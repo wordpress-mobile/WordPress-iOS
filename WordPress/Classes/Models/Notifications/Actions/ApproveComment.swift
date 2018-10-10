@@ -29,7 +29,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
         let title = TitleStrings.approve
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
-        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = TitleHints.approve
         return button
     }()

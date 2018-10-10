@@ -38,7 +38,7 @@ final class ReaderNewsCard {
             return header
         }
 
-        container.addChildViewController(newsCard)
+        container.addChild(newsCard)
 
         // This stream does not have a header: return news card
         guard let sectionHeader = header else {

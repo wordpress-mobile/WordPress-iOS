@@ -145,7 +145,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 layer.borderColor = Styles.activeCellBorderColor.cgColor
                 infoBar.layer.borderColor = Styles.activeCellDividerColor.cgColor
                 actionButton.layer.borderColor = Styles.activeCellDividerColor.cgColor
-                actionButton.setImage(activeEllipsisImage, for: UIControlState())
+                actionButton.setImage(activeEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
@@ -155,7 +155,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 layer.borderColor = Styles.inactiveCellBorderColor.cgColor
                 infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
                 actionButton.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
-                actionButton.setImage(inactiveEllipsisImage, for: UIControlState())
+                actionButton.setImage(inactiveEllipsisImage, for: .normal)
 
                 nameLabel.textColor = Styles.inactiveCellNameColor
                 if theme.isPremium() && showPriceInformation {
@@ -251,7 +251,7 @@ extension ThemeBrowserCell: Accessible {
         imageView.isAccessibilityElement = true
         if let name = theme?.name {
             imageView.accessibilityLabel = name
-            imageView.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSummaryElement
+            imageView.accessibilityTraits = [.button, .summaryElement]
         }
 
         if let details = theme?.details {
@@ -262,7 +262,7 @@ extension ThemeBrowserCell: Accessible {
     private func prepareActionButtonForVoiceOver() {
         actionButton.isAccessibilityElement = true
         actionButton.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
-        actionButton.accessibilityTraits = UIAccessibilityTraitButton
+        actionButton.accessibilityTraits = .button
     }
 
     private func prepareNameLabelForVoiceOver() {

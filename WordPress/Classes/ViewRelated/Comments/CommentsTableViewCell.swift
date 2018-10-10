@@ -33,7 +33,6 @@ open class CommentsTableViewCell: WPTableViewCell {
     }
 
 
-
     // MARK: - Public Methods
     @objc open func downloadGravatarWithURL(_ url: URL?) {
         if url == gravatarURL {

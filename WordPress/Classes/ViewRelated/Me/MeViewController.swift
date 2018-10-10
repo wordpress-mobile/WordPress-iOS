@@ -9,13 +9,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     @objc static let restorationIdentifier = "WPMeRestorationID"
     @objc var handler: ImmuTableViewHandler!
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().meViewController
     }
 
     // MARK: - Table View Controller
 
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
         // Need to use `super` to work around a Swift compiler bug
@@ -131,7 +132,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     private var appSettingsRow: NavigationItemRow {
-        let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
 
         return NavigationItemRow(
             title: RowTitles.appSettings,
@@ -141,7 +142,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     fileprivate func tableViewModel(_ loggedIn: Bool) -> ImmuTable {
-        let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        let accessoryType: UITableViewCell.AccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
 
         let myProfile = NavigationItemRow(
             title: RowTitles.myProfile,

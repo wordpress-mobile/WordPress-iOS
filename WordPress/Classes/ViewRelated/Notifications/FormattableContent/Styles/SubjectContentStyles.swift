@@ -1,15 +1,15 @@
 import WordPressShared
 
 class SubjectContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey: Any] {
+    var attributes: [NSAttributedString.Key: Any] {
         return WPStyleGuide.Notifications.subjectRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey: Any]? {
+    var quoteStyles: [NSAttributedString.Key: Any]? {
         return WPStyleGuide.Notifications.subjectItalicsStyle
     }
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
             .user: WPStyleGuide.Notifications.subjectBoldStyle,
             .post: WPStyleGuide.Notifications.subjectItalicsStyle,

@@ -32,19 +32,19 @@ open class NavigationTitleView: UIView {
     // MARK: - Helpers
     fileprivate func setupSubviews() {
         titleLabel.font                 = WPFontManager.systemSemiBoldFont(ofSize: NavigationTitleView.defaultTitleFontSize)
-        titleLabel.textColor            = UIColor.white
+        titleLabel.textColor            = .white
         titleLabel.textAlignment        = .center
-        titleLabel.backgroundColor      = UIColor.clear
-        titleLabel.autoresizingMask     = UIViewAutoresizing.flexibleWidth
+        titleLabel.backgroundColor      = .clear
+        titleLabel.autoresizingMask     = .flexibleWidth
 
         subtitleLabel.font              = WPFontManager.systemRegularFont(ofSize: NavigationTitleView.defaultSubtitleFontSize)
-        subtitleLabel.textColor         = UIColor.white
+        subtitleLabel.textColor         = .white
         subtitleLabel.textAlignment     = .center
-        subtitleLabel.backgroundColor   = UIColor.clear
-        subtitleLabel.autoresizingMask  = UIViewAutoresizing.flexibleWidth
+        subtitleLabel.backgroundColor   = .clear
+        subtitleLabel.autoresizingMask  = .flexibleWidth
 
         backgroundColor                 = UIColor.clear
-        autoresizingMask                = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleBottomMargin, UIViewAutoresizing.flexibleTopMargin]
+        autoresizingMask                = [.flexibleWidth, .flexibleBottomMargin, .flexibleTopMargin]
         clipsToBounds                   = true
 
         addSubview(titleLabel)

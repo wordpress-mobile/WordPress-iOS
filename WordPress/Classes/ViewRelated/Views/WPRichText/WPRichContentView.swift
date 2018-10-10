@@ -103,22 +103,23 @@ class WPRichContentView: UITextView {
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
                 "</style>"
-            let content = style + str
+            let html = style + str
             // Request the font to ensure it's loaded. Otherwise NSAttributedString
             // falls back to Times New Roman :o
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
             _ = WPFontManager.notoItalicFont(ofSize: 16)
             do {
-                if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil) {
+                if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(html, defaultAttributes: nil) {
                     let mattrTxt = NSMutableAttributedString(attributedString: attrTxt)
 
                     // Ensure the starting paragraph style is applied to the topMarginAttachment else the
                     // first paragraph might not have the correct line height.
-                    var paraStyle = NSParagraphStyle.default
-                    if attrTxt.length > 0 {
-                        if let pstyle = attrTxt.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
-                            paraStyle = pstyle
-                        }
+                    let paraStyle: NSParagraphStyle
+                    if let pstyle = attrTxt.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle,
+                        attrTxt.length > 0 {
+                        paraStyle = pstyle
+                    } else {
+                        paraStyle = .default
                     }
                     mattrTxt.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
                     mattrTxt.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
@@ -406,7 +407,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
 private extension WPRichContentView {
     struct Constants {
-        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
+        static let textContainerInset = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 16.0, right: 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
         static let photonQuality = 65
     }

@@ -1,2 +1,4 @@
-Abbiamo messo a punto le cose sotto il cofano.
-Potrai non vedere nulla di diverso nella app, ma aspettati che tutto sia più stabile e veloce.
+Non vai fuori di testa quando realizzi che vuoi mettere in evidenza un articolo sulla prima pagina del tuo sito ma sei su un autobus e hai con te solo un telefono? Anche noi. Ora puoi impostare articoli in evidenza nell'app e le altre persone sull'autobus non dovranno ascoltare le tue lamentele.
+Risparmia tempo e tocchi con le notifiche push sui commenti che mostrano l'intero commento dalla schermata Home. Tutti amano risparmiare.
+Abbiamo conferito maggiore coerenza visiva a diverse schermate nell'app, così muoversi è più facile. Meno tempo per cercare di capire come si naviga = più tempo per creare.
+Tira fuori le armi e liberati di qualche bug.

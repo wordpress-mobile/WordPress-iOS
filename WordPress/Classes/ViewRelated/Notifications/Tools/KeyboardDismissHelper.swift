@@ -102,12 +102,30 @@ import UIKit
     ///
     @objc func startListeningToKeyboardNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: .UIKeyboardWillChangeFrame, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: .UIKeyboardDidChangeFrame, object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillShow),
+                       name: UIResponder.keyboardWillShowNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidShow),
+                       name: UIResponder.keyboardDidShowNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillHide),
+                       name: UIResponder.keyboardWillHideNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidHide),
+                       name: UIResponder.keyboardDidHideNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillChangeFrame),
+                       name: UIResponder.keyboardWillChangeFrameNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidChangeFrame),
+                       name: UIResponder.keyboardDidChangeFrameNotification,
+                       object: nil)
 
     }
 
@@ -217,7 +235,7 @@ import UIKit
     }
 
     fileprivate func bottomInsetFromKeyboardNote(_ note: Foundation.Notification) -> CGFloat {
-        let wrappedRect = note.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue
+        let wrappedRect = note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         let keyboardRect = wrappedRect?.cgRectValue ?? CGRect.zero
         let relativeRect = parentView.convert(keyboardRect, from: nil)
         let bottomInset = max(relativeRect.height - relativeRect.maxY + parentView.frame.height, 0)
@@ -226,16 +244,16 @@ import UIKit
     }
 
     fileprivate func durationFromKeyboardNote(_ note: Foundation.Notification) -> TimeInterval {
-        guard let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval else {
+        guard let duration = note.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {
             return TimeInterval(0)
         }
 
         return duration
     }
 
-    fileprivate func curveFromKeyboardNote(_ note: Foundation.Notification) -> UIViewAnimationCurve {
-        guard let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-            let curve = UIViewAnimationCurve(rawValue: rawCurve) else {
+    fileprivate func curveFromKeyboardNote(_ note: Foundation.Notification) -> UIView.AnimationCurve {
+        guard let rawCurve = note.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int,
+            let curve = UIView.AnimationCurve(rawValue: rawCurve) else {
             return .easeInOut
         }
 

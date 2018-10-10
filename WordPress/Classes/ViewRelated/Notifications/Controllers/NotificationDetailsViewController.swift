@@ -242,7 +242,8 @@ class NotificationDetailsViewController: UIViewController {
 // MARK: - State Restoration
 //
 extension NotificationDetailsViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
         let context = Environment.current.mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
@@ -254,7 +255,7 @@ extension NotificationDetailsViewController: UIViewControllerRestoration {
             return nil
         }
 
-        let storyboard = coder.decodeObject(forKey: UIStateRestorationViewControllerStoryboardKey) as? UIStoryboard
+        let storyboard = coder.decodeObject(forKey: UIApplication.stateRestorationViewControllerStoryboardKey) as? UIStoryboard
         guard let vc = storyboard?.instantiateViewController(withIdentifier: Restoration.restorationIdentifier) as? NotificationDetailsViewController else {
             return nil
         }
@@ -315,7 +316,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -713,6 +714,14 @@ private extension NotificationDetailsViewController {
             self?.router.routeTo(image)
         }
 
+        cell.onTimeStampLongPress = { [weak self] in
+            guard let urlString = self?.note.url,
+            let url = URL(string: urlString) else {
+                return
+            }
+            UIAlertController.presentAlertAndCopyCommentURLToClipboard(url: url)
+        }
+
         // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
         cell.downloadGravatarWithURL(mediaURL)
@@ -739,6 +748,7 @@ private extension NotificationDetailsViewController {
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
             self?.focusOnReplyTextViewWithBlock(commentBlock)
+            WPAppAnalytics.track(.notificationsCommentRepliedTo)
         }
 
         cell.onLikeClick = { [weak self] _ in
@@ -1224,7 +1234,7 @@ private extension NotificationDetailsViewController {
         static let richBlockTypes           = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
-        static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
+        static let options: UIView.AnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
     }
 
     enum Restoration {
