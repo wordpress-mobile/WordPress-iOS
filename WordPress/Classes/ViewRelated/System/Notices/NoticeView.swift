@@ -11,6 +11,7 @@ class NoticeView: UIView {
     internal let titleLabel = UILabel()
     internal let messageLabel = UILabel()
     private let actionButton = UIButton(type: .system)
+    private let cancelButton = UIButton(type: .system)
 
     internal let notice: Notice
 
@@ -36,7 +37,9 @@ class NoticeView: UIView {
         configureLabels()
         configureForNotice()
 
-        if notice.actionTitle != nil {
+        if notice.actionTitle != nil && notice.cancelTitle != nil {
+            configureDualButtons()
+        } else if notice.actionTitle != nil {
             configureActionButton()
         }
 
@@ -90,8 +93,8 @@ class NoticeView: UIView {
         // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
         // and obscure the blur visual effect view. 
         let maskPath = CGMutablePath()
-        let leftInset = Metrics.layoutMargins.left * 2
-        let topInset = Metrics.layoutMargins.top * 2
+        let leftInset = notice.style.layoutMargins.left * 2
+        let topInset = notice.style.layoutMargins.top * 2
         maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
         maskPath.addPath(shadowPath)
         shadowMaskLayer.path = maskPath
@@ -112,7 +115,7 @@ class NoticeView: UIView {
         labelStackView.spacing = Metrics.labelLineSpacing
         labelStackView.isBaselineRelativeArrangement = true
         labelStackView.isLayoutMarginsRelativeArrangement = true
-        labelStackView.layoutMargins = Metrics.layoutMargins
+        labelStackView.layoutMargins = notice.style.layoutMargins
 
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(messageLabel)
@@ -120,22 +123,32 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(labelStackView)
 
         NSLayoutConstraint.activate([
-            labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
-            labelStackView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
+            labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor)
             ])
 
         titleLabel.font = notice.style.titleLabelFont
         messageLabel.font = notice.style.messageLabelFont
+        messageLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         titleLabel.textColor = notice.style.titleColor
         messageLabel.textColor = notice.style.messageColor
+
+        messageLabel.numberOfLines = 0
+        messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive = true
     }
 
     private func configureActionButton() {
+        guard let actionTitle = notice.actionTitle else {
+            actionBackgroundView.isHidden = true
+            return
+        }
+
+        actionButton.setTitle(actionTitle, for: .normal)
+
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
-        actionBackgroundView.layoutMargins = Metrics.layoutMargins
+        actionBackgroundView.layoutMargins = notice.style.layoutMargins
         actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
 
         actionBackgroundView.addSubview(actionButton)
@@ -154,6 +167,56 @@ class NoticeView: UIView {
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
+    private func configureDualButtons() {
+        guard let actionTitle = notice.actionTitle,
+            let cancelTitle = notice.cancelTitle else {
+            actionBackgroundView.isHidden = true
+            return
+        }
+
+        actionButton.setTitle(actionTitle, for: .normal)
+        cancelButton.setTitle(cancelTitle, for: .normal)
+
+        contentStackView.axis = .vertical
+
+        let cancelBackgroundView = UIView()
+        let buttonStackView = UIStackView(arrangedSubviews: [cancelBackgroundView, actionBackgroundView])
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.axis = .horizontal
+        buttonStackView.distribution = .fillEqually
+        contentStackView.addArrangedSubview(buttonStackView)
+
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        cancelBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+
+        actionBackgroundView.addSubview(actionButton)
+        actionBackgroundView.layoutMargins = Metrics.dualLayoutMargins
+        actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
+        actionBackgroundView.addTopBorder()
+
+        cancelBackgroundView.addSubview(cancelButton)
+        cancelBackgroundView.layoutMargins = Metrics.dualLayoutMargins
+        cancelBackgroundView.pinSubviewToAllEdgeMargins(cancelButton)
+        cancelBackgroundView.addTopBorder()
+        cancelBackgroundView.addTrailingBorder()
+
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
+        actionButton.setTitleColor(.white, for: .normal)
+        actionButton.on(.touchUpInside) { [weak self] _ in
+            self?.actionButtonTapped()
+        }
+        actionButton.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
+        cancelButton.setTitleColor(notice.style.messageColor, for: .normal)
+        cancelButton.on(.touchUpInside) { [weak self] _ in
+            self?.cancelButtonTapped()
+        }
+        cancelButton.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
     private func configureDismissRecognizer() {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         addGestureRecognizer(recognizer)
@@ -170,12 +233,6 @@ class NoticeView: UIView {
         } else {
             titleLabel.numberOfLines = 2
         }
-
-        if let actionTitle = notice.actionTitle {
-            actionButton.setTitle(actionTitle, for: .normal)
-        } else {
-            actionBackgroundView.isHidden = true
-        }
     }
 
     override var bounds: CGRect {
@@ -191,13 +248,18 @@ class NoticeView: UIView {
     }
 
     @objc private func actionButtonTapped() {
-        notice.actionHandler?()
+        notice.actionHandler?(true)
+        dismissHandler?()
+    }
+
+    private func cancelButtonTapped() {
+        notice.actionHandler?(false)
         dismissHandler?()
     }
 
     private enum Metrics {
         static let cornerRadius: CGFloat = 13.0
-        static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+        static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
         static let labelLineSpacing: CGFloat = 18.0
     }
 
@@ -207,5 +269,43 @@ class NoticeView: UIView {
         static let shadowOpacity: Float = 0.25
         static let shadowRadius: CGFloat = 8.0
         static let shadowOffset = CGSize(width: 0.0, height: 2.0)
+        static let minMessageHeight: CGFloat = 18.0
+    }
+}
+
+fileprivate extension UIView {
+    func addTopBorder() {
+        let borderView = makeBorderView()
+
+        NSLayoutConstraint.activate([
+            borderView.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale),
+            borderView.topAnchor.constraint(equalTo: topAnchor),
+            borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            borderView.widthAnchor.constraint(equalTo: widthAnchor)
+            ])
+    }
+
+    func addTrailingBorder() {
+        let borderView = makeBorderView()
+
+        NSLayoutConstraint.activate([
+            borderView.heightAnchor.constraint(equalTo: heightAnchor),
+            borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            borderView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            borderView.widthAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale)
+            ])
+    }
+
+    func makeBorderView() -> UIView {
+        let borderView = UIView()
+        borderView.backgroundColor = Constants.borderColor
+        borderView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(borderView)
+
+        return borderView
+    }
+
+    struct Constants {
+        static let borderColor = UIColor.white.withAlphaComponent(0.25)
     }
 }

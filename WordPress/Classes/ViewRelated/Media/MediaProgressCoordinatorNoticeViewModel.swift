@@ -51,7 +51,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       feedbackType: .success,
                       notificationInfo: notificationInfo,
                       actionTitle: actionTitle,
-                      actionHandler: {
+                      actionHandler: { _ in
                         MediaNoticeNavigationCoordinator.presentEditor(for: blog, source: "media_upload_notice", media: self.successfulMedia)
         })
     }
@@ -62,7 +62,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
-                      actionHandler: {
+                      actionHandler: { _ in
                         for media in self.failedMedia {
                             MediaCoordinator.shared.retryMedia(media)
                         }
