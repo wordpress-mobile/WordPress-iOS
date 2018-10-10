@@ -12,13 +12,13 @@ extension WPStyleGuide {
 
         public static let linkColor = WPStyleGuide.baseLighterBlue()
 
-        public static var contentRegularStyle: [NSAttributedStringKey: Any] {
+        public static var contentRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentParagraph,
                      .font: contentRegularFont,
                      .foregroundColor: contentTextColor ]
         }
 
-        public static var contentItalicStyle: [NSAttributedStringKey: Any] {
+        public static var contentItalicStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentParagraph,
                      .font: contentItalicFont,
                      .foregroundColor: contentTextColor ]
@@ -28,19 +28,19 @@ extension WPStyleGuide {
             return gravatar
         }
 
-        public static func summaryRegularStyle() -> [NSAttributedStringKey: Any] {
+        public static func summaryRegularStyle() -> [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: summaryParagraph,
                      .font: summaryRegularFont,
                      .foregroundColor: WPStyleGuide.littleEddieGrey()]
         }
 
-        public static func summaryBoldStyle() -> [NSAttributedStringKey: Any] {
+        public static func summaryBoldStyle() -> [NSAttributedString.Key: Any] {
             return [.paragraphStyle: summaryParagraph,
                     .font: summaryBoldFont,
                     .foregroundColor: WPStyleGuide.littleEddieGrey()]
         }
 
-        public static func timestampStyle() -> [NSAttributedStringKey: Any] {
+        public static func timestampStyle() -> [NSAttributedString.Key: Any] {
             return  [.font: timestampFont,
                      .foregroundColor: WPStyleGuide.allTAllShadeGrey()]
         }

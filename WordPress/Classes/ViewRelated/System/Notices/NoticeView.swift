@@ -78,7 +78,7 @@ class NoticeView: UIView {
         shadowLayer.shadowOffset = Appearance.shadowOffset
         layer.insertSublayer(shadowLayer, at: 0)
 
-        shadowMaskLayer.fillRule = kCAFillRuleEvenOdd
+        shadowMaskLayer.fillRule = CAShapeLayerFillRule.evenOdd
         shadowLayer.mask = shadowMaskLayer
 
         updateShadowPath()

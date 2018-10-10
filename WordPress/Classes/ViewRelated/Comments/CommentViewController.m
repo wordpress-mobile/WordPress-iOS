@@ -339,15 +339,17 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
     cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
+     __typeof(self) __weak weakSelf = self;
+    cell.onTimeStampLongPress = ^(void) {
+        NSURL *url = [NSURL URLWithString:weakSelf.comment.link];
+        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
+    };
 
     if ([self.comment avatarURLForDisplay]) {
         [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
     } else {
         [cell downloadGravatarWithEmail:[self.comment gravatarEmailForDisplay]];
     }
-
-    // Setup the Callbacks
-    __weak __typeof(self) weakSelf = self;
 
     cell.onUrlClick = ^(NSURL *url){
         [weakSelf openWebViewWithURL:url];

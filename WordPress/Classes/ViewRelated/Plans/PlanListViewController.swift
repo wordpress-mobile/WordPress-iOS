@@ -108,8 +108,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         noResultsViewController.bindViewModel(viewModel)
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        addChildViewController(noResultsViewController)
-        noResultsViewController.didMove(toParentViewController: self)
+        addChild(noResultsViewController)
+        noResultsViewController.didMove(toParent: self)
     }
 
 }
@@ -130,8 +130,10 @@ extension PlanListViewController: UIViewControllerRestoration {
         static let blogURL = "blogURL"
     }
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String, identifier == PlanListViewController.restorationIdentifier else {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last,
+            identifier == PlanListViewController.restorationIdentifier else {
             return nil
         }
 

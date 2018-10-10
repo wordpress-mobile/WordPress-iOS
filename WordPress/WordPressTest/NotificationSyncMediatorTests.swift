@@ -80,41 +80,41 @@ class NotificationSyncMediatorTests: XCTestCase {
 
     /// Verifies that the Sync call, when called repeatedly, won't duplicate our local dataset.
     ///
-    func testMultipleSyncCallsWontInsertDuplicateNotes() {
-        // Stub Endpoint
-        let endpoint = "notifications/"
-        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
-        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
-
-        // Make sure the collection is empty, to begin with
-        XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
-
-        // Shutdown Expectation Warnings. Please
-        manager.requiresTestExpectation = false
-
-        // Wait until all the workers complete
-        let group = DispatchGroup()
-
-        // CoreData Expectations
-        for _ in 0..<100 {
-            group.enter()
-
-            let newMediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
-            newMediator?.sync { (_, _) in
-                group.leave()
-            }
-        }
-
-        // Verify there's no duplication
-        let expect = expectation(description: "Async!")
-
-        group.notify(queue: DispatchQueue.main, execute: {
-            XCTAssert(self.manager.mainContext.countObjects(ofType: Notification.self) == 1)
-            expect.fulfill()
-        })
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
+//    func testMultipleSyncCallsWontInsertDuplicateNotes() {
+//        // Stub Endpoint
+//        let endpoint = "notifications/"
+//        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
+//        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+//
+//        // Make sure the collection is empty, to begin with
+//        XCTAssert(manager.mainContext.countObjects(ofType: Notification.self) == 0)
+//
+//        // Shutdown Expectation Warnings. Please
+//        manager.requiresTestExpectation = false
+//
+//        // Wait until all the workers complete
+//        let group = DispatchGroup()
+//
+//        // CoreData Expectations
+//        for _ in 0..<100 {
+//            group.enter()
+//
+//            let newMediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
+//            newMediator?.sync { (_, _) in
+//                group.leave()
+//            }
+//        }
+//
+//        // Verify there's no duplication
+//        let expect = expectation(description: "Async!")
+//
+//        group.notify(queue: DispatchQueue.main, execute: {
+//            XCTAssert(self.manager.mainContext.countObjects(ofType: Notification.self) == 1)
+//            expect.fulfill()
+//        })
+//
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
 
 
     /// Verifies that RefreshNotification withID effectively loads a single Notification from the remote endpoint.
