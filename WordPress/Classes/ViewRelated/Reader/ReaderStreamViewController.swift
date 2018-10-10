@@ -97,7 +97,7 @@ import WordPressFlux
 
 
     var isShowingResultStatusView: Bool {
-        return resultsStatusView.view.superview != nil
+        return resultsStatusView.view?.superview != nil
     }
 
 
@@ -368,7 +368,6 @@ import WordPressFlux
     }
 
     fileprivate func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
-        childController.removeFromParent()
         controller.addChild(childController)
         controller.view.addSubview(childController.view)
         childController.didMove(toParent: controller)
@@ -1559,14 +1558,14 @@ private extension ReaderStreamViewController {
                                 imageName: String? = nil,
                                 accessoryView: UIView? = nil) {
 
-        (accessoryView as? WPAnimatedBox)?.animate()
         resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
     }
 
     func displayResultsStatus() {
-        add(resultsStatusView, asChildOf: tableViewController)
+        resultsStatusView.removeFromView()
+        tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
         layoutNoResultsStatus()
-
+        resultsStatusView.didMove(toParent: tableViewController)
         footerView.isHidden = true
     }
 
