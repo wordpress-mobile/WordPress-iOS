@@ -49,12 +49,15 @@ class ParentPageSettingsViewController: UIViewController {
     @IBOutlet private var cancelButton: UIBarButtonItem!
     @IBOutlet private var doneButton: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var searchBar: UISearchBar!
 
     private let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-    private var searchController: UISearchController!
+    private var isSearching: Bool = false
     private var sections: [ImmuTableSection] {
-        return searchController.isActive ? filteredRows : rows
+        guard let text = searchBar.text else {
+            return rows
+        }
+        return isSearching && !text.isEmpty ? filteredRows : rows
     }
     private var rows: [ImmuTableSection]!
     private var filteredRows: [ImmuTableSection]!
@@ -71,7 +74,13 @@ class ParentPageSettingsViewController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
-        setupSearchController()
+        startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        stopListeningToKeyboardNotifications()
     }
 
 
@@ -96,22 +105,13 @@ class ParentPageSettingsViewController: UIViewController {
         cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
         doneButton.title = NSLocalizedString("Done", comment: "Text displayed by the right navigation button title")
 
+        searchBar.delegate = self
+
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(doneButton, for: navigationItem)
         WPStyleGuide.setLeftBarButtonItemWithCorrectSpacing(cancelButton, for: navigationItem)
+        WPStyleGuide.configureSearchBar(searchBar)
 
         setupTableView()
-    }
-
-    private func setupSearchController() {
-        searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.autocorrectionType = .default
-
-        WPStyleGuide.configureSearchBar(searchController.searchBar)
-
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
     private func setupTableView() {
@@ -127,6 +127,42 @@ class ParentPageSettingsViewController: UIViewController {
 
         tableView.dataSource = self
         tableView.delegate = self
+    }
+
+    private func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidShow),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc private func keyboardDidShow(_ notification: Foundation.Notification) {
+        let keyboardFrame = localKeyboardFrameFromNotification(notification)
+        let keyboardHeight = tableView.frame.maxY - keyboardFrame.origin.y
+
+        tableView.contentInset.bottom = keyboardHeight
+    }
+
+    @objc private func keyboardWillHide(_ notification: Foundation.Notification) {
+        tableView.contentInset.bottom = 0
+    }
+
+    private func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
+        let key = UIResponder.keyboardFrameEndUserInfoKey
+        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
+            return .zero
+        }
+
+        return view.convert(keyboardFrame, from: nil)
     }
 
     private func reloadData(at section: Int, animation: UITableView.RowAnimation = .none) {
@@ -250,14 +286,38 @@ extension ParentPageSettingsViewController {
 }
 
 
-extension ParentPageSettingsViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text,
-            let rows = rows.last?.rows as? [Row] else {
+extension ParentPageSettingsViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        isSearching = true
+        searchBar.showsCancelButton = true
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        isSearching = false
+        tableView.reloadData()
+        searchBar.showsCancelButton = false
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
+        tableView.reloadData()
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+        searchBar.text = nil
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let rows = rows.last?.rows as? [Row] else {
             return
         }
 
-        filteredRows = [ImmuTableSection(rows: rows.filter { $0.title.contains(text) })]
+        let filteredRows = rows.filter { $0.title.lowercased().contains(searchText.lowercased()) }
+        self.filteredRows = searchText.isEmpty ? self.rows : [ImmuTableSection(rows: filteredRows)]
         tableView.reloadData()
     }
 }
