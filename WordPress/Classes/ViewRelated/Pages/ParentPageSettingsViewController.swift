@@ -197,7 +197,8 @@ class ParentPageSettingsViewController: UIViewController {
                 return
             }
 
-            noResultsViewController.configureForNoSearchResults(title: "No pages matching your search")
+            noResultsViewController.configureForNoSearchResults(title: NSLocalizedString("No pages matching your search",
+                                                                                         comment: "Text displayed when there's no matching with the text search"))
 
             addChild(noResultsViewController)
             noResultsViewController.view.frame = tableView.frame
