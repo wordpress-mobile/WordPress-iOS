@@ -20,11 +20,11 @@ import WordPressFlux
     }
 }
 
-//MARK: - copy text to Clipboard
+//MARK: - copy comment URL to Clipboard
 extension UIAlertController {
     /// This method is used for presenting the Action sheet
-    /// for copying text to clipboard. The action sheet has 2 options:
-    /// copy: will copy the text to the clipboard
+    /// for copying comment URL to clipboard. The action sheet has 2 options:
+    /// Copy Link to Comment: will copy the text to the clipboard
     /// cancel: dismiss the action sheet
     @objc static func copyCommentURLAlertController(_ url: URL,
                                               completion: (() -> Void)? = nil) -> UIAlertController? {
@@ -38,9 +38,9 @@ extension UIAlertController {
     }
 
     /// This method is will present an alert controller (action sheet style) that
-    /// provides a copy action to allow copying the text parameter to the clip board.
-    /// Once copied, or on failure to copy, a notice will be posted using the dispacher so the user will know
-    /// if copying to clipboard was successful
+    /// provides a copy action to allow copying the url parameter to the clip board.
+    /// Once copied, a notice will be posted using the dispacher so the user will know
+    /// the url was copied.
     @objc static func presentAlertAndCopyCommentURLToClipboard(url: URL) {
         let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
 
