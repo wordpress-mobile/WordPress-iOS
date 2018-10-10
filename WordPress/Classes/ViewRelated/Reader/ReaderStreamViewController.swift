@@ -25,12 +25,24 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
-    fileprivate var tableView: UITableView!
-    fileprivate var refreshControl: UIRefreshControl!
+    fileprivate var tableView: UITableView! {
+        return tableViewController.tableView
+    }
+
     fileprivate var syncHelper: WPContentSyncHelper!
-    fileprivate var tableViewController: UITableViewController!
     fileprivate var resultsStatusView = NoResultsViewController.controller()
-    fileprivate var footerView: PostListFooterView!
+
+    fileprivate lazy var footerView: PostListFooterView = {
+        return tableConfiguration.footer()
+    }()
+
+    fileprivate let tableViewController = UITableViewController(style: .plain)
+
+    fileprivate lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        tableViewController.refreshControl = refreshControl
+        return refreshControl
+    }()
 
     fileprivate let loadMoreThreashold = 4
 
@@ -81,6 +93,11 @@ import WordPressFlux
                 fetchTagTopic()
             }
         }
+    }
+
+
+    var isShowingResultStatusView: Bool {
+        return resultsStatusView.view.superview != nil
     }
 
 
@@ -205,12 +222,6 @@ import WordPressFlux
         return super.awakeAfter(using: aDecoder)
     }
 
-
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        tableViewController = segue.destination as? UITableViewController
-    }
-
-
     open override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -235,7 +246,7 @@ import WordPressFlux
 
         if readerTopic != nil {
             configureControllerForTopic()
-        } else if siteID != nil || tagSlug != nil {
+        } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
     }
@@ -245,7 +256,6 @@ import WordPressFlux
 
         syncIfAppropriate()
     }
-
 
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -346,13 +356,32 @@ import WordPressFlux
     // MARK: - Setup
 
     fileprivate func setupTableView() {
-        assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
-
-        tableView = tableViewController.tableView
-        refreshControl = tableViewController.refreshControl!
-        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-
+        configureRefreshControl()
+        add(tableViewController, asChildOf: self)
+        layoutTableView()
         tableConfiguration.setup(tableView)
+    }
+
+    fileprivate func configureRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
+        tableViewController.refreshControl = UIRefreshControl(frame: .zero)
+    }
+
+    fileprivate func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
+        childController.removeFromParent()
+        controller.addChild(childController)
+        controller.view.addSubview(childController.view)
+        childController.didMove(toParent: controller)
+    }
+
+    fileprivate func layoutTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
     }
 
     fileprivate func setupContentHandler() {
@@ -371,12 +400,6 @@ import WordPressFlux
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
-            assertionFailure()
-            return
-        }
-
-        footerView = footer
         footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
@@ -1318,6 +1341,14 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         return UITableView.automaticDimension
     }
 
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let posts = content.content as? [ReaderPost] else {
             return UITableViewCell()
@@ -1475,11 +1506,13 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        displayResultsStatus()
     }
 
     func displayLoadingStreamFailed() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
+        configureResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
+        displayResultsStatus()
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1488,7 +1521,8 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        displayResultsStatus()
     }
 
     func displayNoResultsView() {
@@ -1510,30 +1544,38 @@ private extension ReaderStreamViewController {
         let buttonTitle = buttonTitleForTopic(topic)
         let imageName = ReaderHelpers.topicIsFollowing(topic) ? readerEmptyImageName : nil
 
-        configureAndDisplayResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
-    }
-
-    func displayNoConnectionView() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
-    }
-
-    func configureAndDisplayResultsStatus(title: String,
-                                          subtitle: String? = nil,
-                                          buttonTitle: String? = nil,
-                                          imageName: String? = nil,
-                                          accessoryView: UIView? = nil) {
-
-        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+        configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
         displayResultsStatus()
     }
 
+    func displayNoConnectionView() {
+        configureResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
+        displayResultsStatus()
+    }
+
+    func configureResultsStatus(title: String,
+                                subtitle: String? = nil,
+                                buttonTitle: String? = nil,
+                                imageName: String? = nil,
+                                accessoryView: UIView? = nil) {
+
+        (accessoryView as? WPAnimatedBox)?.animate()
+        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+    }
+
     func displayResultsStatus() {
-        resultsStatusView.removeFromView()
-        tableViewController.addChild(resultsStatusView)
-        tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        resultsStatusView.view.frame = tableView.frame
-        resultsStatusView.didMove(toParent: tableViewController)
+        add(resultsStatusView, asChildOf: tableViewController)
+        layoutNoResultsStatus()
+
         footerView.isHidden = true
+    }
+
+    func layoutNoResultsStatus() {
+        resultsStatusView.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            resultsStatusView.view.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            resultsStatusView.view.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
+            ])
     }
 
     func hideResultsStatus() {
