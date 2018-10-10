@@ -52,7 +52,8 @@ class ParentPageSettingsViewController: UIViewController {
     @IBOutlet private var searchBar: UISearchBar!
 
     private let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-    private var isSearching: Bool = false
+    private lazy var noResultsViewController = NoResultsViewController.controller()
+    private var isSearching = false
     private var sections: [ImmuTableSection] {
         guard let text = searchBar.text else {
             return rows
@@ -190,6 +191,29 @@ class ParentPageSettingsViewController: UIViewController {
         return Row(page: parent, type: .child)
     }
 
+    private func triggerNoResults(display: Bool) {
+        if display {
+            if noResultsViewController.view.superview != nil {
+                return
+            }
+
+            noResultsViewController.configureForNoSearchResults(title: "No pages matching your search")
+
+            addChild(noResultsViewController)
+            noResultsViewController.view.frame = tableView.frame
+            noResultsViewController.view.frame.origin.y = 0
+
+            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            noResultsViewController.didMove(toParent: self)
+        } else {
+            if noResultsViewController.view.superview == nil {
+                return
+            }
+
+            noResultsViewController.removeFromView()
+        }
+    }
+
 
     // MARK: IBAction
 
@@ -300,6 +324,7 @@ extension ParentPageSettingsViewController: UISearchBarDelegate {
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         isSearching = false
+        triggerNoResults(display: false)
         tableView.reloadData()
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
@@ -318,6 +343,9 @@ extension ParentPageSettingsViewController: UISearchBarDelegate {
 
         let filteredRows = rows.filter { $0.title.lowercased().contains(searchText.lowercased()) }
         self.filteredRows = searchText.isEmpty ? self.rows : [ImmuTableSection(rows: filteredRows)]
+
+        triggerNoResults(display: filteredRows.isEmpty && !searchText.isEmpty)
+
         tableView.reloadData()
     }
 }
