@@ -367,13 +367,6 @@ import WordPressFlux
         tableViewController.refreshControl = UIRefreshControl(frame: .zero)
     }
 
-    fileprivate func addTableViewControllerAsChild() {
-        addChild(tableViewController)
-        view.addSubview(tableView)
-
-        tableViewController.didMove(toParent: self)
-    }
-
     fileprivate func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
         childController.removeFromParent()
         controller.addChild(childController)
