@@ -78,6 +78,79 @@ class AztecPostViewController: UIViewController, PostEditor {
         return textView
     }()
 
+    // MARK: - Word count
+
+    /// Count word or characters by set language
+    /// The label should be displayed in the inverse to the natural text direction
+    ///
+    lazy var inverseNatural: NSTextAlignment = {
+        return UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .left : .right
+    }()
+
+    fileprivate(set) lazy var wordCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.wordCount
+        label.font = Fonts.regular
+        label.isUserInteractionEnabled = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        label.textAlignment = inverseNatural
+        label.isHidden = true
+        return label
+    }()
+
+    private lazy var wordCountLabelBottomConstraint: NSLayoutConstraint = {
+        return wordCountLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    }()
+
+    private func updateWordCountLabelBottomConstraint(constant: CGFloat) {
+        wordCountLabelBottomConstraint.constant = constant
+    }
+
+    /// If the language the user chose in settings is character based
+    /// The lable will show the number of characters.
+    /// If the language is not supported the label will stay hidden
+    /// otherwise, show word count.
+    ///
+    private enum TextCountLabelDisplayModel {
+        case wordBase
+        case hidden
+    }
+
+    private lazy var textCountLabelDisplayModel: TextCountLabelDisplayModel = {
+        let primaryLanguage = richTextView.textInputMode?.primaryLanguage
+        let locale =  primaryLanguage != nil
+        ? primaryLanguage
+        : WordPressComLanguageDatabase().deviceLanguage.slug
+        switch locale {
+        case "ja", "th", "zh-cn", "zh-hk", "zh-sg", "zh-tw", "ko":
+            return .hidden
+        default:
+            return .wordBase
+        }
+    }()
+
+    /// updating the word count text when the user types.
+    /// This method only gets called if the user typed one or more words.
+    ///
+    private func  updateWordCountText(isHTML: Bool) {
+        let textView = isHTML ? htmlTextView : richTextView
+        wordCountLabel.isHidden = false
+        if case .wordBase = textCountLabelDisplayModel {
+            let count = textView.wordsCount()
+            var description: String {
+                if count == 1 {
+                    return "word"
+                } else {
+                    return "words"
+                }
+            }
+            wordCountLabel.text = String(format: NSLocalizedString("%i %@", comment: "text for word count label"), count, description).uppercased()
+        } else {
+            wordCountLabel.isHidden = true
+            return
+        }
+    }
 
     /// Aztec's Text Placeholder
     ///
@@ -723,6 +796,13 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
+            wordCountLabel.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            wordCountLabel.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+            wordCountLabel.heightAnchor.constraint(equalToConstant: wordCountLabel.font!.lineHeight),
+            ])
+        wordCountLabelBottomConstraint.isActive = true
+
+        NSLayoutConstraint.activate([
             htmlTextView.leftAnchor.constraint(equalTo: richTextView.leftAnchor),
             htmlTextView.rightAnchor.constraint(equalTo: richTextView.rightAnchor),
             htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
@@ -772,6 +852,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func configureSubviews() {
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
+        view.addSubview(wordCountLabel)
         view.addSubview(titleTextField)
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
@@ -995,6 +1076,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
         // Convert the keyboard frame from window base coordinate
         currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
+        wordCountLabelBottomConstraint.constant = -currentKeyboardFrame.height
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1007,6 +1089,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
 
         currentKeyboardFrame = .zero
+        let bottomConstant: CGFloat = richTextView.inputAccessoryView?.frame.height ?? 0.0
+        wordCountLabelBottomConstraint.constant = -bottomConstant
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1650,7 +1734,12 @@ extension AztecPostViewController: UITextViewDelegate {
         case titleTextField:
             updateTitleHeight()
         case richTextView:
+            if textView.text.count > 0 {
+                updateWordCountText(isHTML: false)
+            }
             updateFormatBar()
+        case htmlTextView:
+            updateWordCountText(isHTML: true)
         default:
             break
         }
@@ -3952,6 +4041,7 @@ extension AztecPostViewController {
         static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
         static let aztecLinkColor           = WPStyleGuide.mediumBlue()
         static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
+        static let wordCount                = WPStyleGuide.grey()
     }
 
     struct Fonts {
