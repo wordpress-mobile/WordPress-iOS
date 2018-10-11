@@ -27,6 +27,15 @@ class QuickStartChecklistViewController: UITableViewController {
         dataSource = QuickStartChecklistDataSource(blog: blog)
     }
 
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let tour = dataSource?.tour(at: indexPath),
+            let isCompleted = dataSource?.isCompleted(tour: tour),
+            !isCompleted else {
+                return nil
+        }
+        return indexPath
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         // don't start a tour if it's already completed
