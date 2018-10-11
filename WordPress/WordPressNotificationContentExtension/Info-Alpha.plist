@@ -30,6 +30,7 @@
 				<string>like-comment</string>
 				<string>replyto-comment</string>
 				<string>replyto-like-comment</string>
+				<string>automattcher</string>
 			</array>
 			<key>UNNotificationExtensionDefaultContentHidden</key>
 			<true/>
@@ -41,9 +42,9 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.usernotifications.content-extension</string>
 	</dict>
-    <key>UIAppFonts</key>
-    <array>
-        <string>Noticons.ttf</string>
-    </array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Noticons.ttf</string>
+	</array>
 </dict>
 </plist>
