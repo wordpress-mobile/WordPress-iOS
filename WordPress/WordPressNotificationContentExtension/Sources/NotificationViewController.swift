@@ -7,7 +7,6 @@ import WordPressKit
 // MARK: - NotificationViewController
 
 /// Responsible for enhancing the visual appearance of designated push notifications.
-@objc(NotificationViewController)
 class NotificationViewController: UIViewController {
 
     // MARK: Properties
