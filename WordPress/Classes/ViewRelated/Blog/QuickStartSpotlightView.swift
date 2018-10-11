@@ -7,22 +7,19 @@ class QuickStartSpotlightView: UIView
 
     // MARK: - Initialization
 
-    init()
-    {
+    init() {
         super.init(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         self.setupLayers()
     }
 
-    required init?(coder aDecoder: NSCoder)
-    {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupLayers()
     }
 
     // MARK: - Setup Layers
 
-    private func setupLayers()
-    {
+    private func setupLayers() {
         // Colors
         //
         let backgroundColor = UIColor(red: 0.243137, green: 0.517647, blue: 0.682353, alpha: 1)
@@ -205,8 +202,7 @@ class QuickStartSpotlightView: UIView
 
     // MARK: - Responder
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
-    {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self.superview),
             let hitLayer = self.layer.presentation()?.hitTest(location) else { return }
 
