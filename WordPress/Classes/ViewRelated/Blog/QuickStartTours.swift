@@ -5,6 +5,13 @@ protocol QuickStartTour {
     var title: String { get }
     var description: String { get }
     var icon: UIImage { get }
+    var suggestionNoText: String { get }
+    var suggestionYesText: String { get }
+}
+
+private struct Strings {
+    static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
+    static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
 }
 
 struct QuickStartCreateTour: QuickStartTour {
@@ -12,6 +19,8 @@ struct QuickStartCreateTour: QuickStartTour {
     let title = NSLocalizedString("Create your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Get your site up and running", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.plus)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 struct QuickStartViewTour: QuickStartTour {
@@ -19,6 +28,8 @@ struct QuickStartViewTour: QuickStartTour {
     let title = NSLocalizedString("View your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Preview your new site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.external)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 struct QuickStartThemeTour: QuickStartTour {
@@ -26,6 +37,8 @@ struct QuickStartThemeTour: QuickStartTour {
     let title = NSLocalizedString("Choose a theme", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Browse all our themes to find your perfect fit.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.themes)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 struct QuickStartCustomizeTour: QuickStartTour {
@@ -33,6 +46,8 @@ struct QuickStartCustomizeTour: QuickStartTour {
     let title = NSLocalizedString("Customize your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Change colors, fonts, and images for a perfectly personalized site.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.customize)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 struct QuickStartShareTour: QuickStartTour {
@@ -40,6 +55,8 @@ struct QuickStartShareTour: QuickStartTour {
     let title = NSLocalizedString("Share your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Connect to your social media accounts -- your site will automatically share new posts.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.share)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 struct QuickStartPublishTour: QuickStartTour {
@@ -47,6 +64,8 @@ struct QuickStartPublishTour: QuickStartTour {
     let title = NSLocalizedString("Publish a post", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("It's time! Draft and publish your very first post.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.create)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 struct QuickStartFollowTour: QuickStartTour {
@@ -54,4 +73,6 @@ struct QuickStartFollowTour: QuickStartTour {
     let title = NSLocalizedString("Follow other sites", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Find sites that speak to you, and follow them to get updates when they publish.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.readerFollow)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }

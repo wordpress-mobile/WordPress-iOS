@@ -240,7 +240,7 @@ private class NoticeContainerView: UIView {
         stackView.spacing = 0
 
         let paddingWidthConstraint = leftPaddingView.widthAnchor.constraint(equalToConstant: 0)
-        paddingWidthConstraint.priority = .defaultLow
+        paddingWidthConstraint.priority = .lowButABigHigher
 
         addSubview(stackView)
 
@@ -295,4 +295,8 @@ private extension UNMutableNotificationContent {
 
         sound = .default
     }
+}
+
+private extension UILayoutPriority {
+    static let lowButABigHigher = UILayoutPriority.defaultLow + 10
 }
