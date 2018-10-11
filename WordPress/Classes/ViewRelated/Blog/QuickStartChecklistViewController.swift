@@ -37,22 +37,14 @@ class QuickStartChecklistViewController: UITableViewController {
                 return
         }
 
-        // make the tour as complete
-        let context = ContextManager.sharedInstance().mainContext
-        let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
-        newCompletion.blog = blog
-        newCompletion.tourID = tour.key
+        guard let tourGuide = QuickStartTourGuide.find() else {
+            return
+        }
 
-        ContextManager.sharedInstance().saveContextAndWait(ContextManager.sharedInstance().mainContext)
+        tourGuide.completed(tourID: tour.key, for: blog)
+        tourGuide.showTestQuickStartNotice()
 
         self.navigationController?.popViewController(animated: true)
-
-        // show the tour
-        // - find the tour guide
-        if let tabBarController = tabBarController as? WPTabBarController,
-            let tourGuide = tabBarController.tourGuide {
-            tourGuide.showTestQuickStartNotice()
-        }
     }
 }
 

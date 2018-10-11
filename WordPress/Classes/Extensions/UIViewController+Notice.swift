@@ -23,7 +23,7 @@ extension UIViewController {
                             message: message,
                             feedbackType: .success,
                             notificationInfo: nil,
-                            actionTitle: buttonTitle) {
+                            actionTitle: buttonTitle) { _ in
                                 let context = ContextManager.sharedInstance().mainContext
                                 let service = ReaderTopicService(managedObjectContext: context)
                                 service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true, {
