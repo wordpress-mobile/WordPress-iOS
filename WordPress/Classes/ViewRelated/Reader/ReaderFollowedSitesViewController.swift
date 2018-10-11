@@ -108,6 +108,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
 
         searchBar.autocapitalizationType = .none
+        searchBar.keyboardType = .URL
         searchBar.isTranslucent = false
         searchBar.tintColor = WPStyleGuide.grey()
         searchBar.barTintColor = WPStyleGuide.greyLighten30()

@@ -1048,6 +1048,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderArticleCommentedOn:
             eventName = @"reader_article_commented_on";
             break;
+        case WPAnalyticsStatReaderArticleCommentLiked:
+            eventName = @"reader_article_comment_liked";
+            break;
+        case WPAnalyticsStatReaderArticleCommentUnliked:
+            eventName = @"reader_article_comment_unliked";
+            break;
+        case WPAnalyticsStatReaderArticleCommentsOpened:
+            eventName = @"reader_article_comments_opened";
+            break;
         case WPAnalyticsStatReaderArticleLiked:
             eventName = @"reader_article_liked";
             break;
@@ -1059,6 +1068,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderArticleUnliked:
             eventName = @"reader_article_unliked";
+            break;
+        case WPAnalyticsStatReaderArticleDetailLiked:
+            eventName = @"reader_article_detail_liked";
+            break;
+        case WPAnalyticsStatReaderArticleDetailUnliked:
+            eventName = @"reader_article_detail_unliked";
             break;
         case WPAnalyticsStatReaderDiscoverViewed:
             eventName = @"reader_discover_viewed";
