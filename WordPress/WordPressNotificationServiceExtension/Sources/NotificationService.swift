@@ -72,14 +72,14 @@ class NotificationService: UNNotificationServiceExtension {
 
             let contentFormatter = RichNotificationContentFormatter(notification: notification)
 
-            guard let bodyText = contentFormatter.formatBody() else {
+            guard let bodyText = contentFormatter.body else {
                 return
             }
             notificationContent.body = bodyText
 
             let viewModel = RichNotificationViewModel(
-                attributedBody: contentFormatter.formatAttributedBody(),
-                attributedSubject: contentFormatter.formatAttributedSubject(),
+                attributedBody: contentFormatter.attributedBody,
+                attributedSubject: contentFormatter.attributedSubject,
                 gravatarURLString: notification.icon,
                 noticon: notification.noticon)
             viewModel.encodeToUserInfo(notificationContent: notificationContent)
