@@ -75,7 +75,11 @@ class NotificationViewController: UIViewController {
 extension NotificationViewController: UNNotificationContentExtension {
     func didReceive(_ notification: UNNotification) {
         let notificationContent = notification.request.content
-        viewModel = RichNotificationViewModel(notificationContent: notificationContent)
+
+        guard let data = notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] as? Data else {
+            return
+        }
+        viewModel = RichNotificationViewModel(data: data)
 
         let username = readExtensionUsername()
         tracks.wpcomUsername = username
