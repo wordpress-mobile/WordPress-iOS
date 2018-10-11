@@ -57,6 +57,7 @@ WordPress/WordPress.xcodeproj/xcuserdata
 WordPress/InfoPlist.h
 WordPress/InfoPlist-alpha.h
 WordPress/InfoPlist-internal.h
+WordPress/Derived Sources/
 # coverage.py
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
