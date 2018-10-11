@@ -51,6 +51,10 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
 
+        if let category = notificationKind.contentExtensionCategoryIdentifier {
+            notificationContent.categoryIdentifier = category
+        }
+
         notificationContent.title = apsAlert
 
         let api = WordPressComRestApi(oAuthToken: token)
