@@ -392,7 +392,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    fileprivate func draftPage(_ apost: AbstractPost) {
+    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
@@ -401,7 +401,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService.uploadPost(apost, success: { [weak self] _ in
+            DispatchQueue.main.async {
+                self?._tableViewHandler.refreshTableView(at: indexPath)
+            }
+        }) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {
@@ -469,7 +473,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         return
                 }
 
-                strongSelf.draftPage(page)
+                strongSelf.draftPage(page, at: indexPath)
             })
 
             alertController.addActionWithTitle(deleteButtonTitle, style: .default, handler: { [weak self] (action) in
@@ -508,7 +512,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                             return
                     }
 
-                    strongSelf.draftPage(page)
+                    strongSelf.draftPage(page, at: indexPath)
                 })
             }
 
