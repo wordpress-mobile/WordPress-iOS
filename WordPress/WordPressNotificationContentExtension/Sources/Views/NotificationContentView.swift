@@ -59,7 +59,7 @@ class NotificationContentView: UIView {
             view.heightAnchor.constraint(equalToConstant: Metrics.noticonOuterDimension),
             noticonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noticonView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            ])
+        ])
 
         return view
     }()
@@ -77,7 +77,7 @@ class NotificationContentView: UIView {
             view.heightAnchor.constraint(equalToConstant: Metrics.noticonInnerDimension),
             noticonLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noticonLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            ])
+        ])
 
         return view
     }()
@@ -174,11 +174,10 @@ class NotificationContentView: UIView {
 
 extension NotificationContentView {
     func downloadGravatar() {
-        guard
-            let specifiedGravatar = viewModel.gravatarURLString,
+        guard let specifiedGravatar = viewModel.gravatarURLString,
             let validURL = URL(string: specifiedGravatar),
-            let gravatar = Gravatar(validURL)
-        else {
+            let gravatar = Gravatar(validURL) else {
+
             return
         }
 

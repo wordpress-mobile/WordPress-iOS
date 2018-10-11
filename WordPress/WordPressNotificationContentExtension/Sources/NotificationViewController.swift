@@ -42,7 +42,9 @@ class NotificationViewController: UIViewController {
 
     /// Responsible for instantiation, installation & configuration of the content view
     private func setupContentView() {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel else {
+            return
+        }
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -76,7 +78,7 @@ extension NotificationViewController: UNNotificationContentExtension {
     }
 }
 
-// MARK: - Private behavior (Tracks)
+// MARK: - Private behavior
 
 private extension NotificationViewController {
     /// Retrieves the WPCOM OAuth Token, meant for Extension usage.
@@ -98,13 +100,10 @@ private extension NotificationViewController {
     ///
     /// - Returns: the username if found; `nil` otherwise
     ///
-    private func readExtensionUsername() -> String? {
-        guard
-            let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationContentExtensionKeychainUsernameKey,
-                                                                         andServiceName: WPNotificationContentExtensionKeychainServiceName,
-                                                                         accessGroup: WPAppKeychainAccessGroup)
-            else
-        {
+    func readExtensionUsername() -> String? {
+        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationContentExtensionKeychainUsernameKey,
+                                                                           andServiceName: WPNotificationContentExtensionKeychainServiceName,
+                                                                           accessGroup: WPAppKeychainAccessGroup) else {
             debugPrint("Unable to retrieve Notification Content Extension username")
             return nil
         }
