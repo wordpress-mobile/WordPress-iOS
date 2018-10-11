@@ -280,7 +280,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewWillAppear:animated];
 
     if (@available(iOS 11, *)) {
-        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+        if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
+            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+        }
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
@@ -466,26 +468,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // only make this adjustment on iOS 10 or earlier
-    if (![self respondsToSelector:@selector(setAdditionalSafeAreaInsets:)]) {
+    if (@available(iOS 11, *)) {
+        // intentionally left blank
+    } else if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
         if (section == self.tableSections.count - 1) {
-            return 60.0;
+            return BlogDetailBottomPaddingForQuickStartNotices;
         }
     }
-    return 0;
+    return UITableViewAutomaticDimension;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    // only make this adjustment on iOS 10 or earlier
-    if (![self respondsToSelector:@selector(setAdditionalSafeAreaInsets:)]) {
+    if (@available(iOS 11, *)) {
+        return nil;
+    } else {
         if (section != self.tableSections.count - 1) {
             return nil;
         }
         UIView *view = [UIView new];
-        view.frame = CGRectMake(0, 0, 100.0, 100.0);
+        view.frame = CGRectMake(0, 0, 100.0, BlogDetailBottomPaddingForQuickStartNotices);
         return view;
     }
-    return nil;
 }
 
 #pragma mark - Data Model setup

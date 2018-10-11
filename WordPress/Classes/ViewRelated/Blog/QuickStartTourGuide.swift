@@ -90,7 +90,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
     @objc func currentElementInt() -> Int {
-        return currentWaypoint()?.element.rawValue ?? -1
+        return currentWaypoint()?.element.rawValue ?? NSNotFound
     }
 
     @objc func isCurrentElement(_ testElement: QuickStartTourElement) -> Bool {
