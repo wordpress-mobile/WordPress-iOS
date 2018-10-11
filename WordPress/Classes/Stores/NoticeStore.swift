@@ -6,6 +6,8 @@ import WordPressFlux
 /// Once you've created a Notice, you can dispatch a `NoticeAction` to display it.
 ///
 struct Notice {
+    typealias ActionHandlerFunction = ((_ accepted: Bool) -> Void)
+
     /// The title of the notice
     let title: String
 
@@ -28,26 +30,28 @@ struct Notice {
     /// a notice
     let actionTitle: String?
 
+    /// A title for an optional cancel button that can be displayed as part of a notice
+    ///
+    let cancelTitle: String?
+
     /// An optional handler closure that will be called when the action button
     /// is tapped, if you've provided an action title
-    let actionHandler: (() -> Void)?
+    let actionHandler: ActionHandlerFunction?
 
-    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackGenerator.FeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle()) {
-        self.title = title
-        self.message = message
-        self.feedbackType = feedbackType
-        self.notificationInfo = notificationInfo
-        self.actionTitle = nil
-        self.actionHandler = nil
-        self.style = style
-    }
-
-    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackGenerator.FeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle(), actionTitle: String, actionHandler: @escaping (() -> Void)) {
+    init(title: String,
+         message: String? = nil,
+         feedbackType: UINotificationFeedbackGenerator.FeedbackType? = nil,
+         notificationInfo: NoticeNotificationInfo? = nil,
+         style: NoticeStyle = NormalNoticeStyle(),
+         actionTitle: String? = nil,
+         cancelTitle: String? = nil,
+         actionHandler: ActionHandlerFunction? = nil) {
         self.title = title
         self.message = message
         self.feedbackType = feedbackType
         self.notificationInfo = notificationInfo
         self.actionTitle = actionTitle
+        self.cancelTitle = cancelTitle
         self.actionHandler = actionHandler
         self.style = style
     }

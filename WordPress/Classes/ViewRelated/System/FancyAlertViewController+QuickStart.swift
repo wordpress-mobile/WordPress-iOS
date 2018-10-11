@@ -16,10 +16,16 @@ extension FancyAlertViewController {
     ///
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
-    @objc static func makeQuickStartAlertController() -> FancyAlertViewController {
+    @objc static func makeQuickStartAlertController(blog: Blog) -> FancyAlertViewController {
 
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             controller.dismiss(animated: true)
+
+            guard let tourGuide = QuickStartTourGuide.find() else {
+                return
+            }
+
+            tourGuide.setup(for: blog)
         }
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
