@@ -31,6 +31,10 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     override func refreshTableView() {
+        refreshTableView(at: nil)
+    }
+
+    func refreshTableView(at indexPath: IndexPath?) {
         super.clearCachedRowHeights()
 
         do {
@@ -40,7 +44,11 @@ final class PageListTableViewHandler: WPTableViewHandler {
             DDLogError("Error fetching pages after refreshing the table: \(error)")
         }
 
-        tableView.reloadData()
+        if let indexPath = indexPath {
+            tableView.reloadSections(IndexSet(integer: indexPath.section), with: .fade)
+        } else {
+            tableView.reloadData()
+        }
     }
 
 
