@@ -108,6 +108,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
 
         searchBar.autocapitalizationType = .none
+        searchBar.keyboardType = .URL
         searchBar.isTranslucent = false
         searchBar.tintColor = WPStyleGuide.grey()
         searchBar.barTintColor = WPStyleGuide.greyLighten30()
@@ -201,7 +202,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             let notice = Notice(title: title,
                                 message: url.host,
                                 feedbackType: .error)
-            self?.post(notice)
+
+            // The underlying services for `followSite` don't consistently run the callback
+            // on the main thread, so we'll ensure that we post the notice on the main
+            // thread to prevent crashes.
+            DispatchQueue.main.async {
+                self?.post(notice)
+            }
         })
     }
 

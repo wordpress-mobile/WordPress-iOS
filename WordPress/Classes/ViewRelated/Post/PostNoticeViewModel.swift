@@ -25,7 +25,7 @@ struct PostNoticeViewModel {
                       feedbackType: .success,
                       notificationInfo: notificationInfo,
                       actionTitle: action.title,
-                      actionHandler: {
+                      actionHandler: { _ in
                         switch action {
                         case .publish:
                             self.publishPost()
@@ -41,7 +41,7 @@ struct PostNoticeViewModel {
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
                       actionTitle: failureActionTitle,
-                      actionHandler: {
+                      actionHandler: { _ in
                         self.retryUpload()
         })
     }
