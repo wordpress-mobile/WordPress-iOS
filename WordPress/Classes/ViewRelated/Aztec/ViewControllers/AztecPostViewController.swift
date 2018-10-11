@@ -466,6 +466,18 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var debouncer = Debouncer(delay: Constants.autoSavingDelay)
 
+    fileprivate var wordsCount: UInt {
+        return mode == .richText ? richTextView.text.wordCount() : htmlTextView.text.wordCount()
+    }
+
+    fileprivate var charactersCount: Int {
+        let textView = mode == .richText ? richTextView : htmlTextView
+        guard let text = textView.text else {
+            return 0
+        }
+        return text.count
+    }
+
     // MARK: - Initializers
 
     /// Initializer
@@ -1453,6 +1465,12 @@ private extension AztecPostViewController {
 
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let textCounterTitle: String = {
+            return String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), wordsCount, charactersCount)
+        }()
+
+        alert.title = textCounterTitle
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
