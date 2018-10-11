@@ -27,26 +27,19 @@ class RichNotificationContentFormatter {
     ///
     /// - Returns: the formatted body of the notification if it exists; `nil` otherwise
     func formatAttributedBody() -> NSAttributedString? {
-        guard
-            let body = notification.body,
+        guard let body = notification.body,
             let bodyBlocks = body as? [[String: AnyObject]],
-            !bodyBlocks.isEmpty
-        else
-        {
+            !bodyBlocks.isEmpty else {
+
             return nil
         }
 
-        let blocks = NotificationContentFactory.content(
-            from: bodyBlocks,
-            actionsParser: parser,
-            parent: notification)
+        let blocks = NotificationContentFactory.content(from: bodyBlocks, actionsParser: parser, parent: notification)
 
-        guard
-            let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
+        guard let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
             let commentText = comment.text,
-            !commentText.isEmpty
-        else
-        {
+            !commentText.isEmpty else {
+
             return nil
         }
 
@@ -66,29 +59,21 @@ class RichNotificationContentFormatter {
     ///
     /// - Returns: the formatted subject of the notification if it exists; `nil` otherwise
     func formatAttributedSubject() -> NSAttributedString? {
-        guard
-            let subject = notification.subject,
+        guard let subject = notification.subject,
             let subjectBlocks = subject as? [[String: AnyObject]],
-            !subjectBlocks.isEmpty
-        else
-        {
+            !subjectBlocks.isEmpty else {
+
             return nil
         }
 
-        let blocks = NotificationContentFactory.content(
-            from: subjectBlocks,
-            actionsParser: parser,
-            parent: notification)
-
+        let blocks = NotificationContentFactory.content(from: subjectBlocks, actionsParser: parser, parent: notification)
         let subjectContentGroup = FormattableContentGroup(blocks: blocks, kind: .subject)
         let subjectContentBlocks = subjectContentGroup.blocks
 
-        guard
-            !subjectContentBlocks.isEmpty,
+        guard !subjectContentBlocks.isEmpty,
             let subjectContentBlock = subjectContentBlocks.first,
-            let subjectText = subjectContentBlock.text
-        else
-        {
+            let subjectText = subjectContentBlock.text else {
+
             return nil
         }
 
@@ -108,25 +93,18 @@ class RichNotificationContentFormatter {
     ///
     /// - Returns: a plain-text representation of the notification body if successful; `nil` otherwise
     func formatBody() -> String? {
-        guard
-            let body = notification.body,
-            let bodyBlocks = body as? [[String: AnyObject]]
-        else
-        {
+        guard let body = notification.body,
+            let bodyBlocks = body as? [[String: AnyObject]] else {
+
             return nil
         }
 
-        let blocks = NotificationContentFactory.content(
-            from: bodyBlocks,
-            actionsParser: parser,
-            parent: notification)
+        let blocks = NotificationContentFactory.content(from: bodyBlocks, actionsParser: parser, parent: notification)
 
-        guard
-            let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
+        guard let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
             let commentText = comment.text,
-            !commentText.isEmpty
-        else
-        {
+            !commentText.isEmpty else {
+
             return nil
         }
 
@@ -136,13 +114,13 @@ class RichNotificationContentFormatter {
 
 // MARK: FormattableContentFormatter adaptation; importing it directly is problematic
 
-extension RichNotificationContentFormatter {
+private extension RichNotificationContentFormatter {
     /// Replaces some common extra whitespace with hairline spaces so that comments display better
     ///
     /// - Parameter baseString: string of the comment body before attributes are added
     /// - Returns: string of same length
     /// - Note: the length must be maintained or the formatting will break
-    private func replaceCommonWhitespaceIssues(in baseString: String) -> String {
+    func replaceCommonWhitespaceIssues(in baseString: String) -> String {
         var newString: String
         // \u{200A} = hairline space (very skinny space).
         // we use these so that the ranges are still in the right position, but the extra space basically disappears
