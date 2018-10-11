@@ -79,6 +79,8 @@ class NotificationService: UNNotificationServiceExtension {
                 attributedBody: contentFormatter.formatAttributedBody(),
                 attributedSubject: contentFormatter.formatAttributedSubject(),
                 gravatarURLString: notification.icon,
+                notificationIdentifier: notification.notificationId,
+                notificationReadStatus: notification.read,
                 noticon: notification.noticon)
             viewModel.encodeToUserInfo(notificationContent: notificationContent)
 

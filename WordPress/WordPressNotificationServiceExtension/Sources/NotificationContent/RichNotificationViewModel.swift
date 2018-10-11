@@ -15,6 +15,12 @@ struct RichNotificationViewModel {
     /// The URL string of the notification "sender's" Gravatar; `nil` otherwise
     var gravatarURLString: String?
 
+    /// The unique identifier for the notification; `nil` otherwise
+    var notificationIdentifier: String?
+
+    /// The notification read status if set; `nil` otherwise
+    var notificationReadStatus: Bool?
+
     /// The "noticon" event label corresponding to the notification type; `nil` otherwise
     var noticon: String?
 }
@@ -25,6 +31,8 @@ private extension CodingUserInfoKey {
     static let attributedBody = CodingUserInfoKey(rawValue: "attributedBody")!
     static let attributedSubject = CodingUserInfoKey(rawValue: "attributedSubject")!
     static let gravatarURLString = CodingUserInfoKey(rawValue: "gravatarURLString")!
+    static let notificationIdentifier = CodingUserInfoKey(rawValue: "notificationIdentifier")!
+    static let notificationReadStatus = CodingUserInfoKey(rawValue: "notificationRead")!
     static let noticonText = CodingUserInfoKey(rawValue: "noticon")!
 }
 
@@ -66,12 +74,16 @@ extension RichNotificationViewModel {
         let decodedBody = RichNotificationViewModel.decode(from: notificationContent, withKey: CodingUserInfoKey.attributedBody)
         let decodedSubject = RichNotificationViewModel.decode(from: notificationContent, withKey: CodingUserInfoKey.attributedSubject)
         let decodedGravatarURLString = notificationContent.userInfo[CodingUserInfoKey.gravatarURLString.rawValue] as? String
+        let decodedNotificationIdentifier = notificationContent.userInfo[CodingUserInfoKey.notificationIdentifier.rawValue] as? String
+        let decodedNotificationReadStatus = notificationContent.userInfo[CodingUserInfoKey.notificationReadStatus.rawValue] as? Bool
         let decodedNoticon = notificationContent.userInfo[CodingUserInfoKey.noticonText.rawValue] as? String
 
         self.init(
             attributedBody: decodedBody?.copy() as? NSAttributedString,
             attributedSubject: decodedSubject?.copy() as? NSAttributedString,
             gravatarURLString: decodedGravatarURLString,
+            notificationIdentifier: decodedNotificationIdentifier,
+            notificationReadStatus: decodedNotificationReadStatus,
             noticon: decodedNoticon
         )
     }
@@ -83,6 +95,8 @@ extension RichNotificationViewModel {
         RichNotificationViewModel.encode(attributedBody, to: notificationContent, withKey: CodingUserInfoKey.attributedBody)
         RichNotificationViewModel.encode(attributedSubject, to: notificationContent, withKey: CodingUserInfoKey.attributedSubject)
         notificationContent.userInfo[CodingUserInfoKey.gravatarURLString.rawValue] = gravatarURLString
+        notificationContent.userInfo[CodingUserInfoKey.notificationIdentifier.rawValue] = notificationIdentifier
+        notificationContent.userInfo[CodingUserInfoKey.notificationReadStatus.rawValue] = notificationReadStatus
         notificationContent.userInfo[CodingUserInfoKey.noticonText.rawValue] = noticon
     }
 }
