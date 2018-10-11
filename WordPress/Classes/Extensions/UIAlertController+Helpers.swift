@@ -20,7 +20,7 @@ import WordPressFlux
     }
 }
 
-//MARK: - copy comment URL to Clipboard
+// MARK: - copy comment URL to Clipboard
 extension UIAlertController {
     /// This method is used for presenting the Action sheet
     /// for copying comment URL to clipboard. The action sheet has 2 options:
