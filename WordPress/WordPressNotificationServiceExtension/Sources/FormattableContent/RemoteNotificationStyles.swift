@@ -79,7 +79,7 @@ class RemoteNotificationStyles: FormattableContentStyles {
             .blockquote: [ .font: prevailingItalicizedFont ],
             .comment: [ .font: prevailingItalicizedFont ],
             .follow: [:],
-            .italic: [:],
+            .italic: [ .font: prevailingItalicizedFont ],
             .link: [:],
             .match: [:],
             .noticon: [ .font: noticonFont ],
