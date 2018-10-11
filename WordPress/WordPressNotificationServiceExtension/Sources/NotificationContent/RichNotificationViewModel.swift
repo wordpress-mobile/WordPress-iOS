@@ -76,7 +76,7 @@ private extension CodingUserInfoKey {
         encoder.requiresSecureCoding = true
         encode(with: encoder)
         encoder.finishEncoding()
-        
+
         return data as Data
     }
 
@@ -128,7 +128,7 @@ private extension CodingUserInfoKey {
     }
 }
 
-// MARK - Encoding / Decoding support for NSAttributedString
+// MARK: - Encoding / Decoding support for NSAttributedString
 
 private extension RichNotificationViewModel {
     static func decodeFromData(_ value: Data?) -> NSAttributedString? {
