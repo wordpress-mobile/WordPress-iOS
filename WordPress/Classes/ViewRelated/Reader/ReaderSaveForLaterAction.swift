@@ -53,7 +53,7 @@ final class ReaderSaveForLaterAction {
         let notice = Notice(title: Strings.postSaved,
                             feedbackType: .success,
                             actionTitle: Strings.viewAll,
-                            actionHandler: {
+                            actionHandler: { _ in
                                 self.trackViewAllSavedPostsAction(origin: origin)
                                 self.showAll()
         })
@@ -69,7 +69,7 @@ final class ReaderSaveForLaterAction {
         let notice = Notice(title: Strings.postRemoved,
                             feedbackType: .success,
                             actionTitle: Strings.undo,
-                            actionHandler: {
+                            actionHandler: { _ in
                                 self.trackSaveAction(for: post, origin: origin)
                                 self.toggleSavedForLater(post, context: context, origin: origin, completion: completion)
         })

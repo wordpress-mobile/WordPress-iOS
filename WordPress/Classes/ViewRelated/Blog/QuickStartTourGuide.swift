@@ -3,11 +3,22 @@ import Gridicons
 
 @objc
 open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
+    private var currentSuggestion: QuickStartTour?
+
+    static func find() -> QuickStartTourGuide? {
+        guard let tabBarController = WPTabBarController.sharedInstance(),
+            let tourGuide = tabBarController.tourGuide else {
+            return nil
+        }
+        return tourGuide
+    }
 
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         switch viewController {
         case is QuickStartChecklistViewController:
             dismissTestQuickStartNotice()
+        case is BlogListViewController:
+            dismissSuggestion()
         default:
             break
         }
@@ -17,8 +28,57 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     @objc
     func showTestQuickStartNotice() {
         let exampleMessage = "Tap %@ to see your checklist".highlighting(phrase: "Quick Start", icon: Gridicon.iconOfType(.listCheckmark))
-        let notice = Notice(title: "Test Quick Start Notice", style: QuickStartNoticeStyle(attributedMessage: exampleMessage))
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: exampleMessage)
+        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
+
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func suggest(_ tour: QuickStartTour, for blog: Blog) {
+        // swallow subsequent suggestions
+        guard currentSuggestion == nil else {
+            return
+        }
+        currentSuggestion = tour
+
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
+        let notice = Notice(title: tour.title,
+                            message: tour.description,
+                            style: noticeStyle,
+                            actionTitle: tour.suggestionYesText,
+                            cancelTitle: tour.suggestionNoText) { [weak self] accepted in
+                                self?.currentSuggestion = nil
+
+                                if accepted {
+                                    self?.showTestQuickStartNotice()
+                                } else {
+                                    self?.skipped(tour, for: blog)
+                                }
+        }
+
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private func dismissSuggestion() {
+        guard currentSuggestion != nil, let presenter = findNoticePresenter() else {
+            return
+        }
+
+        currentSuggestion = nil
+        presenter.dismissCurrentNotice()
+    }
+
+    public func setup(for blog: Blog) {
+        let createTour = QuickStartCreateTour()
+        completed(tourID: createTour.key, for: blog)
+    }
+
+    private func skipped(_ tour: QuickStartTour, for blog: Blog) {
+        blog.skipTour(tour.key)
+    }
+
+    public func completed(tourID: String, for blog: Blog) {
+        blog.completeTour(tourID)
     }
 
     private func findNoticePresenter() -> NoticePresenter? {
