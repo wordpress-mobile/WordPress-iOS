@@ -2,6 +2,8 @@ import UIKit
 import UserNotifications
 import UserNotificationsUI
 
+import WordPressKit
+
 // MARK: - NotificationViewController
 
 /// Responsible for enhancing the visual appearance of designated push notifications.
@@ -18,6 +20,9 @@ class NotificationViewController: UIViewController {
     /// Manages analytics calls via Tracks
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
+    /// The service used to retrieve remote notifications
+    private var notificationService: NotificationSyncServiceRemote?
+
     /// This view model contains the attributes necessary to render a rich notification
     private var viewModel: RichNotificationViewModel? {
         didSet {
@@ -32,6 +37,9 @@ class NotificationViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
+        notificationService?.wordPressComRestApi.invalidateAndCancelTasks()
+        notificationService = nil
 
         view.subviews.forEach { $0.removeFromSuperview() }
         viewModel = nil
@@ -75,12 +83,40 @@ extension NotificationViewController: UNNotificationContentExtension {
 
         let token = readExtensionToken()
         tracks.trackExtensionLaunched(token != nil)
+
+        markNotificationAsReadIfNeeded()
     }
 }
 
 // MARK: - Private behavior
 
 private extension NotificationViewController {
+    /// Attempts to mark the notification as read via the remote service. This promotes UX consistency between the
+    /// Notification received and how it is rendered on the Notifications tab within the app.
+    ///
+    func markNotificationAsReadIfNeeded() {
+        guard let token = readExtensionToken(),
+            let viewModel = viewModel,
+            let notificationIdentifier = viewModel.notificationIdentifier,
+            let notificationHasBeenRead = viewModel.notificationReadStatus,
+            notificationHasBeenRead == false else {
+
+            return
+        }
+
+        let api = WordPressComRestApi(oAuthToken: token)
+        let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
+        self.notificationService = service
+
+        service.updateReadStatus(notificationIdentifier, read: true) { [tracks] error in
+            guard let error = error else {
+                return
+            }
+            tracks.trackFailedToMarkNotificationAsRead(notificationIdentifier: notificationIdentifier, errorDescription: error.localizedDescription)
+            debugPrint("Error marking note as read: \(error)")
+        }
+    }
+
     /// Retrieves the WPCOM OAuth Token, meant for Extension usage.
     ///
     /// - Returns: the token if found; `nil` otherwise
