@@ -114,6 +114,14 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         completed(tourID: createTour.key, for: blog)
     }
 
+    private func getNextStep() -> TourState? {
+        guard let tourState = currentTourState,
+            tourState.step + 1 < tourState.tour.waypoints.count else {
+                return nil
+        }
+
+        return TourState(tour: tourState.tour, blog: tourState.blog, step: tourState.step + 1)
+    }
 
     public func showCurrentStep() {
         guard let waypoint = currentWaypoint() else {
@@ -150,18 +158,16 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
             return
         }
         dismissCurrentNotice()
-        currentTourState = nil
 
-        // check if the tour is over
-        let nextStep = tourState.step + 1
-        guard nextStep < tourState.tour.waypoints.count else {
-            // TODO: we could put a nice animation here
+        guard let nextStep = getNextStep() else {
             completed(tourID: tourState.tour.key, for: tourState.blog)
+            currentTourState = nil
+
+            // TODO: we could put a nice animation here
             return
         }
 
-        // otherwise it's time for the next step
-        currentTourState = TourState(tour: tourState.tour, blog: tourState.blog, step: nextStep)
+        currentTourState = nextStep
         showCurrentStep()
     }
 
