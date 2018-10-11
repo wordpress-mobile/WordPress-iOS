@@ -78,7 +78,7 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
         }
 
         tabBar.switchMySitesTabToBlogDetails(for: siteToShow)
-        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController()
+        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: siteToShow)
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = tabBar
         tabBar.present(fancyAlert, animated: true, completion: nil)
