@@ -21,7 +21,8 @@ enum NotificationKind: String {
 extension NotificationKind {
     /// Enumerates the Kinds that currently provide Rich Notification support
     private static var kindsWithRichNotificationSupport: Set<NotificationKind> = [
-        .comment
+        .comment,
+        .matcher
     ]
 
     /// Indicates whether or not a given kind has rich notification support.
