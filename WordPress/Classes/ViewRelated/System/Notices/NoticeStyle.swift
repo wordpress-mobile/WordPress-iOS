@@ -50,7 +50,7 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public let messageColor: UIColor = WPStyleGuide.greyLighten20()
     public let backgroundColor: UIColor = WPStyleGuide.darkGrey().withAlphaComponent(0.88)
 
-    public let layoutMargins = UIEdgeInsets(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
+    public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
     public let isDismissable = false
 }

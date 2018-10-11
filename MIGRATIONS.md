@@ -3,7 +3,7 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 80
+## WordPress 81
 @nheagy 2018-09-26
 - Replaced `QuickStartCompletedTour` with `QuickStartTourState` with `completed` and `skipped` attributes
 
