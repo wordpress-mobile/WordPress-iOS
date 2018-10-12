@@ -16,6 +16,12 @@ class QuickStartChecklistViewController: UITableViewController {
         super.viewDidLoad()
 
         let tableView = UITableView(frame: .zero)
+        if #available(iOS 11, *) {
+            tableView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tableView.estimatedRowHeight = WPTableViewDefaultRowHeight
+        }
+
         self.tableView = tableView
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
@@ -27,13 +33,17 @@ class QuickStartChecklistViewController: UITableViewController {
         dataSource = QuickStartChecklistDataSource(blog: blog)
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        // don't start a tour if it's already completed
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let tour = dataSource?.tour(at: indexPath),
-            let blog = blog,
-            let isCompleted = dataSource?.isCompleted(tour: tour),
-            !isCompleted else {
+            !(tour is QuickStartCreateTour) else {
+                return nil
+        }
+        return indexPath
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let tour = dataSource?.tour(at: indexPath),
+            let blog = blog else {
                 return
         }
 
@@ -41,10 +51,13 @@ class QuickStartChecklistViewController: UITableViewController {
             return
         }
 
-        tourGuide.completed(tourID: tour.key, for: blog)
-        tourGuide.showTestQuickStartNotice()
+        tourGuide.start(tour: tour, for: blog)
 
         self.navigationController?.popViewController(animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
 
