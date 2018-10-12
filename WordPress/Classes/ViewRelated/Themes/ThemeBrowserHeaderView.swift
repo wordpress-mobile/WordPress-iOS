@@ -107,8 +107,6 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
             customizeButton.addSubview(quickStartSpotlightView)
             quickStartSpotlightView.translatesAutoresizingMaskIntoConstraints = false
             addConstraints([
-                quickStartSpotlightView.widthAnchor.constraint(equalToConstant: quickStartSpotlightView.frame.size.width),
-                quickStartSpotlightView.heightAnchor.constraint(equalToConstant: quickStartSpotlightView.frame.size.width),
                 quickStartSpotlightView.centerYAnchor.constraint(equalTo: customizeButton.centerYAnchor),
                 quickStartSpotlightView.trailingAnchor.constraint(equalTo: customizeButton.trailingAnchor, constant: Constants.spotlightViewPadding)
                 ])
