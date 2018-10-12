@@ -23,4 +23,4 @@ swiftlint.verbose = true
 swiftlint.lint_files
 
 # Podfile: no references to commit hashes
-fail("Podfile: reference to a commit hash") if `grep -e "^[^#]*:commit" Podfile`.length > 1
+warn("Podfile: reference to a commit hash") if `grep -e "^[^#]*:commit" Podfile`.length > 1
