@@ -6,7 +6,7 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftPadding;
+@property (nonatomic, assign) BOOL isSearching;
 
 @end
 
@@ -24,6 +24,26 @@
     [super prepareForReuse];
     
     [self applyStyles];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self configurePageLevel];
+    
+    CGFloat indentPoints = (CGFloat)self.indentationLevel * self.indentationWidth;
+    self.contentView.frame = CGRectMake(indentPoints,
+                                        self.contentView.frame.origin.y,
+                                        self.contentView.frame.size.width - indentPoints,
+                                        self.contentView.frame.size.height);
+}
+
+- (void)configureCell:(AbstractPost *)post forSearch:(BOOL)isSearching
+{
+    [super configureCell:post forSearch:isSearching];
+    
+    _isSearching = isSearching;
 }
 
 #pragma mark - Accessors
@@ -67,7 +87,8 @@
 - (void)configurePageLevel
 {
     Page *page = (Page *)self.post;
-    self.leftPadding.constant = 16.0 * page.hierarchyIndex;
+    self.indentationWidth = _isSearching ? 0.0 : 16.0;
+    self.indentationLevel = page.hierarchyIndex;
 }
 
 @end
