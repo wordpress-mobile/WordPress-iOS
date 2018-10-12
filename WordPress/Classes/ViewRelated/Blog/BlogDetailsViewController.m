@@ -282,6 +282,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (@available(iOS 11, *)) {
         if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
             self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+        } else {
+            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
         }
     }
 
@@ -297,8 +299,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
-
-    [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -306,6 +306,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewDidAppear:animated];
     [self createUserActivity];
     [self startAlertTimer];
+
+    [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1148,7 +1150,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 }
 
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:false];
+                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
             }
             rowCount++;
         }
