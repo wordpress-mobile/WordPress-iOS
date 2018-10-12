@@ -30,6 +30,7 @@ typedef void(^BasePageListCellActionBlock)(BasePageListCell* cell,
 /// Configure the cell to represent the specified post.
 ///
 - (void)configureCell:(AbstractPost *)post;
+- (void)configureCell:(AbstractPost *)post forSearch:(BOOL)isSearching;
 
 @end
 
