@@ -388,13 +388,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - GUI: No results view logic
 
-    private func hideNoResultsView() {
+    func hideNoResultsView() {
         postListFooterView.isHidden = false
         rightBarButtonView.isHidden = false
         noResultsViewController.removeFromView()
     }
 
-    private func showNoResultsView() {
+    func showNoResultsView() {
 
         guard refreshNoResultsViewController != nil else {
             return
