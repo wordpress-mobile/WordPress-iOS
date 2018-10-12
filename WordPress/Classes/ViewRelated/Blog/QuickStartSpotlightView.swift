@@ -20,6 +20,8 @@ class QuickStartSpotlightView: UIView
     // MARK: - Setup Layers
 
     private func setupLayers() {
+        self.isUserInteractionEnabled = false
+
         // Colors
         //
         let backgroundColor = UIColor(red: 0.243137, green: 0.517647, blue: 0.682353, alpha: 1)
@@ -198,14 +200,5 @@ class QuickStartSpotlightView: UIView
 
         self.layer.addSublayer(smallCircleLayer)
 
-    }
-
-    // MARK: - Responder
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self.superview),
-            let hitLayer = self.layer.presentation()?.hitTest(location) else { return }
-
-        print("Layer \(hitLayer.name ?? String(describing: hitLayer)) was tapped.")
     }
 }
