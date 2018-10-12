@@ -4,15 +4,23 @@ import WordPressShared
 
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
+    private struct Constant {
+        struct Size {
+            static let pageSectionHeaderHeight = CGFloat(40.0)
+            static let pageCellEstimatedRowHeight = CGFloat(44.0)
+            static let pageCellWithTagEstimatedRowHeight = CGFloat(60.0)
+        }
 
-    fileprivate static let pageSectionHeaderHeight = CGFloat(40.0)
-    fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
-    fileprivate static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
-    fileprivate static let pageCellIdentifier = "PageCellIdentifier"
-    fileprivate static let pageCellNibName = "PageListTableViewCell"
-    fileprivate static let restorePageCellIdentifier = "RestorePageCellIdentifier"
-    fileprivate static let restorePageCellNibName = "RestorePageTableViewCell"
-    fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
+        struct Identifiers {
+            static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
+            static let pageCellIdentifier = "PageCellIdentifier"
+            static let pageCellNibName = "PageListTableViewCell"
+            static let restorePageCellIdentifier = "RestorePageCellIdentifier"
+            static let restorePageCellNibName = "RestorePageTableViewCell"
+            static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
+        }
+    }
+
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
@@ -64,7 +72,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let context = ContextManager.sharedInstance().mainContext
 
-        guard let blogID = coder.decodeObject(forKey: pagesViewControllerRestorationKey) as? String,
+        guard let blogID = coder.decodeObject(forKey: Constant.Identifiers.pagesViewControllerRestorationKey) as? String,
             let objectURL = URL(string: blogID),
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
             let restoredBlog = try? context.existingObject(with: objectID) as! Blog else {
@@ -82,7 +90,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let objectString = blog?.objectID.uriRepresentation().absoluteString
 
-        coder.encode(objectString, forKey: type(of: self).pagesViewControllerRestorationKey)
+        coder.encode(objectString, forKey: Constant.Identifiers.pagesViewControllerRestorationKey)
 
         super.encodeRestorableState(with: coder)
     }
@@ -134,17 +142,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
-        tableView.estimatedRowHeight = type(of: self).pageCellEstimatedRowHeight
+        tableView.estimatedRowHeight = Constant.Size.pageCellEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
 
         let bundle = Bundle.main
 
         // Register the cells
-        let pageCellNib = UINib(nibName: type(of: self).pageCellNibName, bundle: bundle)
-        tableView.register(pageCellNib, forCellReuseIdentifier: type(of: self).pageCellIdentifier)
+        let pageCellNib = UINib(nibName: Constant.Identifiers.pageCellNibName, bundle: bundle)
+        tableView.register(pageCellNib, forCellReuseIdentifier: Constant.Identifiers.pageCellIdentifier)
 
-        let restorePageCellNib = UINib(nibName: type(of: self).restorePageCellNibName, bundle: bundle)
-        tableView.register(restorePageCellNib, forCellReuseIdentifier: type(of: self).restorePageCellIdentifier)
+        let restorePageCellNib = UINib(nibName: Constant.Identifiers.restorePageCellNibName, bundle: bundle)
+        tableView.register(restorePageCellNib, forCellReuseIdentifier: Constant.Identifiers.restorePageCellIdentifier)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
@@ -315,11 +323,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         guard _tableViewHandler.groupResults else {
             return 0.0
         }
-        return type(of: self).pageSectionHeaderHeight
+        return Constant.Size.pageSectionHeaderHeight
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let page = pageAtIndexPath(indexPath)
+        return page.canDisplayTags ? Constant.Size.pageCellWithTagEstimatedRowHeight : Constant.Size.pageCellEstimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
@@ -374,11 +387,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         cell.accessoryType = .none
 
-        if cell.reuseIdentifier == type(of: self).pageCellIdentifier {
+        if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
-        } else if cell.reuseIdentifier == type(of: self).restorePageCellIdentifier {
+        } else if cell.reuseIdentifier == Constant.Identifiers.restorePageCellIdentifier {
             cell.selectionStyle = .none
             cell.onAction = { [weak self] cell, _, page in
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
@@ -394,9 +407,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         var identifier: String
 
         if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
-            identifier = type(of: self).restorePageCellIdentifier
+            identifier = Constant.Identifiers.restorePageCellIdentifier
         } else {
-            identifier = type(of: self).pageCellIdentifier
+            identifier = Constant.Identifiers.pageCellIdentifier
         }
 
         return identifier
@@ -459,7 +472,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    fileprivate func draftPage(_ apost: AbstractPost) {
+    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
@@ -468,7 +481,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService.uploadPost(apost, success: { [weak self] _ in
+            DispatchQueue.main.async {
+                self?._tableViewHandler.refreshTableView(at: indexPath)
+            }
+        }) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {
@@ -536,7 +553,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         return
                 }
 
-                strongSelf.draftPage(page)
+                strongSelf.draftPage(page, at: indexPath)
             })
 
             alertController.addActionWithTitle(deleteButtonTitle, style: .default, handler: { [weak self] (action) in
@@ -575,7 +592,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                             return
                     }
 
-                    strongSelf.draftPage(page)
+                    strongSelf.draftPage(page, at: indexPath)
                 })
             }
 
