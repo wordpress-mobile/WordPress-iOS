@@ -5,6 +5,11 @@
 
 - (void)configureCell:(AbstractPost *)post
 {
+    [self configureCell:post forSearch:NO];
+}
+
+- (void)configureCell:(AbstractPost *)post forSearch:(BOOL)isSearching
+{
     self.post = post;
 }
 
