@@ -33,8 +33,8 @@ class RichNotificationContentFormatter {
         self.notification = notification
         self.parser = parser
 
-        formatBody()
         formatAttributedSubject()
+        formatBody()
     }
 }
 
@@ -43,11 +43,12 @@ class RichNotificationContentFormatter {
 private extension RichNotificationContentFormatter {
     /// Attempts to format both a plain-text & attributed-text representation of the notification content.
     func formatBody() {
-        guard let body = notification.body,
+        guard NotificationKind.omitsRichNotificationBody(notification.kind) == false,
+            let body = notification.body,
             let bodyBlocks = body as? [[String: AnyObject]],
             !bodyBlocks.isEmpty else {
 
-                return
+            return
         }
 
         let blocks = NotificationContentFactory.content(from: bodyBlocks, actionsParser: parser, parent: notification)
@@ -71,7 +72,7 @@ private extension RichNotificationContentFormatter {
         guard let validContent = formattableContent,
             let bodyText = validContent.text else {
 
-                return
+            return
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: bodyText)
@@ -95,7 +96,7 @@ private extension RichNotificationContentFormatter {
             let subjectBlocks = subject as? [[String: AnyObject]],
             !subjectBlocks.isEmpty else {
 
-                return
+            return
         }
 
         let blocks = NotificationContentFactory.content(from: subjectBlocks, actionsParser: parser, parent: notification)
@@ -106,7 +107,7 @@ private extension RichNotificationContentFormatter {
             let subjectContentBlock = subjectContentBlocks.first,
             let subjectText = subjectContentBlock.text else {
 
-                return
+            return
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: subjectText)
