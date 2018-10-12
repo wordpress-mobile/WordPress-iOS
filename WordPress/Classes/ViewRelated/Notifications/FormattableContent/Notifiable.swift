@@ -28,7 +28,7 @@ extension NotificationKind {
     ]
 
     /// Enumerates the Kinds of rich notifications that include body text
-    private static var kindsWithRichNotificationBodyText: Set<NotificationKind> = [
+    private static var kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
         .commentLike,
         .like,
     ]
@@ -38,7 +38,7 @@ extension NotificationKind {
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the kind of rich notification includes a body; `false` otherwise
     static func omitsRichNotificationBody(_ kind: NotificationKind) -> Bool {
-        return kindsWithRichNotificationBodyText.contains(kind)
+        return kindsWithoutRichNotificationBodyText.contains(kind)
     }
 
     /// Indicates whether or not a given kind has rich notification support.
