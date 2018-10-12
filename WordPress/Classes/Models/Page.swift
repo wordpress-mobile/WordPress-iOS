@@ -14,6 +14,21 @@ class Page: AbstractPost {
         return parentID == nil
     }
 
+    /// Returns if the Page can display some tag
+    @objc var canDisplayTags: Bool {
+        return hasPrivateState || hasPendingReviewState || hasLocalChanges()
+    }
+
+    /// Returns if the Page has private state
+    @objc var hasPrivateState: Bool {
+        return status == .publishPrivate
+    }
+
+    /// Returns if the Page has Pending Review state
+    @objc var hasPendingReviewState: Bool {
+        return status == .pending
+    }
+
     /// Section identifier for the page, using the creation date.
     ///
     @objc func sectionIdentifierWithDateCreated() -> String {
