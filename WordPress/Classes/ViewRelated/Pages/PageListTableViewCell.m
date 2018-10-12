@@ -31,7 +31,7 @@
     
     [self configurePageLevel];
     
-    CGFloat indentPoints = (CGFloat)self.indentationLevel * self.indentationWidth;
+    CGFloat indentPoints = self.indentationLevel * self.indentationWidth;
     self.contentView.frame = CGRectMake(indentPoints,
                                         self.contentView.frame.origin.y,
                                         self.contentView.frame.size.width - indentPoints,
@@ -81,7 +81,7 @@
 {
     Page *page = (Page *)self.post;
     self.indentationWidth = 16.0;
-    self.indentationLevel = page.hierarchyIndex;
+    self.indentationLevel = ![page.status isEqualToString: PostStatusPublish] ? 0 : page.hierarchyIndex;
 }
 
 @end
