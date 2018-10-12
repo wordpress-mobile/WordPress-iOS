@@ -2,11 +2,21 @@
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 
+
+static CGFloat const kWPTagLabelRadius = 2.0;
+static CGFloat const kWPCellLeading = 16.0;
+
 @interface PageListTableViewCell()
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *privateBadgeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *localChangesLabel;
+@property (strong, nonatomic) IBOutlet UIView *privateBadge;
+@property (strong, nonatomic) IBOutlet UIView *localChangesBadge;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftPadding;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *localChangesLeading;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomPadding;
 
 @end
 
@@ -34,6 +44,7 @@
     [self configureTitle];
     [self configureForStatus];
     [self configurePageLevel];
+    [self configureBadges];
 }
 
 #pragma mark - Configuration
@@ -44,7 +55,13 @@
     
     self.titleLabel.textColor = [WPStyleGuide darkGrey];
     self.menuButton.tintColor = [WPStyleGuide greyLighten10];
-    
+
+    self.privateBadgeLabel.text = NSLocalizedString(@"Private", @"Title of the Private Badge");
+    self.localChangesLabel.text = NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge");
+
+    self.privateBadge.layer.cornerRadius = kWPTagLabelRadius;
+    self.localChangesBadge.layer.cornerRadius = self.privateBadge.layer.cornerRadius;
+
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
 }
@@ -58,7 +75,7 @@
 
 - (void)configureForStatus
 {
-    if (self.post.isFailed) {
+    if (self.post.isFailed && !self.post.hasLocalChanges) {
         self.titleLabel.textColor = [WPStyleGuide errorRed];
         self.menuButton.tintColor = [WPStyleGuide errorRed];
     }
@@ -67,7 +84,21 @@
 - (void)configurePageLevel
 {
     Page *page = (Page *)self.post;
-    self.leftPadding.constant = 16.0 * page.hierarchyIndex;
+    self.leftPadding.constant = kWPCellLeading * page.hierarchyIndex;
+}
+
+- (void)configureBadges
+{
+    Page *page = (Page *)self.post;
+
+    if (page.hasPendingReviewState) {
+       self.privateBadgeLabel.text = NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge");
+    }
+
+    self.bottomPadding.active = !page.canDisplayTags;
+    self.privateBadge.hidden = !(page.hasPrivateState || page.hasPendingReviewState);
+    self.localChangesBadge.hidden = !page.hasLocalChanges;
+    self.localChangesLeading.active = !self.privateBadge.isHidden;
 }
 
 @end
