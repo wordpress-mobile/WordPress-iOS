@@ -186,6 +186,73 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         _tableViewHandler.refreshTableView()
     }
 
+    override func syncPostsMatchingSearchText() {
+        guard let searchText = searchController.searchBar.text, !searchText.isEmpty() else {
+            return
+        }
+
+        postsSyncWithSearchDidBegin()
+
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
+        let postService = PostService(managedObjectContext: managedObjectContext())
+        let options = PostServiceSyncOptions()
+        options.statuses = filterSettings.availablePostListFilters().flatMap { $0.statuses.strings }
+        options.authorID = author
+        options.number = 20
+        options.purgesLocalSync = false
+        options.search = searchText
+
+        postService.syncPosts(
+            ofType: postTypeToSync(),
+            with: options,
+            for: blog,
+            success: { [weak self] posts in
+                self?.postsSyncWithSearchEnded()
+            }, failure: { [weak self] (error) in
+                self?.postsSyncWithSearchEnded()
+            }
+        )
+    }
+
+    override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
+        if !searchController.isActive {
+            return super.sortDescriptorsForFetchRequest()
+        }
+
+        let descriptor = NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)
+        return [descriptor]
+    }
+
+    override func updateForLocalPostsMatchingSearchText() {
+        guard searchController.isActive else {
+            hideNoResultsView()
+            return
+        }
+
+        _tableViewHandler.isSearching = true
+        updateAndPerformFetchRequest()
+        tableView.reloadData()
+
+        hideNoResultsView()
+
+        if let text = searchController.searchBar.text,
+            text.isEmpty ||
+            tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            showNoResultsView()
+        }
+    }
+
+    override func showNoResultsView() {
+        super.showNoResultsView()
+        noResultsViewController.view.frame = CGRect(x: 0.0,
+                                                    y: 0.0,
+                                                    width: tableView.frame.width,
+                                                    height: max(tableView.frame.height, tableView.contentSize.height))
+        if searchController.isActive {
+            tableView.bringSubviewToFront(noResultsViewController.view)
+        }
+    }
+
 
     // MARK: - Model Interaction
 
@@ -213,12 +280,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
-        let searchText = currentSearchTerm()
-        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
+        let searchText = currentSearchTerm() ?? ""
+        let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText?.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
 
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
@@ -227,7 +294,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(filterPredicate)
         }
 
-        if let searchText = searchText, searchText.count > 0 {
+        if searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -320,7 +387,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        cell.configureCell(page)
+        cell.configureCell(page, forSearch: _tableViewHandler.isSearching)
     }
 
     fileprivate func cellIdentifierForPage(_ page: Page) -> String {
@@ -641,14 +708,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func updateSearchResults(for searchController: UISearchController) {
-        _tableViewHandler.isSearching = isSearching()
-
         super.updateSearchResults(for: searchController)
     }
 
     override func willDismissSearchController(_ searchController: UISearchController) {
         _tableViewHandler.isSearching = false
-
+        _tableViewHandler.refreshTableView()
         super.willDismissSearchController(searchController)
     }
 
@@ -660,8 +725,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        UIView.animate(withDuration: Animations.searchDismissDuration) {
+        UIView.animate(withDuration: Animations.searchDismissDuration, delay: 0, options: .curveLinear, animations: {
             self.filterTabBar.alpha = WPAlphaFull
+        }) { _ in
+            self.hideNoResultsView()
         }
 
         if #available(iOS 11.0, *) {
@@ -689,8 +756,12 @@ private extension PageListViewController {
             return
         }
 
-        if isSearching() {
-            noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+        if searchController.isActive {
+            if currentSearchTerm()?.count == 0 {
+                noResultsViewController.configureForNoSearchResults(title: NoResultsText.searchPages)
+            } else {
+                noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+            }
         } else {
             let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
@@ -748,6 +819,7 @@ private extension PageListViewController {
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
         static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
+        static let searchPages = NSLocalizedString("Search pages", comment: "Text displayed when the search controller will be presented")
     }
 
 }
