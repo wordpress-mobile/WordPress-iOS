@@ -1,7 +1,6 @@
 import WordPressFlux
 import Gridicons
 
-@objc
 open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
@@ -16,13 +15,20 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     }
 
     // MARK: Quick Start methods
-    @objc
-    func showTestQuickStartNotice() {
+    @objc func showTestQuickStartNotice() {
         let exampleMessage = QuickStartChecklistTour().waypoints[0].description
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: exampleMessage)
         let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+}
+
+/// The API
+internal extension QuickStartTourGuide {
+    func setup(for blog: Blog) {
+        let createTour = QuickStartCreateTour()
+        completed(tourID: createTour.key, for: blog)
     }
 
     func suggest(_ tour: QuickStartTour, for blog: Blog) {
@@ -63,33 +69,6 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         }
     }
 
-    func endCurrentTour() {
-        dismissCurrentNotice()
-        currentTourState = nil
-    }
-
-    func showStepNotice(_ description: NSAttributedString) {
-        let noticeStyle = QuickStartNoticeStyle(attributedMessage: description)
-        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
-    public func shouldSpotlight(_ element: QuickStartTourElement) -> Bool {
-        return currentElement() == element
-    }
-
-    func currentWaypoint() -> QuickStartTour.WayPoint? {
-        guard let state = currentTourState,
-            state.step < state.tour.waypoints.count else {
-                return nil
-        }
-        return state.tour.waypoints[state.step]
-    }
-
-    func currentElement() -> QuickStartTourElement? {
-        return currentWaypoint()?.element
-    }
-
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
     @objc func currentElementInt() -> Int {
         return currentWaypoint()?.element.rawValue ?? NSNotFound
@@ -102,62 +81,14 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         return testElement == currentElement
     }
 
-    private func dismissSuggestion() {
-        guard currentSuggestion != nil, let presenter = findNoticePresenter() else {
-            return
-        }
-
-        currentSuggestion = nil
-        presenter.dismissCurrentNotice()
+    func shouldSpotlight(_ element: QuickStartTourElement) -> Bool {
+        return currentElement() == element
     }
 
-    public func setup(for blog: Blog) {
-        let createTour = QuickStartCreateTour()
-        completed(tourID: createTour.key, for: blog)
-    }
-
-    private func getNextStep() -> TourState? {
-        guard let tourState = currentTourState,
-            tourState.step + 1 < tourState.tour.waypoints.count else {
-                return nil
-        }
-
-        return TourState(tour: tourState.tour, blog: tourState.blog, step: tourState.step + 1)
-    }
-
-    public func showCurrentStep() {
-        guard let waypoint = currentWaypoint() else {
-            return
-        }
-
-        showStepNotice(waypoint.description)
-    }
-
-    private func skipped(_ tour: QuickStartTour, for blog: Blog) {
-        blog.skipTour(tour.key)
-    }
-
-    public func completed(tourID: String, for blog: Blog) {
-        blog.completeTour(tourID)
-    }
-
-    private func findNoticePresenter() -> NoticePresenter? {
-        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
-    }
-
-    func dismissCurrentNotice() {
-        guard let presenter = findNoticePresenter() else {
-            return
-        }
-
-        presenter.dismissCurrentNotice()
-    }
-
-    @objc
-    public func visited(_ element: QuickStartTourElement) {
+    @objc func visited(_ element: QuickStartTourElement) {
         guard element == currentElement(),
             let tourState = currentTourState else {
-            return
+                return
         }
         dismissCurrentNotice()
 
@@ -173,6 +104,11 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         showCurrentStep()
     }
 
+    func endCurrentTour() {
+        dismissCurrentNotice()
+        currentTourState = nil
+    }
+
     static let checklistTours: [QuickStartTour] = [
         QuickStartCreateTour(),
         QuickStartViewTour(),
@@ -182,6 +118,73 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         QuickStartPublishTour(),
         QuickStartFollowTour()
     ]
+}
+
+private extension QuickStartTourGuide {
+
+    func completed(tourID: String, for blog: Blog) {
+        blog.completeTour(tourID)
+    }
+
+    func showCurrentStep() {
+        guard let waypoint = currentWaypoint() else {
+            return
+        }
+
+        showStepNotice(waypoint.description)
+    }
+
+    func showStepNotice(_ description: NSAttributedString) {
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: description)
+        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func currentWaypoint() -> QuickStartTour.WayPoint? {
+        guard let state = currentTourState,
+            state.step < state.tour.waypoints.count else {
+                return nil
+        }
+        return state.tour.waypoints[state.step]
+    }
+
+    func currentElement() -> QuickStartTourElement? {
+        return currentWaypoint()?.element
+    }
+
+    func dismissSuggestion() {
+        guard currentSuggestion != nil, let presenter = findNoticePresenter() else {
+            return
+        }
+
+        currentSuggestion = nil
+        presenter.dismissCurrentNotice()
+    }
+
+    func getNextStep() -> TourState? {
+        guard let tourState = currentTourState,
+            tourState.step + 1 < tourState.tour.waypoints.count else {
+                return nil
+        }
+
+        return TourState(tour: tourState.tour, blog: tourState.blog, step: tourState.step + 1)
+    }
+
+    func skipped(_ tour: QuickStartTour, for blog: Blog) {
+        blog.skipTour(tour.key)
+    }
+
+    func findNoticePresenter() -> NoticePresenter? {
+        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
+    }
+
+    func dismissCurrentNotice() {
+        guard let presenter = findNoticePresenter() else {
+            return
+        }
+
+        presenter.dismissCurrentNotice()
+    }
 }
 
 @objc
