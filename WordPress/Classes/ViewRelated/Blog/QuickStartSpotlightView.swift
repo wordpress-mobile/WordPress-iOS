@@ -1,7 +1,6 @@
 import UIKit
 
-class QuickStartSpotlightView: UIView
-{
+class QuickStartSpotlightView: UIView {
 
     // MARK: - Initialization
 
