@@ -51,6 +51,8 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     }
 
     func start(tour: QuickStartTour, for blog: Blog) {
+        dismissSuggestion()
+
         switch tour {
         case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
