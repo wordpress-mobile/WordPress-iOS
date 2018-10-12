@@ -16,6 +16,12 @@ class QuickStartChecklistViewController: UITableViewController {
         super.viewDidLoad()
 
         let tableView = UITableView(frame: .zero)
+        if #available(iOS 11, *) {
+            tableView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tableView.estimatedRowHeight = WPTableViewDefaultRowHeight
+        }
+
         self.tableView = tableView
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
@@ -48,6 +54,10 @@ class QuickStartChecklistViewController: UITableViewController {
         tourGuide.start(tour: tour, for: blog)
 
         self.navigationController?.popViewController(animated: true)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
 
