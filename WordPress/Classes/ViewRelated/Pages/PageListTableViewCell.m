@@ -42,7 +42,7 @@ static CGFloat const PageListTableViewCellLeading = 16.0;
     
     [self configurePageLevel];
     
-    CGFloat indentPoints = (CGFloat)self.indentationLevel * self.indentationWidth;
+    CGFloat indentPoints = self.indentationLevel * self.indentationWidth;
     self.contentView.frame = CGRectMake(indentPoints,
                                         self.contentView.frame.origin.y,
                                         self.contentView.frame.size.width - indentPoints,
@@ -104,8 +104,10 @@ static CGFloat const PageListTableViewCellLeading = 16.0;
 - (void)configurePageLevel
 {
     Page *page = (Page *)self.post;
+
     self.indentationWidth = _isSearching ? 0.0 : PageListTableViewCellLeading;
     self.indentationLevel = page.hierarchyIndex;
+    self.indentationLevel = ![page.status isEqualToString: PostStatusPublish] ? 0 : page.hierarchyIndex;
 }
 
 - (void)configureBadges

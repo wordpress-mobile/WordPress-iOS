@@ -187,6 +187,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         super.selectedFilterDidChange(filterBar)
     }
 
+    override func updateFilterWithPostStatus(_ status: BasePost.Status) {
+        filterSettings.setFilterWithPostStatus(status)
+        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
+        _tableViewHandler.refreshTableView()
+        super.updateFilterWithPostStatus(status)
+    }
+
     override func updateAndPerformFetchRequest() {
         super.updateAndPerformFetchRequest()
 
