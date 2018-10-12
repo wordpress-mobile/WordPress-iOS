@@ -173,7 +173,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (= 1.1.1)
   - WordPressKit (= 1.4.1)
   - WordPressShared (= 1.1.1-beta.5)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `b3d0ad3716ca8e0a68a0574cda30096676f611da`)
+  - WordPressUI (= 1.0.8)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 2.2.0)
@@ -211,6 +211,7 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -219,17 +220,11 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPressUI:
-    :commit: b3d0ad3716ca8e0a68a0574cda30096676f611da
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPressUI:
-    :commit: b3d0ad3716ca8e0a68a0574cda30096676f611da
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -269,6 +264,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: ffb2dbbe533faeadcdc18d34199f0f3251bc69c0
+PODFILE CHECKSUM: 67364678800a1603af85806b9854b34f7a3e5acf
 
 COCOAPODS: 1.5.3
