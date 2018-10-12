@@ -14,7 +14,7 @@ class LongPressGestureLabel: UILabel {
     }()
 
     @objc private func longPressAction(_ gesture: UILongPressGestureRecognizer) {
-        switch(gesture.state) {
+        switch gesture.state {
         case .began:
             longPressAction?()
         default:
