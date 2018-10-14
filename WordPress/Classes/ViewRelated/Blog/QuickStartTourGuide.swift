@@ -5,6 +5,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
+    static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
         guard let tabBarController = WPTabBarController.sharedInstance(),
@@ -60,7 +61,7 @@ internal extension QuickStartTourGuide {
         dismissSuggestion()
 
         switch tour {
-        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour:
+        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour, is QuickStartPublishTour:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         default:
@@ -132,6 +133,8 @@ private extension QuickStartTourGuide {
         }
 
         showStepNotice(waypoint.description)
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: waypoint.element])
     }
 
     func showStepNotice(_ description: NSAttributedString) {
@@ -184,7 +187,12 @@ private extension QuickStartTourGuide {
         }
 
         presenter.dismissCurrentNotice()
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }
+}
+
+internal extension NSNotification.Name {
+    static let QuickStartTourElementChangedNotification = NSNotification.Name(rawValue: "QuickStartTourElementChangedNotification")
 }
 
 @objc
@@ -194,6 +202,7 @@ public enum QuickStartTourElement: Int {
     case checklist
     case themes
     case customize
+    case newpost
 }
 
 private struct TourState {
