@@ -61,7 +61,7 @@ internal extension QuickStartTourGuide {
         dismissSuggestion()
 
         switch tour {
-        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour, is QuickStartPublishTour:
+        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour, is QuickStartPublishTour, is QuickStartShareTour:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         default:
@@ -203,6 +203,8 @@ public enum QuickStartTourElement: Int {
     case themes
     case customize
     case newpost
+    case sharing
+    case connections
 }
 
 private struct TourState {

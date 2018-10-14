@@ -11,12 +11,10 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
         case is BlogListViewController:
             tourGuide.visited(.noSuchElement)
             tourGuide.endCurrentTour()
-        case is WPWebViewController:
-            fallthrough
-        case is WebKitViewController:
-            tourGuide.visited(.viewSite)
         case is ThemeBrowserViewController:
             tourGuide.visited(.themes)
+        case is SharingViewController:
+            tourGuide.visited(.sharing)
         default:
             break
         }
