@@ -165,6 +165,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)dealloc
 {
+    [self stopWatchingQuickTours];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
@@ -512,6 +513,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     } else {
         [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
     }
+
+    [self alertQuickStartThatWriteWasTapped];
 }
 
 - (void)showPostTabForBlog:(Blog *)blog
@@ -980,6 +983,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [super viewDidAppear:animated];
     [self updateNotificationBadgeVisibility];
+    [self startWatchingQuickTours];
 }
 
 - (void)viewDidLayoutSubviews
