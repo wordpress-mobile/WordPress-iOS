@@ -652,11 +652,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     if ([self.blog supports:BlogFeatureSharing]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
-                                                        image:[Gridicon iconOfType:GridiconTypeShare]
-                                                     callback:^{
-                                                         [weakSelf showSharing];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+                                        image:[Gridicon iconOfType:GridiconTypeShare]
+                                     callback:^{
+                                         [weakSelf showSharing];
+                                     }];
+        row.quickStartIdentifier = QuickStartTourElementSharing;
+        [rows addObject:row];
     }
 
     if ([self.blog supports:BlogFeaturePeople]) {
