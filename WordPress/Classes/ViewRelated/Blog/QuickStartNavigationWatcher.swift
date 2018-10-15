@@ -15,6 +15,14 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
             tourGuide.visited(.themes)
         case is SharingViewController:
             tourGuide.visited(.sharing)
+        case is ReaderMenuViewController:
+            tourGuide.visited(.readerBack)
+            tourGuide.readerNeedsBack = false
+        case is ReaderSearchViewController:
+            tourGuide.visited(.readerSearch)
+            fallthrough
+        case is ReaderStreamViewController, is ReaderSavedPostsViewController:
+            tourGuide.readerNeedsBack = true
         default:
             break
         }

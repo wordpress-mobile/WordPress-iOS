@@ -1,10 +1,11 @@
 import WordPressFlux
 import Gridicons
 
-open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
+open class QuickStartTourGuide: NSObject {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
+    var readerNeedsBack = true
     static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
@@ -100,8 +101,13 @@ internal extension QuickStartTourGuide {
             // TODO: we could put a nice animation here
             return
         }
-
         currentTourState = nextStep
+
+        if currentElement() == .readerBack && !readerNeedsBack {
+            visited(.readerBack)
+            return
+        }
+
         showCurrentStep()
     }
 
