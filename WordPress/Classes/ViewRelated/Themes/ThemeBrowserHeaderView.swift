@@ -25,6 +25,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet var filterBarBorders: [UIView]!
     @IBOutlet weak var filterBar: UIView!
     @IBOutlet weak var filterTypeButton: UIButton!
+    var quickStartSpotlightView = QuickStartSpotlightView()
 
     // MARK: - Properties
 
@@ -91,8 +92,25 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
         currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0!) }
 
+        spotlightCustomizeButtonIfTourIsActive()
+
         filterBar.backgroundColor = Styles.searchBarBackgroundColor
         filterBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
+    }
+
+    private func spotlightCustomizeButtonIfTourIsActive() {
+        guard let tourGuide = QuickStartTourGuide.find() else {
+            return
+        }
+
+        if tourGuide.isCurrentElement(.customize) {
+            customizeButton.addSubview(quickStartSpotlightView)
+            quickStartSpotlightView.translatesAutoresizingMaskIntoConstraints = false
+            addConstraints([
+                quickStartSpotlightView.centerYAnchor.constraint(equalTo: customizeButton.centerYAnchor),
+                quickStartSpotlightView.trailingAnchor.constraint(equalTo: customizeButton.trailingAnchor, constant: Constants.spotlightViewPadding)
+                ])
+        }
     }
 
     fileprivate func setTextForLabels() {
@@ -161,6 +179,10 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
             popover.canOverlapSourceViewRect = true
         }
         alertController.presentFromRootViewController()
+    }
+
+    private enum Constants {
+        static let spotlightViewPadding: CGFloat = -5.0
     }
 }
 
