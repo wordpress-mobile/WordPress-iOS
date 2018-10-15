@@ -6,7 +6,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftPadding;
 
 @end
 
@@ -25,6 +24,20 @@
     
     [self applyStyles];
 }
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self configurePageLevel];
+    
+    CGFloat indentPoints = self.indentationLevel * self.indentationWidth;
+    self.contentView.frame = CGRectMake(indentPoints,
+                                        self.contentView.frame.origin.y,
+                                        self.contentView.frame.size.width - indentPoints,
+                                        self.contentView.frame.size.height);
+}
+
 
 #pragma mark - Accessors
 
@@ -67,7 +80,8 @@
 - (void)configurePageLevel
 {
     Page *page = (Page *)self.post;
-    self.leftPadding.constant = 16.0 * page.hierarchyIndex;
+    self.indentationWidth = 16.0;
+    self.indentationLevel = ![page.status isEqualToString: PostStatusPublish] ? 0 : page.hierarchyIndex;
 }
 
 @end
