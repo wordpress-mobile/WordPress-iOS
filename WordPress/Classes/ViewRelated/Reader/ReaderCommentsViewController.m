@@ -43,6 +43,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
+@property (nonatomic, strong) NoResultsViewController *noResultsTitleViewController;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) KeyboardDismissHelper *keyboardManager;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
@@ -51,11 +52,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
+@property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
-@property (nonatomic, strong) NSCache *estimatedRowHeights;
+@property (nonatomic) BOOL deviceIsRotating;
 
 @end
 
@@ -181,8 +183,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
+    self.deviceIsRotating = true;
+    
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        self.deviceIsRotating = false;
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
         if (selectedIndexPath) {
@@ -341,6 +345,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)configureNoResultsView
 {
     self.noResultsViewController = [NoResultsViewController controller];
+    self.noResultsTitleViewController = [NoResultsViewController controller];
 }
 
 - (void)configureReplyTextView
@@ -652,13 +657,42 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshNoResultsView
 {
-    [self.noResultsViewController removeFromView];
+    // During rotation, the keyboard hides and shows.
+    // To prevent view flashing, do nothing until rotation is finished.
+    if (self.deviceIsRotating) {
+        return;
+    }
 
+    // Because the replyTextView grows, limit what is displayed on the iPhone with the keyboard:
+    // Portrait: show only the title.
+    // Landscape: show nothing.
+    if (WPDeviceIdentification.isiPhone && self.keyboardManager.isKeyboardVisible) {
+        [self.noResultsViewController.view setHidden:true];
+        [self createTitleOnlyNoResultsView];
+        [self.noResultsTitleViewController.view setHidden:(UIDevice.currentDevice.orientation != UIDeviceOrientationPortrait)];
+        return;
+    }
+
+    [self.noResultsViewController removeFromView];
+    [self.noResultsTitleViewController removeFromView];
+    
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
     if (!isTableViewEmpty) {
         return;
     }
 
+    [self createFullNoResultsView];
+}
+
+- (void)createTitleOnlyNoResultsView
+{
+    [self.noResultsTitleViewController configureForNoSearchResultsWithTitle:self.noResultsTitleText];
+    [self addNoResultsViewControllerToView:self.noResultsTitleViewController];
+    [self.noResultsTitleViewController.view setHidden:true];
+}
+
+- (void)createFullNoResultsView
+{
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
                                          buttonTitle:nil
                                             subtitle:nil
@@ -667,13 +701,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
     
-    [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
-    [self addChildViewController:self.noResultsViewController];
-    [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
-    self.noResultsViewController.view.frame = self.tableView.frame;
-    [self.noResultsViewController didMoveToParentViewController:self];
+    [self addNoResultsViewControllerToView:self.noResultsViewController];
+    [self.noResultsViewController.view setHidden:false];
 }
 
+- (void)addNoResultsViewControllerToView:(NoResultsViewController *)viewController
+{
+    [viewController.view setBackgroundColor:[UIColor clearColor]];
+    viewController.view.frame = self.tableView.frame;
+    [self addChildViewController:viewController];
+    [self.view addSubviewWithFadeAnimation:viewController.view];
+    [viewController didMoveToParentViewController:self];
+}
 
 - (void)updateTableViewForAttachments
 {
