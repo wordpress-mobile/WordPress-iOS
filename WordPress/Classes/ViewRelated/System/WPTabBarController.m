@@ -97,6 +97,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self = [super init];
     if (self) {
         [self setDelegate:self];
+        self.tourGuide = [[QuickStartTourGuide alloc] init];
 
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
@@ -218,7 +219,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self.blogListViewController = [[BlogListViewController alloc] init];
     _blogListNavigationController = [[ManyDelegateNavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
-    self.tourGuide = [[QuickStartTourGuide alloc] init];
     _blogListNavigationController.delegate = self.tourGuide.navigationWatcher;
 
     UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
@@ -242,9 +242,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+        _readerNavigationController = [[ManyDelegateNavigationController alloc] initWithRootViewController:self.readerMenuViewController];
 
         _readerNavigationController.navigationBar.translucent = NO;
+        _readerNavigationController.delegate = self.tourGuide.navigationWatcher;
+
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
         _readerNavigationController.tabBarItem.image = readerTabBarImage;
         _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
@@ -829,6 +831,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             }
             case WPTabReader: {
                 [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
+                [self alertQuickStartThatReaderWasTapped];
                 break;
             }
             case WPTabMe: {

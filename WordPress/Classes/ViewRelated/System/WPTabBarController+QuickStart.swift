@@ -47,6 +47,10 @@ extension WPTabBarController {
         QuickStartTourGuide.find()?.visited(.newpost)
     }
 
+    @objc func alertQuickStartThatReaderWasTapped() {
+        QuickStartTourGuide.find()?.visited(.readerTab)
+    }
+
     @objc func stopWatchingQuickTours() {
         NotificationCenter.default.removeObserver(quickStartObserver as Any)
         quickStartObserver = nil
