@@ -34,7 +34,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gifu (3.1.0)
-  - GiphyCoreSDK (1.2.0)
+  - GiphyCoreSDK (1.4.0)
   - GoogleSignInRepacked (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
@@ -153,7 +153,7 @@ DEPENDENCIES:
   - Crashlytics (= 3.10.1)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.1.0)
-  - GiphyCoreSDK (~> 1.2.0)
+  - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (= 0.16)
   - HockeySDK (= 5.1.2)
   - lottie-ios (= 2.5.0)
@@ -237,7 +237,7 @@ SPEC CHECKSUMS:
   Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
-  GiphyCoreSDK: 1278bfc2dbdc9f1b2b1703ee70224f515b9530a6
+  GiphyCoreSDK: 1fe401c5fc65f182e7aa8b7fb2c9005f2a523374
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
@@ -264,6 +264,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 19933583a2667632ace7cbfa17fac42a750e5f44
+PODFILE CHECKSUM: 5849335bc9e83791f05518f58fd1e4d0020b9837
 
 COCOAPODS: 1.5.3
