@@ -45,9 +45,9 @@ private extension RichNotificationContentFormatter {
     func formatBody() {
         guard let body = notification.body,
             let bodyBlocks = body as? [[String: AnyObject]],
-            !bodyBlocks.isEmpty else {
+            bodyBlocks.isEmpty == false else {
 
-                return
+            return
         }
 
         let blocks = NotificationContentFactory.content(from: bodyBlocks, actionsParser: parser, parent: notification)
@@ -59,7 +59,7 @@ private extension RichNotificationContentFormatter {
             let bodyContentGroup = FormattableContentGroup(blocks: blocks, kind: .text)
             let bodyContentBlocks = bodyContentGroup.blocks
 
-            if !bodyContentBlocks.isEmpty,
+            if bodyContentBlocks.isEmpty == false,
                 let bodyContentBlock = bodyContentBlocks.first {
 
                 formattableContent = bodyContentBlock
@@ -71,7 +71,7 @@ private extension RichNotificationContentFormatter {
         guard let validContent = formattableContent,
             let bodyText = validContent.text else {
 
-                return
+            return
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: bodyText)
@@ -93,20 +93,20 @@ private extension RichNotificationContentFormatter {
     func formatAttributedSubject() {
         guard let subject = notification.subject,
             let subjectBlocks = subject as? [[String: AnyObject]],
-            !subjectBlocks.isEmpty else {
+            subjectBlocks.isEmpty == false else {
 
-                return
+            return
         }
 
         let blocks = NotificationContentFactory.content(from: subjectBlocks, actionsParser: parser, parent: notification)
         let subjectContentGroup = FormattableContentGroup(blocks: blocks, kind: .subject)
         let subjectContentBlocks = subjectContentGroup.blocks
 
-        guard !subjectContentBlocks.isEmpty,
+        guard subjectContentBlocks.isEmpty == false,
             let subjectContentBlock = subjectContentBlocks.first,
             let subjectText = subjectContentBlock.text else {
 
-                return
+            return
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: subjectText)
