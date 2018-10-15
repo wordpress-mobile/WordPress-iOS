@@ -14,11 +14,13 @@ final class PageListTableViewHandler: WPTableViewHandler {
 
     private var pages: [Page] = []
     private var filteredPages: [Page] = []
-
+    private let blog: Blog
     private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let publishedFilter = PostListFilter.publishedFilter()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
-        fetchRequest.predicate = publishedFilter.predicateForFetchRequest
+        let predicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+        let predicates = [predicate, publishedFilter.predicateForFetchRequest]
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
         return resultsController(with: fetchRequest, context: managedObjectContext(), performFetch: false)
     }()
@@ -34,6 +36,12 @@ final class PageListTableViewHandler: WPTableViewHandler {
     private lazy var flatResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         return resultsController(with: fetchRequest(), context: managedObjectContext())
     }()
+
+
+    init(tableView: UITableView, blog: Blog) {
+        self.blog = blog
+        super.init(tableView: tableView)
+    }
 
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
         if isSearching {
