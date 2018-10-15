@@ -155,7 +155,7 @@ import WordPressShared
     ///
     /// - Parameters:
     ///   - title:  Main descriptive text. Required.
-    func configureForNoSearchResults(title: String) {
+    @objc func configureForNoSearchResults(title: String) {
         configure(title: title)
         displayTitleViewOnly = true
     }
