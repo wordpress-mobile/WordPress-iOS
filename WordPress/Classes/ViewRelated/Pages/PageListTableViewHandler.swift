@@ -13,7 +13,6 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     private var pages: [Page] = []
-    private var filteredPages: [Page] = []
     private let blog: Blog
     private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let publishedFilter = PostListFilter.publishedFilter()
