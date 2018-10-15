@@ -668,7 +668,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     // Landscape: show nothing.
     if (WPDeviceIdentification.isiPhone && self.keyboardManager.isKeyboardVisible) {
         [self.noResultsViewController.view setHidden:true];
-        [self createTitleOnlyNoResultsView];
         [self.noResultsTitleViewController.view setHidden:(UIDevice.currentDevice.orientation != UIDeviceOrientationPortrait)];
         return;
     }
@@ -681,6 +680,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
+    [self createTitleOnlyNoResultsView];
     [self createFullNoResultsView];
 }
 
