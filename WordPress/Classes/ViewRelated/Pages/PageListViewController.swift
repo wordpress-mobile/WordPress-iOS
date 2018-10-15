@@ -722,9 +722,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        /// This button is disabled for self-hosted sites
+        /// This button is disabled for self-hosted sites and trashed pages
         //
-        guard blog.supports(.wpComRESTAPI) else {
+        if !blog.supports(.wpComRESTAPI) ||
+            page.status == .trash {
             return
         }
 
@@ -745,7 +746,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let selectedPage = pageAtIndexPath(index)
         let newIndex = _tableViewHandler.index(for: selectedPage)
         let pages = _tableViewHandler.removePage(from: newIndex)
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage)
+        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
+            self._tableViewHandler.isSearching = false
+        }
         present(parentPageNavigationController, animated: true, completion: nil)
     }
 
