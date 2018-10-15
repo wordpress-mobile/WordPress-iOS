@@ -33,8 +33,8 @@ class RichNotificationContentFormatter {
         self.notification = notification
         self.parser = parser
 
-        formatBody()
         formatAttributedSubject()
+        formatBody()
     }
 }
 
@@ -43,7 +43,8 @@ class RichNotificationContentFormatter {
 private extension RichNotificationContentFormatter {
     /// Attempts to format both a plain-text & attributed-text representation of the notification content.
     func formatBody() {
-        guard let body = notification.body,
+        guard NotificationKind.omitsRichNotificationBody(notification.kind) == false,
+            let body = notification.body,
             let bodyBlocks = body as? [[String: AnyObject]],
             bodyBlocks.isEmpty == false else {
 

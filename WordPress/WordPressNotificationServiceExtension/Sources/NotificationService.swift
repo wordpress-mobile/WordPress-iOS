@@ -55,8 +55,6 @@ class NotificationService: UNNotificationServiceExtension {
             notificationContent.categoryIdentifier = category
         }
 
-        notificationContent.title = apsAlert
-
         let api = WordPressComRestApi(oAuthToken: token)
         let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
         self.notificationService = service
@@ -76,11 +74,6 @@ class NotificationService: UNNotificationServiceExtension {
 
             let contentFormatter = RichNotificationContentFormatter(notification: notification)
 
-            guard let bodyText = contentFormatter.body else {
-                return
-            }
-            notificationContent.body = bodyText
-
             let viewModel = RichNotificationViewModel(
                 attributedBody: contentFormatter.attributedBody,
                 attributedSubject: contentFormatter.attributedSubject,
@@ -88,6 +81,9 @@ class NotificationService: UNNotificationServiceExtension {
                 notificationIdentifier: notification.notificationId,
                 notificationReadStatus: notification.read,
                 noticon: notification.noticon)
+
+            notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
+            notificationContent.body = contentFormatter.body ?? ""
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
 
             tracks.trackNotificationAssembled()
