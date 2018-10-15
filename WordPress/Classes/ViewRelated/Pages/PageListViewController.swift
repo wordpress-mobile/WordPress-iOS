@@ -323,7 +323,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard _tableViewHandler.groupResults else {
+        if !_tableViewHandler.groupResults || _tableViewHandler.isSearching {
             return 0.0
         }
         return Constant.Size.pageSectionHeaderHeight
@@ -339,7 +339,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        guard _tableViewHandler.groupResults else {
+        if !_tableViewHandler.groupResults || _tableViewHandler.isSearching {
             return UIView(frame: .zero)
         }
 
