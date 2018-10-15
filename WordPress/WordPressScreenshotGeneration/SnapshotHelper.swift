@@ -159,7 +159,7 @@ open class Snapshot: NSObject {
                 print("XCUIApplication is not set. Please call setupSnapshot(app) before snapshot().")
                 return
             }
-            
+
             let window = app.windows.firstMatch
             let screenshot = window.screenshot()
             guard let simulator = ProcessInfo().environment["SIMULATOR_DEVICE_NAME"], let screenshotsDir = screenshotsDirectory else { return }
