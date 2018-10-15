@@ -13,7 +13,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let publishedFilter = PostListFilter.publishedFilter()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
-        let predicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
+        let predicate = NSPredicate(format: "\(#keyPath(Page.blog)) = %@ && \(#keyPath(Page.revision)) = nil", blog)
         let predicates = [predicate, publishedFilter.predicateForFetchRequest]
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
