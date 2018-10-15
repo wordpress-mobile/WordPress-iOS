@@ -92,6 +92,7 @@ internal extension QuickStartTourGuide {
             let tourState = currentTourState else {
                 return
         }
+
         dismissCurrentNotice()
 
         guard let nextStep = getNextStep() else {
@@ -103,9 +104,13 @@ internal extension QuickStartTourGuide {
         }
         currentTourState = nextStep
 
-        if currentElement() == .readerBack && !readerNeedsBack {
-            visited(.readerBack)
-            return
+        if currentElement() == .readerBack {
+            if !readerNeedsBack {
+                visited(.readerBack)
+                return
+            } else {
+                navigationWatcher.spotlightReaderBackButton()
+            }
         }
 
         showCurrentStep()
