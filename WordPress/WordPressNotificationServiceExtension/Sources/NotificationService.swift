@@ -85,8 +85,10 @@ class NotificationService: UNNotificationServiceExtension {
                 attributedBody: contentFormatter.attributedBody,
                 attributedSubject: contentFormatter.attributedSubject,
                 gravatarURLString: notification.icon,
+                notificationIdentifier: notification.notificationId,
+                notificationReadStatus: notification.read,
                 noticon: notification.noticon)
-            viewModel.encodeToUserInfo(notificationContent: notificationContent)
+            notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
 
             tracks.trackNotificationAssembled()
 
