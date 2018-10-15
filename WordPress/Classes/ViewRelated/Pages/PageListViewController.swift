@@ -453,6 +453,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 } else {
                     self?.updateFilter(index: filterIndex)
                 }
+                self?._tableViewHandler.isSearching = false
                 vc.dismiss(animated: true, completion: nil)
             }
         }
