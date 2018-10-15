@@ -256,7 +256,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func showNoResultsView() {
         super.showNoResultsView()
         noResultsViewController.view.frame = CGRect(x: 0.0,
-                                                    y: 0.0,
+                                                    y: searchController.searchBar.bounds.height,
                                                     width: tableView.frame.width,
                                                     height: max(tableView.frame.height, tableView.contentSize.height))
         if searchController.isActive {
@@ -323,7 +323,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if !_tableViewHandler.groupResults || _tableViewHandler.isSearching {
+        guard _tableViewHandler.groupResults else {
             return 0.0
         }
         return Constant.Size.pageSectionHeaderHeight
@@ -339,7 +339,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        if !_tableViewHandler.groupResults || _tableViewHandler.isSearching {
+        guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
         }
 
@@ -780,6 +780,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBar.alpha = WPAlphaZero
 
         if #available(iOS 11.0, *) {
+            tableView.contentInset.top = -searchController.searchBar.bounds.height
             return
         }
 
@@ -800,7 +801,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     func didPresentSearchController(_ searchController: UISearchController) {
         if #available(iOS 11.0, *) {
             tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - topLayoutGuide.length
-            tableView.contentInset.top = 0
         }
     }
 
