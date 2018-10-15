@@ -46,6 +46,8 @@ extension Row: Equatable {
 
 
 class ParentPageSettingsViewController: UIViewController {
+    var onClose: (() -> Void)?
+
     @IBOutlet private var cancelButton: UIBarButtonItem!
     @IBOutlet private var doneButton: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
@@ -215,6 +217,11 @@ class ParentPageSettingsViewController: UIViewController {
         }
     }
 
+    private func dismiss() {
+        onClose?()
+        dismiss(animated: true, completion: nil)
+    }
+
 
     // MARK: IBAction
 
@@ -233,13 +240,13 @@ class ParentPageSettingsViewController: UIViewController {
                                                                                  comment: "Text displayed in HUD after attempting to save a draft post and an error occurred."))
                 self?.selectedPage.parentID = parentId
             } else {
-                self?.dismiss(animated: true, completion: nil)
+                self?.dismiss()
             }
         }
     }
 
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        dismiss()
     }
 }
 
@@ -297,7 +304,7 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 /// ParentPageSettingsViewController class constructor
 //
 extension ParentPageSettingsViewController {
-    class func navigationController(with pages: [Page], selectedPage: Page) -> UINavigationController {
+    class func navigationController(with pages: [Page], selectedPage: Page, onClose: (() -> Void)? = nil) -> UINavigationController {
         let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
         guard let controller = storyBoard.instantiateViewController(withIdentifier: "ParentPageSettings") as? UINavigationController else {
             fatalError("A navigation view controller is required for Parent Page Settings")
@@ -306,6 +313,7 @@ extension ParentPageSettingsViewController {
             fatalError("A ParentPageSettingsViewController is required for Parent Page Settings")
         }
         parentPageSettingsViewController.set(pages: pages, for: selectedPage)
+        parentPageSettingsViewController.onClose = onClose
         return controller
     }
 }
