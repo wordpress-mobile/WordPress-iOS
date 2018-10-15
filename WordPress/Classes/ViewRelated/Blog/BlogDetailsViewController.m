@@ -30,7 +30,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
-CGFloat const BLogDetailGridiconAccessorySize = 17.0;
+CGFloat const BlogDetailGridiconAccessorySize = 17.0;
+CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -49,11 +50,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) NSString *accessibilityIdentifier;
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIImageView *accessoryView;
+@property (nonatomic, strong) UIView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic, copy) void (^callback)(void);
+@property (nonatomic) QuickStartTourElement quickStartIdentifier;
 
 @end
 
@@ -277,6 +279,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
 
+    if (@available(iOS 11, *)) {
+        if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
+            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+        } else {
+            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
+        }
+    }
+
     if (self.splitViewControllerIsHorizontallyCompact) {
         [self animateDeselectionInteractively];
         self.restorableSelectedIndexPath = nil;
@@ -296,6 +306,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewDidAppear:animated];
     [self createUserActivity];
     [self startAlertTimer];
+
+    [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -455,6 +467,32 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return _siteIconPickerPresenter;
 }
 
+#pragma mark - iOS 10 bottom padding
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (@available(iOS 11, *)) {
+        // intentionally left blank
+    } else if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
+        if (section == self.tableSections.count - 1) {
+            return BlogDetailBottomPaddingForQuickStartNotices;
+        }
+    }
+    return UITableViewAutomaticDimension;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (@available(iOS 11, *)) {
+        return nil;
+    } else {
+        if (section != self.tableSections.count - 1) {
+            return nil;
+        }
+        UIView *view = [UIView new];
+        view.frame = CGRectMake(0, 0, 100.0, BlogDetailBottomPaddingForQuickStartNotices);
+        return view;
+    }
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
@@ -589,11 +627,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     if ([self.blog supports:BlogFeatureThemeBrowsing]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                        image:[Gridicon iconOfType:GridiconTypeThemes]
-                                                     callback:^{
-                                                         [weakSelf showThemes];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
+                                                              image:[Gridicon iconOfType:GridiconTypeThemes]
+                                                           callback:^{
+                                                               [weakSelf showThemes];
+                                                           }];
+        row.quickStartIdentifier = QuickStartTourElementThemes;
+        [rows addObject:row];
     }
     if ([self.blog supports:BlogFeatureMenus]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
@@ -657,6 +697,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                callback:^{
                                                                    [weakSelf showViewSite];
                                                                }];
+    viewSiteRow.quickStartIdentifier = QuickStartTourElementViewSite;
     viewSiteRow.showsSelectionState = NO;
     [rows addObject:viewSiteRow];
 
@@ -667,7 +708,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                [weakSelf showViewAdmin];
                                                                [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
                                                            }];
-        UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
+        UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BlogDetailGridiconAccessorySize, BlogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
         UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
         accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
         row.accessoryView = accessoryView;
@@ -953,6 +994,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewCell:cell];
     }
+    if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
+        row.accessoryView = [QuickStartSpotlightView new];
+    }
+
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -1092,6 +1137,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
+- (void)scrollToElement:(QuickStartTourElement) element
+{
+    int sectionCount = 0;
+    int rowCount = 0;
+    for (BlogDetailsSection *section in self.tableSections) {
+        rowCount = 0;
+        for (BlogDetailsRow *row in section.rows) {
+            if (row.quickStartIdentifier == element) {
+                if (@available(iOS 11, *)) {
+                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 80.0, 0);
+                }
+
+                NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
+                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];
+            }
+            rowCount++;
+        }
+        sectionCount++;
+    }
+}
+
 - (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
@@ -1221,6 +1287,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
 }
 
 - (void)showViewAdmin

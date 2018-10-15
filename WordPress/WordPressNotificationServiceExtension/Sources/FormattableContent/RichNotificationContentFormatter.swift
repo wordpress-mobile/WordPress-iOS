@@ -46,7 +46,7 @@ private extension RichNotificationContentFormatter {
         guard NotificationKind.omitsRichNotificationBody(notification.kind) == false,
             let body = notification.body,
             let bodyBlocks = body as? [[String: AnyObject]],
-            !bodyBlocks.isEmpty else {
+            bodyBlocks.isEmpty == false else {
 
             return
         }
@@ -60,7 +60,7 @@ private extension RichNotificationContentFormatter {
             let bodyContentGroup = FormattableContentGroup(blocks: blocks, kind: .text)
             let bodyContentBlocks = bodyContentGroup.blocks
 
-            if !bodyContentBlocks.isEmpty,
+            if bodyContentBlocks.isEmpty == false,
                 let bodyContentBlock = bodyContentBlocks.first {
 
                 formattableContent = bodyContentBlock
@@ -94,7 +94,7 @@ private extension RichNotificationContentFormatter {
     func formatAttributedSubject() {
         guard let subject = notification.subject,
             let subjectBlocks = subject as? [[String: AnyObject]],
-            !subjectBlocks.isEmpty else {
+            subjectBlocks.isEmpty == false else {
 
             return
         }
@@ -103,7 +103,7 @@ private extension RichNotificationContentFormatter {
         let subjectContentGroup = FormattableContentGroup(blocks: blocks, kind: .subject)
         let subjectContentBlocks = subjectContentGroup.blocks
 
-        guard !subjectContentBlocks.isEmpty,
+        guard subjectContentBlocks.isEmpty == false,
             let subjectContentBlock = subjectContentBlocks.first,
             let subjectText = subjectContentBlock.text else {
 
