@@ -4,7 +4,6 @@ import WordPressShared
 
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
-    fileprivate static let HTTPErrorCodeForbidden = Int(403)
     fileprivate static let pageSectionHeaderHeight = CGFloat(40.0)
     fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
     fileprivate static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
