@@ -21,7 +21,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }()
 
     @objc private lazy var _tableViewHandler: PageListTableViewHandler = {
-        let tableViewHandler = PageListTableViewHandler(tableView: self.tableView)
+        let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
         tableViewHandler.listensForContentChanges = false
