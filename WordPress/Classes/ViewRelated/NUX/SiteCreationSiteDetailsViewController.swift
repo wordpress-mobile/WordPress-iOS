@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressShared
 
 
 class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardResponder {
@@ -42,8 +43,10 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
+        WPAppAnalytics.track(.createSiteDetailsViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

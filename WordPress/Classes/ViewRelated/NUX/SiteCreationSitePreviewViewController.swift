@@ -35,6 +35,8 @@ class SiteCreationSitePreviewViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        WPAnalytics.track(.createSiteSuccessViewed)
+
         // Show Congratulations view for 4 seconds.
         Timer.scheduledTimer(timeInterval: 4,
                              target: self,

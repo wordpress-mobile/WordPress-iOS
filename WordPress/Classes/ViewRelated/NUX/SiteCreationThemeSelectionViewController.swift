@@ -1,6 +1,7 @@
 import UIKit
 import SVProgressHUD
 import WordPressAuthenticator
+import WordPressShared
 
 
 class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
@@ -30,6 +31,11 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
         configureView()
         setupThemesSyncHelper()
         syncContent()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAppAnalytics.track(.createSiteThemeViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

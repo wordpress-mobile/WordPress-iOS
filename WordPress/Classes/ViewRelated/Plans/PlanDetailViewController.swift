@@ -54,7 +54,7 @@ class PlanDetailViewController: UIViewController {
         return wrapper
     }()
 
-    class func controllerWithPlan(_ plan: Plan, siteID: Int, activePlan: Plan, price: String) -> PlanDetailViewController {
+    class func controllerWithPlan(_ plan: Plan, siteID: Int, activePlan: Plan?, price: String) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: NSStringFromClass(self)) as! PlanDetailViewController
 
