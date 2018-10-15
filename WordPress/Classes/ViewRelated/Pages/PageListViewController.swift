@@ -19,8 +19,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
-    }
 
+        struct ErrorCode {
+            static let HTTPErrorCodeForbidden = Int(403)
+        }
+    }
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
@@ -496,6 +499,65 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func restorePost(_ apost: AbstractPost, at indexPath: IndexPath?) {
+        WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
+
+        // if the post was recently deleted, update the status helper and reload the cell to display a spinner
+        let postObjectID = apost.objectID
+
+        if let index = recentlyTrashedPostObjectIDs.index(of: postObjectID) {
+            recentlyTrashedPostObjectIDs.remove(at: index)
+        }
+
+        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        postService.restore(apost, success: { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+
+            var apost: AbstractPost
+
+            // Make sure the post still exists.
+            do {
+                apost = try strongSelf.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
+            } catch {
+                DDLogError("\(error)")
+                return
+            }
+
+            DispatchQueue.main.async {
+                strongSelf._tableViewHandler.refreshTableView(at: indexPath)
+            }
+
+            if let postStatus = apost.status {
+                // If the post was restored, see if it appears in the current filter.
+                // If not, prompt the user to let it know under which filter it appears.
+                let filter = strongSelf.filterSettings.filterThatDisplaysPostsWithStatus(postStatus)
+                if filter.filterType == strongSelf.filterSettings.currentPostListFilter().filterType {
+                    return
+                }
+
+                strongSelf.promptThatPostRestoredToFilter(filter)
+
+                // Reindex the restored post in spotlight
+                SearchManager.shared.indexItem(apost)
+            }
+        }) { [weak self] (error) in
+            guard let strongSelf = self else {
+                return
+            }
+
+            if let error = error as NSError?,
+                error.code == Constant.ErrorCode.HTTPErrorCodeForbidden {
+                strongSelf.promptForPassword()
+            } else {
+                WPError.showXMLRPCErrorAlert(error)
+            }
+
+            strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
+        }
+    }
+
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
         var message = NSLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
 
@@ -706,7 +768,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
-        restorePost(page)
+        restorePost(page, at: tableView.indexPath(for: cell))
     }
 
     // MARK: - UISearchControllerDelegate
