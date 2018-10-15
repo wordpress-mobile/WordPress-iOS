@@ -4,8 +4,6 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
     private var spotlightView: QuickStartSpotlightView?
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-
-
         guard let tourGuide = QuickStartTourGuide.find() else {
             return
         }
@@ -28,11 +26,22 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
             tourGuide.visited(.readerSearch)
             fallthrough
         case is ReaderStreamViewController, is ReaderSavedPostsViewController:
-            tourGuide.readerNeedsBack = true
             readerNav = navigationController
+
+            tourGuide.readerNeedsBack = true
+            checkToSpotlightReader()
         default:
             break
         }
+    }
+
+    private func checkToSpotlightReader() {
+        guard let tourGuide = QuickStartTourGuide.find(),
+            tourGuide.isCurrentElement(.readerBack) else {
+            return
+        }
+
+        spotlightReaderBackButton()
     }
 
     func spotlightReaderBackButton() {

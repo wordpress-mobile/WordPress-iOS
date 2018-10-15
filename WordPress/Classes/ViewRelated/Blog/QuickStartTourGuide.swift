@@ -104,13 +104,9 @@ internal extension QuickStartTourGuide {
         }
         currentTourState = nextStep
 
-        if currentElement() == .readerBack {
-            if !readerNeedsBack {
-                visited(.readerBack)
-                return
-            } else {
-                navigationWatcher.spotlightReaderBackButton()
-            }
+        if !readerNeedsBack && currentElement() == .readerBack {
+            visited(.readerBack)
+            return
         }
 
         showCurrentStep()
