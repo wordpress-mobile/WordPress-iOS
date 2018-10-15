@@ -2,6 +2,8 @@ import Foundation
 
 import WordPressKit
 
+// MARK: - RichNotificationContentFormatter
+
 /// Responsible for transforming a `RemoteNotification` into both plain & attributed text representations.
 /// The class abstracts access to `FormattableContent`.
 ///
@@ -13,6 +15,15 @@ class RichNotificationContentFormatter {
     /// The parser used to render blocks in the notification.
     private let parser: FormattableContentActionParser
 
+    /// The plain-text representation of the notification body, suitable for Short Look presentation
+    var body: String?
+
+    /// The attributed-text representation of the notification body, suitable for Long Look presentation
+    var attributedBody: NSAttributedString?
+
+    /// The attributed-text representation of the notification subject, suitable for Long Look presentation
+    var attributedSubject: NSAttributedString?
+
     /// Creates a notification content formatter.
     ///
     /// - Parameters:
@@ -21,75 +32,81 @@ class RichNotificationContentFormatter {
     init(notification: RemoteNotification, parser: FormattableContentActionParser = RemoteNotificationActionParser()) {
         self.notification = notification
         self.parser = parser
+
+        formatBody()
+        formatAttributedSubject()
     }
+}
 
-    /// Returns the body of the notification.
-    ///
-    /// - Returns: the formatted body of the notification if it exists; `nil` otherwise
-    func formatAttributedBody() -> NSAttributedString? {
-        guard
-            let body = notification.body,
+// MARK: - Private behavior
+
+private extension RichNotificationContentFormatter {
+    /// Attempts to format both a plain-text & attributed-text representation of the notification content.
+    func formatBody() {
+        guard let body = notification.body,
             let bodyBlocks = body as? [[String: AnyObject]],
-            !bodyBlocks.isEmpty
-        else
-        {
-            return nil
+            bodyBlocks.isEmpty == false else {
+
+            return
         }
 
-        let blocks = NotificationContentFactory.content(
-            from: bodyBlocks,
-            actionsParser: parser,
-            parent: notification)
+        let blocks = NotificationContentFactory.content(from: bodyBlocks, actionsParser: parser, parent: notification)
 
-        guard
-            let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
-            let commentText = comment.text,
-            !commentText.isEmpty
-        else
-        {
-            return nil
+        let formattableContent: FormattableContent?
+        if let commentContent: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks) {
+            formattableContent = commentContent
+        } else {
+            let bodyContentGroup = FormattableContentGroup(blocks: blocks, kind: .text)
+            let bodyContentBlocks = bodyContentGroup.blocks
+
+            if bodyContentBlocks.isEmpty == false,
+                let bodyContentBlock = bodyContentBlocks.first {
+
+                formattableContent = bodyContentBlock
+            } else {
+                formattableContent = nil
+            }
         }
 
-        let trimmedText = replaceCommonWhitespaceIssues(in: commentText)
+        guard let validContent = formattableContent,
+            let bodyText = validContent.text else {
+
+            return
+        }
+
+        let trimmedText = replaceCommonWhitespaceIssues(in: bodyText)
         let styles = RemoteNotificationStyles()
         let attributedText = NSMutableAttributedString(string: trimmedText, attributes: styles.attributes)
 
         var lengthShift = 0
-        for range in comment.ranges {
+        for range in validContent.ranges {
             lengthShift += range.apply(styles, to: attributedText, withShift: lengthShift)
         }
 
-        return attributedText.trimNewlines()
+        let formattedBody = attributedText.trimNewlines()
+
+        self.body = formattedBody.string
+        self.attributedBody = formattedBody
     }
 
-    /// Returns the subject of the notification.
-    ///
-    /// - Returns: the formatted subject of the notification if it exists; `nil` otherwise
-    func formatAttributedSubject() -> NSAttributedString? {
-        guard
-            let subject = notification.subject,
+    /// Attempts to format the attributed subject of the notification content.
+    func formatAttributedSubject() {
+        guard let subject = notification.subject,
             let subjectBlocks = subject as? [[String: AnyObject]],
-            !subjectBlocks.isEmpty
-        else
-        {
-            return nil
+            subjectBlocks.isEmpty == false else {
+
+            return
         }
 
-        let blocks = NotificationContentFactory.content(
-            from: subjectBlocks,
-            actionsParser: parser,
-            parent: notification)
-
+        let blocks = NotificationContentFactory.content(from: subjectBlocks, actionsParser: parser, parent: notification)
         let subjectContentGroup = FormattableContentGroup(blocks: blocks, kind: .subject)
         let subjectContentBlocks = subjectContentGroup.blocks
 
-        guard
-            !subjectContentBlocks.isEmpty,
+        guard subjectContentBlocks.isEmpty == false,
             let subjectContentBlock = subjectContentBlocks.first,
-            let subjectText = subjectContentBlock.text
-        else
-        {
-            return nil
+            let subjectText = subjectContentBlock.text else {
+
+            return
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: subjectText)
@@ -101,48 +118,15 @@ class RichNotificationContentFormatter {
             lengthShift += range.apply(styles, to: attributedText, withShift: lengthShift)
         }
 
-        return attributedText.trimNewlines()
+        self.attributedSubject = attributedText.trimNewlines()
     }
 
-    /// Renders a plain-text representation of the notification body.
-    ///
-    /// - Returns: a plain-text representation of the notification body if successful; `nil` otherwise
-    func formatBody() -> String? {
-        guard
-            let body = notification.body,
-            let bodyBlocks = body as? [[String: AnyObject]]
-        else
-        {
-            return nil
-        }
-
-        let blocks = NotificationContentFactory.content(
-            from: bodyBlocks,
-            actionsParser: parser,
-            parent: notification)
-
-        guard
-            let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
-            let commentText = comment.text,
-            !commentText.isEmpty
-        else
-        {
-            return nil
-        }
-
-        return commentText
-    }
-}
-
-// MARK: FormattableContentFormatter adaptation; importing it directly is problematic
-
-extension RichNotificationContentFormatter {
     /// Replaces some common extra whitespace with hairline spaces so that comments display better
     ///
     /// - Parameter baseString: string of the comment body before attributes are added
     /// - Returns: string of same length
     /// - Note: the length must be maintained or the formatting will break
-    private func replaceCommonWhitespaceIssues(in baseString: String) -> String {
+    func replaceCommonWhitespaceIssues(in baseString: String) -> String {
         var newString: String
         // \u{200A} = hairline space (very skinny space).
         // we use these so that the ranges are still in the right position, but the extra space basically disappears
