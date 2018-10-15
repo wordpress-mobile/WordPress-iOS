@@ -108,10 +108,9 @@ private extension NotificationViewController {
         }
 
         let api = WordPressComRestApi(oAuthToken: token)
-        let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
-        self.notificationService = service
+        notificationService = NotificationSyncServiceRemote(wordPressComRestApi: api)
 
-        service.updateReadStatus(notificationIdentifier, read: true) { [tracks] error in
+        notificationService?.updateReadStatus(notificationIdentifier, read: true) { [tracks] error in
             guard let error = error else {
                 return
             }
