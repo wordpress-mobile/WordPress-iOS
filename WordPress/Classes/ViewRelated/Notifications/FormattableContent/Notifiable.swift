@@ -22,8 +22,24 @@ extension NotificationKind {
     /// Enumerates the Kinds that currently provide Rich Notification support
     private static var kindsWithRichNotificationSupport: Set<NotificationKind> = [
         .comment,
+        .commentLike,
+        .like,
         .matcher
     ]
+
+    /// Enumerates the Kinds of rich notifications that include body text
+    private static var kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
+        .commentLike,
+        .like,
+    ]
+
+    /// Indicates whether or not a given kind of rich notification has a body support.
+    ///
+    /// - Parameter kind: the notification type to evaluate
+    /// - Returns: `true` if the kind of rich notification includes a body; `false` otherwise
+    static func omitsRichNotificationBody(_ kind: NotificationKind) -> Bool {
+        return kindsWithoutRichNotificationBodyText.contains(kind)
+    }
 
     /// Indicates whether or not a given kind has rich notification support.
     ///
@@ -40,7 +56,7 @@ extension NotificationKind {
     ///
     var contentExtensionCategoryIdentifier: String? {
         switch self {
-        case .matcher:
+        case .commentLike, .like, .matcher:
             return rawValue
         default:
             return nil
