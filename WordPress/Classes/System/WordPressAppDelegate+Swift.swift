@@ -3,11 +3,27 @@ import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
 import WordPressAuthenticator
-
+import React
 
 // MARK: - Utility Configuration
 
 extension WordPressAppDelegate {
+
+    @objc func showGutenberg() {
+        let jsCodeLocation = URL(string: "http://localhost:8081/index.bundle?platform=ios")
+        let mockData: NSDictionary = NSDictionary()
+
+        let rootView = RCTRootView(
+            bundleURL: jsCodeLocation,
+            moduleName: "gutenberg",
+            initialProperties: mockData as [NSObject : AnyObject],
+            launchOptions: nil
+        )
+        let vc = UIViewController()
+        vc.view = rootView
+        self.window.rootViewController?.present(vc, animated: true, completion: nil)
+    }
+
     @objc func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
