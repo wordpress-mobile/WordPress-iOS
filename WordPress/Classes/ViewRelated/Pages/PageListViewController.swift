@@ -722,10 +722,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        /// This button is disabled for self-hosted sites and trashed pages
+        /// This button is disabled for trashed pages
         //
-        if !blog.supports(.wpComRESTAPI) ||
-            page.status == .trash {
+        if page.status == .trash {
             return
         }
 
