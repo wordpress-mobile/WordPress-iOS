@@ -293,6 +293,12 @@ private extension NoResultsViewController {
     }
 
     func setAccessoryViewsVisibility() {
+
+        if hideImage == true {
+            accessoryStackView.isHidden = true
+            return
+        }
+
         // Always hide the accessory/image stack view when in iPhone landscape.
         accessoryStackView.isHidden = UIDevice.current.orientation.isLandscape && WPDeviceIdentification.isiPhone()
 
