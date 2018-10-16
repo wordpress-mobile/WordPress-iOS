@@ -33,7 +33,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.1'
+    pod 'WordPressKit', '1.4.2-beta.2'
 end
 
 def shared_test_pods
@@ -157,7 +157,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressKit', '1.4.1'
+    pod 'WordPressKit', '1.4.2-beta.2'
     pod 'WordPressShared', '1.1.1-beta.5'
     wordpress_ui
 end
@@ -173,7 +173,7 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.1'
+    pod 'WordPressKit', '1.4.2-beta.2'
     pod 'WordPressShared', '1.1.1-beta.5'
 
     wordpress_ui
