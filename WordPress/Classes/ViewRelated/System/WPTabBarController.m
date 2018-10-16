@@ -467,6 +467,19 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self.selectedIndex = WPTabMySites;
 }
 
+- (void)resetReaderTab
+{
+    _readerNavigationController = nil;
+    _readerMenuViewController = nil;
+    _readerSplitViewController = nil;
+
+    [self setViewControllers:@[self.blogListSplitViewController,
+                               self.readerSplitViewController,
+                               self.newPostViewController,
+                               self.meSplitViewController,
+                               self.notificationsSplitViewController]];
+}
+
 #pragma mark - Navigation Coordinators
 
 - (MySitesCoordinator *)mySitesCoordinator
