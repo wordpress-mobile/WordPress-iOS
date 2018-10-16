@@ -21,3 +21,6 @@ warn("Core Data: Do not edit an existing model in a release branch unless it has
 # SwiftLint, requires https://github.com/ashfurrow/danger-swiftlint
 swiftlint.verbose = true
 swiftlint.lint_files
+
+# Podfile: no references to commit hashes
+warn("Podfile: reference to a commit hash") if `grep -e "^[^#]*:commit" Podfile`.length > 1
