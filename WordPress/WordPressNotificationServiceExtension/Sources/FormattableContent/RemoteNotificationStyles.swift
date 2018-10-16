@@ -3,7 +3,7 @@ import Foundation
 import WordPressShared
 import WordPressUI
 
-// MARK: - FormattableContentStyles
+// MARK: - RemoteNotificationStyles
 
 /// Describes how Notifications should appear in the Long Look.
 /// Influenced by both SnippetsContentStyles & SubjectContentStyles.
@@ -79,7 +79,7 @@ class RemoteNotificationStyles: FormattableContentStyles {
             .blockquote: [ .font: prevailingItalicizedFont ],
             .comment: [ .font: prevailingItalicizedFont ],
             .follow: [:],
-            .italic: [:],
+            .italic: [ .font: prevailingItalicizedFont ],
             .link: [:],
             .match: [:],
             .noticon: [ .font: noticonFont ],
