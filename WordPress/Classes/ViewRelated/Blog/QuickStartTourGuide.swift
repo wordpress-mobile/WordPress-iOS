@@ -63,7 +63,10 @@ internal extension QuickStartTourGuide {
         dismissSuggestion()
 
         switch tour {
-        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour, is QuickStartPublishTour, is QuickStartShareTour, is QuickStartFollowTour:
+        case let tour as QuickStartFollowTour:
+            tour.setupReaderTab()
+            fallthrough
+        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour, is QuickStartPublishTour, is QuickStartShareTour:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         default:
