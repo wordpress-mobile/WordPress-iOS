@@ -120,7 +120,7 @@ PODS:
     - WordPressShared (~> 1.1.1-beta.4)
     - WordPressUI (~> 1.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressKit (1.4.1):
+  - WordPressKit (1.4.2-beta.2):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -171,7 +171,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.0.2)
   - WordPressAuthenticator (= 1.1.1)
-  - WordPressKit (= 1.4.1)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `PPP-self-hosted`)
   - WordPressShared (= 1.1.1-beta.4)
   - WordPressUI (= 1.0.8)
   - WPMediaPicker (= 1.3.1)
@@ -209,7 +209,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -220,11 +219,17 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPressKit:
+    :branch: PPP-self-hosted
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPressKit:
+    :commit: 860ccda355b8d97c4e5ae38bd54cce85d42ff4d6
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -257,13 +262,13 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: a736985cc6de6ffceb30a03e380d849b4956ae51
   WordPress-Editor-iOS: 571e9a168881af4cbe6cc909af603c278a5f0fe3
   WordPressAuthenticator: 6e9cdd8f492ec771f9cb352e62a94059166f15c1
-  WordPressKit: d95804a925e3d23f6a8cc0d47424c673253a65b6
+  WordPressKit: a60ac809261ca23ac35e1c39e0249d9e05ab3ec0
   WordPressShared: fc613aa29351c73677c421daacb36eacf53f100d
   WordPressUI: e50965adee24b4f10da398f6cdbdd3a822274158
   WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 3c23827ae53a7547d7736ba7bc90671a040224fc
+PODFILE CHECKSUM: cd08abf0f4cbae86b4ce30d238f25057cebd6762
 
 COCOAPODS: 1.5.3
