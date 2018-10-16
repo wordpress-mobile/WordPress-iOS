@@ -59,6 +59,7 @@ internal extension QuickStartTourGuide {
     }
 
     func start(tour: QuickStartTour, for blog: Blog) {
+        endCurrentTour()
         dismissSuggestion()
 
         switch tour {
