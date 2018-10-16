@@ -154,6 +154,14 @@ struct QuickStartFollowTour: QuickStartTour {
 
         return [step1, step2, step3]
     }()
+
+    func setupReaderTab() {
+        guard let tabBar = WPTabBarController.sharedInstance() else {
+            return
+        }
+
+        tabBar.resetReaderTab()
+    }
 }
 
 private extension String {
