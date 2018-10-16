@@ -19,10 +19,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let restorePageCellNibName = "RestorePageTableViewCell"
             static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
         }
-
-        struct ErrorCode {
-            static let HTTPErrorCodeForbidden = Int(403)
-        }
     }
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
