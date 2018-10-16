@@ -9,6 +9,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             static let pageSectionHeaderHeight = CGFloat(40.0)
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
             static let pageCellWithTagEstimatedRowHeight = CGFloat(60.0)
+            static let pageListTableViewCellLeading = CGFloat(16.0)
         }
 
         struct Identifiers {
@@ -393,7 +394,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         cell.accessoryType = .none
 
+        let page = pageAtIndexPath(indexPath)
+
         if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
+            cell.indentationWidth = _tableViewHandler.isSearching ? 0.0 : Constant.Size.pageListTableViewCellLeading
+            cell.indentationLevel = page.status != .publish ? 0 : page.hierarchyIndex
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
@@ -404,9 +409,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         }
 
-        let page = pageAtIndexPath(indexPath)
-
-        cell.configureCell(page, forSearch: _tableViewHandler.isSearching)
+        cell.configureCell(page)
     }
 
     fileprivate func cellIdentifierForPage(_ page: Page) -> String {

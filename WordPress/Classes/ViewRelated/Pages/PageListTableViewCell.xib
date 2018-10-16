@@ -113,6 +113,7 @@
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="bottomPadding" destination="bK0-9Y-2OP" id="KjA-YM-SlA"/>
+                <outlet property="leadingContentConstraint" destination="El0-aj-PpS" id="LqZ-K0-Tc4"/>
                 <outlet property="localChangesBadge" destination="Tdc-xF-sEY" id="Sl1-29-cgJ"/>
                 <outlet property="localChangesLabel" destination="kzi-MT-rBK" id="mT6-ex-OOX"/>
                 <outlet property="localChangesLeading" destination="vu7-vY-aw9" id="JBF-yS-GsO"/>
