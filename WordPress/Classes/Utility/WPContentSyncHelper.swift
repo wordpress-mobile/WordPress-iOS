@@ -113,9 +113,7 @@ class WPContentSyncHelper: NSObject {
         })
     }
 
-    // MARK: - Private Methods
-
-    fileprivate func syncContentEnded(error: Bool = false) {
+    @objc func syncContentEnded(error: Bool = false) {
         isSyncing = false
         isLoadingMore = false
 

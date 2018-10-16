@@ -28,7 +28,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return footer
     }()
 
-    @objc private lazy var _tableViewHandler: PageListTableViewHandler = {
+    private lazy var _tableViewHandler: PageListTableViewHandler = {
         let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
@@ -42,6 +42,20 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return _tableViewHandler
         } set {
             super.tableViewHandler = newValue
+        }
+    }
+
+    @objc private lazy var _syncHelper: PageContentSyncHelper = {
+        let syncHelper = PageContentSyncHelper()
+        syncHelper.delegate = self
+        return syncHelper
+    }()
+
+    override var syncHelper: WPContentSyncHelper {
+        get {
+            return _syncHelper
+        } set {
+            super.syncHelper = newValue
         }
     }
 
