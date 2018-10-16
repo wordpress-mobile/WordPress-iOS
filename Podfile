@@ -157,6 +157,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
+    pod 'WordPressKit', '1.4.1'
     pod 'WordPressShared', '1.1.1-beta.5'
     wordpress_ui
 end
