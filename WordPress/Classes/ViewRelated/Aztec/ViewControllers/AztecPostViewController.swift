@@ -28,6 +28,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var isOpenedDirectlyForPhotoPost = false
 
+    private let navigationBarManager = PostEditorNavigationBarManager()
 
     /// Format Bar
     ///
@@ -202,117 +203,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         v.translatesAutoresizingMaskIntoConstraints = false
 
         return v
-    }()
-
-
-    /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
-    ///
-    fileprivate lazy var separatorButtonItem: UIBarButtonItem = {
-        let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        return separator
-    }()
-
-
-    /// NavigationBar's Close Button
-    ///
-    fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
-        let cancelItem = UIBarButtonItem(customView: self.closeButton)
-        cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
-        cancelItem.accessibilityIdentifier = "Close"
-        return cancelItem
-    }()
-
-
-    /// NavigationBar's Blog Picker Button
-    ///
-    fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
-        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
-        return pickerItem
-    }()
-
-    /// Media Uploading Status Button
-    ///
-    fileprivate lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
-        let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
-        barButton.accessibilityLabel = NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server")
-        return barButton
-    }()
-
-
-    /// Publish Button
-    fileprivate(set) lazy var publishButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(publishButtonTapped(sender:)), for: .touchUpInside)
-        button.setTitle(self.postEditorStateContext.publishButtonText, for: .normal)
-        button.sizeToFit()
-        button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        return button
-    }()
-
-    /// Publish Button
-    fileprivate(set) lazy var publishBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(customView: self.publishButton)
-
-        return button
-    }()
-
-
-    fileprivate lazy var moreButton: UIButton = {
-        let image = Gridicon.iconOfType(.ellipsis)
-        let button = UIButton(type: .system)
-        button.setImage(image, for: .normal)
-        button.frame = CGRect(origin: .zero, size: image.size)
-        button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
-        button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        return button
-    }()
-
-
-    /// NavigationBar's More Button
-    ///
-    fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
-        let moreItem = UIBarButtonItem(customView: self.moreButton)
-        return moreItem
-    }()
-
-
-    /// Dismiss Button
-    ///
-    fileprivate lazy var closeButton: WPButtonForNavigationBar = {
-        let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-        cancelButton.setContentHuggingPriority(.required, for: .horizontal)
-        return cancelButton
-    }()
-
-
-    /// Blog Picker's Button
-    ///
-    fileprivate lazy var blogPickerButton: WPBlogSelectorButton = {
-        let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
-        button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
-        if #available(iOS 11, *) {
-            button.translatesAutoresizingMaskIntoConstraints = false
-        }
-        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return button
-    }()
-
-    /// Media Uploading Button
-    ///
-    fileprivate lazy var mediaUploadingButton: WPUploadStatusButton = {
-        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
-        button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
-        button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
-        if #available(iOS 11, *) {
-            button.translatesAutoresizingMaskIntoConstraints = false
-        }
-        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        return button
     }()
 
     /// Active Editor's Mode
@@ -523,6 +413,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationBarManager.delegate = self
 
         richTextView.isScrollEnabled = false
         htmlTextView.isScrollEnabled = false
@@ -751,8 +643,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
-        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
+        navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
     }
 
     /// This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
@@ -765,7 +657,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func configureDismissButton() {
         let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
-        closeButton.setImage(image, for: .normal)
+        navigationBarManager.closeButton.setImage(image, for: .normal)
     }
 
     func configureView() {
@@ -844,9 +736,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func refreshNavigationBar() {
         if postEditorStateContext.isUploadingMedia {
-            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+            navigationItem.leftBarButtonItems = navigationBarManager.uploadingMediaLeftBarButtonItems
         } else {
-            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+            navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         }
     }
 
@@ -892,17 +784,11 @@ class AztecPostViewController: UIViewController, PostEditor {
             pickerTitle = blogName
         }
 
-        let titleText = NSAttributedString(string: pickerTitle, attributes: [.font: Fonts.blogPicker])
-        let shouldEnable = !isSingleSiteMode
-
-        blogPickerButton.setAttributedTitle(titleText, for: .normal)
-        blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
-        blogPickerButton.isEnabled = shouldEnable
+        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
     }
 
     func reloadPublishButton() {
-        publishButton.setTitle(postEditorStateContext.publishButtonText, for: .normal)
-        publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
+        navigationBarManager.reloadPublishButton()
     }
 
     func resizeBlogPickerButton() {
@@ -912,6 +798,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
         // On iOS 10 and before we still need to manually resize the button.
         // Ensure the BlogPicker gets it's maximum possible size
+        let blogPickerButton = navigationBarManager.blogPickerButton
         blogPickerButton.sizeToFit()
         // Cap the size, according to the current traits
         var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
@@ -1120,7 +1007,7 @@ extension AztecPostViewController: AztecNavigationControllerDelegate {
 // MARK: - Actions
 //
 extension AztecPostViewController {
-    @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+    @IBAction func publishButtonTapped(sender: UIButton) {
         let action = self.postEditorStateContext.action
 
         publishPost(
@@ -1195,7 +1082,7 @@ extension AztecPostViewController {
             self.discardChangesAndUpdateGUI()
         }
 
-        alertController.popoverPresentationController?.barButtonItem = closeBarButtonItem
+        alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
         present(alertController, animated: true)
     }
 
@@ -1341,7 +1228,7 @@ extension AztecPostViewController {
 private extension AztecPostViewController {
 
     func displayBlogSelector() {
-        guard let sourceView = blogPickerButton.imageView else {
+        guard let sourceView = navigationBarManager.blogPickerButton.imageView else {
             fatalError()
         }
 
@@ -1500,7 +1387,7 @@ private extension AztecPostViewController {
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
 
         present(alert, animated: true)
     }
@@ -4085,5 +3972,39 @@ extension AztecPostViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
+    var publishButtonText: String {
+        return self.postEditorStateContext.publishButtonText
+    }
+
+    var isPublishButtonEnabled: Bool {
+        return self.postEditorStateContext.isPublishButtonEnabled
+    }
+
+    var uploadingButtonSize: CGSize {
+        return Constants.uploadingButtonSize
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
+        closeWasPressed()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+        moreWasPressed()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
+        blogPickerWasPressed()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+        publishButtonTapped(sender: sender)
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+        displayCancelMediaUploads()
     }
 }

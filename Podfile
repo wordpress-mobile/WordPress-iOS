@@ -87,6 +87,16 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
+    ## React Native
+    ## =====================
+    ##
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    pod 'React', :podspec => 'Podspecs/React.podspec.json'
+    pod 'yoga', :podspec => 'Podspecs/yoga.podspec.json'
+    pod 'Folly', :podspec => 'Podspecs/Folly.podspec.json'
+    pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '6.5.2'
+    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git'
+
     ## Third party libraries
     ## =====================
     ##
