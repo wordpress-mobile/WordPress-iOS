@@ -259,11 +259,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func showNoResultsView() {
         super.showNoResultsView()
-        noResultsViewController.view.frame = CGRect(x: 0.0,
-                                                    y: searchController.searchBar.bounds.height,
-                                                    width: tableView.frame.width,
-                                                    height: max(tableView.frame.height, tableView.contentSize.height))
+
         if searchController.isActive {
+            noResultsViewController.view.frame = CGRect(x: 0.0,
+                                                        y: searchController.searchBar.bounds.height,
+                                                        width: tableView.frame.width,
+                                                        height: max(tableView.frame.height, tableView.contentSize.height))
             tableView.bringSubviewToFront(noResultsViewController.view)
         }
     }
