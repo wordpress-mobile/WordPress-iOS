@@ -586,12 +586,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
-        /// This button is disabled for self-hosted sites
-        //
-        guard blog.supports(.wpComRESTAPI) else {
-            return
-        }
-
         let objectID = page.objectID
         let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
         controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] _ in
