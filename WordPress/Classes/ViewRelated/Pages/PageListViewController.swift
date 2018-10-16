@@ -4,7 +4,6 @@ import WordPressShared
 
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
-
     fileprivate static let pageSectionHeaderHeight = CGFloat(40.0)
     fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
     fileprivate static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
@@ -21,7 +20,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }()
 
     @objc private lazy var _tableViewHandler: PageListTableViewHandler = {
-        let tableViewHandler = PageListTableViewHandler(tableView: self.tableView)
+        let tableViewHandler = PageListTableViewHandler(tableView: self.tableView, blog: self.blog)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
         tableViewHandler.listensForContentChanges = false
@@ -178,6 +177,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         _tableViewHandler.refreshTableView()
 
         super.selectedFilterDidChange(filterBar)
+    }
+
+    override func updateFilterWithPostStatus(_ status: BasePost.Status) {
+        filterSettings.setFilterWithPostStatus(status)
+        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
+        _tableViewHandler.refreshTableView()
+        super.updateFilterWithPostStatus(status)
     }
 
     override func updateAndPerformFetchRequest() {
@@ -392,7 +398,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    fileprivate func draftPage(_ apost: AbstractPost) {
+    fileprivate func draftPage(_ apost: AbstractPost, at indexPath: IndexPath?) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
@@ -401,7 +407,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService.uploadPost(apost, success: { [weak self] _ in
+            DispatchQueue.main.async {
+                self?._tableViewHandler.refreshTableView(at: indexPath)
+            }
+        }) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {
@@ -469,7 +479,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         return
                 }
 
-                strongSelf.draftPage(page)
+                strongSelf.draftPage(page, at: indexPath)
             })
 
             alertController.addActionWithTitle(deleteButtonTitle, style: .default, handler: { [weak self] (action) in
@@ -508,7 +518,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                             return
                     }
 
-                    strongSelf.draftPage(page)
+                    strongSelf.draftPage(page, at: indexPath)
                 })
             }
 
@@ -622,7 +632,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
-        restorePost(page)
+        restorePost(page) { [weak self] in
+            self?._tableViewHandler.refreshTableView(at: self?.tableView.indexPath(for: cell))
+        }
     }
 
     // MARK: - UISearchControllerDelegate
