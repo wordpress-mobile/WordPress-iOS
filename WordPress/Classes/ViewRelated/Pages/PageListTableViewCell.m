@@ -3,8 +3,8 @@
 #import "WordPress-Swift.h"
 
 
-static CGFloat const kWPTagLabelRadius = 2.0;
-static CGFloat const kWPCellLeading = 16.0;
+static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
+static CGFloat const PageListTableViewCellLeading = 16.0;
 
 @interface PageListTableViewCell()
 
@@ -79,7 +79,7 @@ static CGFloat const kWPCellLeading = 16.0;
     self.privateBadgeLabel.text = NSLocalizedString(@"Private", @"Title of the Private Badge");
     self.localChangesLabel.text = NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge");
 
-    self.privateBadge.layer.cornerRadius = kWPTagLabelRadius;
+    self.privateBadge.layer.cornerRadius = PageListTableViewCellTagLabelRadius;
     self.localChangesBadge.layer.cornerRadius = self.privateBadge.layer.cornerRadius;
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
@@ -104,7 +104,7 @@ static CGFloat const kWPCellLeading = 16.0;
 - (void)configurePageLevel
 {
     Page *page = (Page *)self.post;
-    self.indentationWidth = _isSearching ? 0.0 : kWPCellLeading;
+    self.indentationWidth = _isSearching ? 0.0 : PageListTableViewCellLeading;
     self.indentationLevel = page.hierarchyIndex;
 }
 
