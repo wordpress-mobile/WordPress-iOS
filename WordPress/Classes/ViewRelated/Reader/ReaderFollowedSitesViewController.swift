@@ -61,6 +61,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
+        setupBackgroundTapGestureRecognizer()
         noResultsViewController.delegate = self
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
@@ -118,6 +119,14 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
     }
 
+    func setupBackgroundTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer()
+        gestureRecognizer.on(call: { [weak self] (gesture) in
+            self?.view.endEditing(true)
+        })
+        gestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(gestureRecognizer)
+    }
     // MARK: - Instance Methods
 
 
