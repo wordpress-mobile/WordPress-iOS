@@ -68,6 +68,29 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
+    ## React Native
+    ## =====================
+    ##
+    pod 'React', path: '../node_modules/react-native', subspecs: [
+    'Core',
+    'jschelpers',
+    'cxxreact',
+    'CxxBridge',
+    'DevSupport',
+    'RCTText',
+    'RCTImage',
+    'RCTNetwork',
+    'RCTActionSheet',
+    'RCTAnimation',
+    'RCTWebSocket',
+    ]
+
+    pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
+    pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+    pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+    pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+    pod 'RNSVG', :podspec => '../node_modules/react-native-svg/RNSVG.podspec'
+
     ## Third party libraries
     ## =====================
     ##
