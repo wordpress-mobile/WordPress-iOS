@@ -4,7 +4,6 @@ import WordPressShared
 
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
-
     fileprivate static let pageSectionHeaderHeight = CGFloat(40.0)
     fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
     fileprivate static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
@@ -627,7 +626,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
-        restorePost(page)
+        restorePost(page) { [weak self] in
+            self?._tableViewHandler.refreshTableView(at: self?.tableView.indexPath(for: cell))
+        }
     }
 
     // MARK: - UISearchControllerDelegate
