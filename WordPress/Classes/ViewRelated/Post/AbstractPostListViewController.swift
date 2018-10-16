@@ -448,13 +448,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
+        let postType = postTypeToSync()
 
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
-        fetchRequest.fetchBatchSize = type(of: self).postsFetchRequestBatchSize
-        fetchRequest.fetchLimit = Int(numberOfPostsPerSync())
-
+        fetchRequest.fetchBatchSize = postType == .page ? 100 : type(of: self).postsFetchRequestBatchSize
+        fetchRequest.fetchLimit = postType == .page ? 0 : Int(numberOfPostsPerSync())
         return fetchRequest
     }
 
@@ -487,7 +487,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             fetchRequest.fetchLimit = 0
         } else {
             // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
-            fetchRequest.fetchLimit = Int(numberOfPostsPerSync())
+            let postType = postTypeToSync()
+            fetchRequest.fetchLimit = postType == .page ? 0 : Int(numberOfPostsPerSync())
         }
 
         fetchRequest.predicate = predicate
@@ -557,10 +558,12 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
+        let postType = postTypeToSync()
+
         // Are we approaching the end of the table?
         if indexPath.section + 1 == tableView.numberOfSections
-            && indexPath.row + type(of: self).postsLoadMoreThreshold >= tableView.numberOfRows(inSection: indexPath.section) {
-
+            && indexPath.row + type(of: self).postsLoadMoreThreshold >= tableView.numberOfRows(inSection: indexPath.section)
+            && postType == .post {
             // Only 3 rows till the end of table
             if filterSettings.currentPostListFilter().hasMore {
                 syncHelper.syncMoreContent()
@@ -659,11 +662,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
-
         if recentlyTrashedPostObjectIDs.count > 0 {
             refreshAndReload()
         }
 
+        let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
 
@@ -672,11 +675,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber?
+        options.number = (postType == .page) ? 100 : numberOfPostsPerSync() as NSNumber?
         options.purgesLocalSync = true
 
         postService.syncPosts(
-            ofType: postTypeToSync(),
+            ofType: postType,
             with: options,
             for: blog,
             success: {[weak self] posts in
@@ -697,7 +700,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     // an action was triggered to syncContent.
                     strongSelf.syncPostsMatchingSearchText()
                 }
-
             }, failure: {[weak self] (error: Error?) -> () in
 
                 guard let strongSelf = self,
@@ -716,6 +718,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         postListFooterView.showSpinner(true)
 
+        let postType = postTypeToSync()
         let filter = filterSettings.currentPostListFilter()
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
 
@@ -724,11 +727,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber?
+        options.number = (postType == .page) ? 100 : numberOfPostsPerSync() as NSNumber?
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
-            ofType: postTypeToSync(),
+            ofType: postType,
             with: options,
             for: blog,
             success: {[weak self] posts in
