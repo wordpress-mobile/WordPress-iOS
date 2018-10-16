@@ -23,6 +23,28 @@ internal extension QuickStartTourGuide {
         completed(tourID: createTour.key, for: blog)
     }
 
+    /// Provides a tour to suggest to the user
+    ///
+    /// - Parameter blog: The Blog for which to suggest a tour.
+    /// - Returns: A QuickStartTour to suggest. `nil` if there are no appropriate tours.
+    func tourToSuggest(for blog: Blog) -> QuickStartTour? {
+        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+        let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
+        let unavailableTours = Array(Set(completedTours + skippedTours))
+
+        guard isQuickStartEnabled(for: blog),
+            skippedTours.count < Constants.maxSkippedTours else {
+            return nil
+        }
+
+        // TODO: this is where the checklist tour will be added
+        let allTours = QuickStartTourGuide.checklistTours
+
+        let unavailableIDs = unavailableTours.map { $0.tourID }
+        let remainingTours = allTours.filter { !unavailableIDs.contains($0.key) }
+        return remainingTours.first
+    }
+
     func suggest(_ tour: QuickStartTour, for blog: Blog) {
         // swallow suggestions if already suggesting or a tour is in progress
         guard currentSuggestion == nil, currentTourState == nil else {
@@ -115,6 +137,14 @@ internal extension QuickStartTourGuide {
 }
 
 private extension QuickStartTourGuide {
+    func isQuickStartEnabled(for blog: Blog) -> Bool {
+        // there must be at least one completed tour for quick start to have been enabled
+        guard let completedTours = blog.completedQuickStartTours else {
+                return false
+        }
+
+        return completedTours.count > 0
+    }
 
     func completed(tourID: String, for blog: Blog) {
         blog.completeTour(tourID)
@@ -184,6 +214,10 @@ private extension QuickStartTourGuide {
         presenter.dismissCurrentNotice()
         ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
+    }
+
+    private struct Constants {
+        static let maxSkippedTours = 3
     }
 }
 
