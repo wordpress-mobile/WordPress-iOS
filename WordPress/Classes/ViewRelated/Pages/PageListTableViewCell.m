@@ -4,7 +4,6 @@
 
 
 static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
-static CGFloat const PageListTableViewCellLeading = 16.0;
 
 @interface PageListTableViewCell()
 
@@ -14,13 +13,16 @@ static CGFloat const PageListTableViewCellLeading = 16.0;
 @property (strong, nonatomic) IBOutlet UIView *privateBadge;
 @property (strong, nonatomic) IBOutlet UIView *localChangesBadge;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (nonatomic, assign) BOOL isSearching;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *localChangesLeading;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomPadding;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingContentConstraint;
 
 @end
 
-@implementation PageListTableViewCell
+@implementation PageListTableViewCell {
+    CGFloat _indentationWidth;
+    NSInteger _indentationLevel;
+}
 
 - (void)awakeFromNib
 {
@@ -36,25 +38,28 @@ static CGFloat const PageListTableViewCellLeading = 16.0;
     [self applyStyles];
 }
 
-- (void)layoutSubviews
+- (CGFloat)indentationWidth
 {
-    [super layoutSubviews];
-    
-    [self configurePageLevel];
-    
-    CGFloat indentPoints = self.indentationLevel * self.indentationWidth;
-    self.contentView.frame = CGRectMake(indentPoints,
-                                        self.contentView.frame.origin.y,
-                                        self.contentView.frame.size.width - indentPoints,
-                                        self.contentView.frame.size.height);
+    return _indentationWidth;
 }
 
-- (void)configureCell:(AbstractPost *)post forSearch:(BOOL)isSearching
+- (NSInteger)indentationLevel
 {
-    [super configureCell:post forSearch:isSearching];
-    
-    _isSearching = isSearching;
+    return _indentationLevel;
 }
+
+- (void)setIndentationWidth:(CGFloat)indentationWidth
+{
+    _indentationWidth = indentationWidth;
+    [self updateLeadingContentConstraint];
+}
+
+- (void)setIndentationLevel:(NSInteger)indentationLevel
+{
+    _indentationLevel = indentationLevel;
+    [self updateLeadingContentConstraint];
+}
+
 
 #pragma mark - Accessors
 
@@ -63,7 +68,6 @@ static CGFloat const PageListTableViewCellLeading = 16.0;
     [super setPost:post];
     [self configureTitle];
     [self configureForStatus];
-    [self configurePageLevel];
     [self configureBadges];
 }
 
@@ -101,13 +105,9 @@ static CGFloat const PageListTableViewCellLeading = 16.0;
     }
 }
 
-- (void)configurePageLevel
+- (void)updateLeadingContentConstraint
 {
-    Page *page = (Page *)self.post;
-
-    self.indentationWidth = _isSearching ? 0.0 : PageListTableViewCellLeading;
-    self.indentationLevel = page.hierarchyIndex;
-    self.indentationLevel = ![page.status isEqualToString: PostStatusPublish] ? 0 : page.hierarchyIndex;
+    self.leadingContentConstraint.constant = (CGFloat)_indentationLevel * _indentationWidth;
 }
 
 - (void)configureBadges
