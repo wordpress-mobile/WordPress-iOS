@@ -3,8 +3,7 @@
 #import "WordPress-Swift.h"
 
 
-static CGFloat const kWPTagLabelRadius = 2.0;
-static CGFloat const kWPCellLeading = 16.0;
+static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
 
 @interface PageListTableViewCell()
 
@@ -14,13 +13,16 @@ static CGFloat const kWPCellLeading = 16.0;
 @property (strong, nonatomic) IBOutlet UIView *privateBadge;
 @property (strong, nonatomic) IBOutlet UIView *localChangesBadge;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftPadding;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *localChangesLeading;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomPadding;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingContentConstraint;
 
 @end
 
-@implementation PageListTableViewCell
+@implementation PageListTableViewCell {
+    CGFloat _indentationWidth;
+    NSInteger _indentationLevel;
+}
 
 - (void)awakeFromNib
 {
@@ -36,6 +38,29 @@ static CGFloat const kWPCellLeading = 16.0;
     [self applyStyles];
 }
 
+- (CGFloat)indentationWidth
+{
+    return _indentationWidth;
+}
+
+- (NSInteger)indentationLevel
+{
+    return _indentationLevel;
+}
+
+- (void)setIndentationWidth:(CGFloat)indentationWidth
+{
+    _indentationWidth = indentationWidth;
+    [self updateLeadingContentConstraint];
+}
+
+- (void)setIndentationLevel:(NSInteger)indentationLevel
+{
+    _indentationLevel = indentationLevel;
+    [self updateLeadingContentConstraint];
+}
+
+
 #pragma mark - Accessors
 
 - (void)setPost:(AbstractPost *)post
@@ -43,7 +68,6 @@ static CGFloat const kWPCellLeading = 16.0;
     [super setPost:post];
     [self configureTitle];
     [self configureForStatus];
-    [self configurePageLevel];
     [self configureBadges];
 }
 
@@ -59,7 +83,7 @@ static CGFloat const kWPCellLeading = 16.0;
     self.privateBadgeLabel.text = NSLocalizedString(@"Private", @"Title of the Private Badge");
     self.localChangesLabel.text = NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge");
 
-    self.privateBadge.layer.cornerRadius = kWPTagLabelRadius;
+    self.privateBadge.layer.cornerRadius = PageListTableViewCellTagLabelRadius;
     self.localChangesBadge.layer.cornerRadius = self.privateBadge.layer.cornerRadius;
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
@@ -81,10 +105,9 @@ static CGFloat const kWPCellLeading = 16.0;
     }
 }
 
-- (void)configurePageLevel
+- (void)updateLeadingContentConstraint
 {
-    Page *page = (Page *)self.post;
-    self.leftPadding.constant = kWPCellLeading * page.hierarchyIndex;
+    self.leadingContentConstraint.constant = (CGFloat)_indentationLevel * _indentationWidth;
 }
 
 - (void)configureBadges
