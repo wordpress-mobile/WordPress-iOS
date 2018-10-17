@@ -12,8 +12,6 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get }
 }
 
-private let WIPwaypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour is under development"))]
-
 private struct Strings {
     static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
     static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
@@ -42,7 +40,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints = WIPwaypoints
+    let waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
 }
 
 struct QuickStartViewTour: QuickStartTour {
