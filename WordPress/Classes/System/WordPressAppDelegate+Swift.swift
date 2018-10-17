@@ -9,11 +9,6 @@ import React
 
 extension WordPressAppDelegate {
 
-    @objc func showGutenberg() {
-        let vc = GutenbergController(html: "")
-        self.window.rootViewController?.present(vc, animated: true, completion: nil)
-    }
-
     @objc func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
