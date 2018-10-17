@@ -3884,6 +3884,14 @@ extension AztecPostViewController: StockPhotosPickerDelegate {
     }
 }
 
+extension AztecPostViewController: GiphyPickerDelegate {
+    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
+        assets.forEach {
+            insert(exportableAsset: $0, source: .giphy)
+        }
+    }
+}
+
 // MARK: - Constants
 //
 extension AztecPostViewController {
