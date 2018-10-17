@@ -5,7 +5,6 @@ open class QuickStartTourGuide: NSObject {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
-    var readerNeedsBack = true
     static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
@@ -107,11 +106,6 @@ internal extension QuickStartTourGuide {
             return
         }
         currentTourState = nextStep
-
-        if !readerNeedsBack && currentElement() == .readerBack {
-            visited(.readerBack)
-            return
-        }
 
         showCurrentStep()
     }
