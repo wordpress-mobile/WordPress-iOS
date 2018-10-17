@@ -10,7 +10,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func stopObservingQuickStart() {
-        NotificationCenter.default.removeObserver(observer)
+        NotificationCenter.default.removeObserver(observer as Any)
     }
 
     @objc func startAlertTimer() {
