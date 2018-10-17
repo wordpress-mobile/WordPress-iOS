@@ -14,15 +14,6 @@ open class QuickStartTourGuide: NSObject {
         }
         return tourGuide
     }
-
-    // MARK: Quick Start methods
-    @objc func showTestQuickStartNotice() {
-        let exampleMessage = QuickStartChecklistTour().waypoints[0].description
-        let noticeStyle = QuickStartNoticeStyle(attributedMessage: exampleMessage)
-        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
-
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
 }
 
 /// The API
@@ -65,12 +56,9 @@ internal extension QuickStartTourGuide {
         case let tour as QuickStartFollowTour:
             tour.setupReaderTab()
             fallthrough
-        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour, is QuickStartPublishTour, is QuickStartShareTour:
+        default:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
-        default:
-            // this is the last use of showTestQuickStartNotice(), when it's gone delete that method
-            showTestQuickStartNotice()
         }
     }
 
