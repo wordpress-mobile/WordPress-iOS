@@ -8,7 +8,7 @@ guard CommandLine.arguments.count > 1 else {
 }
 
 func fix(file: String) throws {
-    var encoding = String.Encoding.utf16LittleEndian
+    var encoding = String.Encoding.utf8
     let contents = try String(contentsOfFile: file, usedEncoding: &encoding)
     let regexp = try NSRegularExpression(pattern: "^\"(.*)\" = \"\";$", options: [])
     var output = ""
