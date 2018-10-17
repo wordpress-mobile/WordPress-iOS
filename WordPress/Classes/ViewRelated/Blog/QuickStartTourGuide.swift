@@ -118,6 +118,8 @@ private extension QuickStartTourGuide {
 
     func completed(tourID: String, for blog: Blog) {
         blog.completeTour(tourID)
+
+        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
     }
 
     func showCurrentStep() {
@@ -202,6 +204,7 @@ public enum QuickStartTourElement: Int {
     case readerTab
     case readerBack
     case readerSearch
+    case tourCompleted
 }
 
 private struct TourState {
