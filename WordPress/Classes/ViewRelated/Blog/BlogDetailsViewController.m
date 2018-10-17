@@ -222,6 +222,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)dealloc
 {
+    [self stopObservingQuickStart];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -272,7 +273,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
-    
+    [self startObservingQuickStart];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1230,6 +1231,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
     [self showDetailViewController:controller sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementSharing];
 }
 
 - (void)showStats
@@ -1255,6 +1258,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
     [self.navigationController showDetailViewController:checklist sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
 }
 
 - (void)showActivity
@@ -1268,6 +1273,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
     [self showDetailViewController:viewController sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];
 }
 
 - (void)showMenus
