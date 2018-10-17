@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -152,16 +151,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="rFc-KI-K05">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="547"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="DaX-Id-Nby">
+                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="AEa-4M-1Cd" firstAttribute="top" secondItem="rFc-KI-K05" secondAttribute="bottom" id="B3g-Fs-lQX"/>
                             <constraint firstAttribute="trailing" secondItem="rFc-KI-K05" secondAttribute="trailing" id="BNx-y3-pCd"/>
+                            <constraint firstItem="rFc-KI-K05" firstAttribute="top" secondItem="DaX-Id-Nby" secondAttribute="bottom" id="G3L-26-jPU"/>
                             <constraint firstItem="rFc-KI-K05" firstAttribute="leading" secondItem="2DW-5s-50f" secondAttribute="leading" id="NDe-TA-NNm"/>
-                            <constraint firstItem="rFc-KI-K05" firstAttribute="top" secondItem="iSZ-D8-Et4" secondAttribute="bottom" id="d7s-nG-VHq"/>
+                            <constraint firstItem="DaX-Id-Nby" firstAttribute="top" secondItem="iSZ-D8-Et4" secondAttribute="bottom" id="YvY-Mq-wRk"/>
+                            <constraint firstItem="DaX-Id-Nby" firstAttribute="leading" secondItem="2DW-5s-50f" secondAttribute="leading" id="a1e-Zm-9xP"/>
+                            <constraint firstAttribute="trailing" secondItem="DaX-Id-Nby" secondAttribute="trailing" id="pDw-6f-r70"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fJK-CD-lVY">
@@ -179,12 +185,13 @@
                     <connections>
                         <outlet property="cancelButton" destination="vsX-CE-sq7" id="nQK-bh-bZX"/>
                         <outlet property="doneButton" destination="Ybc-8A-PTe" id="dxy-DZ-9VV"/>
+                        <outlet property="searchBar" destination="DaX-Id-Nby" id="3r8-LD-SOe"/>
                         <outlet property="tableView" destination="rFc-KI-K05" id="BE5-XQ-QGl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nzq-xn-wGe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1242" y="1048"/>
+            <point key="canvasLocation" x="1240.8" y="1047.5262368815593"/>
         </scene>
     </scenes>
     <resources>
