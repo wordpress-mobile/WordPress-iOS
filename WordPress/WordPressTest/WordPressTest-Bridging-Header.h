@@ -6,3 +6,5 @@
 #import "TestContextManager.h"
 #import "TestingAppDelegate.h"
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "RCTAztecViewManager.h"
+#import <React/RCTViewManager.h>

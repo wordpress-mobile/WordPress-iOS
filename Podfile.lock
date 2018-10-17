@@ -146,10 +146,6 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
-  - RNAztec (0.0.2):
-    - React
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
   - RNSVG (6.5.2):
     - React
   - Starscream (3.0.4)
@@ -233,7 +229,6 @@ DEPENDENCIES:
   - React/RCTNetwork (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNAztec (from `../react-native-aztec/RNAztec.podspec`)
   - RNSVG (from `../node_modules/react-native-svg/RNSVG.podspec`)
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
@@ -299,8 +294,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
-  RNAztec:
-    :podspec: "../react-native-aztec/RNAztec.podspec"
   RNSVG:
     :podspec: "../node_modules/react-native-svg/RNSVG.podspec"
   yoga:
@@ -310,9 +303,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  RNAztec:
-    :commit: 1576895f26e82bb504f6cb9f330b0b60f6679482
-    :git: https://github.com/wordpress-mobile/react-native-aztec.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -344,7 +334,6 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
-  RNAztec: bbc7b72e24b6a5f1b4405505abcd24fecd9e6d30
   RNSVG: 3c037ade1c42014de732e27e3879bf2b77ea78ea
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -360,6 +349,6 @@ SPEC CHECKSUMS:
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 5ed3580b8906edc60876739551f36f00e6a0edcc
+PODFILE CHECKSUM: 89ef38468088e21fa5a83ef1152fc1cad7ad5ec9
 
 COCOAPODS: 1.5.3

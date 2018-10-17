@@ -575,6 +575,11 @@
 		7E3E7A6220E44E6A0075D159 /* BodyContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */; };
 		7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
 		7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
+		7E3E9B652177A49C00FD5797 /* RCTAztecViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B612177A49C00FD5797 /* RCTAztecViewManager.m */; };
+		7E3E9B662177A49C00FD5797 /* RCTAztecViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B632177A49C00FD5797 /* RCTAztecViewManager.swift */; };
+		7E3E9B672177A49C00FD5797 /* RCTAztecView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */; };
+		7E3E9B6B2177C66B00FD5797 /* BridgeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */; };
+		7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -2211,6 +2216,12 @@
 		7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContentGroup.swift; sourceTree = "<group>"; };
+		7E3E9B612177A49C00FD5797 /* RCTAztecViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTAztecViewManager.m; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.m"; sourceTree = "<group>"; };
+		7E3E9B622177A49C00FD5797 /* RCTAztecViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTAztecViewManager.h; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.h"; sourceTree = "<group>"; };
+		7E3E9B632177A49C00FD5797 /* RCTAztecViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecViewManager.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.swift"; sourceTree = "<group>"; };
+		7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecView.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecView.swift"; sourceTree = "<group>"; };
+		7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BridgeDelegate.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/BridgeDelegate.swift"; sourceTree = "<group>"; };
+		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaProvider.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/MediaProvider.swift"; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -3838,6 +3849,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				7E3E9B5F2177A44400FD5797 /* RN */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
@@ -4794,6 +4806,27 @@
 				7E3E7A5220E44B260075D159 /* SubjectContentStyles.swift */,
 			);
 			path = Styles;
+			sourceTree = "<group>";
+		};
+		7E3E9B5F2177A44400FD5797 /* RN */ = {
+			isa = PBXGroup;
+			children = (
+				7E3E9B602177A44E00FD5797 /* RNAztec */,
+			);
+			path = RN;
+			sourceTree = "<group>";
+		};
+		7E3E9B602177A44E00FD5797 /* RNAztec */ = {
+			isa = PBXGroup;
+			children = (
+				7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */,
+				7E3E9B622177A49C00FD5797 /* RCTAztecViewManager.h */,
+				7E3E9B612177A49C00FD5797 /* RCTAztecViewManager.m */,
+				7E3E9B632177A49C00FD5797 /* RCTAztecViewManager.swift */,
+				7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */,
+				7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */,
+			);
+			path = RNAztec;
 			sourceTree = "<group>";
 		};
 		7E4123AB20F4096200DF8486 /* FormattableContent */ = {
@@ -7776,7 +7809,6 @@
 				"${BUILT_PRODUCTS_DIR}/MRProgress/MRProgress.framework",
 				"${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework",
 				"${BUILT_PRODUCTS_DIR}/NSURL+IDN/NSURL_IDN.framework",
-				"${BUILT_PRODUCTS_DIR}/RNAztec/RNAztec.framework",
 				"${BUILT_PRODUCTS_DIR}/RNSVG/RNSVG.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
@@ -7817,7 +7849,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MRProgress.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_SafeExpectations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSURL_IDN.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNAztec.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNSVG.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
@@ -8206,6 +8237,7 @@
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
 				17BD4A0820F76A4700975AC3 /* Routes+Banners.swift in Sources */,
+				7E3E9B652177A49C00FD5797 /* RCTAztecViewManager.m in Sources */,
 				1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */,
 				4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
@@ -8315,6 +8347,7 @@
 				17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */,
 				1715179220F4B2EB002C4A38 /* Routes+Stats.swift in Sources */,
 				74729CAA2057100200D1394D /* SearchIdentifierGenerator.swift in Sources */,
+				7E3E9B6B2177C66B00FD5797 /* BridgeDelegate.swift in Sources */,
 				B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */,
 				433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */,
 				D800D86E2099857000E7C7E5 /* SearchMenuItemCreator.swift in Sources */,
@@ -8335,6 +8368,7 @@
 				FF54D4641D6F3FA900A0DC4D /* EditorSettings.swift in Sources */,
 				D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */,
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
+				7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */,
 				FFD12D5E1FE1998D00F20A00 /* Progress+Helpers.swift in Sources */,
 				170CE7402064478600A48191 /* PostNoticeNavigationCoordinator.swift in Sources */,
 				740516892087B73400252FD0 /* SearchableActivityConvertable.swift in Sources */,
@@ -8483,6 +8517,7 @@
 				D858F30320E201F4007E8A1C /* EditComment.swift in Sources */,
 				B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
+				7E3E9B672177A49C00FD5797 /* RCTAztecView.swift in Sources */,
 				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
@@ -8809,6 +8844,7 @@
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
 				D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */,
 				98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */,
+				7E3E9B662177A49C00FD5797 /* RCTAztecViewManager.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				177B4C2B2123185300CF8084 /* GiphyMediaGroup.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
