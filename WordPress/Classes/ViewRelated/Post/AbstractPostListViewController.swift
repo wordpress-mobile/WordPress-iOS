@@ -48,6 +48,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return postTypeToSync() == .page ? 0 : Int(numberOfPostsPerSync())
     }
 
+    private var numberOfLoadedElement: NSNumber {
+        return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesFetchRequestBatchSize) : NSNumber(value: numberOfPostsPerSync())
+    }
+
     @objc var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
@@ -678,7 +682,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = (postType == .page) ? 100 : numberOfPostsPerSync() as NSNumber?
+        options.number = numberOfLoadedElement
         options.purgesLocalSync = true
 
         postService.syncPosts(
@@ -730,7 +734,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = (postType == .page) ? 100 : numberOfPostsPerSync() as NSNumber?
+        options.number = numberOfLoadedElement
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
