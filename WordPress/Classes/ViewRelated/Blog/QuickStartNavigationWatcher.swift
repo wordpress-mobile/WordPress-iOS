@@ -20,15 +20,12 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
             tourGuide.visited(.sharing)
         case is ReaderMenuViewController:
             tourGuide.visited(.readerBack)
-            tourGuide.readerNeedsBack = false
             removeReaderSpotlight()
         case is ReaderSearchViewController:
             tourGuide.visited(.readerSearch)
             fallthrough
         case is ReaderStreamViewController, is ReaderSavedPostsViewController:
             readerNav = navigationController
-
-            tourGuide.readerNeedsBack = true
             checkToSpotlightReader()
         default:
             break
