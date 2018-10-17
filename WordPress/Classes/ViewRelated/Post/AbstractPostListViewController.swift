@@ -29,16 +29,24 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
-
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)
     fileprivate static let postsFetchRequestBatchSize = Int(10)
+    fileprivate static let pagesFetchRequestBatchSize = Int(100)
     fileprivate static let postsLoadMoreThreshold = Int(4)
     fileprivate static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
 
     fileprivate static let defaultHeightForFooterView = CGFloat(44.0)
 
     fileprivate let abstractPostWindowlessCellIdenfitier = "AbstractPostWindowlessCellIdenfitier"
+
+    private var fetchBatchSize: Int {
+        return postTypeToSync() == .page ? type(of: self).pagesFetchRequestBatchSize : type(of: self).postsFetchRequestBatchSize
+    }
+
+    private var fetchLimit: Int {
+        return postTypeToSync() == .page ? 0 : Int(numberOfPostsPerSync())
+    }
 
     @objc var blog: Blog!
 
@@ -448,13 +456,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        let postType = postTypeToSync()
-
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
-        fetchRequest.fetchBatchSize = postType == .page ? 100 : type(of: self).postsFetchRequestBatchSize
-        fetchRequest.fetchLimit = postType == .page ? 0 : Int(numberOfPostsPerSync())
+        fetchRequest.fetchBatchSize = fetchBatchSize
+        fetchRequest.fetchLimit = fetchLimit
         return fetchRequest
     }
 
@@ -487,8 +493,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             fetchRequest.fetchLimit = 0
         } else {
             // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
-            let postType = postTypeToSync()
-            fetchRequest.fetchLimit = postType == .page ? 0 : Int(numberOfPostsPerSync())
+            fetchRequest.fetchLimit = fetchLimit
         }
 
         fetchRequest.predicate = predicate
@@ -558,12 +563,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
-        let postType = postTypeToSync()
-
         // Are we approaching the end of the table?
         if indexPath.section + 1 == tableView.numberOfSections
             && indexPath.row + type(of: self).postsLoadMoreThreshold >= tableView.numberOfRows(inSection: indexPath.section)
-            && postType == .post {
+            && postTypeToSync() == .post {
             // Only 3 rows till the end of table
             if filterSettings.currentPostListFilter().hasMore {
                 syncHelper.syncMoreContent()
