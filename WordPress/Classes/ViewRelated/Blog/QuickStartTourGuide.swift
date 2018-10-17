@@ -192,6 +192,7 @@ private extension QuickStartTourGuide {
         }
 
         presenter.dismissCurrentNotice()
+        ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }
 }
