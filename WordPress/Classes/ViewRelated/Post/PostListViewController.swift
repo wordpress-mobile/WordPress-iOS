@@ -334,7 +334,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        editPost(apost: post)
+//        editPost(apost: post)
+        showGutenberg(with: post)
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -401,6 +402,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.updateFilterWithPostStatus(.draft)
         })
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
+    }
+
+    func showGutenberg(with apost: AbstractPost) {
+        guard let post = apost as? Post else {
+            return
+        }
+        let gutenberg = GutenbergController(html: post.content ?? "")
+        let navigation = UINavigationController(rootViewController: gutenberg)
+        present(navigation, animated: true, completion: nil)
     }
 
     private func editPost(apost: AbstractPost) {
