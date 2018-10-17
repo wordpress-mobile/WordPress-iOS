@@ -90,6 +90,7 @@ target 'WordPress' do
     pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
     pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
     pod 'RNSVG', :podspec => '../node_modules/react-native-svg/RNSVG.podspec'
+    pod 'RNAztec', :podspec => '../react-native-aztec/RNAztec.podspec'
 
     ## Third party libraries
     ## =====================
