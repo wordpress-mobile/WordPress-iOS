@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,21 +20,7 @@
                     <view key="view" contentMode="scaleToFill" id="nFH-eq-cvg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2H-rP-0mh">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
-                                <connections>
-                                    <segue destination="ojY-lw-Nq8" kind="embed" id="HkI-vX-JZt"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="n2H-rP-0mh" firstAttribute="leading" secondItem="nFH-eq-cvg" secondAttribute="leading" id="Cvv-ls-4WN"/>
-                            <constraint firstAttribute="trailing" secondItem="n2H-rP-0mh" secondAttribute="trailing" id="FBj-uE-3SV"/>
-                            <constraint firstItem="n2H-rP-0mh" firstAttribute="top" secondItem="Pyc-Kx-lnt" secondAttribute="bottom" id="KUX-1E-nEH"/>
-                            <constraint firstItem="icf-FG-h6u" firstAttribute="top" secondItem="n2H-rP-0mh" secondAttribute="bottom" id="T9p-L4-71W"/>
-                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Reader" id="3YL-eA-YLl">
@@ -529,28 +514,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cfm-tk-192" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="687" y="1811"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="Xc2-1X-rOR">
-            <objects>
-                <tableViewController id="ojY-lw-Nq8" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8GD-qV-397">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <connections>
-                            <outlet property="dataSource" destination="ojY-lw-Nq8" id="6Fm-hZ-zEP"/>
-                            <outlet property="delegate" destination="ojY-lw-Nq8" id="W3n-bb-rFj"/>
-                        </connections>
-                    </tableView>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="1cY-Qf-N9S">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </refreshControl>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ch4-jL-nh9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1368" y="470"/>
         </scene>
         <!--Reader Search View Controller-->
         <scene sceneID="Y2l-5f-pGm">
