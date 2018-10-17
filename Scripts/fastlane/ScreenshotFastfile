@@ -34,10 +34,10 @@ platform :ios do
       "fr-FR" => {},
       "id" => {},
       "it" => {},
-      "ja" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
+      "ja" => {font: "/Library/Fonts/Arial Unicode.ttf"},
       "ko" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
-      "no" => {},
       "nl-NL" => {},
+      "no" => {},
       "pt-BR" => {},
       "pt-PT" => {},
       "ru" => {},
@@ -50,7 +50,7 @@ platform :ios do
 
     config_data = [
       {device: "iPhone 8 Plus", template: "./fastlane/appstoreres/assets/ios-phone-5-5-template.png", comp_size: "924x1640", comp_offset: "+161+568"},
-      {device: "iPhone X", template: "./fastlane/appstoreres/assets/ios-phone-5-8-template.png", comp_size: "833x1803", comp_offset: "+146+632", text_offset: 90},
+      {device: "iPhone XS Max", template: "./fastlane/appstoreres/assets/ios-phone-5-65-template.png", top_template: "./fastlane/appstoreres/assets/ios-phone-notch.png", comp_size: "932x2017", comp_offset: "+155+671", text_offset: 130},
       {device: "iPad Pro (12.9-inch)", template: "./fastlane/appstoreres/assets/ios-tab12-landscape-template.png", comp_size: "2298x1723", comp_offset: "+221+322", text_offset: 20, text_adj: 80}
     ]
 
