@@ -9,18 +9,8 @@ import React
 
 extension WordPressAppDelegate {
 
-    var bridgeDelegate: BridgeDelegate {
-        let sourceURL = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index", fallbackResource: nil)!
-
-        return BridgeDelegate(sourceURL: sourceURL, mediaProvider: MediaProvider())
-    }
-
     @objc func showGutenberg() {
-        let bridge = RCTBridge(delegate: bridgeDelegate, launchOptions: nil)
-        let rootView = RCTRootView(bridge: bridge, moduleName: "gutenberg", initialProperties: nil)
-
-        let vc = UIViewController()
-        vc.view = rootView
+        let vc = GutenbergController(html: "")
         self.window.rootViewController?.present(vc, animated: true, completion: nil)
     }
 

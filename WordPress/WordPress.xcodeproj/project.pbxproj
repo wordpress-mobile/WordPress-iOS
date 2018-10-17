@@ -580,6 +580,7 @@
 		7E3E9B672177A49C00FD5797 /* RCTAztecView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */; };
 		7E3E9B6B2177C66B00FD5797 /* BridgeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */; };
 		7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */; };
+		7E3E9B702177C9DC00FD5797 /* Gutenberg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* Gutenberg.swift */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -2222,6 +2223,7 @@
 		7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecView.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecView.swift"; sourceTree = "<group>"; };
 		7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BridgeDelegate.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/BridgeDelegate.swift"; sourceTree = "<group>"; };
 		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaProvider.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/MediaProvider.swift"; sourceTree = "<group>"; };
+		7E3E9B6F2177C9DC00FD5797 /* Gutenberg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gutenberg.swift; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -4811,6 +4813,7 @@
 		7E3E9B5F2177A44400FD5797 /* RN */ = {
 			isa = PBXGroup;
 			children = (
+				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
 				7E3E9B602177A44E00FD5797 /* RNAztec */,
 			);
 			path = RN;
@@ -4827,6 +4830,14 @@
 				7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */,
 			);
 			path = RNAztec;
+			sourceTree = "<group>";
+		};
+		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
+			isa = PBXGroup;
+			children = (
+				7E3E9B6F2177C9DC00FD5797 /* Gutenberg.swift */,
+			);
+			path = Gutenberg;
 			sourceTree = "<group>";
 		};
 		7E4123AB20F4096200DF8486 /* FormattableContent */ = {
@@ -8526,6 +8537,7 @@
 				43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */,
 				1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
+				7E3E9B702177C9DC00FD5797 /* Gutenberg.swift in Sources */,
 				FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,
