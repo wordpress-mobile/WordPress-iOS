@@ -593,6 +593,7 @@ import WordPressShared
 
         if menuItem.type == .search {
             currentReaderStream = nil
+            QuickStartTourGuide.find()?.visited(.readerSearch)
             return viewControllerForSearch()
         }
 

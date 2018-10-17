@@ -9,22 +9,13 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
         }
 
         switch viewController {
-        case is QuickStartChecklistViewController:
-            tourGuide.visited(.checklist)
         case is BlogListViewController:
             tourGuide.visited(.noSuchElement)
             tourGuide.endCurrentTour()
-        case is ThemeBrowserViewController:
-            tourGuide.visited(.themes)
-        case is SharingViewController:
-            tourGuide.visited(.sharing)
         case is ReaderMenuViewController:
             tourGuide.visited(.readerBack)
             removeReaderSpotlight()
-        case is ReaderSearchViewController:
-            tourGuide.visited(.readerSearch)
-            fallthrough
-        case is ReaderStreamViewController, is ReaderSavedPostsViewController:
+        case is ReaderSearchViewController, is ReaderStreamViewController, is ReaderSavedPostsViewController:
             readerNav = navigationController
             checkToSpotlightReader()
         default:
