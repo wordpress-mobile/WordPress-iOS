@@ -83,12 +83,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
-            assertionFailure()
-            return
-        }
-
-        footerView = footer
+        footerView = tableConfiguration.footer()
         footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView

@@ -3,7 +3,7 @@
 
 # A list of devices you want to take the screenshots from
 devices([
-  "iPhone X",
+  "iPhone XS Max",
   "iPhone 8 Plus",
   "iPad Pro (12.9-inch)"
 ])
@@ -23,6 +23,8 @@ workspace "../../WordPress.xcworkspace"
 reinstall_app true
 erase_simulator true
 localize_simulator true
+concurrent_simulators false
+clear_previous_screenshots true
 
 # By default, the latest version should be used automatically. If you want to change it, do it here
 # ios_version '8.1'
