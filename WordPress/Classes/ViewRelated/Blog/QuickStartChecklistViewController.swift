@@ -33,6 +33,8 @@ class QuickStartChecklistViewController: UITableViewController {
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
+        let completedCellNib = UINib(nibName: "QuickStartChecklistCompletedCell", bundle: Bundle(for: QuickStartChecklistCompletedCell.self))
+        tableView.register(completedCellNib, forCellReuseIdentifier: QuickStartChecklistCompletedCell.reuseIdentifier)
 
         guard let blog = blog else {
             return
@@ -124,8 +126,14 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard indexPath.row > 0 else {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCompletedCell.reuseIdentifier) as? QuickStartChecklistCompletedCell {
+                return cell
+            }
+            return UITableViewCell()
+        }
         if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
-            let tour = QuickStartTourGuide.checklistTours[indexPath.row]
+            let tour = QuickStartTourGuide.checklistTours[indexPath.row - 1]
             cell.tour = tour
             if isCompleted(tour: tour) {
                 cell.completed = true
