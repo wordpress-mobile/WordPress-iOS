@@ -294,7 +294,7 @@ private extension NoResultsViewController {
 
     func setAccessoryViewsVisibility() {
 
-        if hideImage == true {
+        if hideImage {
             accessoryStackView.isHidden = true
             return
         }
