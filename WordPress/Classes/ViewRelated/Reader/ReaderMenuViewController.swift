@@ -563,6 +563,10 @@ import WordPressShared
             return
         }
 
+        if menuItem.type == .search {
+            QuickStartTourGuide.find()?.visited(.readerSearch)
+        }
+
         if menuItem.type == .addItem {
             tableView.deselectSelectedRowWithAnimation(true)
             showAddTag()
@@ -593,7 +597,6 @@ import WordPressShared
 
         if menuItem.type == .search {
             currentReaderStream = nil
-            QuickStartTourGuide.find()?.visited(.readerSearch)
             return viewControllerForSearch()
         }
 

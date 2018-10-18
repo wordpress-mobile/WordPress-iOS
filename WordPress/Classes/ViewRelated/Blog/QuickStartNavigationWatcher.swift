@@ -23,6 +23,14 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
         }
     }
 
+    func shouldSkipReaderBack() -> Bool {
+        guard let readerNav = readerNav else {
+            return false
+        }
+
+        return !readerNav.hasHorizontallyCompactView()
+    }
+
     private func checkToSpotlightReader() {
         guard let tourGuide = QuickStartTourGuide.find(),
             tourGuide.isCurrentElement(.readerBack) else {
