@@ -546,11 +546,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     if ([self shouldShowQuickStartChecklist]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
-                                                        image:[Gridicon iconOfType:GridiconTypeListCheckmark]
-                                                     callback:^{
-                                                         [weakSelf showQuickStart];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+                                                              image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                           callback:^{
+                                                               [weakSelf showQuickStart];
+                                                           }];
+        row.quickStartIdentifier = QuickStartTourElementChecklist;
+        [rows addObject:row];
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
