@@ -7,7 +7,7 @@
 
 ### Download Xcode
 
-At the moment *WordPress for iOS requires Swift 4.0 and Xcode 9.3 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+At the moment *WordPress for iOS* uses Swift 4.2 and requires Xcode 10 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
 
 ### Third party tools
 
