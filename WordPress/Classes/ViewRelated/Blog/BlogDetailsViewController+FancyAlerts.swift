@@ -1,6 +1,17 @@
 private var alertWorkItem: DispatchWorkItem?
+private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
+    @objc func startObservingQuickStart() {
+        observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.configureTableViewData()
+            self?.reloadTableViewPreservingSelection()
+        }
+    }
+
+    @objc func stopObservingQuickStart() {
+        NotificationCenter.default.removeObserver(observer as Any)
+    }
 
     @objc func startAlertTimer() {
         let newWorkItem = DispatchWorkItem { [weak self] in
