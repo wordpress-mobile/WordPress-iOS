@@ -38,7 +38,11 @@ internal extension QuickStartTourGuide {
             return nil
         }
 
-        // TODO: this is where the checklist tour will be added
+        // the last tour we suggest is the one to look at the checklist
+        if skippedTours.count == Constants.maxSkippedTours - 1 {
+            return QuickStartChecklistTour()
+        }
+
         let allTours = QuickStartTourGuide.checklistTours
 
         let unavailableIDs = unavailableTours.map { $0.tourID }
