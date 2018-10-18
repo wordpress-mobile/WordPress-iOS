@@ -93,18 +93,28 @@ final class InteractiveNotificationsManager: NSObject {
             return false
         }
 
+        var event: WPAnalyticsStat? = nil
         switch action {
         case .commentApprove:
+            event = .notificationsCommentApproved
             approveCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .commentLike:
+            event = .notificationsCommentLiked
             likeCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .commentReply:
             if let responseText = responseText {
+                event = .notificationsCommentRepliedTo
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
                 DDLogError("Tried to reply to a comment notification with no text")
             }
-        default: break
+        default:
+            break
+        }
+
+        if let actionEvent = event {
+            let actionAnalyticsProperties = [ "is_quick_action": true ]
+            WPAppAnalytics.track(actionEvent, withProperties: actionAnalyticsProperties)
         }
 
         return true
