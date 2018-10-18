@@ -41,6 +41,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 - (void)showMySitesTab;
 - (void)showReaderTab;
+- (void)resetReaderTab;
 - (void)showPostTab;
 - (void)showPostTabWithCompletion:(void (^)(void))afterDismiss;
 - (void)showPostTabForBlog:(Blog *)blog;
