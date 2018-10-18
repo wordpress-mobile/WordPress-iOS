@@ -45,19 +45,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    @objc private lazy var _syncHelper: PageContentSyncHelper = {
-        let syncHelper = PageContentSyncHelper()
-        syncHelper.delegate = self
-        return syncHelper
-    }()
-
-    override var syncHelper: WPContentSyncHelper {
-        get {
-            return _syncHelper
-        } set {
-            super.syncHelper = newValue
-        }
-    }
 
     // MARK: - GUI
 
@@ -280,6 +267,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                                                         width: tableView.frame.width,
                                                         height: max(tableView.frame.height, tableView.contentSize.height))
             tableView.bringSubviewToFront(noResultsViewController.view)
+        }
+    }
+
+    override func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
+        guard syncHelper.hasMoreContent else {
+            super.syncContentEnded(syncHelper)
+            return
         }
     }
 

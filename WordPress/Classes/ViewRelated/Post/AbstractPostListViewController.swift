@@ -32,7 +32,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)
     fileprivate static let postsFetchRequestBatchSize = Int(10)
-    fileprivate static let pagesFetchRequestBatchSize = Int(100)
+    fileprivate static let pagesNumberOfLoadedElement = Int(100)
     fileprivate static let postsLoadMoreThreshold = Int(4)
     fileprivate static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
 
@@ -41,7 +41,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     fileprivate let abstractPostWindowlessCellIdenfitier = "AbstractPostWindowlessCellIdenfitier"
 
     private var fetchBatchSize: Int {
-        return postTypeToSync() == .page ? type(of: self).pagesFetchRequestBatchSize : type(of: self).postsFetchRequestBatchSize
+        return postTypeToSync() == .page ? 0 : type(of: self).postsFetchRequestBatchSize
     }
 
     private var fetchLimit: Int {
@@ -49,7 +49,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     private var numberOfLoadedElement: NSNumber {
-        return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesFetchRequestBatchSize) : NSNumber(value: numberOfPostsPerSync())
+        return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 
     @objc var blog: Blog!
