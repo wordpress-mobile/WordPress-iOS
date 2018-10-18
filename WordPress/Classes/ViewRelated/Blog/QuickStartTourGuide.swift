@@ -138,6 +138,11 @@ internal extension QuickStartTourGuide {
         }
         currentTourState = nextStep
 
+        if currentElement() == .readerBack && navigationWatcher.shouldSkipReaderBack() {
+            visited(.readerBack)
+            return
+        }
+
         showCurrentStep()
     }
 
