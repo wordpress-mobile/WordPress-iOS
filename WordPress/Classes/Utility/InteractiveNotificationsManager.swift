@@ -3,6 +3,7 @@ import CocoaLumberjack
 import UserNotifications
 import WordPressFlux
 
+// MARK: - InteractiveNotificationsManager
 
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
 /// UNNotificationAction instantiation, along with the required handlers.
@@ -93,17 +94,17 @@ final class InteractiveNotificationsManager: NSObject {
             return false
         }
 
-        var event: WPAnalyticsStat? = nil
+        var legacyAnalyticsEvent: WPAnalyticsStat? = nil
         switch action {
         case .commentApprove:
-            event = .notificationsCommentApproved
+            legacyAnalyticsEvent = .notificationsCommentApproved
             approveCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .commentLike:
-            event = .notificationsCommentLiked
+            legacyAnalyticsEvent = .notificationsCommentLiked
             likeCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .commentReply:
             if let responseText = responseText {
-                event = .notificationsCommentRepliedTo
+                legacyAnalyticsEvent = .notificationsCommentRepliedTo
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
                 DDLogError("Tried to reply to a comment notification with no text")
@@ -112,9 +113,12 @@ final class InteractiveNotificationsManager: NSObject {
             break
         }
 
-        if let actionEvent = event {
-            let actionAnalyticsProperties = [ "is_quick_action": true ]
-            WPAppAnalytics.track(actionEvent, withProperties: actionAnalyticsProperties)
+        if let actionEvent = legacyAnalyticsEvent {
+            let modernEventProperties = [ "quick_action": action.quickActionName ]
+            WPAppAnalytics.track(.pushNotificationQuickActionCompleted, withProperties: modernEventProperties)
+
+            let legacyEventProperties = [ "is_quick_action": true ]
+            WPAppAnalytics.track(actionEvent, withProperties: legacyEventProperties)
         }
 
         return true
@@ -401,6 +405,23 @@ private extension InteractiveNotificationsManager {
                                                      textInputPlaceholder: NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view"))
             default:
                 return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)
+            }
+        }
+
+
+        /// Quick action analytics support. Returns either a quick action name (if defined) or an empty string.
+        /// NB: This maintains parity with Android.
+        ///
+        var quickActionName: String {
+            switch self {
+            case .commentApprove:
+                return "approve"
+            case .commentLike:
+                return "like"
+            case .commentReply:
+                return "reply-to"
+            default:
+                return ""
             }
         }
 
