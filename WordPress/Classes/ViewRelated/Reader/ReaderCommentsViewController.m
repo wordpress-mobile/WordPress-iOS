@@ -51,11 +51,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
+@property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
-@property (nonatomic, strong) NSCache *estimatedRowHeights;
+@property (nonatomic) BOOL deviceIsRotating;
 
 @end
 
@@ -181,8 +182,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    self.deviceIsRotating = true;
 
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        self.deviceIsRotating = false;
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
         if (selectedIndexPath) {
@@ -652,6 +655,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshNoResultsView
 {
+    // During rotation, the keyboard hides and shows.
+    // To prevent view flashing, do nothing until rotation is finished.
+    if (self.deviceIsRotating) {
+        return;
+    }
+
     [self.noResultsViewController removeFromView];
 
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
@@ -659,6 +668,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
+    // Because the replyTextView grows, limit what is displayed with the keyboard visible:
+    // iPhone landscape: show nothing.
+    // iPhone portrait: hide the image.
+    // iPad landscape: hide the image.
+    
+    BOOL isLandscape = UIDevice.currentDevice.orientation != UIDeviceOrientationPortrait;
+    BOOL hideImageView = false;
+    if (self.keyboardManager.isKeyboardVisible) {
+
+        if (WPDeviceIdentification.isiPhone && isLandscape) {
+            return;
+        }
+        
+        hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
+    }
+    
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
                                          buttonTitle:nil
                                             subtitle:nil
@@ -666,14 +691,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                image:nil
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
-    
+
+    [self.noResultsViewController hideImageView:hideImageView];
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
     self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
-
 
 - (void)updateTableViewForAttachments
 {
