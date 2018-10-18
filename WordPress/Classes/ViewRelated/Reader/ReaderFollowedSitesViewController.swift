@@ -15,9 +15,10 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     fileprivate var tableView: UITableView!
     fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var tableViewController: UITableViewController!
-
     fileprivate let cellIdentifier = "CellIdentifier"
 
+    private var currentKeyboardHeight: CGFloat = 0
+    private var deviceIsRotating = false
     private let noResultsViewController = NoResultsViewController.controller()
 
     /// Convenience method for instantiating an instance of ReaderFollowedSitesViewController
@@ -61,6 +62,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
+        setupBackgroundTapGestureRecognizer()
         noResultsViewController.delegate = self
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
@@ -72,6 +74,20 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         syncSites()
         configureNoResultsView()
+        startListeningToNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToNotifications()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        deviceIsRotating = true
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+            self.deviceIsRotating = false
+        })
     }
 
 
@@ -117,6 +133,36 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
     }
+
+    func setupBackgroundTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer()
+        gestureRecognizer.on(call: { [weak self] (gesture) in
+            self?.view.endEditing(true)
+        })
+        gestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(gestureRecognizer)
+    }
+
+
+    // MARK: - Keyboard Handling
+
+
+    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo as? [String: AnyObject],
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            else {
+                return
+        }
+
+        currentKeyboardHeight = keyboardFrame.height
+        configureNoResultsView()
+    }
+
+    @objc func keyboardWillHide(_ notification: Foundation.Notification) {
+        currentKeyboardHeight = 0
+        configureNoResultsView()
+    }
+
 
     // MARK: - Instance Methods
 
@@ -265,6 +311,12 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 private extension ReaderFollowedSitesViewController {
 
     func configureNoResultsView() {
+        // During rotation, the keyboard hides and shows.
+        // To prevent view flashing, do nothing until rotation is finished.
+        if deviceIsRotating == true {
+            return
+        }
+
         noResultsViewController.removeFromView()
 
         if let count = tableViewHandler.resultsController.fetchedObjects?.count, count > 0 {
@@ -277,6 +329,16 @@ private extension ReaderFollowedSitesViewController {
             noResultsViewController.configure(title: NoResultsText.noResultsTitle,
                                               buttonTitle: NoResultsText.buttonTitle,
                                               subtitle: NoResultsText.noResultsMessage)
+
+            // Due to limited space when the keyboard is visible,
+            // hide the image on iPhone and iPad landscape.
+            var hideImageView = false
+            if currentKeyboardHeight > 0 {
+                hideImageView = WPDeviceIdentification.isiPhone() ||
+                                (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isLandscape)
+            }
+
+            noResultsViewController.hideImageView(hideImageView)
         }
 
         showNoResultView()
@@ -286,6 +348,11 @@ private extension ReaderFollowedSitesViewController {
         tableViewController.addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.frame = tableView.frame
+
+        if currentKeyboardHeight > 0 {
+            noResultsViewController.view.frame.size.height -= (currentKeyboardHeight - searchBar.frame.height)
+        }
+
         noResultsViewController.didMove(toParent: tableViewController)
     }
 
@@ -302,6 +369,18 @@ private extension ReaderFollowedSitesViewController {
         static let noResultsMessage = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
         static let buttonTitle = NSLocalizedString("Discover Sites", comment: "Button title. Tapping takes the user to the Discover sites list.")
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
+    }
+
+    func startListeningToNotifications() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    func stopListeningToNotifications() {
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
 }
