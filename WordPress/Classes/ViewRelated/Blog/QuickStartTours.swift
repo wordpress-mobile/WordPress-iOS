@@ -12,8 +12,6 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get }
 }
 
-private let WIPwaypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour is under development"))]
-
 private struct Strings {
     static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
     static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
@@ -42,7 +40,7 @@ struct QuickStartCreateTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints = WIPwaypoints
+    let waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
 }
 
 struct QuickStartViewTour: QuickStartTour {
@@ -104,7 +102,17 @@ struct QuickStartShareTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints = WIPwaypoints
+    var waypoints: [WayPoint] = {
+        let step1DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let step1DescriptionTarget = NSLocalizedString("Sharing", comment: "The menu item to tap during a guided tour.")
+        let step1: WayPoint = (element: .sharing, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: Gridicon.iconOfType(.share)))
+
+        let step2DescriptionBase = NSLocalizedString("Tap the %@ to add your social media accounts", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let step2DescriptionTarget = NSLocalizedString("connections", comment: "The menu item to tap during a guided tour.")
+        let step2: WayPoint = (element: .connections, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: nil))
+
+        return [step1, step2]
+    }()
 }
 
 struct QuickStartPublishTour: QuickStartTour {
@@ -115,7 +123,10 @@ struct QuickStartPublishTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints = WIPwaypoints
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Tap %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: Gridicon.iconOfType(.create)))]
+    }()
 }
 
 struct QuickStartFollowTour: QuickStartTour {
@@ -126,11 +137,33 @@ struct QuickStartFollowTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints = WIPwaypoints
+    var waypoints: [WayPoint] = {
+        let step1DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let step1DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to tap during a guided tour.")
+        let step1: WayPoint = (element: .readerTab, description: step1DescriptionBase.highlighting(phrase: step1DescriptionTarget, icon: Gridicon.iconOfType(.reader)))
+
+        let step2DescriptionBase = NSLocalizedString("Tap %@ to continue", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let step2DescriptionTarget = NSLocalizedString("Reader", comment: "The menu item to tap during a guided tour.")
+        let step2: WayPoint = (element: .readerBack, description: step2DescriptionBase.highlighting(phrase: step2DescriptionTarget, icon: Gridicon.iconOfType(.chevronLeft)))
+
+        let step3DescriptionBase = NSLocalizedString("Tap %@ to look for sites with similar interests", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let step3DescriptionTarget = NSLocalizedString("Search", comment: "The menu item to tap during a guided tour.")
+        let step3: WayPoint = (element: .readerSearch, description: step3DescriptionBase.highlighting(phrase: step3DescriptionTarget, icon: Gridicon.iconOfType(.search)))
+
+        return [step1, step2, step3]
+    }()
+
+    func setupReaderTab() {
+        guard let tabBar = WPTabBarController.sharedInstance() else {
+            return
+        }
+
+        tabBar.resetReaderTab()
+    }
 }
 
 private extension String {
-    func highlighting(phrase: String, icon: UIImage) -> NSAttributedString {
+    func highlighting(phrase: String, icon: UIImage?) -> NSAttributedString {
         let normalParts = components(separatedBy: "%@")
         guard normalParts.count > 0 else {
             // if the provided base doesn't contain %@ then we don't know where to place the highlight
@@ -140,21 +173,25 @@ private extension String {
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
 
-        let iconAttachment = NSTextAttachment()
-        iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
-        iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
-        let iconStr = NSAttributedString(attachment: iconAttachment)
-
         let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Constants.highlightColor, .font: Constants.highlightFont])
 
-        switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
-        case .rightToLeft:
-            resultString.append(highlightStr)
-            resultString.append(NSAttributedString(string: " "))
-            resultString.append(iconStr)
-        default:
-            resultString.append(iconStr)
-            resultString.append(NSAttributedString(string: " "))
+        if let icon = icon {
+            let iconAttachment = NSTextAttachment()
+            iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
+            iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
+            let iconStr = NSAttributedString(attachment: iconAttachment)
+
+            switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
+            case .rightToLeft:
+                resultString.append(highlightStr)
+                resultString.append(NSAttributedString(string: " "))
+                resultString.append(iconStr)
+            default:
+                resultString.append(iconStr)
+                resultString.append(NSAttributedString(string: " "))
+                resultString.append(highlightStr)
+            }
+        } else {
             resultString.append(highlightStr)
         }
 

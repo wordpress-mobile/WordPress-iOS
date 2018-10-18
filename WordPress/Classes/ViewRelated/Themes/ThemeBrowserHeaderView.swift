@@ -29,6 +29,8 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
     // MARK: - Properties
 
+    private var observer: NSObjectProtocol?
+
     fileprivate var theme: Theme? {
         didSet {
             currentThemeName.text = theme?.name
@@ -77,6 +79,12 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
         applyStyles()
         setTextForLabels()
+
+        startObservingForQuickStart()
+    }
+
+    deinit {
+        stopObservingForQuickStart()
     }
 
     fileprivate func applyStyles() {
@@ -113,6 +121,16 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
         }
     }
 
+    private func startObservingForQuickStart() {
+        observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.spotlightCustomizeButtonIfTourIsActive()
+        }
+    }
+
+    private func stopObservingForQuickStart() {
+        NotificationCenter.default.removeObserver(observer as Any)
+    }
+
     fileprivate func setTextForLabels() {
         currentThemeLabel.text = NSLocalizedString("Current Theme",
                                                    comment: "Current Theme text that appears in Theme Browser Header")
@@ -140,6 +158,8 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
 
     @IBAction fileprivate func didTapCustomizeButton(_ sender: UIButton) {
         presenter?.presentCustomizeForTheme(theme)
+
+        quickStartSpotlightView.removeFromSuperview()
     }
 
     @IBAction fileprivate func didTapDetailsButton(_ sender: UIButton) {

@@ -593,6 +593,7 @@ import WordPressShared
 
         if menuItem.type == .search {
             currentReaderStream = nil
+            QuickStartTourGuide.find()?.visited(.readerSearch)
             return viewControllerForSearch()
         }
 
@@ -613,6 +614,10 @@ import WordPressShared
         WPStyleGuide.configureTableViewCell(cell)
         cell.accessoryView = nil
         cell.accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+        if menuItem.type == .search && QuickStartTourGuide.find()?.isCurrentElement(.readerSearch) ?? false {
+            cell.accessoryView = QuickStartSpotlightView()
+        }
+
         cell.selectionStyle = .default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon

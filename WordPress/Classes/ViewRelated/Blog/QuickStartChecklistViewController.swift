@@ -5,11 +5,18 @@ class QuickStartChecklistViewController: UITableViewController {
         }
     }
     private var blog: Blog?
+    private var observer: NSObjectProtocol?
 
     @objc
     convenience init(blog: Blog) {
         self.init()
         self.blog = blog
+
+        startObservingForQuickStart()
+    }
+
+    deinit {
+        stopObservingForQuickStart()
     }
 
     override func viewDidLoad() {
@@ -59,6 +66,23 @@ class QuickStartChecklistViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+
+    private func startObservingForQuickStart() {
+        observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+            guard let userInfo = notification.userInfo,
+                let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
+                element == .tourCompleted else {
+                    return
+            }
+
+            self?.dataSource?.loadCompletedTours()
+            self?.tableView.reloadData()
+        }
+    }
+
+    private func stopObservingForQuickStart() {
+        NotificationCenter.default.removeObserver(observer as Any)
+    }
 }
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
@@ -77,6 +101,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
             return
         }
 
+        completedTours = Set<String>()
         for tour in tours {
             completedTours.insert(tour.tourID)
         }
