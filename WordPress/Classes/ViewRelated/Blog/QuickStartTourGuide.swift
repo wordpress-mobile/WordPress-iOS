@@ -5,6 +5,7 @@ open class QuickStartTourGuide: NSObject {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
+    private var suggestionWorkItem: DispatchWorkItem?
     static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
@@ -52,6 +53,20 @@ internal extension QuickStartTourGuide {
         }
         currentSuggestion = tour
 
+        let cancelTimer = { [weak self] (skipped: Bool) in
+            self?.suggestionWorkItem?.cancel()
+            self?.suggestionWorkItem = nil
+
+            self?.skipped(tour, for: blog)
+        }
+
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            self?.dismissSuggestion()
+            cancelTimer(true)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.suggestionTimeout, execute: newWorkItem)
+        suggestionWorkItem = newWorkItem
+
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
         let notice = Notice(title: tour.title,
                             message: tour.description,
@@ -62,8 +77,10 @@ internal extension QuickStartTourGuide {
 
                                 if accepted {
                                     self?.start(tour: tour, for: blog)
+                                    cancelTimer(false)
                                 } else {
                                     self?.skipped(tour, for: blog)
+                                    cancelTimer(true)
                                 }
         }
 
@@ -218,6 +235,7 @@ private extension QuickStartTourGuide {
 
     private struct Constants {
         static let maxSkippedTours = 3
+        static let suggestionTimeout = 3.0
     }
 }
 
