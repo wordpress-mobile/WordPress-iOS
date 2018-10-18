@@ -6,6 +6,7 @@ class QuickStartChecklistViewController: UITableViewController {
     }
     private var blog: Blog?
     private var observer: NSObjectProtocol?
+    private var service: SiteManagementService!
 
     @objc
     convenience init(blog: Blog) {
@@ -34,10 +35,17 @@ class QuickStartChecklistViewController: UITableViewController {
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
+        service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
         guard let blog = blog else {
             return
         }
-        dataSource = QuickStartChecklistDataSource(blog: blog)
+
+        dataSource = QuickStartChecklistDataSource(blog: blog) { [weak self] isChecklistCompleted in
+            if isChecklistCompleted {
+                self?.markQuickStartChecklistAsComplete()
+            }
+        }
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -83,14 +91,27 @@ class QuickStartChecklistViewController: UITableViewController {
     private func stopObservingForQuickStart() {
         NotificationCenter.default.removeObserver(observer as Any)
     }
+
+    private func markQuickStartChecklistAsComplete() {
+        guard let blog = blog else {
+            return
+        }
+        service.markQuickStartChecklistAsComplete(for: blog) { (success, error) in
+            if !success {
+                // Store blog for future check?
+            }
+        }
+    }
 }
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
+    private var isChecklistCompleted: (Bool) -> Void
     private var blog: Blog
     private var completedTours = Set<String>()
 
-    init(blog: Blog) {
+    init(blog: Blog, _ isChecklistCompleted: @escaping (Bool) -> Void) {
         self.blog = blog
+        self.isChecklistCompleted = isChecklistCompleted
 
         super.init()
         loadCompletedTours()
@@ -105,6 +126,8 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         for tour in tours {
             completedTours.insert(tour.tourID)
         }
+
+        isChecklistCompleted(completedTours.count == QuickStartTourGuide.checklistTours.count)
     }
 
     // managing tours
