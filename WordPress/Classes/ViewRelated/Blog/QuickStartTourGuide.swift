@@ -5,6 +5,7 @@ open class QuickStartTourGuide: NSObject {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
+    private var suggestionWorkItem: DispatchWorkItem?
     static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
@@ -23,12 +24,52 @@ internal extension QuickStartTourGuide {
         completed(tourID: createTour.key, for: blog)
     }
 
+    /// Provides a tour to suggest to the user
+    ///
+    /// - Parameter blog: The Blog for which to suggest a tour.
+    /// - Returns: A QuickStartTour to suggest. `nil` if there are no appropriate tours.
+    func tourToSuggest(for blog: Blog) -> QuickStartTour? {
+        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+        let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
+        let unavailableTours = Array(Set(completedTours + skippedTours))
+
+        guard isQuickStartEnabled(for: blog),
+            skippedTours.count < Constants.maxSkippedTours else {
+            return nil
+        }
+
+        // the last tour we suggest is the one to look at the checklist
+        if skippedTours.count == Constants.maxSkippedTours - 1 {
+            return QuickStartChecklistTour()
+        }
+
+        let allTours = QuickStartTourGuide.checklistTours
+
+        let unavailableIDs = unavailableTours.map { $0.tourID }
+        let remainingTours = allTours.filter { !unavailableIDs.contains($0.key) }
+        return remainingTours.first
+    }
+
     func suggest(_ tour: QuickStartTour, for blog: Blog) {
         // swallow suggestions if already suggesting or a tour is in progress
         guard currentSuggestion == nil, currentTourState == nil else {
             return
         }
         currentSuggestion = tour
+
+        let cancelTimer = { [weak self] (skipped: Bool) in
+            self?.suggestionWorkItem?.cancel()
+            self?.suggestionWorkItem = nil
+
+            self?.skipped(tour, for: blog)
+        }
+
+        let newWorkItem = DispatchWorkItem { [weak self] in
+            self?.dismissSuggestion()
+            cancelTimer(true)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.suggestionTimeout, execute: newWorkItem)
+        suggestionWorkItem = newWorkItem
 
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
         let notice = Notice(title: tour.title,
@@ -40,8 +81,10 @@ internal extension QuickStartTourGuide {
 
                                 if accepted {
                                     self?.start(tour: tour, for: blog)
+                                    cancelTimer(false)
                                 } else {
                                     self?.skipped(tour, for: blog)
+                                    cancelTimer(true)
                                 }
         }
 
@@ -120,6 +163,14 @@ internal extension QuickStartTourGuide {
 }
 
 private extension QuickStartTourGuide {
+    func isQuickStartEnabled(for blog: Blog) -> Bool {
+        // there must be at least one completed tour for quick start to have been enabled
+        guard let completedTours = blog.completedQuickStartTours else {
+                return false
+        }
+
+        return completedTours.count > 0
+    }
 
     func completed(tourID: String, for blog: Blog) {
         blog.completeTour(tourID)
@@ -189,6 +240,11 @@ private extension QuickStartTourGuide {
         presenter.dismissCurrentNotice()
         ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
+    }
+
+    private struct Constants {
+        static let maxSkippedTours = 3
+        static let suggestionTimeout = 3.0
     }
 }
 
