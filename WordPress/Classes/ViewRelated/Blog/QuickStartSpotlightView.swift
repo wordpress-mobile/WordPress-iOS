@@ -34,7 +34,7 @@ class QuickStartSpotlightView: UIView {
     private func setupLayers() {
         // Colors
         //
-        let backgroundColor = UIColor(red: 0.243137, green: 0.517647, blue: 0.682353, alpha: 1)
+        let backgroundColor = UIColor(red: 0.096, green: 0.44875, blue: 0.64, alpha: 1)
         let borderColor = UIColor(red: 0.126, green: 0.588984, blue: 0.84, alpha: 1)
         let backgroundColor1 = UIColor(red: 0.096, green: 0.44875, blue: 0.64, alpha: 1)
 
