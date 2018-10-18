@@ -402,3 +402,11 @@ extension WordPressAppDelegate {
         NotificationSupportService.deleteServiceExtensionUsername()
     }
 }
+
+// MARK: - ReactNative
+
+extension WordPressAppDelegate {
+    @objc func startRNBridge(with launchOptions: [AnyHashable: Any]?) {
+        GutenbergBridge.start(with: launchOptions)
+    }
+}

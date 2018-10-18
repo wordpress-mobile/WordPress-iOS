@@ -408,7 +408,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
-        let gutenberg = GutenbergController(html: post.content ?? "")
+        let gutenberg = GutenbergController(post: post)
         let navigation = UINavigationController(rootViewController: gutenberg)
         present(navigation, animated: true, completion: nil)
     }

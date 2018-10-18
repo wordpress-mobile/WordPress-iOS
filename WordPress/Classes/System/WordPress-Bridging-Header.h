@@ -137,3 +137,11 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPAnalytics.h>
 #import <WordPressUI/UIImage+Util.h>
+
+#import <React/RCTBridgeModule.h>
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTRootView.h>
+#import <React/RCTUtils.h>
+#import <React/RCTConvert.h>
+#import <React/RCTBundleURLProvider.h>

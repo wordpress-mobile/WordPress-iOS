@@ -580,7 +580,9 @@
 		7E3E9B672177A49C00FD5797 /* RCTAztecView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */; };
 		7E3E9B6B2177C66B00FD5797 /* BridgeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */; };
 		7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */; };
-		7E3E9B702177C9DC00FD5797 /* Gutenberg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* Gutenberg.swift */; };
+		7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */; };
+		7E3E9B762178BB8000FD5797 /* GutenbergBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B752178BB8000FD5797 /* GutenbergBridge.swift */; };
+		7E3E9B792178EBBD00FD5797 /* GBPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B782178EBBD00FD5797 /* GBPostManager.m */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -2223,7 +2225,9 @@
 		7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecView.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecView.swift"; sourceTree = "<group>"; };
 		7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BridgeDelegate.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/BridgeDelegate.swift"; sourceTree = "<group>"; };
 		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaProvider.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/MediaProvider.swift"; sourceTree = "<group>"; };
-		7E3E9B6F2177C9DC00FD5797 /* Gutenberg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gutenberg.swift; sourceTree = "<group>"; };
+		7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergController.swift; sourceTree = "<group>"; };
+		7E3E9B752178BB8000FD5797 /* GutenbergBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBridge.swift; sourceTree = "<group>"; };
+		7E3E9B782178EBBD00FD5797 /* GBPostManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GBPostManager.m; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -4835,7 +4839,9 @@
 		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B6F2177C9DC00FD5797 /* Gutenberg.swift */,
+				7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */,
+				7E3E9B752178BB8000FD5797 /* GutenbergBridge.swift */,
+				7E3E9B782178EBBD00FD5797 /* GBPostManager.m */,
 			);
 			path = Gutenberg;
 			sourceTree = "<group>";
@@ -8240,6 +8246,7 @@
 				822D60B11F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift in Sources */,
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
 				177B4C292123181400CF8084 /* GiphyDataSource.swift in Sources */,
+				7E3E9B762178BB8000FD5797 /* GutenbergBridge.swift in Sources */,
 				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
@@ -8304,6 +8311,7 @@
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				7E4123C020F4097B00DF8486 /* FormattableTextContent.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
+				7E3E9B792178EBBD00FD5797 /* GBPostManager.m in Sources */,
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
 				1705E55020A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
@@ -8537,7 +8545,7 @@
 				43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */,
 				1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
-				7E3E9B702177C9DC00FD5797 /* Gutenberg.swift in Sources */,
+				7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */,
 				FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,
