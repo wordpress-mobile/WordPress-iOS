@@ -127,7 +127,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     [self syncPostsOfType:postType
               withOptions:options
                   forBlog:blog
-              loadedPosts:@[].mutableCopy
+              loadedPosts:[NSMutableArray new]
                   syncAll:(postType == PostServiceTypePage)
                   success:success
                   failure:failure];
@@ -170,7 +170,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                                    DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
                                    return;
                                }
-                               [self mergePosts:loadedPosts.copy
+                               [self mergePosts:[loadedPosts copy]
                                          ofType:postType
                                    withStatuses:options.statuses
                                        byAuthor:options.authorID
