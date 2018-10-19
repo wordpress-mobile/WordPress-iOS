@@ -17,6 +17,7 @@ extension FancyAlertViewController {
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
     @objc static func makeQuickStartAlertController(blog: Blog) -> FancyAlertViewController {
+        WPAnalytics.track(.quickStartRequestAlertViewed)
 
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             controller.dismiss(animated: true)
