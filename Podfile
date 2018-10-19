@@ -23,13 +23,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    ## pod 'WordPressShared', '1.2.0-beta.1'
+    pod 'WordPressShared', '1.2.0-beta.2'
 
     ## for development:
     ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '35c81ae4c75bb36455d49c7d4b495d22fb7871e3'
+    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '35c81ae4c75bb36455d49c7d4b495d22fb7871e3'
 end
 
 def aztec
@@ -61,7 +61,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.2-beta.3'
+    pod 'WordPressKit', '1.4.2-beta.4'
 end
 
 def shared_test_pods
@@ -168,7 +168,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressKit', '1.4.2-beta.3'
+    pod 'WordPressKit', '1.4.2-beta.4'
     wordpress_shared
     wordpress_ui
 end
@@ -184,7 +184,7 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.2-beta.3'
+    pod 'WordPressKit', '1.4.2-beta.4'
     wordpress_shared
 
     wordpress_ui
