@@ -74,7 +74,6 @@ class QuickStartChecklistViewController: UITableViewController {
                     self?.reload()
                     self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                 }
-                WPAnalytics.track(.quickStartChecklistSkippedAll)
                 return nil
             }
         }
