@@ -1,3 +1,5 @@
+import Gridicons
+
 class QuickStartChecklistCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel?
     @IBOutlet var descriptionLabel: UILabel?
@@ -10,6 +12,7 @@ class QuickStartChecklistCell: UITableViewCell {
                 }
 
                 titleLabel?.attributedText = NSAttributedString(string: titleText, attributes: [.strikethroughStyle: 1])
+                accessoryView = UIImageView(image: Gridicon.iconOfType(.checkmark))
             }
         }
     }
