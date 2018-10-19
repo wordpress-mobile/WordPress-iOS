@@ -48,8 +48,8 @@ extension BlogDetailsViewController {
         guard Feature.enabled(.quickStart) else {
             return false
         }
-        let count = blog.completedQuickStartTours?.count ?? 0
-        return count > 0
+
+        return QuickStartTourGuide.shouldShowChecklist(for: blog)
     }
 
     private func showNotificationPrimerAlert() {

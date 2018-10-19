@@ -31,18 +31,6 @@ extension WPTabBarController {
         quickStartObserver = observer as? NSObject
     }
 
-    private func findTabView(index: Int) -> UIView? {
-        var tabs: [UIView] = []
-        for subview in tabBar.subviews {
-            tabs.append(subview)
-        }
-        tabs.sort {
-            $0.frame.origin.x < $1.frame.origin.x
-        }
-
-        return tabs[index]
-    }
-
     @objc func alertQuickStartThatWriteWasTapped() {
         QuickStartTourGuide.find()?.visited(.newpost)
     }

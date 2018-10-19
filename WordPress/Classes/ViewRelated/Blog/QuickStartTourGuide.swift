@@ -15,13 +15,27 @@ open class QuickStartTourGuide: NSObject {
         }
         return tourGuide
     }
-}
 
-/// The API
-internal extension QuickStartTourGuide {
     func setup(for blog: Blog) {
         let createTour = QuickStartCreateTour()
         completed(tourID: createTour.key, for: blog)
+    }
+
+    @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
+        let checklistCompletedCount = countChecklistCompleted(for: blog)
+        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
+
+        let quickStartIsEnabled = checklistCompletedCount > 0
+        let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
+        let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
+
+        return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
+    }
+
+    @objc func detailString(for blog: Blog) -> String {
+        let completedCount = countChecklistCompleted(for: blog)
+        let totalCount = QuickStartTourGuide.checklistTours.count
+        return "\(completedCount)/\(totalCount)"
     }
 
     /// Provides a tour to suggest to the user
@@ -105,6 +119,10 @@ internal extension QuickStartTourGuide {
         }
     }
 
+    func complete(tour: QuickStartTour, for blog: Blog) {
+        completed(tourID: tour.key, for: blog)
+    }
+
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
     @objc func currentElementInt() -> Int {
         return currentWaypoint()?.element.rawValue ?? NSNotFound
@@ -144,6 +162,43 @@ internal extension QuickStartTourGuide {
         }
 
         showCurrentStep()
+    }
+
+    func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
+        let title = NSLocalizedString("Skip Quick Start", comment: "Title shown in alert to confirm skipping all quick start items")
+        let message = NSLocalizedString("The quick start tour will guide you through building a basic site. Are you sure you want to skip? ",
+                                            comment: "Description shown in alert to confirm skipping all quick start items")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when cancelling alert in quick start"))
+
+        let skipAction = alertController.addDefaultActionWithTitle(NSLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
+            let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+            let completedIDs = completedTours.map { $0.tourID }
+
+            for tour in QuickStartTourGuide.checklistTours {
+                if !completedIDs.contains(tour.key) {
+                    blog.completeTour(tour.key)
+                }
+            }
+
+            whenSkipped()
+        }
+        alertController.preferredAction = skipAction
+
+        WPTabBarController.sharedInstance()?.present(alertController, animated: true)
+    }
+
+    static func countChecklistCompleted(for blog: Blog) -> Int {
+        let allChecklistTourIDs =  QuickStartTourGuide.checklistTours.map { $0.key }
+        let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
+        let filteredIDs = allChecklistTourIDs.filter { completedTourIDs.contains($0) }
+        return Set(filteredIDs).count
+    }
+
+    func countChecklistCompleted(for blog: Blog) -> Int {
+        return QuickStartTourGuide.countChecklistCompleted(for: blog)
     }
 
     func endCurrentTour() {
@@ -244,7 +299,7 @@ private extension QuickStartTourGuide {
 
     private struct Constants {
         static let maxSkippedTours = 3
-        static let suggestionTimeout = 3.0
+        static let suggestionTimeout = 10.0
     }
 }
 
@@ -266,6 +321,7 @@ public enum QuickStartTourElement: Int {
     case readerBack
     case readerSearch
     case tourCompleted
+    case congratulations
 }
 
 private struct TourState {
