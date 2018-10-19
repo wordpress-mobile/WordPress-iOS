@@ -388,13 +388,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - GUI: No results view logic
 
-    private func hideNoResultsView() {
+    func hideNoResultsView() {
         postListFooterView.isHidden = false
         rightBarButtonView.isHidden = false
         noResultsViewController.removeFromView()
     }
 
-    private func showNoResultsView() {
+    func showNoResultsView() {
 
         guard refreshNoResultsViewController != nil else {
             return
@@ -976,7 +976,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         })
     }
 
-    @objc func restorePost(_ apost: AbstractPost) {
+    @objc func restorePost(_ apost: AbstractPost, completion: (() -> Void)? = nil) {
         WPAnalytics.track(.postListRestoreAction, withProperties: propertiesForAnalytics())
 
         // if the post was recently deleted, update the status helper and reload the cell to display a spinner
@@ -1002,6 +1002,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             } catch {
                 DDLogError("\(error)")
                 return
+            }
+
+            DispatchQueue.main.async {
+                completion?()
             }
 
             if let postStatus = apost.status {

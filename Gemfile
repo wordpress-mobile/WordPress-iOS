@@ -5,7 +5,7 @@ source 'https://rubygems.org' do
   gem 'danger'
   gem 'danger-swiftlint'
   gem 'octokit', "~> 4.0"
-  gem 'fastlane'
+  gem 'fastlane', "2.103.1"
   gem 'dotenv'
   gem 'rubyzip', "~> 1.2.2"
 end
