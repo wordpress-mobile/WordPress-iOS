@@ -52,6 +52,8 @@ class QuickStartChecklistViewController: UITableViewController {
                 QuickStartTourGuide.find()?.complete(tour: QuickStartCongratulationsTour(), for: blog)
             }
         }
+
+        WPAnalytics.track(.quickStartChecklistViewed)
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -89,6 +91,8 @@ class QuickStartChecklistViewController: UITableViewController {
         tourGuide.start(tour: tour, for: blog)
 
         self.navigationController?.popViewController(animated: true)
+
+        WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -167,7 +171,11 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
 
         switch section {
         case .congratulations:
-            return shouldShowCongratulations() ? 1 : 0
+            if shouldShowCongratulations() {
+                return 1
+            } else {
+                return 0
+            }
         case .checklistItems:
             return QuickStartTourGuide.checklistTours.count
         case .skipAll:
