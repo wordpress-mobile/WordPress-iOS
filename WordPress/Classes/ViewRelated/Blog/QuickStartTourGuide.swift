@@ -239,6 +239,7 @@ private extension QuickStartTourGuide {
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
 
         guard !(tour is QuickStartCongratulationsTour) else {
+            WPAnalytics.track(.quickStartCongratulationsViewed)
             return
         }
         
