@@ -33,8 +33,10 @@ class QuickStartChecklistViewController: UITableViewController {
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
-        let completedCellNib = UINib(nibName: "QuickStartChecklistCompletedCell", bundle: Bundle(for: QuickStartChecklistCompletedCell.self))
-        tableView.register(completedCellNib, forCellReuseIdentifier: QuickStartChecklistCompletedCell.reuseIdentifier)
+        let congratulationsNib = UINib(nibName: "QuickStartCongratulationsCell", bundle: Bundle(for: QuickStartCongratulationsCell.self))
+        tableView.register(congratulationsNib, forCellReuseIdentifier: QuickStartCongratulationsCell.reuseIdentifier)
+        let skipAllNib = UINib(nibName: "QuickStartSkipAllCell", bundle: Bundle(for: QuickStartSkipAllCell.self))
+        tableView.register(skipAllNib, forCellReuseIdentifier: QuickStartSkipAllCell.reuseIdentifier)
 
         guard let blog = blog else {
             return
@@ -128,16 +130,27 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let congratulationsCount = shouldShowCongratulations() ? 1 : 0
-        return QuickStartTourGuide.checklistTours.count + congratulationsCount
+        let skipAllPad = 1
+        return QuickStartTourGuide.checklistTours.count + congratulationsCount + skipAllPad
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard indexPath.row > 0 else {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCompletedCell.reuseIdentifier) as? QuickStartChecklistCompletedCell {
+        let congratulationsPad = shouldShowCongratulations() ? 1 : 0
+
+        guard indexPath.row - congratulationsPad >= 0 else {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartCongratulationsCell.reuseIdentifier) as? QuickStartCongratulationsCell {
                 return cell
             }
             return UITableViewCell()
         }
+
+        guard indexPath.row < QuickStartTourGuide.checklistTours.count + congratulationsPad else {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartSkipAllCell.reuseIdentifier) as? QuickStartSkipAllCell {
+                return cell
+            }
+            return UITableViewCell()
+        }
+
         if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
             let tour = QuickStartTourGuide.checklistTours[indexPath.row - 1]
             cell.tour = tour
