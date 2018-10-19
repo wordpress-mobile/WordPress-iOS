@@ -124,32 +124,65 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 success:(PostServiceSyncSuccess)success
                 failure:(PostServiceSyncFailure)failure
 {
+    [self syncPostsOfType:postType
+              withOptions:options
+                  forBlog:blog
+              loadedPosts:[NSMutableArray new]
+                  syncAll:(postType == PostServiceTypePage)
+                  success:success
+                  failure:failure];
+}
+
+- (void)syncPostsOfType:(PostServiceType)postType
+            withOptions:(PostServiceSyncOptions *)options
+                forBlog:(Blog *)blog
+            loadedPosts:(NSMutableArray <RemotePost *>*)loadedPosts
+                syncAll:(BOOL)syncAll
+                success:(PostServiceSyncSuccess)success
+                failure:(PostServiceSyncFailure)failure
+{
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
-
+    
+    if (loadedPosts.count > 0) {
+        options.offset = @(loadedPosts.count);
+    }
+    
     NSDictionary *remoteOptions = options ? [self remoteSyncParametersDictionaryForRemote:remote withOptions:options] : nil;
     [remote getPostsOfType:postType
                    options:remoteOptions
                    success:^(NSArray <RemotePost *> *remotePosts) {
-                       [self.managedObjectContext performBlock:^{
-                           NSError *error;
-                           Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
-                           if (!blogInContext || error) {
-                               DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
-                               return;
-                           }
-                           [self mergePosts:remotePosts
-                                     ofType:postType
-                               withStatuses:options.statuses
-                                   byAuthor:options.authorID
-                                    forBlog:blogInContext
-                              purgeExisting:options.purgesLocalSync
-                          completionHandler:^(NSArray<AbstractPost *> *posts) {
-                              if (success) {
-                                  success(posts);
-                              }
-                          }];
-                       }];
+                       [loadedPosts addObjectsFromArray:remotePosts];
+
+                       if (syncAll && remotePosts.count >= options.number.integerValue) {
+                           [self syncPostsOfType:postType
+                                     withOptions:options
+                                         forBlog:blog
+                                     loadedPosts:loadedPosts
+                                         syncAll:syncAll
+                                         success:success
+                                         failure:failure];
+                       } else {
+                           [self.managedObjectContext performBlock:^{
+                               NSError *error;
+                               Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+                               if (!blogInContext || error) {
+                                   DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
+                                   return;
+                               }
+                               [self mergePosts:[loadedPosts copy]
+                                         ofType:postType
+                                   withStatuses:options.statuses
+                                       byAuthor:options.authorID
+                                        forBlog:blogInContext
+                                  purgeExisting:options.purgesLocalSync
+                              completionHandler:^(NSArray<AbstractPost *> *posts) {
+                                  if (success) {
+                                      success(posts);
+                                  }
+                              }];
+                           }];
+                       }
                    } failure:^(NSError *error) {
                        if (failure) {
                            [self.managedObjectContext performBlock:^{
