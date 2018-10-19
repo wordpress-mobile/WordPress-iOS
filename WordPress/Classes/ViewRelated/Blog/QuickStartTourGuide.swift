@@ -234,6 +234,11 @@ private extension QuickStartTourGuide {
     }
 
     func completed(tour: QuickStartTour, for blog: Blog) {
+        let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
+        guard !completedTourIDs.contains(tour.key) else {
+            return
+        }
+
         blog.completeTour(tour.key)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
@@ -247,6 +252,7 @@ private extension QuickStartTourGuide {
 
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
+            grantCongratulationsAward(for: blog)
         }
     }
 
@@ -316,6 +322,11 @@ private extension QuickStartTourGuide {
         presenter.dismissCurrentNotice()
         ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
+    }
+
+    private func grantCongratulationsAward(for blog: Blog) {
+        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.markQuickStartChecklistAsComplete(for: blog)
     }
 
     private struct Constants {
