@@ -242,7 +242,7 @@ private extension QuickStartTourGuide {
             WPAnalytics.track(.quickStartCongratulationsViewed)
             return
         }
-        
+
         WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
 
         if allToursCompleted(for: blog) {
