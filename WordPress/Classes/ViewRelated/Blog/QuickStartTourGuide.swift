@@ -22,7 +22,8 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        return countChecklistCompleted(for: blog) < QuickStartTourGuide.checklistTours.count
+        let checklistCompletedCount = countChecklistCompleted(for: blog)
+        return checklistCompletedCount > 0 && checklistCompletedCount < QuickStartTourGuide.checklistTours.count
     }
 
     @objc func detailString(for blog: Blog) -> String {
