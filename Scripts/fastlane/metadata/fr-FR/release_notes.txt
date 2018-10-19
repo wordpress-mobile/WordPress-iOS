@@ -1,4 +1,5 @@
-Est-ce que ça ne vous rend pas dingue quand vous réalisez que vous voulez épingler un article sur la page d’accueil de votre site mais que vous êtes dans le bus et que vous n’avez que votre téléphone sur vous ? Nous aussi. Maintenant, vous pouvez épingler des articles depuis l’app et les autres personnes dans le bus n’aurons pas à vous entendre râler.
-Économisez du temps avec les notifications push de commentaires qui vous afficheront le commentaire complet depuis l’écran d’accueil. Tout le monde aime économiser !
-Nous avons apporter plus de cohérence visuelle à différents écrans à travers l’app. C'est donc plus facile de se déplacer. Moins de temps pour comprendre comment naviguer = plus de temps à créer.
-Nous avons sorti la tapette à mouche et nous nous sommes débarrassés de quelques bogues.
+La section « Pages du site » affiche maintenant les pages dans l’ordre qui correspond à la mise en page de votre site. C’est donc plus facile de trouver ce que vous cherchez.
+Le syndrome de la page blanche n'est plus ! Nous avons ajouté des suggestions aux prochaines étapes pour chaque page sans contenu.
+Quand vous écrivez un nouvel article, l’app enregistre automatiquement les brouillons sur votre appareil, donc aucun de vos travaux ne seront perdus.
+Nous avons relooké quelques écrans supplémentaires pour plus de cohérence dans l’app.
+Plus, comme toujours, quelques correctifs de bogues et améliorations générales.

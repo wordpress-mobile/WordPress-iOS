@@ -1,0 +1,5 @@
+A seção Páginas do site agora mostra as páginas na mesma ordem de seu site. Assim fica mais fácil para encontrar o que você estiver procurando.
+Sem telas em branco! Adicionamos sugestões de passos a seguir em todas as páginas que não tenham conteúdo.
+Quando você escrever um novo post, o aplicativo salvará automaticamente o rascunho em seu dispositivo para que nada seja perdido.
+Mudamos a aparência de algumas telas para continuar melhorando a consistência no aplicativo.
+Também corrigimos alguns erros e fizemos melhorias como sempre.
