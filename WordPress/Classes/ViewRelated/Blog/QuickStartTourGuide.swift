@@ -124,7 +124,7 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func complete(tour: QuickStartTour, for blog: Blog) {
-        completed(tourID: tour.key, for: blog)
+        completed(tour: tour, for: blog)
     }
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
