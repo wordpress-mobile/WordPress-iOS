@@ -46,9 +46,9 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '777ee955bf315e7236ea93390521af75c2b29ba6'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '777ee955bf315e7236ea93390521af75c2b29ba6'
-#    pod 'WordPress-Editor-iOS', '1.0.2'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'cc56f1886a6e3f566f6af65b1a663007c2aa82c9'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'cc56f1886a6e3f566f6af65b1a663007c2aa82c9'
+    pod 'WordPress-Editor-iOS', '1.1'
 end
 
 def wordpress_ui
