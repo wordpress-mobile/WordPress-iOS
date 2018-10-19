@@ -21,8 +21,25 @@ enum NotificationKind: String {
 extension NotificationKind {
     /// Enumerates the Kinds that currently provide Rich Notification support
     private static var kindsWithRichNotificationSupport: Set<NotificationKind> = [
-        .comment
+        .comment,
+        .commentLike,
+        .like,
+        .matcher
     ]
+
+    /// Enumerates the Kinds of rich notifications that include body text
+    private static var kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
+        .commentLike,
+        .like,
+    ]
+
+    /// Indicates whether or not a given kind of rich notification has a body support.
+    ///
+    /// - Parameter kind: the notification type to evaluate
+    /// - Returns: `true` if the kind of rich notification includes a body; `false` otherwise
+    static func omitsRichNotificationBody(_ kind: NotificationKind) -> Bool {
+        return kindsWithoutRichNotificationBodyText.contains(kind)
+    }
 
     /// Indicates whether or not a given kind has rich notification support.
     ///
@@ -30,6 +47,20 @@ extension NotificationKind {
     /// - Returns: `true` if the kind supports rich notifications; `false` otherwise
     static func isSupportedByRichNotifications(_ kind: NotificationKind) -> Bool {
         return kindsWithRichNotificationSupport.contains(kind)
+    }
+
+    /// Returns a client-side notification category. The category provides a match to ensure that the Long Look
+    /// can be presented.
+    ///
+    /// NB: These should all be set on the server, but in practice, they are not.
+    ///
+    var contentExtensionCategoryIdentifier: String? {
+        switch self {
+        case .commentLike, .like, .matcher:
+            return rawValue
+        default:
+            return nil
+        }
     }
 }
 

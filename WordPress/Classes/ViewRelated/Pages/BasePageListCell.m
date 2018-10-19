@@ -8,6 +8,7 @@
     self.post = post;
 }
 
+
 #pragma mark - Action
 
 - (IBAction)onAction:(UIButton *)sender
