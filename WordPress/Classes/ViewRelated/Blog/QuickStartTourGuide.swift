@@ -180,6 +180,17 @@ open class QuickStartTourGuide: NSObject {
         WPTabBarController.sharedInstance()?.present(alertController, animated: true)
     }
 
+    static func countChecklistCompleted(for blog: Blog) -> Int {
+        let allChecklistTourIDs =  QuickStartTourGuide.checklistTours.map { $0.key }
+        let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
+        let filteredIDs = allChecklistTourIDs.filter { completedTourIDs.contains($0) }
+        return Set(filteredIDs).count
+    }
+
+    func countChecklistCompleted(for blog: Blog) -> Int {
+        return QuickStartTourGuide.countChecklistCompleted(for: blog)
+    }
+
     func endCurrentTour() {
         dismissCurrentNotice()
         currentTourState = nil
@@ -210,17 +221,6 @@ private extension QuickStartTourGuide {
         blog.completeTour(tourID)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
-    }
-
-    static func countChecklistCompleted(for blog: Blog) -> Int {
-        let completedTours = blog.completedQuickStartTours ?? []
-        let filteredTourIDs = completedTours.filter {$0.tourID != QuickStartChecklistTour().key }.map { $0.tourID }
-        let completedSet = Set(filteredTourIDs)
-        return completedSet.count
-    }
-
-    func countChecklistCompleted(for blog: Blog) -> Int {
-        return QuickStartTourGuide.countChecklistCompleted(for: blog)
     }
 
     func showCurrentStep() {
