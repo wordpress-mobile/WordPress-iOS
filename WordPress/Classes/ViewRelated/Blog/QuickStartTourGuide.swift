@@ -237,6 +237,11 @@ private extension QuickStartTourGuide {
         blog.completeTour(tour.key)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+
+        guard !(tour is QuickStartCongratulationsTour) else {
+            return
+        }
+        
         WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
 
         if allToursCompleted(for: blog) {

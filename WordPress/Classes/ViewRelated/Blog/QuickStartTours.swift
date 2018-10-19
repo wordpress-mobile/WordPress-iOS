@@ -175,6 +175,7 @@ private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start
 private let congratsDescription = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
 struct QuickStartCongratulationsTour: QuickStartTour {
     let key = "quick-start-congratulations-tour"
+    let analyticsKey = "congratulations"
     let title = congratsTitle
     let description = congratsDescription
     let icon = Gridicon.iconOfType(.plus)
