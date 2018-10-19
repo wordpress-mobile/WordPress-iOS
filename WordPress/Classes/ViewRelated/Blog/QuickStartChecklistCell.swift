@@ -13,6 +13,8 @@ class QuickStartChecklistCell: UITableViewCell {
 
                 titleLabel?.attributedText = NSAttributedString(string: titleText, attributes: [.strikethroughStyle: 1])
                 accessoryView = UIImageView(image: Gridicon.iconOfType(.checkmark))
+            } else {
+                accessoryView = nil
             }
         }
     }

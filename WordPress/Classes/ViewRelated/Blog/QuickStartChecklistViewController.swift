@@ -186,9 +186,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
                 if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
                     let tour = QuickStartTourGuide.checklistTours[indexPath.row]
                     cell.tour = tour
-                    if isCompleted(tour: tour) {
-                        cell.completed = true
-                    }
+                    cell.completed = isCompleted(tour: tour)
                     return cell
                 }
             case .skipAll:
