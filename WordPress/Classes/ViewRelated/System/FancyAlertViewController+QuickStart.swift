@@ -26,15 +26,21 @@ extension FancyAlertViewController {
             }
 
             tourGuide.setup(for: blog)
+
+            WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
         }
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
             controller.dismiss(animated: true)
+
+            WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "neutral"])
         }
 
         let neverButton = ButtonConfig(Strings.neverText) { controller, _ in
             UserDefaults.standard.quickStartWasDismissedPermanently = true
             controller.dismiss(animated: true)
+
+            WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "negative"])
         }
 
         let image = UIImage(named: "wp-illustration-checklist")
