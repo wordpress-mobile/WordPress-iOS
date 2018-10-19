@@ -2,35 +2,22 @@
 import UIKit
 import React
 
-@objc (GBPostManager)
-public class GBPostManager: NSObject, RCTBridgeModule {
-    public static func moduleName() -> String! {
-        return "GBPostManager"
-    }
+class GutenbergController: UIViewController, PostEditor {
+    var onClose: ((Bool, Bool) -> Void)?
 
-    var post: Post?
-    @objc(savePost:)
-    func savePost(with content: String) {
-        print("NewContent: ")
-        print(content)
-        print(post)
-    }
+    var isOpenedDirectlyForPhotoPost: Bool = false
 
-    public static func requiresMainQueueSetup() -> Bool {
-        return false
-    }
-}
+    let post: AbstractPost
 
-class GutenbergController: UIViewController {
-
-    private let post: Post
-
-    init(post: Post) {
-
+    required init(post: AbstractPost) {
+        guard let post = post as? Post else {
+            fatalError()
+        }
         self.post = post
-        GutenbergBridge.shared.postManager.post = post
-
         super.init(nibName: nil, bundle: nil)
+
+        GutenbergBridge.shared.postManager.post = post
+        GutenbergBridge.shared.postManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -46,26 +33,28 @@ class GutenbergController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSaveButton()
         addCancelButton()
         title = post.titleForDisplay()
     }
 
-    private func addSaveButton() {
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(save))
-        navigationItem.leftBarButtonItem = doneButton
-    }
-
     private func addCancelButton() {
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(close))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(close(sender:)))
         navigationItem.rightBarButtonItem = cancelButton
     }
 
-    @objc private func save(sender: UIBarButtonItem) {
-        close(sender: sender)
+    @objc private func close(sender: UIBarButtonItem) {
+        close(didSave: false)
     }
 
-    @objc private func close(sender: UIBarButtonItem) {
-        presentingViewController?.dismiss(animated: true, completion: nil)
+    private func close(didSave: Bool) {
+        GutenbergBridge.shared.postManager.post = nil
+        GutenbergBridge.shared.postManager.delegate = nil
+        onClose?(didSave, false)
+    }
+}
+
+extension GutenbergController: GBPostManagerDelegate {
+    func postManagerDidSave(post: Post) {
+        close(didSave: true)
     }
 }

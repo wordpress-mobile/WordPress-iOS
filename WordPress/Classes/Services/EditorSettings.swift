@@ -4,11 +4,14 @@ class EditorSettings: NSObject {
     @objc
     enum Editor: Int {
         case aztec
+        case gutenberg
     }
 
     // MARK: - Enabled Editors Keys
 
     fileprivate let aztecEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
+    fileprivate let gutenbergEditorEnabledKey = "kUserDefaultsGutenbergEditorEnabled"
+
 
     // MARK: - Forcing Aztec Keys
 
@@ -51,7 +54,7 @@ class EditorSettings: NSObject {
     // MARK: Public accessors
 
     private var current: Editor {
-        return .aztec
+        return .gutenberg
     }
 
     @objc func isEnabled(_ editor: Editor) -> Bool {
@@ -72,6 +75,8 @@ class EditorSettings: NSObject {
         switch editor {
         case .aztec:
             database.set(true, forKey: aztecEditorEnabledKey)
+        case .gutenberg:
+            database.set(false, forKey: aztecEditorEnabledKey)
         }
     }
 
@@ -85,6 +90,10 @@ class EditorSettings: NSObject {
             let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
+        case .gutenberg:
+            let vc = GutenbergController(post: post)
+            configure(vc, vc)
+            return vc
         }
     }
 
@@ -92,6 +101,10 @@ class EditorSettings: NSObject {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case .gutenberg:
+            let vc = GutenbergController(post: post)
             configure(vc, vc)
             return vc
         }
