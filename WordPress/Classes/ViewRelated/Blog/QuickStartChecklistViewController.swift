@@ -172,7 +172,6 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         switch section {
         case .congratulations:
             if shouldShowCongratulations() {
-                WPAnalytics.track(.quickStartCongratulationsViewed)
                 return 1
             } else {
                 return 0
