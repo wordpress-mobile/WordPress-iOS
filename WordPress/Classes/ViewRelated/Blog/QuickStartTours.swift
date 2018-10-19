@@ -162,6 +162,18 @@ struct QuickStartFollowTour: QuickStartTour {
     }
 }
 
+private let congratulationsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
+struct QuickStartCongratulationsTour: QuickStartTour {
+    let key = "quick-start-congratulations-tour"
+    let title = congratulationsTitle
+    let description = ""
+    let icon = Gridicon.iconOfType(.plus)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+
+    let waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratulationsTitle))]
+}
+
 private extension String {
     func highlighting(phrase: String, icon: UIImage?) -> NSAttributedString {
         let normalParts = components(separatedBy: "%@")
