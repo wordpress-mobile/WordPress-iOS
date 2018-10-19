@@ -280,7 +280,7 @@ private extension QuickStartTourGuide {
 
     private struct Constants {
         static let maxSkippedTours = 3
-        static let suggestionTimeout = 3.0
+        static let suggestionTimeout = 10.0
     }
 }
 
