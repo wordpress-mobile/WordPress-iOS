@@ -82,6 +82,7 @@ final class InteractiveNotificationsManager: NSObject {
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
             let commentID = userInfo.object(forKey: "comment_id") as? NSNumber else {
+
             return false
         }
 
@@ -114,10 +115,14 @@ final class InteractiveNotificationsManager: NSObject {
         }
 
         if let actionEvent = legacyAnalyticsEvent {
-            let modernEventProperties = [ "quick_action": action.quickActionName ]
+            let modernEventProperties: [String: Any] = [
+                WPAppAnalyticsKeyQuickAction: action.quickActionName,
+                WPAppAnalyticsKeyBlogID: siteID,
+                WPAppAnalyticsKeyCommentID: commentID
+            ]
             WPAppAnalytics.track(.pushNotificationQuickActionCompleted, withProperties: modernEventProperties)
 
-            let legacyEventProperties = [ "is_quick_action": true ]
+            let legacyEventProperties = [ WPAppAnalyticsKeyLegacyQuickAction: true ]
             WPAppAnalytics.track(actionEvent, withProperties: legacyEventProperties)
         }
 

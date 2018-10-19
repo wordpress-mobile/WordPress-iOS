@@ -11,18 +11,22 @@
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
 
-NSString * const WPAppAnalyticsDefaultsUserOptedOut = @"tracks_opt_out";
-NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated = @"usage_tracking_enabled";
-NSString * const WPAppAnalyticsKeyBlogID = @"blog_id";
-NSString * const WPAppAnalyticsKeyPostID = @"post_id";
-NSString * const WPAppAnalyticsKeyFeedID = @"feed_id";
-NSString * const WPAppAnalyticsKeyFeedItemID = @"feed_item_id";
-NSString * const WPAppAnalyticsKeyIsJetpack = @"is_jetpack";
-NSString * const WPAppAnalyticsKeySessionCount = @"session_count";
-NSString * const WPAppAnalyticsKeyEditorSource = @"editor_source";
-NSString * const WPAppAnalyticsKeyHasGutenbergBlocks = @"has_gutenberg_blocks";
-static NSString * const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
-static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
+NSString * const WPAppAnalyticsDefaultsUserOptedOut                 = @"tracks_opt_out";
+NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated  = @"usage_tracking_enabled";
+NSString * const WPAppAnalyticsKeyBlogID                            = @"blog_id";
+NSString * const WPAppAnalyticsKeyPostID                            = @"post_id";
+NSString * const WPAppAnalyticsKeyFeedID                            = @"feed_id";
+NSString * const WPAppAnalyticsKeyFeedItemID                        = @"feed_item_id";
+NSString * const WPAppAnalyticsKeyIsJetpack                         = @"is_jetpack";
+NSString * const WPAppAnalyticsKeySessionCount                      = @"session_count";
+NSString * const WPAppAnalyticsKeyEditorSource                      = @"editor_source";
+NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_id";
+NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";
+NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
+
+NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
+static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
+static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
 
 @interface WPAppAnalytics ()
 
