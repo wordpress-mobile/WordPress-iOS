@@ -1,4 +1,4 @@
-class QuickStartChecklistCompletedCell: UITableViewCell {
+class QuickStartCongratulationsCell: UITableViewCell {
     @IBOutlet var topLabel: UILabel?
     @IBOutlet var bottomLabel: UILabel?
 
@@ -12,5 +12,5 @@ class QuickStartChecklistCompletedCell: UITableViewCell {
         bottomLabel?.text = NSLocalizedString("doesn’t it feel good to cross things off a list?", comment: "subhead shown to users when they complete all Quick Start items")
     }
 
-    static let reuseIdentifier = "QuickStartChecklistCompletedCell"
+    static let reuseIdentifier = "QuickStartCongratulationsCell"
 }

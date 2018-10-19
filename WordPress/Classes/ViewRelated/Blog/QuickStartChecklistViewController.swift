@@ -119,10 +119,16 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         return completedTours.contains(tour.key)
     }
 
+    func shouldShowCongratulations() -> Bool {
+        let completedToursCount = blog.completedQuickStartTours?.count ?? 0
+        return completedToursCount >= completedTours.count
+    }
+
     // UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return QuickStartTourGuide.checklistTours.count
+        let congratulationsCount = shouldShowCongratulations() ? 1 : 0
+        return QuickStartTourGuide.checklistTours.count + congratulationsCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
