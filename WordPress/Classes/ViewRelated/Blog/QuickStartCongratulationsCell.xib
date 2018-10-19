@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="88" id="ZK2-Xw-LEM" customClass="QuickStartChecklistCompletedCell" customModule="WordPress" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="88" id="ZK2-Xw-LEM" customClass="QuickStartCongratulationsCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="428" height="88"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZK2-Xw-LEM" id="HIE-6E-scc">
@@ -50,8 +50,8 @@
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
-                <outlet property="bottomLabel" destination="lKH-i8-Ftz" id="f7z-CN-yur"/>
-                <outlet property="topLabel" destination="tmx-Sd-E9i" id="Z4a-k4-sKl"/>
+                <outlet property="bottomLabel" destination="lKH-i8-Ftz" id="i7t-1x-xWb"/>
+                <outlet property="topLabel" destination="tmx-Sd-E9i" id="LgV-2z-JcU"/>
             </connections>
             <point key="canvasLocation" x="-248" y="91"/>
         </tableViewCell>
