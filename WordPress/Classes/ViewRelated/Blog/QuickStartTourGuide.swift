@@ -143,15 +143,30 @@ open class QuickStartTourGuide: NSObject {
         showCurrentStep()
     }
 
-    func skipAll(for blog: Blog) {
-        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
-        let completedIDs = completedTours.map { $0.tourID }
+    func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
+        let title = NSLocalizedString("Skip Quick Start", comment: "Title shown in alert to confirm skipping all quick start items")
+        let message = NSLocalizedString("The quick start tour will guide you through building a basic site. Are you sure you want to skip? ",
+                                            comment: "Description shown in alert to confirm skipping all quick start items")
 
-        for tour in QuickStartTourGuide.checklistTours {
-            if !completedIDs.contains(tour.key) {
-                blog.completeTour(tour.key)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when cancelling alert in quick start"))
+
+        let skipAction = alertController.addDefaultActionWithTitle(NSLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
+            let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+            let completedIDs = completedTours.map { $0.tourID }
+
+            for tour in QuickStartTourGuide.checklistTours {
+                if !completedIDs.contains(tour.key) {
+                    blog.completeTour(tour.key)
+                }
             }
+
+            whenSkipped()
         }
+        alertController.preferredAction = skipAction
+
+        WPTabBarController.sharedInstance()?.present(alertController, animated: true)
     }
 
     func endCurrentTour() {

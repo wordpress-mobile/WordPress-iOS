@@ -58,7 +58,10 @@ class QuickStartChecklistViewController: UITableViewController {
                 guard let blog = blog else {
                     return nil
                 }
-                QuickStartTourGuide.find()?.skipAll(for: blog)
+                QuickStartTourGuide.find()?.skipAll(for: blog) { [weak self] in
+                    self?.reload()
+                    self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                }
                 return nil
             }
         }
@@ -90,9 +93,13 @@ class QuickStartChecklistViewController: UITableViewController {
                     return
             }
 
-            self?.dataSource?.loadCompletedTours()
-            self?.tableView.reloadData()
+            self?.reload()
         }
+    }
+
+    private func reload() {
+        dataSource?.loadCompletedTours()
+        tableView.reloadData()
     }
 
     private func stopObservingForQuickStart() {
@@ -134,7 +141,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
 
     func shouldShowCongratulations() -> Bool {
         let completedToursCount = blog.completedQuickStartTours?.count ?? 0
-        return completedToursCount >= completedTours.count
+        return completedToursCount >= QuickStartTourGuide.checklistTours.count
     }
 
     // UITableViewDataSource
