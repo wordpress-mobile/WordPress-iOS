@@ -13,8 +13,6 @@ class QuickStartChecklistViewController: UITableViewController {
         self.blog = blog
 
         startObservingForQuickStart()
-
-        WPAnalytics.track(.quickStartChecklistViewed)
     }
 
     deinit {
@@ -54,6 +52,8 @@ class QuickStartChecklistViewController: UITableViewController {
                 QuickStartTourGuide.find()?.complete(tour: QuickStartCongratulationsTour(), for: blog)
             }
         }
+
+        WPAnalytics.track(.quickStartChecklistViewed)
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
