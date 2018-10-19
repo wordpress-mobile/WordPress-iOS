@@ -45,20 +45,31 @@ class QuickStartChecklistViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        guard let tour = dataSource?.tour(at: indexPath),
-            !(tour is QuickStartCreateTour) else {
+        if let section = Sections(rawValue: indexPath.section) {
+            switch section {
+            case .congratulations:
                 return nil
+            case .checklistItems:
+                guard let tour = dataSource?.tour(at: indexPath),
+                    !(tour is QuickStartCreateTour) else {
+                        return nil
+                }
+            case .skipAll:
+                guard let blog = blog else {
+                    return nil
+                }
+                QuickStartTourGuide.find()?.skipAll(for: blog)
+                return nil
+            }
         }
         return indexPath
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let tour = dataSource?.tour(at: indexPath),
-            let blog = blog else {
-                return
-        }
-
-        guard let tourGuide = QuickStartTourGuide.find() else {
+        guard let tourGuide = QuickStartTourGuide.find(),
+            Sections(rawValue: indexPath.section) == .checklistItems,
+            let blog = blog,
+            let tour = dataSource?.tour(at: indexPath) else {
             return
         }
 
@@ -128,37 +139,53 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
 
     // UITableViewDataSource
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let congratulationsCount = shouldShowCongratulations() ? 1 : 0
-        let skipAllPad = 1
-        return QuickStartTourGuide.checklistTours.count + congratulationsCount + skipAllPad
+        guard let section = Sections(rawValue: section) else {
+            return 0
+        }
+
+        switch section {
+        case .congratulations:
+            return shouldShowCongratulations() ? 1 : 0
+        case .checklistItems:
+            return QuickStartTourGuide.checklistTours.count
+        case .skipAll:
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let congratulationsPad = shouldShowCongratulations() ? 1 : 0
-
-        guard indexPath.row - congratulationsPad >= 0 else {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartCongratulationsCell.reuseIdentifier) as? QuickStartCongratulationsCell {
-                return cell
+        if let section = Sections(rawValue: indexPath.section) {
+            switch section {
+            case .congratulations:
+                if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartCongratulationsCell.reuseIdentifier) as? QuickStartCongratulationsCell {
+                    return cell
+                }
+            case .checklistItems:
+                if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
+                    let tour = QuickStartTourGuide.checklistTours[indexPath.row]
+                    cell.tour = tour
+                    if isCompleted(tour: tour) {
+                        cell.completed = true
+                    }
+                    return cell
+                }
+            case .skipAll:
+                if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartSkipAllCell.reuseIdentifier) as? QuickStartSkipAllCell {
+                    return cell
+                }
             }
-            return UITableViewCell()
-        }
-
-        guard indexPath.row < QuickStartTourGuide.checklistTours.count + congratulationsPad else {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartSkipAllCell.reuseIdentifier) as? QuickStartSkipAllCell {
-                return cell
-            }
-            return UITableViewCell()
-        }
-
-        if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
-            let tour = QuickStartTourGuide.checklistTours[indexPath.row - 1]
-            cell.tour = tour
-            if isCompleted(tour: tour) {
-                cell.completed = true
-            }
-            return cell
         }
         return UITableViewCell()
     }
+}
+
+private enum Sections: Int {
+    case congratulations = 0
+    case checklistItems = 1
+    case skipAll = 2
 }
