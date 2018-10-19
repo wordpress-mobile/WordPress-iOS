@@ -49,32 +49,38 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
- 
+
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
-    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
-    self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
-    self.statsVC = self.statsNavVC.viewControllers.firstObject;
-    self.statsVC.statsDelegate = self;
-    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.loadingIndicator];
-    [NSLayoutConstraint activateConstraints:@[
-                                              [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-                                              [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
-                                              ]];
-
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
+    
+    if ([Feature enabled:FeatureFlagStatsRefresh]) {
+        NSBundle *statsBundle = [NSBundle bundleForClass:[SiteStatsViewController class]];
+        self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:statsBundle] instantiateInitialViewController];
+        self.statsVC = self.statsNavVC.viewControllers.firstObject;
+    } else {
+        NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+        self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
+        self.statsVC = self.statsNavVC.viewControllers.firstObject;
+        self.statsVC.statsDelegate = self;
+        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:self.loadingIndicator];
+        [NSLayoutConstraint activateConstraints:@[
+                                                  [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                                                  [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+                                                  ]];
 
-    // Being shown in a modal window
-    if (self.presentingViewController != nil) {
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
-        self.navigationItem.rightBarButtonItem = doneButton;
-        self.title = self.blog.settings.name;
+        // Being shown in a modal window
+        if (self.presentingViewController != nil) {
+            UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+            self.navigationItem.rightBarButtonItem = doneButton;
+            self.title = self.blog.settings.name;
+        }
     }
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:appDelegate.internetReachability];
+
     [self initStats];
 }
 
@@ -86,16 +92,22 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
-    if (self.presentingViewController == nil) {
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-        self.navigationItem.rightBarButtonItem = settingsButton;
+    if (![Feature enabled:FeatureFlagStatsRefresh]) {
+        if (self.presentingViewController == nil) {
+            UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+            self.navigationItem.rightBarButtonItem = settingsButton;
+        }
+        
+        [self addChildViewController:self.statsVC];
+        [self.view addSubview:self.statsVC.view];
+        self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view pinSubviewToAllEdges:self.statsVC.view];
+        [self.statsVC didMoveToParentViewController:self];
+    } else {
+        [self addChildViewController:self.statsVC];
+        [self.view addSubview:self.statsVC.view];
+        [self.statsVC didMoveToParentViewController:self];
     }
-    
-    [self addChildViewController:self.statsVC];
-    [self.view addSubview:self.statsVC.view];
-    self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view pinSubviewToAllEdges:self.statsVC.view];
-    [self.statsVC didMoveToParentViewController:self];
 }
 
 
@@ -112,12 +124,18 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
-    self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
-
+    if (![Feature enabled:FeatureFlagStatsRefresh]) {
+        self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
+    }
+    
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
-        self.statsVC.oauth2Token = self.blog.account.authToken;
-        self.statsVC.siteID = self.blog.dotComID;
+        
+        if (![Feature enabled:FeatureFlagStatsRefresh]) {
+            self.statsVC.oauth2Token = self.blog.account.authToken;
+            self.statsVC.siteID = self.blog.dotComID;
+        }
+        
         [self addStatsViewControllerToView];
 
         return;
