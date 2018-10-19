@@ -48,7 +48,6 @@ class QuickStartChecklistViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         if dataSource?.shouldShowCongratulations() ?? false {
-            QuickStartTourGuide.find()?.visited(.congratulations)
             if let blog = blog {
                 QuickStartTourGuide.find()?.complete(tour: QuickStartCongratulationsTour(), for: blog)
             }
