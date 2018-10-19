@@ -237,7 +237,13 @@ private extension QuickStartTourGuide {
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
         WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
 
-        // TODO: put the competion code here
+        if allToursCompleted(for: blog) {
+            WPAnalytics.track(.quickStartAllToursCompleted)
+        }
+    }
+
+    func allToursCompleted(for blog: Blog) -> Bool {
+        return countChecklistCompleted(for: blog) >= QuickStartTourGuide.checklistTours.count
     }
 
     func showCurrentStep() {
