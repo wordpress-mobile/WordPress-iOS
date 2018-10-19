@@ -188,6 +188,8 @@ open class QuickStartTourGuide: NSObject {
             }
 
             whenSkipped()
+
+            WPAnalytics.track(.quickStartChecklistSkippedAll)
         }
         alertController.preferredAction = skipAction
 
