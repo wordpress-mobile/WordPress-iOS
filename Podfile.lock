@@ -200,12 +200,12 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.10.8)
-  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - DoubleConversion (from `Gutenberg/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.1.0)
   - GiphyCoreSDK (~> 1.4.0)
-  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - glog (from `Gutenberg/node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Gridicons (= 0.16)
   - HockeySDK (= 5.1.4)
   - lottie-ios (= 2.5.0)
@@ -218,18 +218,18 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
-  - React/Core (from `../node_modules/react-native`)
-  - React/CxxBridge (from `../node_modules/react-native`)
-  - React/cxxreact (from `../node_modules/react-native`)
-  - React/DevSupport (from `../node_modules/react-native`)
-  - React/jschelpers (from `../node_modules/react-native`)
-  - React/RCTActionSheet (from `../node_modules/react-native`)
-  - React/RCTAnimation (from `../node_modules/react-native`)
-  - React/RCTImage (from `../node_modules/react-native`)
-  - React/RCTNetwork (from `../node_modules/react-native`)
-  - React/RCTText (from `../node_modules/react-native`)
-  - React/RCTWebSocket (from `../node_modules/react-native`)
-  - RNSVG (from `../node_modules/react-native-svg/RNSVG.podspec`)
+  - React/Core (from `Gutenberg/node_modules/react-native`)
+  - React/CxxBridge (from `Gutenberg/node_modules/react-native`)
+  - React/cxxreact (from `Gutenberg/node_modules/react-native`)
+  - React/DevSupport (from `Gutenberg/node_modules/react-native`)
+  - React/jschelpers (from `Gutenberg/node_modules/react-native`)
+  - React/RCTActionSheet (from `Gutenberg/node_modules/react-native`)
+  - React/RCTAnimation (from `Gutenberg/node_modules/react-native`)
+  - React/RCTImage (from `Gutenberg/node_modules/react-native`)
+  - React/RCTNetwork (from `Gutenberg/node_modules/react-native`)
+  - React/RCTText (from `Gutenberg/node_modules/react-native`)
+  - React/RCTWebSocket (from `Gutenberg/node_modules/react-native`)
+  - RNSVG (from `Gutenberg/node_modules/react-native-svg/RNSVG.podspec`)
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
@@ -240,7 +240,7 @@ DEPENDENCIES:
   - WordPressUI (= 1.0.8)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
-  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+  - yoga (from `Gutenberg/node_modules/react-native/ReactCommon/yoga`)
   - ZendeskSDK (= 2.2.0)
 
 SPEC REPOS:
@@ -287,17 +287,17 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   DoubleConversion:
-    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+    :podspec: Gutenberg/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
   Folly:
-    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+    :podspec: Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec
   glog:
-    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+    :podspec: Gutenberg/node_modules/react-native/third-party-podspecs/glog.podspec
   React:
-    :path: "../node_modules/react-native"
+    :path: Gutenberg/node_modules/react-native
   RNSVG:
-    :podspec: "../node_modules/react-native-svg/RNSVG.podspec"
+    :podspec: Gutenberg/node_modules/react-native-svg/RNSVG.podspec
   yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga"
+    :path: Gutenberg/node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -349,6 +349,6 @@ SPEC CHECKSUMS:
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 89ef38468088e21fa5a83ef1152fc1cad7ad5ec9
+PODFILE CHECKSUM: 45598a3337ee48c50b1e846ae51bad4e5289dd86
 
 COCOAPODS: 1.5.3

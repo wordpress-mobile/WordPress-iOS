@@ -71,7 +71,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'React', path: '../node_modules/react-native', subspecs: [
+    pod 'React', path: 'Gutenberg/node_modules/react-native', subspecs: [
     'Core',
     'jschelpers',
     'cxxreact',
@@ -85,11 +85,11 @@ target 'WordPress' do
     'RCTWebSocket',
     ]
 
-    pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
-    pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-    pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-    pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
-    pod 'RNSVG', :podspec => '../node_modules/react-native-svg/RNSVG.podspec'
+    pod 'yoga', path: 'Gutenberg/node_modules/react-native/ReactCommon/yoga'
+    pod 'DoubleConversion', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+    pod 'Folly', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec'
+    pod 'glog', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/glog.podspec'
+    pod 'RNSVG', :podspec => 'Gutenberg/node_modules/react-native-svg/RNSVG.podspec'
     # pod 'RNAztec', :podspec => '../react-native-aztec/RNAztec.podspec'
 
     ## Third party libraries

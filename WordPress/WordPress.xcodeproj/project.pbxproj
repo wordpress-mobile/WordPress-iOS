@@ -575,9 +575,6 @@
 		7E3E7A6220E44E6A0075D159 /* BodyContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */; };
 		7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
 		7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
-		7E3E9B652177A49C00FD5797 /* RCTAztecViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B612177A49C00FD5797 /* RCTAztecViewManager.m */; };
-		7E3E9B662177A49C00FD5797 /* RCTAztecViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B632177A49C00FD5797 /* RCTAztecViewManager.swift */; };
-		7E3E9B672177A49C00FD5797 /* RCTAztecView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */; };
 		7E3E9B6B2177C66B00FD5797 /* BridgeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */; };
 		7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */; };
 		7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */; };
@@ -637,6 +634,9 @@
 		7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F592108122A00CAFB88 /* NotificationUtility.swift */; };
 		7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */; };
 		7EAD7CD0206D761200BEDCFD /* MediaExternalExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */; };
+		7EB52EE7217A5C0000A9D1AD /* RCTAztecViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EB52EE3217A5C0000A9D1AD /* RCTAztecViewManager.m */; };
+		7EB52EE8217A5C0000A9D1AD /* RCTAztecView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB52EE5217A5C0000A9D1AD /* RCTAztecView.swift */; };
+		7EB52EE9217A5C0000A9D1AD /* RCTAztecViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB52EE6217A5C0000A9D1AD /* RCTAztecViewManager.swift */; };
 		7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5824620EC41B200002702 /* NotificationContentFactory.swift */; };
 		7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB4125206C388100012D98 /* StockPhotosService.swift */; };
 		7ECD5B8120C4D823001AEBC5 /* MediaPreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */; };
@@ -2220,12 +2220,8 @@
 		7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContentGroup.swift; sourceTree = "<group>"; };
-		7E3E9B612177A49C00FD5797 /* RCTAztecViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTAztecViewManager.m; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.m"; sourceTree = "<group>"; };
-		7E3E9B622177A49C00FD5797 /* RCTAztecViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTAztecViewManager.h; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.h"; sourceTree = "<group>"; };
-		7E3E9B632177A49C00FD5797 /* RCTAztecViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecViewManager.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.swift"; sourceTree = "<group>"; };
-		7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecView.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/RCTAztecView.swift"; sourceTree = "<group>"; };
-		7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BridgeDelegate.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/BridgeDelegate.swift"; sourceTree = "<group>"; };
-		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaProvider.swift; path = "../../../../react-native-aztec/ios/RNTAztecView/MediaProvider.swift"; sourceTree = "<group>"; };
+		7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BridgeDelegate.swift; path = "../../react-native-aztec/ios/RNTAztecView/BridgeDelegate.swift"; sourceTree = "<group>"; };
+		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MediaProvider.swift; path = "../../react-native-aztec/ios/RNTAztecView/MediaProvider.swift"; sourceTree = "<group>"; };
 		7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergController.swift; sourceTree = "<group>"; };
 		7E3E9B752178BB8000FD5797 /* GutenbergBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergBridge.swift; sourceTree = "<group>"; };
 		7E3E9B782178EBBD00FD5797 /* GBPostManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GBPostManager.m; sourceTree = "<group>"; };
@@ -2283,6 +2279,10 @@
 		7E987F592108122A00CAFB88 /* NotificationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtility.swift; sourceTree = "<group>"; };
 		7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManagerType.swift; sourceTree = "<group>"; };
 		7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExternalExporter.swift; sourceTree = "<group>"; };
+		7EB52EE3217A5C0000A9D1AD /* RCTAztecViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTAztecViewManager.m; path = "../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.m"; sourceTree = "<group>"; };
+		7EB52EE4217A5C0000A9D1AD /* RCTAztecViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTAztecViewManager.h; path = "../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.h"; sourceTree = "<group>"; };
+		7EB52EE5217A5C0000A9D1AD /* RCTAztecView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecView.swift; path = "../../react-native-aztec/ios/RNTAztecView/RCTAztecView.swift"; sourceTree = "<group>"; };
+		7EB52EE6217A5C0000A9D1AD /* RCTAztecViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RCTAztecViewManager.swift; path = "../../react-native-aztec/ios/RNTAztecView/RCTAztecViewManager.swift"; sourceTree = "<group>"; };
 		7EB5824620EC41B200002702 /* NotificationContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentFactory.swift; sourceTree = "<group>"; };
 		7EBB4125206C388100012D98 /* StockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosService.swift; sourceTree = "<group>"; };
 		7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewHelper.swift; sourceTree = "<group>"; };
@@ -4819,26 +4819,27 @@
 		7E3E9B5F2177A44400FD5797 /* RN */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
-				7E3E9B602177A44E00FD5797 /* RNAztec */,
+				7E3E9B6E2177C9C300FD5797 /* Gutenberg-internal */,
+				7E3E9B602177A44E00FD5797 /* gutenberg */,
 			);
 			path = RN;
 			sourceTree = "<group>";
 		};
-		7E3E9B602177A44E00FD5797 /* RNAztec */ = {
+		7E3E9B602177A44E00FD5797 /* gutenberg */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B642177A49C00FD5797 /* RCTAztecView.swift */,
-				7E3E9B622177A49C00FD5797 /* RCTAztecViewManager.h */,
-				7E3E9B612177A49C00FD5797 /* RCTAztecViewManager.m */,
-				7E3E9B632177A49C00FD5797 /* RCTAztecViewManager.swift */,
 				7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */,
 				7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */,
+				7EB52EE5217A5C0000A9D1AD /* RCTAztecView.swift */,
+				7EB52EE4217A5C0000A9D1AD /* RCTAztecViewManager.h */,
+				7EB52EE3217A5C0000A9D1AD /* RCTAztecViewManager.m */,
+				7EB52EE6217A5C0000A9D1AD /* RCTAztecViewManager.swift */,
 			);
-			path = RNAztec;
+			name = gutenberg;
+			path = ../../Gutenberg/ios/gutenberg;
 			sourceTree = "<group>";
 		};
-		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
+		7E3E9B6E2177C9C300FD5797 /* Gutenberg-internal */ = {
 			isa = PBXGroup;
 			children = (
 				7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */,
@@ -4846,7 +4847,7 @@
 				7E3E9B752178BB8000FD5797 /* GutenbergBridge.swift */,
 				7E3E9B782178EBBD00FD5797 /* GBPostManager.m */,
 			);
-			path = Gutenberg;
+			path = "Gutenberg-internal";
 			sourceTree = "<group>";
 		};
 		7E4123AB20F4096200DF8486 /* FormattableContent */ = {
@@ -8259,7 +8260,6 @@
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
 				17BD4A0820F76A4700975AC3 /* Routes+Banners.swift in Sources */,
-				7E3E9B652177A49C00FD5797 /* RCTAztecViewManager.m in Sources */,
 				1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */,
 				4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
@@ -8270,6 +8270,7 @@
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */,
 				E62AFB6C1DC8E593007484FC /* WPRichTextFormatter.swift in Sources */,
+				7EB52EE9217A5C0000A9D1AD /* RCTAztecViewManager.swift in Sources */,
 				74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
@@ -8512,6 +8513,7 @@
 				E62AFB6A1DC8E593007484FC /* NSAttributedString+WPRichText.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
+				7EB52EE7217A5C0000A9D1AD /* RCTAztecViewManager.m in Sources */,
 				E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */,
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
@@ -8540,7 +8542,6 @@
 				D858F30320E201F4007E8A1C /* EditComment.swift in Sources */,
 				B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
-				7E3E9B672177A49C00FD5797 /* RCTAztecView.swift in Sources */,
 				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
@@ -8592,6 +8593,7 @@
 				7360018F20A265C7001E5E31 /* String+Files.swift in Sources */,
 				FF70A3231FD5840500BC270D /* UIImage+Export.swift in Sources */,
 				D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */,
+				7EB52EE8217A5C0000A9D1AD /* RCTAztecView.swift in Sources */,
 				B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */,
 				B55F1AA81C10936600FD04D4 /* BlogSettings+Discussion.swift in Sources */,
 				E155EC721E9B7DCE009D7F63 /* PostTagPickerViewController.swift in Sources */,
@@ -8868,7 +8870,6 @@
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
 				D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */,
 				98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */,
-				7E3E9B662177A49C00FD5797 /* RCTAztecViewManager.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				177B4C2B2123185300CF8084 /* GiphyMediaGroup.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
