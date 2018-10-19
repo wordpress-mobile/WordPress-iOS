@@ -14,29 +14,31 @@
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" rowHeight="66" id="w4N-CY-adj" customClass="QuickStartSkipAllCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w4N-CY-adj" id="crU-RO-lSU">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w4N-CY-adj" id="crU-RO-lSU">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="65.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTB-5D-J8N">
-                        <rect key="frame" x="137.5" y="10.5" width="100" height="40"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MzC-qL-Gp9">
+                        <rect key="frame" x="20" y="20" width="335" height="25.5"/>
                         <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="UzW-0p-dpI"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="qFD-2Y-ROU"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="9Xs-of-cZu"/>
                         </constraints>
-                        <state key="normal" title="Button"/>
-                        <connections>
-                            <action selector="tapped" destination="w4N-CY-adj" eventType="touchUpInside" id="Ko8-p1-aAS"/>
-                        </connections>
-                    </button>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                        <color key="textColor" red="0.0" green="0.52941176470588236" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="XTB-5D-J8N" secondAttribute="bottom" constant="22" id="L6z-e1-Qub"/>
-                    <constraint firstItem="XTB-5D-J8N" firstAttribute="top" secondItem="crU-RO-lSU" secondAttribute="top" constant="10" id="TsN-Fq-aYJ"/>
-                    <constraint firstItem="XTB-5D-J8N" firstAttribute="centerX" secondItem="crU-RO-lSU" secondAttribute="centerX" id="rWR-CR-iNA"/>
+                    <constraint firstItem="MzC-qL-Gp9" firstAttribute="top" secondItem="crU-RO-lSU" secondAttribute="top" constant="20" id="O4P-aw-ptR"/>
+                    <constraint firstItem="MzC-qL-Gp9" firstAttribute="leading" secondItem="crU-RO-lSU" secondAttribute="leading" constant="20" id="qAt-o2-zjA"/>
+                    <constraint firstAttribute="trailing" secondItem="MzC-qL-Gp9" secondAttribute="trailing" constant="20" id="tFo-Ga-nse"/>
+                    <constraint firstAttribute="bottom" secondItem="MzC-qL-Gp9" secondAttribute="bottom" constant="20" id="yc7-rA-KdO"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="skipAllLabel" destination="MzC-qL-Gp9" id="QHe-zh-M5C"/>
+            </connections>
             <point key="canvasLocation" x="232.80000000000001" y="121.4392803598201"/>
         </tableViewCell>
     </objects>

@@ -15,10 +15,7 @@ open class QuickStartTourGuide: NSObject {
         }
         return tourGuide
     }
-}
 
-/// The API
-internal extension QuickStartTourGuide {
     func setup(for blog: Blog) {
         let createTour = QuickStartCreateTour()
         completed(tourID: createTour.key, for: blog)
@@ -144,6 +141,17 @@ internal extension QuickStartTourGuide {
         }
 
         showCurrentStep()
+    }
+
+    func skipAll(for blog: Blog) {
+        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+        let completedIDs = completedTours.map { $0.tourID }
+
+        for tour in QuickStartTourGuide.checklistTours {
+            if !completedIDs.contains(tour.key) {
+                blog.completeTour(tour.key)
+            }
+        }
     }
 
     func endCurrentTour() {
