@@ -161,7 +161,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         case .checklistItems:
             return QuickStartTourGuide.checklistTours.count
         case .skipAll:
-            return 1
+            return shouldShowCongratulations() ? 0 : 1
         }
     }
 
