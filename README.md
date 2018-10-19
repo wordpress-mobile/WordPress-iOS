@@ -1,12 +1,13 @@
 # WordPress for iOS #
 
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=57a120bbe0f5520100e11c19&branch=develop&build=latest)](https://dashboard.buddybuild.com/apps/57a120bbe0f5520100e11c19/build/latest)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 ## Build Instructions
 
 ### Download Xcode
 
-At the moment *WordPress for iOS requires Swift 4.0 and Xcode 9.3 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+At the moment *WordPress for iOS* uses Swift 4.2 and requires Xcode 10 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
 
 ### Third party tools
 
