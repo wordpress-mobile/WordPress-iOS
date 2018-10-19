@@ -21,25 +21,15 @@ end
 ## Pods shared between all the targets
 ## ===================================
 ##
-def shared_with_all_pods
-    pod 'WordPressShared', '1.2.0-beta.1'
-    pod 'CocoaLumberjack', '3.4.2'
-    pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
-    pod 'NSObject-SafeExpectations', '0.0.3'
-    pod 'UIDeviceIdentifier', '~> 0.4'
-end
+def wordpress_shared
+    ## for production:
+    pod 'WordPressShared', '1.2.0-beta.2'
 
-def shared_with_networking_pods
-    pod 'AFNetworking', '3.2.1'
-    pod 'Alamofire', '4.7.3'
-    pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.2-beta.3'
-end
+    ## for development:
+    ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
-def shared_test_pods
-    pod 'OHHTTPStubs', '6.1.0'
-    pod 'OHHTTPStubs/Swift', '6.1.0'
-    pod 'OCMock', '~> 3.4'
+    ## while PR is in review:
+    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '35c81ae4c75bb36455d49c7d4b495d22fb7871e3'
 end
 
 def aztec
@@ -57,6 +47,27 @@ def wordpress_ui
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
     ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '5ec2be1533a86335710221ec20df5b4ba78b06e4'
+end
+
+def shared_with_all_pods
+    wordpress_shared
+    pod 'CocoaLumberjack', '3.4.2'
+    pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
+    pod 'NSObject-SafeExpectations', '0.0.3'
+    pod 'UIDeviceIdentifier', '~> 0.4'
+end
+
+def shared_with_networking_pods
+    pod 'AFNetworking', '3.2.1'
+    pod 'Alamofire', '4.7.3'
+    pod 'wpxmlrpc', '0.8.3'
+    pod 'WordPressKit', '1.4.2-beta.4'
+end
+
+def shared_test_pods
+    pod 'OHHTTPStubs', '6.1.0'
+    pod 'OHHTTPStubs/Swift', '6.1.0'
+    pod 'OCMock', '~> 3.4'
 end
 
 ## WordPress iOS
@@ -157,8 +168,8 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressKit', '1.4.2-beta.3'
-    pod 'WordPressShared', '1.2.0-beta.1'
+    pod 'WordPressKit', '1.4.2-beta.4'
+    wordpress_shared
     wordpress_ui
 end
 
@@ -173,8 +184,8 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.2-beta.3'
-    pod 'WordPressShared', '1.2.0-beta.1'
+    pod 'WordPressKit', '1.4.2-beta.4'
+    wordpress_shared
 
     wordpress_ui
 end
