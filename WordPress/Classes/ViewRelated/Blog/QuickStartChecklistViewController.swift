@@ -44,6 +44,17 @@ class QuickStartChecklistViewController: UITableViewController {
         dataSource = QuickStartChecklistDataSource(blog: blog)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if dataSource?.shouldShowCongratulations() ?? false {
+            QuickStartTourGuide.find()?.visited(.congratulations)
+            if let blog = blog {
+                QuickStartTourGuide.find()?.complete(tour: QuickStartCongratulationsTour(), for: blog)
+            }
+        }
+    }
+
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if let section = Sections(rawValue: indexPath.section) {
             switch section {

@@ -23,7 +23,13 @@ open class QuickStartTourGuide: NSObject {
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
         let checklistCompletedCount = countChecklistCompleted(for: blog)
-        return checklistCompletedCount > 0 && checklistCompletedCount < QuickStartTourGuide.checklistTours.count
+        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
+
+        let quickStartIsEnabled = checklistCompletedCount > 0
+        let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
+        let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
+
+        return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
     }
 
     @objc func detailString(for blog: Blog) -> String {
@@ -111,6 +117,10 @@ open class QuickStartTourGuide: NSObject {
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         }
+    }
+
+    func complete(tour: QuickStartTour, for blog: Blog) {
+        completed(tourID: tour.key, for: blog)
     }
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
@@ -311,6 +321,7 @@ public enum QuickStartTourElement: Int {
     case readerBack
     case readerSearch
     case tourCompleted
+    case congratulations
 }
 
 private struct TourState {
