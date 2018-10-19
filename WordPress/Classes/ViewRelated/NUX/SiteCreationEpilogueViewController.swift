@@ -82,6 +82,8 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = tabBar
         tabBar.present(fancyAlert, animated: true, completion: nil)
+
+        WPAnalytics.track(.quickStartRequestAlertViewed)
     }
 }
 

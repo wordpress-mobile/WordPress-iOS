@@ -18,7 +18,7 @@ open class QuickStartTourGuide: NSObject {
 
     func setup(for blog: Blog) {
         let createTour = QuickStartCreateTour()
-        completed(tourID: createTour.key, for: blog)
+        completed(tour: createTour, for: blog)
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
@@ -96,13 +96,17 @@ open class QuickStartTourGuide: NSObject {
                                 if accepted {
                                     self?.start(tour: tour, for: blog)
                                     cancelTimer(false)
+                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "positive"])
                                 } else {
                                     self?.skipped(tour, for: blog)
                                     cancelTimer(true)
+                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "negative"])
                                 }
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        WPAnalytics.track(.quickStartSuggestionViewed)
     }
 
     func start(tour: QuickStartTour, for blog: Blog) {
@@ -148,7 +152,7 @@ open class QuickStartTourGuide: NSObject {
         dismissCurrentNotice()
 
         guard let nextStep = getNextStep() else {
-            completed(tourID: tourState.tour.key, for: tourState.blog)
+            completed(tour: tourState.tour, for: tourState.blog)
             currentTourState = nil
 
             // TODO: we could put a nice animation here
@@ -227,10 +231,13 @@ private extension QuickStartTourGuide {
         return completedTours.count > 0
     }
 
-    func completed(tourID: String, for blog: Blog) {
-        blog.completeTour(tourID)
+    func completed(tour: QuickStartTour, for blog: Blog) {
+        blog.completeTour(tour.key)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+        WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+
+        // TODO: put the competion code here
     }
 
     func showCurrentStep() {
