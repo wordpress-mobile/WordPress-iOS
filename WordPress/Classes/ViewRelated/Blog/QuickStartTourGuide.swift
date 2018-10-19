@@ -21,6 +21,12 @@ open class QuickStartTourGuide: NSObject {
         completed(tourID: createTour.key, for: blog)
     }
 
+    @objc func detailString(for blog: Blog) -> String {
+        let completedCount = countChecklistCompleted(for: blog)
+        let totalCount = QuickStartTourGuide.checklistTours.count
+        return "\(completedCount)/\(totalCount)"
+    }
+
     /// Provides a tour to suggest to the user
     ///
     /// - Parameter blog: The Blog for which to suggest a tour.
@@ -199,6 +205,13 @@ private extension QuickStartTourGuide {
         blog.completeTour(tourID)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+    }
+
+    func countChecklistCompleted(for blog: Blog) -> Int {
+        let completedTours = blog.completedQuickStartTours ?? []
+        let filteredTourIDs = completedTours.filter {$0.tourID != QuickStartChecklistTour().key }.map { $0.tourID }
+        let completedSet = Set(filteredTourIDs)
+        return completedSet.count
     }
 
     func showCurrentStep() {
