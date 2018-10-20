@@ -547,11 +547,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([self shouldShowQuickStartChecklist]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+                                                         identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                            callback:^{
                                                                [weakSelf showQuickStart];
                                                            }];
         row.quickStartIdentifier = QuickStartTourElementChecklist;
+
+        row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
         [rows addObject:row];
     }
 

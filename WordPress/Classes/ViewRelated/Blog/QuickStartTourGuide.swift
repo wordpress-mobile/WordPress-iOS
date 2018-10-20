@@ -15,13 +15,27 @@ open class QuickStartTourGuide: NSObject {
         }
         return tourGuide
     }
-}
 
-/// The API
-internal extension QuickStartTourGuide {
     func setup(for blog: Blog) {
         let createTour = QuickStartCreateTour()
-        completed(tourID: createTour.key, for: blog)
+        completed(tour: createTour, for: blog)
+    }
+
+    @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
+        let checklistCompletedCount = countChecklistCompleted(for: blog)
+        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
+
+        let quickStartIsEnabled = checklistCompletedCount > 0
+        let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
+        let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
+
+        return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
+    }
+
+    @objc func detailString(for blog: Blog) -> String {
+        let completedCount = countChecklistCompleted(for: blog)
+        let totalCount = QuickStartTourGuide.checklistTours.count
+        return "\(completedCount)/\(totalCount)"
     }
 
     /// Provides a tour to suggest to the user
@@ -82,13 +96,17 @@ internal extension QuickStartTourGuide {
                                 if accepted {
                                     self?.start(tour: tour, for: blog)
                                     cancelTimer(false)
+                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "positive"])
                                 } else {
                                     self?.skipped(tour, for: blog)
                                     cancelTimer(true)
+                                    WPAnalytics.track(.quickStartSuggestionButtonTapped, withProperties: ["type": "negative"])
                                 }
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+        WPAnalytics.track(.quickStartSuggestionViewed)
     }
 
     func start(tour: QuickStartTour, for blog: Blog) {
@@ -103,6 +121,10 @@ internal extension QuickStartTourGuide {
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         }
+    }
+
+    func complete(tour: QuickStartTour, for blog: Blog) {
+        completed(tour: tour, for: blog)
     }
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
@@ -130,7 +152,7 @@ internal extension QuickStartTourGuide {
         dismissCurrentNotice()
 
         guard let nextStep = getNextStep() else {
-            completed(tourID: tourState.tour.key, for: tourState.blog)
+            completed(tour: tourState.tour, for: tourState.blog)
             currentTourState = nil
 
             // TODO: we could put a nice animation here
@@ -144,6 +166,45 @@ internal extension QuickStartTourGuide {
         }
 
         showCurrentStep()
+    }
+
+    func skipAll(for blog: Blog, whenSkipped: @escaping () -> Void) {
+        let title = NSLocalizedString("Skip Quick Start", comment: "Title shown in alert to confirm skipping all quick start items")
+        let message = NSLocalizedString("The quick start tour will guide you through building a basic site. Are you sure you want to skip? ",
+                                            comment: "Description shown in alert to confirm skipping all quick start items")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when cancelling alert in quick start"))
+
+        let skipAction = alertController.addDefaultActionWithTitle(NSLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
+            let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+            let completedIDs = completedTours.map { $0.tourID }
+
+            for tour in QuickStartTourGuide.checklistTours {
+                if !completedIDs.contains(tour.key) {
+                    blog.completeTour(tour.key)
+                }
+            }
+
+            whenSkipped()
+
+            WPAnalytics.track(.quickStartChecklistSkippedAll)
+        }
+        alertController.preferredAction = skipAction
+
+        WPTabBarController.sharedInstance()?.present(alertController, animated: true)
+    }
+
+    static func countChecklistCompleted(for blog: Blog) -> Int {
+        let allChecklistTourIDs =  QuickStartTourGuide.checklistTours.map { $0.key }
+        let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
+        let filteredIDs = allChecklistTourIDs.filter { completedTourIDs.contains($0) }
+        return Set(filteredIDs).count
+    }
+
+    func countChecklistCompleted(for blog: Blog) -> Int {
+        return QuickStartTourGuide.countChecklistCompleted(for: blog)
     }
 
     func endCurrentTour() {
@@ -172,10 +233,31 @@ private extension QuickStartTourGuide {
         return completedTours.count > 0
     }
 
-    func completed(tourID: String, for blog: Blog) {
-        blog.completeTour(tourID)
+    func completed(tour: QuickStartTour, for blog: Blog) {
+        let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
+        guard !completedTourIDs.contains(tour.key) else {
+            return
+        }
+
+        blog.completeTour(tour.key)
 
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+
+        guard !(tour is QuickStartCongratulationsTour) else {
+            WPAnalytics.track(.quickStartCongratulationsViewed)
+            return
+        }
+
+        WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+
+        if allToursCompleted(for: blog) {
+            WPAnalytics.track(.quickStartAllToursCompleted)
+            grantCongratulationsAward(for: blog)
+        }
+    }
+
+    func allToursCompleted(for blog: Blog) -> Bool {
+        return countChecklistCompleted(for: blog) >= QuickStartTourGuide.checklistTours.count
     }
 
     func showCurrentStep() {
@@ -242,9 +324,14 @@ private extension QuickStartTourGuide {
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }
 
+    private func grantCongratulationsAward(for blog: Blog) {
+        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.markQuickStartChecklistAsComplete(for: blog)
+    }
+
     private struct Constants {
         static let maxSkippedTours = 3
-        static let suggestionTimeout = 3.0
+        static let suggestionTimeout = 10.0
     }
 }
 
@@ -266,6 +353,7 @@ public enum QuickStartTourElement: Int {
     case readerBack
     case readerSearch
     case tourCompleted
+    case congratulations
 }
 
 private struct TourState {
