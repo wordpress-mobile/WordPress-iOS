@@ -17,6 +17,7 @@ extension FancyAlertViewController {
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
     @objc static func makeQuickStartAlertController(blog: Blog) -> FancyAlertViewController {
+        WPAnalytics.track(.quickStartRequestAlertViewed)
 
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             controller.dismiss(animated: true)
@@ -26,15 +27,21 @@ extension FancyAlertViewController {
             }
 
             tourGuide.setup(for: blog)
+
+            WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "positive"])
         }
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
             controller.dismiss(animated: true)
+
+            WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "neutral"])
         }
 
         let neverButton = ButtonConfig(Strings.neverText) { controller, _ in
             UserDefaults.standard.quickStartWasDismissedPermanently = true
             controller.dismiss(animated: true)
+
+            WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "negative"])
         }
 
         let image = UIImage(named: "wp-illustration-checklist")
