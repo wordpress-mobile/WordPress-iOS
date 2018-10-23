@@ -4819,13 +4819,13 @@
 		7E3E9B5F2177A44400FD5797 /* RN */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B6E2177C9C300FD5797 /* Gutenberg-internal */,
-				7E3E9B602177A44E00FD5797 /* gutenberg */,
+				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
+				7E3E9B602177A44E00FD5797 /* react-native-aztec */,
 			);
 			path = RN;
 			sourceTree = "<group>";
 		};
-		7E3E9B602177A44E00FD5797 /* gutenberg */ = {
+		7E3E9B602177A44E00FD5797 /* react-native-aztec */ = {
 			isa = PBXGroup;
 			children = (
 				7E3E9B6A2177C66B00FD5797 /* BridgeDelegate.swift */,
@@ -4835,11 +4835,11 @@
 				7EB52EE3217A5C0000A9D1AD /* RCTAztecViewManager.m */,
 				7EB52EE6217A5C0000A9D1AD /* RCTAztecViewManager.swift */,
 			);
-			name = gutenberg;
-			path = ../../Gutenberg/ios/gutenberg;
+			name = "react-native-aztec";
+			path = "../../Gutenberg/ios/react-native-aztec";
 			sourceTree = "<group>";
 		};
-		7E3E9B6E2177C9C300FD5797 /* Gutenberg-internal */ = {
+		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
 			isa = PBXGroup;
 			children = (
 				7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */,
@@ -4847,7 +4847,7 @@
 				7E3E9B752178BB8000FD5797 /* GutenbergBridge.swift */,
 				7E3E9B782178EBBD00FD5797 /* GBPostManager.m */,
 			);
-			path = "Gutenberg-internal";
+			path = Gutenberg;
 			sourceTree = "<group>";
 		};
 		7E4123AB20F4096200DF8486 /* FormattableContent */ = {

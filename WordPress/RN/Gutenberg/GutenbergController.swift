@@ -16,7 +16,7 @@ class GutenbergController: UIViewController, PostEditor {
         self.post = post
         super.init(nibName: nil, bundle: nil)
 
-        GutenbergBridge.shared.postManager.post = post
+        GutenbergBridge.shared.mediaProvider.post = post
         GutenbergBridge.shared.postManager.delegate = self
     }
 
@@ -47,14 +47,25 @@ class GutenbergController: UIViewController, PostEditor {
     }
 
     private func close(didSave: Bool) {
-        GutenbergBridge.shared.postManager.post = nil
+        GutenbergBridge.shared.mediaProvider.post = nil
         GutenbergBridge.shared.postManager.delegate = nil
         onClose?(didSave, false)
     }
 }
 
 extension GutenbergController: GBPostManagerDelegate {
-    func postManagerDidSave(post: Post) {
-        close(didSave: true)
+    func closeButtonPressed() {
+        close(didSave: false)
+    }
+
+    func saveButtonPressed(with content: String) {
+        guard let post = post as? Post else {
+            return
+        }
+        post.content = content
+        PostCoordinator.shared.save(post: post)
+        DispatchQueue.main.async { [weak self] in
+            self?.close(didSave: true)
+        }
     }
 }

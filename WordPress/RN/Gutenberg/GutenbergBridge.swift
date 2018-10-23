@@ -5,6 +5,7 @@ import React
 class GutenbergBridge {
     let rnBridge: RCTBridge
     let postManager: GBPostManager
+    let mediaProvider: MediaProvider
 
     static var shared: GutenbergBridge {
         guard let bridge = _shared else {
@@ -24,6 +25,7 @@ class GutenbergBridge {
     private init(options launchOptions: [AnyHashable: Any]?) {
         let bDelegate = bridgeDelegate
         postManager = bDelegate.postManager
+        mediaProvider = bDelegate.mediaProvider
 
         rnBridge = RCTBridge(delegate: bDelegate, launchOptions: launchOptions)
     }
