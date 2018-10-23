@@ -61,7 +61,9 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.2'
+    # pod 'WordPressKit', '1.4.2'
+    ## while PR is in review:
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ca19d70efdc317b1f560e984713d8633167986f6'
 end
 
 def shared_test_pods
@@ -168,7 +170,10 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressKit', '1.4.2'
+    # pod 'WordPressKit', '1.4.2'
+    ## while PR is in review:
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ca19d70efdc317b1f560e984713d8633167986f6'
+
     wordpress_shared
     wordpress_ui
 end
@@ -184,7 +189,10 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.2'
+    # pod 'WordPressKit', '1.4.2'
+    ## while PR is in review:
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ca19d70efdc317b1f560e984713d8633167986f6'
+
     wordpress_shared
 
     wordpress_ui
