@@ -6,7 +6,7 @@ class MyProfileHeaderView: WPTableViewCell {
     @IBOutlet var gravatarButton: UIButton!
 
     var onAddUpdatePhoto: (() -> Void)?
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    let activityIndicator = UIActivityIndicatorView(style: .white)
     var showsActivityIndicator: Bool {
         get {
             return activityIndicator.isAnimating
@@ -27,7 +27,7 @@ class MyProfileHeaderView: WPTableViewCell {
         }
     }
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 

@@ -65,7 +65,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
 
         let context = ContextManager.sharedInstance().mainContext
 
@@ -139,7 +140,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.isAccessibilityElement = true
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = type(of: self).postCardEstimatedRowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
 
         let bundle = Bundle.main
 
@@ -223,7 +224,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
                                                           gravatarEmail: blog.account?.email) { [weak self] filter in
                                                             if filter != self?.filterSettings.currentPostAuthorFilter() {
-                                                                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, sender)
+                                                                UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: sender)
                                                             }
 
                                                             self?.filterSettings.setCurrentPostAuthorFilter(filter)
@@ -554,6 +555,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.willPresentSearchController(searchController)
 
         self.filterTabBar.alpha = WPAlphaZero
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+
         filterTabBarBottomConstraint.isActive = false
         tableViewTopConstraint.isActive = true
     }
@@ -570,12 +576,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
 
-        tableViewTopConstraint.isActive = false
-        filterTabBarBottomConstraint.isActive = true
-
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull
         }
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
+
     }
 
     enum Animations {
@@ -595,12 +606,16 @@ private extension PostListViewController {
             return
         }
 
-        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+        if isSearching() {
+            noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+        } else {
+            let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
-                                          image: noResultsImageName,
-                                          accessoryView: accessoryView)
+            noResultsViewController.configure(title: noResultsTitle(),
+                                              buttonTitle: noResultsButtonTitle(),
+                                              image: noResultsImageName,
+                                              accessoryView: accessoryView)
+        }
     }
 
     var noResultsImageName: String {

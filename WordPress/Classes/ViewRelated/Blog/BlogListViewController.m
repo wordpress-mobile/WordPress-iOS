@@ -1,20 +1,6 @@
 #import "BlogListViewController.h"
-#import "WordPressAppDelegate.h"
-#import "BlogDetailsViewController.h"
-#import "WPBlogTableViewCell.h"
-#import "ContextManager.h"
-#import "Blog.h"
-#import "WPAccount.h"
-#import "AccountService.h"
-#import "BlogService.h"
-#import "TodayExtensionService.h"
-#import "WPTabBarController.h"
-#import "WordPress-Swift.h"
-#import "WPGUIConstants.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPTableViewCell.h>
-#import <WordPressUI/WordPressUI.h>
 
+#import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
@@ -286,7 +272,7 @@ static NSInteger HideSearchMinSites = 3;
                                                  buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
                                                     subtitle:nil
                                           attributedSubtitle:nil
-                                                       image:nil
+                                                       image:@"mysites-nosites"
                                                subtitleImage:nil
                                                accessoryView:nil];
         [self addNoResultsToView];
@@ -306,13 +292,14 @@ static NSInteger HideSearchMinSites = 3;
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
     
     NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
-    
+    NSString *imageName = @"mysites-nosites";
+
     if (count == 1) {
         [self.noResultsViewController configureWithTitle:singularTitle
                                              buttonTitle:buttonTitle
                                                 subtitle:singularSubtitle
                                       attributedSubtitle:nil
-                                                   image:nil
+                                                   image:imageName
                                            subtitleImage:nil
                                            accessoryView:nil];
     } else {
@@ -320,7 +307,7 @@ static NSInteger HideSearchMinSites = 3;
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
                                       attributedSubtitle:nil
-                                                   image:nil
+                                                   image:imageName
                                            subtitleImage:nil
                                            accessoryView:nil];
     }

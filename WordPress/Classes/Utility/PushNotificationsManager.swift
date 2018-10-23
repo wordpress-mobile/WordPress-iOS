@@ -50,7 +50,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
-    @objc var applicationState: UIApplicationState {
+    @objc var applicationState: UIApplication.State {
         return sharedApplication.applicationState
     }
 

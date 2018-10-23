@@ -83,12 +83,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
-            assertionFailure()
-            return
-        }
-
-        footerView = footer
+        footerView = tableConfiguration.footer()
         footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
@@ -168,7 +163,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
 
     override public func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -310,7 +305,7 @@ private extension ReaderSavedPostsViewController {
 
     func displayNoResultsView() {
         configureNoResultsText()
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.frame = tableView.frame
 
@@ -318,7 +313,7 @@ private extension ReaderSavedPostsViewController {
         // So adjust the NRV accordingly.
         noResultsViewController.view.frame.origin.y -= tableView.frame.origin.y
 
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func configureNoResultsText() {
@@ -332,7 +327,7 @@ private extension ReaderSavedPostsViewController {
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
         messageText.replace("[bookmark-outline]", with: icon)
 
-        noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText, image: "wp-illustration-empty-results")
+        noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText)
         noResultsViewController.view.accessibilityLabel = NoResultsText.accessibilityLabel
     }
 

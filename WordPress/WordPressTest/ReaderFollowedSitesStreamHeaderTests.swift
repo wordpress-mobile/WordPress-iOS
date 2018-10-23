@@ -7,7 +7,7 @@ final class ReaderFollowedSitesStreamHeaderTests: XCTestCase {
     private struct TestConstants {
         static let label = "Manage"
         static let hint = "Tapping lets you manage the sites you follow."
-        static let traits = UIAccessibilityTraitButton
+        static let traits = UIAccessibilityTraits.button
     }
 
     override func setUp() {

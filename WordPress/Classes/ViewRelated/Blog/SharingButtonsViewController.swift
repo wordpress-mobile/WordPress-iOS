@@ -779,12 +779,14 @@ import WordPressShared
     }
 
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView,
+                            numberOfRowsInSection section: Int) -> Int {
         return sections[section].rows.count
     }
 
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
 
         let cell = tableView.dequeueReusableCell(withIdentifier: row.cellIdentifier)!
@@ -795,27 +797,34 @@ import WordPressShared
     }
 
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView,
+                            titleForHeaderInSection section: Int) -> String? {
         return sections[section].headerText
     }
 
 
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView,
+                            willDisplayHeaderView view: UIView,
+                            forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView,
+                            titleForFooterInSection section: Int) -> String? {
         return sections[section].footerText
     }
 
 
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView,
+                            willDisplayFooterView view: UIView,
+                            forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
         let row = sections[indexPath.section].rows[indexPath.row]
         if row.cellIdentifier != SharingCellIdentifiers.SettingsCellIdentifier {
             tableView.deselectRow(at: indexPath, animated: true)
@@ -840,7 +849,7 @@ import WordPressShared
 
     // The table view is in editing mode, but no cells should show the delete button,
     // only the move icon.
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
 

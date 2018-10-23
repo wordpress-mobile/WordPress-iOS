@@ -9,7 +9,7 @@ extension NSMutableAttributedString {
     ///     - pattern: A Regex pattern that should be used to look up for matches
     ///     - styles: Collection of styles to be applied on the matched strings
     ///
-    @objc public func applyStylesToMatchesWithPattern(_ pattern: String, styles: [NSAttributedStringKey: Any]) {
+    @objc public func applyStylesToMatchesWithPattern(_ pattern: String, styles: [NSAttributedString.Key: Any]) {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: .dotMatchesLineSeparators)
             let range = NSRange(location: 0, length: length)
@@ -36,7 +36,7 @@ extension NSMutableAttributedString {
             return
         }
 
-        let font = attribute(NSAttributedStringKey.font, at: range.location, effectiveRange: nil) as? UIFont
+        let font = attribute(NSAttributedString.Key.font, at: range.location, effectiveRange: nil) as? UIFont
         let capHeight = font?.capHeight ?? 0
 
         let attachment = NSTextAttachment()

@@ -30,8 +30,8 @@ class BadgeLabel: UILabel {
     // MARK: Padding
 
     override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsetsMake(0, horizontalPadding, 0, horizontalPadding)
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
+        let insets = UIEdgeInsets.init(top: 0, left: horizontalPadding, bottom: 0, right: horizontalPadding)
+        super.drawText(in: rect.inset(by: insets))
     }
 
     override var intrinsicContentSize: CGSize {

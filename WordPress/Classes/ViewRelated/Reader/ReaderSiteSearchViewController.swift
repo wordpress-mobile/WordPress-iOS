@@ -46,7 +46,8 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
     private static let restorationClassIdentifier = "ReaderSiteSearchRestorationIdentifier"
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return ReaderSiteSearchViewController()
     }
 
@@ -236,13 +237,13 @@ private extension ReaderSiteSearchViewController {
                                    subtitle: String? = nil,
                                    accessoryView: UIView? = nil) {
 
-        statusViewController.configure(title: title, subtitle: subtitle, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        statusViewController.configure(title: title, subtitle: subtitle, accessoryView: accessoryView)
         showStatusView()
     }
 
     func showStatusView() {
         hideStatusView()
-        addChildViewController(statusViewController)
+        addChild(statusViewController)
         tableView.addSubview(withFadeAnimation: statusViewController.view)
         statusViewController.view.frame = tableView.frame
 
@@ -250,7 +251,7 @@ private extension ReaderSiteSearchViewController {
         // So adjust the NRV accordingly.
         statusViewController.view.frame.origin.y -= tableView.frame.origin.y
 
-        statusViewController.didMove(toParentViewController: self)
+        statusViewController.didMove(toParent: self)
     }
 
     func hideStatusView() {
@@ -355,7 +356,7 @@ protocol ReaderSiteSearchFooterViewDelegate: class {
 
 class ReaderSiteSearchFooterView: UIView {
     private let divider = UIView()
-    private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    private let activityIndicator = UIActivityIndicatorView(style: .gray)
     weak var delegate: ReaderSiteSearchFooterViewDelegate? = nil
 
     private static let expandedHeight: CGFloat = 44.0

@@ -16,7 +16,7 @@ extension WPStyleGuide {
             return approved ? WPStyleGuide.readGrey() : WPStyleGuide.alertYellowDark()
         }
 
-        public static func detailsRegularStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
+        public static func detailsRegularStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertYellowDark()
 
             return  [.paragraphStyle: titleParagraph,
@@ -24,7 +24,7 @@ extension WPStyleGuide {
                      .foregroundColor: color ]
         }
 
-        public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
+        public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
             return  [.paragraphStyle: titleParagraph,
@@ -32,7 +32,7 @@ extension WPStyleGuide {
                      .foregroundColor: color ]
         }
 
-        public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
+        public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
             return  [.paragraphStyle: titleParagraph,
@@ -40,7 +40,7 @@ extension WPStyleGuide {
                      .foregroundColor: color ]
         }
 
-        public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
+        public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
             return  [.paragraphStyle: titleParagraph,
@@ -48,7 +48,7 @@ extension WPStyleGuide {
                      .foregroundColor: color ]
         }
 
-        public static func timestampStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
+        public static func timestampStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
             let color = approved ? WPStyleGuide.allTAllShadeGrey() : WPStyleGuide.alertYellowDark()
 
             return  [.font: timestampFont,

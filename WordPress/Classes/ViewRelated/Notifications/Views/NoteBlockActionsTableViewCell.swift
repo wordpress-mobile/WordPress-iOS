@@ -124,7 +124,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
             btnLike.accessibilityLabel = likeAccesibilityLabel
             btnLike.accessibilityHint = likeAccessibilityHint
             // Force button trait to avoid automatic "Selected" trait
-            btnLike.accessibilityTraits = UIAccessibilityTraitButton
+            btnLike.accessibilityTraits = UIAccessibilityTraits.button
         }
         get {
             return btnLike.isSelected
@@ -139,7 +139,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
             btnApprove.accessibilityLabel = approveAccesibilityLabel
             btnApprove.accessibilityHint = approveAccesibilityHint
             // Force button trait to avoid automatic "Selected" trait
-            btnApprove.accessibilityTraits = UIAccessibilityTraitButton
+            btnApprove.accessibilityTraits = UIAccessibilityTraits.button
         }
         get {
             return btnApprove.isSelected
@@ -190,36 +190,36 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         let textNormalColor = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor = WPStyleGuide.Notifications.blockActionEnabledColor
 
-        btnReply.setTitle(ReplyToComment.title, for: UIControlState())
-        btnReply.setTitleColor(textNormalColor, for: UIControlState())
+        btnReply.setTitle(ReplyToComment.title, for: UIControl.State())
+        btnReply.setTitleColor(textNormalColor, for: UIControl.State())
         btnReply.accessibilityLabel = ReplyToComment.title
         btnReply.accessibilityHint = ReplyToComment.hint
 
-        btnLike.setTitle(LikeComment.TitleStrings.like, for: UIControlState())
+        btnLike.setTitle(LikeComment.TitleStrings.like, for: UIControl.State())
         btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .highlighted)
         btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .selected)
-        btnLike.setTitleColor(textNormalColor, for: UIControlState())
+        btnLike.setTitleColor(textNormalColor, for: UIControl.State())
         btnLike.setTitleColor(textSelectedColor, for: .highlighted)
         btnLike.setTitleColor(textSelectedColor, for: .selected)
 
-        btnApprove.setTitle(ApproveComment.TitleStrings.approve, for: UIControlState())
+        btnApprove.setTitle(ApproveComment.TitleStrings.approve, for: UIControl.State())
         btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .highlighted)
         btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .selected)
-        btnApprove.setTitleColor(textNormalColor, for: UIControlState())
+        btnApprove.setTitleColor(textNormalColor, for: UIControl.State())
         btnApprove.setTitleColor(textSelectedColor, for: .highlighted)
         btnApprove.setTitleColor(textSelectedColor, for: .selected)
 
-        btnEdit.setTitleColor(textNormalColor, for: UIControlState())
+        btnEdit.setTitleColor(textNormalColor, for: UIControl.State())
         btnEdit.accessibilityLabel = EditComment.title
         btnEdit.accessibilityHint = EditComment.hint
 
         btnSpam.setTitle(MarkAsSpam.title, for: .normal)
-        btnSpam.setTitleColor(textNormalColor, for: UIControlState())
+        btnSpam.setTitleColor(textNormalColor, for: UIControl.State())
         btnSpam.accessibilityLabel = MarkAsSpam.title
         btnSpam.accessibilityHint = MarkAsSpam.hint
 
         btnTrash.setTitle(TrashComment.title, for: .normal)
-        btnTrash.setTitleColor(textNormalColor, for: UIControlState())
+        btnTrash.setTitleColor(textNormalColor, for: UIControl.State())
         btnTrash.accessibilityLabel = TrashComment.title
         btnTrash.accessibilityHint = TrashComment.hint
     }
@@ -334,7 +334,7 @@ private extension NoteBlockActionsTableViewCell {
         }
     }
 
-    func overlayForButton(_ button: UIButton, state: UIControlState) -> UIImageView? {
+    func overlayForButton(_ button: UIButton, state: UIControl.State) -> UIImageView? {
         guard let buttonImageView = button.imageView, let targetImage = button.image(for: state) else {
             return nil
         }

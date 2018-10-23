@@ -102,7 +102,7 @@ final class NewsCardTests: XCTestCase {
     }
 
     func testNewsTitleContainsTheExpectedAccessibilityTraits() {
-        XCTAssertEqual(subject?.newsTitle.accessibilityTraits, UIAccessibilityTraitStaticText)
+        XCTAssertEqual(subject?.newsTitle.accessibilityTraits, UIAccessibilityTraits.staticText)
     }
 
     func testNewsTitleContainsTheExpectedAccessibilityLabel() {
@@ -118,7 +118,7 @@ final class NewsCardTests: XCTestCase {
     }
 
     func testNewsSubtitleContainsTheExpectedAccessibilityTraits() {
-        XCTAssertEqual(subject?.newsSubtitle.accessibilityTraits, UIAccessibilityTraitStaticText)
+        XCTAssertEqual(subject?.newsSubtitle.accessibilityTraits, UIAccessibilityTraits.staticText)
     }
 
     func testTappingDismissButtonCallsDismissInManager() {
