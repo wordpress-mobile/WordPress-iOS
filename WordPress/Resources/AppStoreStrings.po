@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.0-whats-new"
+msgctxt "v11.1-whats-new"
 msgid ""
 "The Site Pages section now displays the pages in an order that matches the layout of your site, so it’s easier to find what you’re looking for.\n"
 "The tyranny of the blank page is no more! We’ve added suggestions for next steps to every page without content.\n"
