@@ -1,4 +1,5 @@
-Macht es dich wahnsinnig, wenn du feststellst, dass du einen Beitrag auf der Startseite deiner Website oben halten möchtest, du aber im Bus sitzt und nur ein Smartphone dabei hast? Uns auch. Jetzt kannst du oben gehaltene Beiträge in der App festlegen, sodass die anderen Fahrgäste dich nicht motzen hören müssen.
-Spare Zeit und Tipparbeit mit Push-Benachrichtigungen zu Kommentaren, mit denen der gesamte Kommentar auf dem Startbildschirm angezeigt wird. Wir alle sparen gerne!
-Wir haben das Erscheinungsbild verschiedener Bildschirmseiten in der App vereinheitlicht, um die Navigation zu erleichtern. Weniger Zeit, um sich in der Navigation zurechtzufinden, bedeutet mehr Zeit, um Inhalte zu erstellen.
-Wir haben uns auf Fehlersuche begeben und einige Fehler beseitigt.
+Im Abschnitt „Website-Seiten“ werden jetzt die Seiten in einer Reihenfolge angezeigt, die dem Layout deiner Website entspricht. So ist es einfacher, die Inhalte zu finden, die du suchst.
+Du erhältst keine leeren Seiten mehr! Wir haben Vorschläge für nöchste Schritte zu jeder Seite ohne Inhalt hinzugefügt.
+Wenn du einen neuen Beitrag verfasst, speichert die App automatisch Entwürfe auf deinem Gerät. So geht nichts mehr verloren.
+Wir haben das Design einiger Bildschirme überarbeitet, um die Konsistenz innerhalb der App weiter zu verbessern.
+Darüber hinaus haben wir wie immer einige Fehler behoben und allgemeine Verbesserungen an der Zuverlässigkeit durchgeführt.

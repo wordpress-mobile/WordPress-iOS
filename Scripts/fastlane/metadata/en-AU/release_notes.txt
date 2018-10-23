@@ -1,4 +1,5 @@
-Does it drive you nuts when you realise you want to stick a post to the front page of your site, but you’re on the bus and only have a phone with you? Us too. Now you can set sticky posts in the app, and the other people on the bus don’t have to listen to you grumble.
-Save time and taps with comment push notifications that show the entire comment from the home screen. Everyone loves saving!
-We brought more visual consistency to different screens throughout the app, so getting around is easier. Less time trying to figure out how to navigate = more time to create.
-Broke out the fly swatter and got rid of some bugs.
+The Site Pages section now displays the pages in an order that matches the layout of your site, so it’s easier to find what you’re looking for.
+The tyranny of the blank page is no more! We’ve added suggestions for next steps to every page without content.
+When you write a new post, the app automatically saves drafts on your device, so none of your work is ever lost.
+We’ve restyled a few more screens to keep improving consistency across the app.
+Plus some bug fixes and general reliability improvements, as always.

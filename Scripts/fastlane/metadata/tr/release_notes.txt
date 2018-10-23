@@ -1,0 +1,5 @@
+Site Sayfaları bölümü artık sayfaları sitenizin düzenine uyumlu olarak gösteriyor. Böylece aradığınızı bulmak çok daha kolay hale geliyor.
+Artık boş sayfalar hüküm sürmeyecek! İçeriği bulunmayan her sayfa için sonraki adımları içeren önerilerimizi ekledik.
+Yeni bir gönderi yazdığınızda, uygulama otomatik olarak taslakları cihazınıza kaydeder. Böylece çalışmalarınız asla kaybolmaz.
+Uygulama boyunca tutarlılıği iyileştirmek için birkaç ekranı daha yeniden tasarladık.
+Ayrıca her zamanki gibi bazı hatalar düzeltildi ve genel güvenilirlik iyileştirmeleri yapıldı.
