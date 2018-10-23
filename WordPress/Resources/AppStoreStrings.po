@@ -40,11 +40,10 @@ msgstr ""
 
 msgctxt "v11.1-whats-new"
 msgid ""
-"The Site Pages section now displays the pages in an order that matches the layout of your site, so it’s easier to find what you’re looking for.\n"
-"The tyranny of the blank page is no more! We’ve added suggestions for next steps to every page without content.\n"
-"When you write a new post, the app automatically saves drafts on your device, so none of your work is ever lost.\n"
-"We’ve restyled a few more screens to keep improving consistency across the app.\n"
-"Plus some bug fixes and general reliability improvements, as always.\n"
+"A new Quick Start section suggests steps to help you build a great site.\n"
+"With Mentions, you can read the whole push notification message from the home screen.\n"
+"Want to copy the link to a comment? Long-press its timestamp label.\n"
+"Want to know the word and character counts for posts? Check out the editor action sheet title.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
