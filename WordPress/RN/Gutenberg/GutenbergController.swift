@@ -33,13 +33,7 @@ class GutenbergController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addCancelButton()
         title = post.titleForDisplay()
-    }
-
-    private func addCancelButton() {
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(close(sender:)))
-        navigationItem.rightBarButtonItem = cancelButton
     }
 
     @objc private func close(sender: UIBarButtonItem) {

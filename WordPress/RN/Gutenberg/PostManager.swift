@@ -14,12 +14,18 @@ public class GBPostManager: NSObject, RCTBridgeModule {
 
     var delegate: GBPostManagerDelegate?
 
+    public static func requiresMainQueueSetup() -> Bool {
+        return false
+    }
+
+    // MARK: - Communication methods
     @objc(savePost:)
     func savePost(with content: String) {
         delegate?.saveButtonPressed(with: content)
     }
 
-    public static func requiresMainQueueSetup() -> Bool {
-        return false
+    @objc
+    func close() {
+        delegate?.closeButtonPressed()
     }
 }
