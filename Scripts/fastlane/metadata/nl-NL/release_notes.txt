@@ -1,4 +1,5 @@
-Word je er gek van als je weet dat je een bericht op de voorpagina van je site wilt plaatsen, maar je in de bus zit en alleen je telefoon bij je hebt? Wij ook. Je kunt nu sticky berichten instellen in de app, waardoor anderen in de bus je niet hoeven te horen klagen.
-Bespaar tijd en handelingen met pushberichten voor reacties die de hele reactie op het startscherm weergeven. Iedereen houdt van besparing!
-We hebben de weergave van verschillende schermen in de app beter op elkaar afgestemd, zodat je gemakkelijker kunt navigeren. Minder tijd besteed aan navigeren = meer tijd besteed aan creëren.
-We hebben de vliegenmepper erbij gepakt en wat bugs verwijderd.
+In het gedeelte Sitepagina's worden nu de pagina's weergegeven in een volgorde die overeenkomt met de lay-out van je site, zodat je makkelijker kunt vinden waar je naar op zoek bent.
+Het heerschappij van de lege pagina is ten einde gekomen! We hebben suggesties voor volgende stappen toegevoegd aan elke pagina zonder content.
+Wanneer je een nieuw bericht schrijft, slaat de app concepten automatisch op je apparaat op, zodat je werk nooit verloren gaat.
+We hebben de stijl van een aantal extra schermen aangepast, zodat ze consistent zijn met de rest van de app.
+Daarnaast zijn er wat bugfixes en algemene prestatieverbeteringen doorgevoerd, zoals gewoonlijk.
