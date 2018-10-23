@@ -245,7 +245,7 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
         guard noResultsViewModel != nil,
             let noResultsViewController = noResultsViewController else {
-                return UITableView.automaticDimension;
+                return UITableView.automaticDimension
         }
 
         return noResultsViewController.heightForTableCell()
