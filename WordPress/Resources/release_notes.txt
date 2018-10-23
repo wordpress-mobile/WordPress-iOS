@@ -1,5 +1,4 @@
-The Site Pages section now displays the pages in an order that matches the layout of your site, so it’s easier to find what you’re looking for.
-The tyranny of the blank page is no more! We’ve added suggestions for next steps to every page without content.
-When you write a new post, the app automatically saves drafts on your device, so none of your work is ever lost. 
-We’ve restyled a few more screens to keep improving consistency across the app.
-Plus some bug fixes and general reliability improvements, as always.
+A new Quick Start section suggests steps to help you build a great site.
+With Mentions, you can read the whole push notification message from the home screen.
+Want to copy the link to a comment? Long-press its timestamp label.
+Want to know the word and character counts for posts? Check out the editor action sheet title.
