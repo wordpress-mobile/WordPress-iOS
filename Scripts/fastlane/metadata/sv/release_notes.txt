@@ -1,4 +1,5 @@
-Blir du också irriterad när du behöver klistra ett inlägg på webbplatsens startsida men du råkar sitta på bussen och bara har telefonen med dig? Nu kan du klistra inlägg direkt i appen så nu slipper de andra på bussen höra ditt irriterade mummel.
-Spara tid och klick tack vare kommentarsnotiser som visar hela kommentaren direkt på huvudskärmen. Smidigt och bekvämt!
-Vi har gjort de olika skärmsidorna i hela appen mer visuellt samordnade för att underlätta navigeringen. Snabbare navigering ger dig mer tid att skapa.
-Vi tog fram rödpennan och rättade några fel också.
+Sektionen med webbplatssidor visar nu sidorna i samma ordning som används i webbplatsens layout för att göra det enklare att hitta det du söker.
+De tomma sidornas tyranni är nu upphävd! För alla sidor utan innehåll har vi nu lagt till förslag på lämpliga vidare åtgärder.
+När du skriver ett nytt inlägg sparar appen automatiskt inläggen på din enhet för att ditt arbete aldrig ska råka gå förlorat.
+Vi här ändrat stilen på några av skärmbilderna för att skapa en mer enhetlig upplevelse i hela appen.
+Och, som vanligt, några felrättningar och allmänna förbättringar av tillförlitligheten.

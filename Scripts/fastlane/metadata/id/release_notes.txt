@@ -1,4 +1,5 @@
-Apakah Anda merasa sebal saat ingin melekatkan pos ke halaman depan situs, namun Anda sedang di dalam bus dan hanya membawa ponsel? Kami pun merasa begitu. Kini Anda dapat mengatur pos lekat di aplikasi, dan orang lain di dalam bus tidak perlu mendengar Anda menggerutu.
-Hemat waktu dan ketukan jari dengan pemberitahuan push untuk komentar yang menampilkan seluruh komentar dari layar utama. Semua orang suka berhemat!
-Kami meningkatkan konsistensi visual pada berbagai layar di aplikasi, sehingga memudahkan navigasi situs. Lebih sedikit waktu untuk mempelajari cara menavigasi = lebih banyak waktu untuk berkarya.
-Kami mengambil raket listrik dan membasmi serangga yang mengganggu.
+Bagian Halaman Situs kini menampilkan halaman dalam urutan yang sesuai dengan tata letak situs, sehingga memudahkan dalam menemukan yang Anda cari.
+Tak ada lagi halaman kosong tanpa alasan! Kami telah menambahkan saran langkah berikutnya untuk setiap halaman yang tidak berisi konten.
+Saat Anda menulis pos baru, aplikasi akan otomatis menyimpan konsep di perangkat Anda, sehingga tidak akan ada pekerjaan yang hilang.
+Kami telah memperbarui gaya beberapa layar untuk selalu meningkatkan konsistensi di seluruh aplikasi.
+Plus sejumlah perbaikan bug dan peningkatan keandalan umum, seperti biasanya.
