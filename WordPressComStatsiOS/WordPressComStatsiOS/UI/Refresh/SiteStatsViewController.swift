@@ -10,15 +10,19 @@ public class SiteStatsViewController: UIViewController {
 
     // MARK: - View
 
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-
         setupFilterBar()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        selectedFilterDidChange(filterTabBar)
     }
 
 }
 
-// MARK: - Private Extension
+// MARK: - FilterTabBar Support
 
 private extension SiteStatsViewController {
 
@@ -64,12 +68,15 @@ private extension SiteStatsViewController {
 
 }
 
-// MARK: - FilterTabBar Methods
-
-extension SiteStatsViewController {
-
+    
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         // TODO: reload view based on selected tab
-        print("🔴 selectedFilterDidChange. selected filter: ", filterBar.selectedIndex, filter.title)
+        DDLogDebug("selectedFilterDidChange. selected filter: \(filterBar.selectedIndex) - \(currentSelectedPeriod.filterTitle)")
+
+        statsContainerView.isHidden = filterBar.selectedIndex == StatsPeriodType.insights.rawValue
+        insightsContainerView.isHidden = !statsContainerView.isHidden
+        
+        DDLogDebug("showing container: \(statsContainerView.isHidden ? "insights" : "stats")")
     }
+
 }
