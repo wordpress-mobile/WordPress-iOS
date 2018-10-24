@@ -3,9 +3,11 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
+    private let giphy = GiphyPicker()
     private let stockPhotos = StockPhotosPicker()
 
-    init(delegate: StockPhotosPickerDelegate) {
+    init(delegate: GiphyPickerDelegate & StockPhotosPickerDelegate) {
+        giphy.delegate = delegate
         stockPhotos.delegate = delegate
     }
 
@@ -19,6 +21,11 @@ final class AztecMediaPickingCoordinator {
         if blog.supports(.stockPhotos) {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
+
+        if FeatureFlag.giphy.enabled {
+            alertController.addAction(giphyAction(origin: origin, blog: blog))
+        }
+
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
 
@@ -35,6 +42,12 @@ final class AztecMediaPickingCoordinator {
         })
     }
 
+    private func giphyAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .giphy, style: .default, handler: { [weak self] action in
+            self?.showGiphy(origin: origin, blog: blog)
+        })
+    }
+
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
@@ -47,6 +60,10 @@ final class AztecMediaPickingCoordinator {
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
         stockPhotos.presentPicker(origin: origin, blog: blog)
+    }
+
+    private func showGiphy(origin: UIViewController, blog: Blog) {
+        giphy.presentPicker(origin: origin, blog: blog)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
