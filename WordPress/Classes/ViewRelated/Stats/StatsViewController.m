@@ -62,20 +62,22 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
         self.statsVC = self.statsNavVC.viewControllers.firstObject;
         self.statsVC.statsDelegate = self;
-        self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.view addSubview:self.loadingIndicator];
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-                                                  [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
-                                                  ]];
+    }
 
-        // Being shown in a modal window
-        if (self.presentingViewController != nil) {
-            UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
-            self.navigationItem.rightBarButtonItem = doneButton;
-            self.title = self.blog.settings.name;
-        }
+    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.loadingIndicator];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                                              [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+                                              ]];
+    
+    
+    // Being shown in a modal window
+    if (self.presentingViewController != nil) {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        self.title = self.blog.settings.name;
     }
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
