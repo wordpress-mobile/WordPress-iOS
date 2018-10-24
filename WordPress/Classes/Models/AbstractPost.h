@@ -28,6 +28,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, strong) NSSet<Media *> *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
+@property (nonatomic, strong, nullable) NSArray *revisions;
 @property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, strong, nullable) Media *featuredImage;
 
