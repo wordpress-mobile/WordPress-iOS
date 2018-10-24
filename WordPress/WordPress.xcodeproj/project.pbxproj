@@ -3845,7 +3845,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -4380,7 +4380,7 @@
 			isa = PBXGroup;
 			children = (
 				177B4C232123152D00CF8084 /* Giphy */,
-				D8A3A5AD206A059100992576 /* Stock Photos */,
+				D8A3A5AD206A059100992576 /* StockPhotos */,
 				FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */,
 				7435CE7220A4B9170075A1B9 /* AnimatedImageCache.swift */,
 				B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */,
@@ -6522,7 +6522,7 @@
 			name = "Stock Photos";
 			sourceTree = "<group>";
 		};
-		D8A3A5AD206A059100992576 /* Stock Photos */ = {
+		D8A3A5AD206A059100992576 /* StockPhotos */ = {
 			isa = PBXGroup;
 			children = (
 				D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */,
@@ -6542,7 +6542,7 @@
 				D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */,
 				D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */,
 			);
-			path = "Stock Photos";
+			path = StockPhotos;
 			sourceTree = "<group>";
 		};
 		E10520591F2B1CD400A948F6 /* 61-62 */ = {
@@ -7479,7 +7479,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
