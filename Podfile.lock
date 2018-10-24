@@ -206,6 +206,7 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
@@ -219,17 +220,11 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPress-Aztec-iOS:
-    :branch: feature/media-attachment-badge
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPress-Aztec-iOS:
-    :commit: c4ae3ad558b3501f84d57f88293ed1d2642c9416
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
