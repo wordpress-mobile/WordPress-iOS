@@ -7,7 +7,7 @@
 
 ### Download Xcode
 
-At the moment *WordPress for iOS requires Swift 4.0 and Xcode 9.3 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+At the moment *WordPress for iOS* uses Swift 4.2 and requires Xcode 10 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
 
 ### Third party tools
 
@@ -66,7 +66,9 @@ After you created an application you will have an associated a client ID and a c
 
 In order to use these details, you'll need to create a credential file in your build machine. Start by copying the sample credentials file to your home folder by doing this:
 
-` cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.wpcom_app_credentials `
+` mkdir -p ~/.mobile-secrets/iOS/WPiOS/ `
+
+` cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials `
 
 Then edit the `~/.wpcom_app_credentials` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
 

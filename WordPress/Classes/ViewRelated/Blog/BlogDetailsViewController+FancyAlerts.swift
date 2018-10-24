@@ -1,6 +1,17 @@
 private var alertWorkItem: DispatchWorkItem?
+private var observer: NSObjectProtocol?
 
 extension BlogDetailsViewController {
+    @objc func startObservingQuickStart() {
+        observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.configureTableViewData()
+            self?.reloadTableViewPreservingSelection()
+        }
+    }
+
+    @objc func stopObservingQuickStart() {
+        NotificationCenter.default.removeObserver(observer as Any)
+    }
 
     @objc func startAlertTimer() {
         let newWorkItem = DispatchWorkItem { [weak self] in
@@ -25,8 +36,9 @@ extension BlogDetailsViewController {
     }
 
     private func showNoticeOrAlertAsNeeded() {
-        if shouldSuggestQuickStartTour() {
-            suggestAQuickStartTour()
+        if let tourGuide = QuickStartTourGuide.find(),
+            let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
+            tourGuide.suggest(tourToSuggest, for: blog)
         } else {
             showNotificationPrimerAlert()
         }
@@ -36,37 +48,8 @@ extension BlogDetailsViewController {
         guard Feature.enabled(.quickStart) else {
             return false
         }
-        let count = blog.completedQuickStartTours?.count ?? 0
-        return count > 0
-    }
 
-    private func shouldSuggestQuickStartTour() -> Bool {
-        // there must be at least one completed tour for quick start to be enabled
-        guard let completedCount = blog.completedQuickStartTours?.count, completedCount > 0 else {
-            return false
-        }
-
-        let skippedCount = blog.skippedQuickStartTours?.count ?? 0
-
-        // don't suggest a tour if they've completed them all or skipped the rest
-        guard completedCount + skippedCount < QuickStartTourGuide.checklistTours.count else {
-            return false
-        }
-
-        // don't suggest a tour if they've skipped the max
-        guard skippedCount < Constants.maxSkippedTours else {
-            return false
-        }
-
-        return true
-    }
-
-    private func suggestAQuickStartTour() {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-            return
-        }
-        let tour = QuickStartViewTour()
-        tourGuide.suggest(tour, for: blog)
+        return QuickStartTourGuide.shouldShowChecklist(for: blog)
     }
 
     private func showNotificationPrimerAlert() {
@@ -101,9 +84,5 @@ extension BlogDetailsViewController {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true, completion: nil)
         }
-    }
-
-    private struct Constants {
-        static let maxSkippedTours = 3
     }
 }

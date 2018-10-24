@@ -222,6 +222,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)dealloc
 {
+    [self stopObservingQuickStart];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -272,7 +273,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
-    
+    [self startObservingQuickStart];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -545,11 +546,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     if ([self shouldShowQuickStartChecklist]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
-                                                        image:[Gridicon iconOfType:GridiconTypeListCheckmark]
-                                                     callback:^{
-                                                         [weakSelf showQuickStart];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+                                                         identifier:BlogDetailsPlanCellIdentifier
+                                                              image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                           callback:^{
+                                                               [weakSelf showQuickStart];
+                                                           }];
+        row.quickStartIdentifier = QuickStartTourElementChecklist;
+
+        row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
+        [rows addObject:row];
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
@@ -652,11 +658,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     if ([self.blog supports:BlogFeatureSharing]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
-                                                        image:[Gridicon iconOfType:GridiconTypeShare]
-                                                     callback:^{
-                                                         [weakSelf showSharing];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+                                        image:[Gridicon iconOfType:GridiconTypeShare]
+                                     callback:^{
+                                         [weakSelf showSharing];
+                                     }];
+        row.quickStartIdentifier = QuickStartTourElementSharing;
+        [rows addObject:row];
     }
 
     if ([self.blog supports:BlogFeaturePeople]) {
@@ -1228,6 +1236,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
     [self showDetailViewController:controller sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementSharing];
 }
 
 - (void)showStats
@@ -1253,6 +1263,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
     [self.navigationController showDetailViewController:checklist sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
 }
 
 - (void)showActivity
@@ -1266,6 +1278,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
     [self showDetailViewController:viewController sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementThemes];
 }
 
 - (void)showMenus

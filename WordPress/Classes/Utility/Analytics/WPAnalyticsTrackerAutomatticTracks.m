@@ -1015,6 +1015,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPushNotificationReceived:
             eventName = @"push_notification_received";
             break;
+        case WPAnalyticsStatPushNotificationQuickActionCompleted:
+            eventName = @"quick_action_touched";
+            break;
         case WPAnalyticsStatPushNotificationPrimerSeen:
             eventName = @"notifications_primer_seen";
             break;
@@ -1041,6 +1044,36 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPushNotificationOSAlertDenied:
             eventName = @"notifications_os_alert_denied";
+            break;
+        case WPAnalyticsStatQuickStartAllToursCompleted:
+            eventName = @"quick_start_all_tasks_completed";
+            break;
+        case WPAnalyticsStatQuickStartChecklistItemTapped:
+            eventName = @"quick_start_list_item_tapped";
+            break;
+        case WPAnalyticsStatQuickStartChecklistSkippedAll:
+            eventName = @"quick_start_list_all_tasks_skipped";
+            break;
+        case WPAnalyticsStatQuickStartChecklistViewed:
+            eventName = @"quick_start_list_viewed";
+            break;
+        case WPAnalyticsStatQuickStartCongratulationsViewed:
+            eventName = @"quick_start_list_completed_viewed";
+            break;
+        case WPAnalyticsStatQuickStartRequestAlertButtonTapped:
+            eventName = @"quick_start_request_dialog_button_tapped";
+            break;
+        case WPAnalyticsStatQuickStartRequestAlertViewed:
+            eventName = @"quick_start_request_dialog_viewed";
+            break;
+        case WPAnalyticsStatQuickStartSuggestionButtonTapped:
+            eventName = @"quick_start_dialog_button_tapped";
+            break;
+        case WPAnalyticsStatQuickStartSuggestionViewed:
+            eventName = @"quick_start_dialog_viewed";
+            break;
+        case WPAnalyticsStatQuickStartTourCompleted:
+            eventName = @"quick_start_task_completed";
             break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";

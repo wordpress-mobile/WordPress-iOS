@@ -271,6 +271,10 @@ private class NoticeContainerView: UIView {
 
         layoutIfNeeded()
     }
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return noticeView.point(inside: convert(point, to: noticeView), with: event)
+    }
 }
 
 private extension UNMutableNotificationContent {

@@ -46,7 +46,14 @@ import UIKit
     ///
     @objc var onDidChangeFrame: (() -> Void)?
 
-
+    /// Indicates whether the keyboard is visible or not
+    ///
+    @objc var isKeyboardVisible = false {
+        didSet {
+            // Reset any current Drag OP on change
+            trackingDragOperation = false
+        }
+    }
 
     /// Reference to the container view
     ///
@@ -63,15 +70,6 @@ import UIKit
     /// State of the dismissable control's frame, at the beginning of a drag OP
     ///
     fileprivate var initialControlPositionY = CGFloat(0)
-
-    /// Indicates whether the keyboard is visible or not
-    ///
-    fileprivate var isKeyboardVisible = false {
-        didSet {
-            // Reset any current Drag OP on change
-            trackingDragOperation = false
-        }
-    }
 
     /// Indicates whether an Interactive Drag OP is being processed
     ///
