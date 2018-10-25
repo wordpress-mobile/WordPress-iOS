@@ -12,7 +12,7 @@ protocol SiteTypesService {
 
 /// Mock implementation so that we can start developing
 final class MockSiteTypesService: SiteTypesService {
-    func siteTypes(for: Locale, completion: @escaping SitesTypeServiceCompletion) {
+    func siteTypes(for: Locale = .current, completion: @escaping SitesTypeServiceCompletion) {
         let result = Result.success(mockSiteTypes())
 
         completion(result)
