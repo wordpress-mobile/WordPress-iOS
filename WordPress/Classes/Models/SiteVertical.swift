@@ -10,3 +10,16 @@ extension SiteVertical: Equatable {
         return lhs.id == rhs.id
     }
 }
+
+extension SiteVertical: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title = "site-vertical-title"
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try Identifier(value: values.decode(String.self, forKey: .id))
+        title = try values.decode(String.self, forKey: .title)
+    }
+}

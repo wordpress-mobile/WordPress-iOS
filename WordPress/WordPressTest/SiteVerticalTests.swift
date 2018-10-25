@@ -3,17 +3,20 @@ import XCTest
 @testable import WordPress
 
 final class SiteVerticalTests: XCTestCase {
-    private struct Constants {
-        static let id = Identifier(value: "Vertical id 1")
-        static let title = "Vertical 1 title"
+    private struct MockValues {
+        static let id = Identifier(value: "101")
+        static let title = "Lanscaper"
     }
 
     private var subject: SiteVertical?
 
     override func setUp() {
         super.setUp()
-        subject = SiteVertical(id: Constants.id,
-                               title: Constants.title)
+        let json = Bundle(for: SiteVerticalTests.self).url(forResource: "site-vertical", withExtension: "json")!
+        let data = try! Data(contentsOf: json)
+        let jsonDecoder = JSONDecoder()
+
+        subject = try! jsonDecoder.decode(SiteVertical.self, from: data)
     }
 
     override func tearDown() {
@@ -22,15 +25,15 @@ final class SiteVerticalTests: XCTestCase {
     }
 
     func testIdentifierIsNotMutated() {
-        XCTAssertEqual(subject?.id, Constants.id)
+        XCTAssertEqual(subject?.id, MockValues.id)
     }
 
     func testTitleIsNotMutated() {
-        XCTAssertEqual(subject?.title, Constants.title)
+        XCTAssertEqual(subject?.title, MockValues.title)
     }
 
     func testSiteVerticalsWithSameIdAreEqual() {
-        let secondVertical = SiteVertical(id: Constants.id, title: "Cascadia")
+        let secondVertical = SiteVertical(id: MockValues.id, title: "Cascadia")
 
         XCTAssertEqual(subject, secondVertical)
     }
