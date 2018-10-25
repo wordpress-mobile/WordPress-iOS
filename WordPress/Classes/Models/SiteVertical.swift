@@ -1,13 +1,13 @@
 
 /// Models a Site Vertical
 struct SiteVertical {
-    let id: Identifier
+    let identifier: Identifier
     let title: String
 }
 
 extension SiteVertical: Equatable {
     static func ==(lhs: SiteVertical, rhs: SiteVertical) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.identifier == rhs.identifier
     }
 }
 
@@ -19,7 +19,7 @@ extension SiteVertical: Decodable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try Identifier(value: values.decode(String.self, forKey: .id))
+        identifier = try Identifier(value: values.decode(String.self, forKey: .id))
         title = try values.decode(String.self, forKey: .title)
     }
 }
