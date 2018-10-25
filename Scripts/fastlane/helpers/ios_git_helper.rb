@@ -73,7 +73,7 @@ module Fastlane
 
       def self.localize_project()
         Action.sh("cd .. && ./Scripts/localize.py")
-        Action.sh("cd .. && git add ./WordPress/Resources/.")
+        Action.sh("git add ../WordPress/*.lproj/Localizable.strings")
         Action.sh("git commit -m \"Updates strings for localization\"")
         Action.sh("git push")
       end
@@ -85,7 +85,7 @@ module Fastlane
 
       def self.update_metadata()
         Action.sh("cd .. && ./Scripts/update-translations.rb")
-        Action.sh("cd ../WordPress && git add .")
+        Action.sh("git add ../WordPress/*.lproj/Localizable.strings")
         Action.sh("git commit -m \"Updates translation\"")
 
         Action.sh("cd fastlane && ./download_metadata.swift")
