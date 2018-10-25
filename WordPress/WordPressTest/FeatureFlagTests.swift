@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-class FeatureFlagTests: XCTestCase {
+final class FeatureFlagTests: XCTestCase {
 
     func testFeatureFlag_EnhancedSiteCreation_Enabled_ForLocalDeveloperBuildConfiguration() {
         BuildConfiguration.localDeveloper.test {
