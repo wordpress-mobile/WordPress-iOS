@@ -6,3 +6,9 @@ struct SiteType {
     let subtitle: String
     let icon: URL
 }
+
+extension SiteType: Equatable {
+    static func ==(lhs: SiteType, rhs: SiteType) -> Bool {
+        return lhs.id == rhs.id
+    }
+}

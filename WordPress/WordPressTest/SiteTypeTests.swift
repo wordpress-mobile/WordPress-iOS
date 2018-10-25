@@ -40,4 +40,10 @@ final class SiteTypeTests: XCTestCase {
     func testIconIsNotMutated() {
         XCTAssertEqual(subject?.icon, Constants.icon)
     }
+
+    func testSiteTypesWithSameIdAreEqual() {
+        let secondSiteType = SiteType(id: Constants.id, title: "Another title", subtitle: "It does not matter", icon: Constants.icon)
+
+        XCTAssertEqual(subject, secondSiteType)
+    }
 }
