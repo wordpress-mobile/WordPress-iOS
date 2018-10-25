@@ -64,7 +64,7 @@ struct InstructionRow: ImmuTableRow {
     }
 }
 
-enum SiteType: String {
+enum TypeOfSite: String {
     case blog = "blog"
     case website = "website"
     case portfolio = "portfolio"
@@ -78,7 +78,7 @@ struct SiteTypeRow: ImmuTableRow {
         return ImmuTableCell.nib(nib, CellType.self)
     }()
 
-    let siteType: SiteType
+    let siteType: TypeOfSite
     let startWith: String
     let typeDescr: String
     let typeImage: UIImage?
