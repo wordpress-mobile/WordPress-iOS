@@ -7,6 +7,7 @@ public class SiteStatsViewController: UIViewController {
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
+    @IBOutlet weak var progressView: UIProgressView!
 
     // MARK: - View
 

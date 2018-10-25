@@ -53,18 +53,24 @@
                                     <segue destination="plb-uA-RCD" kind="embed" id="HLi-0c-1Fw"/>
                                 </connections>
                             </containerView>
+                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VXq-2d-hqa">
+                                <rect key="frame" x="0.0" y="110" width="375" height="2"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="3Vy-SZ-45b"/>
                             <constraint firstItem="OmR-2E-jXp" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="4PI-hg-39d"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="5Dc-js-I5s"/>
-                            <constraint firstItem="OmR-2E-jXp" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="6oU-ax-STm"/>
-                            <constraint firstItem="J6j-x0-sMS" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="C4A-zc-y4H"/>
+                            <constraint firstAttribute="trailing" secondItem="VXq-2d-hqa" secondAttribute="trailing" id="5pE-GQ-9dX"/>
+                            <constraint firstItem="J6j-x0-sMS" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="Cgj-jO-OfC"/>
+                            <constraint firstItem="VXq-2d-hqa" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="EeE-In-TIf"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="GXb-KG-d0p"/>
+                            <constraint firstItem="VXq-2d-hqa" firstAttribute="leading" secondItem="IsW-kc-L5Q" secondAttribute="leading" id="Lcx-nR-uDo"/>
                             <constraint firstItem="OmR-2E-jXp" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="aAd-fu-NMn"/>
                             <constraint firstItem="OmR-2E-jXp" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="doC-hh-j5P"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="gS5-1d-Huj"/>
+                            <constraint firstItem="OmR-2E-jXp" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="iEq-zu-8bV"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="iem-bg-Jp2"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="irM-hU-WLy"/>
                         </constraints>
@@ -74,6 +80,7 @@
                     <connections>
                         <outlet property="filterTabBar" destination="R6d-mo-itW" id="fNF-ni-3g1"/>
                         <outlet property="insightsContainerView" destination="J6j-x0-sMS" id="Zd2-hc-Bwl"/>
+                        <outlet property="progressView" destination="VXq-2d-hqa" id="wdh-5h-5qQ"/>
                         <outlet property="statsContainerView" destination="OmR-2E-jXp" id="LWw-FC-YvT"/>
                     </connections>
                 </viewController>
