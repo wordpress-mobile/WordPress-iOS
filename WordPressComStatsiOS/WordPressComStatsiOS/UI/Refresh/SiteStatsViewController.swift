@@ -1,5 +1,11 @@
 import UIKit
 
+protocol StatsLoadingProgressDelegate {
+    func didBeginLoadingStats(viewController: UIViewController)
+    func statsLoadingProgress(viewController: UIViewController, percentage: Float)
+    func didEndLoadingStats(viewController: UIViewController)
+}
+
 public class SiteStatsViewController: UIViewController {
 
     // MARK: - Properties
@@ -9,12 +15,55 @@ public class SiteStatsViewController: UIViewController {
     @IBOutlet weak var statsContainerView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
 
+    // TODO: replace UITableViewController with real controller names that
+    // correspond to Insights and Stats.
+    var insightsTableViewController: UITableViewController?
+    var statsTableViewController: UITableViewController?
+
     // MARK: - View
 
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupFilterBar()
         getSelectedPeriodFromUserDefaults()
+    }
+
+    // MARK: - StatsLoadingProgressDelegate methods
+
+    func didBeginLoadingStats(viewController: UIViewController) {
+
+        guard shouldShowProgressView(viewController: viewController) else {
+            return
+        }
+
+        progressView.isHidden = false
+        progressView.setProgress(Constants.progressViewInitialProgress, animated: true)
+    }
+
+    func statsLoadingProgress(viewController: UIViewController, percentage: Float) {
+
+        guard shouldShowProgressView(viewController: viewController) else {
+            return
+        }
+
+        progressView.setProgress(percentage, animated: true)
+    }
+
+    func didEndLoadingStats(viewController: UIViewController) {
+
+        guard shouldShowProgressView(viewController: viewController) else {
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.progressViewHideDelay)) {
+            UIView.animate(withDuration: Constants.progressViewHideDuration, animations: {
+                self.progressView.alpha = 0.0
+            }, completion: { _ in
+                self.progressView.isHidden = true
+                self.progressView.alpha = 1.0
+                self.progressView.progress = 0.0
+            })
+        }
     }
 
 }
@@ -25,6 +74,9 @@ private extension SiteStatsViewController {
 
     struct Constants {
         static let userDefaultsKey = "LastSelectedStatsPeriodType"
+        static let progressViewInitialProgress = Float(0.03)
+        static let progressViewHideDelay = 1
+        static let progressViewHideDuration = 0.25
     }
 
     enum StatsPeriodType: Int {
@@ -64,8 +116,20 @@ private extension SiteStatsViewController {
         insightsContainerView.isHidden = !statsContainerView.isHidden
     }
 
-}
+    func shouldShowProgressView(viewController: UIViewController) -> Bool {
 
+        var shouldShow = false
+
+        if viewController == insightsTableViewController {
+            shouldShow = !insightsContainerView.isHidden
+        } else if viewController == statsTableViewController {
+            shouldShow = !statsContainerView.isHidden
+        }
+
+        return shouldShow
+    }
+
+}
 
 // MARK: - FilterTabBar Support
 
