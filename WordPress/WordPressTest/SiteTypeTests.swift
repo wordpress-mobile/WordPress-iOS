@@ -4,7 +4,7 @@ import XCTest
 
 final class SiteTypeTests: XCTestCase {
     private struct MockValues {
-        static let id = Identifier(value: "101")
+        static let identifier = Identifier(value: "101")
         static let title = "Blogger"
         static let subtitle = "Publish a collection of posts."
         static let icon = URL(string: "https://wordpress.com/icon/blogger.png")!
@@ -28,7 +28,7 @@ final class SiteTypeTests: XCTestCase {
     }
 
     func testIdentifierIsNotMutated() {
-        XCTAssertEqual(subject?.id, MockValues.id)
+        XCTAssertEqual(subject?.identifier, MockValues.identifier)
     }
 
     func testTitleIsNotMutated() {
@@ -44,7 +44,7 @@ final class SiteTypeTests: XCTestCase {
     }
 
     func testSiteTypesWithSameIdAreEqual() {
-        let secondSiteType = SiteType(id: MockValues.id, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon)
+        let secondSiteType = SiteType(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon)
 
         XCTAssertEqual(subject, secondSiteType)
     }

@@ -27,7 +27,7 @@ final class MockSiteTypesService: SiteTypesService {
 
     private func singleSiteType(id: String) -> SiteType {
         let identifier = Identifier(value: id)
-        return SiteType(id: identifier,
+        return SiteType(identifier: identifier,
                            title: "Mock",
                            subtitle: "Mock subtitle",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)
