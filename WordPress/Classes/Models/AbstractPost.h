@@ -41,6 +41,10 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 @property (nonatomic, strong) NSString *restorableStatus;
 @property (nonatomic, weak, readonly, nullable) NSString * statusTitle;
+/**
+ This array will contain a list of revision IDs.
+ */
+@property (nonatomic, strong, nullable) NSArray *revisions;
 
 // Revision management
 - (AbstractPost *)createRevision;
