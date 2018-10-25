@@ -5,7 +5,7 @@ import XCTest
 final class SiteVerticalTests: XCTestCase {
     private struct MockValues {
         static let identifier = Identifier(value: "101")
-        static let title = "Lanscaper"
+        static let title = "Landscaper"
     }
 
     private var subject: SiteVertical?
