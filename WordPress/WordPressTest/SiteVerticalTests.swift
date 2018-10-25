@@ -28,4 +28,10 @@ final class SiteVerticalTests: XCTestCase {
     func testTitleIsNotMutated() {
         XCTAssertEqual(subject?.title, Constants.title)
     }
+
+    func testSiteVerticalsWithSameIdAreEqual() {
+        let secondVertical = SiteVertical(id: Constants.id, title: "Cascadia")
+
+        XCTAssertEqual(subject, secondVertical)
+    }
 }
