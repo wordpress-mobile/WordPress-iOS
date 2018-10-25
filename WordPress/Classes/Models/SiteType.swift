@@ -12,3 +12,20 @@ extension SiteType: Equatable {
         return lhs.id == rhs.id
     }
 }
+
+extension SiteType: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title = "site-type-title"
+        case subtitle = "site-type-subtitle"
+        case icon
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try Identifier(value: values.decode(String.self, forKey: .id))
+        title = try values.decode(String.self, forKey: .title)
+        subtitle = try values.decode(String.self, forKey: .subtitle)
+        icon = try values.decode(String.self, forKey: .icon).asURL()
+    }
+}
