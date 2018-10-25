@@ -74,7 +74,7 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
             ])
     }
 
-    private func createRowFor(_ siteType: TypeOfSite) -> SiteTypeRow {
+    private func createRowFor(_ siteType: SiteType) -> SiteTypeRow {
 
         var typeDescription: String
         var typeTitle: String

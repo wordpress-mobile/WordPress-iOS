@@ -8,7 +8,7 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
 
     // MARK: - Properties
 
-    var siteType: TypeOfSite?
+    var siteType: SiteType?
     private typealias Styles = WPStyleGuide.Themes
 
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
