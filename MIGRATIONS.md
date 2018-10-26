@@ -6,7 +6,7 @@ data model as well as any custom migrations.
 ## WordPress 82
 @danielebogo 2018-10-26
 - `AbstractPost` added `revisions` property to store the revisions IDs.
-- Added `Revision`,  to store the data of a *post* revision, like title, content, date etc...
+- Added `Revision`,  to store the data of a *post* revision, like title, content, date.
 - Added `RevisionDiff` to store the data for a *revision diff*, like the amount of additions or deletions and the revision id it refers to.
 - Added `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue`: these will store the type of change and the operation type.
 
