@@ -9,6 +9,7 @@ enum FeatureFlag: Int {
     case giphy
     case automatedTransfer
     case enhancedSiteCreation
+    case revisions
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -26,6 +27,8 @@ enum FeatureFlag: Int {
         case .automatedTransfer:
             return true
         case .enhancedSiteCreation:
+            return BuildConfiguration.current == .localDeveloper
+        case .revisions:
             return BuildConfiguration.current == .localDeveloper
         }
     }
