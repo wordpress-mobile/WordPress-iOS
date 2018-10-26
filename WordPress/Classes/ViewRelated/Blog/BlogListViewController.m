@@ -877,11 +877,21 @@ static NSInteger HideSearchMinSites = 3;
                                                           handler:^(UIAlertAction *action) {
                                                               [self showLoginControllerForAddingSelfHostedSite];
                                                           }];
+    [addSiteAlertController addAction:addSiteAction];
+
+    if ([Feature enabled:FeatureFlagBottomSheetDemo] == YES) {
+        NSString *title = NSLocalizedString(@"Demo bottom sheet", @"Demo bottom sheet");
+        UIAlertAction *addBottomSheetDemoAction = [UIAlertAction actionWithTitle:title
+                                                                           style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction *action) {
+                                                                             [self showBottomSheetDemo];
+                                                                         }];
+        [addSiteAlertController addAction:addBottomSheetDemoAction];
+    }
+
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
-
-    [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
 
     return addSiteAlertController;
@@ -914,6 +924,11 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO animated:NO];
     [WordPressAuthenticator showLoginForSelfHostedSite:self];
+}
+
+- (void)showBottomSheetDemo
+{
+    DDLogWarn(@"Presenting the bottom sheet demo...");
 }
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
