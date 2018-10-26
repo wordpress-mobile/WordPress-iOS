@@ -29,12 +29,12 @@
         <!--Stats-->
         <scene sceneID="TCQ-Sm-O2v">
             <objects>
-                <viewController storyboardIdentifier="SiteStatsViewController" id="vP4-Vk-Ilg" customClass="SiteStatsViewController" customModule="WordPressComStatsiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SiteStatsViewController" id="vP4-Vk-Ilg" customClass="SiteStatsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IsW-kc-L5Q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6d-mo-itW" customClass="FilterTabBar" customModule="WordPressComStatsiOS">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R6d-mo-itW" customClass="FilterTabBar" customModule="WordPress">
                                 <rect key="frame" x="0.0" y="64" width="375" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>

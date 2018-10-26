@@ -6,7 +6,7 @@ protocol StatsLoadingProgressDelegate {
     func didEndLoadingStats(viewController: UIViewController)
 }
 
-public class SiteStatsViewController: UIViewController {
+class SiteStatsViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -22,7 +22,7 @@ public class SiteStatsViewController: UIViewController {
 
     // MARK: - View
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupFilterBar()
         getSelectedPeriodFromUserDefaults()
