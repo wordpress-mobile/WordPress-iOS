@@ -637,24 +637,24 @@
         <attribute name="siteId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="diff" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RevisionDiff" inverseName="revision" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="RevisionAbstractDiff" syncable="YES">
-        <attribute name="operation" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
     <entity name="RevisionDiff" syncable="YES">
         <attribute name="fromRevisionId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="toRevisionId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="totalAdditions" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="totalDeletions" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="contentDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffContent" inverseName="relationship" inverseEntity="RevisionDiffContent" syncable="YES"/>
+        <relationship name="contentDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffContentValue" inverseName="relationship" inverseEntity="RevisionDiffContentValue" syncable="YES"/>
         <relationship name="revision" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Revision" inverseName="diff" inverseEntity="Revision" syncable="YES"/>
-        <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffTitle" inverseName="relationship" inverseEntity="RevisionDiffTitle" syncable="YES"/>
+        <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffTitleValue" inverseName="relationship" inverseEntity="RevisionDiffTitleValue" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiffContent" syncable="YES">
+    <entity name="RevisionDiffAbstractValue" syncable="YES">
+        <attribute name="operation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="RevisionDiffContentValue" syncable="YES">
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="contentDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiffTitle" parentEntity="RevisionAbstractDiff" syncable="YES">
+    <entity name="RevisionDiffTitleValue" parentEntity="RevisionDiffAbstractValue" syncable="YES">
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="titleDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
     <entity name="Role" representedClassName=".Role" syncable="YES">
@@ -752,8 +752,8 @@
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
         <element name="Revision" positionX="27" positionY="153" width="128" height="195"/>
         <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
-        <element name="RevisionAbstractDiff" positionX="45" positionY="171" width="128" height="90"/>
-        <element name="RevisionDiffTitle" positionX="54" positionY="180" width="128" height="60"/>
-        <element name="RevisionDiffContent" positionX="63" positionY="189" width="128" height="60"/>
+        <element name="RevisionDiffAbstractValue" positionX="45" positionY="171" width="128" height="30"/>
+        <element name="RevisionDiffTitleValue" positionX="54" positionY="180" width="128" height="30"/>
+        <element name="RevisionDiffContentValue" positionX="63" positionY="189" width="128" height="30"/>
     </elements>
 </model>
