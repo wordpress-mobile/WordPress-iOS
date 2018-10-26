@@ -1124,6 +1124,8 @@
 		D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */; };
 		D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */; };
 		D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */; };
+		D8A468E82182E0110094B82F /* Wizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468E72182E0110094B82F /* Wizard.swift */; };
+		D8A468EA2182E0570094B82F /* WizardStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468E92182E0570094B82F /* WizardStep.swift */; };
 		D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */; };
 		D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */; };
 		D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */; };
@@ -2883,6 +2885,8 @@
 		D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMediaGroup.swift; sourceTree = "<group>"; };
 		D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMedia.swift; sourceTree = "<group>"; };
 		D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPicker.swift; sourceTree = "<group>"; };
+		D8A468E72182E0110094B82F /* Wizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wizard.swift; sourceTree = "<group>"; };
+		D8A468E92182E0570094B82F /* WizardStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardStep.swift; sourceTree = "<group>"; };
 		D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+LoadFromNib.swift"; sourceTree = "<group>"; };
 		D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAware.swift; sourceTree = "<group>"; };
 		D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+NetworkAware.swift"; sourceTree = "<group>"; };
@@ -5074,6 +5078,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				D8A468E62182DFFC0094B82F /* Site Creation */,
 				98077B58207555E400109F95 /* Support */,
 				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
@@ -6546,6 +6551,15 @@
 				D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */,
 			);
 			path = StockPhotos;
+			sourceTree = "<group>";
+		};
+		D8A468E62182DFFC0094B82F /* Site Creation */ = {
+			isa = PBXGroup;
+			children = (
+				D8A468E72182E0110094B82F /* Wizard.swift */,
+				D8A468E92182E0570094B82F /* WizardStep.swift */,
+			);
+			path = "Site Creation";
 			sourceTree = "<group>";
 		};
 		E10520591F2B1CD400A948F6 /* 61-62 */ = {
@@ -8329,6 +8343,7 @@
 				1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */,
 				D8071631203DA23700B32FD9 /* Accessible.swift in Sources */,
 				98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */,
+				D8A468E82182E0110094B82F /* Wizard.swift in Sources */,
 				E17E67031FA22C93009BDC9A /* PluginViewModel.swift in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
@@ -8645,6 +8660,7 @@
 				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
 				17A4A36C20EE55320071C2CA /* ReaderCoordinator.swift in Sources */,
 				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
+				D8A468EA2182E0570094B82F /* WizardStep.swift in Sources */,
 				93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */,
 				08D345511CD7F50900358E8C /* MenusSelectionItem.m in Sources */,
 				E62AFB6D1DC8E593007484FC /* WPTextAttachment.swift in Sources */,
