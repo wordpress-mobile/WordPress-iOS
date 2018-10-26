@@ -2513,6 +2513,7 @@
 		9A1DA2FB21370DD00082569B /* WordPress 80.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 80.xcdatamodel"; sourceTree = "<group>"; };
 		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
+		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
 		9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteInfoSubscriptions.swift; sourceTree = "<group>"; };
 		9F3EFCA0208E305D00268758 /* ReaderTopicService+Subscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderTopicService+Subscriptions.swift"; sourceTree = "<group>"; };
@@ -6804,8 +6805,9 @@
 				FF27169E1CAAF5060006E2D4 /* WPUITestCredentials.swift */,
 				FFB7B81D1A0012E80032E723 /* ApiCredentials.m */,
 			);
-			path = "Derived Sources";
-			sourceTree = "<group>";
+			name = "Derived Sources";
+			path = "../Derived Sources";
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E1A03EDF17422DBC0085D192 /* 10-11 */ = {
 			isa = PBXGroup;
@@ -7957,11 +7959,11 @@
 			);
 			name = "Generate Credentials";
 			outputPaths = (
-				"$(SRCROOT)/Derived Sources/WPUITestCredentials.swift",
+				"$(BUILT_PRODUCTS_DIR)/../Derived Sources/WPUITestCredentials.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "DERIVED_SOURCES_DIR=\"${SOURCE_ROOT}/Derived Sources\"\n\necho \"Generating credentials file in ${DERIVED_SOURCES_DIR}/WPUICredentials.swift\"\n\nruby \"${SOURCE_ROOT}/WordPressUITests/gencredentials.rb\" > \"${DERIVED_SOURCES_DIR}/WPUITestCredentials.swift\"\n";
+			shellScript = "DERIVED_SOURCES_DIR=\"${BUILT_PRODUCTS_DIR}/../Derived Sources\"\n\necho \"Generating credentials file in ${DERIVED_SOURCES_DIR}/WPUICredentials.swift\"\n\nruby \"${SOURCE_ROOT}/WordPressUITests/gencredentials.rb\" > \"${DERIVED_SOURCES_DIR}/WPUITestCredentials.swift\"\n";
 		};
 		928885381E5E057F001F9637 /* Reset Simulator */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8091,11 +8093,11 @@
 			);
 			name = "Generate API credentials";
 			outputPaths = (
-				"$(SRCROOT)/Derived Sources/ApiCredentials.m",
+				"$(BUILT_PRODUCTS_DIR)/../Derived Sources/ApiCredentials.m",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "DERIVED_SOURCES_DIR=\"${SOURCE_ROOT}/Derived Sources\"\ncp \"${SOURCE_ROOT}/Credentials/ApiCredentials.m\" \"${DERIVED_SOURCES_DIR}/ApiCredentials.m\"\n\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_SOURCES_DIR}/ApiCredentials.m\"\nruby \"${SOURCE_ROOT}/Credentials/gencredentials.rb\" > \"${DERIVED_SOURCES_DIR}/ApiCredentials.m\"\n";
+			shellScript = "# Delete the in-repo 'Derived Sources'\nrm -rf \"${SOURCE_ROOT}/Derived Sources\"\n\n# Place 'Derived Sources' relative to BUILT_PRODUCTS_DIR \nDERIVED_SOURCES_DIR=\"${BUILT_PRODUCTS_DIR}/../Derived Sources\"\n\nmkdir -p \"${DERIVED_SOURCES_DIR}\"\ncp \"${SOURCE_ROOT}/Credentials/ApiCredentials.m\" \"${DERIVED_SOURCES_DIR}/ApiCredentials.m\"\n\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_SOURCES_DIR}/ApiCredentials.m\"\nruby \"${SOURCE_ROOT}/Credentials/gencredentials.rb\" > \"${DERIVED_SOURCES_DIR}/ApiCredentials.m\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */ = {
@@ -11914,6 +11916,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */,
 				43290D012159652800F6B398 /* WordPress 81.xcdatamodel */,
 				9A1DA2FB21370DD00082569B /* WordPress 80.xcdatamodel */,
 				17BABCA52124487600B86ADF /* WordPress 79.xcdatamodel */,
@@ -11996,7 +11999,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 43290D012159652800F6B398 /* WordPress 81.xcdatamodel */;
+			currentVersion = 9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
