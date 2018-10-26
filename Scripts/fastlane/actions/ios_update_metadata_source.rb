@@ -2,6 +2,9 @@ module Fastlane
   module Actions
     class IosUpdateMetadataSourceAction < Action
       def self.run(params)
+        # Check local repo status
+        other_action.ensure_git_status_clean()
+
         other_action.gp_update_metadata_source(po_file_path: params[:po_file_path],
           source_files: params[:source_files], 
           release_version: params[:release_version])
