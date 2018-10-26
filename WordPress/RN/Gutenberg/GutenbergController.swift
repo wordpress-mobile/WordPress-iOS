@@ -16,7 +16,6 @@ class GutenbergController: UIViewController, PostEditor {
         self.post = post
         super.init(nibName: nil, bundle: nil)
 
-        GutenbergBridge.shared.mediaProvider.post = post
         GutenbergBridge.shared.postManager.delegate = self
     }
 
@@ -27,8 +26,7 @@ class GutenbergController: UIViewController, PostEditor {
     override func loadView() {
         let props: [AnyHashable: Any] = [
             "initialData": post.content ?? ""]
-        let bridge = GutenbergBridge.shared
-        view = RCTRootView(bridge: bridge.rnBridge, moduleName: "gutenberg", initialProperties: props)
+        view = GutenbergBridge.rootView(with: props)
     }
 
     override func viewDidLoad() {
@@ -41,7 +39,6 @@ class GutenbergController: UIViewController, PostEditor {
     }
 
     private func close(didSave: Bool) {
-        GutenbergBridge.shared.mediaProvider.post = nil
         GutenbergBridge.shared.postManager.delegate = nil
         onClose?(didSave, false)
     }

@@ -407,6 +407,8 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
     @objc func startRNBridge(with launchOptions: [AnyHashable: Any]?) {
-        GutenbergBridge.start(with: launchOptions)
+        DispatchQueue.main.async {
+            GutenbergBridge.start(with: launchOptions, mediaProvider: MediaProvider(), postManager: GBPostManager())
+        }
     }
 }
