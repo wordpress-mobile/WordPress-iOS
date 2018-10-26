@@ -54,7 +54,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
     
     if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        NSBundle *statsBundle = [NSBundle bundleForClass:[SiteStatsViewController class]];
+        NSBundle *statsBundle = [NSBundle bundleForClass:[SiteStatsDashboardViewController class]];
         self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:statsBundle] instantiateInitialViewController];
         self.statsVC = self.statsNavVC.viewControllers.firstObject;
     } else {

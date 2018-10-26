@@ -29,7 +29,7 @@
         <!--Stats-->
         <scene sceneID="TCQ-Sm-O2v">
             <objects>
-                <viewController storyboardIdentifier="SiteStatsViewController" id="vP4-Vk-Ilg" customClass="SiteStatsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SiteStatsDashboardViewController" id="vP4-Vk-Ilg" customClass="SiteStatsDashboardViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IsW-kc-L5Q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

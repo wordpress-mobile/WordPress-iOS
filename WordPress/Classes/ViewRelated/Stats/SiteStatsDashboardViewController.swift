@@ -6,7 +6,7 @@ protocol StatsLoadingProgressDelegate {
     func didEndLoadingStats(viewController: UIViewController)
 }
 
-class SiteStatsViewController: UIViewController {
+class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -70,7 +70,7 @@ class SiteStatsViewController: UIViewController {
 
 // MARK: - Private Extension
 
-private extension SiteStatsViewController {
+private extension SiteStatsDashboardViewController {
 
     struct Constants {
         static let userDefaultsKey = "LastSelectedStatsPeriodType"
@@ -133,7 +133,7 @@ private extension SiteStatsViewController {
 
 // MARK: - FilterTabBar Support
 
-private extension SiteStatsViewController {
+private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
@@ -154,7 +154,7 @@ private extension SiteStatsViewController {
 
 // MARK: - User Defaults Support
 
-private extension SiteStatsViewController {
+private extension SiteStatsDashboardViewController {
 
     func saveSelectedPeriodToUserDefaults() {
         UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Constants.userDefaultsKey)
