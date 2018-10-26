@@ -27,27 +27,21 @@ protocol PostEditorNavigationBarManagerDelegate: class {
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }
 
-    func closeWasPressed(sender: UIButton)
-    func moreWasPressed(sender: UIButton)
-    func blogPickerWasPressed(sender: UIButton)
-    func publishButtonWasPressed(sender: UIButton)
-    func displayCancelMediaUploads(sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton)
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton)
 }
 
 class PostEditorNavigationBarManager {
-    let navigationItem: UINavigationItem
     weak var delegate: PostEditorNavigationBarManagerDelegate?
-
-    init(navigationItem: UINavigationItem, delegate: PostEditorNavigationBarManagerDelegate) {
-        self.navigationItem = navigationItem
-        self.delegate = delegate
-    }
 
     // MARK: - Buttons
 
     /// Dismiss Button
     ///
-    private lazy var closeButton: WPButtonForNavigationBar = {
+    lazy var closeButton: WPButtonForNavigationBar = {
         let cancelButton = WPStyleGuide.buttonForBar(with: AztecPostViewController.Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = AztecPostViewController.Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = AztecPostViewController.Constants.cancelButtonPadding.right
@@ -68,7 +62,7 @@ class PostEditorNavigationBarManager {
 
     /// Blog Picker's Button
     ///
-    private lazy var blogPickerButton: WPBlogSelectorButton = {
+    lazy var blogPickerButton: WPBlogSelectorButton = {
         let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
         button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
         if #available(iOS 11, *) {
@@ -114,7 +108,7 @@ class PostEditorNavigationBarManager {
 
     /// NavigationBar's Close Button
     ///
-    private lazy var closeBarButtonItem: UIBarButtonItem = {
+    lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         cancelItem.accessibilityIdentifier = "Close"
@@ -147,7 +141,7 @@ class PostEditorNavigationBarManager {
 
     /// NavigationBar's More Button
     ///
-    private lazy var moreBarButtonItem: UIBarButtonItem = {
+    lazy var moreBarButtonItem: UIBarButtonItem = {
         let moreItem = UIBarButtonItem(customView: self.moreButton)
         return moreItem
     }()
@@ -155,23 +149,23 @@ class PostEditorNavigationBarManager {
     // MARK: - Selectors
 
     @objc private func closeWasPressed(sender: UIButton) {
-        delegate?.closeWasPressed(sender: sender)
+        delegate?.navigationBarManager(self, closeWasPressed: sender)
     }
 
     @objc private func moreWasPressed(sender: UIButton) {
-        delegate?.moreWasPressed(sender: sender)
+        delegate?.navigationBarManager(self, moreWasPressed: sender)
     }
 
     @objc private func blogPickerWasPressed(sender: UIButton) {
-        delegate?.blogPickerWasPressed(sender: sender)
+        delegate?.navigationBarManager(self, blogPickerWasPressed: sender)
     }
 
     @objc private func publishButtonTapped(sender: UIButton) {
-        delegate?.publishButtonWasPressed(sender: sender)
+        delegate?.navigationBarManager(self, publishButtonWasPressed: sender)
     }
 
     @objc private func displayCancelMediaUploads(sender: UIButton) {
-        delegate?.displayCancelMediaUploads(sender: sender)
+        delegate?.navigationBarManager(self, displayCancelMediaUploads: sender)
     }
 
     // MARK: - Public
@@ -180,7 +174,25 @@ class PostEditorNavigationBarManager {
         return [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
     }
 
+    var uploadingMediaLeftBarButtonItems: [UIBarButtonItem] {
+        return [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+    }
+
     var rightBarButtonItems: [UIBarButtonItem] {
         return [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
+    }
+
+    func reloadPublishButton() {
+        publishButton.setTitle(delegate?.publishButtonText ?? "", for: .normal)
+        publishButton.isEnabled = delegate?.isPublishButtonEnabled ?? true
+    }
+
+    func reloadBlogPickerButton(with title: String, enabled: Bool) {
+
+        let titleText = NSAttributedString(string: title, attributes: [.font: AztecPostViewController.Fonts.blogPicker])
+
+        blogPickerButton.setAttributedTitle(titleText, for: .normal)
+        blogPickerButton.buttonMode = enabled ? .multipleSite : .singleSite
+        blogPickerButton.isEnabled = enabled
     }
 }
