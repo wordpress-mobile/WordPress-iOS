@@ -10,6 +10,6 @@ final class SiteCreationWizard: Wizard {
 }
 
 extension SiteCreationWizard: WizardDelegate {
-    func wizard(_ wizard: Wizard, willNavigateToDestinationWith identifier: Identifier) {}
-    func wizard(_ wizard: Wizard, didNavigateToDestinationWith identifier: Identifier) {}
+    func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {}
+    func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {}
 }
