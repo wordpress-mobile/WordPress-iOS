@@ -364,7 +364,6 @@ import WordPressFlux
 
     fileprivate func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-        tableViewController.refreshControl = UIRefreshControl(frame: .zero)
     }
 
     fileprivate func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
