@@ -3727,7 +3727,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
         noResultsView.removeFromView()
 
-        if mediaLibraryDataSource.searchQuery?.count ?? 0 > 0 {
+        if (mediaLibraryDataSource.searchQuery?.count ?? 0) > 0 {
             noResultsView.configureForNoSearchResult()
         }
     }
