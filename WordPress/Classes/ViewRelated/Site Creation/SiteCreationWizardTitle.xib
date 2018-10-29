@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiteCreationWizardTitle" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="subtitleLabel" destination="0lA-wK-rwX" id="EPs-Wh-bfL"/>
+                <outlet property="titleLabel" destination="qw8-NK-s2J" id="AsG-ij-vxa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

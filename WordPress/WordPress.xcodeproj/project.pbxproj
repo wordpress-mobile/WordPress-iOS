@@ -1106,6 +1106,7 @@
 		D86572212186EFEE0023A99C /* SiteCreationWizardTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */; };
 		D86572222186EFEE0023A99C /* SiteCreationWizardTitle.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */; };
 		D86572252186F0470023A99C /* SiteSegmentsWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572232186F0470023A99C /* SiteSegmentsWizardContent.swift */; };
+		D86572272186F36F0023A99C /* SiteCreationHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572262186F36F0023A99C /* SiteCreationHeaderData.swift */; };
 		D871F98C214235C9002849B0 /* NewsBadFormed.strings in Resources */ = {isa = PBXBuildFile; fileRef = D871F98B214235C9002849B0 /* NewsBadFormed.strings */; };
 		D87A329620ABD60700F4726F /* ReaderTableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87A329520ABD60700F4726F /* ReaderTableContent.swift */; };
 		D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */; };
@@ -2883,6 +2884,7 @@
 		D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SiteCreationWizardTitle.xib; path = "Classes/ViewRelated/Site Creation/SiteCreationWizardTitle.xib"; sourceTree = SOURCE_ROOT; };
 		D86572232186F0470023A99C /* SiteSegmentsWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteSegmentsWizardContent.swift; path = "/Users/ctarda/Development/WordPress-iOS/WordPress/Classes/ViewRelated/New Group/SiteSegmentsWizardContent.swift"; sourceTree = "<absolute>"; };
 		D86572242186F0470023A99C /* SiteSegmentsWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SiteSegmentsWizardContent.xib; path = "/Users/ctarda/Development/WordPress-iOS/WordPress/Classes/ViewRelated/New Group/SiteSegmentsWizardContent.xib"; sourceTree = "<absolute>"; };
+		D86572262186F36F0023A99C /* SiteCreationHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderData.swift; sourceTree = "<group>"; };
 		D871F98B214235C9002849B0 /* NewsBadFormed.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NewsBadFormed.strings; sourceTree = "<group>"; };
 		D87A329520ABD60700F4726F /* ReaderTableContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableContent.swift; sourceTree = "<group>"; };
 		D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostUndoCell.swift; sourceTree = "<group>"; };
@@ -6561,6 +6563,7 @@
 				D865721D2186ED910023A99C /* SiteSegmentsStep.swift */,
 				D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */,
 				D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */,
+				D86572262186F36F0023A99C /* SiteCreationHeaderData.swift */,
 			);
 			name = "Site Creation";
 			path = "New Group";
@@ -8964,6 +8967,7 @@
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
+				D86572272186F36F0023A99C /* SiteCreationHeaderData.swift in Sources */,
 				D86572212186EFEE0023A99C /* SiteCreationWizardTitle.swift in Sources */,
 				98579BC7203DD86F004086E4 /* EpilogueSectionHeaderFooter.swift in Sources */,
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
