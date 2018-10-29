@@ -11,7 +11,7 @@ class WPRichContentViewTests: XCTestCase {
         // When
         contentView.content = ""
 
-        // Then : no assertions needed, as the app crashes with an empty string
+        // Then : no assertions - the test suite crashes with an empty string
     }
 
     func test_ContentView_DoesNotCrash_WithSingleCharacterString() {
@@ -21,6 +21,6 @@ class WPRichContentViewTests: XCTestCase {
         // When
         contentView.content = "-"
 
-        // Then : no assertions needed, as the app crashes with an empty string
+        // Then : no assertions - the test suite should not crash
     }
 }
