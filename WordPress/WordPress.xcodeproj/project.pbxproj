@@ -1103,6 +1103,9 @@
 		D86572152186C34C0023A99C /* SiteCreationWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572142186C34C0023A99C /* SiteCreationWizard.swift */; };
 		D86572172186C3600023A99C /* WizardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572162186C3600023A99C /* WizardDelegate.swift */; };
 		D865721E2186ED910023A99C /* SiteSegmentsStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865721D2186ED910023A99C /* SiteSegmentsStep.swift */; };
+		D86572212186EFEE0023A99C /* SiteCreationWizardTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */; };
+		D86572222186EFEE0023A99C /* SiteCreationWizardTitle.xib in Resources */ = {isa = PBXBuildFile; fileRef = D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */; };
+		D86572252186F0470023A99C /* SiteSegmentsWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572232186F0470023A99C /* SiteSegmentsWizardContent.swift */; };
 		D871F98C214235C9002849B0 /* NewsBadFormed.strings in Resources */ = {isa = PBXBuildFile; fileRef = D871F98B214235C9002849B0 /* NewsBadFormed.strings */; };
 		D87A329620ABD60700F4726F /* ReaderTableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87A329520ABD60700F4726F /* ReaderTableContent.swift */; };
 		D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */; };
@@ -2876,6 +2879,10 @@
 		D86572142186C34C0023A99C /* SiteCreationWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteCreationWizard.swift; path = "Classes/ViewRelated/Site Creation/SiteCreationWizard.swift"; sourceTree = SOURCE_ROOT; };
 		D86572162186C3600023A99C /* WizardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WizardDelegate.swift; path = Classes/ViewRelated/Wizards/WizardDelegate.swift; sourceTree = SOURCE_ROOT; };
 		D865721D2186ED910023A99C /* SiteSegmentsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteSegmentsStep.swift; path = "Classes/ViewRelated/Site Creation/SiteSegmentsStep.swift"; sourceTree = SOURCE_ROOT; };
+		D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteCreationWizardTitle.swift; path = "Classes/ViewRelated/Site Creation/SiteCreationWizardTitle.swift"; sourceTree = SOURCE_ROOT; };
+		D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SiteCreationWizardTitle.xib; path = "Classes/ViewRelated/Site Creation/SiteCreationWizardTitle.xib"; sourceTree = SOURCE_ROOT; };
+		D86572232186F0470023A99C /* SiteSegmentsWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteSegmentsWizardContent.swift; path = "/Users/ctarda/Development/WordPress-iOS/WordPress/Classes/ViewRelated/New Group/SiteSegmentsWizardContent.swift"; sourceTree = "<absolute>"; };
+		D86572242186F0470023A99C /* SiteSegmentsWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SiteSegmentsWizardContent.xib; path = "/Users/ctarda/Development/WordPress-iOS/WordPress/Classes/ViewRelated/New Group/SiteSegmentsWizardContent.xib"; sourceTree = "<absolute>"; };
 		D871F98B214235C9002849B0 /* NewsBadFormed.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = NewsBadFormed.strings; sourceTree = "<group>"; };
 		D87A329520ABD60700F4726F /* ReaderTableContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableContent.swift; sourceTree = "<group>"; };
 		D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostUndoCell.swift; sourceTree = "<group>"; };
@@ -6548,8 +6555,12 @@
 		D865720F21869C380023A99C /* Site Creation */ = {
 			isa = PBXGroup;
 			children = (
+				D86572232186F0470023A99C /* SiteSegmentsWizardContent.swift */,
+				D86572242186F0470023A99C /* SiteSegmentsWizardContent.xib */,
 				D86572142186C34C0023A99C /* SiteCreationWizard.swift */,
 				D865721D2186ED910023A99C /* SiteSegmentsStep.swift */,
+				D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */,
+				D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */,
 			);
 			name = "Site Creation";
 			path = "New Group";
@@ -7591,6 +7602,7 @@
 				5D6C4AF61B603CA3005E3C43 /* WPTableViewActivityCell.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				4350359B1EDCAB99004ECF47 /* stats.json in Resources */,
+				D86572222186EFEE0023A99C /* SiteCreationWizardTitle.xib in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				98579BC8203DD86F004086E4 /* EpilogueSectionHeaderFooter.xib in Resources */,
 				435035981EDCAB99004ECF47 /* notifications.json in Resources */,
@@ -8284,6 +8296,7 @@
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
+				D86572252186F0470023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
@@ -8951,6 +8964,7 @@
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
+				D86572212186EFEE0023A99C /* SiteCreationWizardTitle.swift in Sources */,
 				98579BC7203DD86F004086E4 /* EpilogueSectionHeaderFooter.swift in Sources */,
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
