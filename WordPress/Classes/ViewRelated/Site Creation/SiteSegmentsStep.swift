@@ -13,5 +13,5 @@ final class SiteSegmentsStep: WizardStep {
         return UIViewController()
     }
 
-    var delegate: WizardDelegate? 
+    var delegate: WizardDelegate?
 }

@@ -5,13 +5,13 @@ import Foundation
 /// Abstracts the service to obtain site types
 typealias SitesTypeServiceCompletion = (Result<[SiteSegment]>) -> Void
 
-protocol SiteTypesService {
+protocol SiteSegmentsService {
     func siteTypes(for: Locale, completion: @escaping SitesTypeServiceCompletion)
 }
 
 
 /// Mock implementation so that we can start developing
-final class MockSiteTypesService: SiteTypesService {
+final class MockSiteTypesService: SiteSegmentsService {
     func siteTypes(for: Locale = .current, completion: @escaping SitesTypeServiceCompletion) {
         let result = Result.success(mockSiteTypes())
 
