@@ -3,16 +3,16 @@ import Foundation
 
 
 /// Abstracts the service to obtain site types
-typealias SitesTypeServiceCompletion = (Result<[SiteSegment]>) -> Void
+typealias SiteSegmentsServiceCompletion = (Result<[SiteSegment]>) -> Void
 
 protocol SiteSegmentsService {
-    func siteTypes(for: Locale, completion: @escaping SitesTypeServiceCompletion)
+    func siteTypes(for: Locale, completion: @escaping SiteSegmentsServiceCompletion)
 }
 
 
 /// Mock implementation so that we can start developing
-final class MockSiteTypesService: SiteSegmentsService {
-    func siteTypes(for: Locale = .current, completion: @escaping SitesTypeServiceCompletion) {
+final class MockSiteSegmentsService: SiteSegmentsService {
+    func siteTypes(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
         let result = Result.success(mockSiteTypes())
 
         completion(result)
