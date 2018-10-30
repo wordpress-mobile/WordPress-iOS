@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 
-class RevisionDiffAbstractValue: NSManagedObject {
+class DiffAbstractValue: NSManagedObject {
     enum Operation: String {
         case add
         case copy
