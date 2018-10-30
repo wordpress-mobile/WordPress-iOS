@@ -10,7 +10,7 @@ class RevisionDiff: NSManagedObject {
     @NSManaged var totalDeletions: NSNumber
 
     @NSManaged var contentDiffs: [DiffContentValue]?
-    @NSManaged var titleDiffs: [DiffAbstractValue]?
+    @NSManaged var titleDiffs: [DiffTitleValue]?
 
     @NSManaged var revision: Revision?
 }
