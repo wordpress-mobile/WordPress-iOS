@@ -2883,7 +2883,7 @@
 		D865721121869C590023A99C /* Wizard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Wizard.swift; path = Classes/ViewRelated/Wizards/Wizard.swift; sourceTree = SOURCE_ROOT; };
 		D86572142186C34C0023A99C /* SiteCreationWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteCreationWizard.swift; path = "Classes/ViewRelated/Site Creation/SiteCreationWizard.swift"; sourceTree = SOURCE_ROOT; };
 		D86572162186C3600023A99C /* WizardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WizardDelegate.swift; path = Classes/ViewRelated/Wizards/WizardDelegate.swift; sourceTree = SOURCE_ROOT; };
-		D865721D2186ED910023A99C /* SiteSegmentsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteSegmentsStep.swift; path = "Classes/ViewRelated/Site Creation/SiteSegmentsStep.swift"; sourceTree = SOURCE_ROOT; };
+		D865721D2186ED910023A99C /* SiteSegmentsStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteSegmentsStep.swift; path = "Classes/ViewRelated/New Group/SiteSegments/SiteSegmentsStep.swift"; sourceTree = SOURCE_ROOT; };
 		D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SiteCreationWizardTitle.swift; path = "Classes/ViewRelated/Site Creation/SiteCreationWizardTitle.swift"; sourceTree = SOURCE_ROOT; };
 		D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SiteCreationWizardTitle.xib; path = "Classes/ViewRelated/Site Creation/SiteCreationWizardTitle.xib"; sourceTree = SOURCE_ROOT; };
 		D86572262186F36F0023A99C /* SiteCreationHeaderData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderData.swift; sourceTree = "<group>"; };
@@ -6567,10 +6567,8 @@
 		D865720F21869C380023A99C /* Site Creation */ = {
 			isa = PBXGroup;
 			children = (
-				D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */,
-				D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */,
+				D8C31CBF2188442200A33B35 /* SiteSegments */,
 				D86572142186C34C0023A99C /* SiteCreationWizard.swift */,
-				D865721D2186ED910023A99C /* SiteSegmentsStep.swift */,
 				D865721F2186EFEE0023A99C /* SiteCreationWizardTitle.swift */,
 				D86572202186EFEE0023A99C /* SiteCreationWizardTitle.xib */,
 				D86572262186F36F0023A99C /* SiteCreationHeaderData.swift */,
@@ -6633,6 +6631,16 @@
 				D8A468E12181C8290094B82F /* site-vertical.json */,
 			);
 			name = "Site Creation";
+			sourceTree = "<group>";
+		};
+		D8C31CBF2188442200A33B35 /* SiteSegments */ = {
+			isa = PBXGroup;
+			children = (
+				D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */,
+				D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */,
+				D865721D2186ED910023A99C /* SiteSegmentsStep.swift */,
+			);
+			path = SiteSegments;
 			sourceTree = "<group>";
 		};
 		D8CB56212181A93F00554EAE /* Site Creation */ = {
