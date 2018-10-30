@@ -13,16 +13,20 @@ protocol SiteSegmentsService {
 /// Mock implementation so that we can start developing
 final class MockSiteSegmentsService: SiteSegmentsService {
     func siteSegments(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
-        let result = Result.success(mockSiteTypes())
+        let result = Result.success(mockSiteTypes)
 
         completion(result)
     }
 
-    func mockSiteTypes() -> [SiteSegment] {
+    lazy var mockSiteTypes: [SiteSegment] = {
         return [ singleSiteType(id: "Site Id 1"),
                  singleSiteType(id: "Site Id 2"),
                  singleSiteType(id: "Site Id 3"),
                  singleSiteType(id: "Site Id 4") ]
+    }()
+
+    var mockCount: Int {
+        return mockSiteTypes.count
     }
 
     private func singleSiteType(id: String) -> SiteSegment {
