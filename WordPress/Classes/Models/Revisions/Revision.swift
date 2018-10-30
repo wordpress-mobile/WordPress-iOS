@@ -16,5 +16,5 @@ class Revision: NSManagedObject {
     @NSManaged var postDateGmt: String?
     @NSManaged var postModifiedGmt: String?
 
-    @NSManaged var diff: Diff?
+    @NSManaged var diff: RevisionDiff?
 }

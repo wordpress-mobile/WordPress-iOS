@@ -800,7 +800,7 @@
 		9A38DC69218899FB006A409B /* Revision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC64218899FA006A409B /* Revision.swift */; };
 		9A38DC6A218899FB006A409B /* DiffTitleValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC65218899FA006A409B /* DiffTitleValue.swift */; };
 		9A38DC6B218899FB006A409B /* DiffContentValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC66218899FB006A409B /* DiffContentValue.swift */; };
-		9A38DC6C218899FB006A409B /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* Diff.swift */; };
+		9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
 		9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC68218899FB006A409B /* DiffAbstractValue.swift */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */; };
@@ -2530,7 +2530,7 @@
 		9A38DC64218899FA006A409B /* Revision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Revision.swift; path = Revisions/Revision.swift; sourceTree = "<group>"; };
 		9A38DC65218899FA006A409B /* DiffTitleValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffTitleValue.swift; path = Revisions/DiffTitleValue.swift; sourceTree = "<group>"; };
 		9A38DC66218899FB006A409B /* DiffContentValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffContentValue.swift; path = Revisions/DiffContentValue.swift; sourceTree = "<group>"; };
-		9A38DC67218899FB006A409B /* Diff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Diff.swift; path = Revisions/Diff.swift; sourceTree = "<group>"; };
+		9A38DC67218899FB006A409B /* RevisionDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiff.swift; path = Revisions/RevisionDiff.swift; sourceTree = "<group>"; };
 		9A38DC68218899FB006A409B /* DiffAbstractValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffAbstractValue.swift; path = Revisions/DiffAbstractValue.swift; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
@@ -5530,7 +5530,7 @@
 			isa = PBXGroup;
 			children = (
 				9A38DC64218899FA006A409B /* Revision.swift */,
-				9A38DC67218899FB006A409B /* Diff.swift */,
+				9A38DC67218899FB006A409B /* RevisionDiff.swift */,
 				9A38DC68218899FB006A409B /* DiffAbstractValue.swift */,
 				9A38DC66218899FB006A409B /* DiffContentValue.swift */,
 				9A38DC65218899FA006A409B /* DiffTitleValue.swift */,
@@ -8450,7 +8450,7 @@
 				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */,
-				9A38DC6C218899FB006A409B /* Diff.swift in Sources */,
+				9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */,
 				FF4C069F206560E500E0B2BC /* MediaThumbnailCoordinator.swift in Sources */,
 				7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,

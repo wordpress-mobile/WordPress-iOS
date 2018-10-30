@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 
-class Diff: NSManagedObject {
+class RevisionDiff: NSManagedObject {
     @NSManaged var fromRevisionId: NSNumber
     @NSManaged var toRevisionId: NSNumber
 

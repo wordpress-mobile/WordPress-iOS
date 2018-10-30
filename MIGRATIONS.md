@@ -5,8 +5,8 @@ data model as well as any custom migrations.
 
 ## WordPress 83
 @danielebogo 2018-10-30
-- Renamed `RevisionDiff` to `Diff`.
 - Renamed `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue` to `DiffAbstractValue`, `DiffContentValue`, `DiffTitleValue`.
+- Set `DiffAbstractValue` as abstract entity.
 - Replaced relationship property name on `DiffContentValue` and `DiffTitleValue` from *relationship* to *revisionDiff*.
 - Fix parent entity of `DiffContentValue`.
 - Replaced properties name on `DiffAbstractValue`.

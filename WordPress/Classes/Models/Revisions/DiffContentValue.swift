@@ -3,5 +3,5 @@ import CoreData
 
 
 class DiffContentValue: DiffAbstractValue {
-    @NSManaged var revisionDiff: Diff?
+    @NSManaged var revisionDiff: RevisionDiff?
 }

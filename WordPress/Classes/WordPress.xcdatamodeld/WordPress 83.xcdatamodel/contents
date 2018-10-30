@@ -290,25 +290,16 @@
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
         <userInfo/>
     </entity>
-    <entity name="Diff" representedClassName="WordPress.Diff" syncable="YES">
-        <attribute name="fromRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="toRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="totalAdditions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="totalDeletions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="contentDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiffContentValue" inverseName="revisionDiff" inverseEntity="DiffContentValue" syncable="YES"/>
-        <relationship name="revision" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Revision" inverseName="diff" inverseEntity="Revision" syncable="YES"/>
-        <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiffTitleValue" inverseName="revisionDiff" inverseEntity="DiffTitleValue" syncable="YES"/>
-    </entity>
     <entity name="DiffAbstractValue" representedClassName="WordPress.DiffAbstractValue" isAbstract="YES" syncable="YES">
         <attribute name="diffOperation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="diffType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DiffContentValue" representedClassName="WordPress.DiffContentValue" parentEntity="DiffAbstractValue" syncable="YES">
-        <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Diff" inverseName="contentDiffs" inverseEntity="Diff" syncable="YES"/>
+        <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="contentDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
     <entity name="DiffTitleValue" representedClassName="WordPress.DiffTitleValue" parentEntity="DiffAbstractValue" syncable="YES">
-        <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Diff" inverseName="titleDiffs" inverseEntity="Diff" syncable="YES"/>
+        <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="titleDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
     <entity name="Domain" representedClassName=".ManagedDomain" syncable="YES">
         <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
@@ -655,7 +646,16 @@
         <attribute name="postTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="revisionId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="siteId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="diff" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Diff" inverseName="revision" inverseEntity="Diff" syncable="YES"/>
+        <relationship name="diff" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RevisionDiff" inverseName="revision" inverseEntity="RevisionDiff" syncable="YES"/>
+    </entity>
+    <entity name="RevisionDiff" representedClassName="WordPress.RevisionDiff" syncable="YES">
+        <attribute name="fromRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="toRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="totalAdditions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="totalDeletions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="contentDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiffContentValue" inverseName="revisionDiff" inverseEntity="DiffContentValue" syncable="YES"/>
+        <relationship name="revision" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Revision" inverseName="diff" inverseEntity="Revision" syncable="YES"/>
+        <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiffTitleValue" inverseName="revisionDiff" inverseEntity="DiffTitleValue" syncable="YES"/>
     </entity>
     <entity name="Role" representedClassName=".Role" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -719,7 +719,7 @@
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Diff" positionX="36" positionY="162" width="128" height="150"/>
+        <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
         <element name="DiffAbstractValue" positionX="45" positionY="171" width="128" height="90"/>
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
