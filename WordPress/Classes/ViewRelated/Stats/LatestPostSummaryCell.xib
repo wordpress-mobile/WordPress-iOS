@@ -107,14 +107,17 @@
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dj8-5c-J6O" userLabel="View More Stack View">
                                 <rect key="frame" x="16" y="305.5" width="343" height="26"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xet-wC-hmj" userLabel="View More Label">
-                                        <rect key="frame" x="0.0" y="3" width="335" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xet-wC-hmj" userLabel="View More Label">
+                                        <rect key="frame" x="0.0" y="3" width="333" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="NUJ-mV-eYK" userLabel="View More Disclosure Image">
-                                        <rect key="frame" x="335" y="6.5" width="8" height="13"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="NUJ-mV-eYK" userLabel="View More Disclosure Image">
+                                        <rect key="frame" x="333" y="6.5" width="10" height="13"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="10" id="AYx-EH-X3W"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
                             </stackView>
