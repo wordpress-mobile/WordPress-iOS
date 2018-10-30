@@ -38,6 +38,6 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        dataSource = SegmentsDataSource(data: data)
+        dataSource = SiteSegmentsDataSource(data: data)
     }
 }

@@ -1,4 +1,4 @@
-final class SegmentsDataSource: NSObject, UITableViewDataSource {
+final class SiteSegmentsDataSource: NSObject, UITableViewDataSource {
     private let data: [SiteSegment]
 
     init(data: [SiteSegment]) {
