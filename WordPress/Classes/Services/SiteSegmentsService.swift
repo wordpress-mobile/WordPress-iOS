@@ -18,7 +18,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
         completion(result)
     }
 
-    private func mockSiteTypes() -> [SiteSegment] {
+    func mockSiteTypes() -> [SiteSegment] {
         return [ singleSiteType(id: "Site Id 1"),
                  singleSiteType(id: "Site Id 2"),
                  singleSiteType(id: "Site Id 3"),
