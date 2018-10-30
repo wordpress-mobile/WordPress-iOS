@@ -1148,6 +1148,8 @@
 		D8C31CBE2188383E00A33B35 /* SiteSegmentsStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */; };
 		D8C31CC12188446700A33B35 /* SiteSegmentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C31CC02188446700A33B35 /* SiteSegmentsDataSource.swift */; };
 		D8C31CC3218844DD00A33B35 /* SiteSegmentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C31CC2218844DD00A33B35 /* SiteSegmentsDataSourceTests.swift */; };
+		D8C31CC62188490000A33B35 /* SiteSegmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C31CC42188490000A33B35 /* SiteSegmentsCell.swift */; };
+		D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */; };
 		D8CB56202181A8CE00554EAE /* SiteSegmentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */; };
 		D8CB56232181A95D00554EAE /* SiteSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56222181A95D00554EAE /* SiteSegment.swift */; };
 		D8CB56252181B3C300554EAE /* SiteTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56242181B3C300554EAE /* SiteTypeTests.swift */; };
@@ -2932,6 +2934,8 @@
 		D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsStepTests.swift; sourceTree = "<group>"; };
 		D8C31CC02188446700A33B35 /* SiteSegmentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsDataSource.swift; sourceTree = "<group>"; };
 		D8C31CC2218844DD00A33B35 /* SiteSegmentsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsDataSourceTests.swift; sourceTree = "<group>"; };
+		D8C31CC42188490000A33B35 /* SiteSegmentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsCell.swift; sourceTree = "<group>"; };
+		D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteSegmentsCell.xib; sourceTree = "<group>"; };
 		D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsService.swift; sourceTree = "<group>"; };
 		D8CB56222181A95D00554EAE /* SiteSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegment.swift; sourceTree = "<group>"; };
 		D8CB56242181B3C300554EAE /* SiteTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTests.swift; sourceTree = "<group>"; };
@@ -6645,6 +6649,8 @@
 				D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */,
 				D865721D2186ED910023A99C /* SiteSegmentsStep.swift */,
 				D8C31CC02188446700A33B35 /* SiteSegmentsDataSource.swift */,
+				D8C31CC42188490000A33B35 /* SiteSegmentsCell.swift */,
+				D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */,
 			);
 			path = SiteSegments;
 			sourceTree = "<group>";
@@ -7684,6 +7690,7 @@
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */,
+				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
@@ -8758,6 +8765,7 @@
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
 				74558369201A1FD3007809BB /* WPReusableTableViewCells.swift in Sources */,
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
+				D8C31CC62188490000A33B35 /* SiteSegmentsCell.swift in Sources */,
 				98921EFB21372E57004949AA /* NewsService.swift in Sources */,
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
