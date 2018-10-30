@@ -10,6 +10,10 @@ class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
 
+    @objc var siteID: NSNumber?
+    @objc var siteTimeZone: TimeZone?
+    @objc var oauth2Token: String?
+
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
