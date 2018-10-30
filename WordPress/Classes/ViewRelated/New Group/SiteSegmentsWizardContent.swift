@@ -3,6 +3,7 @@ import UIKit
 
 final class SiteSegmentsWizardContent: UIViewController {
     private let service: SiteSegmentsService
+    private var dataSource: UITableViewDataSource?
 
     @IBOutlet weak var table: UITableView!
 
@@ -37,7 +38,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        print("handling data")
+        dataSource = SegmentsDataSource(data: data)
     }
 }
 
