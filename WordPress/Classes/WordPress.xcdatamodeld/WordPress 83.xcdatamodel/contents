@@ -625,7 +625,7 @@
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Revision" syncable="YES">
+    <entity name="Revision" representedClassName="WordPress.Revision" syncable="YES">
         <attribute name="postAuthorId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postDateGmt" optional="YES" attributeType="String" syncable="YES"/>
@@ -637,7 +637,7 @@
         <attribute name="siteId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="diff" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RevisionDiff" inverseName="revision" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiff" syncable="YES">
+    <entity name="RevisionDiff" representedClassName="WordPress.RevisionDiff" syncable="YES">
         <attribute name="fromRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="toRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="totalAdditions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -646,15 +646,15 @@
         <relationship name="revision" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Revision" inverseName="diff" inverseEntity="Revision" syncable="YES"/>
         <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffTitleValue" inverseName="revisionDiff" inverseEntity="RevisionDiffTitleValue" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiffAbstractValue" isAbstract="YES" syncable="YES">
+    <entity name="RevisionDiffAbstractValue" representedClassName="WordPress.RevisionDiffAbstractValue" isAbstract="YES" syncable="YES">
         <attribute name="diffOperation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="diffType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiffContentValue" parentEntity="RevisionDiffAbstractValue" syncable="YES">
+    <entity name="RevisionDiffContentValue" representedClassName="WordPress.RevisionDiffContentValue" parentEntity="RevisionDiffAbstractValue" syncable="YES">
         <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="contentDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiffTitleValue" parentEntity="RevisionDiffAbstractValue" syncable="YES">
+    <entity name="RevisionDiffTitleValue" representedClassName="WordPress.RevisionDiffTitleValue" parentEntity="RevisionDiffAbstractValue" syncable="YES">
         <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="titleDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
     <entity name="Role" representedClassName=".Role" syncable="YES">
