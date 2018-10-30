@@ -16,7 +16,7 @@ final class SiteSegmentsStep: WizardStep {
     }()
 
     private(set) lazy var content: UIViewController = {
-        return UIViewController()
+        return SiteSegmentsWizardContent(service: self.service)
     }()
 
     var delegate: WizardDelegate?
