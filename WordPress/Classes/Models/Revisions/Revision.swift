@@ -5,8 +5,8 @@ import CoreData
 class Revision: NSManagedObject {
     @NSManaged var siteId: NSNumber
     @NSManaged var revisionId: NSNumber
-
     @NSManaged var postId: NSNumber
+
     @NSManaged var postAuthorId: NSNumber?
 
     @NSManaged var postTitle: String?
