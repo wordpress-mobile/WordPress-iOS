@@ -10,7 +10,7 @@ final class SiteTypeTests: XCTestCase {
         static let icon = URL(string: "https://wordpress.com/icon/blogger.png")!
     }
 
-    private var subject: PendingSiteType?
+    private var subject: SiteSegment?
 
     override func setUp() {
         super.setUp()
@@ -19,7 +19,7 @@ final class SiteTypeTests: XCTestCase {
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 
-        subject = try! jsonDecoder.decode(PendingSiteType.self, from: data)
+        subject = try! jsonDecoder.decode(SiteSegment.self, from: data)
     }
 
     override func tearDown() {
@@ -44,7 +44,7 @@ final class SiteTypeTests: XCTestCase {
     }
 
     func testSiteTypesWithSameIdAreEqual() {
-        let secondSiteType = PendingSiteType(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon)
+        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon)
 
         XCTAssertEqual(subject, secondSiteType)
     }

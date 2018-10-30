@@ -3,7 +3,7 @@ import Foundation
 
 
 /// Abstracts the service to obtain site types
-typealias SitesTypeServiceCompletion = (Result<[PendingSiteType]>) -> Void
+typealias SitesTypeServiceCompletion = (Result<[SiteSegment]>) -> Void
 
 protocol SiteTypesService {
     func siteTypes(for: Locale, completion: @escaping SitesTypeServiceCompletion)
@@ -18,16 +18,16 @@ final class MockSiteTypesService: SiteTypesService {
         completion(result)
     }
 
-    private func mockSiteTypes() -> [PendingSiteType] {
+    private func mockSiteTypes() -> [SiteSegment] {
         return [ singleSiteType(id: "Site Id 1"),
                  singleSiteType(id: "Site Id 2"),
                  singleSiteType(id: "Site Id 3"),
                  singleSiteType(id: "Site Id 4") ]
     }
 
-    private func singleSiteType(id: String) -> PendingSiteType {
+    private func singleSiteType(id: String) -> SiteSegment {
         let identifier = Identifier(value: id)
-        return PendingSiteType(identifier: identifier,
+        return SiteSegment(identifier: identifier,
                            title: "Mock",
                            subtitle: "Mock subtitle",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)

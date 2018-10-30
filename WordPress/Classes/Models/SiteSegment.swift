@@ -1,19 +1,19 @@
 
-/// A site type. There is already a SiteType enum in the codebase. To be renamed after we get rid of the old code
-struct PendingSiteType {
+/// Models a type of site.
+struct SiteSegment {
     let identifier: Identifier
     let title: String
     let subtitle: String
     let icon: URL
 }
 
-extension PendingSiteType: Equatable {
-    static func ==(lhs: PendingSiteType, rhs: PendingSiteType) -> Bool {
+extension SiteSegment: Equatable {
+    static func ==(lhs: SiteSegment, rhs: SiteSegment) -> Bool {
         return lhs.identifier == rhs.identifier
     }
 }
 
-extension PendingSiteType: Decodable {
+extension SiteSegment: Decodable {
     enum CodingKeys: String, CodingKey {
         case id
         case title = "site-type-title"
