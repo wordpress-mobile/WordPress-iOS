@@ -5,6 +5,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.backgroundColor = WPStyleGuide.greyLighten30()
+        setUpLatestPostSummaryCell()
     }
 
     // MARK: - Table view data source
@@ -28,3 +29,18 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
 }
 
+private extension SiteStatsInsightsTableViewController {
+
+    func setUpLatestPostSummaryCell() {
+        let nib = UINib(nibName: NibNames.latestPostSummary, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: ReuseIdentifiers.latestPostSummary)
+    }
+
+    struct NibNames {
+        static let latestPostSummary = "LatestPostSummaryCell"
+    }
+
+    struct ReuseIdentifiers {
+        static let latestPostSummary = "latestPostSummaryCell"
+    }
+}

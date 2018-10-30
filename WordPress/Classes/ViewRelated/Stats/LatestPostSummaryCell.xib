@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="latestPostSummaryCell" rowHeight="555" id="KGk-i7-Jjw" customClass="LatestPostSummaryCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="555"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="554.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WbC-hI-HqV" userLabel="Bordered View">
+                        <rect key="frame" x="0.0" y="8" width="320" height="538.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Latest Post Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwt-UQ-iMD" userLabel="Header Label">
+                                <rect key="frame" x="16" y="12" width="288" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="It's been 999 months since Your Post was published. Here's how the post performed so far." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-57-h8x" userLabel="Summary Label">
+                                <rect key="frame" x="16" y="54.5" width="288" height="58"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="MnQ-57-h8x" firstAttribute="leading" secondItem="WbC-hI-HqV" secondAttribute="leading" constant="16" id="3gL-ef-8Z6"/>
+                            <constraint firstItem="MnQ-57-h8x" firstAttribute="top" secondItem="Iwt-UQ-iMD" secondAttribute="bottom" constant="22" id="Tjy-69-Fns"/>
+                            <constraint firstItem="Iwt-UQ-iMD" firstAttribute="top" secondItem="WbC-hI-HqV" secondAttribute="top" constant="12" id="fz0-eF-o55"/>
+                            <constraint firstAttribute="bottom" secondItem="MnQ-57-h8x" secondAttribute="bottom" constant="12" id="tNL-h6-oeg"/>
+                            <constraint firstAttribute="trailing" secondItem="Iwt-UQ-iMD" secondAttribute="trailing" constant="16" id="vdz-eU-As7"/>
+                            <constraint firstAttribute="trailing" secondItem="MnQ-57-h8x" secondAttribute="trailing" constant="16" id="y9b-gW-KIB"/>
+                            <constraint firstItem="Iwt-UQ-iMD" firstAttribute="leading" secondItem="WbC-hI-HqV" secondAttribute="leading" constant="16" id="yMP-2P-LWA"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="WbC-hI-HqV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="BcG-y3-7d3"/>
+                    <constraint firstAttribute="trailing" secondItem="WbC-hI-HqV" secondAttribute="trailing" id="GUc-Ln-WUC"/>
+                    <constraint firstItem="WbC-hI-HqV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="KbD-hj-p3v"/>
+                    <constraint firstAttribute="bottom" secondItem="WbC-hI-HqV" secondAttribute="bottom" constant="8" id="iKd-Ny-sBY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="borderedView" destination="WbC-hI-HqV" id="Lnp-5X-VVN"/>
+                <outlet property="headerLabel" destination="Iwt-UQ-iMD" id="5zZ-8W-Of7"/>
+                <outlet property="summaryLabel" destination="MnQ-57-h8x" id="0Qb-wb-77F"/>
+            </connections>
+            <point key="canvasLocation" x="52.799999999999997" y="24.7376311844078"/>
+        </tableViewCell>
+    </objects>
+</document>
