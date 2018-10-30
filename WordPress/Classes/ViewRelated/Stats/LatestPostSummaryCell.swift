@@ -1,4 +1,5 @@
 import UIKit
+import WordPressComStatsiOS
 
 class LatestPostSummaryCell: UITableViewCell {
 
@@ -24,8 +25,15 @@ class LatestPostSummaryCell: UITableViewCell {
         applyStyles()
     }
 
-    func configure() {
-        summaryLabel.attributedText = attributedSummary()
+    func configure(withData summaryData: StatsLatestPostSummary?) {
+        guard let summaryData = summaryData else {
+            return
+        }
+
+        summaryLabel.attributedText = attributedSummary(postTitle: summaryData.postTitle, postAge: summaryData.postAge)
+        viewsDataLabel.text = summaryData.views
+        likesDataLabel.text = summaryData.likes
+        commentsDataLabel.text = summaryData.comments
     }
 
 }
@@ -59,12 +67,9 @@ private extension LatestPostSummaryCell {
         viewMoreLabel.text = CellStrings.viewMore
     }
 
-    func attributedSummary() -> NSAttributedString {
+    func attributedSummary(postTitle: String, postAge: String) -> NSAttributedString {
 
-        let postTitle = "Testing testing testing"
-        let time = "666 months"
-
-        let unformattedString = String(format: CellStrings.summary, time, postTitle)
+        let unformattedString = String(format: CellStrings.summary, postAge, postTitle)
 
         // Add formatting to entire string.
         let attributedString = NSMutableAttributedString(string: unformattedString, attributes: [

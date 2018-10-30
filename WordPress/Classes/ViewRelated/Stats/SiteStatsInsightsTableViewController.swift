@@ -6,6 +6,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     // MARK: - Properties
 
     var statsService: WPStatsService?
+    var latestPostSummary: StatsLatestPostSummary?
 
     // MARK: - View
 
@@ -16,7 +17,12 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         setUpLatestPostSummaryCell()
     }
 
-    // MARK: - Table view data source
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchStats()
+    }
+
+    // MARK: - Table Methods
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -27,9 +33,14 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.latestPostSummary, for: indexPath) as! LatestPostSummaryCell
-        cell.configure()
-        return cell
+
+        if latestPostSummary != nil {
+            let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.latestPostSummary, for: indexPath) as! LatestPostSummaryCell
+            cell.configure(withData: latestPostSummary)
+            return cell
+        }
+
+        return UITableViewCell()
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -37,6 +48,54 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     }
 
 }
+
+// MARK: - Data Fetching
+
+private extension SiteStatsInsightsTableViewController {
+
+    func fetchStats() {
+
+        // TODO: update progress view
+
+        statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
+
+        }, insightsCompletionHandler: { (mostPopularStats, error) in
+
+        }, todaySummaryCompletionHandler: { (todaySummary, error) in
+
+        }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
+            if error != nil {
+                DDLogDebug("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
+                self.latestPostSummary = nil
+            } else {
+                self.latestPostSummary = latestPostSummary
+                self.tableView.reloadData()
+            }
+        }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
+
+        }, commentsPostsCompletionHandler: { (commentsPosts, error) in
+
+        }, tagsCategoriesCompletionHandler: { (tagsCategories, error) in
+
+        }, followersDotComCompletionHandler: { (followersDotCom, error) in
+
+        }, followersEmailCompletionHandler: { (followersEmail, error) in
+
+        }, publicizeCompletionHandler: { (publicize, error) in
+
+        }, streakCompletionHandler: { (statsStreak, error) in
+
+        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
+            // TODO: update progress view
+        }, andOverallCompletionHandler: {
+            // TODO: update progress view
+        })
+
+    }
+}
+
+
+// MARK: - Cell Support
 
 private extension SiteStatsInsightsTableViewController {
 
