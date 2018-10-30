@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiteSegmentsWizardContent" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="table" destination="f4p-Ic-8S4" id="zF1-SC-EdX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
