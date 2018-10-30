@@ -15,6 +15,8 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var commentsLabel: UILabel!
     @IBOutlet weak var commentsDataLabel: UILabel!
 
+    @IBOutlet weak var viewMoreLabel: UILabel!
+
     // MARK: - View
 
     override func awakeFromNib() {
@@ -49,6 +51,8 @@ private extension LatestPostSummaryCell {
 
         commentsLabel.textColor = viewsLabel.textColor
         commentsDataLabel.textColor = viewsDataLabel.textColor
+
+        viewMoreLabel.textColor = WPStyleGuide.wordPressBlue()
     }
 
     func attributedSummary() -> NSAttributedString {
