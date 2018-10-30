@@ -1,4 +1,5 @@
 import UIKit
+import WordPressComStatsiOS
 
 protocol StatsLoadingProgressDelegate {
     func didBeginLoadingStats(viewController: UIViewController)
@@ -36,6 +37,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
+            insightsTableVC.statsService = initStatsService()
             insightsTableViewController = insightsTableVC
         }
     }
@@ -89,6 +91,7 @@ private extension SiteStatsDashboardViewController {
         static let progressViewInitialProgress = Float(0.03)
         static let progressViewHideDelay = 1
         static let progressViewHideDuration = 0.25
+        static let cacheExpirationInterval = Double(300)
     }
 
     enum StatsPeriodType: Int {
@@ -141,6 +144,19 @@ private extension SiteStatsDashboardViewController {
         return shouldShow
     }
 
+    func initStatsService() -> WPStatsService? {
+
+        guard let siteID = siteID,
+            let siteTimeZone = siteTimeZone,
+            let oauth2Token = oauth2Token else {
+            return nil
+        }
+
+        return WPStatsService.init(siteId: siteID,
+                                   siteTimeZone: siteTimeZone,
+                                   oauth2Token: oauth2Token,
+                                   andCacheExpirationInterval: Constants.cacheExpirationInterval)
+    }
 }
 
 // MARK: - FilterTabBar Support

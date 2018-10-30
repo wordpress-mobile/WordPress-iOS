@@ -1,9 +1,17 @@
 import UIKit
+import WordPressComStatsiOS
 
 class SiteStatsInsightsTableViewController: UITableViewController {
 
+    // MARK: - Properties
+
+    var statsService: WPStatsService?
+
+    // MARK: - View
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.backgroundColor = WPStyleGuide.greyLighten30()
         setUpLatestPostSummaryCell()
     }
