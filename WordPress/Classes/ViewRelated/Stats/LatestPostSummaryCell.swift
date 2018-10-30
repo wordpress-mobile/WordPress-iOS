@@ -44,15 +44,19 @@ private extension LatestPostSummaryCell {
         headerLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
 
         viewsLabel.textColor = WPStyleGuide.darkGrey()
+        viewsLabel.text = CellStrings.views
         viewsDataLabel.textColor = WPStyleGuide.darkGrey()
 
         likesLabel.textColor = viewsLabel.textColor
+        likesLabel.text = CellStrings.likes
         likesDataLabel.textColor = viewsDataLabel.textColor
 
         commentsLabel.textColor = viewsLabel.textColor
+        commentsLabel.text = CellStrings.comments
         commentsDataLabel.textColor = viewsDataLabel.textColor
 
         viewMoreLabel.textColor = WPStyleGuide.wordPressBlue()
+        viewMoreLabel.text = CellStrings.viewMore
     }
 
     func attributedSummary() -> NSAttributedString {
@@ -60,7 +64,7 @@ private extension LatestPostSummaryCell {
         let postTitle = "Testing testing testing"
         let time = "666 months"
 
-        let unformattedString = String(format: CellStrings.cardSummary, time, postTitle)
+        let unformattedString = String(format: CellStrings.summary, time, postTitle)
 
         // Add formatting to entire string.
         let attributedString = NSMutableAttributedString(string: unformattedString, attributes: [
@@ -83,7 +87,11 @@ private extension LatestPostSummaryCell {
 
     struct CellStrings {
         static let header = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary section header")
-        static let cardSummary = NSLocalizedString("It's been %@ since %@ was published. Here's how the post performed so far.", comment: "Latest post summary text including placeholder for time and the post title.")
+        static let summary = NSLocalizedString("It's been %@ since %@ was published. Here's how the post performed so far.", comment: "Latest post summary text including placeholder for time and the post title.")
+        static let views = NSLocalizedString("Views", comment: "Label for post views count.")
+        static let likes = NSLocalizedString("Likes", comment: "Label for post likes count.")
+        static let comments = NSLocalizedString("Comments", comment: "Label for post comments count.")
+        static let viewMore = NSLocalizedString("View more", comment: "Label for viewing more post information.")
     }
 
 }
