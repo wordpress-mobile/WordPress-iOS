@@ -42,5 +42,4 @@ final class SiteSegmentsStepTests: XCTestCase {
 
         XCTAssertEqual(header.subtitleLabel.text, HeaderExpectations.subtitle)
     }
-
 }
