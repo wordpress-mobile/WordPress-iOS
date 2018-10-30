@@ -2,25 +2,25 @@ import XCTest
 @testable import WordPress
 
 final class SiteSegmentsDataSourceTests: XCTestCase {
+    private var dataSource: UITableViewDataSource?
+    private var mock: MockSiteSegmentsService?
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        super.setUp()
+        mock = MockSiteSegmentsService()
+        dataSource = SiteSegmentsDataSource(data: mock!.mockSiteTypes)
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        dataSource = nil
+        mock = nil
+        super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testDataSourceCountMatchesMockCount() {
+        let table = UITableView()
+        let count = dataSource?.tableView(table, numberOfRowsInSection: 0)
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        XCTAssertEqual(count, mock?.mockCount)
     }
-
 }
