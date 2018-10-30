@@ -797,6 +797,11 @@
 		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
 		9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */; };
 		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
+		9A38DC69218899FB006A409B /* Revision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC64218899FA006A409B /* Revision.swift */; };
+		9A38DC6A218899FB006A409B /* RevisionDiffTitleValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC65218899FA006A409B /* RevisionDiffTitleValue.swift */; };
+		9A38DC6B218899FB006A409B /* RevisionDiffContentValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC66218899FB006A409B /* RevisionDiffContentValue.swift */; };
+		9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
+		9A38DC6D218899FB006A409B /* RevisionDiffAbstractValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC68218899FB006A409B /* RevisionDiffAbstractValue.swift */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */; };
 		9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFCA0208E305D00268758 /* ReaderTopicService+Subscriptions.swift */; };
@@ -2522,6 +2527,11 @@
 		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
 		9A38DC60218897B4006A409B /* WordPress 83.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 83.xcdatamodel"; sourceTree = "<group>"; };
+		9A38DC64218899FA006A409B /* Revision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Revision.swift; path = Revisions/Revision.swift; sourceTree = "<group>"; };
+		9A38DC65218899FA006A409B /* RevisionDiffTitleValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiffTitleValue.swift; path = Revisions/RevisionDiffTitleValue.swift; sourceTree = "<group>"; };
+		9A38DC66218899FB006A409B /* RevisionDiffContentValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiffContentValue.swift; path = Revisions/RevisionDiffContentValue.swift; sourceTree = "<group>"; };
+		9A38DC67218899FB006A409B /* RevisionDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiff.swift; path = Revisions/RevisionDiff.swift; sourceTree = "<group>"; };
+		9A38DC68218899FB006A409B /* RevisionDiffAbstractValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiffAbstractValue.swift; path = Revisions/RevisionDiffAbstractValue.swift; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
 		9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteInfoSubscriptions.swift; sourceTree = "<group>"; };
@@ -4012,6 +4022,7 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9A38DC63218899E4006A409B /* Revisions */,
 				D8CB56212181A93F00554EAE /* Site Creation */,
 				B5176CC41CDCE3C80083CF2D /* Account Settings */,
 				B5176CC61CDCE47F0083CF2D /* Blog */,
@@ -5513,6 +5524,18 @@
 				9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		9A38DC63218899E4006A409B /* Revisions */ = {
+			isa = PBXGroup;
+			children = (
+				9A38DC64218899FA006A409B /* Revision.swift */,
+				9A38DC67218899FB006A409B /* RevisionDiff.swift */,
+				9A38DC68218899FB006A409B /* RevisionDiffAbstractValue.swift */,
+				9A38DC66218899FB006A409B /* RevisionDiffContentValue.swift */,
+				9A38DC65218899FA006A409B /* RevisionDiffTitleValue.swift */,
+			);
+			name = Revisions;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -8340,6 +8363,7 @@
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
 				43AF2F972107D3810069C012 /* QuickStartTourState.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
+				9A38DC6B218899FB006A409B /* RevisionDiffContentValue.swift in Sources */,
 				7E4123C020F4097B00DF8486 /* FormattableTextContent.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
@@ -8426,6 +8450,7 @@
 				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */,
+				9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */,
 				FF4C069F206560E500E0B2BC /* MediaThumbnailCoordinator.swift in Sources */,
 				7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
@@ -8710,6 +8735,7 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				17BEE0041FC867C20074C124 /* WordPressAppDelegate+Swift.swift in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
+				9A38DC6A218899FB006A409B /* RevisionDiffTitleValue.swift in Sources */,
 				7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */,
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
 				74558369201A1FD3007809BB /* WPReusableTableViewCells.swift in Sources */,
@@ -8911,6 +8937,7 @@
 				D816B8C42112CFAE0052CE4D /* Result.swift in Sources */,
 				B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */,
 				7E3E7A5720E44D130075D159 /* HeaderContentStyles.swift in Sources */,
+				9A38DC69218899FB006A409B /* Revision.swift in Sources */,
 				403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */,
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
 				D816B8D92112D85F0052CE4D /* News.swift in Sources */,
@@ -8978,6 +9005,7 @@
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
 				08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
+				9A38DC6D218899FB006A409B /* RevisionDiffAbstractValue.swift in Sources */,
 				177B4C252123161900CF8084 /* GiphyPicker.swift in Sources */,
 				17B7C8C120EE2A870042E260 /* Routes+Notifications.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
