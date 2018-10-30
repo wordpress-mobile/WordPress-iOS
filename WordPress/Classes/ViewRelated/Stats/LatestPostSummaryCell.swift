@@ -8,6 +8,13 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
 
+    @IBOutlet weak var viewsLabel: UILabel!
+    @IBOutlet weak var viewsDataLabel: UILabel!
+    @IBOutlet weak var likesLabel: UILabel!
+    @IBOutlet weak var likesDataLabel: UILabel!
+    @IBOutlet weak var commentsLabel: UILabel!
+    @IBOutlet weak var commentsDataLabel: UILabel!
+
     // MARK: - View
 
     override func awakeFromNib() {
@@ -33,6 +40,15 @@ private extension LatestPostSummaryCell {
         headerLabel.text = CellStrings.header
         headerLabel.textColor = WPStyleGuide.darkGrey()
         headerLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+
+        viewsLabel.textColor = WPStyleGuide.darkGrey()
+        viewsDataLabel.textColor = WPStyleGuide.darkGrey()
+
+        likesLabel.textColor = viewsLabel.textColor
+        likesDataLabel.textColor = viewsDataLabel.textColor
+
+        commentsLabel.textColor = viewsLabel.textColor
+        commentsDataLabel.textColor = viewsDataLabel.textColor
     }
 
     func attributedSummary() -> NSAttributedString {

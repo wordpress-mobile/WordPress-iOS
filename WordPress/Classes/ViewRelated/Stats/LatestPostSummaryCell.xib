@@ -22,25 +22,84 @@
                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WbC-hI-HqV" userLabel="Bordered View">
                         <rect key="frame" x="0.0" y="8" width="320" height="538.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Latest Post Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwt-UQ-iMD" userLabel="Header Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latest Post Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwt-UQ-iMD" userLabel="Header Label">
                                 <rect key="frame" x="16" y="12" width="288" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="It's been 999 months since Your Post was published. Here's how the post performed so far." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-57-h8x" userLabel="Summary Label">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It's been 999 months since Your Post was published. Here's how the post performed so far." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-57-h8x" userLabel="Summary Label">
                                 <rect key="frame" x="16" y="54.5" width="288" height="58"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="irr-i0-AM0" userLabel="Data Stack View">
+                                <rect key="frame" x="24" y="143.5" width="272" height="383"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="wux-rC-UyT" userLabel="Views Stack View">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="383"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L5K-Wp-mW9" userLabel="Views Label">
+                                                <rect key="frame" x="22" y="0.0" width="36" height="347.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Efd-SW-O9K" userLabel="Views Data">
+                                                <rect key="frame" x="34" y="351.5" width="12" height="31.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5Lu-bf-dhz" userLabel="Likes Stack View">
+                                        <rect key="frame" x="96" y="0.0" width="80" height="383"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UBX-AB-ffn" userLabel="Likes Label">
+                                                <rect key="frame" x="24.5" y="0.0" width="31.5" height="347.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSJ-ds-3G4" userLabel="Likes Data">
+                                                <rect key="frame" x="34" y="351.5" width="12" height="31.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="INN-7n-UXp" userLabel="Comments Stack View">
+                                        <rect key="frame" x="192" y="0.0" width="80" height="383"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jLy-hA-LxG" userLabel="Comments Label">
+                                                <rect key="frame" x="7.5" y="0.0" width="65.5" height="347.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ke4-L3-2a5" userLabel="Comments Data">
+                                                <rect key="frame" x="34" y="351.5" width="12" height="31.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="irr-i0-AM0" secondAttribute="bottom" constant="12" id="275-Eg-vZP"/>
                             <constraint firstItem="MnQ-57-h8x" firstAttribute="leading" secondItem="WbC-hI-HqV" secondAttribute="leading" constant="16" id="3gL-ef-8Z6"/>
+                            <constraint firstAttribute="trailing" secondItem="irr-i0-AM0" secondAttribute="trailing" constant="24" id="JoX-qU-Cdu"/>
                             <constraint firstItem="MnQ-57-h8x" firstAttribute="top" secondItem="Iwt-UQ-iMD" secondAttribute="bottom" constant="22" id="Tjy-69-Fns"/>
+                            <constraint firstItem="irr-i0-AM0" firstAttribute="top" secondItem="MnQ-57-h8x" secondAttribute="bottom" constant="31" id="Wbc-9E-iYy"/>
+                            <constraint firstItem="irr-i0-AM0" firstAttribute="leading" secondItem="WbC-hI-HqV" secondAttribute="leading" constant="24" id="cec-En-J8O"/>
                             <constraint firstItem="Iwt-UQ-iMD" firstAttribute="top" secondItem="WbC-hI-HqV" secondAttribute="top" constant="12" id="fz0-eF-o55"/>
-                            <constraint firstAttribute="bottom" secondItem="MnQ-57-h8x" secondAttribute="bottom" constant="12" id="tNL-h6-oeg"/>
                             <constraint firstAttribute="trailing" secondItem="Iwt-UQ-iMD" secondAttribute="trailing" constant="16" id="vdz-eU-As7"/>
                             <constraint firstAttribute="trailing" secondItem="MnQ-57-h8x" secondAttribute="trailing" constant="16" id="y9b-gW-KIB"/>
                             <constraint firstItem="Iwt-UQ-iMD" firstAttribute="leading" secondItem="WbC-hI-HqV" secondAttribute="leading" constant="16" id="yMP-2P-LWA"/>
@@ -58,8 +117,14 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="borderedView" destination="WbC-hI-HqV" id="Lnp-5X-VVN"/>
+                <outlet property="commentsDataLabel" destination="Ke4-L3-2a5" id="Mi7-wx-efz"/>
+                <outlet property="commentsLabel" destination="jLy-hA-LxG" id="jxu-pA-4Xa"/>
                 <outlet property="headerLabel" destination="Iwt-UQ-iMD" id="5zZ-8W-Of7"/>
+                <outlet property="likesDataLabel" destination="eSJ-ds-3G4" id="g1g-h2-qD5"/>
+                <outlet property="likesLabel" destination="UBX-AB-ffn" id="kcJ-sh-Lsa"/>
                 <outlet property="summaryLabel" destination="MnQ-57-h8x" id="0Qb-wb-77F"/>
+                <outlet property="viewsDataLabel" destination="Efd-SW-O9K" id="CL6-zS-XtJ"/>
+                <outlet property="viewsLabel" destination="L5K-Wp-mW9" id="gpt-1m-oBt"/>
             </connections>
             <point key="canvasLocation" x="52.799999999999997" y="24.7376311844078"/>
         </tableViewCell>
