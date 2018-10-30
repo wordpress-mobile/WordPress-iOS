@@ -15,9 +15,11 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var statsContainerView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
 
+    var insightsTableViewController: SiteStatsInsightsTableViewController?
+
     // TODO: replace UITableViewController with real controller names that
-    // correspond to Insights and Stats.
-    var insightsTableViewController: UITableViewController?
+    // corresponds to Stats.
+
     var statsTableViewController: UITableViewController?
 
     // MARK: - View
@@ -26,6 +28,12 @@ class SiteStatsDashboardViewController: UIViewController {
         super.viewDidLoad()
         setupFilterBar()
         getSelectedPeriodFromUserDefaults()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
+            insightsTableViewController = insightsTableVC
+        }
     }
 
     // MARK: - StatsLoadingProgressDelegate methods
