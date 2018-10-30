@@ -1146,6 +1146,7 @@
 		D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */; };
 		D8BA274D20FDEA2E007A5C77 /* NotificationTextContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BA274C20FDEA2E007A5C77 /* NotificationTextContentTests.swift */; };
 		D8C31CBE2188383E00A33B35 /* SiteSegmentsStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */; };
+		D8C31CC12188446700A33B35 /* SiteSegmentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C31CC02188446700A33B35 /* SiteSegmentsDataSource.swift */; };
 		D8CB56202181A8CE00554EAE /* SiteSegmentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */; };
 		D8CB56232181A95D00554EAE /* SiteSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56222181A95D00554EAE /* SiteSegment.swift */; };
 		D8CB56252181B3C300554EAE /* SiteTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56242181B3C300554EAE /* SiteTypeTests.swift */; };
@@ -2928,6 +2929,7 @@
 		D8B9B592204F6C93003C6042 /* CommentsViewController+Network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CommentsViewController+Network.h"; sourceTree = "<group>"; };
 		D8BA274C20FDEA2E007A5C77 /* NotificationTextContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTextContentTests.swift; sourceTree = "<group>"; };
 		D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsStepTests.swift; sourceTree = "<group>"; };
+		D8C31CC02188446700A33B35 /* SiteSegmentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsDataSource.swift; sourceTree = "<group>"; };
 		D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsService.swift; sourceTree = "<group>"; };
 		D8CB56222181A95D00554EAE /* SiteSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegment.swift; sourceTree = "<group>"; };
 		D8CB56242181B3C300554EAE /* SiteTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTests.swift; sourceTree = "<group>"; };
@@ -6639,6 +6641,7 @@
 				D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */,
 				D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */,
 				D865721D2186ED910023A99C /* SiteSegmentsStep.swift */,
+				D8C31CC02188446700A33B35 /* SiteSegmentsDataSource.swift */,
 			);
 			path = SiteSegments;
 			sourceTree = "<group>";
@@ -8432,6 +8435,7 @@
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
 				17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */,
 				1715179220F4B2EB002C4A38 /* Routes+Stats.swift in Sources */,
+				D8C31CC12188446700A33B35 /* SiteSegmentsDataSource.swift in Sources */,
 				74729CAA2057100200D1394D /* SearchIdentifierGenerator.swift in Sources */,
 				B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */,
 				433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */,
