@@ -5,9 +5,11 @@ data model as well as any custom migrations.
 
 ## WordPress 83
 @danielebogo 2018-10-30
-- Replaced relationship property name on `RevisionDiffContentValue` and `RevisionDiffTitleValue` from *relationship* to *revisionDiff*.
-- Fix parent entity of `RevisionDiffContentValue`.
-- Replaced properties name on `RevisionDiffAbstractValue`.
+- Renamed `RevisionDiff` to `Diff`.
+- Renamed `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue` to `DiffAbstractValue`, `DiffContentValue`, `DiffTitleValue`.
+- Replaced relationship property name on `DiffContentValue` and `DiffTitleValue` from *relationship* to *revisionDiff*.
+- Fix parent entity of `DiffContentValue`.
+- Replaced properties name on `DiffAbstractValue`.
 
 ## WordPress 82
 @danielebogo 2018-10-26
