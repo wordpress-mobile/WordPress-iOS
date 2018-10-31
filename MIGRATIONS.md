@@ -10,6 +10,7 @@ data model as well as any custom migrations.
 - Replaced relationship property name on `DiffContentValue` and `DiffTitleValue` from *relationship* to *revisionDiff*.
 - Fix parent entity of `DiffContentValue`.
 - Replaced properties name on `DiffAbstractValue`.
+- Added property *index* on `DiffAbstractValue`.
 
 ## WordPress 82
 @danielebogo 2018-10-26
