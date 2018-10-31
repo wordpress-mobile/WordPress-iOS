@@ -16,6 +16,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
         tableView.backgroundColor = WPStyleGuide.greyLighten30()
         setUpLatestPostSummaryCell()
+        refreshControl?.addTarget(self, action: #selector(fetchStats), for: .valueChanged)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,7 +55,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
 private extension SiteStatsInsightsTableViewController {
 
-    func fetchStats() {
+    @objc func fetchStats() {
 
         loadingProgressDelegate?.didBeginLoadingStats(viewController: self)
 
@@ -91,6 +92,7 @@ private extension SiteStatsInsightsTableViewController {
                 self.loadingProgressDelegate?.statsLoadingProgress(viewController: self, percentage: percentage)
         }, andOverallCompletionHandler: {
             self.loadingProgressDelegate?.didEndLoadingStats(viewController: self)
+            self.refreshControl?.endRefreshing()
         })
 
     }

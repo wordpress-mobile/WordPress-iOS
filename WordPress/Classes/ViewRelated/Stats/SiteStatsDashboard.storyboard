@@ -101,6 +101,9 @@
                             <outlet property="delegate" destination="Hcp-7d-sgU" id="1zr-d2-Cjw"/>
                         </connections>
                     </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="zYc-fh-rSf">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LmM-2F-Flv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
