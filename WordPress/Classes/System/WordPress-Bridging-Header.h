@@ -100,6 +100,7 @@
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
+#import "WPBackgroundDimmerView.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
 #import "WPCrashlytics.h"
