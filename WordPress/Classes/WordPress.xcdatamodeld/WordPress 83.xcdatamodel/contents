@@ -293,6 +293,7 @@
     <entity name="DiffAbstractValue" representedClassName="WordPress.DiffAbstractValue" isAbstract="YES" syncable="YES">
         <attribute name="diffOperation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="diffType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DiffContentValue" representedClassName="WordPress.DiffContentValue" parentEntity="DiffAbstractValue" syncable="YES">
@@ -719,8 +720,7 @@
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
-        <element name="DiffAbstractValue" positionX="45" positionY="171" width="128" height="90"/>
+        <element name="DiffAbstractValue" positionX="45" positionY="171" width="128" height="105"/>
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
@@ -751,6 +751,7 @@
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
         <element name="Revision" positionX="27" positionY="153" width="128" height="195"/>
+        <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
         <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>

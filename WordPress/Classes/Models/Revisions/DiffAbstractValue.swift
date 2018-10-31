@@ -19,6 +19,7 @@ class DiffAbstractValue: NSManagedObject {
     @NSManaged private var diffOperation: String
     @NSManaged private var diffType: String
 
+    @NSManaged var index: Int
     @NSManaged var value: String?
 
     var operation: Operation {
