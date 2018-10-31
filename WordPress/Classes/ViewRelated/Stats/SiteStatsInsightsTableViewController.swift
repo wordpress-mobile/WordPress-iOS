@@ -7,6 +7,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     var statsService: WPStatsService?
     var latestPostSummary: StatsLatestPostSummary?
+    var loadingProgressDelegate: StatsLoadingProgressDelegate?
 
     // MARK: - View
 
@@ -55,7 +56,7 @@ private extension SiteStatsInsightsTableViewController {
 
     func fetchStats() {
 
-        // TODO: update progress view
+        loadingProgressDelegate?.didBeginLoadingStats(viewController: self)
 
         statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
 
@@ -86,9 +87,10 @@ private extension SiteStatsInsightsTableViewController {
         }, streakCompletionHandler: { (statsStreak, error) in
 
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
-            // TODO: update progress view
+                let percentage = Float(numberOfFinishedOperations) / Float(totalNumberOfOperations)
+                self.loadingProgressDelegate?.statsLoadingProgress(viewController: self, percentage: percentage)
         }, andOverallCompletionHandler: {
-            // TODO: update progress view
+            self.loadingProgressDelegate?.didEndLoadingStats(viewController: self)
         })
 
     }
