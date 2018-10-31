@@ -928,7 +928,16 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showBottomSheetDemo
 {
-    DDLogWarn(@"Presenting the bottom sheet demo...");
+    if ([WPDeviceIdentification isiPhone] == YES) {
+        BottomSheetDemoViewController *demoViewController = [[BottomSheetDemoViewController alloc] init];
+
+        BottomSheetPresentationController *presentationController = [[BottomSheetPresentationController alloc] initWithPresentedViewController:demoViewController presentingViewController:self];
+        demoViewController.transitioningDelegate = presentationController;
+
+        [self presentViewController:demoViewController animated:true completion:nil];
+    } else {
+        // TBD: Present via popover
+    }
 }
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
