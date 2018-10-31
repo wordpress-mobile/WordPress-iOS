@@ -293,7 +293,7 @@
     <entity name="DiffAbstractValue" representedClassName="WordPress.DiffAbstractValue" isAbstract="YES" syncable="YES">
         <attribute name="diffOperation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="diffType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DiffContentValue" representedClassName="WordPress.DiffContentValue" parentEntity="DiffAbstractValue" syncable="YES">
