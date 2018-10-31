@@ -346,19 +346,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             let learnMoreButtonTitle = NSLocalizedString("Learn More", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
 
             let editButton = FancyAlertViewController.Config.ButtonConfig(editButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
-                
+
                 controller.dismiss(animated: true) { [unowned self] in
                     self.editPost(apost: post)
                 }
             }
 
             let goBackButton = FancyAlertViewController.Config.ButtonConfig(goBackButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
-                
+
                 controller.dismiss(animated: true)
             }
-            
+
             let moreInfoButton = FancyAlertViewController.Config.ButtonConfig(learnMoreButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
-                
+
                 let url: URL = { [unowned self] in
                     if self.blog.isAccessibleThroughWPCom() {
                         return URL(string: "https://apps.wordpress.com/gutenberg?flavor=wpcom")!
@@ -366,14 +366,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                         return URL(string: "https://apps.wordpress.com/gutenberg?flavor=wporg")!
                     }
                 }()
-                
+
                 let webViewController = WebViewControllerFactory.controller(url: url)
                 let navController = UINavigationController(rootViewController: webViewController)
                 navController.modalPresentationStyle = .fullScreen
-                
+
                 controller.present(navController, animated: true, completion: nil)
             }
-            
+
             let configuration = FancyAlertViewController.Config(
                 titleText: title,
                 bodyText: message,
@@ -382,11 +382,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 defaultButton: editButton,
                 cancelButton: goBackButton,
                 moreInfoButton: moreInfoButton)
-            
+
             let alert = FancyAlertViewController.controllerWithConfiguration(configuration: configuration)
             alert.modalPresentationStyle = .custom
             alert.transitioningDelegate = self
-            
+
             present(alert, animated: true, completion: nil)
         }
     }
@@ -730,7 +730,7 @@ extension PostListViewController: UIViewControllerTransitioningDelegate {
         guard presented is FancyAlertViewController else {
             return nil
         }
-        
+
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
