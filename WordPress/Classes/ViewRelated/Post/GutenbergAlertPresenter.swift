@@ -24,6 +24,12 @@ import Foundation
             return
         }
 
+        let trackProperties = properties(for: post)
+
+        WPAnalytics.track(
+            .gutenbergWarningConfirmDialogShown,
+            withProperties: trackProperties)
+
         let title = NSLocalizedString("Before you continue", comment: "Title of the popup shown when trying to edit a Gutenberg post using our existing editor.")
         let message = NSLocalizedString("We are working on the brand new WordPress editor. You can still edit this post, but we recommend previewing it before publishing.", comment: "Message of the popup shown when trying to edit a Gutenberg post using our existing editor.")
         let editButtonTitle = NSLocalizedString("Edit Post", comment: "Title of the edit post button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
@@ -32,6 +38,9 @@ import Foundation
         let doNotShowAgainSwitchText = NSLocalizedString("Do not show this again", comment: "Text shown in the switch that allows the user to not show again the alert that comes up when opening a Gutenberg post with our existing editor.")
 
         let editButton = FancyAlertViewController.Config.ButtonConfig(editButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
+            WPAnalytics.track(
+                .gutenbergWarningConfirmDialogShownYesTapped,
+                withProperties: trackProperties)
 
             if controller.isBottomSwitchOn() {
                 self.doNotShowAgain()
@@ -43,6 +52,9 @@ import Foundation
         }
 
         let goBackButton = FancyAlertViewController.Config.ButtonConfig(goBackButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
+            WPAnalytics.track(
+                .gutenbergWarningConfirmDialogShownCancelTapped,
+                withProperties: trackProperties)
 
             if controller.isBottomSwitchOn() {
                 self.doNotShowAgain()
@@ -54,6 +66,9 @@ import Foundation
         }
 
         let moreInfoButton = FancyAlertViewController.Config.ButtonConfig(learnMoreButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
+            WPAnalytics.track(
+                .gutenbergWarningConfirmDialogShownLearnMoreTapped,
+                withProperties: trackProperties)
 
             let url: URL = {
                 if post.blog.isAccessibleThroughWPCom() {
@@ -73,7 +88,15 @@ import Foundation
         let doNotShowAgainSwitchConfig = FancyAlertViewController.Config.SwitchConfig(
             initialValue: false,
             text: doNotShowAgainSwitchText) { (controller, theSwitch) in
-
+                if theSwitch.isOn {
+                    WPAnalytics.track(
+                        .gutenbergWarningConfirmDialogShownDontShowAgainChecked,
+                        withProperties: trackProperties)
+                } else {
+                    WPAnalytics.track(
+                        .gutenbergWarningConfirmDialogShownDontShowAgainUnchecked,
+                        withProperties: trackProperties)
+                }
         }
 
         let configuration = FancyAlertViewController.Config(
@@ -113,6 +136,16 @@ import Foundation
 
     private func isGutenbergPost(_ post: Post) -> Bool {
         return post.content?.contains("<!-- wp:") ?? false
+    }
+
+    // MARK: - Analytics
+
+    private func properties(for post: Post) -> [AnyHashable: Any] {
+        guard let dotComID = post.blog.dotComID else {
+            return [:]
+        }
+
+        return ["siteId": dotComID]
     }
 }
 
