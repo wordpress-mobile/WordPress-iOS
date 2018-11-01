@@ -17,12 +17,15 @@ final class WizardViewController: UIViewController {
         addChild(content)
 
         let stackView = UIStackView(arrangedSubviews: [header.view, content.view])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         view.addSubview(stackView)
 
         NSLayoutConstraint.activate([
             stackView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor),
-            stackView.heightAnchor.constraint(equalTo: view.readableContentGuide.heightAnchor)
+            stackView.heightAnchor.constraint(equalTo: view.readableContentGuide.heightAnchor),
+            stackView.centerXAnchor.constraint(equalTo: view.readableContentGuide.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.readableContentGuide.centerYAnchor)
             ])
 
         header.didMove(toParent: self)
