@@ -14,6 +14,7 @@ final class SiteCreationWizard: Wizard {
     init(steps: [WizardStep]) {
         self.steps = steps
         configureSteps()
+        runWizard()
     }
 
     /// This probably won't fly for too long.
@@ -21,6 +22,14 @@ final class SiteCreationWizard: Wizard {
         for var step in steps {
             step.delegate = self
         }
+    }
+
+    private func runWizard() {
+        guard let firstStep = steps.first else {
+            return
+        }
+
+        content.render(step: firstStep)
     }
 }
 

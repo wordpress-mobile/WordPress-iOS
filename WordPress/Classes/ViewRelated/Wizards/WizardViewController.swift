@@ -7,4 +7,8 @@ final class WizardViewController: UIViewController {
 
         view.backgroundColor = .red
     }
+
+    func render(step: WizardStep) {
+        print("rendering step with id: ", step.identifier)
+    }
 }
