@@ -1,14 +1,15 @@
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
-    lazy var ui: UIViewController = {
-        let content = WizardViewController()
-        return UINavigationController(rootViewController: content)
+    private lazy var content = {
+        WizardViewController()
     }()
 
+    lazy var ui: UIViewController = {
+        return UINavigationController(rootViewController: self.content)
+    }()
 
     // The sequence of steps to complete the wizard.
     let steps: [WizardStep]
-
 
     init(steps: [WizardStep]) {
         self.steps = steps
