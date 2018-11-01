@@ -334,60 +334,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        let isGutenbergPost = post.content?.contains("<!-- wp:") ?? false
+        let gutenbergAlertPresenter = GutenbergAlertPresenter()
 
-        if !isGutenbergPost {
-            editPost(apost: post)
-        } else {
-            let title = NSLocalizedString("Before you continue", comment: "Title of the popup shown when trying to edit a Gutenberg post using our existing editor.")
-            let message = NSLocalizedString("We are working on the brand new WordPress editor. You can still edit this post, but we recommend previewing it before publishing.", comment: "Message of the popup shown when trying to edit a Gutenberg post using our existing editor.")
-            let editButtonTitle = NSLocalizedString("Edit Post", comment: "Title of the edit post button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
-            let goBackButtonTitle = NSLocalizedString("Go Back", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
-            let learnMoreButtonTitle = NSLocalizedString("Learn More", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
-
-            let editButton = FancyAlertViewController.Config.ButtonConfig(editButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
-
-                controller.dismiss(animated: true) { [unowned self] in
-                    self.editPost(apost: post)
-                }
+        gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
+            if edit {
+                self.editPost(apost: post)
             }
-
-            let goBackButton = FancyAlertViewController.Config.ButtonConfig(goBackButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
-
-                controller.dismiss(animated: true)
-            }
-
-            let moreInfoButton = FancyAlertViewController.Config.ButtonConfig(learnMoreButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
-
-                let url: URL = { [unowned self] in
-                    if self.blog.isAccessibleThroughWPCom() {
-                        return URL(string: "https://apps.wordpress.com/gutenberg?flavor=wpcom")!
-                    } else {
-                        return URL(string: "https://apps.wordpress.com/gutenberg?flavor=wporg")!
-                    }
-                }()
-
-                let webViewController = WebViewControllerFactory.controller(url: url)
-                let navController = UINavigationController(rootViewController: webViewController)
-                navController.modalPresentationStyle = .fullScreen
-
-                controller.present(navController, animated: true, completion: nil)
-            }
-
-            let configuration = FancyAlertViewController.Config(
-                titleText: title,
-                bodyText: message,
-                headerImage: nil,
-                dividerPosition: nil,
-                defaultButton: editButton,
-                cancelButton: goBackButton,
-                moreInfoButton: moreInfoButton)
-
-            let alert = FancyAlertViewController.controllerWithConfiguration(configuration: configuration)
-            alert.modalPresentationStyle = .custom
-            alert.transitioningDelegate = self
-
-            present(alert, animated: true, completion: nil)
         }
     }
 
@@ -719,18 +671,5 @@ private extension PostListViewController {
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-    }
-
-}
-
-// MARK: - UIViewControllerTransitioningDelegate
-//
-extension PostListViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        guard presented is FancyAlertViewController else {
-            return nil
-        }
-
-        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
