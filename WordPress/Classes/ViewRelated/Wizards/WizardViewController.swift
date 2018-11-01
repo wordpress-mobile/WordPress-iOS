@@ -1,5 +1,6 @@
 import UIKit
 
+/// Renders a WzardStep
 final class WizardViewController: UIViewController {
 
     override func viewDidLoad() {
