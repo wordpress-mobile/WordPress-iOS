@@ -10,6 +10,22 @@ final class WizardViewController: UIViewController {
     }
 
     func render(step: WizardStep) {
-        print("rendering step with id: ", step.identifier)
+        let header = step.header
+        let content = step.content
+
+        addChild(header)
+        addChild(content)
+
+        let stackView = UIStackView(arrangedSubviews: [header.view, content.view])
+        stackView.axis = .vertical
+        view.addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor),
+            stackView.heightAnchor.constraint(equalTo: view.readableContentGuide.heightAnchor)
+            ])
+
+        header.didMove(toParent: self)
+        content.didMove(toParent: self)
     }
 }
