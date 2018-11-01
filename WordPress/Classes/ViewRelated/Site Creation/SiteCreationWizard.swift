@@ -1,7 +1,8 @@
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
     lazy var ui: UIViewController = {
-        WizardViewController()
+        let content = WizardViewController()
+        return UINavigationController(rootViewController: content)
     }()
 
 
