@@ -1,8 +1,11 @@
 /// Terrible name. Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher: NSObject {
+    private lazy var builder: SiteCreationBuilder = {
+        return SiteCreationBuilder()
+    }()
 
     private lazy var segmentsStep: WizardStep = {
-        return SiteSegmentsStep(service: MockSiteSegmentsService())
+        return SiteSegmentsStep(builder: self.builder, service: MockSiteSegmentsService())
     }()
 
     private lazy var steps: [WizardStep] =  {
