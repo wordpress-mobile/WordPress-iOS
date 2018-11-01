@@ -6,11 +6,11 @@ data model as well as any custom migrations.
 ## WordPress 83
 @danielebogo 2018-10-30
 - Renamed `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue` to `DiffAbstractValue`, `DiffContentValue`, `DiffTitleValue`.
-- Set `DiffAbstractValue` as abstract entity.
+- Set `DiffAbstractValue` as abstract entity which was omitted from model 82.
 - Replaced relationship property name on `DiffContentValue` and `DiffTitleValue` from *relationship* to *revisionDiff*.
-- Fix parent entity of `DiffContentValue`.
-- Replaced properties name on `DiffAbstractValue`.
-- Added property *index* on `DiffAbstractValue`.
+- Set `DiffAbstractValue` as parent entity of `DiffContentValue` which was omitted from model 82.
+- Replaced properties name on `DiffAbstractValue` from *operation* to *diffOperation* and *type* to *diffType*.
+- Added property *index* on `DiffAbstractValue` to store the right index position within the set.
 
 ## WordPress 82
 @danielebogo 2018-10-26
