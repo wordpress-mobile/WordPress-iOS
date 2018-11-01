@@ -133,7 +133,7 @@ class BottomSheetPresentationController: UIPresentationController {
         }
     }
 
-    override var frameOfPresentedViewInContainerView: CGRect{
+    override var frameOfPresentedViewInContainerView: CGRect {
         let containerViewBounds = containerView?.bounds ?? .zero
         let presentedViewContentSize = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerViewBounds.size)
 
@@ -197,7 +197,7 @@ extension BottomSheetPresentationController: UIViewControllerAnimatedTransitioni
         if isPresenting == true {
             toViewInitialFrame.origin = CGPoint(x: containerView.bounds.minX, y: containerView.bounds.maxY)
             toViewInitialFrame.size = toViewFinalFrame.size
-            toView?.frame = toViewInitialFrame;
+            toView?.frame = toViewInitialFrame
         } else {
             if let fromView = fromView {
                 fromViewFinalFrame = fromView.frame.offsetBy(dx: 0, dy: fromView.frame.height)

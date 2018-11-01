@@ -94,7 +94,7 @@ private extension LocationResultsTableViewProvider {
         tableView.dataSource = self
         tableView.delegate = self
 
-        tableView.register(LocationResultTableViewCell.self, forCellReuseIdentifier:LocationResultTableViewCell.reuseIdentifier)
+        tableView.register(LocationResultTableViewCell.self, forCellReuseIdentifier: LocationResultTableViewCell.reuseIdentifier)
         tableView.reloadData()
     }
 

@@ -276,4 +276,3 @@ extension LocationResultsTableViewController {
         performDismissal()
     }
 }
-
