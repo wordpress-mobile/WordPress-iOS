@@ -882,9 +882,25 @@ static NSInteger HideSearchMinSites = 3;
                                                    handler:nil];
 
     [addSiteAlertController addAction:addSiteAction];
+
+    if ([Feature enabled: FeatureFlagEnhancedSiteCreation]) {
+        UIAlertAction *enhancedSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Enhanced site creation", @"Enhanced site creation")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {
+                                                                  [self enhancedSiteCreation];
+                                                              }];
+
+        [addSiteAlertController addAction:enhancedSiteAction];
+    }
+
     [addSiteAlertController addAction:cancel];
 
     return addSiteAlertController;
+}
+
+- (void)enhancedSiteCreation
+{
+    NSLog(@"starting the new site flow");
 }
 
 - (WPAccount *)defaultWordPressComAccount
