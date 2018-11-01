@@ -1543,6 +1543,8 @@ private extension AztecPostViewController {
     }
 
     func displayHistory() {
+        let revisionsViewController = RevisionsTableViewController(post: post)
+        navigationController?.pushViewController(revisionsViewController, animated: true)
     }
 
     func displayHasFailedMediaAlert(then: @escaping () -> ()) {
