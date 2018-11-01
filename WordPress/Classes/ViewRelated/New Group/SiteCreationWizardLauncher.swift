@@ -9,7 +9,7 @@ final class SiteCreationWizardLauncher: NSObject {
         return SiteSegmentsStep(builder: self.builder, service: MockSiteSegmentsService())
     }()
 
-    private lazy var steps: [WizardStep] =  {
+    private lazy var steps: [WizardStep] = {
         return [self.segmentsStep]
     }()
 
