@@ -1,21 +1,38 @@
 import Foundation
 
 /// Utility class that provides a mechanism for presenting the temporary gutenberg alert.
-/// This alert is warns the user about editing Aztec posts with Gutenberg, and will be presented
+/// This alert is warns the user about editing Aztec posts / pages with Gutenberg, and will be presented
 /// whenever the user tries to edit a Gutenberg post, and as long as they don't enable the
 /// "Do not show this again" option.
 ///
 @objc class GutenbergAlertPresenter: NSObject {
 
+    // MARK: - User Defaults
+
     private let key = "GutenbergAlertConfiguration.doNotShowAgain"
     private let userDefaults: UserDefaults
+
+    // MARK: - String Constants
+
+    static let alertTitle = NSLocalizedString("Before you continue", comment: "Title of the popup shown when trying to edit a Gutenberg post using our existing editor.")
+    static let postAlertMessage = NSLocalizedString("We are working on the brand new WordPress editor. You can still edit this post, but we recommend previewing it before publishing.", comment: "Message of the popup shown when trying to edit a Gutenberg post using our existing editor.")
+    static let pageAlertMessage = NSLocalizedString("We are working on the brand new WordPress editor. You can still edit this page, but we recommend previewing it before publishing.", comment: "Message of the popup shown when trying to edit a Gutenberg page using our existing editor.")
+    static let editPostButtonTitle = NSLocalizedString("Edit Post", comment: "Title of the edit post button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
+    static let editPageButtonTitle = NSLocalizedString("Edit Page", comment: "Title of the edit post button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
+    static let goBackButtonTitle = NSLocalizedString("Go Back", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
+    static let learnMoreButtonTitle = NSLocalizedString("Learn More", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
+    static let doNotShowAgainSwitchText = NSLocalizedString("Do not show this again", comment: "Text shown in the switch that allows the user to not show again the alert that comes up when opening a Gutenberg post with our existing editor.")
+
+    // MARK: - Initializers
 
     init(userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
     }
 
+    // MARK: - Presentation
+
     func presentIfNecessary(
-        for post: Post,
+        for post: AbstractPost,
         from viewController: UIViewController,
         andDo onComplete: @escaping (Bool) -> ()) {
 
@@ -30,12 +47,7 @@ import Foundation
             .gutenbergWarningConfirmDialogShown,
             withProperties: trackProperties)
 
-        let title = NSLocalizedString("Before you continue", comment: "Title of the popup shown when trying to edit a Gutenberg post using our existing editor.")
-        let message = NSLocalizedString("We are working on the brand new WordPress editor. You can still edit this post, but we recommend previewing it before publishing.", comment: "Message of the popup shown when trying to edit a Gutenberg post using our existing editor.")
-        let editButtonTitle = NSLocalizedString("Edit Post", comment: "Title of the edit post button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
-        let goBackButtonTitle = NSLocalizedString("Go Back", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
-        let learnMoreButtonTitle = NSLocalizedString("Learn More", comment: "Title of the go-back button shown in the popup that comes up when opening a Gutenberg post with our existing editor.")
-        let doNotShowAgainSwitchText = NSLocalizedString("Do not show this again", comment: "Text shown in the switch that allows the user to not show again the alert that comes up when opening a Gutenberg post with our existing editor.")
+        let editButtonTitle = self.editButtonTitle(for: post)
 
         let editButton = FancyAlertViewController.Config.ButtonConfig(editButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
             WPAnalytics.track(
@@ -51,7 +63,7 @@ import Foundation
             }
         }
 
-        let goBackButton = FancyAlertViewController.Config.ButtonConfig(goBackButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
+        let goBackButton = FancyAlertViewController.Config.ButtonConfig(GutenbergAlertPresenter.goBackButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
             WPAnalytics.track(
                 .gutenbergWarningConfirmDialogShownCancelTapped,
                 withProperties: trackProperties)
@@ -65,7 +77,7 @@ import Foundation
             }
         }
 
-        let moreInfoButton = FancyAlertViewController.Config.ButtonConfig(learnMoreButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
+        let moreInfoButton = FancyAlertViewController.Config.ButtonConfig(GutenbergAlertPresenter.learnMoreButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
             WPAnalytics.track(
                 .gutenbergWarningConfirmDialogShownLearnMoreTapped,
                 withProperties: trackProperties)
@@ -87,7 +99,7 @@ import Foundation
 
         let doNotShowAgainSwitchConfig = FancyAlertViewController.Config.SwitchConfig(
             initialValue: false,
-            text: doNotShowAgainSwitchText) { (controller, theSwitch) in
+            text: GutenbergAlertPresenter.doNotShowAgainSwitchText) { (controller, theSwitch) in
                 if theSwitch.isOn {
                     WPAnalytics.track(
                         .gutenbergWarningConfirmDialogShownDontShowAgainChecked,
@@ -100,8 +112,8 @@ import Foundation
         }
 
         let configuration = FancyAlertViewController.Config(
-            titleText: title,
-            bodyText: message,
+            titleText: GutenbergAlertPresenter.alertTitle,
+            bodyText: alertMessage(for: post),
             headerImage: nil,
             dividerPosition: nil,
             defaultButton: editButton,
@@ -116,9 +128,28 @@ import Foundation
         viewController.present(alert, animated: true, completion: nil)
     }
 
+    // MARK: - Variable Strings
+
+    private func alertMessage(for post: AbstractPost) -> String {
+        if post is Post {
+            return GutenbergAlertPresenter.postAlertMessage
+        } else {
+            return GutenbergAlertPresenter.pageAlertMessage
+        }
+    }
+
+    private func editButtonTitle(for post: AbstractPost) -> String {
+
+        if post is Post {
+            return GutenbergAlertPresenter.editPostButtonTitle
+        } else {
+            return GutenbergAlertPresenter.editPageButtonTitle
+        }
+    }
+
     // MARK: - Presentation Evaluation Logic
 
-    private func mustPresent(for post: Post) -> Bool {
+    private func mustPresent(for post: AbstractPost) -> Bool {
         return canPresentAlert() && isGutenbergPost(post)
     }
 
@@ -134,13 +165,13 @@ import Foundation
 
     // MARK: - Gutenber Post Introspection
 
-    private func isGutenbergPost(_ post: Post) -> Bool {
+    private func isGutenbergPost(_ post: AbstractPost) -> Bool {
         return post.content?.contains("<!-- wp:") ?? false
     }
 
     // MARK: - Analytics
 
-    private func properties(for post: Post) -> [AnyHashable: Any] {
+    private func properties(for post: AbstractPost) -> [AnyHashable: Any] {
         guard let dotComID = post.blog.dotComID else {
             return [:]
         }

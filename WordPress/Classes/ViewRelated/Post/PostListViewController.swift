@@ -51,6 +51,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    // MARK: - Gutenberg Support
+
+    private let gutenbergAlertPresenter = GutenbergAlertPresenter()
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -329,12 +333,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.status == .trash {
+        guard post.status != .trash else {
             // No editing posts that are trashed.
             return
         }
-
-        let gutenbergAlertPresenter = GutenbergAlertPresenter()
 
         gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
             if edit {
@@ -495,7 +497,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
-        editPost(apost: post)
+        gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
+            if edit {
+                self.editPost(apost: post)
+            }
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
