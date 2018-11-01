@@ -6,6 +6,10 @@ final class WizardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        styleBackground()
+    }
+
+    private func styleBackground() {
         view.backgroundColor = .red
     }
 
