@@ -19,7 +19,20 @@ final class SiteSegmentsWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupTable()
+
         fetchSegments()
+    }
+
+    private func setupTable() {
+        let cellName = SiteSegmentsDataSource.cellReuseIdentifier()
+        let nib = UINib(nibName: cellName, bundle: nil)
+        table.register(nib, forCellReuseIdentifier: cellName)
     }
 
     private func fetchSegments() {
@@ -39,5 +52,6 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func handleData(_ data: [SiteSegment]) {
         dataSource = SiteSegmentsDataSource(data: data)
+        table.reloadData()
     }
 }
