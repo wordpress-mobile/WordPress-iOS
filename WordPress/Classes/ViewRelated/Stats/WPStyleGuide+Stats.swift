@@ -8,6 +8,11 @@ extension WPStyleGuide {
 
         // MARK: - Style Methods
 
+        static func configureTable(_ table: UITableView) {
+            table.backgroundColor = tableBackgroundColor
+            table.separatorStyle = .none
+        }
+
         static func configureCell(_ cell: UITableViewCell) {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
@@ -34,7 +39,7 @@ extension WPStyleGuide {
                 return attributedString
             }
 
-            attributedString.addAttributes(        [
+            attributedString.addAttributes( [
                 .foregroundColor: substringHighlightTextColor,
                 .font: substringHighlightFont
                 ], range: subStringRange)

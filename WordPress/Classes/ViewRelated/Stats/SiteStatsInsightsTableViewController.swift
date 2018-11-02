@@ -14,7 +14,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.backgroundColor = WPStyleGuide.Stats.tableBackgroundColor
+        WPStyleGuide.Stats.configureTable(tableView)
         setUpLatestPostSummaryCell()
         refreshControl?.addTarget(self, action: #selector(fetchStats), for: .valueChanged)
     }
