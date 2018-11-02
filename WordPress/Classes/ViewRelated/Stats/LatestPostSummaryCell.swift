@@ -164,6 +164,8 @@ private extension LatestPostSummaryCell {
             ])
     }
 
+    // MARK: - Properties
+
     enum ActionType: Int {
         case viewMore
         case sharePost
@@ -182,6 +184,45 @@ private extension LatestPostSummaryCell {
         static let viewMore = NSLocalizedString("View more", comment: "Label for viewing more post information.")
         static let sharePost = NSLocalizedString("Share Post", comment: "Label for action to share post.")
         static let createPost = NSLocalizedString("Create Post", comment: "Label for action to create a new post.")
+    }
+
+    // MARK: - Button Handling
+
+    @IBAction func didTapSummaryButton(_ sender: UIButton) {
+        // TODO: show post in a web view.
+        showAlertWithTitle("The post will be shown here.")
+    }
+
+    @IBAction func didTapActionButton(_ sender: UIButton) {
+
+        guard let actionType = actionType else {
+            return
+        }
+
+        var alertTitle = ""
+
+        switch actionType {
+        case .viewMore:
+            // TODO: show Post Details
+            alertTitle = "Post Details will be shown here."
+        case .sharePost:
+            // TODO: show Share options
+            alertTitle = "Share options will be shown here."
+        case .createPost:
+            // TODO: show Create Post
+            alertTitle = "Create Post will be shown here."
+        }
+
+        showAlertWithTitle(alertTitle)
+
+    }
+
+    func showAlertWithTitle(_ title: String) {
+        let alertController =  UIAlertController(title: title,
+                                                 message: nil,
+                                                 preferredStyle: .alert)
+        alertController.addCancelActionWithTitle("OK")
+        alertController.presentFromRootViewController()
     }
 
 }
