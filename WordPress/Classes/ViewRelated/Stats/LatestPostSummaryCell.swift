@@ -10,6 +10,7 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
 
+    @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var summariesStackView: UIStackView!
     @IBOutlet weak var chartStackView: UIStackView!
 
@@ -119,6 +120,8 @@ private extension LatestPostSummaryCell {
         chartStackView.isHidden = hide
         disclosureImageView.isHidden = hide
         actionImageView.isHidden = !hide
+        contentStackViewTopConstraint.constant = hide ? ContentStackViewTopConstraint.dataHidden
+                                                        : ContentStackViewTopConstraint.dataShown
     }
 
     func setActionImageFor(action: ActionType) {
@@ -170,6 +173,11 @@ private extension LatestPostSummaryCell {
         case viewMore
         case sharePost
         case createPost
+    }
+
+    struct ContentStackViewTopConstraint {
+        static let dataShown = CGFloat(20)
+        static let dataHidden = CGFloat(10)
     }
 
     struct CellStrings {

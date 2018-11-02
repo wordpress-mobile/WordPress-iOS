@@ -190,6 +190,7 @@
                 <outlet property="chartStackView" destination="dVi-l5-zbj" id="kyV-EI-lLg"/>
                 <outlet property="commentsDataLabel" destination="Ke4-L3-2a5" id="Mi7-wx-efz"/>
                 <outlet property="commentsLabel" destination="jLy-hA-LxG" id="jxu-pA-4Xa"/>
+                <outlet property="contentStackViewTopConstraint" destination="ciO-yG-Ee8" id="pIG-eC-6u8"/>
                 <outlet property="disclosureImageView" destination="NUJ-mV-eYK" id="Feu-jf-QlE"/>
                 <outlet property="headerLabel" destination="Iwt-UQ-iMD" id="5zZ-8W-Of7"/>
                 <outlet property="likesDataLabel" destination="eSJ-ds-3G4" id="g1g-h2-qD5"/>
