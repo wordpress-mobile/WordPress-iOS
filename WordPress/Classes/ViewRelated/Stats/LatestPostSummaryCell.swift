@@ -102,22 +102,14 @@ private extension LatestPostSummaryCell {
         switch actionType {
         case .viewMore:
             toggleDataViews(hide: false)
-            disclosureImageView.isHidden = false
-            actionImageView.isHidden = true
             actionLabel.text = CellStrings.viewMore
         case .sharePost:
             toggleDataViews(hide: true)
-            disclosureImageView.isHidden = true
-            actionImageView.isHidden = false
-            let icon = Gridicon.iconOfType(.shareIOS).imageWithTintColor(WPStyleGuide.mediumBlue())
-            actionImageView.image = icon
+            setActionImageFor(action: .sharePost)
             actionLabel.text = CellStrings.sharePost
         case .createPost:
             toggleDataViews(hide: true)
-            disclosureImageView.isHidden = true
-            actionImageView.isHidden = false
-            let icon = Gridicon.iconOfType(.create).imageWithTintColor(WPStyleGuide.mediumBlue())
-            actionImageView.image = icon
+            setActionImageFor(action: .createPost)
             actionLabel.text = CellStrings.createPost
         }
     }
@@ -125,6 +117,13 @@ private extension LatestPostSummaryCell {
     func toggleDataViews(hide: Bool) {
         summariesStackView.isHidden = hide
         chartStackView.isHidden = hide
+        disclosureImageView.isHidden = hide
+        actionImageView.isHidden = !hide
+    }
+
+    func setActionImageFor(action: ActionType) {
+        let iconType: GridiconType = action == .sharePost ? .shareIOS : .create
+        actionImageView.image = Gridicon.iconOfType(iconType).imageWithTintColor(WPStyleGuide.mediumBlue())
     }
 
     func attributedSummary() -> NSAttributedString {
@@ -134,11 +133,7 @@ private extension LatestPostSummaryCell {
         }
 
         if actionType == .createPost {
-            // Add formatting to entire string.
-            return NSMutableAttributedString(string: CellStrings.summaryNoPosts, attributes: [
-                .foregroundColor: WPStyleGuide.darkGrey(),
-                .font: WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-                ])
+            return formattedSummaryString(CellStrings.summaryNoPosts)
         }
 
         let postAge = summaryData?.postAge ?? ""
@@ -147,12 +142,7 @@ private extension LatestPostSummaryCell {
         var unformattedString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
         unformattedString.append(summaryToAppend)
-
-        // Add formatting to entire string.
-        let attributedString = NSMutableAttributedString(string: unformattedString, attributes: [
-            .foregroundColor: WPStyleGuide.darkGrey(),
-            .font: WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-            ])
+        let attributedString = formattedSummaryString(unformattedString)
 
         guard let postTitleRange = unformattedString.nsRange(of: postTitle) else {
             return attributedString
@@ -165,6 +155,13 @@ private extension LatestPostSummaryCell {
             ], range: postTitleRange)
 
         return attributedString
+    }
+
+    func formattedSummaryString(_ rawString: String) -> NSMutableAttributedString {
+        return NSMutableAttributedString(string: rawString, attributes: [
+            .foregroundColor: WPStyleGuide.darkGrey(),
+            .font: WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+            ])
     }
 
     enum ActionType: Int {
