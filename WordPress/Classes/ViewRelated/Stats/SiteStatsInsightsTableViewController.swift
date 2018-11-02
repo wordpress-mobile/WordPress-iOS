@@ -7,6 +7,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     var statsService: WPStatsService?
     var latestPostSummary: StatsLatestPostSummary?
+    private var finishedLoading = false
 
     // MARK: - View
 
@@ -30,6 +31,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard finishedLoading == true else {
+            return 0
+        }
+
         return 1
     }
 
@@ -50,6 +55,9 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     @objc func fetchStats() {
+
+        finishedLoading = false
+
         statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
 
         }, insightsCompletionHandler: { (mostPopularStats, error) in
@@ -62,8 +70,8 @@ private extension SiteStatsInsightsTableViewController {
                 self.latestPostSummary = nil
             } else {
                 self.latestPostSummary = latestPostSummary
-                self.tableView.reloadData()
             }
+            self.tableView.reloadData()
         }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
 
         }, commentsPostsCompletionHandler: { (commentsPosts, error) in
@@ -82,6 +90,7 @@ private extension SiteStatsInsightsTableViewController {
 
         }, andOverallCompletionHandler: {
             self.refreshControl?.endRefreshing()
+            self.finishedLoading = true
         })
 
     }
