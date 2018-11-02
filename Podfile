@@ -23,13 +23,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    ## pod 'WordPressShared', '1.2.0'
+    pod 'WordPressShared', '1.3.0'
 
     ## for development:
     ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'a08d8a7a2d778aa3a842dd608ee4584d71cbe937'
+    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '14a5ebae28fdc09130b091330d84a3a310132cd2'
 end
 
 def aztec
@@ -49,6 +49,11 @@ def wordpress_ui
     ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'aae4524cd95ae24b725b1cad8c54918a3d5b2e59'
 end
 
+def wordpress_kit
+    pod 'WordPressKit', '1.4.2.1'
+    ## pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '60ac75bb8b9a499dfa5446b53c01fa9d2d6e71cb'
+end
+
 def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.4.2'
@@ -61,7 +66,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.2'
+	wordpress_kit
 end
 
 def shared_test_pods
@@ -106,7 +111,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
-    pod 'WordPressAuthenticator', '1.1.2'
+    pod 'WordPressAuthenticator', '1.1.3'
 
     aztec
     wordpress_ui
@@ -168,7 +173,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressKit', '1.4.2'
+	wordpress_kit
     wordpress_shared
     wordpress_ui
 end
@@ -184,7 +189,7 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.2'
+    wordpress_kit
     wordpress_shared
 
     wordpress_ui

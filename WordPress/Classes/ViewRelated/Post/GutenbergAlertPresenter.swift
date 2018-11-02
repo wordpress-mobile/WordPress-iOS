@@ -51,7 +51,7 @@ import Foundation
 
         let editButton = FancyAlertViewController.Config.ButtonConfig(editButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
             WPAnalytics.track(
-                .gutenbergWarningConfirmDialogShownYesTapped,
+                .gutenbergWarningConfirmDialogYesTapped,
                 withProperties: trackProperties)
 
             if controller.isBottomSwitchOn() {
@@ -65,7 +65,7 @@ import Foundation
 
         let goBackButton = FancyAlertViewController.Config.ButtonConfig(GutenbergAlertPresenter.goBackButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
             WPAnalytics.track(
-                .gutenbergWarningConfirmDialogShownCancelTapped,
+                .gutenbergWarningConfirmDialogCancelTapped,
                 withProperties: trackProperties)
 
             if controller.isBottomSwitchOn() {
@@ -79,7 +79,7 @@ import Foundation
 
         let moreInfoButton = FancyAlertViewController.Config.ButtonConfig(GutenbergAlertPresenter.learnMoreButtonTitle) { (controller: FancyAlertViewController, button: UIButton) in
             WPAnalytics.track(
-                .gutenbergWarningConfirmDialogShownLearnMoreTapped,
+                .gutenbergWarningConfirmDialogLearnMoreTapped,
                 withProperties: trackProperties)
 
             let url: URL = {
@@ -102,11 +102,11 @@ import Foundation
             text: GutenbergAlertPresenter.doNotShowAgainSwitchText) { (controller, theSwitch) in
                 if theSwitch.isOn {
                     WPAnalytics.track(
-                        .gutenbergWarningConfirmDialogShownDontShowAgainChecked,
+                        .gutenbergWarningConfirmDialogDontShowAgainChecked,
                         withProperties: trackProperties)
                 } else {
                     WPAnalytics.track(
-                        .gutenbergWarningConfirmDialogShownDontShowAgainUnchecked,
+                        .gutenbergWarningConfirmDialogDontShowAgainUnchecked,
                         withProperties: trackProperties)
                 }
         }

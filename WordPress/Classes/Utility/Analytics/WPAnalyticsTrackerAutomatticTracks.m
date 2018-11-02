@@ -560,19 +560,19 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatGutenbergWarningConfirmDialogShown:
             eventName = @"gutenberg_warning_confirm_dialog_shown";
             break;
-        case WPAnalyticsStatGutenbergWarningConfirmDialogShownYesTapped:
+        case WPAnalyticsStatGutenbergWarningConfirmDialogYesTapped:
             eventName = @"gutenberg_warning_confirm_dialog_yes_tapped";
             break;
-        case WPAnalyticsStatGutenbergWarningConfirmDialogShownCancelTapped:
+        case WPAnalyticsStatGutenbergWarningConfirmDialogCancelTapped:
             eventName = @"gutenberg_warning_confirm_dialog_cancel_tapped";
             break;
-        case WPAnalyticsStatGutenbergWarningConfirmDialogShownDontShowAgainChecked:
+        case WPAnalyticsStatGutenbergWarningConfirmDialogDontShowAgainChecked:
             eventName = @"gutenberg_warning_confirm_dialog_dont_show_again_checked";
             break;
-        case WPAnalyticsStatGutenbergWarningConfirmDialogShownDontShowAgainUnchecked:
+        case WPAnalyticsStatGutenbergWarningConfirmDialogDontShowAgainUnchecked:
             eventName = @"gutenberg_warning_confirm_dialog_dont_show_again_unchecked";
             break;
-        case WPAnalyticsStatGutenbergWarningConfirmDialogShownLearnMoreTapped:
+        case WPAnalyticsStatGutenbergWarningConfirmDialogLearnMoreTapped:
             eventName = @"gutenberg_warning_confirm_dialog_learn_more_tapped";
             break;
         case WPAnalyticsStatInstallJetpackCanceled:
