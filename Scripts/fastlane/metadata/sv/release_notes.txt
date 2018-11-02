@@ -1,5 +1,4 @@
-Sektionen med webbplatssidor visar nu sidorna i samma ordning som används i webbplatsens layout för att göra det enklare att hitta det du söker.
-De tomma sidornas tyranni är nu upphävd! För alla sidor utan innehåll har vi nu lagt till förslag på lämpliga vidare åtgärder.
-När du skriver ett nytt inlägg sparar appen automatiskt inläggen på din enhet för att ditt arbete aldrig ska råka gå förlorat.
-Vi här ändrat stilen på några av skärmbilderna för att skapa en mer enhetlig upplevelse i hela appen.
-Och, som vanligt, några felrättningar och allmänna förbättringar av tillförlitligheten.
+En ny snabbstartssektion föreslår lämpliga steg för att hjälpa dig skapa en utmärkt webbplats.
+Med hjälp av omnämnanden kan du läsa hela pushaviseringsmeddelandet på startskärmen.
+Vill du kopiera länken till en kommentar? Gör ett långt tryck på dess tidsangivelse.
+Vill du kolla antalet ord och tecken i dina inlägg? Kolla in rubriken för redigerarens åtgärdsark.
