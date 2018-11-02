@@ -27,8 +27,6 @@ enum FeatureFlag: Int {
             return true
         case .giphy:
             return BuildConfiguration.current == .localDeveloper
-        case .automatedTransfersCustomDomain:
-            return BuildConfiguration.current == .localDeveloper
         case .enhancedSiteCreation:
             return BuildConfiguration.current == .localDeveloper
         case .revisions:
