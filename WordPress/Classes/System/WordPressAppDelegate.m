@@ -73,7 +73,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    [self startRNBridgeWith:launchOptions];
     [WordPressAppDelegate fixKeychainAccess];
 
     // Authentication Framework

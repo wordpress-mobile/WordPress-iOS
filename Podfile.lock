@@ -146,6 +146,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNReactNativeGutenbergBridge (0.1.0):
+    - React
   - RNSVG (6.5.2):
     - React
   - Starscream (3.0.4)
@@ -229,6 +231,7 @@ DEPENDENCIES:
   - React/RCTNetwork (from `Gutenberg/node_modules/react-native`)
   - React/RCTText (from `Gutenberg/node_modules/react-native`)
   - React/RCTWebSocket (from `Gutenberg/node_modules/react-native`)
+  - RNReactNativeGutenbergBridge (from `Gutenberg/react-native-gutenberg-bridge/ios/`)
   - RNSVG (from `Gutenberg/node_modules/react-native-svg/RNSVG.podspec`)
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
@@ -294,6 +297,8 @@ EXTERNAL SOURCES:
     :podspec: Gutenberg/node_modules/react-native/third-party-podspecs/glog.podspec
   React:
     :path: Gutenberg/node_modules/react-native
+  RNReactNativeGutenbergBridge:
+    :path: Gutenberg/react-native-gutenberg-bridge/ios/
   RNSVG:
     :podspec: Gutenberg/node_modules/react-native-svg/RNSVG.podspec
   yoga:
@@ -334,6 +339,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  RNReactNativeGutenbergBridge: 411ac6af1c1337f7b57805a24bbd4cfd6e34d138
   RNSVG: 3c037ade1c42014de732e27e3879bf2b77ea78ea
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -349,6 +355,6 @@ SPEC CHECKSUMS:
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 45598a3337ee48c50b1e846ae51bad4e5289dd86
+PODFILE CHECKSUM: a272a43db2b7031cb9f84a8ee2cd0f49643b90c5
 
 COCOAPODS: 1.5.3

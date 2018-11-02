@@ -31,7 +31,6 @@ class GutenbergController: UIViewController, PostEditor {
         self.post = post
         super.init(nibName: nil, bundle: nil)
 
-        GutenbergBridge.shared.postManager.delegate = self
         navBarManager.delegate = self
     }
 
@@ -42,7 +41,7 @@ class GutenbergController: UIViewController, PostEditor {
     override func loadView() {
         let props: [AnyHashable: Any] = [
             "initialData": post.content ?? ""]
-        view = GutenbergBridge.rootView(with: props)
+//        view = GutenbergBridge.rootView(with: props)
     }
 
     override func viewDidLoad() {
@@ -72,12 +71,12 @@ class GutenbergController: UIViewController, PostEditor {
     }
 
     private func close(didSave: Bool) {
-        GutenbergBridge.shared.postManager.delegate = nil
+
         onClose?(didSave, false)
     }
 }
 
-extension GutenbergController: GBPostManagerDelegate {
+extension GutenbergController {
     func closeButtonPressed() {
         close(didSave: false)
     }

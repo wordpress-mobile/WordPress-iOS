@@ -3,7 +3,6 @@ import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
 import WordPressAuthenticator
-import React
 
 // MARK: - Utility Configuration
 
@@ -400,15 +399,5 @@ extension WordPressAppDelegate {
 
         NotificationSupportService.deleteServiceExtensionToken()
         NotificationSupportService.deleteServiceExtensionUsername()
-    }
-}
-
-// MARK: - ReactNative
-
-extension WordPressAppDelegate {
-    @objc func startRNBridge(with launchOptions: [AnyHashable: Any]?) {
-        DispatchQueue.main.async {
-            GutenbergBridge.start(with: launchOptions, mediaProvider: MediaProvider(), postManager: GBPostManager())
-        }
     }
 }
