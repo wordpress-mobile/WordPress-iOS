@@ -90,7 +90,7 @@ target 'WordPress' do
     pod 'Folly', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec'
     pod 'glog', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/glog.podspec'
     pod 'RNSVG', :podspec => 'Gutenberg/node_modules/react-native-svg/RNSVG.podspec'
-    pod 'RNReactNativeGutenbergBridge', :path => 'Gutenberg/react-native-gutenberg-bridge/ios/'
+    pod 'RNReactNativeGutenbergBridge', :path => 'Gutenberg/react-native-gutenberg-bridge/'
 
     ## Third party libraries
     ## =====================

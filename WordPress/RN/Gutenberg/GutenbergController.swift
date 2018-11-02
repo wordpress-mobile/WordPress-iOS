@@ -39,9 +39,8 @@ class GutenbergController: UIViewController, PostEditor {
     }
 
     override func loadView() {
-        let props: [AnyHashable: Any] = [
-            "initialData": post.content ?? ""]
-//        view = GutenbergBridge.rootView(with: props)
+        let props: [String: Any] = ["initialData": post.content ?? ""]
+        view = Gutenberg.sharedInstance().rootView(withInitialProps: props)
     }
 
     override func viewDidLoad() {
