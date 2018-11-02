@@ -1496,6 +1496,12 @@ private extension AztecPostViewController {
             self.displayPreview()
         }
 
+        if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
+                self.displayHistory()
+            }
+        }
+
         alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
@@ -1534,6 +1540,11 @@ private extension AztecPostViewController {
         let previewController = PostPreviewViewController(post: post)
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
+    }
+
+    func displayHistory() {
+        let revisionsViewController = RevisionsTableViewController(post: post)
+        navigationController?.pushViewController(revisionsViewController, animated: true)
     }
 
     func displayHasFailedMediaAlert(then: @escaping () -> ()) {
@@ -3985,6 +3996,7 @@ extension AztecPostViewController {
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }

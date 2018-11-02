@@ -299,7 +299,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         let image = richTextImage(with: finalSize, url, attachment)
 
         // show that something is loading.
-        attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.width / 2.0)
+        attachment.maxSize = CGSize(width: proposedSize.width, height: proposedSize.height)
 
         let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
@@ -311,7 +311,6 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             }
 
             richMedia.attachment.maxSize = image.contentSize()
-            self?.layoutAttachmentViews()
         }, onError: { (indexPath, error) in
             DDLogError("\(String(describing: error))")
         })
