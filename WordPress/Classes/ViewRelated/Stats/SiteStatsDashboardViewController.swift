@@ -1,4 +1,5 @@
 import UIKit
+import WordPressComStatsiOS
 
 protocol StatsLoadingProgressDelegate {
     func didBeginLoadingStats(viewController: UIViewController)
@@ -10,14 +11,20 @@ class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
 
+    @objc var siteID: NSNumber?
+    @objc var siteTimeZone: TimeZone?
+    @objc var oauth2Token: String?
+
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
 
+    var insightsTableViewController: SiteStatsInsightsTableViewController?
+
     // TODO: replace UITableViewController with real controller names that
-    // correspond to Insights and Stats.
-    var insightsTableViewController: UITableViewController?
+    // corresponds to Stats.
+
     var statsTableViewController: UITableViewController?
 
     // MARK: - View
@@ -28,41 +35,11 @@ class SiteStatsDashboardViewController: UIViewController {
         getSelectedPeriodFromUserDefaults()
     }
 
-    // MARK: - StatsLoadingProgressDelegate methods
-
-    func didBeginLoadingStats(viewController: UIViewController) {
-
-        guard shouldShowProgressView(viewController: viewController) else {
-            return
-        }
-
-        progressView.isHidden = false
-        progressView.setProgress(Constants.progressViewInitialProgress, animated: true)
-    }
-
-    func statsLoadingProgress(viewController: UIViewController, percentage: Float) {
-
-        guard shouldShowProgressView(viewController: viewController) else {
-            return
-        }
-
-        progressView.setProgress(percentage, animated: true)
-    }
-
-    func didEndLoadingStats(viewController: UIViewController) {
-
-        guard shouldShowProgressView(viewController: viewController) else {
-            return
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.progressViewHideDelay)) {
-            UIView.animate(withDuration: Constants.progressViewHideDuration, animations: {
-                self.progressView.alpha = 0.0
-            }, completion: { _ in
-                self.progressView.isHidden = true
-                self.progressView.alpha = 1.0
-                self.progressView.progress = 0.0
-            })
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
+            insightsTableVC.statsService = initStatsService()
+            insightsTableVC.loadingProgressDelegate = self
+            insightsTableViewController = insightsTableVC
         }
     }
 
@@ -76,7 +53,8 @@ private extension SiteStatsDashboardViewController {
         static let userDefaultsKey = "LastSelectedStatsPeriodType"
         static let progressViewInitialProgress = Float(0.03)
         static let progressViewHideDelay = 1
-        static let progressViewHideDuration = 0.25
+        static let progressViewHideDuration = 0.15
+        static let cacheExpirationInterval = Double(300)
     }
 
     enum StatsPeriodType: Int {
@@ -129,6 +107,19 @@ private extension SiteStatsDashboardViewController {
         return shouldShow
     }
 
+    func initStatsService() -> WPStatsService? {
+
+        guard let siteID = siteID,
+            let siteTimeZone = siteTimeZone,
+            let oauth2Token = oauth2Token else {
+            return nil
+        }
+
+        return WPStatsService.init(siteId: siteID,
+                                   siteTimeZone: siteTimeZone,
+                                   oauth2Token: oauth2Token,
+                                   andCacheExpirationInterval: Constants.cacheExpirationInterval)
+    }
 }
 
 // MARK: - FilterTabBar Support
@@ -148,6 +139,48 @@ private extension SiteStatsDashboardViewController {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
 
         // TODO: reload view based on selected tab
+    }
+
+}
+
+// MARK: - StatsLoadingProgressDelegate Support
+
+extension SiteStatsDashboardViewController: StatsLoadingProgressDelegate {
+
+    func didBeginLoadingStats(viewController: UIViewController) {
+
+        guard shouldShowProgressView(viewController: viewController) else {
+            return
+        }
+
+        progressView.isHidden = false
+        progressView.setProgress(Constants.progressViewInitialProgress, animated: true)
+    }
+
+    func statsLoadingProgress(viewController: UIViewController, percentage: Float) {
+
+        guard shouldShowProgressView(viewController: viewController) else {
+            return
+        }
+
+        progressView.setProgress(percentage, animated: true)
+    }
+
+    func didEndLoadingStats(viewController: UIViewController) {
+
+        guard shouldShowProgressView(viewController: viewController) else {
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.progressViewHideDelay)) {
+            UIView.animate(withDuration: Constants.progressViewHideDuration, animations: {
+                self.progressView.alpha = 0.0
+            }, completion: { _ in
+                self.progressView.isHidden = true
+                self.progressView.alpha = 1.0
+                self.progressView.progress = 0.0
+            })
+        }
     }
 
 }
