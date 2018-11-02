@@ -1,5 +1,14 @@
 class RevisionsTableViewController: UITableViewController {
-    private var post: AbstractPost?
+    private struct Constant {
+        struct Size {
+            static let sectionHeaderHeight = CGFloat(40.0)
+            static let cellEstimatedRowHeight = CGFloat(60.0)
+        }
+    }
+
+    private var post: AbstractPost!
+    private var presenter: RevisionsTableViewPresenter!
+
     private lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
         tableViewHandler.cacheRowHeights = false
@@ -17,26 +26,35 @@ class RevisionsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
+        setupPresenter()
+        setupUI()
+
+        tableViewHandler.refreshTableView()
+        presenter.getRevisions()
+    }
+
+
+    // MARK: Private methods
+
+    private func setupUI() {
+        self.navigationItem.title = presenter.title
 
         let cellNib = UINib(nibName: "RevisionsTableViewCell", bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
 
-        tableViewHandler.refreshTableView()
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshRevisions), for: .valueChanged)
+        tableView.addSubview(refreshControl)
 
-        guard let post = post else {
-            return
-        }
+        self.refreshControl = refreshControl
+    }
 
-        let managedObjectContext = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: managedObjectContext)
-        postService.getPostRevisions(for: post, success: { revisions in
-            DispatchQueue.main.async {
-                self.tableViewHandler.refreshTableView()
-            }
-        }) { (error) in
-            DDLogError(error?.localizedDescription ?? "unkown error")
-        }
+    private func setupPresenter() {
+        presenter = RevisionsTableViewPresenter(post: post, attach: self)
+    }
+
+    @objc func refreshRevisions() {
+        presenter.getRevisions()
     }
 }
 
@@ -47,8 +65,12 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        let predicate = NSPredicate(format: "\(#keyPath(Revision.postId)) = %@ && \(#keyPath(Revision.siteId)) = %@", post!.postID!, post!.blog.dotComID!)
-        let descriptor = NSSortDescriptor(key: #keyPath(Revision.revisionId), ascending: true)
+        guard let postId = post.postID, let siteId = post.blog.dotComID else {
+            fatalError("Expected a postId or a siteId")
+        }
+
+        let predicate = NSPredicate(format: "\(#keyPath(Revision.postId)) = %@ && \(#keyPath(Revision.siteId)) = %@", postId, siteId)
+        let descriptor = NSSortDescriptor(key: #keyPath(Revision.postModifiedGmt), ascending: false)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Revision.entityName())
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [descriptor]
@@ -76,6 +98,32 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         return revision
     }
 
+
+    // MARK: Override delegate methodds
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Constant.Size.sectionHeaderHeight
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constant.Size.cellEstimatedRowHeight
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let nibName = String(describing: PageListSectionHeaderView.self)
+        guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
+            let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView else {
+                return UIView(frame: .zero)
+        }
+
+        headerView.setTite(sectionInfo.name)
+        return headerView
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RevisionsTableViewCell.reuseIdentifier, for: indexPath) as? RevisionsTableViewCell else {
             preconditionFailure("The cell should be of class \(String(describing: RevisionsTableViewCell.self))")
@@ -87,5 +135,24 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+    }
+}
+
+
+extension RevisionsTableViewController: RevisionsView {
+    func startLoading() {
+        // Animate loader if table view is empty
+    }
+
+    func stopLoadigng(success: Bool, error: Error?) {
+        refreshControl?.endRefreshing()
+        tableViewHandler.refreshTableView()
+
+        guard success else {
+            DDLogError(error?.localizedDescription ?? "unkown error")
+            return
+        }
+
+        // Present no result view
     }
 }

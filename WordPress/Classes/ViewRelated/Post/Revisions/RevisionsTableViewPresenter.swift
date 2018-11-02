@@ -29,9 +29,11 @@ final class RevisionsTableViewPresenter {
 
         postService.getPostRevisions(for: post, success: { [weak self] _ in
             DispatchQueue.main.async {
+                self?.isLoading = false
                 self?.revisionsView?.stopLoadigng(success: true, error: nil)
             }
         }) { [weak self] error in
+            self?.isLoading = false
             self?.revisionsView?.stopLoadigng(success: false, error: error)
         }
     }
