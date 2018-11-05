@@ -557,6 +557,24 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatGravatarUploaded:
             eventName = @"me_gravatar_uploaded";
             break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogShown:
+            eventName = @"gutenberg_warning_confirm_dialog_shown";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogYesTapped:
+            eventName = @"gutenberg_warning_confirm_dialog_yes_tapped";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogCancelTapped:
+            eventName = @"gutenberg_warning_confirm_dialog_cancel_tapped";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogDontShowAgainChecked:
+            eventName = @"gutenberg_warning_confirm_dialog_dont_show_again_checked";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogDontShowAgainUnchecked:
+            eventName = @"gutenberg_warning_confirm_dialog_dont_show_again_unchecked";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogLearnMoreTapped:
+            eventName = @"gutenberg_warning_confirm_dialog_learn_more_tapped";
+            break;
         case WPAnalyticsStatInstallJetpackCanceled:
             eventName = @"install_jetpack_canceled";
             break;
