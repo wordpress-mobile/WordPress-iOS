@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.1-whats-new"
+msgctxt "v11.2-whats-new"
 msgid ""
 "A new Quick Start section suggests steps to help you build a great site.\n"
 "With Mentions, you can read the whole push notification message from the home screen.\n"
