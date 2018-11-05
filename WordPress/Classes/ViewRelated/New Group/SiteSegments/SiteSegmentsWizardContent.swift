@@ -41,7 +41,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleError(_ error: Error) {
-        print("=== handling error===")
+        debugPrint("=== handling error===")
     }
 
     private func handleData(_ data: [SiteSegment]) {
