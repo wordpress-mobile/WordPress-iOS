@@ -8,17 +8,21 @@ final class ShowRevisionsListManger {
 
     private var isLoading = false
     private weak var revisionsView: RevisionsView?
-    private let post: AbstractPost
+    private let post: AbstractPost?
     private lazy var postService: PostService = {
         return PostService(managedObjectContext: context)
     }()
 
-    init(post: AbstractPost, attach revisionsView: RevisionsView?) {
+    init(post: AbstractPost?, attach revisionsView: RevisionsView?) {
         self.post = post
         self.revisionsView = revisionsView
     }
 
     func getRevisions() {
+        guard let post = post else {
+            return
+        }
+
         if isLoading {
             return
         }

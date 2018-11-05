@@ -1,5 +1,5 @@
 class RevisionsTableViewController: UITableViewController {
-    private var post: AbstractPost!
+    private var post: AbstractPost?
     private var manager: ShowRevisionsListManger!
 
     private lazy var tableViewHandler: WPTableViewHandler = {
@@ -25,10 +25,10 @@ class RevisionsTableViewController: UITableViewController {
         tableViewHandler.refreshTableView()
         manager.getRevisions()
     }
+}
 
 
-    // MARK: Private methods
-
+private extension RevisionsTableViewController {
     private func setupUI() {
         navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
 
@@ -46,18 +46,8 @@ class RevisionsTableViewController: UITableViewController {
         manager = ShowRevisionsListManger(post: post, attach: self)
     }
 
-    @objc func refreshRevisions() {
+    @objc private func refreshRevisions() {
         manager.getRevisions()
-    }
-
-
-    // MARK: Constants
-
-    private struct Constant {
-        struct Size {
-            static let sectionHeaderHeight = CGFloat(40.0)
-            static let cellEstimatedRowHeight = CGFloat(60.0)
-        }
     }
 }
 
@@ -68,7 +58,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        guard let postId = post.postID, let siteId = post.blog.dotComID else {
+        guard let postId = post?.postID, let siteId = post?.blog.dotComID else {
             preconditionFailure("Expected a postId or a siteId")
         }
 
@@ -105,7 +95,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     // MARK: Override delegate methodds
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Constant.Size.sectionHeaderHeight
+        return Sizes.sectionHeaderHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -113,14 +103,14 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constant.Size.cellEstimatedRowHeight
+        return Sizes.cellEstimatedRowHeight
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let nibName = String(describing: PageListSectionHeaderView.self)
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
             let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView else {
-                return UIView(frame: .zero)
+                return UIView()
         }
 
         headerView.setTite(sectionInfo.name)
@@ -143,4 +133,10 @@ extension RevisionsTableViewController: RevisionsView {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
     }
+}
+
+
+private struct Sizes {
+    static let sectionHeaderHeight = CGFloat(40.0)
+    static let cellEstimatedRowHeight = CGFloat(60.0)
 }
