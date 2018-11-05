@@ -898,14 +898,6 @@ static NSInteger HideSearchMinSites = 3;
     return addSiteAlertController;
 }
 
-- (void)enhancedSiteCreation
-{
-    SiteCreationWizardLauncher *wizardLauncher = [[SiteCreationWizardLauncher alloc] init];
-    UIViewController *wizard = [wizardLauncher ui];
-
-    [self presentViewController:wizard animated:YES completion:nil];
-}
-
 - (WPAccount *)defaultWordPressComAccount
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

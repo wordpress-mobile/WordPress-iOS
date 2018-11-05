@@ -1,5 +1,5 @@
 /// Terrible name. Puts together the Site creation wizard, assembling steps.
-final class SiteCreationWizardLauncher: NSObject {
+final class SiteCreationWizardLauncher {
     private lazy var builder: SiteCreationBuilder = {
         return SiteCreationBuilder()
     }()
@@ -17,7 +17,6 @@ final class SiteCreationWizardLauncher: NSObject {
         return SiteCreationWizard(steps: self.steps)
     }()
 
-    @objc
     lazy var ui: UIViewController = {
         return wizard.ui
     }()
