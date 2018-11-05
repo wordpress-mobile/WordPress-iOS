@@ -1,10 +1,9 @@
 protocol RevisionsView: class {
-    func stopLoadigng(success: Bool, error: Error?)
+    func stopLoading(success: Bool, error: Error?)
 }
 
 
-final class RevisionsTableViewPresenter {
-    let title = NSLocalizedString("History", comment: "Title of the post history screen")
+final class ShowRevisionsListManger {
     let context = ContextManager.sharedInstance().mainContext
 
     private var isLoading = false
@@ -29,11 +28,11 @@ final class RevisionsTableViewPresenter {
         postService.getPostRevisions(for: post, success: { [weak self] _ in
             DispatchQueue.main.async {
                 self?.isLoading = false
-                self?.revisionsView?.stopLoadigng(success: true, error: nil)
+                self?.revisionsView?.stopLoading(success: true, error: nil)
             }
         }) { [weak self] error in
             self?.isLoading = false
-            self?.revisionsView?.stopLoadigng(success: false, error: error)
+            self?.revisionsView?.stopLoading(success: false, error: error)
         }
     }
 }

@@ -1,6 +1,6 @@
 class RevisionsTableViewController: UITableViewController {
     private var post: AbstractPost!
-    private var presenter: RevisionsTableViewPresenter!
+    private var manager: ShowRevisionsListManger!
 
     private lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
@@ -23,14 +23,14 @@ class RevisionsTableViewController: UITableViewController {
         setupUI()
 
         tableViewHandler.refreshTableView()
-        presenter.getRevisions()
+        manager.getRevisions()
     }
 
 
     // MARK: Private methods
 
     private func setupUI() {
-        navigationItem.title = presenter.title
+        navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
 
         let cellNib = UINib(nibName: "RevisionsTableViewCell", bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
@@ -43,11 +43,11 @@ class RevisionsTableViewController: UITableViewController {
     }
 
     private func setupPresenter() {
-        presenter = RevisionsTableViewPresenter(post: post, attach: self)
+        manager = ShowRevisionsListManger(post: post, attach: self)
     }
 
     @objc func refreshRevisions() {
-        presenter.getRevisions()
+        manager.getRevisions()
     }
 
 
@@ -139,7 +139,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
 
 extension RevisionsTableViewController: RevisionsView {
-    func stopLoadigng(success: Bool, error: Error?) {
+    func stopLoading(success: Bool, error: Error?) {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
     }
