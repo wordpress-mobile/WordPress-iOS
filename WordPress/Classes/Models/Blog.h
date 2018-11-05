@@ -238,6 +238,14 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable WordPressComRestApi *)wordPressComRestApi;
 
 /**
+ Call this method to know if the blog is hosted at WPcom or accessed through Jetpack.
+ 
+ @return YES if the blog is hosted at WPcom or if it's connected through Jetpack.
+    NO otherwise.
+ */
+- (BOOL)isAccessibleThroughWPCom;
+
+/**
  Check if there is already a basic auth credential stored for this blog/site.
 
  @return YES if there is a credential

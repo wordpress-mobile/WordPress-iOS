@@ -53,6 +53,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    // MARK: - Gutenberg Support
+
+    private let gutenbergAlertPresenter = GutenbergAlertPresenter()
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
@@ -376,8 +380,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.status != .trash {
-            editPage(page)
+        guard page.status != .trash else {
+            return
+        }
+
+        gutenbergAlertPresenter.presentIfNecessary(for: page, from: self) { [unowned self] edit in
+            if edit {
+                self.editPage(page)
+            }
         }
     }
 

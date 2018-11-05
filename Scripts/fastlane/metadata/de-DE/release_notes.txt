@@ -1,5 +1,4 @@
-Im Abschnitt „Website-Seiten“ werden jetzt die Seiten in einer Reihenfolge angezeigt, die dem Layout deiner Website entspricht. So ist es einfacher, die Inhalte zu finden, die du suchst.
-Du erhältst keine leeren Seiten mehr! Wir haben Vorschläge für nöchste Schritte zu jeder Seite ohne Inhalt hinzugefügt.
-Wenn du einen neuen Beitrag verfasst, speichert die App automatisch Entwürfe auf deinem Gerät. So geht nichts mehr verloren.
-Wir haben das Design einiger Bildschirme überarbeitet, um die Konsistenz innerhalb der App weiter zu verbessern.
-Darüber hinaus haben wir wie immer einige Fehler behoben und allgemeine Verbesserungen an der Zuverlässigkeit durchgeführt.
+Ein neuer Schnellstartbereich mit empfohlenen Schritten zur Erstellung einer tollen Website.
+Mit Mentions kannst du die gesamte Push-Benachrichtigung auf dem Startbildschirm lesen.
+Möchtest du den Link in einen Kommentar kopieren? Halte dazu das Label mit dem Zeitstempel gedrückt.
+Möchtest du die Anzahl der Wörter und Zeichen von Beiträgen wissen? Siehe dazu auf dem Blatt mit dem Titel „Aktionen“ des Editors nach.
