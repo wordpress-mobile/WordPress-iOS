@@ -379,6 +379,7 @@ private extension NotificationsViewController {
         var headerFrame = tableHeaderView.frame
         headerFrame.size.height = requiredSize.height
         tableHeaderView.frame = headerFrame
+        adjustNoResultsViewSize()
 
         tableHeaderView.layoutIfNeeded()
 
@@ -1128,15 +1129,18 @@ private extension NotificationsViewController {
         addChild(noResultsViewController)
         tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
-
-        // Adjust the NRV to accommodate for the segmented control/refresh control.
-        if traitCollection.verticalSizeClass == .regular {
-            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height
-        } else {
-            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height/2
-        }
-
+        adjustNoResultsViewSize()
         noResultsViewController.didMove(toParent: self)
+    }
+
+    func adjustNoResultsViewSize() {
+        noResultsViewController.view.frame.origin.y = tableHeaderView.frame.size.height
+
+        if inlinePromptView.alpha == WPAlphaFull {
+            noResultsViewController.view.frame.size.height -= tableHeaderView.frame.size.height
+        } else {
+            noResultsViewController.view.frame.size.height = tableView.frame.size.height - tableHeaderView.frame.size.height
+        }
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
