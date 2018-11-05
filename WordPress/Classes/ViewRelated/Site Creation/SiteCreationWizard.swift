@@ -1,11 +1,11 @@
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
-    private lazy var content = {
+    private lazy var contentViewController = {
         WizardViewController()
     }()
 
-    lazy var ui: UIViewController = {
-        return UINavigationController(rootViewController: self.content)
+    lazy var content: UIViewController = {
+        return UINavigationController(rootViewController: self.contentViewController)
     }()
 
     // The sequence of steps to complete the wizard.
@@ -29,7 +29,7 @@ final class SiteCreationWizard: Wizard {
             return
         }
 
-        content.render(step: firstStep)
+        contentViewController.render(step: firstStep)
     }
 }
 

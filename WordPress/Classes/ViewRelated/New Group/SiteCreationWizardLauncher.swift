@@ -18,6 +18,6 @@ final class SiteCreationWizardLauncher {
     }()
 
     lazy var ui: UIViewController = {
-        return wizard.ui
+        return wizard.content
     }()
 }
