@@ -1,6 +1,7 @@
 
 import UIKit
 
+/// Contains the UI corresponsing to the list of segments
 final class SiteSegmentsWizardContent: UIViewController {
     private let service: SiteSegmentsService
     private var dataSource: UITableViewDataSource?
