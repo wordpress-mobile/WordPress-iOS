@@ -144,9 +144,16 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc func visited(_ element: QuickStartTourElement) {
-        guard element == currentElement(),
+        let readerElements: [QuickStartTourElement] = [.readerTab, .readerBack]
+        guard let currentElement = currentElement(),
             let tourState = currentTourState else {
-                return
+            return
+        }
+        guard element == currentElement else {
+            if element == .tabFlipped, !readerElements.contains(currentElement)  {
+                endCurrentTour()
+            }
+            return
         }
 
         dismissCurrentNotice()
@@ -160,7 +167,7 @@ open class QuickStartTourGuide: NSObject {
         }
         currentTourState = nextStep
 
-        if currentElement() == .readerBack && navigationWatcher.shouldSkipReaderBack() {
+        if currentElement == .readerBack && navigationWatcher.shouldSkipReaderBack() {
             visited(.readerBack)
             return
         }
@@ -342,6 +349,7 @@ internal extension NSNotification.Name {
 @objc
 public enum QuickStartTourElement: Int {
     case noSuchElement
+    case tabFlipped
     case viewSite
     case checklist
     case themes
