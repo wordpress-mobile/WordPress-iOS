@@ -1,11 +1,4 @@
 class RevisionsTableViewController: UITableViewController {
-    private struct Constant {
-        struct Size {
-            static let sectionHeaderHeight = CGFloat(40.0)
-            static let cellEstimatedRowHeight = CGFloat(60.0)
-        }
-    }
-
     private var post: AbstractPost!
     private var presenter: RevisionsTableViewPresenter!
 
@@ -37,7 +30,7 @@ class RevisionsTableViewController: UITableViewController {
     // MARK: Private methods
 
     private func setupUI() {
-        self.navigationItem.title = presenter.title
+        navigationItem.title = presenter.title
 
         let cellNib = UINib(nibName: "RevisionsTableViewCell", bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
@@ -56,6 +49,16 @@ class RevisionsTableViewController: UITableViewController {
     @objc func refreshRevisions() {
         presenter.getRevisions()
     }
+
+
+    // MARK: Constants
+
+    private struct Constant {
+        struct Size {
+            static let sectionHeaderHeight = CGFloat(40.0)
+            static let cellEstimatedRowHeight = CGFloat(60.0)
+        }
+    }
 }
 
 
@@ -66,7 +69,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         guard let postId = post.postID, let siteId = post.blog.dotComID else {
-            fatalError("Expected a postId or a siteId")
+            preconditionFailure("Expected a postId or a siteId")
         }
 
         let predicate = NSPredicate(format: "\(#keyPath(Revision.postId)) = %@ && \(#keyPath(Revision.siteId)) = %@", postId, siteId)
@@ -86,13 +89,13 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
             preconditionFailure("The cell should be of class \(String(describing: RevisionsTableViewCell.self))")
         }
 
-        let revision = self.revision(at: indexPath)
+        let revision = getRevision(at: indexPath)
         cell.revisionNum = revision.revisionId.intValue
     }
 
-    func revision(at indexPath: IndexPath) -> Revision {
+    func getRevision(at indexPath: IndexPath) -> Revision {
         guard let revision = tableViewHandler.resultsController.object(at: indexPath) as? Revision else {
-            fatalError("Expected a Revision object.")
+            preconditionFailure("Expected a Revision object.")
         }
 
         return revision
@@ -132,27 +135,12 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         configureCell(cell, at: indexPath)
         return cell
     }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-    }
 }
 
 
 extension RevisionsTableViewController: RevisionsView {
-    func startLoading() {
-        // Animate loader if table view is empty
-    }
-
     func stopLoadigng(success: Bool, error: Error?) {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
-
-        guard success else {
-            DDLogError(error?.localizedDescription ?? "unkown error")
-            return
-        }
-
-        // Present no result view
     }
 }

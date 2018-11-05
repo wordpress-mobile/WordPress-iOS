@@ -1,5 +1,4 @@
 protocol RevisionsView: class {
-    func startLoading()
     func stopLoadigng(success: Bool, error: Error?)
 }
 
