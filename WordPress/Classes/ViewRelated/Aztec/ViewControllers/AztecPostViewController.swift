@@ -1453,10 +1453,10 @@ private extension AztecPostViewController {
 
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
         if mode == .richText {
-            let textCounterTitle: String = {
-                return String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
-            }()
+            let localizedString = NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text")
+            let textCounterTitle = String(format: localizedString, richTextView.wordCount, richTextView.characterCount)
 
             alert.title = textCounterTitle
         }
