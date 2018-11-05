@@ -1,7 +1,7 @@
 /// Terrible name. Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {
-    private lazy var builder: SiteCreationBuilder = {
-        return SiteCreationBuilder()
+    private lazy var builder: SiteCreator = {
+        return SiteCreator()
     }()
 
     private lazy var segmentsStep: WizardStep = {

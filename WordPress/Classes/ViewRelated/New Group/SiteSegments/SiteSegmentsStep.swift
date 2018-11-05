@@ -1,7 +1,7 @@
 
 /// Site Creation. First screen: Site Segments
 final class SiteSegmentsStep: WizardStep {
-    private let builder: SiteCreationBuilder
+    private let builder: SiteCreator
     private let service: SiteSegmentsService
 
     var identifier: Identifier {
@@ -22,7 +22,7 @@ final class SiteSegmentsStep: WizardStep {
 
     var delegate: WizardDelegate?
 
-    init(builder: SiteCreationBuilder, service: SiteSegmentsService) {
+    init(builder: SiteCreator, service: SiteSegmentsService) {
         self.builder = builder
         self.service = service
     }

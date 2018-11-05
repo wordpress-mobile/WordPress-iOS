@@ -11,7 +11,7 @@ final class SiteSegmentsStepTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        step = SiteSegmentsStep(builder: SiteCreationBuilder(), service: MockSiteSegmentsService())
+        step = SiteSegmentsStep(builder: SiteCreator(), service: MockSiteSegmentsService())
     }
 
     override func tearDown() {
