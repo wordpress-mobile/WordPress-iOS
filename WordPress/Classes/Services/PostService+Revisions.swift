@@ -24,7 +24,7 @@ extension PostService {
                                 postId: postId.intValue,
                                 success: { (remoteRevisions) in
                                     self.managedObjectContext.perform {
-                                        let revisions = self.syncPostRevisions(from: remoteRevisions,
+                                        let revisions = self.syncPostRevisions(from: remoteRevisions ?? [],
                                                                                for: postId.intValue,
                                                                                with: blogId.intValue)
                                         ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
@@ -37,58 +37,60 @@ extension PostService {
 
     // MARK: Private methods
 
-    private func syncPostRevisions(from remoteRevisions: [RemoteRevision]?,
+    private func syncPostRevisions(from remoteRevisions: [RemoteRevision],
                                    for postId: Int,
                                    with siteId: Int) -> [Revision] {
-        guard let remoteRevisions = remoteRevisions else {
-            return []
+        return remoteRevisions.map { mapRevision(from: $0, for: postId, with: siteId) }
+    }
+
+    private func mapRevision(from remoteRevision: RemoteRevision,
+                             for postId: Int,
+                             with siteId: Int) -> Revision {
+        let siteId = NSNumber(value: siteId)
+        let revisionId = NSNumber(value: remoteRevision.id)
+        let revision = findPostRevision(with: revisionId, and: siteId)
+
+        if let postAuthorId = remoteRevision.postAuthorId,
+            let postAuthorIdAsInt = Int(postAuthorId) {
+            revision.postAuthorId = NSNumber(value: postAuthorIdAsInt)
+        } else {
+            revision.postAuthorId = nil
         }
 
-        return remoteRevisions.map { remoteRevision in
-            let siteId = NSNumber(value: siteId)
-            let revisionId = NSNumber(value: remoteRevision.id)
-            let revision = findPostRevision(with: revisionId, and: siteId)
-            revision.siteId = siteId
-            revision.revisionId = revisionId
-            revision.postId = NSNumber(value: postId)
+        revision.postTitle = remoteRevision.postTitle
+        revision.postContent = remoteRevision.postContent
+        revision.postExcerpt = remoteRevision.postExcerpt
 
-            if let postAuthorId = remoteRevision.postAuthorId,
-                let postAuthorIdAsInt = Int(postAuthorId) {
-                revision.postAuthorId = NSNumber(value: postAuthorIdAsInt)
-            } else {
-                revision.postAuthorId = nil
-            }
+        revision.postDateGmt = remoteRevision.postDateGmt
+        revision.postModifiedGmt = remoteRevision.postModifiedGmt
 
-            revision.postTitle = remoteRevision.postTitle
-            revision.postContent = remoteRevision.postContent
-            revision.postExcerpt = remoteRevision.postExcerpt
+        revision.diff = mapRevisionDiff(from: remoteRevision, for: revision)
 
-            revision.postDateGmt = remoteRevision.postDateGmt
-            revision.postModifiedGmt = remoteRevision.postModifiedGmt
+        return revision
+    }
 
-            if let diff = remoteRevision.diff {
-                let revisionDiff = findDiff(for: revision)
-                revisionDiff.fromRevisionId = NSNumber(value: diff.fromRevisionId)
-                revisionDiff.toRevisionId = NSNumber(value: diff.toRevisionId)
-
-                revisionDiff.totalAdditions = NSNumber(value: diff.values.totals?.totalAdditions ?? 0)
-                revisionDiff.totalDeletions = NSNumber(value: diff.values.totals?.totalDeletions ?? 0)
-
-                revisionDiff.remove(DiffContentValue.self).add(values: diff.values.contentDiffs) {
-                    return self.diffValue(for: DiffContentValue.self, with: $1, at: $0)
-                }
-
-                revisionDiff.remove(DiffTitleValue.self).add(values: diff.values.titleDiffs) {
-                    return self.diffValue(for: DiffTitleValue.self, with: $1, at: $0)
-                }
-
-                revision.diff = revisionDiff
-            } else {
-                revision.diff = nil
-            }
-
-            return revision
+    private func mapRevisionDiff(from remoteRevision: RemoteRevision,
+                                 for revision: Revision) -> RevisionDiff? {
+        guard let diff = remoteRevision.diff else {
+            return nil
         }
+
+        let revisionDiff = findDiff(for: revision)
+        revisionDiff.fromRevisionId = NSNumber(value: diff.fromRevisionId)
+        revisionDiff.toRevisionId = NSNumber(value: diff.toRevisionId)
+
+        revisionDiff.totalAdditions = NSNumber(value: diff.values.totals?.totalAdditions ?? 0)
+        revisionDiff.totalDeletions = NSNumber(value: diff.values.totals?.totalDeletions ?? 0)
+
+        revisionDiff.remove(DiffContentValue.self).add(values: diff.values.contentDiffs) {
+            return self.diffValue(for: DiffContentValue.self, with: $1, at: $0)
+        }
+
+        revisionDiff.remove(DiffTitleValue.self).add(values: diff.values.titleDiffs) {
+            return self.diffValue(for: DiffTitleValue.self, with: $1, at: $0)
+        }
+
+        return revisionDiff
     }
 
     private func findPostRevision(with revisionId: NSNumber, and siteId: NSNumber) -> Revision {
