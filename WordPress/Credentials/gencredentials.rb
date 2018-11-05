@@ -49,14 +49,6 @@ EOF
 EOF
 end
 
-def print_pocket(pocket)
-    print <<-EOF
-+ (NSString *)pocketConsumerKey {
-    return @"#{pocket}";
-}
-EOF
-end
-
 def print_crashlytics(crashlytics)
 print <<-EOF
 + (NSString *)crashlyticsApiKey {
@@ -68,7 +60,11 @@ end
 def print_hockeyapp(hockeyapp)
 print <<-EOF
 + (NSString *)hockeyappAppId {
+    #ifdef HOCKEYAPP_ENABLED
     return @"#{hockeyapp}";
+    #else
+    return @"";
+    #endif
 }
 EOF
 end
@@ -77,14 +73,6 @@ def print_giphy(giphy)
 print <<-EOF
 + (NSString *)giphyAppId {
     return @"#{giphy}";
-}
-EOF
-end
-
-def print_googleplus(googleplus)
-print <<-EOF
-+ (NSString *)googlePlusClientId {
-    return @"#{googleplus}";
 }
 EOF
 end
@@ -145,18 +133,16 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, giphy, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, crashlytics, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
 EOF
   print_client(client)
   print_secret(secret)
-  print_pocket(pocket)
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_giphy(giphy)
-  print_googleplus(googleplus)
   print_google_login_client(google_client)
   print_google_login_scheme(google_scheme)
   print_google_login_server(google_login_server)
@@ -181,11 +167,9 @@ end
 
 client = nil
 secret = nil
-pocket = nil
 crashlytics = nil
 hockeyapp = nil
 giphy = nil
-googleplus = nil
 google_client = nil
 google_scheme = nil
 google_login_server = nil
@@ -202,16 +186,12 @@ File.open(path) do |f|
       client = value
     elsif k == "WPCOM_APP_SECRET"
       secret = value
-    elsif k == "POCKET_CONSUMER_KEY"
-      pocket = value
     elsif k == "CRASHLYTICS_API_KEY"
       crashlytics = value
     elsif k == "HOCKEYAPP_APP_ID"
       hockeyapp = value
     elsif k == "GIPHY_APP_ID"
       giphy = value
-    elsif k == "GOOGLE_PLUS_CLIENT_ID"
-      googleplus = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
       google_client = value
     elsif k == "GOOGLE_LOGIN_SCHEME_ID"
@@ -247,14 +227,6 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Crashlytics API key not found"
   end
 
-  if pocket.nil?
-    $stderr.puts "warning: Pocket API key not found"
-  end
-
-  if googleplus.nil?
-    $stderr.puts "warning: Google Plus API key not found"
-  end
-
   if google_client.nil?
     $stderr.puts "warning: Google Login Client ID not found"
   end
@@ -274,4 +246,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, giphy, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, crashlytics, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
