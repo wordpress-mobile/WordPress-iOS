@@ -59,15 +59,13 @@ extension RevisionDiff {
         switch type {
         case is DiffContentValue.Type:
             removeFromContentDiffs(set)
-            return self
-
         case is DiffTitleValue.Type:
             removeFromTitleDiffs(set)
-            return self
-
         default:
-            return self
+            break
         }
+
+        return self
     }
 
     func add<T: Codable, D: DiffAbstractValue>(values: [T], _ transform: (Int, T) -> D) {
@@ -75,14 +73,14 @@ extension RevisionDiff {
         for (index, value) in values.enumerated() {
             array.append(transform(index, value))
         }
+
         let set = NSSet(array: array)
+
         switch D.self {
         case is DiffContentValue.Type:
             addToContentDiffs(set)
-
         case is DiffTitleValue.Type:
             addToTitleDiffs(set)
-
         default:
             break
         }
