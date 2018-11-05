@@ -466,17 +466,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var debouncer = Debouncer(delay: Constants.autoSavingDelay)
 
-    fileprivate var wordsCount: UInt {
-        return richTextView.text.wordCount()
-    }
-
-    fileprivate var charactersCount: Int {
-        guard let text = richTextView.text else {
-            return 0
-        }
-        return text.count
-    }
-
     // MARK: - Initializers
 
     /// Initializer
@@ -1466,7 +1455,7 @@ private extension AztecPostViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         if mode == .richText {
             let textCounterTitle: String = {
-                return String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), wordsCount, charactersCount)
+                return String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
             }()
 
             alert.title = textCounterTitle
