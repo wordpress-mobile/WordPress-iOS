@@ -13,19 +13,11 @@
     return WPCOM_API_CLIENT_SECRET;
 }
 
-+ (NSString *)pocketConsumerKey {
-    return @"";
-}
-
 + (NSString *)crashlyticsApiKey {
     return @"";
 }
     
 + (NSString *)hockeyappAppId {
-    return @"";
-}
-    
-+ (NSString *)googlePlusClientId {
     return @"";
 }
 
