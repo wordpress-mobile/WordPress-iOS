@@ -4,17 +4,24 @@ import Foundation
 
 extension UITextView {
 
+    /// Returns a count of valid text characters.
+    var characterCount: Int {
+        var charCount = 0
+
+        if !text.isEmpty {
+            let textRange = text.startIndex..<text.endIndex
+            text.enumerateSubstrings(in: textRange, options: [.byWords, .localized]) { word, _, _, _ in
+                let wordLength = word?.count ?? 0
+                charCount += wordLength
+            }
+        }
+
+        return charCount
+    }
+
     /// Returns a count of words in a given text view.
     var wordCount: UInt {
         return text.wordCount()
-    }
-
-    /// Returns a count of text-based characters, excluding whitespace, newlines & control characters.
-    var characterCount: Int {
-        guard let text = text else {
-            return 0
-        }
-        return text.count
     }
 }
 
