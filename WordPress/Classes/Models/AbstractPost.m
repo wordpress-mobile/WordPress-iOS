@@ -14,6 +14,7 @@
 @dynamic metaPublishImmediately;
 @dynamic comments;
 @dynamic featuredImage;
+@dynamic revisions;
 
 @synthesize restorableStatus;
 

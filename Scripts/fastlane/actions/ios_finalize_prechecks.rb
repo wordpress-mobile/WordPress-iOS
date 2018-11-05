@@ -19,6 +19,9 @@ module Fastlane
           UI.message(message)
         end
 
+        # Check local repo status
+        other_action.ensure_git_status_clean()
+
         version
       end
 
