@@ -1,12 +1,12 @@
 /// Terrible name. Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {
-    private lazy var builder: SiteCreator = {
+    private lazy var creator: SiteCreator = {
         return SiteCreator()
     }()
 
     private lazy var segmentsStep: WizardStep = {
         // It seems like we might need to pass the builder to all the steps. I am not too fond of inheritance in general, but this might make a good case for a base Step
-        return SiteSegmentsStep(builder: self.builder, service: MockSiteSegmentsService())
+        return SiteSegmentsStep(creator: self.creator, service: MockSiteSegmentsService())
     }()
 
     private lazy var steps: [WizardStep] = {

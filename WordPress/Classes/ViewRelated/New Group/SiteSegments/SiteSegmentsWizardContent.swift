@@ -1,15 +1,15 @@
-
 import UIKit
-
 
 /// Contains the UI corresponsing to the list of segments
 final class SiteSegmentsWizardContent: UIViewController {
+    private let creator: SiteCreator
     private let service: SiteSegmentsService
     private var dataSource: UITableViewDataSource?
 
     @IBOutlet weak var table: UITableView!
 
-    init(service: SiteSegmentsService) {
+    init(creator: SiteCreator, service: SiteSegmentsService) {
+        self.creator = creator
         self.service = service
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }

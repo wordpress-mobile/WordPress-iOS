@@ -1,7 +1,7 @@
 
 /// Site Creation. First screen: Site Segments
 final class SiteSegmentsStep: WizardStep {
-    private let builder: SiteCreator
+    private let creator: SiteCreator
     private let service: SiteSegmentsService
 
     var identifier: Identifier {
@@ -17,13 +17,13 @@ final class SiteSegmentsStep: WizardStep {
     }()
 
     private(set) lazy var content: UIViewController = {
-        return SiteSegmentsWizardContent(service: self.service)
+        return SiteSegmentsWizardContent(creator: self.creator, service: self.service)
     }()
 
     var delegate: WizardDelegate?
 
-    init(builder: SiteCreator, service: SiteSegmentsService) {
-        self.builder = builder
+    init(creator: SiteCreator, service: SiteSegmentsService) {
+        self.creator = creator
         self.service = service
     }
 }
