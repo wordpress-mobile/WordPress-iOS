@@ -1,6 +1,10 @@
 import UIKit
 import WordPressComStatsiOS
 
+@objc protocol SiteStatsInsightsDelegate {
+    @objc optional func displayWebViewWithURL(_ url: URL)
+}
+
 class SiteStatsInsightsTableViewController: UITableViewController {
 
     // MARK: - Properties
@@ -17,10 +21,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         setUpLatestPostSummaryCell()
         refreshControl?.addTarget(self, action: #selector(fetchStats), for: .valueChanged)
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         fetchStats()
     }
 
@@ -113,4 +114,15 @@ private extension SiteStatsInsightsTableViewController {
     struct ReuseIdentifiers {
         static let latestPostSummary = "latestPostSummaryCell"
     }
+}
+
+// MARK: - SiteStatsInsightsDelegate Methods
+
+extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        navigationController?.pushViewController(webViewController, animated: true)
+    }
+
 }
