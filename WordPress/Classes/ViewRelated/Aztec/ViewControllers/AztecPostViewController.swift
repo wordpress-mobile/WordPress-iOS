@@ -1453,10 +1453,9 @@ private extension AztecPostViewController {
 
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
         if mode == .richText {
-            let localizedString = NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text")
-            let textCounterTitle = String(format: localizedString, richTextView.wordCount, richTextView.characterCount)
+            // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
+            let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
 
             alert.title = textCounterTitle
         }
