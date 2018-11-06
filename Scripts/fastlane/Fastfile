@@ -184,7 +184,7 @@ import "./ScreenshotFastfile"
     
     gym(scheme: "WordPress Internal", workspace: "../WordPress.xcworkspace",
       export_method: "enterprise", clean: true,
-      output_directory: "../build/", export_team_id: ENV["INT_EXPORT_TEAM"],
+      output_directory: "../build/", export_team_id: ENV["INT_EXPORT_TEAM_ID"],
       export_options: {
         method: "enterprise",
         provisioningProfiles: { 
