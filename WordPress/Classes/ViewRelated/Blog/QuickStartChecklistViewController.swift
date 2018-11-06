@@ -15,10 +15,6 @@ class QuickStartChecklistViewController: UITableViewController {
         startObservingForQuickStart()
     }
 
-    deinit {
-        stopObservingForQuickStart()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -114,10 +110,6 @@ class QuickStartChecklistViewController: UITableViewController {
     private func reload() {
         dataSource?.loadCompletedTours()
         tableView.reloadData()
-    }
-
-    private func stopObservingForQuickStart() {
-        NotificationCenter.default.removeObserver(observer as Any)
     }
 }
 

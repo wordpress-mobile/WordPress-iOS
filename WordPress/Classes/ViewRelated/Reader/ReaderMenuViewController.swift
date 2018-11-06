@@ -83,12 +83,6 @@ import WordPressShared
 
     // MARK: - Lifecycle Methods
 
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-
     override init(style: UITableView.Style) {
         super.init(style: style)
         // Need to use `super` to work around a Swift compiler bug

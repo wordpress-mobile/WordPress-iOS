@@ -30,10 +30,6 @@ class SupportTableViewController: UITableViewController {
         self.init(style: .grouped)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - View
 
     override func viewDidLoad() {

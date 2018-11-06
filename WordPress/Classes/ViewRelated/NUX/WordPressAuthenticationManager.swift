@@ -8,10 +8,6 @@ import WordPressAuthenticator
 @objc
 class WordPressAuthenticationManager: NSObject {
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
     ///

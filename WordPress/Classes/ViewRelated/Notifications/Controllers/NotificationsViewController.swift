@@ -90,10 +90,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - View Lifecycle
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 

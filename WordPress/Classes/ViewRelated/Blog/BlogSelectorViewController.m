@@ -21,11 +21,6 @@
 
 @implementation BlogSelectorViewController
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
                               successHandler:(BlogSelectorSuccessHandler)successHandler
                               dismissHandler:(BlogSelectorDismissHandler)dismissHandler

@@ -46,10 +46,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
         setupWithSettings(settings)
     }
 
-    deinit {
-        stopListeningToNotifications()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -71,10 +67,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
     private func startListeningToNotifications() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(refreshPushAuthorizationStatus), name: UIApplication.didBecomeActiveNotification, object: nil)
-    }
-
-    private func stopListeningToNotifications() {
-        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupTableView() {

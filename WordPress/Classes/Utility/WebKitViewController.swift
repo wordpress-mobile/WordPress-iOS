@@ -82,13 +82,6 @@ class WebKitViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.title))
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.url))
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
-    }
-
     private func startObservingWebView() {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.title), options: [.new], context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: [.new], context: nil)
