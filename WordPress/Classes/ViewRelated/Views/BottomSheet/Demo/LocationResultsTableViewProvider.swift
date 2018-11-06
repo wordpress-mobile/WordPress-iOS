@@ -103,8 +103,8 @@ private extension LocationResultsTableViewProvider {
             return
         }
 
-        cell.setKey(key: locationResult.name)
-        cell.setValue(value: locationResult.locationDescription)
+        cell.setKey(locationResult.name)
+        cell.setValue(locationResult.locationDescription)
 
         if selectedIndexPath == indexPath {
             cell.accessoryType = .checkmark

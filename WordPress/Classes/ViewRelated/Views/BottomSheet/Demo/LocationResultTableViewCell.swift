@@ -26,11 +26,11 @@ class LocationResultTableViewCell: UITableViewCell {
 
     // MARK: Internal behavior
 
-    func setKey(key: String) {
+    func setKey(_ key: String) {
         textLabel?.text = key
     }
 
-    func setValue(value: String) {
+    func setValue(_ value: String) {
         detailTextLabel?.text = value
     }
 }
