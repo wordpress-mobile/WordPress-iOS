@@ -174,7 +174,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
     return sessionCount;
 }
@@ -346,8 +345,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
     if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
         [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
                                                 forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
     }
 }
 
