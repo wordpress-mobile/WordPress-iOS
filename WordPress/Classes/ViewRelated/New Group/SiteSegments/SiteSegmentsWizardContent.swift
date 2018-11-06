@@ -48,6 +48,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func handleData(_ data: [SiteSegment]) {
         dataSource = SiteSegmentsDataSource(data: data)
+        table.dataSource = dataSource
         table.reloadData()
     }
 }
