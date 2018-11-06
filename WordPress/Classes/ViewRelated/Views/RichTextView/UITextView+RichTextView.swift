@@ -6,17 +6,7 @@ extension UITextView {
 
     /// Returns a count of valid text characters.
     var characterCount: Int {
-        var charCount = 0
-
-        if !text.isEmpty {
-            let textRange = text.startIndex..<text.endIndex
-            text.enumerateSubstrings(in: textRange, options: [.byWords, .localized]) { word, _, _, _ in
-                let wordLength = word?.count ?? 0
-                charCount += wordLength
-            }
-        }
-
-        return charCount
+        return text.characterCount
     }
 
     /// Returns a count of words in a given text view.
