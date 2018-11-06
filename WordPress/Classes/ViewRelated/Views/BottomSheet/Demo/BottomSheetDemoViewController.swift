@@ -5,7 +5,7 @@ import UIKit
 
 class BottomSheetDemoViewController: UINavigationController {
 
-    let resultsViewController = LocationResultsTableViewController()
+    private let resultsViewController = LocationResultsTableViewController()
 
     init() {
         super.init(rootViewController: resultsViewController)
