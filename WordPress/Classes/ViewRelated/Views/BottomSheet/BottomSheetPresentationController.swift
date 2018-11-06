@@ -34,53 +34,18 @@ class BottomSheetPresentationController: UIPresentationController {
     }
 
     override func presentationTransitionWillBegin() {
-        guard let containerView = containerView else {
+        guard let containerView = containerView,
+            let coordinator = presentingViewController.transitionCoordinator else {
+
             return
         }
 
-        let presentationWrapperView = UIView(frame: frameOfPresentedViewInContainerView)
-        self.presentationWrappingView = presentationWrapperView
+        preparePresentationWrappingView()
 
-        let presentationRoundedCornerInsets = UIEdgeInsets(top: 0, left: 0, bottom: -Constants.cornerRadius, right: 0)
-        let presentationRoundedCornerViewRect = presentationWrapperView.bounds.inset(by: presentationRoundedCornerInsets)
-        let presentationRoundedCornerView = UIView(frame: presentationRoundedCornerViewRect)
-        presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        presentationRoundedCornerView.layer.cornerRadius = Constants.cornerRadius
-        presentationRoundedCornerView.layer.masksToBounds = true
+        prepareDimmingView(containerView: containerView)
 
-        let presentedViewControllerWrapperInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.cornerRadius, right: 0)
-        let presentedViewControllerWrapperViewRect = presentationRoundedCornerView.bounds.inset(by: presentedViewControllerWrapperInsets)
-        let presentedViewControllerWrapperView = UIView(frame: presentedViewControllerWrapperViewRect)
-        presentedViewControllerWrapperView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        guard let presentedViewControllerView = super.presentedView else {
-            return
-        }
-
-        presentedViewControllerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        presentedViewControllerView.frame = presentedViewControllerWrapperView.bounds
-        presentedViewControllerWrapperView.addSubview(presentedViewControllerView)
-
-        presentationRoundedCornerView.addSubview(presentedViewControllerWrapperView)
-
-        presentationWrapperView.addSubview(presentationRoundedCornerView)
-
-        let dimmingView = UIView(frame: containerView.bounds)
-        dimmingView.backgroundColor = WPStyleGuide.darkGrey()
-        dimmingView.isOpaque = false
-        dimmingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
-        dimmingView.addGestureRecognizer(tapRecognizer)
-
-        self.dimmingView = dimmingView
-        containerView.addSubview(dimmingView)
-
-        let coordinator = presentingViewController.transitionCoordinator
-
-        dimmingView.alpha = 0
-        coordinator?.animate(alongsideTransition: { [weak self] context in
-            self?.dimmingView?.alpha = 0.5
+        coordinator.animate(alongsideTransition: { [dimmingView] _ in
+            dimmingView?.alpha = 0.5
         })
     }
 
@@ -132,6 +97,7 @@ class BottomSheetPresentationController: UIPresentationController {
     }
 
     override var frameOfPresentedViewInContainerView: CGRect {
+
         let containerViewBounds = containerView?.bounds ?? .zero
         let presentedViewContentSize = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerViewBounds.size)
 
@@ -152,19 +118,74 @@ class BottomSheetPresentationController: UIPresentationController {
     }
 }
 
+// MARK: - Private behavior
+
+private extension BottomSheetPresentationController {
+
+    func prepareDimmingView(containerView: UIView) {
+
+        let dimmingView = UIView(frame: containerView.bounds)
+        dimmingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        dimmingView.backgroundColor = WPStyleGuide.darkGrey()
+        dimmingView.isOpaque = false
+        dimmingView.alpha = 0
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
+        dimmingView.addGestureRecognizer(tapRecognizer)
+
+        containerView.addSubview(dimmingView)
+
+        self.dimmingView = dimmingView
+    }
+
+    func preparePresentationWrappingView() {
+
+        let presentationWrapperView = UIView(frame: frameOfPresentedViewInContainerView)
+
+        let presentationRoundedCornerInsets = UIEdgeInsets(top: 0, left: 0, bottom: -Constants.cornerRadius, right: 0)
+        let presentationRoundedCornerRect = presentationWrapperView.bounds.inset(by: presentationRoundedCornerInsets)
+
+        let presentationRoundedCornerView = UIView(frame: presentationRoundedCornerRect)
+
+        presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        presentationRoundedCornerView.layer.cornerRadius = Constants.cornerRadius
+        presentationRoundedCornerView.layer.masksToBounds = true
+
+        let presentedViewControllerWrapperInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.cornerRadius, right: 0)
+        let presentedViewControllerWrapperRect = presentationRoundedCornerView.bounds.inset(by: presentedViewControllerWrapperInsets)
+
+        let presentedViewControllerWrapperView = UIView(frame: presentedViewControllerWrapperRect)
+
+        presentedViewControllerWrapperView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        guard let presentedViewControllerView = super.presentedView else {
+            return
+        }
+        presentedViewControllerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        presentedViewControllerView.frame = presentedViewControllerWrapperView.bounds
+
+        presentedViewControllerWrapperView.addSubview(presentedViewControllerView)
+        presentationRoundedCornerView.addSubview(presentedViewControllerWrapperView)
+        presentationWrapperView.addSubview(presentationRoundedCornerView)
+
+        self.presentationWrappingView = presentationWrapperView
+    }
+}
+
 // MARK: - UIViewControllerAnimatedTransitioning
 
 extension BottomSheetPresentationController: UIViewControllerAnimatedTransitioning {
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+
         if let context = transitionContext, context.isAnimated {
             return Constants.transitionDuration
         }
+
         return 0
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-
         guard let fromViewController = transitionContext.viewController(forKey: .from),
             let toViewController = transitionContext.viewController(forKey: .to) else {
 
@@ -204,14 +225,12 @@ extension BottomSheetPresentationController: UIViewControllerAnimatedTransitioni
 
         let duration = transitionDuration(using: transitionContext)
 
-        UIView.animate(withDuration: duration,
-                       animations: {
-
-                        if isPresenting {
-                            toView?.frame = toViewFinalFrame
-                        } else {
-                            fromView?.frame = fromViewFinalFrame
-                        }
+        UIView.animate(withDuration: duration, animations: {
+            if isPresenting {
+                toView?.frame = toViewFinalFrame
+            } else {
+                fromView?.frame = fromViewFinalFrame
+            }
         }) { finished in
             let wasCancelled = transitionContext.transitionWasCancelled
             transitionContext.completeTransition(!wasCancelled)
