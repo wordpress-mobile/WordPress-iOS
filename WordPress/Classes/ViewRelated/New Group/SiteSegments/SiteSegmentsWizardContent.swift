@@ -4,6 +4,7 @@ import UIKit
 final class SiteSegmentsWizardContent: UIViewController {
     private let service: SiteSegmentsService
     private var dataSource: UITableViewDataSource?
+    private var delegate: UITableViewDelegate?
 
     @IBOutlet weak var table: UITableView!
 
@@ -46,7 +47,9 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func handleData(_ data: [SiteSegment]) {
         dataSource = SiteSegmentsDataSource(data: data)
+        delegate = SiteCreationContentDelegate(data: data)
         table.dataSource = dataSource
+        table.delegate = delegate
         table.reloadData()
     }
 }
