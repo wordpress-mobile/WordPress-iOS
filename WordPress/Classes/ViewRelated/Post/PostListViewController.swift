@@ -51,6 +51,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    // MARK: - Gutenberg Support
+
+    private let gutenbergAlertPresenter = GutenbergAlertPresenter()
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -329,12 +333,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.status == .trash {
+        guard post.status != .trash else {
             // No editing posts that are trashed.
             return
         }
 
-        editPost(apost: post)
+        gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
+            if edit {
+                self.editPost(apost: post)
+            }
+        }
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -489,7 +497,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
-        editPost(apost: post)
+        gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
+            if edit {
+                self.editPost(apost: post)
+            }
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
@@ -666,5 +678,4 @@ private extension PostListViewController {
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
     }
-
 }

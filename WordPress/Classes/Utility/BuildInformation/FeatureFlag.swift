@@ -9,6 +9,7 @@ enum FeatureFlag: Int {
     case giphy
     case automatedTransfer
     case enhancedSiteCreation
+    case revisions
     case statsRefresh
     case bottomSheetDemo
 
@@ -28,6 +29,8 @@ enum FeatureFlag: Int {
         case .automatedTransfer:
             return true
         case .enhancedSiteCreation:
+            return BuildConfiguration.current == .localDeveloper
+        case .revisions:
             return BuildConfiguration.current == .localDeveloper
         case .statsRefresh:
             return BuildConfiguration.current == .localDeveloper
