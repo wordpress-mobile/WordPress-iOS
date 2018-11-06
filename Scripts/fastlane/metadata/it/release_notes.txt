@@ -1,5 +1,0 @@
-La sezione Pagine del sito ora visualizza le pagine con un ordine che corrisponde al layout del sito, così sarà più facile trovare ciò che cerchi.
-La tirannia delle pagine vuote è finita! Abbiamo aggiunto suggerimenti per i passi successivi per ogni pagina senza contenuti.
-Quando scrivi un nuovo articolo, l’app salva automaticamente le bozze sul tuo dispositivo, in modo che nessun lavoro vada perso.
-Abbiamo rinnovato lo stile di altre schermate per mantenere la coerenza all’interno dell’app.
-E, come sempre, abbiamo risolto alcuni problemi e apportato miglioramenti generici di affidabilità.
