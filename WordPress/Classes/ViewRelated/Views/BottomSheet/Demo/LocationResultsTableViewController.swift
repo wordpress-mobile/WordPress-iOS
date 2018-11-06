@@ -1,19 +1,6 @@
 
 import UIKit
 
-// MARK: - LocationResultsTableViewControllerConstants
-
-private struct LocationResultsTableViewControllerConstants {
-    static let defaultRowHeight         = CGFloat(60)
-    static let searchBarTextPadding     = CGFloat(13)
-    static let searchBarFontSize        = CGFloat(17)
-    static let separatorInsetLeading    = CGFloat(15)
-    static let summaryAnimationDuration = TimeInterval(0.3)
-    static let summaryFontSize          = CGFloat(22)
-    static let summaryLabelWidth        = CGFloat(300)
-    static let summaryTopInset          = CGFloat(64)
-}
-
 // MARK: - SearchBarSansCancel
 
 class SearchBarSansCancel: UISearchBar {
@@ -43,6 +30,17 @@ class LocationResultsTableViewController: UITableViewController {
 
     // MARK: Properties
 
+    private struct Constants {
+        static let defaultRowHeight         = CGFloat(60)
+        static let searchBarTextPadding     = CGFloat(13)
+        static let searchBarFontSize        = CGFloat(17)
+        static let separatorInsetLeading    = CGFloat(15)
+        static let summaryAnimationDuration = TimeInterval(0.3)
+        static let summaryFontSize          = CGFloat(22)
+        static let summaryLabelWidth        = CGFloat(300)
+        static let summaryTopInset          = CGFloat(64)
+    }
+
     private let searchController = SearchControllerSansCancel(searchResultsController: nil)
 
     private(set) var searchQuery = ""
@@ -55,8 +53,8 @@ class LocationResultsTableViewController: UITableViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
 
-        label.preferredMaxLayoutWidth = CGFloat(LocationResultsTableViewControllerConstants.summaryLabelWidth)
-        label.font = UIFont.systemFont(ofSize: LocationResultsTableViewControllerConstants.summaryFontSize)
+        label.preferredMaxLayoutWidth = CGFloat(Constants.summaryLabelWidth)
+        label.font = UIFont.systemFont(ofSize: Constants.summaryFontSize)
         label.textColor = WPStyleGuide.greyDarken10()
         label.textAlignment = .center
 
@@ -146,7 +144,7 @@ extension LocationResultsTableViewController: UISearchResultsUpdating {
                 destinationAlpha = 0
             }
 
-            UIView.animate(withDuration: LocationResultsTableViewControllerConstants.summaryAnimationDuration) {
+            UIView.animate(withDuration: Constants.summaryAnimationDuration) {
                 resultSummaryLabel.text = resultSummary
                 resultSummaryLabel.alpha = destinationAlpha
             }
@@ -209,7 +207,7 @@ private extension LocationResultsTableViewController {
 
         searchBar.tintColor = WPStyleGuide.wordPressBlue()
 
-        searchBar.searchTextPositionAdjustment = UIOffset(horizontal: LocationResultsTableViewControllerConstants.searchBarTextPadding, vertical: 0)
+        searchBar.searchTextPositionAdjustment = UIOffset(horizontal: Constants.searchBarTextPadding, vertical: 0)
 
         searchBar.autocapitalizationType = .words
         searchBar.autocorrectionType = .no
@@ -218,7 +216,7 @@ private extension LocationResultsTableViewController {
 
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {
             textField.textColor = WPStyleGuide.darkGrey()
-            textField.font = UIFont.systemFont(ofSize: LocationResultsTableViewControllerConstants.searchBarFontSize)
+            textField.font = UIFont.systemFont(ofSize: Constants.searchBarFontSize)
             textField.clearButtonMode = .never
 
             let searchColor = UIColor(red: 135/255.0, green: 166/255.0, blue: 188/255.0, alpha: 1.0)
@@ -228,7 +226,7 @@ private extension LocationResultsTableViewController {
 
             if let placeholderLabel = textField.value(forKey: "placeholderLabel") as? UILabel {
                 placeholderLabel.textColor = searchColor
-                placeholderLabel.font = UIFont.systemFont(ofSize: LocationResultsTableViewControllerConstants.searchBarFontSize)
+                placeholderLabel.font = UIFont.systemFont(ofSize: Constants.searchBarFontSize)
             }
         }
 
@@ -237,9 +235,9 @@ private extension LocationResultsTableViewController {
 
     func configure(tableView: UITableView) {
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = LocationResultsTableViewControllerConstants.defaultRowHeight
+        tableView.estimatedRowHeight = Constants.defaultRowHeight
 
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: LocationResultsTableViewControllerConstants.separatorInsetLeading, bottom: 0, right: 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: Constants.separatorInsetLeading, bottom: 0, right: 0)
         tableView.separatorColor = WPStyleGuide.grey()
 
         if #available(iOS 11.0, *) {} else {
@@ -254,7 +252,7 @@ private extension LocationResultsTableViewController {
         view.addSubview(summaryLabel)
 
         NSLayoutConstraint.activate([
-            summaryLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: LocationResultsTableViewControllerConstants.summaryTopInset),
+            summaryLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.summaryTopInset),
             summaryLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
