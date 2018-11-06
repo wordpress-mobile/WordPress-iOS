@@ -3,6 +3,7 @@ import WordPressComStatsiOS
 
 @objc protocol SiteStatsInsightsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
+    @objc optional func showCreatePost()
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -123,6 +124,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         navigationController?.pushViewController(webViewController, animated: true)
+    }
+
+    func showCreatePost() {
+        WPTabBarController.sharedInstance().showPostTab { [weak self] in
+            self?.fetchStats()
+        }
     }
 
 }

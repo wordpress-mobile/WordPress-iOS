@@ -197,21 +197,16 @@ private extension LatestPostSummaryCell {
             return
         }
 
-        var alertTitle = ""
-
         switch actionType {
         case .viewMore:
             // TODO: show Post Details
-            alertTitle = "Post Details will be shown here."
+            showAlertWithTitle("Post Details will be shown here.")
         case .sharePost:
             // TODO: show Share options
-            alertTitle = "Share options will be shown here."
+            showAlertWithTitle("Share options will be shown here.")
         case .createPost:
-            // TODO: show Create Post
-            alertTitle = "Create Post will be shown here."
+            siteStatsInsightsDelegate?.showCreatePost?()
         }
-
-        showAlertWithTitle(alertTitle)
 
     }
 
