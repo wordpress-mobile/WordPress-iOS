@@ -3,8 +3,7 @@ import UIKit
 /// Contains the UI corresponsing to the list of segments
 final class SiteSegmentsWizardContent: UIViewController {
     private let service: SiteSegmentsService
-    private var dataSource: UITableViewDataSource?
-    private var delegate: UITableViewDelegate?
+    private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
 
     @IBOutlet weak var table: UITableView!
 
@@ -25,7 +24,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTable() {
-        let cellName = SiteSegmentsDataSource.cellReuseIdentifier()
+        let cellName = SiteSegmentsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
     }
@@ -46,10 +45,9 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        dataSource = SiteSegmentsDataSource(data: data)
-        delegate = SiteCreationContentDelegate(data: data)
-        table.dataSource = dataSource
-        table.delegate = delegate
+        dataCoordinator = SiteCreationDataCoordinator(data: data, cellType: SiteSegmentsCell.self)
+        table.dataSource = dataCoordinator
+        table.delegate = dataCoordinator
         table.reloadData()
     }
 }
