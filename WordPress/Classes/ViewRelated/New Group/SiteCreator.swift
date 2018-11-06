@@ -6,7 +6,7 @@ final class SiteCreator {
     /// Generates the final object that will be posted to the backend
     ///
     /// - Returns: an Encodable object
-    func build() -> SiteCreationOutput {
-        return SiteCreationOutput()
+    func build() -> SiteCreatorOutput {
+        return SiteCreatorOutput()
     }
 }
