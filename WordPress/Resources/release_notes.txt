@@ -1,4 +1,4 @@
-A new Quick Start section suggests steps to help you build a great site.
-With Mentions, you can read the whole push notification message from the home screen.
-Want to copy the link to a comment? Long-press its timestamp label.
-Want to know the word and character counts for posts? Check out the editor action sheet title.
+Add Giphy gifs directly from the media toolbar when editing a post.
+More helpful error messages will assist you when logging in to a self hosted site.
+Viewing a post with many images is now faster.
+Bug fixes.
