@@ -13,6 +13,7 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var summariesStackView: UIStackView!
     @IBOutlet weak var chartStackView: UIStackView!
+    @IBOutlet weak var actionStackView: UIStackView!
 
     @IBOutlet weak var viewsLabel: UILabel!
     @IBOutlet weak var viewsDataLabel: UILabel!
@@ -202,12 +203,13 @@ private extension LatestPostSummaryCell {
             // TODO: show Post Details
             showAlertWithTitle("Post Details will be shown here.")
         case .sharePost:
-            // TODO: show Share options
-            showAlertWithTitle("Share options will be shown here.")
+            guard let postID = summaryData?.postID else {
+                return
+            }
+            siteStatsInsightsDelegate?.showShareForPost?(postID: postID, fromView: actionStackView)
         case .createPost:
             siteStatsInsightsDelegate?.showCreatePost?()
         }
-
     }
 
     func showAlertWithTitle(_ title: String) {

@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 @objc protocol SiteStatsInsightsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func showCreatePost()
+    @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -13,6 +14,18 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     var statsService: WPStatsService?
     var latestPostSummary: StatsLatestPostSummary?
     private var finishedLoading = false
+
+    private lazy var mainContext: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().mainContext
+    }()
+
+    private lazy var blogService: BlogService = {
+        return BlogService(managedObjectContext: mainContext)
+    }()
+
+    private lazy var postService: PostService = {
+        return PostService(managedObjectContext: mainContext)
+    }()
 
     // MARK: - View
 
@@ -130,6 +143,27 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
             self?.fetchStats()
         }
+    }
+
+    func showShareForPost(postID: NSNumber, fromView: UIView) {
+
+        guard let blogId = statsService?.siteId,
+        let blog = blogService.blog(byBlogId: blogId) else {
+            DDLogInfo("Failed to get blog with id \(String(describing: statsService?.siteId))")
+            return
+        }
+
+        postService.getPostWithID(postID, for: blog, success: { apost in
+            guard let post = apost as? Post else {
+                DDLogInfo("Failed to get post with id \(postID)")
+                return
+            }
+
+            let shareController = PostSharingController()
+            shareController.sharePost(post, fromView: fromView, inViewController: self)
+        }, failure: { error in
+            DDLogInfo("Error getting post with id \(postID): \(error.localizedDescription)")
+        })
     }
 
 }
