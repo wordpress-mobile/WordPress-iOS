@@ -3,9 +3,11 @@ import UIKit
 /// Generics-based implementation of the UITableViewDataSource and UITableViewDelegate protocol. It will dispatch a notification when an item is selected
 final class SiteCreationDataCoordinator<Model, Cell>: NSObject, UITableViewDataSource, UITableViewDelegate where Cell: ModelSettableCell, Cell: UITableViewCell, Model == Cell.DataType {
     private let data: [Model]
+    private let selection: (Model) -> Void
 
-    init(data: [Model], cellType: Cell.Type) {
+    init(data: [Model], cellType: Cell.Type, selection: @escaping (Model) -> Void) {
         self.data = data
+        self.selection = selection
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -25,6 +27,6 @@ final class SiteCreationDataCoordinator<Model, Cell>: NSObject, UITableViewDataS
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedModel = data[indexPath.row]
-        print("===== selected model ===", selectedModel)
+        selection(selectedModel)
     }
 }
