@@ -17,7 +17,7 @@ final class SiteSegmentsStep: WizardStep {
     }()
 
     private(set) lazy var content: UIViewController = {
-        return SiteSegmentsWizardContent(service: self.service)
+        return SiteSegmentsWizardContent(service: self.service, selection: self.didSelect)
     }()
 
     var delegate: WizardDelegate?
@@ -25,5 +25,10 @@ final class SiteSegmentsStep: WizardStep {
     init(creator: SiteCreator, service: SiteSegmentsService) {
         self.creator = creator
         self.service = service
+    }
+
+    private func didSelect(_ segment: SiteSegment) {
+        print("===== end of proagation ===")
+        print(segment)
     }
 }

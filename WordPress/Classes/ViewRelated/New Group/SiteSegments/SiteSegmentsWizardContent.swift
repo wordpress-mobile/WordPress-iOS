@@ -4,11 +4,13 @@ import UIKit
 final class SiteSegmentsWizardContent: UIViewController {
     private let service: SiteSegmentsService
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
+    private let selection: (SiteSegment) -> Void
 
     @IBOutlet weak var table: UITableView!
 
-    init(service: SiteSegmentsService) {
+    init(service: SiteSegmentsService, selection: @escaping (SiteSegment) -> Void) {
         self.service = service
+        self.selection = selection
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
 
@@ -52,6 +54,6 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func didSelect(_ segment: SiteSegment) {
-        print(segment)
+        selection(segment)
     }
 }
