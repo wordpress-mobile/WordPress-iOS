@@ -1062,6 +1062,8 @@
 		D818FFD72191566B000E5FEE /* VerticalsWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFD52191566B000E5FEE /* VerticalsWizardContent.swift */; };
 		D818FFD82191566B000E5FEE /* VerticalsWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D818FFD62191566B000E5FEE /* VerticalsWizardContent.xib */; };
 		D818FFDE219177DA000E5FEE /* SiteSegmentsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFDD219177DA000E5FEE /* SiteSegmentsDelegate.swift */; };
+		D818FFE021917916000E5FEE /* SiteCreationDataCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFDF21917916000E5FEE /* SiteCreationDataCoordinator.swift */; };
+		D818FFE2219179C5000E5FEE /* ModelSettableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFE1219179C5000E5FEE /* ModelSettableCell.swift */; };
 		D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */; };
 		D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */; };
 		D81C2F5A20F86E94002AE1F1 /* LikeCommentActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */; };
@@ -2873,6 +2875,8 @@
 		D818FFD52191566B000E5FEE /* VerticalsWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalsWizardContent.swift; sourceTree = "<group>"; };
 		D818FFD62191566B000E5FEE /* VerticalsWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerticalsWizardContent.xib; sourceTree = "<group>"; };
 		D818FFDD219177DA000E5FEE /* SiteSegmentsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsDelegate.swift; sourceTree = "<group>"; };
+		D818FFDF21917916000E5FEE /* SiteCreationDataCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationDataCoordinator.swift; sourceTree = "<group>"; };
+		D818FFE1219179C5000E5FEE /* ModelSettableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettableCell.swift; sourceTree = "<group>"; };
 		D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveCommentActionTests.swift; sourceTree = "<group>"; };
 		D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
 		D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCommentActionTests.swift; sourceTree = "<group>"; };
@@ -6696,6 +6700,8 @@
 				D8B1873D218AABF9002920A2 /* SiteCreationWizardLauncher.swift */,
 				D8E59685218AC73F00C9615E /* SiteCreator.swift */,
 				D8E59687218AC76100C9615E /* SiteCreatorOutput.swift */,
+				D818FFDF21917916000E5FEE /* SiteCreationDataCoordinator.swift */,
+				D818FFE1219179C5000E5FEE /* ModelSettableCell.swift */,
 			);
 			name = "Site Creation";
 			path = "New Group";
@@ -8861,6 +8867,7 @@
 				08216FD31CDBF96000304BA7 /* MenuItemTagsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */,
+				D818FFE2219179C5000E5FEE /* ModelSettableCell.swift in Sources */,
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
@@ -9047,6 +9054,7 @@
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */,
 				E1F47D4D1FE0290C00C1D44E /* PluginListCell.swift in Sources */,
+				D818FFE021917916000E5FEE /* SiteCreationDataCoordinator.swift in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
 				E1CB6DA3200F376400945457 /* TimeZoneStore.swift in Sources */,
