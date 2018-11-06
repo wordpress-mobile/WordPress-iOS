@@ -1,16 +1,26 @@
 class RevisionsTableViewCell: UITableViewCell {
-    @IBOutlet var titleLabel: UILabel?
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var subTitleLabel: UILabel!
+    @IBOutlet var avatarImageView: CircularImageView!
 
-    var revisionNum: Int? {
+    var modifiedDate: String? {
         didSet {
-            titleLabel?.text = "Revision \(revisionNum ?? -2)"
+            titleLabel.text = modifiedDate
+        }
+    }
+
+    var createdDate: String? {
+        didSet {
+            subTitleLabel.text = createdDate
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        WPStyleGuide.configureTableViewCell(self)
+        titleLabel.textColor = WPStyleGuide.darkGrey()
+        subTitleLabel.textColor = WPStyleGuide.greyDarken10()
     }
 
-    static let reuseIdentifier = "RevisionsTableViewCell"
+    static let reuseIdentifier = "RevisionsTableViewCellIdentifier"
 }
