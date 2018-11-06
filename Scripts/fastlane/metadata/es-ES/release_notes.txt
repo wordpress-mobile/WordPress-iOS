@@ -1,5 +1,4 @@
-La sección de páginas del sitio ahora muestra las páginas en un orden que coincide con el diseño de tu sitio, para que sea más fácil encontrar lo que busques.
-¡La tiranía de la página en blanco ya no existe! Hemos añadido sugerencias de los siguientes pasos para cada página de tu contenido.
-Cuando escribes una nueva entrada la aplicación automáticamente guarda borradores en tu dispositivo, para que no se pierda nada de tu trabajo.
-Hemos cambiado el estilo de unas pocas pantallas más para seguir mejorando en la consistencia de toda la aplicación.
-Además de algunas soluciones a fallos y mejoras en la fiabilidad general, como siempre.
+Una nueva sección de inicio rápido te sugiere pasos para ayudarte a construir un sitio genial.
+Con las menciones, puedes leer el mensaje completo del aviso desde la pantalla de inicio.
+¿Quieres copiar el enlace a un comentario? Haz una pulsación larga en su etiqueta con la fecha y hora.
+¿Quieres saber el número de caracteres y palabras de las entradas? Échale un ojo a la hoja de acciones del título del editor.

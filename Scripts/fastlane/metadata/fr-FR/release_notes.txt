@@ -1,5 +1,4 @@
-La section « Pages du site » affiche maintenant les pages dans l’ordre qui correspond à la mise en page de votre site. C’est donc plus facile de trouver ce que vous cherchez.
-Le syndrome de la page blanche n'est plus ! Nous avons ajouté des suggestions aux prochaines étapes pour chaque page sans contenu.
-Quand vous écrivez un nouvel article, l’app enregistre automatiquement les brouillons sur votre appareil, donc aucun de vos travaux ne seront perdus.
-Nous avons relooké quelques écrans supplémentaires pour plus de cohérence dans l’app.
-Plus, comme toujours, quelques correctifs de bogues et améliorations générales.
+Une nouvelle section « Démarrage rapide »vous suggère les étapes à suivre pour vous aider à construire un excellent site.
+Avec les mentions, vous pouvez lire le message de notification push en entier directement depuis votre écran d’accueil.
+Vous voulez copier le lien d’une commentaire ? Faites une pression longue sur son horodatage.
+Vous voulez connaitre le nombre de mots et de caractères dans l’article ? Cliquez sur les 3 points en haut à droite dans la fenêtre d'édition.
