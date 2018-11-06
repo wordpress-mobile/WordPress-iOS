@@ -13,7 +13,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     var statsService: WPStatsService?
     var latestPostSummary: StatsLatestPostSummary?
-    private var finishedLoading = false
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -46,10 +45,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard finishedLoading == true else {
-            return 0
-        }
-
         return 1
     }
 
@@ -70,8 +65,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     @objc func fetchStats() {
-
-        finishedLoading = false
 
         statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
 
@@ -105,7 +98,6 @@ private extension SiteStatsInsightsTableViewController {
 
         }, andOverallCompletionHandler: {
             self.refreshControl?.endRefreshing()
-            self.finishedLoading = true
         })
 
     }
