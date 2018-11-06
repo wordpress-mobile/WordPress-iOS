@@ -24,7 +24,7 @@ enum FeatureFlag: Int {
         case .newsCard:
             return true
         case .giphy:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .automatedTransfer:
             return true
         case .enhancedSiteCreation:
