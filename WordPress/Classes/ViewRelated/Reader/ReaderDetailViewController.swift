@@ -1237,7 +1237,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
         return false
     }
 
-    @available(iOS 10, *)
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if interaction == .presentActions {
             // show
