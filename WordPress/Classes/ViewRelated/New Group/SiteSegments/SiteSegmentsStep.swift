@@ -28,7 +28,7 @@ final class SiteSegmentsStep: WizardStep {
     }
 
     private func didSelect(_ segment: SiteSegment) {
-        print("===== end of proagation ===")
-        print(segment)
+        creator.segment = segment
+        delegate?.wizard(self, willNavigateTo: Identifier(value: "hola"))
     }
 }
