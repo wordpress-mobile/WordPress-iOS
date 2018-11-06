@@ -24,6 +24,8 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
                 MockModel(id: "3")]
     }()
 
+    private var selectedModel: MockModel?
+
     private var coordinator: (UITableViewDataSource & UITableViewDelegate)?
 
     override func setUp() {
@@ -34,11 +36,14 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
         if let mock = mockData {
             coordinator = SiteCreationDataCoordinator(data: mock, cellType: Cell.self, selection: didSelect)
         }
+
+        selectedModel = nil
     }
 
     override func tearDown() {
         mockData = nil
         coordinator = nil
+        selectedModel = nil
         super.tearDown()
     }
 
@@ -54,7 +59,13 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
         XCTAssertEqual(cell?.outlet1, mockData?.first?.id)
     }
 
-    private func didSelect(_ mock: MockModel) {
+    func testSelection() {
+        coordinator?.tableView!(tableView, didSelectRowAt: IndexPath(item: 0, section: 0))
 
+        XCTAssertEqual(selectedModel?.id, mockData?.first?.id)
+    }
+
+    private func didSelect(_ mock: MockModel) {
+        selectedModel = mock
     }
 }
