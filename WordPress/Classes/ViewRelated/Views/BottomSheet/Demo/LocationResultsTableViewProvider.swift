@@ -3,11 +3,25 @@ import UIKit
 
 // MARK: - LocationResultsMessages
 
-struct LocationResultsMessages {
+enum LocationResultsMessages: String, RawRepresentable {
 
-    static let noSearch = NSLocalizedString("Start typing your business name or address", comment: "Displayed before the user has conducted a search.")
+    case noSearch
+    case noMatches
 
-    static let noMatches = NSLocalizedString("No location matching your search", comment: "Displayed when user has conducted a search with no matches.")
+    // MARK: RawRepresentable
+
+    init?(rawValue: String) {
+        return nil  // intentional failure
+    }
+
+    var rawValue: String {
+        switch self {
+        case .noSearch:
+            return NSLocalizedString("Start typing your business name or address", comment: "Displayed before the user has conducted a search.")
+        case .noMatches:
+            return NSLocalizedString("No location matching your search", comment: "Displayed when user has conducted a search with no matches.")
+        }
+    }
 }
 
 // MARK: - LocationResultsTableViewProvider
@@ -38,7 +52,7 @@ class LocationResultsTableViewProvider: NSObject {
         if let results = results, results.isEmpty == false {
             message = nil
         } else {
-            message = LocationResultsMessages.noMatches
+            message = LocationResultsMessages.noMatches.rawValue
         }
 
         DispatchQueue.main.async { [weak self] in

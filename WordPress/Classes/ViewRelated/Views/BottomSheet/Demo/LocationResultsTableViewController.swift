@@ -60,7 +60,7 @@ class LocationResultsTableViewController: UITableViewController {
         label.textColor = WPStyleGuide.greyDarken10()
         label.textAlignment = .center
 
-        label.text = LocationResultsMessages.noSearch
+        label.text = LocationResultsMessages.noSearch.rawValue
         label.sizeToFit()
 
         return label
