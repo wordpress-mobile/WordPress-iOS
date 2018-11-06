@@ -32,7 +32,8 @@ private extension RevisionsTableViewController {
     private func setupUI() {
         navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
 
-        let cellNib = UINib(nibName: "RevisionsTableViewCell", bundle: Bundle(for: RevisionsTableViewCell.self))
+        let nibName = String(describing: RevisionsTableViewCell.self)
+        let cellNib = UINib(nibName: nibName, bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
 
         let refreshControl = UIRefreshControl()
@@ -40,6 +41,8 @@ private extension RevisionsTableViewController {
         tableView.addSubview(refreshControl)
 
         self.refreshControl = refreshControl
+
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     private func setupPresenter() {
@@ -99,11 +102,21 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
+        return Sizes.sectionFooterHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Sizes.cellEstimatedRowHeight
+    }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let nibName = String(describing: RevisionsTableViewFooter.self)
+        guard let footerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? RevisionsTableViewFooter else {
+            return UIView()
+        }
+
+        footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+        return footerView
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -138,5 +151,6 @@ extension RevisionsTableViewController: RevisionsView {
 
 private struct Sizes {
     static let sectionHeaderHeight = CGFloat(40.0)
+    static let sectionFooterHeight = CGFloat(48.0)
     static let cellEstimatedRowHeight = CGFloat(60.0)
 }
