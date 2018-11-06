@@ -1,13 +1,6 @@
 
 import UIKit
 
-// MARK: - BottomSheetPresentationControllerConstants
-
-private struct BottomSheetPresentationControllerConstants {
-    static let cornerRadius         = CGFloat(16)
-    static let transitionDuration   = TimeInterval(0.3)
-}
-
 // MARK: - BottomSheetPresentationController
 
 ///
@@ -19,6 +12,11 @@ private struct BottomSheetPresentationControllerConstants {
 class BottomSheetPresentationController: UIPresentationController {
 
     // MARK: Properties
+
+    private struct Constants {
+        static let cornerRadius         = CGFloat(16)
+        static let transitionDuration   = TimeInterval(0.3)
+    }
 
     private(set) var dimmingView: UIView?
     private(set) var presentationWrappingView: UIView?
@@ -43,14 +41,14 @@ class BottomSheetPresentationController: UIPresentationController {
         let presentationWrapperView = UIView(frame: frameOfPresentedViewInContainerView)
         self.presentationWrappingView = presentationWrapperView
 
-        let presentationRoundedCornerInsets = UIEdgeInsets(top: 0, left: 0, bottom: -BottomSheetPresentationControllerConstants.cornerRadius, right: 0)
+        let presentationRoundedCornerInsets = UIEdgeInsets(top: 0, left: 0, bottom: -Constants.cornerRadius, right: 0)
         let presentationRoundedCornerViewRect = presentationWrapperView.bounds.inset(by: presentationRoundedCornerInsets)
         let presentationRoundedCornerView = UIView(frame: presentationRoundedCornerViewRect)
         presentationRoundedCornerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        presentationRoundedCornerView.layer.cornerRadius = BottomSheetPresentationControllerConstants.cornerRadius
+        presentationRoundedCornerView.layer.cornerRadius = Constants.cornerRadius
         presentationRoundedCornerView.layer.masksToBounds = true
 
-        let presentedViewControllerWrapperInsets = UIEdgeInsets(top: 0, left: 0, bottom: BottomSheetPresentationControllerConstants.cornerRadius, right: 0)
+        let presentedViewControllerWrapperInsets = UIEdgeInsets(top: 0, left: 0, bottom: Constants.cornerRadius, right: 0)
         let presentedViewControllerWrapperViewRect = presentationRoundedCornerView.bounds.inset(by: presentedViewControllerWrapperInsets)
         let presentedViewControllerWrapperView = UIView(frame: presentedViewControllerWrapperViewRect)
         presentedViewControllerWrapperView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -160,7 +158,7 @@ extension BottomSheetPresentationController: UIViewControllerAnimatedTransitioni
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         if let context = transitionContext, context.isAnimated {
-            return BottomSheetPresentationControllerConstants.transitionDuration
+            return Constants.transitionDuration
         }
         return 0
     }
