@@ -144,15 +144,17 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc func visited(_ element: QuickStartTourElement) {
-        let readerElements: [QuickStartTourElement] = [.readerTab, .readerBack]
         guard let currentElement = currentElement(),
             let tourState = currentTourState else {
             return
         }
         if element != currentElement {
-            if element == .blogDetailNavigation {
+            let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerBack]
+
+            if blogDetailEvents.contains(element) {
                 endCurrentTour()
-            } else if element == .tabFlipped, !readerElements.contains(currentElement)  {
+            } else if element == .tabFlipped, !readerElements.contains(currentElement) {
                 endCurrentTour()
             }
             return
