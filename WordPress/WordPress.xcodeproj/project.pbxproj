@@ -807,6 +807,8 @@
 		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
 		9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */; };
 		9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */; };
+		9A2B28EE2191B50500458F2A /* RevisionsTableViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */; };
+		9A2B28F02191B53500458F2A /* RevisionsTableViewFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B28EF2191B53500458F2A /* RevisionsTableViewFooter.xib */; };
 		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
 		9A38DC69218899FB006A409B /* Revision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC64218899FA006A409B /* Revision.swift */; };
 		9A38DC6A218899FB006A409B /* DiffTitleValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC65218899FA006A409B /* DiffTitleValue.swift */; };
@@ -2567,6 +2569,8 @@
 		9A1DA2FB21370DD00082569B /* WordPress 80.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 80.xcdatamodel"; sourceTree = "<group>"; };
 		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
 		9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRevisionsListManger.swift; sourceTree = "<group>"; };
+		9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionsTableViewFooter.swift; sourceTree = "<group>"; };
+		9A2B28EF2191B53500458F2A /* RevisionsTableViewFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionsTableViewFooter.xib; sourceTree = "<group>"; };
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
 		9A38DC60218897B4006A409B /* WordPress 83.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 83.xcdatamodel"; sourceTree = "<group>"; };
 		9A38DC64218899FA006A409B /* Revision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Revision.swift; path = Revisions/Revision.swift; sourceTree = "<group>"; };
@@ -4244,6 +4248,7 @@
 			children = (
 				9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */,
 				4349B0AB218A45270034118A /* RevisionsTableViewController.swift */,
+				9A2B28EC2191B4E600458F2A /* Footer */,
 				9A5CF43E218C54A60060F81B /* TableViewCell */,
 			);
 			path = Revisions;
@@ -5625,6 +5630,15 @@
 				9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		9A2B28EC2191B4E600458F2A /* Footer */ = {
+			isa = PBXGroup;
+			children = (
+				9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */,
+				9A2B28EF2191B53500458F2A /* RevisionsTableViewFooter.xib */,
+			);
+			path = Footer;
 			sourceTree = "<group>";
 		};
 		9A38DC63218899E4006A409B /* Revisions */ = {
@@ -7754,6 +7768,7 @@
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
+				9A2B28F02191B53500458F2A /* RevisionsTableViewFooter.xib in Resources */,
 				4349B0B0218A477F0034118A /* RevisionsTableViewCell.xib in Resources */,
 				4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */,
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
@@ -8458,6 +8473,7 @@
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
 				433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */,
 				4395A1592106389800844E8E /* QuickStartTours.swift in Sources */,
+				9A2B28EE2191B50500458F2A /* RevisionsTableViewFooter.swift in Sources */,
 				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */,
 				B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */,
