@@ -25,6 +25,7 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var actionImageView: UIImageView!
     @IBOutlet weak var disclosureImageView: UIImageView!
 
+    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var summaryData: StatsLatestPostSummary?
 
@@ -41,7 +42,9 @@ class LatestPostSummaryCell: UITableViewCell {
         applyStyles()
     }
 
-    func configure(withData summaryData: StatsLatestPostSummary?) {
+    func configure(withData summaryData: StatsLatestPostSummary?, andDelegate delegate: SiteStatsInsightsDelegate) {
+
+        siteStatsInsightsDelegate = delegate
 
         // If there is no summary data, there is no post. Show Create Post option.
         guard let summaryData = summaryData else {
@@ -180,8 +183,12 @@ private extension LatestPostSummaryCell {
     // MARK: - Button Handling
 
     @IBAction func didTapSummaryButton(_ sender: UIButton) {
-        // TODO: show post in a web view.
-        showAlertWithTitle("The post will be shown here.")
+
+        guard let postURL = summaryData?.postURL else {
+            return
+        }
+
+        siteStatsInsightsDelegate?.displayWebViewWithURL?(postURL)
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {

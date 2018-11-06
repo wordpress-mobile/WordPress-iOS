@@ -41,7 +41,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.latestPostSummary, for: indexPath) as! LatestPostSummaryCell
-        cell.configure(withData: latestPostSummary)
+        cell.configure(withData: latestPostSummary, andDelegate: self)
         return cell
     }
 
