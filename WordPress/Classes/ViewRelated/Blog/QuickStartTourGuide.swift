@@ -149,8 +149,10 @@ open class QuickStartTourGuide: NSObject {
             let tourState = currentTourState else {
             return
         }
-        guard element == currentElement else {
-            if element == .tabFlipped, !readerElements.contains(currentElement)  {
+        if element != currentElement {
+            if element == .blogDetailNavigation {
+                endCurrentTour()
+            } else if element == .tabFlipped, !readerElements.contains(currentElement)  {
                 endCurrentTour()
             }
             return
@@ -350,6 +352,8 @@ internal extension NSNotification.Name {
 public enum QuickStartTourElement: Int {
     case noSuchElement
     case tabFlipped
+    case blogDetails
+    case blogDetailNavigation
     case viewSite
     case checklist
     case themes
