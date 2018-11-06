@@ -5,7 +5,15 @@ import UIKit
 
 class BottomSheetDemoViewController: UINavigationController {
 
+    // MARK: Properties
+
+    private struct Constants {
+        static let topInset = CGFloat(88)
+    }
+
     private let resultsViewController = LocationResultsTableViewController()
+
+    // MARK: UIViewController
 
     init() {
         super.init(rootViewController: resultsViewController)
@@ -30,12 +38,11 @@ class BottomSheetDemoViewController: UINavigationController {
 private extension BottomSheetDemoViewController {
 
     func setupView() {
-        let topInset = CGFloat(88)
-        let preferredHeight = view.bounds.height - topInset
+        let preferredHeight = view.bounds.height - Constants.topInset
         preferredContentSize = CGSize(width: view.bounds.width, height: preferredHeight)
 
-        navigationBar.isTranslucent = false
         navigationBar.barTintColor = .white
+        navigationBar.isTranslucent = false
 
         navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
 
