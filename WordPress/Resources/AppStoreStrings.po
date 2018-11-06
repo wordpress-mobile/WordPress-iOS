@@ -40,10 +40,10 @@ msgstr ""
 
 msgctxt "v11.2-whats-new"
 msgid ""
-"A new Quick Start section suggests steps to help you build a great site.\n"
-"With Mentions, you can read the whole push notification message from the home screen.\n"
-"Want to copy the link to a comment? Long-press its timestamp label.\n"
-"Want to know the word and character counts for posts? Check out the editor action sheet title.\n"
+"Add Giphy gifs directly from the media toolbar when editing a post.\n"
+"More helpful error messages will assist you when logging in to a self hosted site.\n"
+"Viewing a post with many images is now faster.\n"
+"Bug fixes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
