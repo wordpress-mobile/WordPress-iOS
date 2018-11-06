@@ -7,13 +7,16 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
     }
 
     private class Cell: UITableViewCell, ModelSettableCell {
+        var outlet1: String?
+
         var model: MockModel? {
             didSet {
-
+                outlet1 = model?.id
             }
         }
-
     }
+
+    private let tableView = UITableView()
 
     private lazy var mockData: [MockModel]? = {
         return [MockModel(id: "1"),
@@ -25,6 +28,9 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+
+        tableView.register(Cell.self, forCellReuseIdentifier: Cell.cellReuseIdentifier())
+
         if let mock = mockData {
             coordinator = SiteCreationDataCoordinator(data: mock, cellType: Cell.self, selection: didSelect)
         }
@@ -37,9 +43,15 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
     }
 
     func testNumberOfRowsMatchesExpectation() {
-        let count = coordinator?.tableView(UITableView(), numberOfRowsInSection: 0)
+        let count = coordinator?.tableView(tableView, numberOfRowsInSection: 0)
 
         XCTAssertEqual(count, mockData?.count)
+    }
+
+    func testDataSourcePopulatesCell() {
+        let cell = coordinator?.tableView(tableView, cellForRowAt: IndexPath(item: 0, section: 0)) as? Cell
+
+        XCTAssertEqual(cell?.outlet1, mockData?.first?.id)
     }
 
     private func didSelect(_ mock: MockModel) {
