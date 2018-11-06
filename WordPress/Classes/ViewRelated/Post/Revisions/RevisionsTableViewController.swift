@@ -9,6 +9,9 @@ class RevisionsTableViewController: UITableViewController {
         tableViewHandler.updateRowAnimation = .none
         return tableViewHandler
     }()
+    private var revisionsSectionsCount: Int {
+        return tableViewHandler.resultsController.sections?.count ?? 0
+    }
 
 
     convenience init(post: AbstractPost) {
@@ -74,7 +77,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     func sectionNameKeyPath() -> String {
-        return #keyPath(Revision.revisionDate)
+        return #keyPath(Revision.revisionDateForSection)
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
@@ -83,7 +86,8 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         }
 
         let revision = getRevision(at: indexPath)
-        cell.revisionNum = revision.revisionId.intValue
+        cell.createdDate = revision.revisionDate.mediumStringWithTime()
+        cell.modifiedDate = revision.revisionModifiedDate.toStringForPageSections()
     }
 
     func getRevision(at indexPath: IndexPath) -> Revision {
@@ -102,7 +106,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return Sizes.sectionFooterHeight
+        return (section != revisionsSectionsCount - 1) ? 0 : Sizes.sectionFooterHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -111,12 +115,13 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let nibName = String(describing: RevisionsTableViewFooter.self)
-        guard let footerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? RevisionsTableViewFooter else {
-            return UIView()
+        if let footerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? RevisionsTableViewFooter,
+            section == revisionsSectionsCount - 1 {
+            footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+            return footerView
         }
 
-        footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
-        return footerView
+        return UIView()
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
