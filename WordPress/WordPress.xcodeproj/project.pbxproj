@@ -1065,6 +1065,7 @@
 		D818FFE021917916000E5FEE /* SiteCreationDataCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFDF21917916000E5FEE /* SiteCreationDataCoordinator.swift */; };
 		D818FFE2219179C5000E5FEE /* ModelSettableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFE1219179C5000E5FEE /* ModelSettableCell.swift */; };
 		D818FFE42191897C000E5FEE /* SiteCreationDataCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFE32191897C000E5FEE /* SiteCreationDataCoordinatorTests.swift */; };
+		D818FFE621918CCD000E5FEE /* SiteSegmentsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D818FFE521918CCD000E5FEE /* SiteSegmentsCellTests.swift */; };
 		D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */; };
 		D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */; };
 		D81C2F5A20F86E94002AE1F1 /* LikeCommentActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */; };
@@ -2877,6 +2878,7 @@
 		D818FFDF21917916000E5FEE /* SiteCreationDataCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationDataCoordinator.swift; sourceTree = "<group>"; };
 		D818FFE1219179C5000E5FEE /* ModelSettableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettableCell.swift; sourceTree = "<group>"; };
 		D818FFE32191897C000E5FEE /* SiteCreationDataCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationDataCoordinatorTests.swift; sourceTree = "<group>"; };
+		D818FFE521918CCD000E5FEE /* SiteSegmentsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsCellTests.swift; sourceTree = "<group>"; };
 		D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveCommentActionTests.swift; sourceTree = "<group>"; };
 		D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
 		D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCommentActionTests.swift; sourceTree = "<group>"; };
@@ -4453,6 +4455,7 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D818FFE521918CCD000E5FEE /* SiteSegmentsCellTests.swift */,
 				D818FFE32191897C000E5FEE /* SiteCreationDataCoordinatorTests.swift */,
 				D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */,
 				D865722A2186F5400023A99C /* SiteCreationHeaderDataTests.swift */,
@@ -9569,6 +9572,7 @@
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				D816B8C02112CC930052CE4D /* NewsItemTests.swift in Sources */,
+				D818FFE621918CCD000E5FEE /* SiteSegmentsCellTests.swift in Sources */,
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */,
