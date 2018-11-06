@@ -25,6 +25,7 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var actionImageView: UIImageView!
     @IBOutlet weak var disclosureImageView: UIImageView!
 
+    private typealias Style = WPStyleGuide.Stats
     private var summaryData: StatsLatestPostSummary?
 
     private var actionType: ActionType? {
@@ -70,27 +71,27 @@ class LatestPostSummaryCell: UITableViewCell {
 private extension LatestPostSummaryCell {
 
     func applyStyles() {
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
-        borderedView.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
-        borderedView.layer.borderWidth = 0.5
+
+        Style.configureCell(self)
+        Style.configureBorderForView(borderedView)
 
         headerLabel.text = CellStrings.header
-        headerLabel.textColor = WPStyleGuide.darkGrey()
-        headerLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        Style.configureLabelAsHeader(headerLabel)
+        Style.configureLabelAsSummary(summaryLabel)
 
-        viewsLabel.textColor = WPStyleGuide.darkGrey()
         viewsLabel.text = CellStrings.views
-        viewsDataLabel.textColor = WPStyleGuide.darkGrey()
+        viewsLabel.textColor = Style.defaultTextColor
+        viewsDataLabel.textColor = Style.defaultTextColor
 
-        likesLabel.textColor = viewsLabel.textColor
         likesLabel.text = CellStrings.likes
-        likesDataLabel.textColor = viewsDataLabel.textColor
+        likesLabel.textColor = Style.defaultTextColor
+        likesDataLabel.textColor = Style.defaultTextColor
 
-        commentsLabel.textColor = viewsLabel.textColor
         commentsLabel.text = CellStrings.comments
-        commentsDataLabel.textColor = viewsDataLabel.textColor
+        commentsLabel.textColor = Style.defaultTextColor
+        commentsDataLabel.textColor = Style.defaultTextColor
 
-        actionLabel.textColor = WPStyleGuide.wordPressBlue()
+        actionLabel.textColor = Style.actionTextColor
     }
 
     func configureViewForAction() {
@@ -126,7 +127,7 @@ private extension LatestPostSummaryCell {
 
     func setActionImageFor(action: ActionType) {
         let iconType: GridiconType = action == .sharePost ? .shareIOS : .create
-        actionImageView.image = Gridicon.iconOfType(iconType).imageWithTintColor(WPStyleGuide.mediumBlue())
+        actionImageView.image = Style.imageForGridiconType(iconType)
     }
 
     func attributedSummary() -> NSAttributedString {
@@ -136,35 +137,17 @@ private extension LatestPostSummaryCell {
         }
 
         if actionType == .createPost {
-            return formattedSummaryString(CellStrings.summaryNoPosts)
+            return NSAttributedString(string: CellStrings.summaryNoPosts)
         }
 
         let postAge = summaryData?.postAge ?? ""
         let postTitle = summaryData?.postTitle ?? ""
 
-        var unformattedString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
+        var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
-        unformattedString.append(summaryToAppend)
-        let attributedString = formattedSummaryString(unformattedString)
+        summaryString.append(summaryToAppend)
 
-        guard let postTitleRange = unformattedString.nsRange(of: postTitle) else {
-            return attributedString
-        }
-
-        // Add formatting to post title
-        attributedString.addAttributes(        [
-            .foregroundColor: WPStyleGuide.wordPressBlue(),
-            .font: WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-            ], range: postTitleRange)
-
-        return attributedString
-    }
-
-    func formattedSummaryString(_ rawString: String) -> NSMutableAttributedString {
-        return NSMutableAttributedString(string: rawString, attributes: [
-            .foregroundColor: WPStyleGuide.darkGrey(),
-            .font: WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-            ])
+        return Style.highlightString(postTitle, inString: summaryString)
     }
 
     // MARK: - Properties
