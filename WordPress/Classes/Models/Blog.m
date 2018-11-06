@@ -723,6 +723,10 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
     return nil;
 }
 
+- (BOOL)isAccessibleThroughWPCom {
+    return self.wordPressComRestApi != nil;
+}
+
 - (BOOL)supportsRestApi {
     // We don't want to check for `restApi` as it can be `nil` when the token
     // is missing from the keychain.

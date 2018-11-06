@@ -882,6 +882,17 @@ static NSInteger HideSearchMinSites = 3;
                                                    handler:nil];
 
     [addSiteAlertController addAction:addSiteAction];
+
+    if ([Feature enabled: FeatureFlagEnhancedSiteCreation]) {
+        UIAlertAction *enhancedSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Enhanced site creation", @"Enhanced site creation")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction *action) {
+                                                                  [self enhancedSiteCreation];
+                                                              }];
+
+        [addSiteAlertController addAction:enhancedSiteAction];
+    }
+
     [addSiteAlertController addAction:cancel];
 
     return addSiteAlertController;
@@ -897,11 +908,6 @@ static NSInteger HideSearchMinSites = 3;
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
-
-    // to be integrated via [#10322](https://github.com/wordpress-mobile/WordPress-iOS/issues/10312)
-    if ([Feature enabled:FeatureFlagEnhancedSiteCreation] == YES) {
-        DDLogDebug(@"The feature flag for enhanced site creation is ENABLED.");
-    }
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
     SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];

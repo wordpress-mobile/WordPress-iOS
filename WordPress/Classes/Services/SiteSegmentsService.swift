@@ -3,26 +3,30 @@ import Foundation
 
 
 /// Abstracts the service to obtain site types
-typealias SitesTypeServiceCompletion = (Result<[SiteSegment]>) -> Void
+typealias SiteSegmentsServiceCompletion = (Result<[SiteSegment]>) -> Void
 
-protocol SiteTypesService {
-    func siteTypes(for: Locale, completion: @escaping SitesTypeServiceCompletion)
+protocol SiteSegmentsService {
+    func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion)
 }
 
 
 /// Mock implementation so that we can start developing
-final class MockSiteTypesService: SiteTypesService {
-    func siteTypes(for: Locale = .current, completion: @escaping SitesTypeServiceCompletion) {
-        let result = Result.success(mockSiteTypes())
+final class MockSiteSegmentsService: SiteSegmentsService {
+    func siteSegments(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
+        let result = Result.success(mockSiteTypes)
 
         completion(result)
     }
 
-    private func mockSiteTypes() -> [SiteSegment] {
+    lazy var mockSiteTypes: [SiteSegment] = {
         return [ singleSiteType(id: "Site Id 1"),
                  singleSiteType(id: "Site Id 2"),
                  singleSiteType(id: "Site Id 3"),
                  singleSiteType(id: "Site Id 4") ]
+    }()
+
+    var mockCount: Int {
+        return mockSiteTypes.count
     }
 
     private func singleSiteType(id: String) -> SiteSegment {
