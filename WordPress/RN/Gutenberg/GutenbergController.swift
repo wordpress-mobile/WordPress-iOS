@@ -8,6 +8,7 @@ class GutenbergController: UIViewController, PostEditor {
     var isOpenedDirectlyForPhotoPost: Bool = false
 
     let post: AbstractPost
+    let gutenberg: Gutenberg
 
     let navBarManager = PostEditorNavigationBarManager()
 
@@ -29,6 +30,7 @@ class GutenbergController: UIViewController, PostEditor {
             fatalError()
         }
         self.post = post
+        self.gutenberg = Gutenberg(props: ["initialData": post.content ?? ""])
         super.init(nibName: nil, bundle: nil)
 
         navBarManager.delegate = self
@@ -38,20 +40,24 @@ class GutenbergController: UIViewController, PostEditor {
         fatalError()
     }
 
+    deinit {
+        gutenberg.invalidate()
+    }
+
     override func loadView() {
-        let props: [String: Any] = ["initialData": post.content ?? ""]
-        view = Gutenberg.sharedInstance().rootView(withInitialProps: props)
+        view = gutenberg.rootView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
         reloadBlogPickerButton()
+        gutenberg.delegate = self
     }
 
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Edutor Navigation Bar"
+        navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navBarManager.rightBarButtonItems
     }
@@ -70,7 +76,6 @@ class GutenbergController: UIViewController, PostEditor {
     }
 
     private func close(didSave: Bool) {
-
         onClose?(didSave, false)
     }
 }
@@ -89,6 +94,12 @@ extension GutenbergController {
         DispatchQueue.main.async { [weak self] in
             self?.close(didSave: true)
         }
+    }
+}
+
+extension GutenbergController: GutenbergBridgeDelegate {
+    func gutenbergDidProvideHTML(_ html: String) {
+
     }
 }
 
@@ -118,7 +129,7 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
-
+        gutenberg.requestHTML()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
