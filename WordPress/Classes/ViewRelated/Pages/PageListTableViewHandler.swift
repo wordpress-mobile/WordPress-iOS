@@ -5,6 +5,10 @@ final class PageListTableViewHandler: WPTableViewHandler {
     var isSearching: Bool = false
     var status: PostListFilter.Status = .published
     var groupResults: Bool {
+        if isSearching {
+            return true
+        }
+
         return status == .scheduled
     }
 
@@ -17,15 +21,19 @@ final class PageListTableViewHandler: WPTableViewHandler {
         let predicates = [predicate, publishedFilter.predicateForFetchRequest]
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
-        return resultsController(with: fetchRequest, context: managedObjectContext())
+        return resultsController(with: fetchRequest, context: managedObjectContext(), performFetch: false)
+    }()
+
+    private lazy var searchResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
+        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: BasePost.statusKeyPath, performFetch: false)
     }()
 
     private lazy var groupedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: sectionNameKeyPath(), performFetch: true)
+        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: sectionNameKeyPath())
     }()
 
     private lazy var flatResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return resultsController(with: fetchRequest(), context: managedObjectContext(), performFetch: true)
+        return resultsController(with: fetchRequest(), context: managedObjectContext())
     }()
 
 
@@ -35,6 +43,10 @@ final class PageListTableViewHandler: WPTableViewHandler {
     }
 
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
+        if isSearching {
+            return searchResultsController
+        }
+
         return groupResults ? groupedResultsController : flatResultsController
     }
 
@@ -118,7 +130,7 @@ final class PageListTableViewHandler: WPTableViewHandler {
     private func resultsController(with request: NSFetchRequest<NSFetchRequestResult>?,
                                    context: NSManagedObjectContext?,
                                    keyPath: String? = nil,
-                                   performFetch: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
+                                   performFetch: Bool = true) -> NSFetchedResultsController<NSFetchRequestResult> {
         guard let request = request, let context = context else {
             fatalError("A request and a context must exist")
         }

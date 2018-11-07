@@ -557,6 +557,24 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatGravatarUploaded:
             eventName = @"me_gravatar_uploaded";
             break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogShown:
+            eventName = @"gutenberg_warning_confirm_dialog_shown";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogYesTapped:
+            eventName = @"gutenberg_warning_confirm_dialog_yes_tapped";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogCancelTapped:
+            eventName = @"gutenberg_warning_confirm_dialog_cancel_tapped";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogDontShowAgainChecked:
+            eventName = @"gutenberg_warning_confirm_dialog_dont_show_again_checked";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogDontShowAgainUnchecked:
+            eventName = @"gutenberg_warning_confirm_dialog_dont_show_again_unchecked";
+            break;
+        case WPAnalyticsStatGutenbergWarningConfirmDialogLearnMoreTapped:
+            eventName = @"gutenberg_warning_confirm_dialog_learn_more_tapped";
+            break;
         case WPAnalyticsStatInstallJetpackCanceled:
             eventName = @"install_jetpack_canceled";
             break;
@@ -1015,6 +1033,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPushNotificationReceived:
             eventName = @"push_notification_received";
             break;
+        case WPAnalyticsStatPushNotificationQuickActionCompleted:
+            eventName = @"quick_action_touched";
+            break;
         case WPAnalyticsStatPushNotificationPrimerSeen:
             eventName = @"notifications_primer_seen";
             break;
@@ -1042,11 +1063,50 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPushNotificationOSAlertDenied:
             eventName = @"notifications_os_alert_denied";
             break;
+        case WPAnalyticsStatQuickStartAllToursCompleted:
+            eventName = @"quick_start_all_tasks_completed";
+            break;
+        case WPAnalyticsStatQuickStartChecklistItemTapped:
+            eventName = @"quick_start_list_item_tapped";
+            break;
+        case WPAnalyticsStatQuickStartChecklistSkippedAll:
+            eventName = @"quick_start_list_all_tasks_skipped";
+            break;
+        case WPAnalyticsStatQuickStartChecklistViewed:
+            eventName = @"quick_start_list_viewed";
+            break;
+        case WPAnalyticsStatQuickStartCongratulationsViewed:
+            eventName = @"quick_start_list_completed_viewed";
+            break;
+        case WPAnalyticsStatQuickStartRequestAlertButtonTapped:
+            eventName = @"quick_start_request_dialog_button_tapped";
+            break;
+        case WPAnalyticsStatQuickStartRequestAlertViewed:
+            eventName = @"quick_start_request_dialog_viewed";
+            break;
+        case WPAnalyticsStatQuickStartSuggestionButtonTapped:
+            eventName = @"quick_start_dialog_button_tapped";
+            break;
+        case WPAnalyticsStatQuickStartSuggestionViewed:
+            eventName = @"quick_start_dialog_viewed";
+            break;
+        case WPAnalyticsStatQuickStartTourCompleted:
+            eventName = @"quick_start_task_completed";
+            break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
         case WPAnalyticsStatReaderArticleCommentedOn:
             eventName = @"reader_article_commented_on";
+            break;
+        case WPAnalyticsStatReaderArticleCommentLiked:
+            eventName = @"reader_article_comment_liked";
+            break;
+        case WPAnalyticsStatReaderArticleCommentUnliked:
+            eventName = @"reader_article_comment_unliked";
+            break;
+        case WPAnalyticsStatReaderArticleCommentsOpened:
+            eventName = @"reader_article_comments_opened";
             break;
         case WPAnalyticsStatReaderArticleLiked:
             eventName = @"reader_article_liked";
@@ -1059,6 +1119,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderArticleUnliked:
             eventName = @"reader_article_unliked";
+            break;
+        case WPAnalyticsStatReaderArticleDetailLiked:
+            eventName = @"reader_article_detail_liked";
+            break;
+        case WPAnalyticsStatReaderArticleDetailUnliked:
+            eventName = @"reader_article_detail_unliked";
             break;
         case WPAnalyticsStatReaderDiscoverViewed:
             eventName = @"reader_discover_viewed";

@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressComRestApi;
 @class WordPressOrgXMLRPCApi;
 @class Role;
-@class QuickStartCompletedTour;
+@class QuickStartTourState;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -123,7 +123,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL hasPaidPlan;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
-@property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartCompletedTour *> *completedQuickStartTours;
+@property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartTourState *> *quickStartTours;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites
@@ -236,6 +236,14 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return a WordPressComRestApi object if available
  */
 - (nullable WordPressComRestApi *)wordPressComRestApi;
+
+/**
+ Call this method to know if the blog is hosted at WPcom or accessed through Jetpack.
+ 
+ @return YES if the blog is hosted at WPcom or if it's connected through Jetpack.
+    NO otherwise.
+ */
+- (BOOL)isAccessibleThroughWPCom;
 
 /**
  Check if there is already a basic auth credential stored for this blog/site.

@@ -39,7 +39,7 @@ struct ShareNoticeViewModel {
                       feedbackType: .success,
                       notificationInfo: notificationInfo,
                       actionTitle: ShareNoticeText.actionEditPost,
-                      actionHandler: {
+                      actionHandler: { _ in
                         ShareNoticeNavigationCoordinator.presentEditor(for: post, source: ShareNoticeConstants.notificationSourceSuccess)
         })
     }

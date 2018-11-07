@@ -16,7 +16,6 @@
 #import <WordPressUI/WordPressUI.h>
 
 
-
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
 // crash in certain circumstances when the tableView lays out its visible cells,
 // and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
@@ -52,11 +51,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
+@property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
-@property (nonatomic, strong) NSCache *estimatedRowHeights;
+@property (nonatomic) BOOL deviceIsRotating;
 
 @end
 
@@ -182,8 +182,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    self.deviceIsRotating = true;
 
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        self.deviceIsRotating = false;
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
         if (selectedIndexPath) {
@@ -209,7 +211,46 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.view layoutIfNeeded];
 }
 
+#pragma mark - Tracking methods
 
+-(void)trackCommentsOpened {
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
+    properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentsOpened withProperties:properties];
+}
+
+-(void)trackCommentLikedOrUnliked:(Comment *) comment {
+    ReaderPost *post = self.post;
+    WPAnalyticsStat stat;
+    if (comment.isLiked) {
+        stat = WPAnalyticsStatReaderArticleCommentLiked;
+    } else {
+        stat = WPAnalyticsStatReaderArticleCommentUnliked;
+    }
+
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyPostID] = post.postID;
+    properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+    [WPAppAnalytics track: stat withProperties:properties];
+}
+
+-(void)trackReplyToComment {
+    ReaderPost *post = self.post;
+    NSDictionary *railcar = post.railcarDictionary;
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+    properties[WPAppAnalyticsKeyPostID] = post.postID;
+    properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+    if (post.feedID && post.feedItemID) {
+        properties[WPAppAnalyticsKeyFeedID] = post.feedID;
+        properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
+    }
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+    if (railcar) {
+        [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
+    }
+}
 #pragma mark - Configuration
 
 - (void)configureNavbar
@@ -481,7 +522,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 
     _post = post;
-
+    [self trackCommentsOpened];
     if (_post.isWPCom || _post.isJetpack) {
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
@@ -614,6 +655,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshNoResultsView
 {
+    // During rotation, the keyboard hides and shows.
+    // To prevent view flashing, do nothing until rotation is finished.
+    if (self.deviceIsRotating) {
+        return;
+    }
+
     [self.noResultsViewController removeFromView];
 
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
@@ -621,6 +668,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
+    // Because the replyTextView grows, limit what is displayed with the keyboard visible:
+    // iPhone landscape: show nothing.
+    // iPhone portrait: hide the image.
+    // iPad landscape: hide the image.
+    
+    BOOL isLandscape = UIDevice.currentDevice.orientation != UIDeviceOrientationPortrait;
+    BOOL hideImageView = false;
+    if (self.keyboardManager.isKeyboardVisible) {
+
+        if (WPDeviceIdentification.isiPhone && isLandscape) {
+            return;
+        }
+        
+        hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
+    }
+    
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
                                          buttonTitle:nil
                                             subtitle:nil
@@ -628,14 +691,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                image:nil
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
-    
+
+    [self.noResultsViewController hideImageView:hideImageView];
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
     self.noResultsViewController.view.frame = self.tableView.frame;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
-
 
 - (void)updateTableViewForAttachments
 {
@@ -667,8 +730,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)sendReplyWithNewContent:(NSString *)content
 {
     __typeof(self) __weak weakSelf = self;
-    ReaderPost *post = self.post;
-    NSDictionary *railcar = post.railcarDictionary;
 
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
@@ -676,18 +737,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     void (^successBlock)(void) = ^void() {
         [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
-        NSMutableDictionary *properties = [NSMutableDictionary dictionary];
-        properties[WPAppAnalyticsKeyBlogID] = post.siteID;
-        properties[WPAppAnalyticsKeyPostID] = post.postID;
-        properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
-        if (post.feedID && post.feedItemID) {
-            properties[WPAppAnalyticsKeyFeedID] = post.feedID;
-            properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
-        }
-        [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
-        if (railcar) {
-            [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
-        }
+        [weakSelf trackReplyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
 
@@ -832,6 +882,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.enableLoggedInFeatures = [self isLoggedIn];
+    cell.onTimeStampLongPress = ^(void) {
+        NSURL *url = [NSURL URLWithString:comment.link];
+        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
+    };
 
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure
@@ -1018,6 +1072,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     __typeof(self) __weak weakSelf = self;
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+        [weakSelf trackCommentLikedOrUnliked:comment];
 
         [weakSelf.tableView reloadData];
     } failure:^(NSError *error) {

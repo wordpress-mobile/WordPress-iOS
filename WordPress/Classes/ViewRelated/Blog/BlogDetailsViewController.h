@@ -3,6 +3,7 @@
 @class Blog;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
+    BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
     BlogDetailsSubsectionPosts,
     BlogDetailsSubsectionCustomize,
@@ -23,5 +24,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
 @property (nonatomic, strong) Blog *blog;
 
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
-
+- (void)reloadTableViewPreservingSelection;
+- (void)configureTableViewData;
 @end

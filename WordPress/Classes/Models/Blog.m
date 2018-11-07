@@ -77,7 +77,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
-@dynamic completedQuickStartTours;
+@dynamic quickStartTours;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
@@ -721,6 +721,10 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
         return self.account.wordPressComRestApi;
     }
     return nil;
+}
+
+- (BOOL)isAccessibleThroughWPCom {
+    return self.wordPressComRestApi != nil;
 }
 
 - (BOOL)supportsRestApi {

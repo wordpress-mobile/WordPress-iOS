@@ -461,8 +461,22 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-    // For autosaving
+    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
+    /// In this case every 0.5 second
+    ///
     var debouncer = Debouncer(delay: Constants.autoSavingDelay)
+
+    fileprivate var wordsCount: UInt {
+        return richTextView.text.wordCount()
+    }
+
+    fileprivate var charactersCount: Int {
+        guard let text = richTextView.text else {
+            return 0
+        }
+        return text.count
+    }
+
     // MARK: - Initializers
 
     /// Initializer
@@ -1450,6 +1464,13 @@ private extension AztecPostViewController {
 
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if mode == .richText {
+            let textCounterTitle: String = {
+                return String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), wordsCount, charactersCount)
+            }()
+
+            alert.title = textCounterTitle
+        }
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
@@ -3705,7 +3726,10 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
         noResultsView.removeFromView()
-        noResultsView.configureForNoSearchResult()
+
+        if (mediaLibraryDataSource.searchQuery?.count ?? 0) > 0 {
+            noResultsView.configureForNoSearchResult()
+        }
     }
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
