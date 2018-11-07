@@ -808,7 +808,6 @@
 		9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */; };
 		9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */; };
 		9A2B28EE2191B50500458F2A /* RevisionsTableViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */; };
-		9A2B28F02191B53500458F2A /* RevisionsTableViewFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B28EF2191B53500458F2A /* RevisionsTableViewFooter.xib */; };
 		9A2B28F52192121400458F2A /* RevisionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28F42192121400458F2A /* RevisionOperation.swift */; };
 		9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B28F62192121F00458F2A /* RevisionOperation.xib */; };
 		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
@@ -2572,7 +2571,6 @@
 		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
 		9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRevisionsListManger.swift; sourceTree = "<group>"; };
 		9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionsTableViewFooter.swift; sourceTree = "<group>"; };
-		9A2B28EF2191B53500458F2A /* RevisionsTableViewFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionsTableViewFooter.xib; sourceTree = "<group>"; };
 		9A2B28F42192121400458F2A /* RevisionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionOperation.swift; sourceTree = "<group>"; };
 		9A2B28F62192121F00458F2A /* RevisionOperation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionOperation.xib; sourceTree = "<group>"; };
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
@@ -5639,7 +5637,6 @@
 			isa = PBXGroup;
 			children = (
 				9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */,
-				9A2B28EF2191B53500458F2A /* RevisionsTableViewFooter.xib */,
 			);
 			path = Footer;
 			sourceTree = "<group>";
@@ -7791,7 +7788,6 @@
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
-				9A2B28F02191B53500458F2A /* RevisionsTableViewFooter.xib in Resources */,
 				4349B0B0218A477F0034118A /* RevisionsTableViewCell.xib in Resources */,
 				4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */,
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,

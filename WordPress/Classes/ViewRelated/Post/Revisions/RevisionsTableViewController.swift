@@ -9,8 +9,13 @@ class RevisionsTableViewController: UITableViewController {
         tableViewHandler.updateRowAnimation = .none
         return tableViewHandler
     }()
-    private var revisionsSectionsCount: Int {
-        return tableViewHandler.resultsController.sections?.count ?? 0
+
+    private var tableViewFooter: RevisionsTableViewFooter {
+        let footerView = RevisionsTableViewFooter(frame: CGRect(origin: .zero,
+                                                                size: CGSize(width: tableView.frame.width,
+                                                                             height: Sizes.sectionFooterHeight)))
+        footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+        return footerView
     }
 
 
@@ -45,15 +50,7 @@ private extension RevisionsTableViewController {
 
         self.refreshControl = refreshControl
 
-        if let footerView = Bundle.main.loadNibNamed(RevisionsTableViewFooter.classNameWithoutNamespaces(),
-                                                     owner: nil,
-                                                     options: nil)?.first as? RevisionsTableViewFooter {
-            footerView.translatesAutoresizingMaskIntoConstraints = false
-            footerView.autoresizingMask = .flexibleWidth
-            footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
-            footerView.backgroundColor = .red
-            tableView.tableFooterView = footerView
-        }
+        tableView.tableFooterView = tableViewFooter
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
@@ -126,9 +123,10 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let nibName = String(describing: PageListSectionHeaderView.self)
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
-            let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView else {
+            let headerView = Bundle.main.loadNibNamed(PageListSectionHeaderView.classNameWithoutNamespaces(),
+                                                      owner: nil,
+                                                      options: nil)?.first as? PageListSectionHeaderView else {
                 return UIView()
         }
 
