@@ -1,5 +1,5 @@
 final class VerticalsStep: WizardStep {
-    private let builder: SiteCreator
+    private let creator: SiteCreator
     private let service: SiteVerticalsService
 
     private(set) lazy var header: UIViewController = {
@@ -16,8 +16,8 @@ final class VerticalsStep: WizardStep {
 
     var delegate: WizardDelegate?
 
-    init(builder: SiteCreator, service: SiteVerticalsService) {
-        self.builder = builder
+    init(creator: SiteCreator, service: SiteVerticalsService) {
+        self.creator = creator
         self.service = service
     }
 }
