@@ -4247,8 +4247,7 @@
 				B574CE101B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift */,
 				B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */,
 			);
-			name = Style;
-			path = "New Group";
+			path = Style;
 			sourceTree = "<group>";
 		};
 		402FFB22218C36CF00FF4A0B /* Helpers */ = {
