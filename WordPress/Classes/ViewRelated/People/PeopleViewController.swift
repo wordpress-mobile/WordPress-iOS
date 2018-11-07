@@ -1,18 +1,23 @@
 import UIKit
+
 import CocoaLumberjack
 import WordPressShared
 
-open class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate, UIViewControllerRestoration {
+// MARK: - PeopleViewController
 
-    // MARK: - Properties
+class PeopleViewController: UITableViewController, UIViewControllerRestoration {
+
+    // MARK: Properties
+
+    private static let refreshRowPadding = 4
 
     /// Team's Blog
     ///
-    @objc open var blog: Blog?
+    private var blog: Blog?
 
     /// Mode: Users / Followers
     ///
-    fileprivate var filter = Filter.Users {
+    private var filter = Filter.Users {
         didSet {
             refreshInterface()
             refreshResultsController()
@@ -25,10 +30,9 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     ///
     private let noResultsViewController = NoResultsViewController.controller()
 
-
     /// Indicates whether there are more results that can be retrieved, or not.
     ///
-    fileprivate var shouldLoadMore = false {
+    private var shouldLoadMore = false {
         didSet {
             if shouldLoadMore {
                 footerActivityIndicator.startAnimating()
@@ -40,22 +44,22 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// Indicates whether there is a loadMore call in progress, or not.
     ///
-    fileprivate var isLoadingMore = false
+    private var isLoadingMore = false
 
     /// Number of records to skip in the next request
     ///
-    fileprivate var nextRequestOffset = 0
+    private var nextRequestOffset = 0
 
     /// Filter Predicate
     ///
-    fileprivate var predicate: NSPredicate {
+    private var predicate: NSPredicate {
         let predicate = NSPredicate(format: "siteID = %@ AND kind = %@", blog!.dotComID!, NSNumber(value: filter.personKind.rawValue as Int))
         return predicate
     }
 
     /// Sort Descriptor
     ///
-    fileprivate var sortDescriptors: [NSSortDescriptor] {
+    private var sortDescriptors: [NSSortDescriptor] {
         // Note:
         // Followers must be sorted out by creationDate!
         //
@@ -69,13 +73,13 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// Core Data Context
     ///
-    fileprivate lazy var context: NSManagedObjectContext = {
+    private lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().newMainContextChildContext()
     }()
 
     /// Core Data FRC
     ///
-    fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
+    private lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         // FIXME(@koke, 2015-11-02): my user should be first
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
         request.predicate = self.predicate
@@ -88,29 +92,30 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// Navigation Bar Custom Title
     ///
-    @IBOutlet fileprivate var titleButton: NavBarTitleDropdownButton!
+    @IBOutlet
+    private var titleButton: NavBarTitleDropdownButton!
 
     /// TableView Footer
     ///
-    @IBOutlet fileprivate var footerView: UIView!
+    @IBOutlet
+    private var footerView: UIView!
 
     /// TableView Footer Activity Indicator
     ///
-    @IBOutlet fileprivate var footerActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet
+    private var footerActivityIndicator: UIActivityIndicatorView!
 
+    // MARK: UITableViewDataSource
 
-
-    // MARK: - UITableView Methods
-
-    open override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return resultsController.sections?.count ?? 0
     }
 
-    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PeopleCell") as? PeopleCell else {
             fatalError()
         }
@@ -124,32 +129,25 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         return cell
     }
 
-    open override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    // MARK: UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return hasHorizontallyCompactView() ? CGFloat.leastNormalMagnitude : 0
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Refresh only when we reach the last 3 rows in the last section!
         let numberOfRowsInSection = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        guard (indexPath.row + refreshRowPadding) >= numberOfRowsInSection else {
+        guard (indexPath.row + PeopleViewController.refreshRowPadding) >= numberOfRowsInSection else {
             return
         }
 
         loadMorePeopleIfNeeded()
     }
 
+    // MARK: UIViewController
 
-    // MARK: - NSFetchedResultsController Methods
-
-    open func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        refreshNoResultsView()
-        tableView.reloadData()
-    }
-
-
-    // MARK: - View Lifecycle Methods
-
-    open override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.titleView = titleButton
@@ -166,19 +164,19 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         observeNetworkStatus()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
         refreshNoResultsView()
         WPAnalytics.track(.openedPeople)
     }
 
-    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
     }
 
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let personViewController = segue.destination as? PersonViewController,
             let selectedIndexPath = tableView.indexPathForSelectedRow {
             personViewController.context = context
@@ -199,25 +197,117 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
+    // MARK: - UIViewControllerRestoration
 
-    // MARK: - Action Handlers
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
+        let context = ContextManager.sharedInstance().mainContext
 
-    @IBAction open func refresh() {
+        guard let blogID = coder.decodeObject(forKey: RestorationKeys.blog) as? String,
+            let objectURL = URL(string: blogID),
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+            let restoredBlog = try? context.existingObject(with: objectID),
+            let blog = restoredBlog  as? Blog else {
+                return nil
+        }
+
+        return controllerWithBlog(blog)
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        let objectString = blog?.objectID.uriRepresentation().absoluteString
+        coder.encode(objectString, forKey: RestorationKeys.blog)
+        super.encodeRestorableState(with: coder)
+    }
+
+    // MARK: Action Handlers
+
+    @IBAction
+    func refresh() {
         refreshPeople()
     }
 
-    @IBAction open func titleWasPressed() {
+    @IBAction
+    func titleWasPressed() {
         displayModePicker()
     }
 
-    @IBAction open func invitePersonWasPressed() {
+    @IBAction
+    func invitePersonWasPressed() {
         performSegue(withIdentifier: Storyboard.inviteSegueIdentifier, sender: self)
     }
+}
 
+// MARK: - NSFetchedResultsControllerDelegate
 
-    // MARK: - Interface Helpers
+extension PeopleViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        refreshNoResultsView()
+        tableView.reloadData()
+    }
+}
 
-    fileprivate func refreshInterface() {
+// MARK: - NetworkAwareUI
+
+extension PeopleViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return resultsController.isEmpty()
+    }
+}
+
+// MARK: - NetworkStatusDelegate
+
+extension PeopleViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        refresh()
+    }
+}
+
+// MARK: - Private behavior
+
+private extension PeopleViewController {
+
+    // MARK: Enums
+
+    enum Filter: String {
+        case Users      = "users"
+        case Followers  = "followers"
+        case Viewers    = "viewers"
+
+        var title: String {
+            switch self {
+            case .Users:
+                return NSLocalizedString("Users", comment: "Blog Users")
+            case .Followers:
+                return NSLocalizedString("Followers", comment: "Blog Followers")
+            case .Viewers:
+                return NSLocalizedString("Viewers", comment: "Blog Viewers")
+            }
+        }
+
+        var personKind: PersonKind {
+            switch self {
+            case .Users:
+                return .user
+            case .Followers:
+                return .follower
+            case .Viewers:
+                return .viewer
+            }
+        }
+    }
+
+    enum RestorationKeys {
+        static let blog = "peopleBlogRestorationKey"
+    }
+
+    enum Storyboard {
+        static let inviteSegueIdentifier = "invite"
+    }
+
+    // MARK: Interface Helpers
+
+    func refreshInterface() {
         // Note:
         // We also set the title on purpose, so that whatever VC we push, the back button spells the right title.
         //
@@ -226,7 +316,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         shouldLoadMore = false
     }
 
-    fileprivate func refreshResultsController() {
+    func refreshResultsController() {
         resultsController.fetchRequest.predicate = predicate
         resultsController.fetchRequest.sortDescriptors = sortDescriptors
 
@@ -247,10 +337,9 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
+    // MARK: Sync Helpers
 
-    // MARK: - Sync Helpers
-
-    fileprivate func refreshPeople() {
+    func refreshPeople() {
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.tableView.reloadData()
             self?.nextRequestOffset = retrieved
@@ -259,7 +348,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
-    fileprivate func loadMorePeopleIfNeeded() {
+    func loadMorePeopleIfNeeded() {
         guard shouldLoadMore == true && isLoadingMore == false else {
             return
         }
@@ -273,7 +362,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
-    fileprivate func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
+    func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blog, let service = PeopleService(blog: blog, context: context) else {
             return
         }
@@ -288,7 +377,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
-    fileprivate func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
+    func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blogInContext,
             let peopleService = PeopleService(blog: blog, context: context),
             let roleService = RoleService(blog: blog, context: context) else {
@@ -327,20 +416,18 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
-    fileprivate var blogInContext: Blog? {
+    var blogInContext: Blog? {
         guard let objectID = blog?.objectID,
             let object = try? context.existingObject(with: objectID) else {
-            return nil
+                return nil
         }
 
         return object as? Blog
     }
 
+    // MARK: No Results Helpers
 
-    // MARK: - No Results Helpers
-
-    private func refreshNoResultsView() {
-
+    func refreshNoResultsView() {
         noResultsViewController.removeFromView()
 
         guard resultsController.fetchedObjects?.count == 0 else {
@@ -355,15 +442,15 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         noResultsViewController.didMove(toParent: self)
     }
 
-    private func noResultsTitle() -> String {
+    func noResultsTitle() -> String {
         let noPeopleFormat = NSLocalizedString("No %@ yet",
-            comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
+                                               comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
         let noPeople = String(format: noPeopleFormat, filter.title.lowercased())
 
         return connectionAvailable() ? noPeople : noConnectionMessage()
     }
 
-    private func handleLoadError(_ forError: Error) {
+    func handleLoadError(_ forError: Error) {
         let _ = DispatchDelayedAction(delay: .milliseconds(250)) { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
@@ -371,22 +458,22 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         handleConnectionError()
     }
 
-    // MARK: - Private Helpers
+    // MARK: Private Helpers
 
-    fileprivate func personAtIndexPath(_ indexPath: IndexPath) -> Person {
+    func personAtIndexPath(_ indexPath: IndexPath) -> Person {
         let managedPerson = resultsController.object(at: indexPath) as! ManagedPerson
         return managedPerson.toUnmanaged()
     }
 
-    fileprivate func role(person: Person) -> Role? {
+    func role(person: Person) -> Role? {
         guard let blog = blog,
             let service = RoleService(blog: blog, context: context) else {
-            return nil
+                return nil
         }
         return service.getRole(slug: person.role)
     }
 
-    fileprivate func displayModePicker() {
+    func displayModePicker() {
         guard let blog = blog else {
             fatalError()
         }
@@ -410,12 +497,12 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         controller.tableView.isScrollEnabled = false
 
         ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
-                                                                                                           presentingFromView: titleButton)
+                                                                               presentingFromView: titleButton)
 
         present(controller, animated: true)
     }
 
-    fileprivate func filtersAvailableForBlog(_ blog: Blog) -> [Filter] {
+    func filtersAvailableForBlog(_ blog: Blog) -> [Filter] {
         var available: [Filter] = [.Users, .Followers]
         if blog.siteVisibility == .private {
             available.append(.Viewers)
@@ -423,35 +510,13 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
         return available
     }
+}
 
+// MARK: - Objective-C support
 
-    // MARK: - UIViewControllerRestoration
-
-    open override func encodeRestorableState(with coder: NSCoder) {
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-        coder.encode(objectString, forKey: RestorationKeys.blog)
-        super.encodeRestorableState(with: coder)
-    }
-
-    open class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                   coder: NSCoder) -> UIViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: RestorationKeys.blog) as? String,
-            let objectURL = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context.existingObject(with: objectID),
-            let blog = restoredBlog  as? Blog else {
-            return nil
-        }
-
-        return controllerWithBlog(blog)
-    }
-
-
-    // MARK: - Static Helpers
-
-    @objc open class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
+@objc
+extension PeopleViewController {
+    class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
         let storyboard = UIStoryboard(name: "People", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
             return nil
@@ -461,59 +526,5 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         viewController.restorationClass = self
 
         return viewController
-    }
-
-
-
-    // MARK: - Private Enums
-
-    fileprivate enum Filter: String {
-        case Users      = "users"
-        case Followers  = "followers"
-        case Viewers    = "viewers"
-
-        var title: String {
-            switch self {
-            case .Users:
-                return NSLocalizedString("Users", comment: "Blog Users")
-            case .Followers:
-                return NSLocalizedString("Followers", comment: "Blog Followers")
-            case .Viewers:
-                return NSLocalizedString("Viewers", comment: "Blog Viewers")
-            }
-        }
-
-        var personKind: PersonKind {
-            switch self {
-            case .Users:
-                return .user
-            case .Followers:
-                return .follower
-            case .Viewers:
-                return .viewer
-            }
-        }
-    }
-
-    fileprivate enum RestorationKeys {
-        static let blog = "peopleBlogRestorationKey"
-    }
-
-    fileprivate enum Storyboard {
-        static let inviteSegueIdentifier = "invite"
-    }
-
-    fileprivate let refreshRowPadding = 4
-}
-
-extension PeopleViewController: NetworkAwareUI {
-    func contentIsEmpty() -> Bool {
-        return resultsController.isEmpty()
-    }
-}
-
-extension PeopleViewController: NetworkStatusDelegate {
-    func networkStatusDidChange(active: Bool) {
-        refresh()
     }
 }
