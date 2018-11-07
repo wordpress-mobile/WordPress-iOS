@@ -135,12 +135,18 @@
                         </connections>
                     </refreshControl>
                     <connections>
+                        <outlet property="filterBar" destination="Tt0-sL-emP" id="QIi-A8-pb2"/>
                         <outlet property="footerActivityIndicator" destination="L1Z-xm-37g" id="0Hk-Vq-YkI"/>
                         <outlet property="footerView" destination="1wT-dA-R90" id="hb4-2d-bqw"/>
                         <segue destination="Hu7-FD-rJZ" kind="presentation" identifier="invite" modalPresentationStyle="formSheet" id="sCY-hm-WIa"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kLo-F0-Yvi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Tt0-sL-emP" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="1280" y="738"/>
         </scene>

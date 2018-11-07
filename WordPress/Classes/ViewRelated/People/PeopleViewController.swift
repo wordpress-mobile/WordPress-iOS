@@ -17,7 +17,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     /// Mode: Users / Followers
     ///
-    private var filter = Filter.Users {
+    private var filter = Filter.users {
         didSet {
             refreshInterface()
             refreshResultsController()
@@ -64,7 +64,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         // Followers must be sorted out by creationDate!
         //
         switch filter {
-        case .Followers:
+        case .followers:
             return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
@@ -89,6 +89,10 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         frc.delegate = self
         return frc
     }()
+
+    /// Filtering Tab Bar
+    ///
+    @IBOutlet weak var filterBar: FilterTabBar!
 
     /// TableView Footer
     ///
@@ -145,16 +149,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                            target: self,
-                                                            action: #selector(invitePersonWasPressed))
-
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-
-        // By default, let's display the Blog's Users
-        filter = .Users
-
+        setupView()
         observeNetworkStatus()
     }
 
@@ -177,11 +172,11 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
             switch filter {
-            case .Followers:
+            case .followers:
                 personViewController.screenMode = .Follower
-            case .Users:
+            case .users:
                 personViewController.screenMode = .User
-            case .Viewers:
+            case .viewers:
                 personViewController.screenMode = .Viewer
             }
 
@@ -258,29 +253,33 @@ private extension PeopleViewController {
 
     // MARK: Enums
 
-    enum Filter: String {
-        case Users      = "users"
-        case Followers  = "followers"
-        case Viewers    = "viewers"
+    enum Filter: String, CaseIterable {
+        case users      = "users"
+        case followers  = "followers"
+        case viewers    = "viewers"
+
+        static var defaultFilters: [Filter] {
+            return [.users, .followers]
+        }
 
         var title: String {
             switch self {
-            case .Users:
+            case .users:
                 return NSLocalizedString("Users", comment: "Blog Users")
-            case .Followers:
+            case .followers:
                 return NSLocalizedString("Followers", comment: "Blog Followers")
-            case .Viewers:
+            case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
             }
         }
 
         var personKind: PersonKind {
             switch self {
-            case .Users:
+            case .users:
                 return .user
-            case .Followers:
+            case .followers:
                 return .follower
-            case .Viewers:
+            case .viewers:
                 return .viewer
             }
         }
@@ -296,11 +295,15 @@ private extension PeopleViewController {
 
     // MARK: Interface Helpers
 
+    func filtersAvailableForBlog(_ blog: Blog?) -> [Filter] {
+        guard let blog = blog, blog.siteVisibility == .private else {
+            return Filter.defaultFilters
+        }
+
+        return Filter.allCases
+    }
+
     func refreshInterface() {
-        // Note:
-        // We also set the title on purpose, so that whatever VC we push, the back button spells the right title.
-        //
-        title = NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
         shouldLoadMore = false
     }
 
@@ -356,11 +359,11 @@ private extension PeopleViewController {
         }
 
         switch filter {
-        case .Followers:
+        case .followers:
             service.loadFollowersPage(offset, success: success)
-        case .Users:
+        case .users:
             loadUsersPage(offset, success: success)
-        case .Viewers:
+        case .viewers:
             service.loadViewersPage(offset, success: success)
         }
     }
@@ -426,7 +429,10 @@ private extension PeopleViewController {
 
         addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        noResultsViewController.view.frame = tableView.bounds
+
+        let headerInset = UIEdgeInsets(top: filterBar.frame.height, left: 0, bottom: 0, right: 0)
+        noResultsViewController.view.frame = tableView.bounds.inset(by: headerInset)
+
         noResultsViewController.didMove(toParent: self)
     }
 
@@ -461,43 +467,43 @@ private extension PeopleViewController {
         return service.getRole(slug: person.role)
     }
 
-//    func displayModePicker() {
-//        guard let blog = blog else {
-//            fatalError()
-//        }
-//
-//        let filters                 = filtersAvailableForBlog(blog)
-//
-//        let controller              = SettingsSelectionViewController(style: .plain)
-//        controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
-//        controller.titles           = filters.map { $0.title }
-//        controller.values           = filters.map { $0.rawValue }
-//        controller.currentValue     = filter.rawValue as NSObject?
-//        controller.onItemSelected   = { [weak self] selectedValue in
-//            guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
-//                fatalError()
-//            }
-//
-//            self?.filter = filter
-//            self?.dismiss(animated: true)
-//        }
-//
-//        controller.tableView.isScrollEnabled = false
-//
-//        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
-//                                                                               presentingFromView: titleButton)
-//
-//        present(controller, animated: true)
-//    }
-//
-//    func filtersAvailableForBlog(_ blog: Blog) -> [Filter] {
-//        var available: [Filter] = [.Users, .Followers]
-//        if blog.siteVisibility == .private {
-//            available.append(.Viewers)
-//        }
-//
-//        return available
-//    }
+    func setupFilterBar() {
+        filterBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+
+        filterBar.items = filtersAvailableForBlog(blog).map { $0.title }
+        filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+
+        // By default, let's display the Blog's Users
+        filter = .users
+    }
+
+    func setupTableView() {
+        filterBar.translatesAutoresizingMaskIntoConstraints = false
+
+        tableView.tableHeaderView = filterBar
+
+        NSLayoutConstraint.activate([
+            filterBar.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            filterBar.topAnchor.constraint(equalTo: tableView.topAnchor),
+            filterBar.widthAnchor.constraint(equalTo: tableView.widthAnchor),
+        ])
+    }
+
+    func setupView() {
+        title = NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(invitePersonWasPressed))
+
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+
+        setupFilterBar()
+        setupTableView()
+    }
 }
 
 // MARK: - Objective-C support
@@ -514,5 +520,10 @@ extension PeopleViewController {
         viewController.restorationClass = self
 
         return viewController
+    }
+
+    func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        let selectedFilter = Filter.allCases[filterBar.selectedIndex]
+        filter = selectedFilter
     }
 }
