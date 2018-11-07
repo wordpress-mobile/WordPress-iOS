@@ -20,7 +20,6 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
             let userDefaults = UserDefaults.standard
             userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
-            userDefaults.synchronize()
 
             DDLogWarn(">> Migration process matched [\(username)] as the default WordPress.com account")
         } else {
@@ -50,7 +49,6 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
         // Cleanup!
         userDefaults.removeObject(forKey: defaultDotcomUsernameKey)
-        userDefaults.synchronize()
     }
 
 
@@ -92,6 +90,5 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
         let defaults = UserDefaults.standard
         defaults.set(accountURL, forKey: defaultDotcomKey)
-        defaults.synchronize()
     }
 }

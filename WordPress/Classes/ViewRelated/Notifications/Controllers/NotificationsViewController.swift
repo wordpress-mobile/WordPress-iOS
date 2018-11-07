@@ -1445,7 +1445,6 @@ private extension NotificationsViewController {
         }
         set {
             userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
-            userDefaults.synchronize()
         }
     }
 
