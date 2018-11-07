@@ -1,11 +1,15 @@
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
-    private lazy var contentViewController = {
+    private lazy var firstContentViewController = {
         WizardViewController()
     }()
 
+    private lazy var navigation: WizardNavigation = {
+        return WizardNavigation(root: self.firstContentViewController)
+    }()
+
     lazy var content: UIViewController = {
-        return UINavigationController(rootViewController: self.contentViewController)
+        return navigation.content
     }()
 
     // The sequence of steps to complete the wizard.
@@ -29,7 +33,7 @@ final class SiteCreationWizard: Wizard {
             return
         }
 
-        contentViewController.render(step: firstStep)
+        firstContentViewController.render(step: firstStep)
     }
 }
 
@@ -46,13 +50,10 @@ extension SiteCreationWizard: WizardDelegate {
             return
         }
 
-        guard let navigationController = content as? UINavigationController else {
-            return
-        }
-
         let newViewController = WizardViewController()
-        navigationController.pushViewController(newViewController, animated: true)
+
         newViewController.render(step: destinationStep)
+        navigation.push(newViewController)
     }
 
     private func step(identifier: Identifier) -> WizardStep? {
