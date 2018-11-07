@@ -56,7 +56,6 @@
 
     NSURL *accountURL = [[account objectID] URIRepresentation];
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:WPComDefaultAccountUrlKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
     return YES;
 }

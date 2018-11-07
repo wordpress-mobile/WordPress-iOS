@@ -404,7 +404,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             }
 
             self?.filter = filter
-            self?.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true)
         }
 
         controller.tableView.isScrollEnabled = false
@@ -412,7 +412,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
                                                                                                            presentingFromView: titleButton)
 
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true)
     }
 
     fileprivate func filtersAvailableForBlog(_ blog: Blog) -> [Filter] {

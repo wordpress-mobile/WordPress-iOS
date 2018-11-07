@@ -94,7 +94,7 @@ import Foundation
             let navController = UINavigationController(rootViewController: webViewController)
             navController.modalPresentationStyle = .fullScreen
 
-            controller.present(navController, animated: true, completion: nil)
+            controller.present(navController, animated: true)
         }
 
         let doNotShowAgainSwitchConfig = FancyAlertViewController.Config.SwitchConfig(
@@ -125,7 +125,7 @@ import Foundation
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
 
-        viewController.present(alert, animated: true, completion: nil)
+        viewController.present(alert, animated: true)
     }
 
     // MARK: - Variable Strings

@@ -83,7 +83,7 @@ class AztecVerificationPromptHelper: NSObject {
                                                         return
                                             }
 
-                                            displayedAlert.dismiss(animated: true, completion: nil)
+                                            displayedAlert.dismiss(animated: true)
                                             self?.completionBlock?(!updatedAccount.needsEmailVerification)
             }, failure: nil)
     }

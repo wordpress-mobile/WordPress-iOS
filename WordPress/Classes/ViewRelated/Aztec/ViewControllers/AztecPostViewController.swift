@@ -466,17 +466,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var debouncer = Debouncer(delay: Constants.autoSavingDelay)
 
-    fileprivate var wordsCount: UInt {
-        return richTextView.text.wordCount()
-    }
-
-    fileprivate var charactersCount: Int {
-        guard let text = richTextView.text else {
-            return 0
-        }
-        return text.count
-    }
-
     // MARK: - Initializers
 
     /// Initializer
@@ -1203,7 +1192,7 @@ extension AztecPostViewController {
         }
 
         alertController.popoverPresentationController?.barButtonItem = closeBarButtonItem
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     private func publishPost(
@@ -1280,7 +1269,7 @@ extension AztecPostViewController {
             let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
             controller.modalPresentationStyle = .custom
             controller.transitioningDelegate = self
-            self.present(controller, animated: true, completion: nil)
+            self.present(controller, animated: true)
         }
 
         if action.isAsync {
@@ -1297,7 +1286,7 @@ extension AztecPostViewController {
     func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     @IBAction func closeWasPressed() {
@@ -1354,7 +1343,7 @@ private extension AztecPostViewController {
 
         // Setup Handlers
         let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true)
 
             guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
@@ -1364,7 +1353,7 @@ private extension AztecPostViewController {
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true)
         }
 
         // Setup Picker
@@ -1384,7 +1373,7 @@ private extension AztecPostViewController {
         navigationController.configurePopoverPresentationStyle(from: sourceView)
 
         // Done!
-        present(navigationController, animated: true, completion: nil)
+        present(navigationController, animated: true)
     }
 
     /// Presents an alert controller, allowing the user to insert a link to either:
@@ -1465,9 +1454,8 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         if mode == .richText {
-            let textCounterTitle: String = {
-                return String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), wordsCount, charactersCount)
-            }()
+            // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
+            let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
 
             alert.title = textCounterTitle
         }
@@ -1522,7 +1510,7 @@ private extension AztecPostViewController {
 
         alert.addCancelActionWithTitle(SwitchSiteAlert.cancelTitle)
 
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     func displayPostSettings() {
@@ -1555,7 +1543,7 @@ private extension AztecPostViewController {
         }
 
         alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     @IBAction func displayCancelMediaUploads() {
@@ -1564,7 +1552,7 @@ private extension AztecPostViewController {
             self.mediaCoordinator.cancelUploadOfAllMedia(for: self.post)
         }
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
         return
     }
 
@@ -1585,7 +1573,7 @@ private extension AztecPostViewController {
         alertController.addDefaultActionWithTitle(publishTitle) { _ in
             publishAction()
         }
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 }
 
@@ -1604,7 +1592,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
                 postEditorStateContext.updated(postStatus: status)
                 editorContentWasUpdated()
             }
-        case #keyPath(AbstractPost.dateCreated):
+        case #keyPath(AbstractPost.date_created_gmt):
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
             editorContentWasUpdated()
@@ -1641,13 +1629,13 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
 
     internal func addObservers(toPost: AbstractPost) {
         toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
         fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
@@ -2398,7 +2386,7 @@ extension AztecPostViewController {
     private func dismissOptionsViewController() {
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         default:
             optionsViewController?.removeFromParent()
             changeRichTextInputView(to: nil)
@@ -2624,11 +2612,11 @@ private extension AztecPostViewController {
             self?.richTextView.edit(attachment) { htmlAttachment in
                 htmlAttachment.rawHTML = html
             }
-            self?.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true)
         }
 
         targetVC.onDidCancel = { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: true)
         }
 
         let navigationController = UINavigationController(rootViewController: targetVC)
@@ -2643,7 +2631,7 @@ private extension AztecPostViewController {
         presentationController?.sourceView = view
         presentationController?.delegate = self
 
-        present(viewController, animated: true, completion: nil)
+        present(viewController, animated: true)
     }
 }
 
@@ -2742,7 +2730,7 @@ private extension AztecPostViewController {
         if let onClose = onClose {
             onClose(didSave, shouldShowPostEpilogue)
         } else if isModal() {
-            presentingViewController?.dismiss(animated: true, completion: nil)
+            presentingViewController?.dismiss(animated: true)
         } else {
             _ = navigationController?.popViewController(animated: true)
         }
@@ -3486,7 +3474,7 @@ extension AztecPostViewController {
 
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
 
         WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
     }
@@ -3529,13 +3517,13 @@ extension AztecPostViewController {
         controller.showsPlaybackControls = true
         controller.player = player
         player.play()
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true)
     }
 
     func displayUnableToPlayVideoAlert() {
         let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
         return
     }
 
@@ -3791,7 +3779,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         if picker != mediaPickerInputViewController?.mediaPicker {
             unregisterChangeObserver()
             mediaLibraryDataSource.searchCancelled()
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         }
     }
 
@@ -3799,7 +3787,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         if picker != mediaPickerInputViewController?.mediaPicker {
             unregisterChangeObserver()
             mediaLibraryDataSource.searchCancelled()
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
             mediaSelectionMethod = .fullScreenPicker
         } else {
             mediaSelectionMethod = .inlinePicker

@@ -63,16 +63,16 @@ class SupportTableViewController: UITableViewController {
 
         let tabBarController = WPTabBarController.sharedInstance()
         if let presentedVC = tabBarController?.presentedViewController {
-            presentedVC.present(navigationController, animated: true, completion: nil)
+            presentedVC.present(navigationController, animated: true)
         } else {
-            tabBarController?.present(navigationController, animated: true, completion: nil)
+            tabBarController?.present(navigationController, animated: true)
         }
     }
 
     // MARK: - Button Actions
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
 }
@@ -226,7 +226,6 @@ private extension SupportTableViewController {
     func extraDebugToggled() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.userDefaults.set(newValue, forKey: UserDefaultsKeys.extraDebug)
-            self.userDefaults.synchronize()
             WPLogger.configureLoggerLevelWithExtraDebug()
         }
     }

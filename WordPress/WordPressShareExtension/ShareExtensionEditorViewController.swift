@@ -752,7 +752,7 @@ extension ShareExtensionEditorViewController {
             self?.richTextView.becomeFirstResponder()
         }
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     @objc func alertTextFieldDidChange(_ textField: UITextField) {
@@ -896,7 +896,7 @@ extension ShareExtensionEditorViewController {
     private func dismissOptionsViewController() {
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         default:
             optionsViewController?.removeFromParent()
             changeRichTextInputView(to: nil)

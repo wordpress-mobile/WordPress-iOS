@@ -183,8 +183,7 @@ class PlansLoadingIndicatorView: UIView {
             options: .curveEaseOut,
             animations: { [unowned freeView] in
                 freeView.transform = CGAffineTransform.identity
-            },
-            completion: nil)
+            })
 
         UIView.animate(
             withDuration: Config.Duration.premium * Config.Duration.durationScale,
@@ -194,8 +193,7 @@ class PlansLoadingIndicatorView: UIView {
             options: .curveEaseOut,
             animations: { [unowned premiumView] in
                 premiumView.transform = CGAffineTransform.identity
-            },
-            completion: nil)
+            })
 
         UIView.animate(
             withDuration: Config.Duration.business * Config.Duration.durationScale,
@@ -205,7 +203,6 @@ class PlansLoadingIndicatorView: UIView {
             options: .curveEaseOut,
             animations: { [unowned businessView] in
                 businessView.transform = CGAffineTransform.identity
-            },
-            completion: nil)
+            })
     }
 }

@@ -60,7 +60,7 @@ class PlanPostPurchaseViewController: UIViewController {
         // If the view is changing size (e.g. on rotation, or multitasking), scroll to the correct page boundary based on the new size
         coordinator.animate(alongsideTransition: { context in
             self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentScrollViewPage()) * size.width, y: 0), animated: true)
-            }, completion: nil)
+            })
     }
 
     fileprivate func addPageControl() {
@@ -154,7 +154,7 @@ class PlanPostPurchaseViewController: UIViewController {
     }
 
     @objc func closeTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 
@@ -324,7 +324,7 @@ class PlanPostPurchasePageViewController: UIViewController {
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             WPTabBarController.sharedInstance().switchMySitesTabToCustomizeView(for: service.primaryBlog())
 
-            WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
+            WPTabBarController.sharedInstance().dismiss(animated: true)
         case .VideoPress:
             WPTabBarController.sharedInstance().dismiss(animated: true) {
                 WPTabBarController.sharedInstance().showPostTab()
@@ -333,7 +333,7 @@ class PlanPostPurchasePageViewController: UIViewController {
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             WPTabBarController.sharedInstance().switchMySitesTabToThemesView(for: service.primaryBlog())
 
-            WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
+            WPTabBarController.sharedInstance().dismiss(animated: true)
         default: break
         }
     }

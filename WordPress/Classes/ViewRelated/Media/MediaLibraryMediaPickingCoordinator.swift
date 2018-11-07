@@ -50,7 +50,7 @@ final class MediaLibraryMediaPickingCoordinator {
         menuAlert.popoverPresentationController?.sourceRect = fromView.bounds
         menuAlert.popoverPresentationController?.barButtonItem = buttonItem
 
-        origin.present(menuAlert, animated: true, completion: nil)
+        origin.present(menuAlert, animated: true)
     }
 
     private func cameraAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
@@ -114,7 +114,7 @@ final class MediaLibraryMediaPickingCoordinator {
             docPicker.allowsMultipleSelection = true
         }
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        origin.present(docPicker, animated: true, completion: nil)
+        origin.present(docPicker, animated: true)
     }
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {

@@ -226,7 +226,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             }
         }
         alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     private func executeAction() {

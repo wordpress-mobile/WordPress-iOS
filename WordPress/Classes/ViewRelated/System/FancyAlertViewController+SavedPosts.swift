@@ -16,13 +16,13 @@ extension FancyAlertViewController {
             controller.modalPresentationStyle = .custom
             controller.transitioningDelegate = origin
 
-            origin.present(controller, animated: true, completion: nil)
+            origin.present(controller, animated: true)
         }
     }
 
     static func makeReaderSavedPostsAlertController() -> FancyAlertViewController {
         let dismissButton = ButtonConfig(Strings.okTitle) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let image = UIImage(named: "wp-illustration-mobile-save-for-later")

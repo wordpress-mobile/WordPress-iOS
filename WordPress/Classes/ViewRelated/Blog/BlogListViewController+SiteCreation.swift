@@ -3,6 +3,6 @@ extension BlogListViewController {
     func enhancedSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
         let wizard = wizardLauncher.ui
-        present(wizard, animated: true, completion: nil)
+        present(wizard, animated: true)
     }
 }
