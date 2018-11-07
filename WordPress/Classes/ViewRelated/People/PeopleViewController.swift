@@ -90,11 +90,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         return frc
     }()
 
-    /// Navigation Bar Custom Title
-    ///
-    @IBOutlet
-    private var titleButton: NavBarTitleDropdownButton!
-
     /// TableView Footer
     ///
     @IBOutlet
@@ -150,7 +145,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.titleView = titleButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(invitePersonWasPressed))
@@ -225,11 +219,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     @IBAction
     func refresh() {
         refreshPeople()
-    }
-
-    @IBAction
-    func titleWasPressed() {
-        displayModePicker()
     }
 
     @IBAction
@@ -311,8 +300,7 @@ private extension PeopleViewController {
         // Note:
         // We also set the title on purpose, so that whatever VC we push, the back button spells the right title.
         //
-        title = filter.title
-        titleButton.setAttributedTitleForTitle(filter.title)
+        title = NSLocalizedString("People", comment: "Noun. Title of the people management feature.")
         shouldLoadMore = false
     }
 
@@ -473,43 +461,43 @@ private extension PeopleViewController {
         return service.getRole(slug: person.role)
     }
 
-    func displayModePicker() {
-        guard let blog = blog else {
-            fatalError()
-        }
-
-        let filters                 = filtersAvailableForBlog(blog)
-
-        let controller              = SettingsSelectionViewController(style: .plain)
-        controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
-        controller.titles           = filters.map { $0.title }
-        controller.values           = filters.map { $0.rawValue }
-        controller.currentValue     = filter.rawValue as NSObject?
-        controller.onItemSelected   = { [weak self] selectedValue in
-            guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
-                fatalError()
-            }
-
-            self?.filter = filter
-            self?.dismiss(animated: true)
-        }
-
-        controller.tableView.isScrollEnabled = false
-
-        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
-                                                                               presentingFromView: titleButton)
-
-        present(controller, animated: true)
-    }
-
-    func filtersAvailableForBlog(_ blog: Blog) -> [Filter] {
-        var available: [Filter] = [.Users, .Followers]
-        if blog.siteVisibility == .private {
-            available.append(.Viewers)
-        }
-
-        return available
-    }
+//    func displayModePicker() {
+//        guard let blog = blog else {
+//            fatalError()
+//        }
+//
+//        let filters                 = filtersAvailableForBlog(blog)
+//
+//        let controller              = SettingsSelectionViewController(style: .plain)
+//        controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
+//        controller.titles           = filters.map { $0.title }
+//        controller.values           = filters.map { $0.rawValue }
+//        controller.currentValue     = filter.rawValue as NSObject?
+//        controller.onItemSelected   = { [weak self] selectedValue in
+//            guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
+//                fatalError()
+//            }
+//
+//            self?.filter = filter
+//            self?.dismiss(animated: true)
+//        }
+//
+//        controller.tableView.isScrollEnabled = false
+//
+//        ForcePopoverPresenter.configurePresentationControllerForViewController(controller,
+//                                                                               presentingFromView: titleButton)
+//
+//        present(controller, animated: true)
+//    }
+//
+//    func filtersAvailableForBlog(_ blog: Blog) -> [Filter] {
+//        var available: [Filter] = [.Users, .Followers]
+//        if blog.siteVisibility == .private {
+//            available.append(.Viewers)
+//        }
+//
+//        return available
+//    }
 }
 
 // MARK: - Objective-C support
