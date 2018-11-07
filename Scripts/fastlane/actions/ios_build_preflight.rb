@@ -3,8 +3,16 @@ module Fastlane
     class IosBuildPreflightAction < Action
       def self.run(params) 
         Action.sh("cd .. && rm -rf ~/Library/Developer/Xcode/DerivedData")
-        Action.sh("rake clobber")
-        Action.sh("rake dependencies")
+        
+        # Check gems and pods are up to date. This will exit if it fails
+        begin
+          Action.sh("bundle check")
+        rescue 
+          UI.user_error!("You should run 'rake dependencies' to make sure gems are up to date")
+          raise
+        end
+
+        Action.sh("rake dependencies:pod:clean")
         other_action.cocoapods()
       end
 
