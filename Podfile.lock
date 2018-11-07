@@ -171,7 +171,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.1)
   - WordPressAuthenticator (= 1.1.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `5451f4d`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `ae2227b`)
   - WordPressShared (= 1.2.0)
   - WordPressUI (= 1.0.8)
   - WPMediaPicker (= 1.3.1)
@@ -220,7 +220,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressKit:
-    :commit: 5451f4d
+    :commit: ae2227b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -228,7 +228,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressKit:
-    :commit: 5451f4d
+    :commit: ae2227b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -269,6 +269,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 28bf6b969b82a19052ec5ebb9e6e0286453833f0
+PODFILE CHECKSUM: 19ef2b47c55dc42f8d2b171a23c67d26b79333de
 
 COCOAPODS: 1.5.3
