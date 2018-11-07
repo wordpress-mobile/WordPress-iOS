@@ -13,12 +13,6 @@ open class DiscussionSettingsViewController: UITableViewController {
         self.blog = blog
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-
-
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
         super.viewDidLoad()

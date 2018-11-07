@@ -508,7 +508,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
         removeObservers(fromPost: post)
         unregisterMediaObserver()
         cancelAllPendingMediaRequests()

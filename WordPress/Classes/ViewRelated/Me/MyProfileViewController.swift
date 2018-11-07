@@ -87,10 +87,6 @@ private class MyProfileController: SettingsController {
         notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     func refreshModel() {
         service.refreshSettings()
     }

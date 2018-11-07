@@ -117,7 +117,6 @@ class PingHubManager: NSObject {
     deinit {
         delayedRetry?.cancel()
         reachability.stopNotifier()
-        NotificationCenter.default.removeObserver(self)
     }
 
     fileprivate func stateChanged(old: State, new: State) {

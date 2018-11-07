@@ -116,8 +116,6 @@ class NotificationDetailsViewController: UIViewController {
 
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
-
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
         guard isViewLoaded else {
             return

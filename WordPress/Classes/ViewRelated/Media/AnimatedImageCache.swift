@@ -15,10 +15,6 @@ class AnimatedImageCache {
                                                object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: Private fields
 
     fileprivate lazy var session: URLSession = {

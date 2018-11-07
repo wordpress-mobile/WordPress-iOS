@@ -121,10 +121,6 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     // MARK: - Lifecycle Methods
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

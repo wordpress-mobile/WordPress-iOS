@@ -34,9 +34,4 @@ static NSString *const DidTouchPostActivityDateNotification = @"DidTouchPostActi
                     }];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 @end

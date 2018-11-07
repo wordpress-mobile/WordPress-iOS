@@ -7,10 +7,6 @@ class StoreContainer {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     @objc fileprivate func applicationWillResignActive() {
         try? plugin.persistState()
     }

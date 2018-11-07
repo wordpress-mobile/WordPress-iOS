@@ -83,10 +83,6 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
         startObservingForQuickStart()
     }
 
-    deinit {
-        stopObservingForQuickStart()
-    }
-
     fileprivate func applyStyles() {
         currentThemeBar.backgroundColor = Styles.currentThemeBackgroundColor
         currentThemeDivider.backgroundColor = Styles.currentThemeDividerColor
@@ -125,10 +121,6 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             self?.spotlightCustomizeButtonIfTourIsActive()
         }
-    }
-
-    private func stopObservingForQuickStart() {
-        NotificationCenter.default.removeObserver(observer as Any)
     }
 
     fileprivate func setTextForLabels() {

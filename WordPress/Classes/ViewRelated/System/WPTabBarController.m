@@ -167,7 +167,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)dealloc
 {
     [self stopWatchingQuickTours];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 

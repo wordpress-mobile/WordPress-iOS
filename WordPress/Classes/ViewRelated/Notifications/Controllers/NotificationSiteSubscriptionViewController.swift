@@ -79,10 +79,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        stopListeningToNotifications()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -194,10 +190,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     private func startListeningToNotifications() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(followingSiteStateToggled), name: NSNotification.Name(rawValue: ReaderPostServiceToggleSiteFollowingState), object: nil)
-    }
-
-    private func stopListeningToNotifications() {
-        NotificationCenter.default.removeObserver(self)
     }
 
     @objc func followingSiteStateToggled() {

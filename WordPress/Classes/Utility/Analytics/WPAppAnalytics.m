@@ -46,13 +46,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
 
 @implementation WPAppAnalytics
 
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    [self stopObservingNotifications];
-}
-
 #pragma mark - Init
 
 - (instancetype)init
@@ -126,11 +119,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
                                              selector:@selector(accountSettingsDidChange:)
                                                  name:NSNotification.AccountSettingsChanged
                                                object:nil];
-}
-
-- (void)stopObservingNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Notifications

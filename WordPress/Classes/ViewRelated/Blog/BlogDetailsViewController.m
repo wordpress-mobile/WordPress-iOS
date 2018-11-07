@@ -223,7 +223,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)dealloc
 {
     [self stopObservingQuickStart];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
