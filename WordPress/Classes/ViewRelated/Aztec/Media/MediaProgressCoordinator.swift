@@ -32,6 +32,10 @@ public class MediaProgressCoordinator: NSObject {
 
     private var mediaProgressObserverContext: String = "mediaProgressObserverContext"
 
+    deinit {
+        mediaGlobalProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+    }
+
     /// Setup the coordinator to track the provided number of tasks
     ///
     /// - Parameter count: the number of tasks that need to be tracked
