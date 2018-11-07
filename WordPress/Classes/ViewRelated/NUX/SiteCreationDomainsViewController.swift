@@ -75,12 +75,7 @@ class SiteCreationDomainsViewController: NUXViewController, DomainSuggestionsBut
 
 extension SiteCreationDomainsViewController: DomainSuggestionsTableViewControllerDelegate {
     func domainSelected(_ domain: DomainSuggestion) {
-        var domainName = domain.domainName
-
-        // Remove ".wordpress.com" before sending it along
-        if domainName.hasSuffix(".wordpress.com") {
-            domainName = domainName.removingSuffix(".wordpress.com")
-        }
+        let domainName = domain.domainName.removingSuffix(".wordpress.com")
 
         SiteCreationFields.sharedInstance.domain = domainName
         showButtonView(show: true, withAnimation: true)
