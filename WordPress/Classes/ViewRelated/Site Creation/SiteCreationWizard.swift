@@ -35,12 +35,10 @@ final class SiteCreationWizard: Wizard {
 
 extension SiteCreationWizard: WizardDelegate {
     func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {
-        debugPrint("==== will navigate ====")
         navigate(to: destination)
     }
 
     func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {
-        debugPrint("==== did navigate ====")
     }
 
     private func navigate(to: Identifier) {
