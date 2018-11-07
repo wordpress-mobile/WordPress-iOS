@@ -34,6 +34,32 @@ final class SiteCreationWizard: Wizard {
 }
 
 extension SiteCreationWizard: WizardDelegate {
-    func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {}
-    func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {}
+    func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {
+        debugPrint("==== will navigate ====")
+        navigate(to: destination)
+    }
+
+    func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {
+        debugPrint("==== did navigate ====")
+    }
+
+    private func navigate(to: Identifier) {
+        guard let destinationStep = step(identifier: to) else {
+            return
+        }
+
+        guard let navigationController = content as? UINavigationController else {
+            return
+        }
+
+        let newViewController = WizardViewController()
+        navigationController.pushViewController(newViewController, animated: true)
+        newViewController.render(step: destinationStep)
+    }
+
+    private func step(identifier: Identifier) -> WizardStep? {
+        return steps.filter {
+                $0.identifier == identifier
+            }.first
+    }
 }
