@@ -35,8 +35,8 @@ private extension RevisionsTableViewController {
     private func setupUI() {
         navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
 
-        let nibName = String(describing: RevisionsTableViewCell.self)
-        let cellNib = UINib(nibName: nibName, bundle: Bundle(for: RevisionsTableViewCell.self))
+        let cellNib = UINib(nibName: RevisionsTableViewCell.classNameWithoutNamespaces(),
+                            bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
 
         let refreshControl = UIRefreshControl()
@@ -44,6 +44,16 @@ private extension RevisionsTableViewController {
         tableView.addSubview(refreshControl)
 
         self.refreshControl = refreshControl
+
+        if let footerView = Bundle.main.loadNibNamed(RevisionsTableViewFooter.classNameWithoutNamespaces(),
+                                                     owner: nil,
+                                                     options: nil)?.first as? RevisionsTableViewFooter {
+            footerView.translatesAutoresizingMaskIntoConstraints = false
+            footerView.autoresizingMask = .flexibleWidth
+            footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+            footerView.backgroundColor = .red
+            tableView.tableFooterView = footerView
+        }
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
@@ -86,8 +96,10 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         }
 
         let revision = getRevision(at: indexPath)
-        cell.createdDate = revision.revisionDate.mediumStringWithTime()
-        cell.modifiedDate = revision.revisionModifiedDate.toStringForPageSections()
+        cell.title = revision.revisionModifiedDate.shortTimeString()
+        cell.subtitle = "author name"
+        cell.totalAdd = revision.diff?.totalAdditions.intValue
+        cell.totalDel = revision.diff?.totalDeletions.intValue
     }
 
     func getRevision(at indexPath: IndexPath) -> Revision {
@@ -106,22 +118,11 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return (section != revisionsSectionsCount - 1) ? 0 : Sizes.sectionFooterHeight
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Sizes.cellEstimatedRowHeight
-    }
-
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let nibName = String(describing: RevisionsTableViewFooter.self)
-        if let footerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? RevisionsTableViewFooter,
-            section == revisionsSectionsCount - 1 {
-            footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
-            return footerView
-        }
-
-        return UIView()
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -158,4 +159,18 @@ private struct Sizes {
     static let sectionHeaderHeight = CGFloat(40.0)
     static let sectionFooterHeight = CGFloat(48.0)
     static let cellEstimatedRowHeight = CGFloat(60.0)
+}
+
+
+private extension Date {
+    private static let shortTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.doesRelativeDateFormatting = true
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
+    func shortTimeString() -> String {
+        return Date.shortTimeFormatter.string(from: self)
+    }
 }

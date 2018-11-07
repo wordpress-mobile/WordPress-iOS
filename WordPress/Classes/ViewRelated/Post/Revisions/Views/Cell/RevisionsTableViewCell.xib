@@ -27,33 +27,45 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGK-dg-4l6">
-                        <rect key="frame" x="64" y="10" width="212" height="20.5"/>
+                        <rect key="frame" x="64" y="10" width="42" height="20.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uHw-yX-yQA">
-                        <rect key="frame" x="64" y="32.5" width="212" height="18"/>
+                        <rect key="frame" x="64" y="32.5" width="37.5" height="18"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ft5-M5-Hhp">
+                        <rect key="frame" x="266" y="22" width="20" height="16"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" placeholder="YES" id="3y6-wH-FNx"/>
+                            <constraint firstAttribute="width" constant="20" placeholder="YES" id="Ihi-RY-Lki"/>
+                        </constraints>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="RGK-dg-4l6" secondAttribute="trailing" priority="750" constant="10" id="6QW-Ug-yTv"/>
+                    <constraint firstItem="Ft5-M5-Hhp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="8wc-db-Pew"/>
                     <constraint firstItem="urr-kW-bED" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="FL4-WQ-m8D"/>
                     <constraint firstItem="RGK-dg-4l6" firstAttribute="leading" secondItem="urr-kW-bED" secondAttribute="trailing" constant="10" id="POQ-k5-wPd"/>
                     <constraint firstItem="RGK-dg-4l6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="S7a-2V-hTf"/>
                     <constraint firstItem="urr-kW-bED" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="T0w-4y-fdS"/>
-                    <constraint firstAttribute="trailing" secondItem="uHw-yX-yQA" secondAttribute="trailing" priority="750" constant="10" id="TBa-Dy-j3I"/>
                     <constraint firstItem="uHw-yX-yQA" firstAttribute="leading" secondItem="urr-kW-bED" secondAttribute="trailing" constant="10" id="WTL-dh-dcA"/>
                     <constraint firstItem="uHw-yX-yQA" firstAttribute="top" secondItem="RGK-dg-4l6" secondAttribute="bottom" constant="2" id="hp3-e9-fDH"/>
+                    <constraint firstItem="Ft5-M5-Hhp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RGK-dg-4l6" secondAttribute="trailing" constant="10" id="kDa-Fk-oEN"/>
+                    <constraint firstAttribute="trailing" secondItem="Ft5-M5-Hhp" secondAttribute="trailing" id="qAR-rS-Fy4"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <inset key="separatorInset" minX="64" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="avatarImageView" destination="urr-kW-bED" id="y8t-H7-pL9"/>
+                <outlet property="stackView" destination="Ft5-M5-Hhp" id="dMe-4A-7ve"/>
                 <outlet property="subTitleLabel" destination="uHw-yX-yQA" id="Kwy-Oq-qQD"/>
                 <outlet property="titleLabel" destination="RGK-dg-4l6" id="4cj-WM-Ehm"/>
             </connections>
