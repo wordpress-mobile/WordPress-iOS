@@ -433,7 +433,7 @@ fileprivate extension SearchManager {
         openListView(for: post)
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(editor, animated: true, completion: nil)
+        WPTabBarController.sharedInstance().present(editor, animated: true)
     }
 
     func openEditor(for page: Page) {
@@ -442,14 +442,14 @@ fileprivate extension SearchManager {
         let editorSettings = EditorSettings()
         let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
             editor.onClose = { changesSaved, _ in
-                vc.dismiss(animated: true, completion: nil)
+                vc.dismiss(animated: true)
             }
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
         navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(navController, animated: true, completion: nil)
+        WPTabBarController.sharedInstance().present(navController, animated: true)
     }
 
     func openPreview(for apost: AbstractPost) {
@@ -461,7 +461,7 @@ fileprivate extension SearchManager {
         controller.onClose = {
             navWrapper.dismiss(animated: true) {}
         }
-        WPTabBarController.sharedInstance().present(navWrapper, animated: true, completion: nil)
+        WPTabBarController.sharedInstance().present(navWrapper, animated: true)
         openListView(for: apost)
     }
 
@@ -475,7 +475,7 @@ fileprivate extension SearchManager {
                 // Do nothing — post is already loaded or PostPreviewViewController isn't visible
                 return
         }
-        navController.dismiss(animated: true, completion: nil)
+        navController.dismiss(animated: true)
     }
 
     /// If there is any PostPreviewViewController window open, close it.
@@ -485,6 +485,6 @@ fileprivate extension SearchManager {
             let _ = navController.topViewController as? PostPreviewViewController else {
                 return
         }
-        navController.dismiss(animated: true, completion: nil)
+        navController.dismiss(animated: true)
     }
 }

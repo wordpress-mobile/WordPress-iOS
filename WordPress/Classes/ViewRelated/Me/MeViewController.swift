@@ -380,7 +380,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self.logOut()
         }
 
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     private var logOutAlertTitle: String {
@@ -422,17 +422,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             imageCropViewController.shouldShowCancelButton = true
 
             imageCropViewController.onCancel = { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
+                self?.dismiss(animated: true)
                 self?.updateGravatarStatus(.idle)
             }
             imageCropViewController.onCompletion = { [weak self] image, _ in
-                self?.dismiss(animated: true, completion: nil)
+                self?.dismiss(animated: true)
                 self?.uploadGravatarImage(image)
             }
 
             let navController = UINavigationController(rootViewController: imageCropViewController)
             navController.modalPresentationStyle = .formSheet
-            self?.present(navController, animated: true, completion: nil)
+            self?.present(navController, animated: true)
         }
         return headerView
     }()

@@ -56,7 +56,7 @@ final class ReaderShowMenuAction {
 
         if WPDeviceIdentification.isiPad() {
             alertController.modalPresentationStyle = .popover
-            vc.present(alertController, animated: true, completion: nil)
+            vc.present(alertController, animated: true)
             if let presentationController = alertController.popoverPresentationController {
                 presentationController.permittedArrowDirections = .any
                 presentationController.sourceView = anchor
@@ -64,7 +64,7 @@ final class ReaderShowMenuAction {
             }
 
         } else {
-            vc.present(alertController, animated: true, completion: nil)
+            vc.present(alertController, animated: true)
         }
     }
 

@@ -1217,7 +1217,7 @@ internal extension NotificationsViewController {
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
             self.setupTableHeaderView()
-        }, completion: nil)
+        })
 
         WPAnalytics.track(.appReviewsSawPrompt)
     }

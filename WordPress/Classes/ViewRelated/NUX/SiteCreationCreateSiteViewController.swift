@@ -335,7 +335,7 @@ extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate 
     }
 
     func dismissButtonPressed() {
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true)
     }
 }
 

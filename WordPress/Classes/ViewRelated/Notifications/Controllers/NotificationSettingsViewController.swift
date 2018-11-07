@@ -166,7 +166,7 @@ open class NotificationSettingsViewController: UIViewController {
             self.reloadSettings()
         }
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
 

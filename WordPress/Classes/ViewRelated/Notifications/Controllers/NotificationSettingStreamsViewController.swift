@@ -202,7 +202,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
                                         comment: "Displayed when Push Notifications are disabled (iOS 7)")
         let button = NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
 
-        let alert = AlertView(title: title, message: message, button: button, completion: nil)
+        let alert = AlertView(title: title, message: message, button: button)
         alert.show()
     }
 

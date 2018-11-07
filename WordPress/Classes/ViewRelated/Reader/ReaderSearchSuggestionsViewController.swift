@@ -88,7 +88,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { (_) in
             self.updateHeightConstraint()
-            }, completion: nil)
+            })
     }
 
 

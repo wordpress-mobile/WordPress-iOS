@@ -284,7 +284,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             self.deleteSelectedItems()
         })
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     private func deleteSelectedItems() {
@@ -341,7 +341,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. Button title. Tapping dismisses a prmopt."))
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     override var isEditing: Bool {
@@ -434,7 +434,7 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
     }
 
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 
@@ -463,7 +463,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard picker != self else { return }
         pickerDataSource.searchCancelled()
 
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
 
         guard ReachabilityUtils.isInternetReachable() else {
             ReachabilityUtils.showAlertNoInternetConnection()
@@ -482,7 +482,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         pickerDataSource.searchCancelled()
 
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {

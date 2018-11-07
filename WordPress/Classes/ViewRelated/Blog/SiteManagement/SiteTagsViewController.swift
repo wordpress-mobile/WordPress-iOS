@@ -348,7 +348,7 @@ extension SiteTagsViewController {
         let acceptTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(acceptTitle)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     private func tagWasUpdated(tag: PostTag, updatedTag: SettingsTitleSubtitleController.Content) -> Bool {

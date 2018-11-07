@@ -66,7 +66,7 @@ extension WordPressAuthenticationManager {
         }
 
         let controller = signinForWPComFixingAuthToken()
-        presenter.present(controller, animated: true, completion: nil)
+        presenter.present(controller, animated: true)
     }
 }
 
@@ -127,7 +127,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
 
-        sourceViewController.present(navController, animated: true, completion: nil)
+        sourceViewController.present(navController, animated: true)
     }
 
     /// Presents Support new request, with the specified ViewController as a source.

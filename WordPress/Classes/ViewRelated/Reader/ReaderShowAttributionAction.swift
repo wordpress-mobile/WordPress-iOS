@@ -24,6 +24,6 @@ final class ReaderShowAttributionAction {
         configuration.addsWPComReferrer = true
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
-        origin.present(navController, animated: true, completion: nil)
+        origin.present(navController, animated: true)
     }
 }

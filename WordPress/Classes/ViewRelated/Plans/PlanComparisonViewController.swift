@@ -11,7 +11,7 @@ class PlanComparisonViewController: PagedViewController {
     }()
 
     @IBAction func closeTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     override func viewDidLoad() {

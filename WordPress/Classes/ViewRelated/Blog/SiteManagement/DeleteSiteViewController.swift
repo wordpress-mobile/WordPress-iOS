@@ -162,7 +162,7 @@ open class DeleteSiteViewController: UITableViewController {
 
     @IBAction func deleteSite(_ sender: Any) {
         tableView.deselectSelectedRowWithAnimation(true)
-        present(confirmDeleteController(), animated: true, completion: nil)
+        present(confirmDeleteController(), animated: true)
     }
 
     @IBAction func contactSupport(_ sender: Any) {

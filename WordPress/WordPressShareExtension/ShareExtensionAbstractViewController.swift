@@ -153,7 +153,7 @@ extension ShareExtensionAbstractViewController {
         }
 
         alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     func saveImageToSharedContainer(_ image: UIImage) -> URL? {

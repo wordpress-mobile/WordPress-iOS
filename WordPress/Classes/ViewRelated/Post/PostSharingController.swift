@@ -30,13 +30,13 @@ import SVProgressHUD
             link: link)
 
         if !UIDevice.isPad() {
-            viewController.present(controller, animated: true, completion: nil)
+            viewController.present(controller, animated: true)
             return
         }
 
         // Silly iPad popover rules.
         controller.modalPresentationStyle = .popover
-        viewController.present(controller, animated: true, completion: nil)
+        viewController.present(controller, animated: true)
         if let presentationController = controller.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
             presentationController.barButtonItem = anchorBarButtonItem
@@ -50,13 +50,13 @@ import SVProgressHUD
             link: link)
 
         if !UIDevice.isPad() {
-            viewController.present(controller, animated: true, completion: nil)
+            viewController.present(controller, animated: true)
             return
         }
 
         // Silly iPad popover rules.
         controller.modalPresentationStyle = .popover
-        viewController.present(controller, animated: true, completion: nil)
+        viewController.present(controller, animated: true)
         if let presentationController = controller.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
             presentationController.sourceView = anchorView
@@ -98,14 +98,15 @@ import SVProgressHUD
         let controller = shareController("", summary: "", link: url.absoluteString)
 
         if !UIDevice.isPad() {
-            viewController.present(controller, animated: true, completion: nil)
+            viewController.present(controller, animated: true)
             return
         }
 
         // Silly iPad popover rules.
         controller.modalPresentationStyle = .popover
 
-        viewController.present(controller, animated: true, completion: nil)
+        viewController.present(controller, animated: true)
+
         if let presentationController = controller.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
             presentationController.sourceView = view
