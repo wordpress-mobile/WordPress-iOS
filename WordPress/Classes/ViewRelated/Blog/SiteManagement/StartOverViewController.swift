@@ -126,7 +126,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         mailComposeController.setToRecipients([mailRecipient])
         mailComposeController.setSubject(mailSubject)
         mailComposeController.setMessageBody(mailBody, isHTML: false)
-        present(mailComposeController, animated: true, completion: nil)
+        present(mailComposeController, animated: true)
     }
 
     @objc func showGoogleMailComposerForURL(_ url: URL ) {
@@ -149,7 +149,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     // MARK: - MFMailComposeViewControllerDelegate Method
 
     public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
+        controller.dismiss(animated: true)
         if let _ = error {
             showAlertToSendEmail()
         }

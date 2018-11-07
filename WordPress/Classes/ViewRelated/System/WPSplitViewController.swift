@@ -150,7 +150,7 @@ class WPSplitViewController: UISplitViewController {
         coordinator.animate(alongsideTransition: { context in
             self.updateSplitViewForPrimaryColumnWidth()
             self.updateDimmingViewFrame()
-        }, completion: nil)
+        })
 
         // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
         if let _ = overriddenTraitCollectionForDetailViewController,

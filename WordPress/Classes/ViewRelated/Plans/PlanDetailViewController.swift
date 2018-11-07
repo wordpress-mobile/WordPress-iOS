@@ -210,7 +210,7 @@ class PlanDetailViewController: UIViewController {
             purchaseButton?.isSelected = false
 
             let postPurchaseViewController = PlanPostPurchaseViewController(plan: viewModel.plan)
-            present(postPurchaseViewController, animated: true, completion: nil)
+            present(postPurchaseViewController, animated: true)
         }
     }
 

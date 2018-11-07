@@ -742,7 +742,7 @@ private extension ZendeskUtils {
         }
 
         // Show alert
-        presentInController?.present(alertController, animated: true, completion: nil)
+        presentInController?.present(alertController, animated: true)
     }
 
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {

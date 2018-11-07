@@ -1189,7 +1189,7 @@ extension ReaderStreamViewController: NewsManagerDelegate {
         configuration.addsWPComReferrer = true
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     private func presentReaderDetailViewControllerWithURL(_ url: URL) {

@@ -219,7 +219,7 @@ class ParentPageSettingsViewController: UIViewController {
 
     private func dismiss() {
         onClose?()
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
 

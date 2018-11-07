@@ -892,7 +892,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         configuration.addsWPComReferrer = true
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     @objc func presentFullScreenGif(with animatedGifData: Data?) {
@@ -903,7 +903,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true)
     }
 
     @objc func presentFullScreenImage(with image: UIImage?, linkURL: URL? = nil) {
@@ -919,7 +919,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true)
     }
 
     @objc func previewSite() {
@@ -945,7 +945,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 options: [.beginFromCurrentState, .allowUserInteraction],
                 animations: {
                     self.view.layoutIfNeeded()
-                }, completion: nil)
+                })
 
         } else {
             // Shows the navbar and footer view
@@ -964,9 +964,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                                 self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                             }
 
-            }, completion: nil)
+            })
         }
-
     }
 
 
@@ -1143,7 +1142,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        present(controller, animated: true)
     }
 
 

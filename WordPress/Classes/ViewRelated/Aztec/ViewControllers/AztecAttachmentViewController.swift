@@ -225,13 +225,13 @@ class AztecAttachmentViewController: UITableViewController {
 
     @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
         onCancel?()
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
         let checkedAlt = alt == "" ? nil : alt
         onUpdate?(alignment, size, linkURL, checkedAlt, caption)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     private func pushSettingsController(for row: EditableTextRow,

@@ -479,7 +479,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.updateFilter(index: filterIndex)
                 }
                 self?._tableViewHandler.isSearching = false
-                vc.dismiss(animated: true, completion: nil)
+                vc.dismiss(animated: true)
             }
         }
         let navController = UINavigationController(rootViewController: postViewController)
@@ -678,7 +678,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListOpenedCellMenu, withProperties: propertiesForAnalytics())
 
         alertController.modalPresentationStyle = .popover
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
 
         if let presentationController = alertController.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
@@ -714,7 +714,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
             self._tableViewHandler.isSearching = false
         }
-        present(parentPageNavigationController, animated: true, completion: nil)
+        present(parentPageNavigationController, animated: true)
     }
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {

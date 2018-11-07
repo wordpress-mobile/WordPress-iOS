@@ -91,14 +91,14 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController(rootViewController: webViewController)
-        controller?.present(navController, animated: true, completion: nil)
+        controller?.present(navController, animated: true)
     }
 
     func displayFullscreenImage(_ image: UIImage) {
         let imageViewController = WPImageViewController(image: image)
         imageViewController.modalTransitionStyle = .crossDissolve
         imageViewController.modalPresentationStyle = .fullScreen
-        controller?.present(imageViewController, animated: true, completion: nil)
+        controller?.present(imageViewController, animated: true)
     }
 
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws {

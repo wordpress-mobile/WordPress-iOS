@@ -36,7 +36,7 @@ enum PlanListViewModel {
                 let url = URL(string: WPAutomatticTermsOfServiceURL)!
                 let webViewController = WebViewControllerFactory.controller(url: url)
                 let navController = UINavigationController(rootViewController: webViewController)
-                presenter?.present(navController, animated: true, completion: nil)
+                presenter?.present(navController, animated: true)
             }
 
             return (footerTitle, {})

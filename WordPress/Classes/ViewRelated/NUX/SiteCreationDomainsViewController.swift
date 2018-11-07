@@ -75,7 +75,7 @@ class SiteCreationDomainsViewController: NUXViewController {
 
             // Since the Button View uses auto layout, need to call this so the animation works properly.
             self.view.layoutIfNeeded()
-        }, completion: nil)
+        })
     }
 
     // MARK: - Navigation
