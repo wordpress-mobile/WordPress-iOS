@@ -354,7 +354,6 @@ internal extension NSNotification.Name {
 public enum QuickStartTourElement: Int {
     case noSuchElement
     case tabFlipped
-    case blogDetails
     case blogDetailNavigation
     case viewSite
     case checklist
