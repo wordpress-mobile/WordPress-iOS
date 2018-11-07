@@ -11,7 +11,7 @@ final class VerticalsStep: WizardStep {
     }()
 
     private(set) lazy var content: UIViewController = {
-        return VerticalsWizardContent(service: self.service)
+        return VerticalsWizardContent(segment: self.creator.segment, service: self.service, selection: self.didSelect)
     }()
 
     var delegate: WizardDelegate?
@@ -19,5 +19,10 @@ final class VerticalsStep: WizardStep {
     init(creator: SiteCreator, service: SiteVerticalsService) {
         self.creator = creator
         self.service = service
+    }
+
+    private func didSelect(_ vertical: SiteVertical) {
+        creator.vertical = vertical
+        //delegate?.wizard(self, willNavigateTo: VerticalsStep.identifier)
     }
 }
