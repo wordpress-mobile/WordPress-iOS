@@ -36,6 +36,6 @@ class Revision: NSManagedObject {
     }
 
     @objc var revisionDateForSection: String {
-        return revisionDate.toStringForPageSections()
+        return revisionDate.longUTCStringWithoutTime()
     }
 }
