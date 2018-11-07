@@ -2,6 +2,7 @@ import UIKit
 import WordPressKit
 
 final class VerticalsWizardContent: UIViewController {
+    private let segment: SiteSegment?
     private let service: SiteVerticalsService
     private var dataSource: UITableViewDataSource?
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
@@ -11,8 +12,10 @@ final class VerticalsWizardContent: UIViewController {
     @IBOutlet weak var table: UITableView!
 
 
-    init(service: SiteVerticalsService) {
+    init(segment: SiteSegment?, service: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
+        self.segment = segment
         self.service = service
+        self.selection = selection
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
 
@@ -50,9 +53,11 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func fetchVerticals(_ searchTerm: String) {
-        print("searching ", searchTerm)
+        guard let segment = segment else {
+            return
+        }
 
-        service.verticals(for: Locale.current, type: SiteSegment()) {  [weak self] results in
+        service.verticals(for: Locale.current, type: segment) {  [weak self] results in
             switch results {
             case .error(let error):
                 self?.handleError(error)
