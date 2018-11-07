@@ -1592,7 +1592,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
                 postEditorStateContext.updated(postStatus: status)
                 editorContentWasUpdated()
             }
-        case #keyPath(AbstractPost.dateCreated):
+        case #keyPath(AbstractPost.date_created_gmt):
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
             editorContentWasUpdated()
@@ -1629,13 +1629,13 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
 
     internal func addObservers(toPost: AbstractPost) {
         toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
         fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
