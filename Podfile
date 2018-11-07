@@ -9,7 +9,7 @@ workspace 'WordPress.xcworkspace'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
-        if ['Gifu', 'Starscream', 'WordPress-Aztec-iOS', 'WordPress-Editor-iOS'].include? target.name
+        if ['WordPress-Aztec-iOS', 'WordPress-Editor-iOS'].include? target.name
             target.build_configurations.each do |config|
                 config.build_settings['SWIFT_VERSION'] = '4.0'
             end
@@ -94,11 +94,11 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'Crashlytics', '3.10.8'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
-    pod 'Gifu', '3.1.0'
+    pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'MGSwipeTableCell', '1.6.7'
     pod 'lottie-ios', '2.5.0'
-    pod 'Starscream', '3.0.4'
+    pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
 
