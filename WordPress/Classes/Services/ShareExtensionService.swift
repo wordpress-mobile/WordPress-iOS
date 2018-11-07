@@ -48,7 +48,6 @@ open class ShareExtensionService: NSObject {
 
         userDefaults.set(defaultSiteID, forKey: WPShareExtensionUserDefaultsPrimarySiteID)
         userDefaults.set(defaultSiteName, forKey: WPShareExtensionUserDefaultsPrimarySiteName)
-        userDefaults.synchronize()
     }
 
     /// Sets the Last Used Site that should be pre-selected in the Share Extension.
@@ -64,7 +63,6 @@ open class ShareExtensionService: NSObject {
 
         userDefaults.set(lastUsedSiteID, forKey: WPShareExtensionUserDefaultsLastUsedSiteID)
         userDefaults.set(lastUsedSiteName, forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
-        userDefaults.synchronize()
     }
 
     /// Sets the Maximum Media Size.
@@ -77,7 +75,6 @@ open class ShareExtensionService: NSObject {
         }
 
         userDefaults.set(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
-        userDefaults.synchronize()
     }
 
 
@@ -91,7 +88,6 @@ open class ShareExtensionService: NSObject {
         }
 
         userDefaults.set(recentSites, forKey: WPShareExtensionRecentSitesKey)
-        userDefaults.synchronize()
     }
 
     /// Nukes all of the Share Extension Configuration
@@ -120,7 +116,6 @@ open class ShareExtensionService: NSObject {
             userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
             userDefaults.removeObject(forKey: WPShareExtensionMaximumMediaDimensionKey)
             userDefaults.removeObject(forKey: WPShareExtensionRecentSitesKey)
-            userDefaults.synchronize()
         }
     }
 

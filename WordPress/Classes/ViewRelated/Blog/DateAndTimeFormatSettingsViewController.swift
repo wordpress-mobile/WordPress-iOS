@@ -206,7 +206,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {
             let navController = UINavigationController(rootViewController: webViewController)
-            present(navController, animated: true, completion: nil)
+            present(navController, animated: true)
         }
     }
 

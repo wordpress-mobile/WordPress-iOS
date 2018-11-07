@@ -29,11 +29,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
 
 @implementation MenuItemSourceCell
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

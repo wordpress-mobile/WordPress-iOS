@@ -10,9 +10,6 @@ class NotificationCenterObserveOnceTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        if let observer = observer {
-            notificationCenter.removeObserver(observer)
-        }
         observer = nil
     }
 

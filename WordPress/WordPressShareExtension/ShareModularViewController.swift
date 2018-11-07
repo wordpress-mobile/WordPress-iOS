@@ -469,12 +469,12 @@ fileprivate extension ShareModularViewController {
         switch ModulesSection(rawValue: indexPath.section)! {
         case .categories:
             if shareData.categoryCountForSelectedSite > 1 {
-                modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+                modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
                 showCategoriesPicker()
             }
             return
         case .tags:
-            modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+            modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
             showTagsPicker()
             return
         case .summary:
@@ -553,7 +553,7 @@ fileprivate extension ShareModularViewController {
     }
 
     func selectedSitesTableRowAt(_ indexPath: IndexPath) {
-        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength)
 
         guard let cell = sitesTableView.cellForRow(at: indexPath),
             let site = siteForRowAtIndexPath(indexPath),
@@ -858,7 +858,7 @@ fileprivate extension ShareModularViewController {
         }
         alertController.addAction(dismissAction)
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     func showPermissionsAlert() {
@@ -873,7 +873,7 @@ fileprivate extension ShareModularViewController {
         }
         alertController.addAction(dismissAction)
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 }
 

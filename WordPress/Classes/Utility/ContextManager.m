@@ -26,11 +26,6 @@ static ContextManager *_override;
 //
 @implementation ContextManager
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)init
 {
     self = [super init];

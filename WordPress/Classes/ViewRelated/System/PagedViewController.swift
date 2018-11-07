@@ -41,7 +41,7 @@ class PagedViewController: UIViewController {
         // If the view is changing size (e.g. on rotation, or multitasking), scroll to the correct page boundary based on the new size
         coordinator.animate(alongsideTransition: { context in
             self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentIndex) * size.width, y: 0), animated: false)
-            }, completion: nil)
+        })
     }
 
     override var shouldAutorotate: Bool {

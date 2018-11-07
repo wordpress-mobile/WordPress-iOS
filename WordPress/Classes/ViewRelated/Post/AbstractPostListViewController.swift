@@ -803,7 +803,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         navController.modalPresentationStyle = .formSheet
 
         WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: "An error message."), message: message, withSupportButton: true) { _ in
-            self.present(navController, animated: true, completion: nil)
+            self.present(navController, animated: true)
         }
     }
 
@@ -905,7 +905,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             self.updateFilterWithPostStatus(.publish)
         }
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     @objc func schedulePost(_ apost: AbstractPost) {

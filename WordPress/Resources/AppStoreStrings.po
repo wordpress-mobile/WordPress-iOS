@@ -43,6 +43,7 @@ msgid ""
 "Add Giphy gifs directly from the media toolbar when editing a post.\n"
 "More helpful error messages will assist you when logging in to a self hosted site.\n"
 "Viewing a post with many images is now faster.\n"
+"Added support for iPad Pro.\n"
 "Bug fixes.\n"
 msgstr ""
 

@@ -157,10 +157,6 @@ enum ReaderDefaultMenuItemOrder: Int {
     }
 
     // MARK: - Lifecycle Methods
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
 
     init(sectionCreators: [ReaderMenuItemCreator]) {
         self.sectionCreators = sectionCreators

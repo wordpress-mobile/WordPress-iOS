@@ -39,7 +39,7 @@ extension FancyAlertViewController {
 
         let defaultButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
             completion?()
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
@@ -57,7 +57,7 @@ extension FancyAlertViewController {
 
     private static func successfullySentVerificationEmailConfig() -> FancyAlertViewController.Config {
         let okButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         return FancyAlertViewController.Config(titleText: Strings.titleText,
@@ -73,7 +73,7 @@ extension FancyAlertViewController {
 
     private static func failureSendingVerificationEmailConfig(with error: VerificationFailureError) -> FancyAlertViewController.Config {
         let okButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let bodyText: String

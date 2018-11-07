@@ -77,12 +77,12 @@ extension BlogDetailsViewController {
 
             let alert = FancyAlertViewController.makeNotificationPrimerAlertController { (controller) in
                 InteractiveNotificationsManager.shared.requestAuthorization {
-                    controller.dismiss(animated: true, completion: nil)
+                    controller.dismiss(animated: true)
                 }
             }
             alert.modalPresentationStyle = .custom
             alert.transitioningDelegate = self
-            self?.tabBarController?.present(alert, animated: true, completion: nil)
+            self?.tabBarController?.present(alert, animated: true)
         }
     }
 }

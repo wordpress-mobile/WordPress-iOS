@@ -300,7 +300,7 @@ class FilterTabBar: UIControl {
                            options: .curveEaseInOut,
                            animations: {
                 self.layoutIfNeeded()
-            }, completion: nil)
+            })
         }
     }
 

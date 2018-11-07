@@ -53,7 +53,7 @@ private extension MainShareViewController {
         shareNavController.transitioningDelegate = extensionTransitioningManager
         shareNavController.modalPresentationStyle = .custom
 
-        present(shareNavController, animated: true, completion: nil)
+        present(shareNavController, animated: true)
     }
 
     func trackExtensionLaunch() {

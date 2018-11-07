@@ -41,11 +41,6 @@ static NSInteger HideSearchMinSites = 3;
     return [[WPTabBarController sharedInstance] blogListViewController];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)init
 {
     self = [super init];

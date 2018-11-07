@@ -100,7 +100,7 @@ extension PostSettingsViewController {
             alertController.popoverPresentationController?.sourceRect = CGRect(origin: CGPoint(x: anchorView.bounds.midX, y: anchorView.bounds.midY), size: CGSize(width: 1, height: 1))
             alertController.popoverPresentationController?.permittedArrowDirections = .any
         }
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     struct FeaturedImageActionSheet {
