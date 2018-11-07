@@ -562,15 +562,17 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 {
     BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
 
+    BOOL isTransferrable = self.isHostedAtWPcom
+        && self.planID.integerValue == WPComBusinessPlanId
+        && self.siteVisibility != SiteVisibilityPrivate
+        && self.isAdmin;
+
+    BOOL hasCustomDomain = ![self.hostURL containsString:@".wordpress.com"];
+
     if ([Feature enabled:FeatureFlagAutomatedTransfersCustomDomain]) {
-        BOOL isTransferrable = self.isHostedAtWPcom
-            && self.planID.integerValue == WPComBusinessPlanId
-            && self.siteVisibility != SiteVisibilityPrivate
-            && self.isAdmin;
-    
         return isTransferrable || hasRequiredJetpack;
     } else {
-        return hasRequiredJetpack;
+        return (isTransferrable && hasCustomDomain) || hasRequiredJetpack;
     }
 }
 
