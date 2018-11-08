@@ -8,6 +8,8 @@ final class VerticalsWizardContent: UIViewController {
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
     private let selection: (SiteVertical) -> Void
 
+    private let throttle = Scheduler(seconds: 1)
+
     @IBOutlet weak var search: UITextField!
     @IBOutlet weak var table: UITableView!
 
@@ -48,8 +50,9 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
 
-        //this would have to be throttled
-        fetchVerticals(searchTerm)
+        throttle.throttle { [weak self] in
+            self?.fetchVerticals(searchTerm)
+        }
     }
 
     private func fetchVerticals(_ searchTerm: String) {
