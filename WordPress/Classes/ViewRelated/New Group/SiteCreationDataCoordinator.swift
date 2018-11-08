@@ -4,10 +4,12 @@ import UIKit
 final class SiteCreationDataCoordinator<Model, Cell>: NSObject, UITableViewDataSource, UITableViewDelegate where Cell: ModelSettableCell, Cell: UITableViewCell, Model == Cell.DataType {
     private let data: [Model]
     private let selection: (Model) -> Void
+    private let headerData: SiteCreationHeaderData
 
-    init(data: [Model], cellType: Cell.Type, selection: @escaping (Model) -> Void) {
+    init(data: [Model], cellType: Cell.Type, selection: @escaping (Model) -> Void, headerData: SiteCreationHeaderData) {
         self.data = data
         self.selection = selection
+        self.headerData = headerData
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

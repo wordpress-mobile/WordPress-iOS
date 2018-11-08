@@ -8,6 +8,14 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     @IBOutlet weak var table: UITableView!
 
+    private lazy var headerData: SiteCreationHeaderData = {
+        let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
+        let subtitle = NSLocalizedString("This helps us suggest a solid foundation. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
+        return SiteCreationHeaderData(title: title, subtitle: subtitle)
+    }()
+
+
+
     init(service: SiteSegmentsService, selection: @escaping (SiteSegment) -> Void) {
         self.service = service
         self.selection = selection
@@ -47,7 +55,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        dataCoordinator = SiteCreationDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
+        dataCoordinator = SiteCreationDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect, headerData: headerData)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()

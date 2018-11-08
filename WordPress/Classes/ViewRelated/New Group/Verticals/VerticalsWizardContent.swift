@@ -13,6 +13,14 @@ final class VerticalsWizardContent: UIViewController {
     @IBOutlet weak var search: UITextField!
     @IBOutlet weak var table: UITableView!
 
+    private lazy var headerData: SiteCreationHeaderData = {
+        let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
+        let subtitle = NSLocalizedString("We'll use your answer to add sections to your website.", comment: "Create site, step 2. Select focus of the business. Subtitle")
+
+        return SiteCreationHeaderData(title: title, subtitle: subtitle)
+    }()
+
+
 
     init(segment: SiteSegment?, service: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
@@ -75,7 +83,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        dataCoordinator = SiteCreationDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect)
+        dataCoordinator = SiteCreationDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect, headerData: headerData)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()
