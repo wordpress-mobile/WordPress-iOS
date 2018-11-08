@@ -69,6 +69,12 @@ namespace :dependencies do
         pod %w[install]
       end
     end
+
+    task :clean do
+      fold("clean.cocoapds") do
+        FileUtils.rm_rf('Pods')
+      end
+    end
     CLOBBER << "Pods"
   end
 
