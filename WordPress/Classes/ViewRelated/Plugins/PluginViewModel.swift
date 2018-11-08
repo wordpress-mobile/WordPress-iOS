@@ -461,14 +461,8 @@ class PluginViewModel: Observable {
         let registerDomainActionTitle = NSLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain")) { [weak self] (action) in
-            guard let self = self else {
-                return
-            }
-            ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry,
-                                                           site: self.site))
 
-        }
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain"))
 
         let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
             self?.presentDomainRegistration()
