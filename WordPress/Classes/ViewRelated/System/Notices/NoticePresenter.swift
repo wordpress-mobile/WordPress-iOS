@@ -188,6 +188,9 @@ class NoticePresenter: NSObject {
     private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
         fromState()
 
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
+
+//        /// This causes the nav transition to be wonky
         UIView.animate(withDuration: Animations.appearanceDuration,
                        delay: 0,
                        usingSpringWithDamping: Animations.appearanceSpringDamping,
@@ -197,6 +200,27 @@ class NoticePresenter: NSObject {
                        completion: { _ in
                         completion()
         })
+        }
+//
+//        /// This leaves the nav transition alone
+//        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: Animations.appearanceDuration,
+//                                                            delay: 0,
+//                                                            options: [],
+//                                                            animations: toState) { _ in
+//                                                                completion()
+//        }
+
+        /// This makes the transition wonky again!
+//        let springTimings = UISpringTimingParameters(dampingRatio: Animations.appearanceSpringDamping,
+//                                                     initialVelocity: CGVector(dx: 0, dy: Animations.appearanceSpringVelocity))
+//        let animator = UIViewPropertyAnimator(duration: Animations.appearanceDuration, dampingRatio: 0, animations: nil)
+//        animator.addCompletion { _ in
+//            completion()
+//        }
+//        animator.addAnimations {
+//            toState()
+//        }
+//        animator.startAnimation()
     }
 
     private enum Animations {
