@@ -188,39 +188,18 @@ class NoticePresenter: NSObject {
     private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
         fromState()
 
+        // this delay avoids affecting other transitions like navigation pushes
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
-
-//        /// This causes the nav transition to be wonky
-        UIView.animate(withDuration: Animations.appearanceDuration,
-                       delay: 0,
-                       usingSpringWithDamping: Animations.appearanceSpringDamping,
-                       initialSpringVelocity: Animations.appearanceSpringVelocity,
-                       options: [],
-                       animations: toState,
-                       completion: { _ in
-                        completion()
-        })
+            UIView.animate(withDuration: Animations.appearanceDuration,
+                           delay: 0,
+                           usingSpringWithDamping: Animations.appearanceSpringDamping,
+                           initialSpringVelocity: Animations.appearanceSpringVelocity,
+                           options: [],
+                           animations: toState,
+                           completion: { _ in
+                            completion()
+            })
         }
-//
-//        /// This leaves the nav transition alone
-//        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: Animations.appearanceDuration,
-//                                                            delay: 0,
-//                                                            options: [],
-//                                                            animations: toState) { _ in
-//                                                                completion()
-//        }
-
-        /// This makes the transition wonky again!
-//        let springTimings = UISpringTimingParameters(dampingRatio: Animations.appearanceSpringDamping,
-//                                                     initialVelocity: CGVector(dx: 0, dy: Animations.appearanceSpringVelocity))
-//        let animator = UIViewPropertyAnimator(duration: Animations.appearanceDuration, dampingRatio: 0, animations: nil)
-//        animator.addCompletion { _ in
-//            completion()
-//        }
-//        animator.addAnimations {
-//            toState()
-//        }
-//        animator.startAnimation()
     }
 
     private enum Animations {
