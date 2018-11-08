@@ -33,11 +33,10 @@ extension Double {
         let units: [String] = ["k", "M", "B", "T", "P", "E"]
         let roundedNum: Double = Foundation.round(10 * num / pow(1000.0, Double(exp))) / 10
 
-        let remainder = roundedNum.truncatingRemainder(dividingBy: 1)
-        if remainder > 0 {
-            return "\(sign)\(roundedNum)\(units[exp-1])"
+        if roundedNum == 1000.0 {
+            return "\(sign)\(1)\(units[exp])"
         } else {
-            return "\(sign)\(Int(roundedNum))\(units[exp-1])"
+            return "\(sign)\(roundedNum)\(units[exp-1])"
         }
     }
 
