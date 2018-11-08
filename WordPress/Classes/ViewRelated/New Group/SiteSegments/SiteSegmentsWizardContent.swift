@@ -55,7 +55,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        dataCoordinator = SiteCreationDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect, headerData: headerData)
+        dataCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect, headerData: headerData)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()

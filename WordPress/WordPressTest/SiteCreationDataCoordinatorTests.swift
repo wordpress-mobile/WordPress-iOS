@@ -34,7 +34,7 @@ final class SiteCreationDataCoordinatorTests: XCTestCase {
         tableView.register(Cell.self, forCellReuseIdentifier: Cell.cellReuseIdentifier())
 
         if let mock = mockData {
-            coordinator = SiteCreationDataCoordinator(data: mock, cellType: Cell.self, selection: didSelect)
+            coordinator = TableDataCoordinator(data: mock, cellType: Cell.self, selection: didSelect)
         }
 
         selectedModel = nil

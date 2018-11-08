@@ -1,7 +1,7 @@
 import UIKit
 
 /// Generic-based implementation of the UITableViewDataSource and UITableViewDelegate protocol. It will dispatch a notification when an item is selected
-final class SiteCreationDataCoordinator<Model, Cell>: NSObject, UITableViewDataSource, UITableViewDelegate where Cell: ModelSettableCell, Cell: UITableViewCell, Model == Cell.DataType {
+final class TableDataCoordinator<Model, Cell>: NSObject, UITableViewDataSource, UITableViewDelegate where Cell: ModelSettableCell, Cell: UITableViewCell, Model == Cell.DataType {
     private let data: [Model]
     private let selection: (Model) -> Void
     private let headerData: SiteCreationHeaderData
