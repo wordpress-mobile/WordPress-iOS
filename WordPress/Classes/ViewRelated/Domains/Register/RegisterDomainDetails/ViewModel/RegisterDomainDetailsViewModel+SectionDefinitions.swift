@@ -82,6 +82,7 @@ extension RegisterDomainDetailsViewModel {
             self.sectionIndex = sectionIndex
             self.onChange = onChange
             registerChangeHandlers()
+            triggerValidation()
         }
 
         func insert(_ row: RowType, at index: Int) {
@@ -134,6 +135,13 @@ extension RegisterDomainDetailsViewModel {
             }
             return true
         }
+
+        func triggerValidation() {
+            rows.forEach { row in
+                row.editableRow?.validate()
+            }
+        }
+
 
         func validationErrors(forContext context: ValidationRule.Context) -> [String] {
             var result: [String] = []

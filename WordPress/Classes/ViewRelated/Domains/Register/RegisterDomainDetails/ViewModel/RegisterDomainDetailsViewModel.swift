@@ -169,10 +169,8 @@ class RegisterDomainDetailsViewModel {
     }
 
     private func manuallyTriggerValidation() {
-        sections.forEach { section in
-            section.rows.forEach { row in
-                row.editableRow?.validate()
-            }
+        sections.forEach {
+            $0.triggerValidation()
         }
     }
 
