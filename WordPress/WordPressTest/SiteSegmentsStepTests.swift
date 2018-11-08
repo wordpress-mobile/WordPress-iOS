@@ -18,28 +18,4 @@ final class SiteSegmentsStepTests: XCTestCase {
         step = nil
         super.tearDown()
     }
-
-    func testHeaderTitleMatchesExpectation() {
-        guard let header = step?.header as? SiteCreationWizardTitle else {
-            XCTFail()
-            return
-        }
-
-        // Force loading xib
-        let _ = header.view
-
-        XCTAssertEqual(header.titleLabel.text, HeaderExpectations.title)
-    }
-
-    func testHeaderSubtitleMatchesExpectation() {
-        guard let header = step?.header as? SiteCreationWizardTitle else {
-            XCTFail()
-            return
-        }
-
-        // Force loading xib
-        let _ = header.view
-
-        XCTAssertEqual(header.subtitleLabel.text, HeaderExpectations.subtitle)
-    }
 }

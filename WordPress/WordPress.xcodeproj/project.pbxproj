@@ -1177,8 +1177,6 @@
 		D8A468E02181C6450094B82F /* site-type.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468DF2181C6450094B82F /* site-type.json */; };
 		D8A468E22181C8290094B82F /* site-vertical.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468E12181C8290094B82F /* site-vertical.json */; };
 		D8A468E521828D940094B82F /* SiteVerticalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468E421828D940094B82F /* SiteVerticalsService.swift */; };
-		D8B1873B218AAB4A002920A2 /* WizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B18739218AAB4A002920A2 /* WizardViewController.swift */; };
-		D8B1873C218AAB4A002920A2 /* WizardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8B1873A218AAB4A002920A2 /* WizardViewController.xib */; };
 		D8B1873E218AABF9002920A2 /* SiteCreationWizardLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1873D218AABF9002920A2 /* SiteCreationWizardLauncher.swift */; };
 		D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */; };
 		D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */; };
@@ -3002,8 +3000,6 @@
 		D8A468DF2181C6450094B82F /* site-type.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-type.json"; sourceTree = "<group>"; };
 		D8A468E12181C8290094B82F /* site-vertical.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-vertical.json"; sourceTree = "<group>"; };
 		D8A468E421828D940094B82F /* SiteVerticalsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalsService.swift; sourceTree = "<group>"; };
-		D8B18739218AAB4A002920A2 /* WizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardViewController.swift; sourceTree = "<group>"; };
-		D8B1873A218AAB4A002920A2 /* WizardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WizardViewController.xib; sourceTree = "<group>"; };
 		D8B1873D218AABF9002920A2 /* SiteCreationWizardLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardLauncher.swift; sourceTree = "<group>"; };
 		D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+LoadFromNib.swift"; sourceTree = "<group>"; };
 		D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAware.swift; sourceTree = "<group>"; };
@@ -6774,8 +6770,6 @@
 				D86572162186C3600023A99C /* WizardDelegate.swift */,
 				D865721121869C590023A99C /* Wizard.swift */,
 				D865721021869C590023A99C /* WizardStep.swift */,
-				D8B18739218AAB4A002920A2 /* WizardViewController.swift */,
-				D8B1873A218AAB4A002920A2 /* WizardViewController.xib */,
 			);
 			path = Wizards;
 			sourceTree = "<group>";
@@ -7866,7 +7860,6 @@
 				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
-				D8B1873C218AAB4A002920A2 /* WizardViewController.xib in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */,
@@ -8761,7 +8754,6 @@
 				D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */,
 				E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */,
 				98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */,
-				D8B1873B218AAB4A002920A2 /* WizardViewController.swift in Sources */,
 				74EFB5C8208674250070BD4E /* BlogListViewController+Activity.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,

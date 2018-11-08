@@ -25,7 +25,6 @@ final class SiteCreationWizard: Wizard {
     init(steps: [WizardStep]) {
         self.steps = steps
         configureSteps()
-        //runWizard()
     }
 
     /// This probably won't fly for too long.
@@ -34,14 +33,6 @@ final class SiteCreationWizard: Wizard {
             step.delegate = self
         }
     }
-
-//    private func runWizard() {
-//        guard let firstStep = steps.first else {
-//            return
-//        }
-//
-//        //firstContentViewController.render(step: firstStep)
-//    }
 }
 
 extension SiteCreationWizard: WizardDelegate {
@@ -57,10 +48,7 @@ extension SiteCreationWizard: WizardDelegate {
             return
         }
 
-        let newViewController = WizardViewController()
-
-        newViewController.render(step: destinationStep)
-        navigation?.push(newViewController)
+        navigation?.push(destinationStep.content)
     }
 
     private func step(identifier: Identifier) -> WizardStep? {
