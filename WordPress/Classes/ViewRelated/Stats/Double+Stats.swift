@@ -7,7 +7,7 @@ extension Double {
         let sign = num < 0 ? "-" : ""
         num = fabs(num)
 
-        if (num < 1000.0) {
+        if num < 1000.0 {
             return "\(sign)\(Int(num))"
         }
 
