@@ -12,6 +12,13 @@ extension RegisterDomainDetailsViewModel {
             }
             return false
         }
+
+        static var validEmail: RowValidationBlock = { (text) in
+            guard let email = text else {
+                return false
+            }
+            return EmailFormatValidator.validate(string: email)
+        }
     }
 
     class ValidationRule {
@@ -138,7 +145,11 @@ extension RegisterDomainDetailsViewModel {
             }
 
             func isValid(inContext context: ValidationRule.Context) -> Bool {
-                return validationErrors(forContext: context).isEmpty
+                let hasErrors = validationRules
+                    .filter { return $0.context == context }
+                    .contains { $0.isValid == false }
+
+                return !hasErrors
             }
 
             static func == (lhs: EditableKeyValueRow, rhs: EditableKeyValueRow) -> Bool {

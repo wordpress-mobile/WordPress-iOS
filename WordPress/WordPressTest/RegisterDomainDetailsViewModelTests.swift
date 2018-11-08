@@ -15,7 +15,10 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        viewModel = RegisterDomainDetailsViewModel(domain: "")
+
+        let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
+
+        viewModel = RegisterDomainDetailsViewModel(domain: domainSuggestion)
         viewModel.onChange = { [weak self] (change: Change) in
             self?.changeArray.append(change)
         }
@@ -104,7 +107,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         viewModel.enableAddAddressRow()
         viewModel.replaceAddNewAddressLine()
 
-        XCTAssert(addressSection.rows.count == initialRowCount + RegisterDomainDetailsViewModel.Const.maxExtraAddressLine)
+        XCTAssert(addressSection.rows.count == initialRowCount + RegisterDomainDetailsViewModel.Constant.maxExtraAddressLine)
 
         viewModel.enableAddAddressRow()
         viewModel.replaceAddNewAddressLine()
@@ -112,11 +115,13 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         viewModel.enableAddAddressRow()
         viewModel.replaceAddNewAddressLine()
 
-        XCTAssert(addressSection.rows.count == initialRowCount + RegisterDomainDetailsViewModel.Const.maxExtraAddressLine)
+        XCTAssert(addressSection.rows.count == initialRowCount + RegisterDomainDetailsViewModel.Constant.maxExtraAddressLine)
     }
 
     func testEnableSubmitValidation() {
         viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true, emptyPrefillData: true)
+
+        XCTAssert(viewModel.isValid(inContext: .clientSide) == false)
 
         viewModel.updateValue("firstName", at: CellIndex.ContactInformation.firstName.indexPath)
         viewModel.updateValue("lastName", at: CellIndex.ContactInformation.lastName.indexPath)
@@ -131,17 +136,17 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
         viewModel.updateValue("423345", at: IndexPath(row: viewModel.addressSectionIndexHelper.postalCodeIndex, section: SectionIndex.address.rawValue))
         viewModel.updateValue("address line", at: IndexPath(row: viewModel.addressSectionIndexHelper.extraAddressLineCount, section: SectionIndex.address.rawValue))
 
-        XCTAssert(changeArray[16] == Change.wholeValidation(tag: .enableSubmit, isValid: true))
+        XCTAssert(viewModel.isValid(inContext: .clientSide) == true)
 
         viewModel.enableAddAddressRow()
         viewModel.replaceAddNewAddressLine()
 
-        XCTAssert(changeArray[17] == Change.addNewAddressLineEnabled(indexPath: IndexPath(row: 1,
+        XCTAssert(changeArray.lazy.reversed()[1] == Change.addNewAddressLineEnabled(indexPath: IndexPath(row: 1,
                                                                                           section: SectionIndex.address.rawValue)))
-        XCTAssert(changeArray[18] == Change.addNewAddressLineReplaced(indexPath: IndexPath(row: 1,
+        XCTAssert(changeArray.lazy.reversed()[0] == Change.addNewAddressLineReplaced(indexPath: IndexPath(row: 1,
                                                                                            section: SectionIndex.address.rawValue)))
 
-        XCTAssert(viewModel.isValid(forTag: .enableSubmit))
+        XCTAssert(viewModel.isValid(inContext: .clientSide))
     }
 
     func testPrefillData() {

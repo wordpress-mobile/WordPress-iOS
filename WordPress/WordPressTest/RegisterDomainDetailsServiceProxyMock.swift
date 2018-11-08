@@ -97,4 +97,16 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         state2.name = "Alaska"
         success([state1, state2])
     }
+
+    func createShoppingCart(siteID: Int, domainSuggestion: DomainSuggestion, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) {
+        guard self.success else {
+            failure(NSError())
+            return
+        }
+
+        let token = "RandomStringRepresentingACart"
+
+        success(token)
+    }
+
 }

@@ -36,6 +36,10 @@ extension RegisterDomainDetailsViewModel {
         return ValidationRule(context: .clientSide,
                               validationBlock: ValidationBlock.nonEmpty,
                               errorMessage: nil)
+    static var emailRule: ValidationRule {
+        return ValidationRule(context: .clientSide,
+                              validationBlock: ValidationBlock.validEmail,
+                              errorMessage: "not email")
     }
 
     static func serverSideRule(with key: String, hasErrorMessage: Bool = true) -> ValidationRule {
@@ -77,7 +81,8 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.ContactInformation.email,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule,
+                validationRules: [emailRule,
+                                  nonEmptyRule,
                                   serverSideRule(with: Localized.ContactInformation.email)]
                 )),
             .inlineEditable(.init(

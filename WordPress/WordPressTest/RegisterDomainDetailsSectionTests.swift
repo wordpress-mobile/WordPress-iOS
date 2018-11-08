@@ -22,27 +22,26 @@ class RegisterDomainDetailsSectionTests: XCTestCase {
     func testUpdateWithSingleField() {
         let sectionIndex = RegisterDomainDetailsViewModel.SectionIndex.contactInformation
         let emailRowIndex = CellIndex.email.rawValue
-        let emailIndexPath = CellIndex.email.indexPath
+
         section = RegisterDomainDetailsViewModel.Section(
             rows: RegisterDomainDetailsViewModel.contactInformationRows,
             sectionIndex: sectionIndex,
             onChange: self.changeHandler
         )
-        //invalid email is also valid in terms of enableSubmit rules
+
+
+        //we're handling more complicated cases than just "is empty"
         section.updateValue("invalidEmail", at: emailRowIndex)
-        XCTAssert(changeArray[0] == Change.rowValidation(tag: .enableSubmit,
-                                                         indexPath: emailIndexPath,
-                                                         isValid: true,
-                                                         errorMessage: nil))
+        XCTAssert(section.rows[emailRowIndex].editableRow?.isValid(inContext: .clientSide) == false)
+
         //nothing changes here in terms of enableSubmit rules
         section.updateValue("valid@email.com", at: emailRowIndex)
+        XCTAssert(section.rows[emailRowIndex].editableRow?.isValid(inContext: .clientSide) == true)
 
         //empty email is invalid in terms of enableSubmit rules
         section.updateValue("", at: emailRowIndex)
-        XCTAssert(changeArray[1] == Change.rowValidation(tag: .enableSubmit,
-                                                         indexPath: emailIndexPath,
-                                                         isValid: false,
-                                                         errorMessage: nil))
+        XCTAssert(section.rows[emailRowIndex].editableRow?.isValid(inContext: .clientSide) == false)
+
     }
 
     func testUpdateWholeSection() {
@@ -53,36 +52,32 @@ class RegisterDomainDetailsSectionTests: XCTestCase {
             sectionIndex: sectionIndex,
             onChange: self.changeHandler
         )
+
+        XCTAssert(section.isValid(inContext: .clientSide) == false)
+
+        XCTAssert(section.rows[CellIndex.firstName.rawValue].editableRow?.isValid(inContext: .clientSide) == false)
         section.updateValue("firstName", at: CellIndex.firstName.rawValue)
-        XCTAssert(changeArray[0] == Change.rowValidation(tag: .enableSubmit,
-                                                         indexPath: CellIndex.firstName.indexPath,
-                                                         isValid: true,
-                                                         errorMessage: nil))
+        XCTAssert(section.rows[CellIndex.firstName.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
 
+        XCTAssert(section.rows[CellIndex.lastName.rawValue].editableRow?.isValid(inContext: .clientSide) == false)
         section.updateValue("lastName", at: CellIndex.lastName.rawValue)
-        XCTAssert(changeArray[1] == Change.rowValidation(tag: .enableSubmit,
-                                                         indexPath: CellIndex.lastName.indexPath,
-                                                         isValid: true,
-                                                         errorMessage: nil))
+        XCTAssert(section.rows[CellIndex.lastName.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
 
+        XCTAssert(section.rows[CellIndex.email.rawValue].editableRow?.isValid(inContext: .clientSide) == false)
         section.updateValue("valid@email.com", at: CellIndex.email.rawValue)
-        XCTAssert(changeArray[2] == Change.rowValidation(tag: .enableSubmit,
-                                                         indexPath: CellIndex.email.indexPath,
-                                                         isValid: true,
-                                                         errorMessage: nil))
+        XCTAssert(section.rows[CellIndex.email.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
 
         //this is an optional field so validation state does not change for this
+        XCTAssert(section.rows[CellIndex.organization.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
         section.updateValue("organization", at: CellIndex.organization.rawValue)
+        XCTAssert(section.rows[CellIndex.organization.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
+        section.updateValue("", at: CellIndex.organization.rawValue) // changing it back to empty shouldn't invalidate either.
+        XCTAssert(section.rows[CellIndex.organization.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
 
+        XCTAssert(section.rows[CellIndex.country.rawValue].editableRow?.isValid(inContext: .clientSide) == false)
         section.updateValue("UK", at: CellIndex.country.rawValue)
+        XCTAssert(section.rows[CellIndex.country.rawValue].editableRow?.isValid(inContext: .clientSide) == true)
 
-        XCTAssert(changeArray[3] == Change.rowValidation(tag: .enableSubmit,
-                                                         indexPath: CellIndex.country.indexPath,
-                                                         isValid: true,
-                                                         errorMessage: nil))
-
-        XCTAssert(changeArray[4] == Change.sectionValidation(tag: .enableSubmit,
-                                                             sectionIndex: sectionIndex,
-                                                             isValid: true))
+        XCTAssert(section.isValid(inContext: .clientSide) == true)
     }
 }

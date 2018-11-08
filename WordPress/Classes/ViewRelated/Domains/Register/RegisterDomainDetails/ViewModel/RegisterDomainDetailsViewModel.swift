@@ -67,6 +67,7 @@ class RegisterDomainDetailsViewModel {
 
     init(domain: DomainSuggestion) {
         self.domain = domain
+        manuallyTriggerValidation()
     }
 
     lazy var sectionChangeHandler: ((Section.Change) -> Void)? = { [weak self] (change) in
@@ -165,6 +166,14 @@ class RegisterDomainDetailsViewModel {
             }
         }
         return true
+    }
+
+    private func manuallyTriggerValidation() {
+        sections.forEach { section in
+            section.rows.forEach { row in
+                row.editableRow?.validate()
+            }
+        }
     }
 
     func register() {
