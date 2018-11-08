@@ -51,6 +51,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    // MARK: - Gutenberg Support
+
+    private let gutenbergAlertPresenter = GutenbergAlertPresenter()
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -204,7 +208,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             if self.isViewLoaded {
                 self.tableView.reloadData()
             }
-            }, completion: nil)
+            })
     }
 
     // MARK: - Sync Methods
@@ -231,7 +235,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                                                             self?.updateAuthorFilter()
                                                             self?.refreshAndReload()
                                                             self?.syncItemsWithUserInteraction(false)
-                                                            self?.dismiss(animated: true, completion: nil)
+                                                            self?.dismiss(animated: true)
         }
 
         ForcePopoverPresenter.configurePresentationControllerForViewController(filterController, presentingFromView: sender)
@@ -329,12 +333,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.status == .trash {
+        guard post.status != .trash else {
             // No editing posts that are trashed.
             return
         }
 
-        editPost(apost: post)
+        gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
+            if edit {
+                self.editPost(apost: post)
+            }
+        }
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -420,7 +428,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: nil)
+        present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
     }
 
@@ -489,7 +497,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - InteractivePostViewDelegate
 
     func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
-        editPost(apost: post)
+        gutenbergAlertPresenter.presentIfNecessary(for: post, from: self) { [unowned self] edit in
+            if edit {
+                self.editPost(apost: post)
+            }
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
@@ -666,5 +678,4 @@ private extension PostListViewController {
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
     }
-
 }

@@ -18,10 +18,10 @@ extension GravatarUploader {
                 self?.uploadGravatarImage(updatedGravatarImage)
             }
 
-            sourceVC.dismiss(animated: true, completion: nil)
+            sourceVC.dismiss(animated: true)
         }
         pickerViewController.modalPresentationStyle = .formSheet
-        sourceVC.present(pickerViewController, animated: true, completion: nil)
+        sourceVC.present(pickerViewController, animated: true)
     }
 
     func uploadGravatarImage(_ newGravatar: UIImage) {

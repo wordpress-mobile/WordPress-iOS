@@ -53,6 +53,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    // MARK: - Gutenberg Support
+
+    private let gutenbergAlertPresenter = GutenbergAlertPresenter()
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
@@ -376,8 +380,14 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.status != .trash {
-            editPage(page)
+        guard page.status != .trash else {
+            return
+        }
+
+        gutenbergAlertPresenter.presentIfNecessary(for: page, from: self) { [unowned self] edit in
+            if edit {
+                self.editPage(page)
+            }
         }
     }
 
@@ -469,7 +479,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     self?.updateFilter(index: filterIndex)
                 }
                 self?._tableViewHandler.isSearching = false
-                vc.dismiss(animated: true, completion: nil)
+                vc.dismiss(animated: true)
             }
         }
         let navController = UINavigationController(rootViewController: postViewController)
@@ -668,7 +678,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListOpenedCellMenu, withProperties: propertiesForAnalytics())
 
         alertController.modalPresentationStyle = .popover
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
 
         if let presentationController = alertController.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
@@ -704,7 +714,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage) {
             self._tableViewHandler.isSearching = false
         }
-        present(parentPageNavigationController, animated: true, completion: nil)
+        present(parentPageNavigationController, animated: true)
     }
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {

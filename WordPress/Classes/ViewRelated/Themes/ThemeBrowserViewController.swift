@@ -702,7 +702,7 @@ public protocol ThemePresenter: class {
 
         collectionView.performBatchUpdates({
             hidden ? hide() : show()
-        }, completion: nil)
+        })
     }
 
     // MARK: - UISearchResultsUpdating
@@ -868,10 +868,10 @@ public protocol ThemePresenter: class {
 
         if searchController != nil && searchController.isActive {
             searchController.dismiss(animated: true, completion: {
-                self.present(navigation, animated: true, completion: nil)
+                self.present(navigation, animated: true)
             })
         } else {
-            present(navigation, animated: true, completion: nil)
+            present(navigation, animated: true)
         }
     }
 

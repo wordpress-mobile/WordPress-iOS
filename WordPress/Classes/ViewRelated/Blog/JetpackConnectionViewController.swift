@@ -84,7 +84,7 @@ open class JetpackConnectionViewController: UITableViewController {
                                                           handler: { action in
                                                               self.disconnectJetpack()
                                                           })
-            self.present(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true)
         }
     }
 
@@ -115,7 +115,7 @@ open class JetpackConnectionViewController: UITableViewController {
 
     @objc func dismiss() {
         if isModal() {
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         } else {
             navigationController?.popViewController(animated: true)
         }

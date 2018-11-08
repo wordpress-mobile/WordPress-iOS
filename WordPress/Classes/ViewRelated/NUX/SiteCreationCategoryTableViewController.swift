@@ -52,7 +52,7 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
     // MARK: - Cancel Button Action
 
     @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     // MARK: - Table Model

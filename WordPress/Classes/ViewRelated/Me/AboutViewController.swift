@@ -78,7 +78,7 @@ open class AboutViewController: UITableViewController {
 
     // MARK: - Button Helpers
     @IBAction func dismissWasPressed(_ sender: AnyObject) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
 
@@ -146,7 +146,7 @@ open class AboutViewController: UITableViewController {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {
             let navController = UINavigationController(rootViewController: webViewController)
-            present(navController, animated: true, completion: nil)
+            present(navController, animated: true)
         }
     }
 

@@ -1,5 +1,0 @@
-In het gedeelte Sitepagina's worden nu de pagina's weergegeven in een volgorde die overeenkomt met de lay-out van je site, zodat je makkelijker kunt vinden waar je naar op zoek bent.
-Het heerschappij van de lege pagina is ten einde gekomen! We hebben suggesties voor volgende stappen toegevoegd aan elke pagina zonder content.
-Wanneer je een nieuw bericht schrijft, slaat de app concepten automatisch op je apparaat op, zodat je werk nooit verloren gaat.
-We hebben de stijl van een aantal extra schermen aangepast, zodat ze consistent zijn met de rest van de app.
-Daarnaast zijn er wat bugfixes en algemene prestatieverbeteringen doorgevoerd, zoals gewoonlijk.

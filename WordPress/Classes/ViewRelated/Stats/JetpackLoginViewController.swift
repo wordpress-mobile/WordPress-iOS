@@ -162,7 +162,7 @@ class JetpackLoginViewController: UIViewController {
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     fileprivate func signIn() {

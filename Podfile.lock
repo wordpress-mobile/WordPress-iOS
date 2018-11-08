@@ -29,11 +29,11 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.10.8):
     - Fabric (~> 1.7.12)
-  - Fabric (1.7.12)
+  - Fabric (1.7.13)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - Gifu (3.1.0)
+  - Gifu (3.2.0)
   - GiphyCoreSDK (1.4.0)
   - GoogleSignInRepacked (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
@@ -83,7 +83,7 @@ PODS:
   - Nimble (7.1.3)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
-  - OCMock (3.4.2)
+  - OCMock (3.4.3)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
   - OHHTTPStubs/Core (6.1.0)
@@ -100,13 +100,13 @@ PODS:
   - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Starscream (3.0.4)
+  - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.1)
   - WordPress-Editor-iOS (1.1):
     - WordPress-Aztec-iOS (= 1.1)
-  - WordPressAuthenticator (1.1.2):
+  - WordPressAuthenticator (1.1.5):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -116,21 +116,21 @@ PODS:
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
     - UIDeviceIdentifier (~> 0.4)
-    - WordPressKit (~> 1.4.2)
-    - WordPressShared (~> 1.2.0)
+    - WordPressKit (~> 1.4)
+    - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressKit (1.4.3-beta.4):
+  - WordPressKit (1.4.5-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 0.4)
-    - WordPressShared (~> 1.2.0)
+    - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.2.0):
+  - WordPressShared (1.4.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.0.8)
+  - WordPressUI (1.1.0)
   - WPMediaPicker (1.3.1)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (2.2.0):
@@ -152,7 +152,7 @@ DEPENDENCIES:
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.10.8)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - Gifu (= 3.1.0)
+  - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (= 0.16)
   - HockeySDK (= 5.1.4)
@@ -166,14 +166,14 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
-  - Starscream (= 3.0.4)
+  - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.1)
-  - WordPressAuthenticator (= 1.1.2)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `ae2227b`)
-  - WordPressShared (= 1.2.0)
-  - WordPressUI (= 1.0.8)
+  - WordPressAuthenticator (~> 1.1)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `4e5eeff2dda03c6daf655746c597e489f4a3cfe0`)
+  - WordPressShared (~> 1.4)
+  - WordPressUI (~> 1.1)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 2.2.0)
@@ -220,7 +220,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressKit:
-    :commit: ae2227b
+    :commit: 4e5eeff2dda03c6daf655746c597e489f4a3cfe0
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -228,7 +228,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressKit:
-    :commit: ae2227b
+    :commit: 4e5eeff2dda03c6daf655746c597e489f4a3cfe0
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -239,9 +239,9 @@ SPEC CHECKSUMS:
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 058dc1ba579f6c100bc60a6878703779bff383c4
-  Fabric: d7387db9a31aadff63b147a4b91d982c53afaa4f
+  Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
+  Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   GiphyCoreSDK: 1fe401c5fc65f182e7aa8b7fb2c9005f2a523374
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
@@ -253,22 +253,22 @@ SPEC CHECKSUMS:
   Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
-  OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
+  OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 5bb57849aad4583a2e714ba8634eff1db0d03ac3
   WordPress-Editor-iOS: 5a949802536d73c67ffb4d7705f922ca13a71550
-  WordPressAuthenticator: 0506b827e7050c902dcc07623ff4e5ad89d4cbe1
-  WordPressKit: 41da9cfcd2d4ff0b75ab34c967a97db64fdb51a1
-  WordPressShared: 7ef0253d54989b195e020a74100a8500be0a4315
-  WordPressUI: e50965adee24b4f10da398f6cdbdd3a822274158
+  WordPressAuthenticator: 0e60d89e1637212bc841a0cf66fc5ef8cac01e52
+  WordPressKit: 7363364daa6a642f955453479924442ca522e5f1
+  WordPressShared: f55be10963c8f6dbbc8e896450805ba1dd5353f7
+  WordPressUI: d3dbd0258f12560d6607647d3240c62c83e089fe
   WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 19ef2b47c55dc42f8d2b171a23c67d26b79333de
+PODFILE CHECKSUM: b1700fe20e79918d3bc9c8e266ba3ac80797c7e2
 
 COCOAPODS: 1.5.3

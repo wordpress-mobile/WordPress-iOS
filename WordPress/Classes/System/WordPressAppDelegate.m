@@ -62,11 +62,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions

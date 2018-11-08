@@ -41,11 +41,6 @@ static NSInteger HideSearchMinSites = 3;
     return [[WPTabBarController sharedInstance] blogListViewController];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)init
 {
     self = [super init];
@@ -877,11 +872,31 @@ static NSInteger HideSearchMinSites = 3;
                                                           handler:^(UIAlertAction *action) {
                                                               [self showLoginControllerForAddingSelfHostedSite];
                                                           }];
+    [addSiteAlertController addAction:addSiteAction];
+
+    if ([Feature enabled: FeatureFlagEnhancedSiteCreation]) {
+        UIAlertAction *enhancedSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Enhanced site creation", @"Enhanced site creation")
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction *action) {
+                                                                       [self enhancedSiteCreation];
+                                                                   }];
+
+        [addSiteAlertController addAction:enhancedSiteAction];
+    }
+
+    if ([Feature enabled:FeatureFlagBottomSheetDemo] == YES) {
+        NSString *title = NSLocalizedString(@"Demo bottom sheet", @"Demo bottom sheet");
+        UIAlertAction *addBottomSheetDemoAction = [UIAlertAction actionWithTitle:title
+                                                                           style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction *action) {
+                                                                             [self showBottomSheetDemo];
+                                                                         }];
+        [addSiteAlertController addAction:addBottomSheetDemoAction];
+    }
+
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
-
-    [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
 
     return addSiteAlertController;
@@ -898,11 +913,6 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO animated:NO];
 
-    // to be integrated via [#10322](https://github.com/wordpress-mobile/WordPress-iOS/issues/10312)
-    if ([Feature enabled:FeatureFlagEnhancedSiteCreation] == YES) {
-        DDLogDebug(@"The feature flag for enhanced site creation is ENABLED.");
-    }
-
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
     SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
     SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
@@ -914,6 +924,20 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO animated:NO];
     [WordPressAuthenticator showLoginForSelfHostedSite:self];
+}
+
+- (void)showBottomSheetDemo
+{
+    if ([WPDeviceIdentification isiPhone] == YES) {
+        BottomSheetDemoViewController *demoViewController = [[BottomSheetDemoViewController alloc] init];
+
+        BottomSheetPresentationController *presentationController = [[BottomSheetPresentationController alloc] initWithPresentedViewController:demoViewController presentingViewController:self];
+        demoViewController.transitioningDelegate = presentationController;
+
+        [self presentViewController:demoViewController animated:true completion:nil];
+    } else {
+        // TBD: Present via popover
+    }
 }
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog

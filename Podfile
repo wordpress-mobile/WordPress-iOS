@@ -9,7 +9,7 @@ workspace 'WordPress.xcworkspace'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
-        if ['Gifu', 'Starscream', 'WordPress-Aztec-iOS', 'WordPress-Editor-iOS'].include? target.name
+        if ['WordPress-Aztec-iOS', 'WordPress-Editor-iOS'].include? target.name
             target.build_configurations.each do |config|
                 config.build_settings['SWIFT_VERSION'] = '4.0'
             end
@@ -23,13 +23,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.2.0'
+    pod 'WordPressShared', '~> 1.4'
 
     ## for development:
     ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '35c81ae4c75bb36455d49c7d4b495d22fb7871e3'
+    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '14a5ebae28fdc09130b091330d84a3a310132cd2'
 end
 
 def aztec
@@ -42,11 +42,16 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '1.0.8'
+    pod 'WordPressUI', '~> 1.1'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '5ec2be1533a86335710221ec20df5b4ba78b06e4'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'aae4524cd95ae24b725b1cad8c54918a3d5b2e59'
+end
+
+def wordpress_kit
+    ##pod 'WordPressKit', '~> 1.4'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '4e5eeff2dda03c6daf655746c597e489f4a3cfe0'
 end
 
 def shared_with_all_pods
@@ -61,7 +66,8 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ae2227b'
+
+	wordpress_kit
 end
 
 def shared_test_pods
@@ -89,11 +95,11 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'Crashlytics', '3.10.8'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
-    pod 'Gifu', '3.1.0'
+    pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'MGSwipeTableCell', '1.6.7'
     pod 'lottie-ios', '2.5.0'
-    pod 'Starscream', '3.0.4'
+    pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
 
@@ -106,7 +112,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
-    pod 'WordPressAuthenticator', '1.1.2'
+    pod 'WordPressAuthenticator', '~> 1.1'
 
     aztec
     wordpress_ui
@@ -168,8 +174,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ae2227b'
-
+	wordpress_kit
     wordpress_shared
     wordpress_ui
 end
@@ -185,10 +190,9 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ae2227b'
 
+    wordpress_kit
     wordpress_shared
-
     wordpress_ui
 end
 

@@ -23,11 +23,8 @@ class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to follow site: \(String(describing: error))")
-            //block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
-
-        //block.setOverrideValue(true, forAction: .Follow)
     }
 
 
@@ -49,11 +46,8 @@ class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to unfollow site: \(String(describing: error))")
-            //block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
-
-        //block.setOverrideValue(false, forAction: .Follow)
     }
 
 
@@ -133,11 +127,8 @@ class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to like comment: \(String(describing: error))")
-            //block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
-
-        //block.setOverrideValue(true, forAction: .Like)
     }
 
 
@@ -159,11 +150,8 @@ class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to unlike comment: \(String(describing: error))")
-            //block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
-
-        //block.setOverrideValue(false, forAction: .Like)
     }
 
 
@@ -185,11 +173,8 @@ class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
-            //block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
-
-        //block.setOverrideValue(true, forAction: .Approve)
     }
 
 
@@ -211,11 +196,8 @@ class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
-            //block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
-
-        //block.setOverrideValue(false, forAction: .Approve)
     }
 
 

@@ -69,8 +69,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         UIView.animate(withDuration: 0.25,
             delay: 0,
             options: UIView.AnimationOptions(),
-            animations: updateBorder,
-            completion: nil)
+            animations: updateBorder)
     }
 
 

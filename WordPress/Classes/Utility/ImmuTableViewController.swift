@@ -21,7 +21,7 @@ extension ImmuTablePresenter where Self: UIViewController {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
-            self.present(controller, animated: true, completion: nil)
+            self.present(controller, animated: true)
         }
     }
 }

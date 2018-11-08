@@ -25,6 +25,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
+@property (nonatomic, strong) SiteStatsDashboardViewController *siteStatsDashboardVC;
 @property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 
@@ -42,10 +43,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,9 +51,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
     
     if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        NSBundle *statsBundle = [NSBundle bundleForClass:[SiteStatsDashboardViewController class]];
-        self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:statsBundle] instantiateInitialViewController];
-        self.statsVC = self.statsNavVC.viewControllers.firstObject;
+        self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStatsDashboard" bundle:nil] instantiateInitialViewController];
+        self.siteStatsDashboardVC = self.statsNavVC.viewControllers.firstObject;
     } else {
         NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
         self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
@@ -94,7 +90,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
-    if (![Feature enabled:FeatureFlagStatsRefresh]) {
+    if ([Feature enabled:FeatureFlagStatsRefresh]) {
+        [self addChildViewController:self.siteStatsDashboardVC];
+        [self.view addSubview:self.siteStatsDashboardVC.view];
+        [self.siteStatsDashboardVC didMoveToParentViewController:self];
+    } else {
         if (self.presentingViewController == nil) {
             UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
             self.navigationItem.rightBarButtonItem = settingsButton;
@@ -104,10 +104,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         [self.view addSubview:self.statsVC.view];
         self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         [self.view pinSubviewToAllEdges:self.statsVC.view];
-        [self.statsVC didMoveToParentViewController:self];
-    } else {
-        [self addChildViewController:self.statsVC];
-        [self.view addSubview:self.statsVC.view];
         [self.statsVC didMoveToParentViewController:self];
     }
 }
@@ -126,14 +122,19 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
-    if (![Feature enabled:FeatureFlagStatsRefresh]) {
+    if ([Feature enabled:FeatureFlagStatsRefresh]) {
+        self.siteStatsDashboardVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
+    } else {
         self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
     }
     
     // WordPress.com + Jetpack REST
     if (self.blog.account) {
         
-        if (![Feature enabled:FeatureFlagStatsRefresh]) {
+        if ([Feature enabled:FeatureFlagStatsRefresh]) {
+            self.siteStatsDashboardVC.oauth2Token = self.blog.account.authToken;
+            self.siteStatsDashboardVC.siteID = self.blog.dotComID;
+        } else {
             self.statsVC.oauth2Token = self.blog.account.authToken;
             self.statsVC.siteID = self.blog.dotComID;
         }
