@@ -2,7 +2,7 @@
 import XCTest
 @testable import WordPress
 
-final class SiteTypeTests: XCTestCase {
+final class SiteSegmentTests: XCTestCase {
     private struct MockValues {
         static let identifier = Identifier(value: "101")
         static let title = "Blogger"
@@ -15,7 +15,7 @@ final class SiteTypeTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let json = Bundle(for: SiteTypeTests.self).url(forResource: "site-type", withExtension: "json")!
+        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-type", withExtension: "json")!
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 

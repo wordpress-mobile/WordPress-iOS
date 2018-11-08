@@ -1188,7 +1188,7 @@
 		D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */; };
 		D8CB56202181A8CE00554EAE /* SiteSegmentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */; };
 		D8CB56232181A95D00554EAE /* SiteSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56222181A95D00554EAE /* SiteSegment.swift */; };
-		D8CB56252181B3C300554EAE /* SiteTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56242181B3C300554EAE /* SiteTypeTests.swift */; };
+		D8CB56252181B3C300554EAE /* SiteSegmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CB56242181B3C300554EAE /* SiteSegmentTests.swift */; };
 		D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFE20A33BDB0010EB6E /* ImgUploadProcessor.swift */; };
 		D8E59686218AC73F00C9615E /* SiteCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E59685218AC73F00C9615E /* SiteCreator.swift */; };
 		D8E59688218AC76100C9615E /* SiteCreatorOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E59687218AC76100C9615E /* SiteCreatorOutput.swift */; };
@@ -3013,7 +3013,7 @@
 		D8C31CC52188490000A33B35 /* SiteSegmentsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteSegmentsCell.xib; sourceTree = "<group>"; };
 		D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentsService.swift; sourceTree = "<group>"; };
 		D8CB56222181A95D00554EAE /* SiteSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegment.swift; sourceTree = "<group>"; };
-		D8CB56242181B3C300554EAE /* SiteTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTests.swift; sourceTree = "<group>"; };
+		D8CB56242181B3C300554EAE /* SiteSegmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSegmentTests.swift; sourceTree = "<group>"; };
 		D8E59685218AC73F00C9615E /* SiteCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreator.swift; sourceTree = "<group>"; };
 		D8E59687218AC76100C9615E /* SiteCreatorOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreatorOutput.swift; sourceTree = "<group>"; };
 		D8EB1FD021900810002AE1C4 /* BlogListViewController+SiteCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+SiteCreation.swift"; sourceTree = "<group>"; };
@@ -4485,7 +4485,7 @@
 				D865722A2186F5400023A99C /* SiteCreationHeaderDataTests.swift */,
 				D86572282186F3DC0023A99C /* SiteCreationWizardTitleTests.swift */,
 				D8A468DC2181C23A0094B82F /* SiteVerticalTests.swift */,
-				D8CB56242181B3C300554EAE /* SiteTypeTests.swift */,
+				D8CB56242181B3C300554EAE /* SiteSegmentTests.swift */,
 				D816B8D62112D75C0052CE4D /* NewsCardTests.swift */,
 				D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */,
 				D816B8C92112D2FD0052CE4D /* LocalNewsServiceTests.swift */,
@@ -9619,7 +9619,7 @@
 				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,
-				D8CB56252181B3C300554EAE /* SiteTypeTests.swift in Sources */,
+				D8CB56252181B3C300554EAE /* SiteSegmentTests.swift in Sources */,
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				E180BD4C1FB462FF00D0D781 /* CookieJarTests.swift in Sources */,
