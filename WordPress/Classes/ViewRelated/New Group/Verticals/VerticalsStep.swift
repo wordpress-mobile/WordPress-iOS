@@ -1,3 +1,4 @@
+/// Site Creation. Second screen: Site Verticals
 final class VerticalsStep: WizardStep {
     private let creator: SiteCreator
     private let service: SiteVerticalsService

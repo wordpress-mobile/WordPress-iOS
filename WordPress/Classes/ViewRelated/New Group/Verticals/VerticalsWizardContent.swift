@@ -1,6 +1,7 @@
 import UIKit
 import WordPressKit
 
+/// Contains the UI corresponsing to the list of verticals
 final class VerticalsWizardContent: UIViewController {
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
