@@ -5,7 +5,7 @@ final class SiteCreationDataCoordinator: NSObject, UITableViewDataSource, UITabl
 
     private struct Constants {
         // Arbitrary value, will have to be updated
-        static let headerHeight: CGFloat = 80
+        static let headerHeight: CGFloat = 200
     }
 
     init(decorated: UITableViewDataSource & UITableViewDelegate, headerData: SiteCreationHeaderData) {
@@ -30,13 +30,16 @@ final class SiteCreationDataCoordinator: NSObject, UITableViewDataSource, UITabl
         let title = UILabel(frame: .zero)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = headerData.title
+        title.textAlignment = .center
+        title.numberOfLines = 0
 
-        let subTitle = UILabel(frame: .zero)
-        subTitle.translatesAutoresizingMaskIntoConstraints = false
-        subTitle.text = headerData.subtitle
+        let subtitle = UILabel(frame: .zero)
+        subtitle.translatesAutoresizingMaskIntoConstraints = false
+        subtitle.text = headerData.subtitle
+        subtitle.textAlignment = .center
+        subtitle.numberOfLines = 0
 
-        let stackView = UIStackView(arrangedSubviews: [title, subTitle])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView(arrangedSubviews: [title, subtitle])
         stackView.axis = .vertical
         stackView.spacing = 20
 
