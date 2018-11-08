@@ -1,8 +1,10 @@
-
+import CoreServices
 import UIKit
 import React
+import WPMediaPicker
 
 class GutenbergController: UIViewController, PostEditor {
+
     var onClose: ((Bool, Bool) -> Void)?
 
     var isOpenedDirectlyForPhotoPost: Bool = false
@@ -11,6 +13,8 @@ class GutenbergController: UIViewController, PostEditor {
     let gutenberg: Gutenberg
 
     let navBarManager = PostEditorNavigationBarManager()
+
+    var mediaPickerHelper: GutenbergMediaPickerHelper!
 
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -33,6 +37,7 @@ class GutenbergController: UIViewController, PostEditor {
         self.gutenberg = Gutenberg(props: ["initialData": post.content ?? ""])
         super.init(nibName: nil, bundle: nil)
 
+        mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
         navBarManager.delegate = self
     }
 
@@ -98,6 +103,13 @@ extension GutenbergController {
 }
 
 extension GutenbergController: GutenbergBridgeDelegate {
+
+    func gutenbergDidRequestMediaPicker(callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       dataSourceType: .mediaLibrary,
+                                                       callback: callback)
+    }
+
     func gutenbergDidProvideHTML(_ html: String) {
 
     }
