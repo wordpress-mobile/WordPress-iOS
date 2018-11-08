@@ -54,10 +54,6 @@ class PluginViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
-    }
-
     @objc private func didChangeDynamicType() {
         // (non-trivial) NSAttributedStrings and Dynamic Type don't work super well with each other.
         // We use fairly complex NSAttributedStrings in this view — so we subscribe to the notification

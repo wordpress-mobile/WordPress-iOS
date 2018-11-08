@@ -331,6 +331,6 @@ extension SharingAccountViewController: NoResultsViewControllerDelegate {
         if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
             UIApplication.shared.open(url)
         }
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }

@@ -1,4 +1,5 @@
 Add Giphy gifs directly from the media toolbar when editing a post.
 More helpful error messages will assist you when logging in to a self hosted site.
 Viewing a post with many images is now faster.
+Added support for iPad Pro.
 Bug fixes.

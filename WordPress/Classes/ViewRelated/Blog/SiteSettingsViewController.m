@@ -116,11 +116,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 @implementation SiteSettingsViewController
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);

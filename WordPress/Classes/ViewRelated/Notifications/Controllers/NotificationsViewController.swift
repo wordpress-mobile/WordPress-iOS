@@ -90,10 +90,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - View Lifecycle
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -1221,7 +1217,7 @@ internal extension NotificationsViewController {
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
             self.inlinePromptView.alpha = WPAlphaFull
             self.setupTableHeaderView()
-        }, completion: nil)
+        })
 
         WPAnalytics.track(.appReviewsSawPrompt)
     }
@@ -1445,7 +1441,6 @@ private extension NotificationsViewController {
         }
         set {
             userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
-            userDefaults.synchronize()
         }
     }
 

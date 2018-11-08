@@ -8,10 +8,6 @@ import WordPressAuthenticator
 @objc
 class WordPressAuthenticationManager: NSObject {
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
     ///
@@ -66,7 +62,7 @@ extension WordPressAuthenticationManager {
         }
 
         let controller = signinForWPComFixingAuthToken()
-        presenter.present(controller, animated: true, completion: nil)
+        presenter.present(controller, animated: true)
     }
 }
 
@@ -127,7 +123,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
 
-        sourceViewController.present(navController, animated: true, completion: nil)
+        sourceViewController.present(navController, animated: true)
     }
 
     /// Presents Support new request, with the specified ViewController as a source.

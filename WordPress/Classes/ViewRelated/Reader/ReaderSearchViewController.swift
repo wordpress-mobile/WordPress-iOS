@@ -82,12 +82,6 @@ import Gridicons
 
     // MARK: Lifecycle methods
 
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
         restorationIdentifier = type(of: self).restorationClassIdentifier
         restorationClass = type(of: self)

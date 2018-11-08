@@ -18,7 +18,7 @@ extension UITableView {
     @objc func flashRowAtIndexPath(_ indexPath: IndexPath,
                                    scrollPosition: UITableView.ScrollPosition = .middle,
                                    flashLength: TimeInterval,
-                                   completion: (() -> Void)?) {
+                                   completion: (() -> Void)? = nil) {
         selectRow(at: indexPath, animated: true, scrollPosition: scrollPosition)
 
         let time = DispatchTime.now() + Double(Int64(flashLength * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)

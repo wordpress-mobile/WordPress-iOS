@@ -47,10 +47,6 @@ private class AccountSettingsController: SettingsController {
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     func refreshModel() {
         service.refreshSettings()
     }

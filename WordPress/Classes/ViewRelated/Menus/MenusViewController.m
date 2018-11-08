@@ -58,11 +58,6 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     return controller;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)setupWithBlog:(Blog *)blog
 {
     // using a new child context to keep local changes discardable

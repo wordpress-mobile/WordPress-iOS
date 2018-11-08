@@ -18,11 +18,6 @@
 
 @implementation MenusSelectionItemView
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (id)init
 {
     self = [super init];

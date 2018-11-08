@@ -136,7 +136,7 @@ class PrivacySettingsViewController: UITableViewController {
         }
         let webViewController = WebViewControllerFactory.controller(url: url)
         let navigation = UINavigationController(rootViewController: webViewController)
-        present(navigation, animated: true, completion: nil)
+        present(navigation, animated: true)
     }
 
 }

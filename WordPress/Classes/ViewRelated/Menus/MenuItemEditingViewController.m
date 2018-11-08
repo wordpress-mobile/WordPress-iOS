@@ -64,11 +64,6 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
     return controller;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)setupWithItem:(MenuItem *)item blog:(Blog *)blog
 {
     _blog = blog;

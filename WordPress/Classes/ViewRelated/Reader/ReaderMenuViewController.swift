@@ -83,12 +83,6 @@ import WordPressShared
 
     // MARK: - Lifecycle Methods
 
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-
     override init(style: UITableView.Style) {
         super.init(style: style)
         // Need to use `super` to work around a Swift compiler bug
@@ -417,14 +411,14 @@ import WordPressShared
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
 
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
 
     /// Dismisses a presented view controller.
     ///
     @objc func dismissModal() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     func deselectSelectedRow(animated: Bool) {

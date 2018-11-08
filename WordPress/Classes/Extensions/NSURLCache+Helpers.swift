@@ -28,7 +28,7 @@ extension URLCache {
             return
         }
 
-        // Fist: Prepare the Response Headers
+        // First: Prepare the Response Headers
         let headerFields = [
             Constants.contentTypeKey: Constants.contentTypePNG,
             Constants.expirationKey: Date(timeIntervalSinceNow: Constants.expirationTime).toStringAsRFC1123()
