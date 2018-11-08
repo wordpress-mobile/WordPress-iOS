@@ -54,9 +54,9 @@ class LatestPostSummaryCell: UITableViewCell {
         }
 
         self.summaryData = summaryData
-        viewsDataLabel.text = summaryData.views
-        likesDataLabel.text = summaryData.likes
-        commentsDataLabel.text = summaryData.comments
+        viewsDataLabel.text = summaryData.viewsValue.abbreviatedString()
+        likesDataLabel.text = summaryData.likesValue.abbreviatedString()
+        commentsDataLabel.text = summaryData.commentsValue.abbreviatedString()
 
         // If there is a post but 0 data, show Share Post option.
         if summaryData.viewsValue == 0 && summaryData.likesValue == 0 && summaryData.commentsValue == 0 {
