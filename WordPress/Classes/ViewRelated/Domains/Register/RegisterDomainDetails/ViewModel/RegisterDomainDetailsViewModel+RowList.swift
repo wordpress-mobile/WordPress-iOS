@@ -36,6 +36,8 @@ extension RegisterDomainDetailsViewModel {
         return ValidationRule(context: .clientSide,
                               validationBlock: ValidationBlock.nonEmpty,
                               errorMessage: nil)
+    }
+
     static var emailRule: ValidationRule {
         return ValidationRule(context: .clientSide,
                               validationBlock: ValidationBlock.validEmail,
