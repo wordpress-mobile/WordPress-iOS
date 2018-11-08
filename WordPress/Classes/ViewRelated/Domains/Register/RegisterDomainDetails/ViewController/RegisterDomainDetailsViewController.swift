@@ -190,22 +190,14 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
             let sectionType = SectionIndex(rawValue: indexPath.section) else {
                 return
         }
+
         viewModel.updateValue(valueTextField.text, at: indexPath)
 
-        switch sectionType {
-        case .address:
-            let addressField = viewModel.addressSectionIndexHelper.addressField(for: indexPath.row)
-            switch addressField {
-            case .addressLine:
-                if !(valueTextField.text?.isEmpty ?? true)
-                    && indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount {
-                    viewModel.enableAddAddressRow()
-                }
-            default:
-                break
-            }
-        default:
-            break
+        if sectionType == .address,
+            viewModel.addressSectionIndexHelper.addressField(for: indexPath.row) == .addressLine,
+            indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount,
+            valueTextField.text?.isEmpty == false {
+                viewModel.enableAddAddressRow()
         }
     }
 }
