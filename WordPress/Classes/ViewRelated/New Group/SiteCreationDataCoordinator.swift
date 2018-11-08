@@ -14,4 +14,9 @@ final class SiteCreationDataCoordinator: NSObject, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return decorated.tableView(tableView, cellForRowAt: indexPath)
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //Avoid force unwrapping
+        decorated.tableView!(tableView, didSelectRowAt: indexPath)
+    }
 }
