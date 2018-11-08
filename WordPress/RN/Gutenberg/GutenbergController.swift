@@ -1,4 +1,3 @@
-import CoreServices
 import UIKit
 import React
 import WPMediaPicker
