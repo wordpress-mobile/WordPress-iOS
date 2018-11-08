@@ -128,7 +128,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
-        navigationController?.pushViewController(webViewController, animated: true)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
     }
 
     func showCreatePost() {
