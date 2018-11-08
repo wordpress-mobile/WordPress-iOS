@@ -1,15 +1,22 @@
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
-    private lazy var firstContentViewController = {
-        WizardViewController()
+    private lazy var firstContentViewController: UIViewController? = {
+        guard let firstStep = self.steps.first else {
+            return nil
+        }
+        return firstStep.content
     }()
 
-    private lazy var navigation: WizardNavigation = {
-        return WizardNavigation(root: self.firstContentViewController)
+    private lazy var navigation: WizardNavigation? = {
+        guard let first = self.firstContentViewController else {
+            return nil
+        }
+
+        return WizardNavigation(root: first)
     }()
 
-    lazy var content: UIViewController = {
-        return navigation.content
+    lazy var content: UIViewController? = {
+        return navigation?.content
     }()
 
     // The sequence of steps to complete the wizard.
@@ -18,7 +25,7 @@ final class SiteCreationWizard: Wizard {
     init(steps: [WizardStep]) {
         self.steps = steps
         configureSteps()
-        runWizard()
+        //runWizard()
     }
 
     /// This probably won't fly for too long.
@@ -28,13 +35,13 @@ final class SiteCreationWizard: Wizard {
         }
     }
 
-    private func runWizard() {
-        guard let firstStep = steps.first else {
-            return
-        }
-
-        firstContentViewController.render(step: firstStep)
-    }
+//    private func runWizard() {
+//        guard let firstStep = steps.first else {
+//            return
+//        }
+//
+//        //firstContentViewController.render(step: firstStep)
+//    }
 }
 
 extension SiteCreationWizard: WizardDelegate {
@@ -53,7 +60,7 @@ extension SiteCreationWizard: WizardDelegate {
         let newViewController = WizardViewController()
 
         newViewController.render(step: destinationStep)
-        navigation.push(newViewController)
+        navigation?.push(newViewController)
     }
 
     private func step(identifier: Identifier) -> WizardStep? {

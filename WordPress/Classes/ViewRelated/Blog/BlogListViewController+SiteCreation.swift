@@ -2,7 +2,9 @@ extension BlogListViewController {
     @objc
     func enhancedSiteCreation() {
         let wizardLauncher = SiteCreationWizardLauncher()
-        let wizard = wizardLauncher.ui
+        guard let wizard = wizardLauncher.ui else {
+            return
+        }
         wizard.navigationItem.leftBarButtonItem = cancelButton()
 
         present(wizard, animated: true)

@@ -23,7 +23,10 @@ final class SiteCreationWizardLauncher {
         return SiteCreationWizard(steps: self.steps)
     }()
 
-    lazy var ui: UIViewController = {
-        return wizard.content
+    lazy var ui: UIViewController? = {
+        guard let wizardContent = wizard.content else {
+            return nil
+        }
+        return wizardContent
     }()
 }
