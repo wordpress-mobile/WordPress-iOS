@@ -4,7 +4,6 @@ import WordPressKit
 final class VerticalsWizardContent: UIViewController {
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
-    private var dataSource: UITableViewDataSource?
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
     private let selection: (SiteVertical) -> Void
 
