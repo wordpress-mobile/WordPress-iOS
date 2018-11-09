@@ -13,7 +13,9 @@ class GutenbergController: UIViewController, PostEditor {
 
     let navBarManager = PostEditorNavigationBarManager()
 
-    var mediaPickerHelper: GutenbergMediaPickerHelper!
+    lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
+        return GutenbergMediaPickerHelper(context: self, post: post)
+    }()
 
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -36,7 +38,6 @@ class GutenbergController: UIViewController, PostEditor {
         self.gutenberg = Gutenberg(props: ["initialData": post.content ?? ""])
         super.init(nibName: nil, bundle: nil)
 
-        mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
         navBarManager.delegate = self
     }
 
