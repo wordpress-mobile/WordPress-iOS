@@ -7,7 +7,6 @@ class SiteStatsInsightsViewModel: NSObject {
 
     // MARK: - Properties
 
-    private(set) var refreshing = false
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - Constructor
@@ -21,8 +20,6 @@ class SiteStatsInsightsViewModel: NSObject {
 
     func fetchStats() {
 
-        refreshing = true
-
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
 
         }, insightsCompletionHandler: { (mostPopularStats, error) in
@@ -33,7 +30,7 @@ class SiteStatsInsightsViewModel: NSObject {
             if error != nil {
                 DDLogDebug("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
             }
-            self.refreshing = false
+
             self.siteStatsInsightsDelegate?.latestPostSummaryLoaded?(latestPostSummary)
         }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
 
