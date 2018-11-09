@@ -33,7 +33,7 @@ final class AztecMediaPickingCoordinator {
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: fromView.frame.origin, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
 
-        origin.present(alertController, animated: true, completion: nil)
+        origin.present(alertController, animated: true)
     }
 
     private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
@@ -74,6 +74,6 @@ final class AztecMediaPickingCoordinator {
             docPicker.allowsMultipleSelection = true
         }
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        origin.present(docPicker, animated: true, completion: nil)
+        origin.present(docPicker, animated: true)
     }
 }

@@ -53,11 +53,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 @implementation CommentViewController
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)loadView
 {
     [super loadView];

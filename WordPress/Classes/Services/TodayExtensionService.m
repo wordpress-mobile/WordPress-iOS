@@ -19,7 +19,6 @@
     [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults setObject:siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults setObject:blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults synchronize];
     
     NSError *error;
     [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetKeychainTokenKey
@@ -40,7 +39,6 @@
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
-    [sharedDefaults synchronize];
     
     [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetKeychainTokenKey
                               andServiceName:WPStatsTodayWidgetKeychainServiceName

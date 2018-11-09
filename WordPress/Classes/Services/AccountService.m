@@ -50,7 +50,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
     return defaultAccount;
@@ -73,7 +72,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSManagedObjectID *accountID = account.objectID;
     void (^notifyAccountChange)(void) = ^{
@@ -133,7 +131,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];

@@ -124,7 +124,7 @@ class WebKitViewController: UIViewController {
 
     @objc func loadWebViewRequest() {
         if ReachabilityUtils.alertIsShowing() {
-            self.dismiss(animated: false, completion: nil)
+            self.dismiss(animated: false)
         }
 
         guard let authenticator = authenticator,
@@ -294,7 +294,7 @@ class WebKitViewController: UIViewController {
     // MARK: User Actions
 
     @objc func close() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     @objc func share() {
@@ -311,7 +311,7 @@ class WebKitViewController: UIViewController {
                 WPActivityDefaults.trackActivityType(type)
             }
         }
-        present(activityViewController, animated: true, completion: nil)
+        present(activityViewController, animated: true)
 
     }
 
@@ -393,13 +393,13 @@ extension WebKitViewController: WKUIDelegate {
             let url = navigationAction.request.url {
             let controller = WebKitViewController(url: url, parent: self)
             let navController = UINavigationController(rootViewController: controller)
-            present(navController, animated: true, completion: nil)
+            present(navController, animated: true)
         }
         return nil
     }
 
     func webViewDidClose(_ webView: WKWebView) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

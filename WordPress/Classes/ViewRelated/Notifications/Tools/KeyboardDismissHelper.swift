@@ -75,13 +75,6 @@ import UIKit
     ///
     fileprivate var trackingDragOperation = false
 
-
-    /// Deinitializer
-    ///
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     /// Designated initializer
     ///
     /// -   Parameter scrollView: View that contains everything
@@ -132,8 +125,6 @@ import UIKit
     @objc func stopListeningToKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
-
-
 
     /// ScrollView willBeginDragging Event
     ///

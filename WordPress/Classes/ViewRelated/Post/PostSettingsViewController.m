@@ -113,7 +113,6 @@ FeaturedImageViewControllerDelegate>
 {
     [self.internetReachability stopNotifier];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
     [self removeMediaObserver];
 }

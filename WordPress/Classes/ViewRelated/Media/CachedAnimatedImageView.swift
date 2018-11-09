@@ -94,10 +94,6 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                                                object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Public methods
 
     override public func display(_ layer: CALayer) {

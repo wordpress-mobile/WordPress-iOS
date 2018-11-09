@@ -78,7 +78,7 @@ class SiteCreationSitePreviewViewController: UIViewController {
             self.siteView.alpha = 1
             UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
                 self.congratulationsView.alpha = 0
-            }, completion: nil)
+            })
         }
     }
 }

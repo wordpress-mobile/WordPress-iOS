@@ -55,7 +55,7 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
             self?.showQuickStartAlert()
         }
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true)
     }
 
     // 'Configure' button
@@ -81,7 +81,7 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
         let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: siteToShow)
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = tabBar
-        tabBar.present(fancyAlert, animated: true, completion: nil)
+        tabBar.present(fancyAlert, animated: true)
     }
 }
 

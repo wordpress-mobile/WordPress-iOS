@@ -11,35 +11,11 @@ final class SiteSegmentsStepTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        step = SiteSegmentsStep(builder: SiteCreator(), service: MockSiteSegmentsService())
+        step = SiteSegmentsStep(creator: SiteCreator(), service: MockSiteSegmentsService())
     }
 
     override func tearDown() {
         step = nil
         super.tearDown()
-    }
-
-    func testHeaderTitleMatchesExpectation() {
-        guard let header = step?.header as? SiteCreationWizardTitle else {
-            XCTFail()
-            return
-        }
-
-        // Force loading xib
-        let _ = header.view
-
-        XCTAssertEqual(header.titleLabel.text, HeaderExpectations.title)
-    }
-
-    func testHeaderSubtitleMatchesExpectation() {
-        guard let header = step?.header as? SiteCreationWizardTitle else {
-            XCTFail()
-            return
-        }
-
-        // Force loading xib
-        let _ = header.view
-
-        XCTAssertEqual(header.subtitleLabel.text, HeaderExpectations.subtitle)
     }
 }

@@ -19,7 +19,7 @@ class ShareNoticeNavigationCoordinator {
 
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
+        WPTabBarController.sharedInstance().present(editor, animated: false)
     }
 
     static func navigateToPostList(with userInfo: NSDictionary) {

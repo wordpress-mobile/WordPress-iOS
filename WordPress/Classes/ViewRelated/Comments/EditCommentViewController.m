@@ -49,11 +49,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 
 #pragma mark - Lifecycle
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
