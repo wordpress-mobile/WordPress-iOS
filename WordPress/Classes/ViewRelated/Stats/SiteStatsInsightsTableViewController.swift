@@ -5,6 +5,7 @@ import WordPressComStatsiOS
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func showCreatePost()
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
+    @objc optional func latestPostSummaryLoaded(_ summaryData: StatsLatestPostSummary?)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -26,105 +27,63 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         return PostService(managedObjectContext: mainContext)
     }()
 
+    private var viewModel: SiteStatsInsightsViewModel {
+        return SiteStatsInsightsViewModel(statsService: statsService, insightsDelegate: self)
+    }
+
+    private lazy var tableHandler: ImmuTableViewHandler = {
+        return ImmuTableViewHandler(takeOver: self)
+    }()
+
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         WPStyleGuide.Stats.configureTable(tableView)
-        setUpLatestPostSummaryCell()
-        refreshControl?.addTarget(self, action: #selector(fetchStats), for: .valueChanged)
-
-        fetchStats()
-    }
-
-    // MARK: - Table Methods
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.latestPostSummary, for: indexPath) as! LatestPostSummaryCell
-        cell.configure(withData: latestPostSummary, andDelegate: self)
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        ImmuTable.registerRows([LatestPostSummaryRow.self], tableView: tableView)
+        viewModel.fetchStats()
     }
 
 }
 
-// MARK: - Data Fetching
+// MARK: - Private Extension
 
 private extension SiteStatsInsightsTableViewController {
 
-    @objc func fetchStats() {
+    // MARK: - Table Model
 
-        statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
+    func tableViewModel() -> ImmuTable {
+        let latestPostSummaryRow = LatestPostSummaryRow(summaryData: latestPostSummary, siteStatsInsightsDelegate: self)
 
-        }, insightsCompletionHandler: { (mostPopularStats, error) in
-
-        }, todaySummaryCompletionHandler: { (todaySummary, error) in
-
-        }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
-            if error != nil {
-                DDLogDebug("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
-                self.latestPostSummary = nil
-            } else {
-                self.latestPostSummary = latestPostSummary
-            }
-            self.tableView.reloadData()
-        }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
-
-        }, commentsPostsCompletionHandler: { (commentsPosts, error) in
-
-        }, tagsCategoriesCompletionHandler: { (tagsCategories, error) in
-
-        }, followersDotComCompletionHandler: { (followersDotCom, error) in
-
-        }, followersEmailCompletionHandler: { (followersEmail, error) in
-
-        }, publicizeCompletionHandler: { (publicize, error) in
-
-        }, streakCompletionHandler: { (statsStreak, error) in
-
-        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
-
-        }, andOverallCompletionHandler: {
-            self.refreshControl?.endRefreshing()
-        })
-
-    }
-}
-
-
-// MARK: - Cell Support
-
-private extension SiteStatsInsightsTableViewController {
-
-    func setUpLatestPostSummaryCell() {
-        let nib = UINib(nibName: NibNames.latestPostSummary, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: ReuseIdentifiers.latestPostSummary)
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: [
+                    latestPostSummaryRow
+                ])
+            ])
     }
 
-    struct NibNames {
-        static let latestPostSummary = "LatestPostSummaryCell"
+    func refreshModel() {
+        tableHandler.viewModel = tableViewModel()
+        refreshControl?.endRefreshing()
     }
 
-    struct ReuseIdentifiers {
-        static let latestPostSummary = "latestPostSummaryCell"
+    @objc func refreshData() {
+        refreshControl?.beginRefreshing()
+        viewModel.fetchStats()
     }
+
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
 
 extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
+
+    func latestPostSummaryLoaded(_ summaryData: StatsLatestPostSummary?) {
+        latestPostSummary = summaryData
+        refreshModel()
+    }
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
@@ -134,7 +93,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showCreatePost() {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
-            self?.fetchStats()
+            self?.viewModel.fetchStats()
         }
     }
 
