@@ -7,15 +7,13 @@ class SiteStatsInsightsViewModel: NSObject {
 
     // MARK: - Properties
 
-    private var statsService: WPStatsService?
     private(set) var refreshing = false
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - Constructor
 
-    init(statsService: WPStatsService?, insightsDelegate: SiteStatsInsightsDelegate) {
+    init(insightsDelegate: SiteStatsInsightsDelegate) {
         super.init()
-        self.statsService = statsService
         self.siteStatsInsightsDelegate = insightsDelegate
     }
 
@@ -25,7 +23,7 @@ class SiteStatsInsightsViewModel: NSObject {
 
         refreshing = true
 
-        statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
+        SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
 
         }, insightsCompletionHandler: { (mostPopularStats, error) in
 

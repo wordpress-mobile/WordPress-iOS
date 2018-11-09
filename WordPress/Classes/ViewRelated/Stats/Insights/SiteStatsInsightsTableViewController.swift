@@ -12,7 +12,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var statsService: WPStatsService?
     var latestPostSummary: StatsLatestPostSummary?
 
     private lazy var mainContext: NSManagedObjectContext = {
@@ -28,7 +27,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     }()
 
     private var viewModel: SiteStatsInsightsViewModel {
-        return SiteStatsInsightsViewModel(statsService: statsService, insightsDelegate: self)
+        return SiteStatsInsightsViewModel(insightsDelegate: self)
     }
 
     private lazy var tableHandler: ImmuTableViewHandler = {
@@ -99,9 +98,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {
 
-        guard let blogId = statsService?.siteId,
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
         let blog = blogService.blog(byBlogId: blogId) else {
-            DDLogInfo("Failed to get blog with id \(String(describing: statsService?.siteId))")
+            DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
 

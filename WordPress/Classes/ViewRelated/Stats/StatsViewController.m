@@ -82,6 +82,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self initStats];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [SiteStatsInformation resetSharedInstance];
+}
+
+
 - (void)setBlog:(Blog *)blog
 {
     _blog = blog;
@@ -123,7 +130,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
     if ([Feature enabled:FeatureFlagStatsRefresh]) {
-        self.siteStatsDashboardVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
+        SiteStatsInformation.sharedInstance.siteTimeZone = [blogService timeZoneForBlog:self.blog];
     } else {
         self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
     }
@@ -132,8 +139,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (self.blog.account) {
         
         if ([Feature enabled:FeatureFlagStatsRefresh]) {
-            self.siteStatsDashboardVC.oauth2Token = self.blog.account.authToken;
-            self.siteStatsDashboardVC.siteID = self.blog.dotComID;
+            SiteStatsInformation.sharedInstance.oauth2Token = self.blog.account.authToken;
+            SiteStatsInformation.sharedInstance.siteID = self.blog.dotComID;
         } else {
             self.statsVC.oauth2Token = self.blog.account.authToken;
             self.statsVC.siteID = self.blog.dotComID;
