@@ -1,5 +1,5 @@
 // Decorates a UITableViewDataSource & UITableViewDelegate to implement a table view header
-final class SiteCreationDataCoordinator: NSObject, UITableViewDataSource, UITableViewDelegate {
+final class TitleSubtitleHeaderDataCoordinator: NSObject, UITableViewDataSource, UITableViewDelegate {
     private let decorated: UITableViewDataSource & UITableViewDelegate
     private let headerData: SiteCreationHeaderData
 

@@ -84,7 +84,7 @@ final class VerticalsWizardContent: UIViewController {
 
     private func handleData(_ data: [SiteVertical]) {
         let tableCoordinator = TableDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect)
-        dataCoordinator = SiteCreationDataCoordinator(decorated: tableCoordinator, headerData: headerData)
+        dataCoordinator = TitleSubtitleHeaderDataCoordinator(decorated: tableCoordinator, headerData: headerData)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()
