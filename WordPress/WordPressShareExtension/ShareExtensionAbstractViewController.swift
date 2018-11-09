@@ -121,10 +121,6 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     // MARK: - Lifecycle Methods
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -153,7 +149,7 @@ extension ShareExtensionAbstractViewController {
         }
 
         alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     func saveImageToSharedContainer(_ image: UIImage) -> URL? {

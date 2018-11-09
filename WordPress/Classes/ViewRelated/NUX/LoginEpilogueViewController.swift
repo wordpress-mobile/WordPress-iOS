@@ -160,7 +160,7 @@ extension LoginEpilogueViewController {
 
     @IBAction func dismissEpilogue() {
         onDismiss?()
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true)
     }
 
     @IBAction func handleConnectAnotherButton() {

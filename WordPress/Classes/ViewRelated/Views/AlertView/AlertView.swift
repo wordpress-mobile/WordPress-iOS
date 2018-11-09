@@ -16,7 +16,7 @@ open class AlertView: NSObject {
     ///     - message: Message string to be displayed. Note: Bold is supported, **markdown flavor**.
     ///     - completion: A closure to be executed right after the button is pressed.
     ///
-    @objc public init(title: String, message: String, button: String, completion: Completion?) {
+    @objc public init(title: String, message: String, button: String, completion: Completion? = nil) {
         super.init()
 
         Bundle.main.loadNibNamed(AlertView.classNameWithoutNamespaces(), owner: self, options: nil)

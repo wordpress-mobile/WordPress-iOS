@@ -167,7 +167,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)dealloc
 {
     [self stopWatchingQuickTours];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
@@ -853,6 +852,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             }
             default: break;
         }
+
+        [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
         if ([viewController isKindOfClass:[UINavigationController class]]) {

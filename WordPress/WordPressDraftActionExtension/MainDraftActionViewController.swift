@@ -53,7 +53,7 @@ private extension MainDraftActionViewController {
         let shareNavController = MainDraftNavigationController(rootViewController: modularController)
         shareNavController.transitioningDelegate = extensionTransitioningManager
         shareNavController.modalPresentationStyle = .custom
-        present(shareNavController, animated: !shareNavController.shouldFillContentContainer, completion: nil)
+        present(shareNavController, animated: !shareNavController.shouldFillContentContainer)
     }
 
     func trackExtensionLaunch() {

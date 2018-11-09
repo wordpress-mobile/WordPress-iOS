@@ -215,7 +215,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
                                                       handler: { action in
                                                         self.restoreSiteToRewindID(rewindID)
                                                       })
-        self.present(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true)
     }
 
 }

@@ -34,11 +34,6 @@ static NSString *const ClearPostActivityDateNotification = @"ClearPostActivityDa
                 }];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 // Load one-time setup data from the delegate
 - (void)loadDefaults
 {

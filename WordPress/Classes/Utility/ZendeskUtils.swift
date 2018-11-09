@@ -515,7 +515,6 @@ private extension ZendeskUtils {
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
         DDLogDebug("Zendesk - saving profile to User Defaults: \(userProfile)")
         UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
-        UserDefaults.standard.synchronize()
     }
 
     static func getUserProfile() -> Bool {
@@ -530,7 +529,6 @@ private extension ZendeskUtils {
 
     static func saveUnreadCount() {
         UserDefaults.standard.set(unreadNotificationsCount, forKey: Constants.userDefaultsZendeskUnreadNotifications)
-        UserDefaults.standard.synchronize()
     }
 
     // MARK: - Data Helpers
@@ -744,7 +742,7 @@ private extension ZendeskUtils {
         }
 
         // Show alert
-        presentInController?.present(alertController, animated: true, completion: nil)
+        presentInController?.present(alertController, animated: true)
     }
 
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {

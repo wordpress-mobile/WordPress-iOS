@@ -38,10 +38,6 @@ open class WP3DTouchShortcutCreator: NSObject {
         registerForNotifications()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     public convenience override init() {
         self.init(shortcutsProvider: UIApplication.shared)
     }

@@ -26,7 +26,7 @@ extension FancyAlertViewController {
             defer {
                 WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
             }
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let image = UIImage(named: "wp-illustration-stay-in-the-loop")

@@ -1,16 +1,24 @@
-
 import UIKit
-
 
 /// Contains the UI corresponsing to the list of segments
 final class SiteSegmentsWizardContent: UIViewController {
     private let service: SiteSegmentsService
-    private var dataSource: UITableViewDataSource?
+    private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
+    private let selection: (SiteSegment) -> Void
 
     @IBOutlet weak var table: UITableView!
 
-    init(service: SiteSegmentsService) {
+    private lazy var headerData: SiteCreationHeaderData = {
+        let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
+        let subtitle = NSLocalizedString("This helps us suggest a solid foundation. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
+        return SiteCreationHeaderData(title: title, subtitle: subtitle)
+    }()
+
+
+
+    init(service: SiteSegmentsService, selection: @escaping (SiteSegment) -> Void) {
         self.service = service
+        self.selection = selection
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
 
@@ -26,7 +34,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTable() {
-        let cellName = SiteSegmentsDataSource.cellReuseIdentifier()
+        let cellName = SiteSegmentsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
     }
@@ -47,7 +55,14 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        dataSource = SiteSegmentsDataSource(data: data)
+        let tableCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
+        dataCoordinator = SiteCreationDataCoordinator(decorated: tableCoordinator, headerData: headerData)
+        table.dataSource = dataCoordinator
+        table.delegate = dataCoordinator
         table.reloadData()
+    }
+
+    private func didSelect(_ segment: SiteSegment) {
+        selection(segment)
     }
 }

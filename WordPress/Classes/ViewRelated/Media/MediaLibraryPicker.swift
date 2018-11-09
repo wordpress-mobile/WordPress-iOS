@@ -20,6 +20,6 @@ final class MediaLibraryPicker: NSObject {
         picker.dataSource = dataSource
         picker.delegate = delegate
 
-        origin.present(picker, animated: true, completion: nil)
+        origin.present(picker, animated: true)
     }
 }

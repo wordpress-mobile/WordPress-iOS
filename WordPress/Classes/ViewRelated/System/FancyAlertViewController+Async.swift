@@ -50,7 +50,7 @@ extension FancyAlertViewController {
         }
 
         let dismissButton = ButtonConfig(GeneralStrings.keepEditingTitle) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let moreHelpButton = ButtonConfig(GeneralStrings.moreHelpTitle) { controller, _ in
@@ -60,7 +60,7 @@ extension FancyAlertViewController {
 
             let safariViewController = SFSafariViewController(url: url)
             safariViewController.modalPresentationStyle = .pageSheet
-            controller.present(safariViewController, animated: true, completion: nil)
+            controller.present(safariViewController, animated: true)
         }
 
         let image = UIImage(named: "wp-illustration-easy-async")

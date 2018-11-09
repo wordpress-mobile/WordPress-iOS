@@ -29,7 +29,7 @@ class PostNoticeNavigationCoordinator {
 
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet
-        presenter.present(navigationController, animated: true, completion: nil)
+        presenter.present(navigationController, animated: true)
     }
 
     private static func presentPostEpilogue(for post: Post) {
@@ -42,7 +42,7 @@ class PostNoticeNavigationCoordinator {
         editor.openWithPostPost = true
         editor.onClose = { _ in
         }
-        presenter.present(editor, animated: true, completion: nil)
+        presenter.present(editor, animated: true)
     }
 
     static func retryPostUpload(with userInfo: NSDictionary) {

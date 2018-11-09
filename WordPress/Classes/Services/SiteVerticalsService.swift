@@ -3,12 +3,12 @@ typealias SiteVerticalsServiceCompletion = (Result<[SiteVertical]>) -> Void
 
 /// Abstracts obtention of site verticals
 protocol SiteVerticalsService {
-    func verticals(for: Locale, type: SiteType, completion: @escaping SiteVerticalsServiceCompletion)
+    func verticals(for: Locale, type: SiteSegment, completion: @escaping SiteVerticalsServiceCompletion)
 }
 
 /// Mock implementation of the SiteVerticalsService
 final class MockSiteVerticalsService: SiteVerticalsService {
-    func verticals(for: Locale = .current, type: SiteType, completion: @escaping SiteVerticalsServiceCompletion) {
+    func verticals(for: Locale = .current, type: SiteSegment, completion: @escaping SiteVerticalsServiceCompletion) {
         let result = Result.success(mockVerticals())
 
         completion(result)

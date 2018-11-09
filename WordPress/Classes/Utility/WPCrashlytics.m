@@ -18,13 +18,6 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
 
 @implementation WPCrashlytics
 
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    [self stopObservingNotifications];
-}
-
 #pragma mark - Initialization
 
 - (instancetype)initWithAPIKey:(NSString *)apiKey
@@ -127,13 +120,6 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
                            selector:@selector(handleDefaultAccountChangedNotification:)
                                name:WPAccountDefaultWordPressComAccountChangedNotification
                              object:nil];
-}
-
-- (void)stopObservingNotifications
-{
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    
-    [notificationCenter removeObserver:self];
 }
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification

@@ -162,7 +162,7 @@ private extension SignupEpilogueViewController {
             }
             self.refreshAccountDetails() {
                 SVProgressHUD.dismiss()
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                self.navigationController?.dismiss(animated: true)
             }
         }
         changesMade = true
@@ -241,7 +241,7 @@ private extension SignupEpilogueViewController {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
-            self.navigationController?.dismiss(animated: true, completion: nil)
+            self.navigationController?.dismiss(animated: true)
             return
         }
         service.updateUserDetails(for: account, success: { () in

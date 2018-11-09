@@ -16,7 +16,7 @@ import WordPressFlux
         while leafViewController.presentedViewController != nil && !leafViewController.presentedViewController!.isBeingDismissed {
             leafViewController = leafViewController.presentedViewController!
         }
-        leafViewController.present(self, animated: true, completion: nil)
+        leafViewController.present(self, animated: true)
     }
 }
 

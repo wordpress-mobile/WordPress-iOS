@@ -1,6 +1,6 @@
 class RevisionsTableViewController: UITableViewController {
     private var post: AbstractPost?
-    private var manager: ShowRevisionsListManger!
+    private var manager: ShowRevisionsListManger?
 
     private lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
@@ -31,7 +31,7 @@ class RevisionsTableViewController: UITableViewController {
         setupUI()
 
         tableViewHandler.refreshTableView()
-        manager.getRevisions()
+        manager?.getRevisions()
     }
 }
 
@@ -60,7 +60,7 @@ private extension RevisionsTableViewController {
     }
 
     @objc private func refreshRevisions() {
-        manager.getRevisions()
+        manager?.getRevisions()
     }
 }
 

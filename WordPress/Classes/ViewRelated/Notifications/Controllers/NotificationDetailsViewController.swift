@@ -116,8 +116,6 @@ class NotificationDetailsViewController: UIViewController {
 
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
-
         // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
         guard isViewLoaded else {
             return
@@ -168,7 +166,7 @@ class NotificationDetailsViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { context in
             self.refreshInterfaceIfNeeded()
-        }, completion: nil)
+        })
     }
 
     override func viewDidLayoutSubviews() {
@@ -911,7 +909,7 @@ private extension NotificationDetailsViewController {
             //
             UIView.animate(withDuration: ContentMedia.duration, delay: ContentMedia.delay, options: ContentMedia.options, animations: { [weak self] in
                 self?.tableView.reloadRows(at: [indexPath], with: .fade)
-                }, completion: nil)
+                })
         }
 
         mediaDownloader.downloadMedia(urls: urls, maximumWidth: maxMediaEmbedWidth, completion: completion)
@@ -1117,7 +1115,7 @@ private extension NotificationDetailsViewController {
         navController.modalTransitionStyle = .coverVertical
         navController.navigationBar.isTranslucent = false
 
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     func displayCommentUpdateErrorWithBlock(_ block: FormattableCommentContent, content: String) {

@@ -36,7 +36,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     _syncHelper.delegate = nil;
     _tableViewHandler.delegate = nil;
 }
