@@ -4251,19 +4251,15 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				98747671219638BF0080967F /* Insights */,
+				98747670219638990080967F /* Extensions */,
 				C56636E61868D0CE00226AAB /* StatsViewController.h */,
 				C56636E71868D0CE00226AAB /* StatsViewController.m */,
 				7470840D1E269669002CA726 /* JetpackLoginViewController.swift */,
 				7470840E1E269669002CA726 /* JetpackLoginViewController.xib */,
 				981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */,
-				981C82B52193A7B900A06E84 /* Double+Stats.swift */,
 				981C3493218388CA00FC2683 /* SiteStatsDashboardViewController.swift */,
-				988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */,
-				980026CD2187B97200A0C30A /* LatestPostSummaryCell.swift */,
-				980026CE2187B97200A0C30A /* LatestPostSummaryCell.xib */,
-				9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */,
 				9874766E219630240080967F /* SiteStatsTableViewCells.swift */,
-				986DD19B218D002500D28061 /* WPStyleGuide+Stats.swift */,
 			);
 			path = Stats;
 			sourceTree = "<group>";
@@ -5664,6 +5660,26 @@
 				98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */,
 			);
 			name = Epilogues;
+			sourceTree = "<group>";
+		};
+		98747670219638990080967F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				981C82B52193A7B900A06E84 /* Double+Stats.swift */,
+				986DD19B218D002500D28061 /* WPStyleGuide+Stats.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		98747671219638BF0080967F /* Insights */ = {
+			isa = PBXGroup;
+			children = (
+				980026CD2187B97200A0C30A /* LatestPostSummaryCell.swift */,
+				980026CE2187B97200A0C30A /* LatestPostSummaryCell.xib */,
+				988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */,
+				9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */,
+			);
+			path = Insights;
 			sourceTree = "<group>";
 		};
 		98C43E841FE98041006FEF54 /* Social Signup */ = {
