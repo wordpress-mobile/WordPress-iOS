@@ -1,9 +1,19 @@
 import UIKit
 
-final class SiteSegmentsCell: UITableViewCell {
+final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
+
+    var model: SiteSegment? {
+        didSet {
+            title.text = model?.title
+            subtitle.text = model?.subtitle
+            if let modelIcon = model?.icon {
+                icon.setImageWith(modelIcon)
+            }
+        }
+    }
 
     func set(segment: SiteSegment) {
         title.text = segment.title
