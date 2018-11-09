@@ -23,7 +23,7 @@ class RevisionOperationView: UIView {
     var total: Int = 0 {
         didSet {
             isHidden = total == 0
-            numbersLabel.text = total > 99 ? "\(total)+" : "\(total)"
+            numbersLabel.text = "\(total)"
         }
     }
 

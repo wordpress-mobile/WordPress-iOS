@@ -26,14 +26,14 @@
                             <constraint firstAttribute="height" constant="38" id="ysn-gN-OU5"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGK-dg-4l6">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RGK-dg-4l6">
                         <rect key="frame" x="64" y="10" width="42" height="20.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uHw-yX-yQA">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uHw-yX-yQA">
                         <rect key="frame" x="64" y="32.5" width="37.5" height="18"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -50,6 +50,7 @@
                     </stackView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Ft5-M5-Hhp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uHw-yX-yQA" secondAttribute="trailing" constant="10" id="5yP-u8-qpa"/>
                     <constraint firstItem="Ft5-M5-Hhp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="8wc-db-Pew"/>
                     <constraint firstItem="urr-kW-bED" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="FL4-WQ-m8D"/>
                     <constraint firstItem="RGK-dg-4l6" firstAttribute="leading" secondItem="urr-kW-bED" secondAttribute="trailing" constant="10" id="POQ-k5-wPd"/>
