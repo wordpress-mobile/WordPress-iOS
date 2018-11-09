@@ -831,9 +831,12 @@ static NSInteger HideSearchMinSites = 3;
 
         __weak __typeof(self) weakSelf = self;
         if (@available(iOS 11.0, *)) {
+            [UIView setAnimationsEnabled:NO];
             [self.tableView performBatchUpdates:^{
                 weakSelf.tableView.tableHeaderView = nil;
-            } completion:^(BOOL finished) {}];
+            } completion:^(BOOL finished) {
+                [UIView setAnimationsEnabled:YES];
+            }];
         } else {
             [self.tableView beginUpdates];
             self.tableView.tableHeaderView = nil;
