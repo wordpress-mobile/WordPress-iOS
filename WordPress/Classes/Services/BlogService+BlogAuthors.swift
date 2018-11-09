@@ -29,15 +29,7 @@ extension BlogService {
 
 private extension BlogService {
     private func findBlogAuthor(with userId: NSNumber) -> BlogAuthor {
-        return findFirst(BlogAuthor.self,
-                         predicate: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@", userId))
-    }
-
-    private func findFirst<Entity: NSManagedObject>(_ type: Entity.Type, predicate: NSPredicate) -> Entity {
-        guard let entity = managedObjectContext.firstObject(ofType: type, matching: predicate) else {
-            return managedObjectContext.insertNewObject(ofType: type)
-        }
-
-        return entity
+        return managedObjectContext.entity(of: BlogAuthor.self,
+                                           with: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@", userId))
     }
 }

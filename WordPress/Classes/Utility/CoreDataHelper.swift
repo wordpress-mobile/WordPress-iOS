@@ -119,6 +119,19 @@ extension NSManagedObjectContext {
         return result
     }
 
+    /// Returns an entity already stored or it creates a new one of a specific type
+    ///
+    /// - Parameters:
+    ///   - type: Type of the Entity
+    ///   - predicate: A predicate used to fetch a stored Entity
+    /// - Returns: A valid Entity
+    func entity<Entity: NSManagedObject>(of type: Entity.Type, with predicate: NSPredicate) -> Entity {
+        guard let entity = firstObject(ofType: type, matching: predicate) else {
+            return insertNewObject(ofType: type)
+        }
+        return entity
+    }
+
     /// Loads the collection of entities that match with a given Fetch Request
     ///
     private func loadObjects<T: NSManagedObject>(ofType type: T.Type, with request: NSFetchRequest<NSFetchRequestResult>) -> [T] {
