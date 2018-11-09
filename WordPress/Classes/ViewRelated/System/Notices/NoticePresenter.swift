@@ -188,15 +188,18 @@ class NoticePresenter: NSObject {
     private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
         fromState()
 
-        UIView.animate(withDuration: Animations.appearanceDuration,
-                       delay: 0,
-                       usingSpringWithDamping: Animations.appearanceSpringDamping,
-                       initialSpringVelocity: Animations.appearanceSpringVelocity,
-                       options: [],
-                       animations: toState,
-                       completion: { _ in
-                        completion()
-        })
+        // this delay avoids affecting other transitions like navigation pushes
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
+            UIView.animate(withDuration: Animations.appearanceDuration,
+                           delay: 0,
+                           usingSpringWithDamping: Animations.appearanceSpringDamping,
+                           initialSpringVelocity: Animations.appearanceSpringVelocity,
+                           options: [],
+                           animations: toState,
+                           completion: { _ in
+                            completion()
+            })
+        }
     }
 
     private enum Animations {
