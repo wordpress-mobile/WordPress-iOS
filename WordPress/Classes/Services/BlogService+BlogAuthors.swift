@@ -9,7 +9,7 @@ extension BlogService {
             }
 
             remoteUsers.forEach {
-                let blogAuthor = findBlogAuthor(with: $0.userID)
+                let blogAuthor = findBlogAuthor(with: $0.userID, and: blog)
                 blogAuthor.userID = $0.userID
                 blogAuthor.username = $0.username
                 blogAuthor.email = $0.email
@@ -28,8 +28,8 @@ extension BlogService {
 
 
 private extension BlogService {
-    private func findBlogAuthor(with userId: NSNumber) -> BlogAuthor {
+    private func findBlogAuthor(with userId: NSNumber, and blog: Blog) -> BlogAuthor {
         return managedObjectContext.entity(of: BlogAuthor.self,
-                                           with: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@", userId))
+                                           with: NSPredicate(format: "\(#keyPath(BlogAuthor.userID)) = %@ AND \(#keyPath(BlogAuthor.blog)) = %@", userId, blog))
     }
 }

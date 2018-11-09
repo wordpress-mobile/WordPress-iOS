@@ -138,7 +138,7 @@
         </attribute>
         <relationship name="account" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="blogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
         <relationship name="accountForDefaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="defaultBlog" inverseEntity="Account" syncable="YES"/>
-        <relationship name="authors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BlogAuthor" inverseName="blogs" inverseEntity="BlogAuthor" syncable="YES"/>
+        <relationship name="authors" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BlogAuthor" inverseName="blog" inverseEntity="BlogAuthor" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="blog" inverseEntity="Category" indexed="YES">
             <userInfo/>
         </relationship>
@@ -174,7 +174,7 @@
         <attribute name="primaryBlogID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="authors" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="authors" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="BlogSettings" representedClassName=".BlogSettings" syncable="YES">
         <attribute name="ampEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -728,6 +728,7 @@
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="735"/>
+        <element name="BlogAuthor" positionX="27" positionY="153" width="128" height="165"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
@@ -767,6 +768,5 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
-        <element name="BlogAuthor" positionX="27" positionY="153" width="128" height="165"/>
     </elements>
 </model>

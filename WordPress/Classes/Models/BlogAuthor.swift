@@ -10,20 +10,5 @@ public class BlogAuthor: NSManagedObject {
     @NSManaged public var primaryBlogID: NSNumber?
     @NSManaged public var avatarURL: String?
     @NSManaged public var linkedUserID: NSNumber?
-    @NSManaged public var blogs: NSSet?
-}
-
-
-extension BlogAuthor {
-    @objc(addBlogsObject:)
-    @NSManaged public func addToBlogs(_ value: Blog)
-
-    @objc(removeBlogsObject:)
-    @NSManaged public func removeFromBlogs(_ value: Blog)
-
-    @objc(addBlogs:)
-    @NSManaged public func addToBlogs(_ values: NSSet)
-
-    @objc(removeBlogs:)
-    @NSManaged public func removeFromBlogs(_ values: NSSet)
+    @NSManaged public var blog: Blog?
 }

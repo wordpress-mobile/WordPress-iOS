@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import WordPress
 
 
 extension Blog {
