@@ -1,27 +1,25 @@
 import UIKit
 
 final class TitleSubtitleHeader: UIView {
-    private lazy var title: UILabel = {
+    lazy var title: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
-        //label.text = headerData.title
         label.textAlignment = .center
         label.numberOfLines = 0
 
         return label
     }()
 
-    private lazy var subtitle: UILabel = {
+    lazy var subtitle: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
-        //label.text = headerData.subtitle
         label.textAlignment = .center
         label.numberOfLines = 0
 
         return label
     }()
 
-    private let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let returnValue = UIStackView(arrangedSubviews: [self.title, self.subtitle])
         returnValue.axis = .vertical
         returnValue.spacing = 20
@@ -41,12 +39,10 @@ final class TitleSubtitleHeader: UIView {
 
     private func setupView() {
         addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
     }
-
-    override func layoutSubviews() {
-
-    }
-//    override var intrinsicContentSize: CGSize {
-//        return CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
-//    }
 }
