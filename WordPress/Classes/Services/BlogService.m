@@ -848,6 +848,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         if (!blog) {
             return;
         }
+        
+        [self blogAuthorsFor:blog with:users];
+        
         blog.isMultiAuthor = users.count > 1;
         /// Search for a matching user ID
         /// - wp.com hosted: blog.account.userID
