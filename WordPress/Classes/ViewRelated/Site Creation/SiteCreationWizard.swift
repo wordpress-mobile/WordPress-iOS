@@ -1,11 +1,22 @@
 /// Coordinates the UI flow for creating a new site
 final class SiteCreationWizard: Wizard {
-    private lazy var contentViewController = {
-        WizardViewController()
+    private lazy var firstContentViewController: UIViewController? = {
+        guard let firstStep = self.steps.first else {
+            return nil
+        }
+        return firstStep.content
     }()
 
-    lazy var content: UIViewController = {
-        return UINavigationController(rootViewController: self.contentViewController)
+    private lazy var navigation: WizardNavigation? = {
+        guard let first = self.firstContentViewController else {
+            return nil
+        }
+
+        return WizardNavigation(root: first)
+    }()
+
+    lazy var content: UIViewController? = {
+        return navigation?.content
     }()
 
     // The sequence of steps to complete the wizard.
@@ -14,7 +25,6 @@ final class SiteCreationWizard: Wizard {
     init(steps: [WizardStep]) {
         self.steps = steps
         configureSteps()
-        runWizard()
     }
 
     /// This probably won't fly for too long.
@@ -23,17 +33,27 @@ final class SiteCreationWizard: Wizard {
             step.delegate = self
         }
     }
-
-    private func runWizard() {
-        guard let firstStep = steps.first else {
-            return
-        }
-
-        contentViewController.render(step: firstStep)
-    }
 }
 
 extension SiteCreationWizard: WizardDelegate {
-    func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {}
-    func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {}
+    func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {
+        navigate(to: destination)
+    }
+
+    func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {
+    }
+
+    private func navigate(to: Identifier) {
+        guard let destinationStep = step(identifier: to) else {
+            return
+        }
+
+        navigation?.push(destinationStep.content)
+    }
+
+    private func step(identifier: Identifier) -> WizardStep? {
+        return steps.filter {
+                $0.identifier == identifier
+            }.first
+    }
 }
