@@ -49,6 +49,9 @@ extension PostService {
         let siteId = NSNumber(value: siteId)
         let revisionId = NSNumber(value: remoteRevision.id)
         let revision = findPostRevision(with: revisionId, and: siteId)
+        revision.revisionId = revisionId
+        revision.siteId = siteId
+        revision.postId = NSNumber(value: postId)
 
         if let postAuthorId = remoteRevision.postAuthorId,
             let postAuthorIdAsInt = Int(postAuthorId) {
