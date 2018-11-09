@@ -84,7 +84,7 @@ target 'WordPress' do
     'RCTAnimation',
     'RCTWebSocket',
     ]
- 
+
     pod 'yoga', path: 'Gutenberg/node_modules/react-native/ReactCommon/yoga'
     pod 'DoubleConversion', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
     pod 'Folly', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec'
