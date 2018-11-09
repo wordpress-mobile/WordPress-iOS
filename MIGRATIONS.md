@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 84
+@danielebogo 2018-11-9
+- Added `BlogAuthor` to store the data of a *blog author*.
+- `Blog` added `authors` property to store a set of `BlogAuthor`.
+
+
 ## WordPress 83
 @danielebogo 2018-10-30
 - Renamed `RevisionDiffAbstractValue`, `RevisionDiffContentValue`, `RevisionDiffTitleValue` to `DiffAbstractValue`, `DiffContentValue`, `DiffTitleValue`.
