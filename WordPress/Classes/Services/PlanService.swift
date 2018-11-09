@@ -164,3 +164,32 @@ extension PlanService {
         }, failure: failure)
     }
 }
+
+// We need to call this from Obj-C — there's no way to call `PlanService` directly, with it being
+// a generic Swift struct, so it's just a simple shim that exposes a obj-c compatible API.
+@objc class PlanServiceWrapper: NSObject {
+
+    let service: PlanService<StoreKitStore>
+    let blogID: Int
+
+    @objc init?(blog: Blog) {
+        guard let service = PlanService(blog: blog, store: StoreKitStore()),
+            let blogID = blog.dotComID as? Int else {
+            return nil
+        }
+
+        self.blogID = blogID
+        self.service = service
+    }
+
+    @objc func syncPlans(completion: @escaping (Bool, Error?) -> Void) {
+        service.plansWithPricesForBlog(blogID,
+                                       success: { (_) in
+                                        completion(true, nil)
+        },
+                                       failure: { error in
+                                        completion(false, error)
+        })
+    }
+
+}
