@@ -9,6 +9,10 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     @IBOutlet weak var table: UITableView!
 
+    private struct StyleConstants {
+        static let rowHeight: CGFloat = 72.0
+    }
+
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
         let subtitle = NSLocalizedString("This helps us suggest a solid foundation. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
@@ -48,9 +52,19 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupCell() {
+        registerCell()
+        setupCellHeight()
+    }
+
+    private func registerCell() {
         let cellName = SiteSegmentsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
+    }
+
+    private func setupCellHeight() {
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = StyleConstants.rowHeight
     }
 
     private func setupHeader() {
