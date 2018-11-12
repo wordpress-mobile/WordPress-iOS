@@ -71,26 +71,13 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'React', path: 'Gutenberg/node_modules/react-native', subspecs: [
-    'Core',
-    'jschelpers',
-    'cxxreact',
-    'CxxBridge',
-    'DevSupport',
-    'RCTText',
-    'RCTImage',
-    'RCTNetwork',
-    'RCTActionSheet',
-    'RCTAnimation',
-    'RCTWebSocket',
-    ]
-
-    pod 'yoga', path: 'Gutenberg/node_modules/react-native/ReactCommon/yoga'
-    pod 'DoubleConversion', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+    pod 'React', :podspec => 'Podspecs/React.podspec.json'
+    pod 'yoga', :podspec => 'Podspecs/yoga.podspec.json'
     pod 'Folly', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec'
-    pod 'glog', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/glog.podspec'
-    pod 'RNSVG', :podspec => 'Gutenberg/node_modules/react-native-svg/RNSVG.podspec'
+
     pod 'RNReactNativeGutenbergBridge', :path => 'Gutenberg/react-native-gutenberg-bridge/'
+
+    pod 'RNSVG', :podspec => 'Gutenberg/node_modules/react-native-svg/RNSVG.podspec'
     pod 'RNTAztecView', :path => 'Gutenberg/react-native-aztec/'
 
     ## Third party libraries
