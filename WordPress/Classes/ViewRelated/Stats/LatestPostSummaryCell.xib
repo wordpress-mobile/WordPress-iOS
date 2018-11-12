@@ -186,6 +186,7 @@
             <connections>
                 <outlet property="actionImageView" destination="OZB-d7-5Vo" id="ZYF-8v-WcS"/>
                 <outlet property="actionLabel" destination="Xet-wC-hmj" id="amV-hg-OIZ"/>
+                <outlet property="actionStackView" destination="dj8-5c-J6O" id="gkV-Yq-6bI"/>
                 <outlet property="borderedView" destination="WbC-hI-HqV" id="Lnp-5X-VVN"/>
                 <outlet property="chartStackView" destination="dVi-l5-zbj" id="kyV-EI-lLg"/>
                 <outlet property="commentsDataLabel" destination="Ke4-L3-2a5" id="Mi7-wx-efz"/>

@@ -13,6 +13,7 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var summariesStackView: UIStackView!
     @IBOutlet weak var chartStackView: UIStackView!
+    @IBOutlet weak var actionStackView: UIStackView!
 
     @IBOutlet weak var viewsLabel: UILabel!
     @IBOutlet weak var viewsDataLabel: UILabel!
@@ -25,6 +26,7 @@ class LatestPostSummaryCell: UITableViewCell {
     @IBOutlet weak var actionImageView: UIImageView!
     @IBOutlet weak var disclosureImageView: UIImageView!
 
+    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var summaryData: StatsLatestPostSummary?
 
@@ -41,7 +43,9 @@ class LatestPostSummaryCell: UITableViewCell {
         applyStyles()
     }
 
-    func configure(withData summaryData: StatsLatestPostSummary?) {
+    func configure(withData summaryData: StatsLatestPostSummary?, andDelegate delegate: SiteStatsInsightsDelegate) {
+
+        siteStatsInsightsDelegate = delegate
 
         // If there is no summary data, there is no post. Show Create Post option.
         guard let summaryData = summaryData else {
@@ -50,9 +54,9 @@ class LatestPostSummaryCell: UITableViewCell {
         }
 
         self.summaryData = summaryData
-        viewsDataLabel.text = summaryData.views
-        likesDataLabel.text = summaryData.likes
-        commentsDataLabel.text = summaryData.comments
+        viewsDataLabel.text = summaryData.viewsValue.abbreviatedString()
+        likesDataLabel.text = summaryData.likesValue.abbreviatedString()
+        commentsDataLabel.text = summaryData.commentsValue.abbreviatedString()
 
         // If there is a post but 0 data, show Share Post option.
         if summaryData.viewsValue == 0 && summaryData.likesValue == 0 && summaryData.commentsValue == 0 {
@@ -180,8 +184,12 @@ private extension LatestPostSummaryCell {
     // MARK: - Button Handling
 
     @IBAction func didTapSummaryButton(_ sender: UIButton) {
-        // TODO: show post in a web view.
-        showAlertWithTitle("The post will be shown here.")
+
+        guard let postURL = summaryData?.postURL else {
+            return
+        }
+
+        siteStatsInsightsDelegate?.displayWebViewWithURL?(postURL)
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
@@ -190,22 +198,18 @@ private extension LatestPostSummaryCell {
             return
         }
 
-        var alertTitle = ""
-
         switch actionType {
         case .viewMore:
             // TODO: show Post Details
-            alertTitle = "Post Details will be shown here."
+            showAlertWithTitle("Post Details will be shown here.")
         case .sharePost:
-            // TODO: show Share options
-            alertTitle = "Share options will be shown here."
+            guard let postID = summaryData?.postID else {
+                return
+            }
+            siteStatsInsightsDelegate?.showShareForPost?(postID: postID, fromView: actionStackView)
         case .createPost:
-            // TODO: show Create Post
-            alertTitle = "Create Post will be shown here."
+            siteStatsInsightsDelegate?.showCreatePost?()
         }
-
-        showAlertWithTitle(alertTitle)
-
     }
 
     func showAlertWithTitle(_ title: String) {
