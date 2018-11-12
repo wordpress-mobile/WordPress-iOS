@@ -57,7 +57,6 @@ final class SiteSegmentsWizardContent: UIViewController {
         let header = TitleSubtitleHeader(frame: .zero)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
-        header.backgroundColor = WPStyleGuide.greyLighten30()
 
         table.tableHeaderView = header
 

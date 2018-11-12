@@ -51,6 +51,12 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
+
+        setStyles()
+    }
+
+    private func setStyles() {
+        backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     func setTitle(_ text: String) {
