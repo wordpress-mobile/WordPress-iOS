@@ -33,8 +33,13 @@ final class SiteSegmentsWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        applyTitle()
         setupBackground()
         setupTable()
+    }
+
+    private func applyTitle() {
+        title = NSLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
     }
 
     private func setupBackground() {

@@ -32,9 +32,20 @@ final class VerticalsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        applyTitle()
+        setupBackground()
         setupTable()
+    }
+
+    private func applyTitle() {
+        title = NSLocalizedString("1 of 3", comment: "Site creation. Step 2. Screen title")
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func setupTable() {

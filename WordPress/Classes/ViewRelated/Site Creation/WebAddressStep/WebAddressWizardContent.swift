@@ -28,8 +28,13 @@ final class WebAddressWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        applyTitle()
         setupBackground()
         setupTable()
+    }
+
+    private func applyTitle() {
+        title = NSLocalizedString("3 of 3", comment: "Site creation. Step 3. Screen title")
     }
 
     private func setupBackground() {
