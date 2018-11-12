@@ -27,23 +27,28 @@ final class TitleSubtitleHeaderDataCoordinator: NSObject, UITableViewDataSource,
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = UILabel(frame: .zero)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.text = headerData.title
-        title.textAlignment = .center
-        title.numberOfLines = 0
+        let header = TitleSubtitleHeader(frame: .zero)
+        header.title.text = headerData.title
+        header.subtitle.text = headerData.subtitle
 
-        let subtitle = UILabel(frame: .zero)
-        subtitle.translatesAutoresizingMaskIntoConstraints = false
-        subtitle.text = headerData.subtitle
-        subtitle.textAlignment = .center
-        subtitle.numberOfLines = 0
-
-        let stackView = UIStackView(arrangedSubviews: [title, subtitle])
-        stackView.axis = .vertical
-        stackView.spacing = 20
-
-        return stackView
+        return header
+//        let title = UILabel(frame: .zero)
+//        title.translatesAutoresizingMaskIntoConstraints = false
+//        title.text = headerData.title
+//        title.textAlignment = .center
+//        title.numberOfLines = 0
+//
+//        let subtitle = UILabel(frame: .zero)
+//        subtitle.translatesAutoresizingMaskIntoConstraints = false
+//        subtitle.text = headerData.subtitle
+//        subtitle.textAlignment = .center
+//        subtitle.numberOfLines = 0
+//
+//        let stackView = UIStackView(arrangedSubviews: [title, subtitle])
+//        stackView.axis = .vertical
+//        stackView.spacing = 20
+//
+//        return stackView
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
