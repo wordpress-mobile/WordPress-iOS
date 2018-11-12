@@ -10,7 +10,6 @@ final class VerticalsWizardContent: UIViewController {
 
     private let throttle = Scheduler(seconds: 1)
 
-    @IBOutlet weak var search: UITextField!
     @IBOutlet weak var table: UITableView!
 
     private lazy var headerData: SiteCreationHeaderData = {
@@ -36,8 +35,6 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupTable()
-
-        setupSearchField()
     }
 
     private func setupTable() {
@@ -52,9 +49,11 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
+        let header = TitleSubtitleTextfieldHeader(frame: .zero)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
+
+        header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
         table.tableHeaderView = header
 
@@ -65,12 +64,6 @@ final class VerticalsWizardContent: UIViewController {
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
-    }
-
-    private func setupSearchField() {
-        search.leftViewMode = .always
-
-        search.addTarget(self, action: #selector(textChanged), for: .editingChanged)
     }
 
     @objc
