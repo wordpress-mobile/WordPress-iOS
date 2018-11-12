@@ -36,6 +36,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         applyTitle()
         setupBackground()
         setupTable()
+        initCancelButton()
     }
 
     private func applyTitle() {
@@ -98,6 +99,20 @@ final class SiteSegmentsWizardContent: UIViewController {
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
+    }
+
+    private func initCancelButton() {
+        navigationItem.leftBarButtonItem = cancelButton()
+    }
+
+    private func cancelButton() -> UIBarButtonItem {
+        let literal = NSLocalizedString("Cancel", comment: "Cancel button. Site creation modal popover.")
+        return UIBarButtonItem(title: literal, style: .plain, target: self, action: #selector(cancelSiteCreation))
+    }
+
+    @objc
+    private func cancelSiteCreation() {
+        dismiss(animated: true, completion: nil)
     }
 
     private func fetchSegments() {
