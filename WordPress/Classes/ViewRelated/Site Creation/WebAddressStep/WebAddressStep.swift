@@ -1,22 +1,23 @@
 /// Site Creation. Second screen: Site Verticals
 final class WebAddressStep: WizardStep {
     private let creator: SiteCreator
-
-    private(set) lazy var header: UIViewController = {
-        let title = NSLocalizedString("Lastly, choose and address for your site", comment: "Create site, step 3. Select address for the site. Title")
-        let subtitle = NSLocalizedString("A domain name is your main site address", comment: "Create site, step 3. Select address for the site. Subtitle")
-        let headerData = SiteCreationHeaderData(title: title, subtitle: subtitle)
-
-        return SiteCreationWizardTitle(data: headerData)
-    }()
+    private let service: SiteAddressService
 
     private(set) lazy var content: UIViewController = {
+       // return VerticalsWizardContent(segment: self.creator.segment, service: self.service, selection: self.didSelect)
         return UIViewController()
     }()
 
     var delegate: WizardDelegate?
 
-    init(creator: SiteCreator) {
+    init(creator: SiteCreator, service: SiteAddressService) {
         self.creator = creator
+        self.service = service
+    }
+
+    private func didSelect(_ vertical: SiteVertical) {
+        creator.vertical = vertical
+        // Will have to change to the basic information instead
+        delegate?.wizard(self, willNavigateTo: WebAddressStep.identifier)
     }
 }

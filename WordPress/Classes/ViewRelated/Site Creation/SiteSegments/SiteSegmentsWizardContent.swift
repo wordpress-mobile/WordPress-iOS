@@ -15,8 +15,6 @@ final class SiteSegmentsWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
-
-
     init(service: SiteSegmentsService, selection: @escaping (SiteSegment) -> Void) {
         self.service = service
         self.selection = selection
