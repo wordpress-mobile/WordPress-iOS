@@ -5,7 +5,8 @@ final class WebAddressStep: WizardStep {
 
     private(set) lazy var content: UIViewController = {
        // return VerticalsWizardContent(segment: self.creator.segment, service: self.service, selection: self.didSelect)
-        return UIViewController()
+        //return UIViewController()
+        return WebAddressWizardContent(service: self.service, selection: didSelect)
     }()
 
     var delegate: WizardDelegate?
@@ -15,9 +16,9 @@ final class WebAddressStep: WizardStep {
         self.service = service
     }
 
-    private func didSelect(_ vertical: SiteVertical) {
-        creator.vertical = vertical
-        // Will have to change to the basic information instead
-        delegate?.wizard(self, willNavigateTo: WebAddressStep.identifier)
+    private func didSelect(_ vertical: SiteAddress) {
+//        creator.vertical = vertical
+//        // Will have to transit to the success step
+//        delegate?.wizard(self, willNavigateTo: WebAddressStep.identifier)
     }
 }
