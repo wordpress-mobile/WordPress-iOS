@@ -3,22 +3,40 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 
-protocol SiteCreationDomainsTableViewControllerDelegate {
-    func domainSelected(_ domain: String)
+protocol DomainSuggestionsTableViewControllerDelegate {
+    func domainSelected(_ domain: DomainSuggestion)
     func newSearchStarted()
 }
 
-class SiteCreationDomainsTableViewController: NUXTableViewController {
+/// This is intended to be an abstract base class that provides domain
+/// suggestions for the keyword that user searches.
+/// Subclasses should override the open variables to make customizations.
+class DomainSuggestionsTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
     open var siteName: String?
-    open var delegate: SiteCreationDomainsTableViewControllerDelegate?
+    open var delegate: DomainSuggestionsTableViewControllerDelegate?
+    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
+        return .onlyWordPressDotCom
+    }
+    open var useFadedColorForParentDomains: Bool {
+        return true
+    }
+    open var sectionTitle: String {
+        return ""
+    }
+    open var sectionDescription: String {
+        return ""
+    }
+    open var searchFieldPlaceholder: String {
+        return ""
+    }
 
     private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
-    private var siteTitleSuggestions: [String] = []
-    private var searchSuggestions: [String] = []
+    private var siteTitleSuggestions: [DomainSuggestion] = []
+    private var searchSuggestions: [DomainSuggestion] = []
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
@@ -27,6 +45,10 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     fileprivate enum ViewPadding: CGFloat {
         case noResultsView = 60
+    }
+
+    private var parentDomainColor: UIColor {
+        return useFadedColorForParentDomains ? WPStyleGuide.grey() : WPStyleGuide.darkGrey()
     }
 
     // MARK: - Init
@@ -80,7 +102,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     /// - Parameters:
     ///   - searchTerm: string to base suggestions on
     ///   - addSuggestions: function to call when results arrive
-    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [String]) ->()) {
+    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [DomainSuggestion]) ->()) {
         guard !isSearching else {
             return
         }
@@ -93,7 +115,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
-        service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
+        service.getDomainSuggestions(base: searchTerm,
+                                     domainSuggestionType: domainSuggestionType,
+                                     success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.noSuggestions = false
             SVProgressHUD.dismiss()
@@ -130,7 +154,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension SiteCreationDomainsTableViewController {
+extension DomainSuggestionsTableViewController {
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
         case searchField = 1
@@ -175,9 +199,9 @@ extension SiteCreationDomainsTableViewController {
             } else {
                 let suggestion: String
                 if searchSuggestions.count > 0 {
-                    suggestion = searchSuggestions[indexPath.row]
+                    suggestion = searchSuggestions[indexPath.row].domainName
                 } else {
-                    suggestion = siteTitleSuggestions[indexPath.row]
+                    suggestion = siteTitleSuggestions[indexPath.row].domainName
                 }
                 cell = suggestionCell(domain: suggestion)
             }
@@ -217,10 +241,9 @@ extension SiteCreationDomainsTableViewController {
 
     // MARK: table view cells
 
-    private func titleAndDescriptionCell() -> UITableViewCell {
-        let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
-        let description = NSLocalizedString("Pick an available \"yourname.wordpress.com\" address to let people find you on the web.", comment: "Description of how to pick a domain name during the site creation process")
-        let cell = LoginSocialErrorCell(title: title, description: description)
+    @objc func titleAndDescriptionCell() -> UITableViewCell {
+        let cell = LoginSocialErrorCell(title: sectionTitle,
+                                        description: sectionDescription)
         cell.selectionStyle = .none
         return cell
     }
@@ -230,7 +253,7 @@ extension SiteCreationDomainsTableViewController {
             fatalError()
         }
 
-        cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
+        cell.placeholder = searchFieldPlaceholder
         cell.delegate = self
         cell.selectionStyle = .none
 
@@ -248,7 +271,7 @@ extension SiteCreationDomainsTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.attributedText = styleDomain(domain)
-        cell.textLabel?.textColor = WPStyleGuide.grey()
+        cell.textLabel?.textColor = parentDomainColor
         cell.indentationWidth = 20.0
         cell.indentationLevel = 1
         return cell
@@ -259,14 +282,16 @@ extension SiteCreationDomainsTableViewController {
         guard let dotPosition = domain.index(of: ".") else {
             return styledDomain
         }
-        styledDomain.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: NSMakeRange(0, dotPosition.encodedOffset))
+        styledDomain.addAttribute(.foregroundColor,
+                                  value: WPStyleGuide.darkGrey(),
+                                  range: NSMakeRange(0, dotPosition.encodedOffset))
         return styledDomain
     }
 }
 
 // MARK: - NoResultsViewController Extension
 
-private extension SiteCreationDomainsTableViewController {
+private extension DomainSuggestionsTableViewController {
 
     func addNoResultsTo(cell: UITableViewCell) {
         if noResultsViewController == nil {
@@ -301,9 +326,10 @@ private extension SiteCreationDomainsTableViewController {
 
 // MARK: - UITableViewDelegate
 
-extension SiteCreationDomainsTableViewController {
+extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedDomain: String
+        let selectedDomain: DomainSuggestion
+
         switch indexPath.section {
         case Sections.suggestions.rawValue:
             if searchSuggestions.count > 0 {
@@ -315,8 +341,6 @@ extension SiteCreationDomainsTableViewController {
             return
         }
 
-        // Remove ".wordpress.com" before sending it to the delegate
-        selectedDomain = selectedDomain.components(separatedBy: ".")[0]
         delegate?.domainSelected(selectedDomain)
 
         tableView.deselectSelectedRowWithAnimation(true)
@@ -336,7 +360,7 @@ extension SiteCreationDomainsTableViewController {
 
 // MARK: - SearchTableViewCellDelegate
 
-extension SiteCreationDomainsTableViewController: SearchTableViewCellDelegate {
+extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
         removeNoResultsFromView()

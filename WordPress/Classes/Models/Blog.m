@@ -43,6 +43,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @dynamic apiKey;
 @dynamic hasOlderPosts;
 @dynamic hasOlderPages;
+@dynamic hasDomainCredit;
 @dynamic posts;
 @dynamic categories;
 @dynamic tags;
@@ -561,16 +562,17 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 {
     BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
 
-    if ([Feature enabled:FeatureFlagAutomatedTransfer]) {
-        BOOL isTransferrable = self.isHostedAtWPcom
-            && self.planID.integerValue == WPComBusinessPlanId
-            && self.siteVisibility != SiteVisibilityPrivate
-            && self.isAdmin
-            && ![self.hostURL containsString:@".wordpress.com"];
+    BOOL isTransferrable = self.isHostedAtWPcom
+        && self.planID.integerValue == WPComBusinessPlanId
+        && self.siteVisibility != SiteVisibilityPrivate
+        && self.isAdmin;
 
+    BOOL hasCustomDomain = ![self.hostURL containsString:@".wordpress.com"];
+
+    if ([Feature enabled:FeatureFlagAutomatedTransfersCustomDomain]) {
         return isTransferrable || hasRequiredJetpack;
     } else {
-        return hasRequiredJetpack;
+        return (isTransferrable && hasCustomDomain) || hasRequiredJetpack;
     }
 }
 
