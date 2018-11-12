@@ -1,9 +1,9 @@
 import UIKit
 
-class VerticalsCell: UITableViewCell, ModelSettableCell {
+final class AddressCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var title: UILabel!
 
-    var model: SiteVertical? {
+    var model: SiteAddress? {
         didSet {
             title.text = model?.title
         }
