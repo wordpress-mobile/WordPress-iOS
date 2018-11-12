@@ -21,6 +21,7 @@ final class TitleSubtitleHeader: UIView {
 
     private lazy var stackView: UIStackView = {
         let returnValue = UIStackView(arrangedSubviews: [self.title, self.subtitle])
+        returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
         returnValue.spacing = 20
 
@@ -38,6 +39,7 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
