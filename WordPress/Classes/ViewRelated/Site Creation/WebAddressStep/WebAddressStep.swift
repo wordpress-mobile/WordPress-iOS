@@ -16,8 +16,8 @@ final class WebAddressStep: WizardStep {
         self.service = service
     }
 
-    private func didSelect(_ vertical: SiteAddress) {
-//        creator.vertical = vertical
+    private func didSelect(_ address: SiteAddress) {
+        creator.address = address
 //        // Will have to transit to the success step
 //        delegate?.wizard(self, willNavigateTo: WebAddressStep.identifier)
     }
