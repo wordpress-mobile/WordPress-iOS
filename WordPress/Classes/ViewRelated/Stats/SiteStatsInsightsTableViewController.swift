@@ -1,13 +1,30 @@
 import UIKit
 import WordPressComStatsiOS
 
+@objc protocol SiteStatsInsightsDelegate {
+    @objc optional func displayWebViewWithURL(_ url: URL)
+    @objc optional func showCreatePost()
+    @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
+}
+
 class SiteStatsInsightsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
     var statsService: WPStatsService?
     var latestPostSummary: StatsLatestPostSummary?
-    private var finishedLoading = false
+
+    private lazy var mainContext: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().mainContext
+    }()
+
+    private lazy var blogService: BlogService = {
+        return BlogService(managedObjectContext: mainContext)
+    }()
+
+    private lazy var postService: PostService = {
+        return PostService(managedObjectContext: mainContext)
+    }()
 
     // MARK: - View
 
@@ -17,10 +34,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         setUpLatestPostSummaryCell()
         refreshControl?.addTarget(self, action: #selector(fetchStats), for: .valueChanged)
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         fetchStats()
     }
 
@@ -31,16 +45,12 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard finishedLoading == true else {
-            return 0
-        }
-
         return 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifiers.latestPostSummary, for: indexPath) as! LatestPostSummaryCell
-        cell.configure(withData: latestPostSummary)
+        cell.configure(withData: latestPostSummary, andDelegate: self)
         return cell
     }
 
@@ -55,8 +65,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     @objc func fetchStats() {
-
-        finishedLoading = false
 
         statsService?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
 
@@ -90,7 +98,6 @@ private extension SiteStatsInsightsTableViewController {
 
         }, andOverallCompletionHandler: {
             self.refreshControl?.endRefreshing()
-            self.finishedLoading = true
         })
 
     }
@@ -113,4 +120,43 @@ private extension SiteStatsInsightsTableViewController {
     struct ReuseIdentifiers {
         static let latestPostSummary = "latestPostSummaryCell"
     }
+}
+
+// MARK: - SiteStatsInsightsDelegate Methods
+
+extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
+    }
+
+    func showCreatePost() {
+        WPTabBarController.sharedInstance().showPostTab { [weak self] in
+            self?.fetchStats()
+        }
+    }
+
+    func showShareForPost(postID: NSNumber, fromView: UIView) {
+
+        guard let blogId = statsService?.siteId,
+        let blog = blogService.blog(byBlogId: blogId) else {
+            DDLogInfo("Failed to get blog with id \(String(describing: statsService?.siteId))")
+            return
+        }
+
+        postService.getPostWithID(postID, for: blog, success: { apost in
+            guard let post = apost as? Post else {
+                DDLogInfo("Failed to get post with id \(postID)")
+                return
+            }
+
+            let shareController = PostSharingController()
+            shareController.sharePost(post, fromView: fromView, inViewController: self)
+        }, failure: { error in
+            DDLogInfo("Error getting post with id \(postID): \(error.localizedDescription)")
+        })
+    }
+
 }
