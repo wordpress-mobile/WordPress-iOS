@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Contains the UI corresponsing to the list of segments
 final class SiteSegmentsWizardContent: UIViewController {
@@ -26,6 +27,16 @@ final class SiteSegmentsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupBackground()
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupTable()
@@ -48,6 +59,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         let header = TitleSubtitleHeader(frame: .zero)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
+        header.backgroundColor = WPStyleGuide.greyLighten30()
 
         table.tableHeaderView = header
 

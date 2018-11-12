@@ -52,6 +52,7 @@ final class VerticalsWizardContent: UIViewController {
         let header = TitleSubtitleTextfieldHeader(frame: .zero)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
+        header.backgroundColor = WPStyleGuide.greyLighten30()
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
