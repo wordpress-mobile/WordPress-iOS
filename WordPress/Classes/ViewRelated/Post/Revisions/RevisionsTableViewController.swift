@@ -46,8 +46,6 @@ private extension RevisionsTableViewController {
 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshRevisions), for: .valueChanged)
-        tableView.addSubview(refreshControl)
-
         self.refreshControl = refreshControl
 
         tableView.tableFooterView = tableViewFooter
