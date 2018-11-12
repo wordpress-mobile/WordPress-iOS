@@ -40,6 +40,21 @@ class RevisionsTableViewCell: UITableViewCell {
         super.awakeFromNib()
         setupStyles()
     }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        setHighlighted(selected, animated: animated)
+    }
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        let previouslyHighlighted = self.isHighlighted
+        super.setHighlighted(highlighted, animated: animated)
+
+        if previouslyHighlighted != highlighted {
+            addOperation.internalView.type = .add
+            delOperation.internalView.type = .del
+        }
+    }
 }
 
 
