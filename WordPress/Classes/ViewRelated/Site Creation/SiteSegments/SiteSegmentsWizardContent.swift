@@ -11,6 +11,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private struct StyleConstants {
         static let rowHeight: CGFloat = 72.0
+        static let separatorInset = UIEdgeInsets(top: 0, left: 64.0, bottom: 0, right: 0)
     }
 
     private lazy var headerData: SiteCreationHeaderData = {
@@ -63,8 +64,9 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupCellHeight() {
-        table.rowHeight = UITableView.automaticDimension
+        table.rowHeight = StyleConstants.rowHeight
         table.estimatedRowHeight = StyleConstants.rowHeight
+        table.separatorInset = StyleConstants.separatorInset
     }
 
     private func setupHeader() {
