@@ -28,9 +28,8 @@ final class TitleSubtitleHeaderDataCoordinator: NSObject, UITableViewDataSource,
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = TitleSubtitleHeader(frame: .zero)
-        header.title.text = headerData.title
-        header.subtitle.text = headerData.subtitle
-
+        header.setTitle(headerData.title)
+        header.setSubtitle(headerData.subtitle)
         return header
 //        let title = UILabel(frame: .zero)
 //        title.translatesAutoresizingMaskIntoConstraints = false

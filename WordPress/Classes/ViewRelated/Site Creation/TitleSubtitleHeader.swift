@@ -1,7 +1,7 @@
 import UIKit
 
 final class TitleSubtitleHeader: UIView {
-    lazy var title: UILabel = {
+    private lazy var title: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -10,7 +10,7 @@ final class TitleSubtitleHeader: UIView {
         return label
     }()
 
-    lazy var subtitle: UILabel = {
+    private lazy var subtitle: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -46,5 +46,15 @@ final class TitleSubtitleHeader: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
+    }
+
+    func setTitle(_ text: String) {
+        title.text = text
+        title.accessibilityLabel = text
+    }
+
+    func setSubtitle(_ text: String) {
+        subtitle.text = text
+        subtitle.accessibilityLabel = text
     }
 }

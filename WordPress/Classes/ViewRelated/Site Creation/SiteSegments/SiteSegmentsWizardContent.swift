@@ -46,8 +46,8 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func setupHeader() {
         let header = TitleSubtitleHeader(frame: .zero)
-        header.title.text = headerData.title
-        header.subtitle.text = headerData.subtitle
+        header.setTitle(headerData.title)
+        header.setSubtitle(headerData.subtitle)
 
         table.tableHeaderView = header
 
