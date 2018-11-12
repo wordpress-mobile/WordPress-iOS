@@ -34,10 +34,17 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupTable() {
+        setupCell()
+        setupHeader()
+    }
+
+    private func setupCell() {
         let cellName = SiteSegmentsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
+    }
 
+    private func setupHeader() {
         let header = TitleSubtitleHeader(frame: .zero)
         header.title.text = headerData.title
         header.subtitle.text = headerData.subtitle
