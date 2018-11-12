@@ -49,6 +49,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupTable() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
         setupCell()
         setupHeader()
     }
@@ -70,8 +71,8 @@ final class VerticalsWizardContent: UIViewController {
 
         // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
         header.centerXAnchor.constraint(equalTo: table.centerXAnchor).isActive = true
-        header.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
-        header.topAnchor.constraint(equalTo: table.topAnchor).isActive = true
+        header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor).isActive = true
+        header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor).isActive = true
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
