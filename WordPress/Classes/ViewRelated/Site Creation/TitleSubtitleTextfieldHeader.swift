@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 final class TitleSubtitleTextfieldHeader: UIView {
     private lazy var titleSubtitle: TitleSubtitleHeader = {
@@ -13,6 +14,10 @@ final class TitleSubtitleTextfieldHeader: UIView {
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.leftViewMode = .always
         returnValue.backgroundColor = .white
+
+        let loupeIcon = Gridicon.iconOfType(.search)
+        let imageView = UIImageView(image: loupeIcon)
+        returnValue.leftView = imageView
 
         return returnValue
     }()
