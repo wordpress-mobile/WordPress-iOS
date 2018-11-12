@@ -43,6 +43,7 @@ private extension RevisionsTableViewController {
         let cellNib = UINib(nibName: RevisionsTableViewCell.classNameWithoutNamespaces(),
                             bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshRevisions), for: .valueChanged)
