@@ -12,6 +12,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         let returnValue = UITextField(frame: .zero)
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.leftViewMode = .always
+        returnValue.backgroundColor = .white
 
         return returnValue
     }()
