@@ -37,6 +37,20 @@ final class SiteSegmentsWizardContent: UIViewController {
         let cellName = SiteSegmentsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
+
+        let header = TitleSubtitleHeader(frame: .zero)
+        header.title.text = headerData.title
+        header.subtitle.text = headerData.subtitle
+
+        table.tableHeaderView = header
+
+        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
+        header.centerXAnchor.constraint(equalTo: table.centerXAnchor).isActive = true
+        header.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
+        header.topAnchor.constraint(equalTo: table.topAnchor).isActive = true
+
+        table.tableHeaderView?.layoutIfNeeded()
+        table.tableHeaderView = table.tableHeaderView
     }
 
     private func fetchSegments() {
@@ -55,8 +69,8 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        let tableCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
-        dataCoordinator = TitleSubtitleHeaderDataCoordinator(decorated: tableCoordinator, headerData: headerData)
+        //let tableCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
+        dataCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()
