@@ -29,6 +29,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         super.viewDidLoad()
 
         setupBackground()
+        setupTable()
     }
 
     private func setupBackground() {
@@ -37,7 +38,6 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupTable()
 
         fetchSegments()
     }

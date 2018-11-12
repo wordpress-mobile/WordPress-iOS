@@ -29,15 +29,11 @@ final class WebAddressWizardContent: UIViewController {
         super.viewDidLoad()
 
         setupBackground()
+        setupTable()
     }
 
     private func setupBackground() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupTable()
     }
 
     private func setupTable() {

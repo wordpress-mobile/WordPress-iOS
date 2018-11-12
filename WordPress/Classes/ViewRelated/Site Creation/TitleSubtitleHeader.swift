@@ -51,7 +51,23 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func setStyles() {
+        styleBackground()
+        styleTitle()
+        styleSubtitle()
+    }
+
+    private func styleBackground() {
         backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func styleTitle() {
+        title.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        title.textColor = WPStyleGuide.darkGrey()
+    }
+
+    private func styleSubtitle() {
+        subtitle.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        subtitle.textColor = WPStyleGuide.greyDarken10()
     }
 
     func setTitle(_ text: String) {
