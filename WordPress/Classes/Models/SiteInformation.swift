@@ -41,7 +41,7 @@ fileprivate struct AbstractSiteInformationRow: Decodable {
 struct SiteInformation {
     let title: String
     let subtitle: String
-    let groups: [SiteInformationSection]
+    let sections: [SiteInformationSection]
 }
 
 extension SiteInformation: Decodable {
@@ -56,7 +56,7 @@ extension SiteInformation: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         title = try values.decode(String.self, forKey: .title)
         subtitle = try values.decode(String.self, forKey: .subtitle)
-        groups = [try values.decode(SiteInformationSection.self, forKey: .needs)]
+        sections = [try values.decode(SiteInformationSection.self, forKey: .needs)]
     }
 }
 
