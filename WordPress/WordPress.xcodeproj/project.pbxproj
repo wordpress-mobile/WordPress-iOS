@@ -1148,6 +1148,8 @@
 		D82253EE219A8A960014D0E2 /* SiteInfoWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */; };
 		D82253F0219A8AED0014D0E2 /* SiteInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253EF219A8AED0014D0E2 /* SiteInfoService.swift */; };
 		D82253F2219A8C670014D0E2 /* SiteInfoNeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253F1219A8C670014D0E2 /* SiteInfoNeed.swift */; };
+		D82253F4219A9D650014D0E2 /* SiteInfoNeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */; };
+		D82253F6219A9D8E0014D0E2 /* site-info-need.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253F5219A9D8E0014D0E2 /* site-info-need.json */; };
 		D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */; };
 		D826D682211D51E300A5D8FE /* ReaderNewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */; };
 		D8281CF1212AB34C00D09098 /* NewsStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8281CF0212AB34C00D09098 /* NewsStats.swift */; };
@@ -3023,6 +3025,8 @@
 		D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteInfoWizardContent.xib; sourceTree = "<group>"; };
 		D82253EF219A8AED0014D0E2 /* SiteInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoService.swift; sourceTree = "<group>"; };
 		D82253F1219A8C670014D0E2 /* SiteInfoNeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoNeed.swift; sourceTree = "<group>"; };
+		D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoNeedTests.swift; sourceTree = "<group>"; };
+		D82253F5219A9D8E0014D0E2 /* site-info-need.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-need.json"; sourceTree = "<group>"; };
 		D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullMockUserDefaults.swift; sourceTree = "<group>"; };
 		D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderNewsCard.swift; sourceTree = "<group>"; };
 		D8281CF0212AB34C00D09098 /* NewsStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStats.swift; sourceTree = "<group>"; };
@@ -4685,6 +4689,7 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */,
 				D818FFE521918CCD000E5FEE /* SiteSegmentsCellTests.swift */,
 				D818FFE32191897C000E5FEE /* SiteCreationDataCoordinatorTests.swift */,
 				D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */,
@@ -7050,6 +7055,7 @@
 			children = (
 				D8A468DF2181C6450094B82F /* site-type.json */,
 				D8A468E12181C8290094B82F /* site-vertical.json */,
+				D82253F5219A9D8E0014D0E2 /* site-info-need.json */,
 			);
 			name = "Site Creation";
 			sourceTree = "<group>";
@@ -8252,6 +8258,7 @@
 				748437EC1F1D4A4800E8DDAF /* gallery-reader-post-public.json in Resources */,
 				7E4A772720F7CDD5001C706D /* activity-log-settings-content.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
+				D82253F6219A9D8E0014D0E2 /* site-info-need.json in Resources */,
 				D88A64AA208D974D008AE9BC /* thumbnail-collection.json in Resources */,
 				08B832421EC130D60079808D /* test-gif.gif in Resources */,
 				D821C819210037F8002ED995 /* activity-log-activity-content.json in Resources */,
@@ -9918,6 +9925,7 @@
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */,
 				D816B8CA2112D2FD0052CE4D /* LocalNewsServiceTests.swift in Sources */,
+				D82253F4219A9D650014D0E2 /* SiteInfoNeedTests.swift in Sources */,
 				D800D87A20999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift in Sources */,
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,

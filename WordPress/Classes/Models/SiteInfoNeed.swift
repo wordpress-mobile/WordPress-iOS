@@ -15,15 +15,23 @@ fileprivate struct GenericNeed: Decodable {
         case type
         case text
         case hint
-        case siteOption = "site-option"
+        case site_option
     }
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         type = try values.decode(SiteInfoNeedType.self, forKey: .type)
         text = try values.decode(String.self, forKey: .text)
-        hint = try values.decode(String.self, forKey: .hint)
-        siteOption = try Identifier(value: values.decode(String.self, forKey: .siteOption))
+        if values.contains(.hint) {
+            hint = try values.decode(String.self, forKey: .hint)
+        } else {
+            hint = nil
+        }
+        if values.contains(.site_option) {
+            siteOption = try Identifier(value: values.decode(String.self, forKey: .site_option))
+        } else {
+            siteOption = nil
+        }
     }
 }
 
@@ -90,14 +98,14 @@ extension TextInfoNeed: Decodable {
     enum CodingKeys: String, CodingKey {
         case text
         case hint
-        case siteOption = "site-option"
+        case site_option
     }
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         text = try values.decode(String.self, forKey: .text)
         hint = try values.decode(String.self, forKey: .hint)
-        siteOption = try Identifier(value: values.decode(String.self, forKey: .siteOption))
+        siteOption = try Identifier(value: values.decode(String.self, forKey: .site_option))
     }
 }
 
@@ -113,14 +121,14 @@ extension PhoneInfoNeed: Decodable {
     enum CodingKeys: String, CodingKey {
         case text
         case hint
-        case siteOption = "site-option"
+        case site_option
     }
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         text = try values.decode(String.self, forKey: .text)
         hint = try values.decode(String.self, forKey: .hint)
-        siteOption = try Identifier(value: values.decode(String.self, forKey: .siteOption))
+        siteOption = try Identifier(value: values.decode(String.self, forKey: .site_option))
     }
 }
 
