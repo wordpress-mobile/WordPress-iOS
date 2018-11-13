@@ -1,0 +1,6 @@
+{
+    "type": "phone-num",
+    "text": "Phone Number",
+    "hint": "Phone Number",
+    "site_option": "phone_number"
+}
