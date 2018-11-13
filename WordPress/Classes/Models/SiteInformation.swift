@@ -1,12 +1,12 @@
-fileprivate enum SiteInfoNeedType: String, Decodable {
+fileprivate enum SiteInformationRowType: String, Decodable {
     case text
     case phoneNum = "phone-num"
     case header
     case footer
 }
 
-fileprivate struct GenericNeed: Decodable {
-    let type: SiteInfoNeedType
+fileprivate struct AbstractSiteInformationRow: Decodable {
+    let type: SiteInformationRowType
     let text: String
     let hint: String?
     let siteOption: Identifier?
@@ -20,7 +20,7 @@ fileprivate struct GenericNeed: Decodable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        type = try values.decode(SiteInfoNeedType.self, forKey: .type)
+        type = try values.decode(SiteInformationRowType.self, forKey: .type)
         text = try values.decode(String.self, forKey: .text)
         if values.contains(.hint) {
             hint = try values.decode(String.self, forKey: .hint)
@@ -41,7 +41,7 @@ fileprivate struct GenericNeed: Decodable {
 struct SiteInformation {
     let title: String
     let subtitle: String
-    let groups: [SiteInfoGroup]
+    let groups: [SiteInformationSection]
 }
 
 extension SiteInformation: Decodable {
@@ -56,18 +56,18 @@ extension SiteInformation: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         title = try values.decode(String.self, forKey: .title)
         subtitle = try values.decode(String.self, forKey: .subtitle)
-        groups = [try values.decode(SiteInfoGroup.self, forKey: .needs)]
+        groups = [try values.decode(SiteInformationSection.self, forKey: .needs)]
     }
 }
 
-struct SiteInfoGroup {
-    let sections: [SiteInfoSection]
+struct SiteInformationSection {
+    let sections: [SiteInformationRow]
 }
 
-extension SiteInfoGroup: Decodable {
+extension SiteInformationSection: Decodable {
     init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
-        sections = try container.decode([GenericNeed].self).map { need in
+        sections = try container.decode([AbstractSiteInformationRow].self).map { need in
             switch need.type {
             case .text:
                 return TextInfoNeed(text: need.text, hint: need.hint, siteOption: need.siteOption)
@@ -84,21 +84,21 @@ extension SiteInfoGroup: Decodable {
 
 // MARK: - PROTOCOL
 // MARK: -
-protocol SiteInfoSection {
+protocol SiteInformationRow {
     var text: String { get }
     var hint: String? { get }
     var siteOption: Identifier? { get }
 }
 
-extension SiteInfoSection where Self: Equatable {
-    static func ==(lhs: SiteInfoSection, rhs: SiteInfoSection) -> Bool {
+extension SiteInformationRow where Self: Equatable {
+    static func ==(lhs: SiteInformationRow, rhs: SiteInformationRow) -> Bool {
         return lhs.siteOption == rhs.siteOption
     }
 }
 
 // MARK: - IMPLEMENTATIONS
 // MARK: - Text Info
-struct TextInfoNeed: SiteInfoSection, Equatable {
+struct TextInfoNeed: SiteInformationRow, Equatable {
     private let type = "text"
     let text: String
     let hint: String?
@@ -121,7 +121,7 @@ extension TextInfoNeed: Decodable {
 }
 
 // MARK: - Phone Info
-struct PhoneInfoNeed: SiteInfoSection, Equatable {
+struct PhoneInfoNeed: SiteInformationRow, Equatable {
     private let type = "phone-num"
     let text: String
     let hint: String?
@@ -144,7 +144,7 @@ extension PhoneInfoNeed: Decodable {
 }
 
 // MARK: - Header
-struct HeaderInfoNeed: SiteInfoSection, Equatable {
+struct HeaderInfoNeed: SiteInformationRow, Equatable {
     private let type = "header"
     let text: String
     let hint: String? = nil
@@ -163,7 +163,7 @@ extension HeaderInfoNeed: Decodable {
 }
 
 // MARK: - Footer
-struct FooterInfoNeed: SiteInfoSection, Equatable {
+struct FooterInfoNeed: SiteInformationRow, Equatable {
     private let type = "footer"
     let text: String
     let hint: String? = nil
