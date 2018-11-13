@@ -50,6 +50,11 @@ final class SiteInformationWizardContent: UIViewController {
 
     private func setupNextButton() {
         nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
+
+        let buttonTitle = NSLocalizedString("Next", comment: "Button to progress to the next step")
+        nextStep.setTitle(buttonTitle, for: .normal)
+        nextStep.accessibilityLabel = buttonTitle
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step", comment: "Site creation. Navigates tot he next step")
     }
 
     private func render() {
