@@ -219,7 +219,7 @@ class WPRichTextFormatter {
     ///
     /// - Returns: An instance of ParsedSource containing the modified string and any attachments.
     ///
-    func processString(_ string:String, forTag tag:HtmlTagProcessor ) -> ParsedSource {
+    func processString(_ string: String, forTag tag: HtmlTagProcessor ) -> ParsedSource {
         var attachments = [WPTextAttachment]()
         var processedString = ""
         let scanner = Scanner(string: string)
