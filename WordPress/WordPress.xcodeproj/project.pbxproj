@@ -6940,7 +6940,7 @@
 			path = Verticals;
 			sourceTree = "<group>";
 		};
-		D8380CA72194287B00250609 /* WebAddressStep */ = {
+		D8380CA72194287B00250609 /* WebAddress */ = {
 			isa = PBXGroup;
 			children = (
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
@@ -6949,13 +6949,13 @@
 				D82253E3219956540014D0E2 /* AddressCell.swift */,
 				D82253E4219956540014D0E2 /* AddressCell.xib */,
 			);
-			path = WebAddressStep;
+			path = WebAddress;
 			sourceTree = "<group>";
 		};
 		D865720F21869C380023A99C /* Site Creation */ = {
 			isa = PBXGroup;
 			children = (
-				D8380CA72194287B00250609 /* WebAddressStep */,
+				D8380CA72194287B00250609 /* WebAddress */,
 				D818FFD22191556A000E5FEE /* Verticals */,
 				D8C31CBF2188442200A33B35 /* SiteSegments */,
 				D86572142186C34C0023A99C /* SiteCreationWizard.swift */,
