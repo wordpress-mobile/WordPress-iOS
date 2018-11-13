@@ -18,8 +18,13 @@ final class SiteCreationWizardLauncher {
         return WebAddressStep(creator: self.creator, service: MockSiteAddressService())
     }()
 
+    private lazy var siteInfoStep: WizardStep = {
+        return SiteInfoStep(creator: self.creator, service: MockSiteInformationService())
+    }()
+
     private lazy var steps: [WizardStep] = {
-        return [self.segmentsStep,
+        return [self.siteInfoStep,
+                self.segmentsStep,
                 self.verticalsStep,
                 self.addressStep]
     }()

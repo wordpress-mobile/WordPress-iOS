@@ -3,8 +3,7 @@ final class SiteInfoStep: WizardStep {
     private let service: SiteInformationService
 
     private(set) lazy var content: UIViewController = {
-        //return VerticalsWizardContent(segment: self.creator.segment, service: self.service, selection: self.didSelect)
-        return SiteInfoWizardContent()
+        return SiteInfoWizardContent(service: self.service)
     }()
 
     var delegate: WizardDelegate?
@@ -13,11 +12,4 @@ final class SiteInfoStep: WizardStep {
         self.creator = creator
         self.service = service
     }
-
-//    private func didSelect(_ vertical: SiteVertical) {
-//        creator.vertical = vertical
-//        // Will have to change to the basic information instead
-//        delegate?.wizard(self, willNavigateTo: WebAddressStep.identifier)
-//    }
-
 }
