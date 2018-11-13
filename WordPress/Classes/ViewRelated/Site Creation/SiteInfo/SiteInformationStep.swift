@@ -3,7 +3,7 @@ final class SiteInformationStep: WizardStep {
     private let service: SiteInformationService
 
     private(set) lazy var content: UIViewController = {
-        return SiteInfoWizardContent(service: self.service)
+        return SiteInformationWizardContent(service: self.service)
     }()
 
     var delegate: WizardDelegate?

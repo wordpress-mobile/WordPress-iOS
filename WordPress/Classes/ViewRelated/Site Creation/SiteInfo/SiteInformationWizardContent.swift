@@ -1,6 +1,6 @@
 import UIKit
 
-final class SiteInfoWizardContent: UIViewController {
+final class SiteInformationWizardContent: UIViewController {
     private let service: SiteInformationService
 
     init(service: SiteInformationService) {
