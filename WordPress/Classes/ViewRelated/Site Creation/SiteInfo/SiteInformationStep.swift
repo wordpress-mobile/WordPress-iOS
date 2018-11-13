@@ -1,4 +1,4 @@
-final class SiteInfoStep: WizardStep {
+final class SiteInformationStep: WizardStep {
     private let creator: SiteCreator
     private let service: SiteInformationService
 

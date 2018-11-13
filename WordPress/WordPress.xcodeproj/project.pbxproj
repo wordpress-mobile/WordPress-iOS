@@ -1143,7 +1143,7 @@
 		D82253E2219942FF0014D0E2 /* SiteAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E1219942FF0014D0E2 /* SiteAddress.swift */; };
 		D82253E5219956540014D0E2 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E3219956540014D0E2 /* AddressCell.swift */; };
 		D82253E6219956540014D0E2 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253E4219956540014D0E2 /* AddressCell.xib */; };
-		D82253EA219A8A720014D0E2 /* SiteInfoStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E9219A8A720014D0E2 /* SiteInfoStep.swift */; };
+		D82253EA219A8A720014D0E2 /* SiteInformationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E9219A8A720014D0E2 /* SiteInformationStep.swift */; };
 		D82253ED219A8A960014D0E2 /* SiteInfoWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253EB219A8A960014D0E2 /* SiteInfoWizardContent.swift */; };
 		D82253EE219A8A960014D0E2 /* SiteInfoWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */; };
 		D82253F4219A9D650014D0E2 /* SiteInfoNeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */; };
@@ -3029,7 +3029,7 @@
 		D82253E1219942FF0014D0E2 /* SiteAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAddress.swift; sourceTree = "<group>"; };
 		D82253E3219956540014D0E2 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		D82253E4219956540014D0E2 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
-		D82253E9219A8A720014D0E2 /* SiteInfoStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoStep.swift; sourceTree = "<group>"; };
+		D82253E9219A8A720014D0E2 /* SiteInformationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInformationStep.swift; sourceTree = "<group>"; };
 		D82253EB219A8A960014D0E2 /* SiteInfoWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoWizardContent.swift; sourceTree = "<group>"; };
 		D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteInfoWizardContent.xib; sourceTree = "<group>"; };
 		D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoNeedTests.swift; sourceTree = "<group>"; };
@@ -6980,7 +6980,7 @@
 		D82253E8219A8A5F0014D0E2 /* SiteInfo */ = {
 			isa = PBXGroup;
 			children = (
-				D82253E9219A8A720014D0E2 /* SiteInfoStep.swift */,
+				D82253E9219A8A720014D0E2 /* SiteInformationStep.swift */,
 				D82253EB219A8A960014D0E2 /* SiteInfoWizardContent.swift */,
 				D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */,
 			);
@@ -8748,7 +8748,7 @@
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
 				7ED3695520A9F091007B0D56 /* Blog+ImageSourceInformation.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
-				D82253EA219A8A720014D0E2 /* SiteInfoStep.swift in Sources */,
+				D82253EA219A8A720014D0E2 /* SiteInformationStep.swift in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				E161B7EC1F839345000FDF0B /* CookieJar.swift in Sources */,
 				D853723A21952DAF0076F461 /* WebAddressStep.swift in Sources */,
