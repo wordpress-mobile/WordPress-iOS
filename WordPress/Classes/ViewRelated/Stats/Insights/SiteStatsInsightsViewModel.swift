@@ -1,56 +1,47 @@
 import Foundation
 import WordPressComStatsiOS
+import WordPressFlux
 
 /// The view model used by Stats Insights.
 ///
-class SiteStatsInsightsViewModel: NSObject {
+class SiteStatsInsightsViewModel: Observable {
 
     // MARK: - Properties
 
-    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let changeDispatcher = Dispatcher<Void>()
+
+    private let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+
+    private let store: StatsInsightsStore
+    private let insightsReceipt: Receipt
+    private var changeReceipt: Receipt?
 
     // MARK: - Constructor
 
-    init(insightsDelegate: SiteStatsInsightsDelegate) {
-        super.init()
+    init(insightsDelegate: SiteStatsInsightsDelegate, store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
         self.siteStatsInsightsDelegate = insightsDelegate
+        self.store = store
+        insightsReceipt = store.query(.insights())
+
+        changeReceipt = store.onChange { [weak self] in
+            self?.emitChange()
+        }
     }
 
-    // MARK: - Data Fetching
+    // MARK: - Table Model
 
-    func fetchStats() {
+    func tableViewModel() -> ImmuTable {
 
-        SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
+        var tableRows = [ImmuTableRow]()
 
-        }, insightsCompletionHandler: { (mostPopularStats, error) in
+        let latestPostSummaryRow = LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
+                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        tableRows.append(latestPostSummaryRow)
 
-        }, todaySummaryCompletionHandler: { (todaySummary, error) in
-
-        }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
-            if error != nil {
-                DDLogDebug("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            self.siteStatsInsightsDelegate?.latestPostSummaryLoaded?(latestPostSummary)
-        }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
-
-        }, commentsPostsCompletionHandler: { (commentsPosts, error) in
-
-        }, tagsCategoriesCompletionHandler: { (tagsCategories, error) in
-
-        }, followersDotComCompletionHandler: { (followersDotCom, error) in
-
-        }, followersEmailCompletionHandler: { (followersEmail, error) in
-
-        }, publicizeCompletionHandler: { (publicize, error) in
-
-        }, streakCompletionHandler: { (statsStreak, error) in
-
-        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
-
-        }, andOverallCompletionHandler: {
-
-        })
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: tableRows)
+            ])
     }
 
 }
