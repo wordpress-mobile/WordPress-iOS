@@ -1156,6 +1156,8 @@
 		D82253FE219AA3EE0014D0E2 /* site-info-section-footer.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253FD219AA3EE0014D0E2 /* site-info-section-footer.json */; };
 		D8225400219AA4EB0014D0E2 /* site-info-section-phone.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253FF219AA4EB0014D0E2 /* site-info-section-phone.json */; };
 		D8225402219AA50A0014D0E2 /* SiteInfoPhoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8225401219AA50A0014D0E2 /* SiteInfoPhoneTests.swift */; };
+		D8225404219AA5940014D0E2 /* site-info-section-header.json in Resources */ = {isa = PBXBuildFile; fileRef = D8225403219AA5940014D0E2 /* site-info-section-header.json */; };
+		D8225406219AA5B70014D0E2 /* SiteInfoHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8225405219AA5B70014D0E2 /* SiteInfoHeaderTests.swift */; };
 		D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */; };
 		D826D682211D51E300A5D8FE /* ReaderNewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */; };
 		D8281CF1212AB34C00D09098 /* NewsStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8281CF0212AB34C00D09098 /* NewsStats.swift */; };
@@ -3039,6 +3041,8 @@
 		D82253FD219AA3EE0014D0E2 /* site-info-section-footer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-section-footer.json"; sourceTree = "<group>"; };
 		D82253FF219AA4EB0014D0E2 /* site-info-section-phone.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-section-phone.json"; sourceTree = "<group>"; };
 		D8225401219AA50A0014D0E2 /* SiteInfoPhoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoPhoneTests.swift; sourceTree = "<group>"; };
+		D8225403219AA5940014D0E2 /* site-info-section-header.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-section-header.json"; sourceTree = "<group>"; };
+		D8225405219AA5B70014D0E2 /* SiteInfoHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoHeaderTests.swift; sourceTree = "<group>"; };
 		D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullMockUserDefaults.swift; sourceTree = "<group>"; };
 		D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderNewsCard.swift; sourceTree = "<group>"; };
 		D8281CF0212AB34C00D09098 /* NewsStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStats.swift; sourceTree = "<group>"; };
@@ -4701,6 +4705,7 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D8225405219AA5B70014D0E2 /* SiteInfoHeaderTests.swift */,
 				D8225401219AA50A0014D0E2 /* SiteInfoPhoneTests.swift */,
 				D82253FB219AA3D40014D0E2 /* SiteInfoFooterTests.swift */,
 				D82253F9219AA2870014D0E2 /* SiteInfoSectionTextTests.swift */,
@@ -7074,6 +7079,7 @@
 				D82253F7219AA25A0014D0E2 /* site-info-section-text.json */,
 				D82253FD219AA3EE0014D0E2 /* site-info-section-footer.json */,
 				D82253FF219AA4EB0014D0E2 /* site-info-section-phone.json */,
+				D8225403219AA5940014D0E2 /* site-info-section-header.json */,
 			);
 			name = "Site Creation";
 			sourceTree = "<group>";
@@ -8311,6 +8317,7 @@
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				D8A468E22181C8290094B82F /* site-vertical.json in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
+				D8225404219AA5940014D0E2 /* site-info-section-header.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
 				D848CC1120FF310400A9038F /* notifications-site-range.json in Resources */,
 				7E53AB0620FE6905005796FE /* activity-log-comment.json in Resources */,
@@ -9959,6 +9966,7 @@
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				D816B8C02112CC930052CE4D /* NewsItemTests.swift in Sources */,
 				D818FFE621918CCD000E5FEE /* SiteSegmentsCellTests.swift in Sources */,
+				D8225406219AA5B70014D0E2 /* SiteInfoHeaderTests.swift in Sources */,
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */,
