@@ -38,13 +38,13 @@ fileprivate struct GenericNeed: Decodable {
 
 // MARK: - SITE INFO
 // MARK: -
-struct SiteInfoNeed {
+struct SiteInformation {
     let title: String
     let subtitle: String
     let groups: [SiteInfoGroup]
 }
 
-extension SiteInfoNeed: Decodable {
+extension SiteInformation: Decodable {
     private enum CodingKeys: String, CodingKey {
         case title
         case subtitle

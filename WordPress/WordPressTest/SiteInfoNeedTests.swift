@@ -7,7 +7,7 @@ final class SiteInfoNeedTests: XCTestCase {
         static let subtitle = "Tell us more about the site you are creating"
     }
 
-    private var subject: SiteInfoNeed?
+    private var subject: SiteInformation?
 
     override func setUp() {
         super.setUp()
@@ -16,7 +16,7 @@ final class SiteInfoNeedTests: XCTestCase {
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 
-        subject = try! jsonDecoder.decode(SiteInfoNeed.self, from: data)
+        subject = try! jsonDecoder.decode(SiteInformation.self, from: data)
     }
 
     override func tearDown() {
