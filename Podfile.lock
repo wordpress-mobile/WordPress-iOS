@@ -120,6 +120,10 @@ PODS:
     - Folly (= 2016.10.31.00)
     - React/jschelpers
     - React/jsinspector
+  - React/DevSupport (0.57.1):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.57.1)
   - React/jschelpers (0.57.1):
     - Folly (= 2016.10.31.00)
     - React/PrivateDatabase
@@ -128,6 +132,8 @@ PODS:
   - React/RCTActionSheet (0.57.1):
     - React/Core
   - React/RCTAnimation (0.57.1):
+    - React/Core
+  - React/RCTBlob (0.57.1):
     - React/Core
   - React/RCTImage (0.57.1):
     - React/Core
@@ -138,9 +144,14 @@ PODS:
     - React/Core
   - React/RCTText (0.57.1):
     - React/Core
+  - React/RCTWebSocket (0.57.1):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
   - RNReactNativeGutenbergBridge (0.1.0):
     - React/Core (= 0.57.1)
     - React/CxxBridge (= 0.57.1)
+    - React/DevSupport (= 0.57.1)
     - React/RCTActionSheet (= 0.57.1)
     - React/RCTAnimation (= 0.57.1)
     - React/RCTImage (= 0.57.1)
@@ -331,8 +342,8 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: b4e0982b0ed6a7de90e96cf6fe5cf036aeadd1ec
-  RNReactNativeGutenbergBridge: ab5de9ad9b7b056dcbc10bb41b4321f2875ef5e9
-  RNSVG: ef9440cbb099244d050620297ff1358da8d037d1
+  RNReactNativeGutenbergBridge: 665447f21909219f6acdc2c429e5a3f9a592c4d3
+  RNSVG: 3c037ade1c42014de732e27e3879bf2b77ea78ea
   RNTAztecView: e7134bf19a4ad5cedf4093477c0f0da8ddcfdb9d
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
