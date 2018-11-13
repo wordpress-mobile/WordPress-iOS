@@ -61,13 +61,13 @@ extension SiteInformation: Decodable {
 }
 
 struct SiteInformationSection {
-    let sections: [SiteInformationRow]
+    let rows: [SiteInformationRow]
 }
 
 extension SiteInformationSection: Decodable {
     init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
-        sections = try container.decode([AbstractSiteInformationRow].self).map { need in
+        rows = try container.decode([AbstractSiteInformationRow].self).map { need in
             switch need.type {
             case .text:
                 return TextInfoNeed(text: need.text, hint: need.hint, siteOption: need.siteOption)
