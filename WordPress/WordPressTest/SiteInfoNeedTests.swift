@@ -35,8 +35,11 @@ final class SiteInfoNeedTests: XCTestCase {
     }
 
     func testFirstSectionIsText() {
-        let sections = subject?.sections
-        guard let firstSection = sections?.first else {
+        guard let firstGroup = subject?.groups.first else {
+            XCTFail()
+            return
+        }
+        guard let firstSection = firstGroup.sections.first else {
             XCTFail()
             return
         }
@@ -45,22 +48,22 @@ final class SiteInfoNeedTests: XCTestCase {
     }
 
     func testSecondSectionIsPhoneNumber() {
-        let sections = subject?.sections
-        guard let secondSection = sections?[1] else {
+        guard let firstGroup = subject?.groups.first else {
             XCTFail()
             return
         }
+        let secondSection = firstGroup.sections[1]
 
         XCTAssertTrue(secondSection is PhoneInfoNeed)
     }
 
     func testThirdSectionIsFooter() {
-        let sections = subject?.sections
-        guard let secondSection = sections?[2] else {
+        guard let firstGroup = subject?.groups.first else {
             XCTFail()
             return
         }
+        let thirdSection = firstGroup.sections[2]
 
-        XCTAssertTrue(secondSection is FooterInfoNeed)
+        XCTAssertTrue(thirdSection is FooterInfoNeed)
     }
 }

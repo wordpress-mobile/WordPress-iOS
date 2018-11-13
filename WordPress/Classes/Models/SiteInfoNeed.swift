@@ -41,7 +41,7 @@ fileprivate struct GenericNeed: Decodable {
 struct SiteInfoNeed {
     let title: String
     let subtitle: String
-    let sections: [SiteInfoSection]
+    let groups: [SiteInfoGroup]
 }
 
 extension SiteInfoNeed: Decodable {
@@ -56,7 +56,18 @@ extension SiteInfoNeed: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         title = try values.decode(String.self, forKey: .title)
         subtitle = try values.decode(String.self, forKey: .subtitle)
-        sections = try values.decode([GenericNeed].self, forKey: .needs).map { need in
+        groups = [try values.decode(SiteInfoGroup.self, forKey: .needs)]
+    }
+}
+
+struct SiteInfoGroup {
+    let sections: [SiteInfoSection]
+}
+
+extension SiteInfoGroup: Decodable {
+    init(from decoder: Decoder) throws {
+        var container = try decoder.unkeyedContainer()
+        sections = try container.decode([GenericNeed].self).map { need in
             switch need.type {
             case .text:
                 return TextInfoNeed(text: need.text, hint: need.hint, siteOption: need.siteOption)
