@@ -1,0 +1,6 @@
+{
+"type": "text",
+"text": "Business Name",
+"hint": "eg. Bob's Diner",
+"site_option": "site_title"
+}
