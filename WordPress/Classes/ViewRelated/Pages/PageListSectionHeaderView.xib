@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +16,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0w-kY-8uW">
-                    <rect key="frame" x="16" y="13" width="288" height="24"/>
+                    <rect key="frame" x="16" y="13" width="296" height="24"/>
                     <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="0.30980392156862746" green="0.45490196078431372" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -27,9 +26,9 @@
             <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailingMargin" secondItem="T0w-kY-8uW" secondAttribute="trailing" priority="999" id="DfH-Qk-uHM"/>
-                <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailing" constant="16" id="UYn-hJ-O0G"/>
+                <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailingMargin" constant="16" id="UYn-hJ-O0G"/>
                 <constraint firstAttribute="bottom" secondItem="T0w-kY-8uW" secondAttribute="bottom" constant="3" id="bEL-Gi-2rw"/>
-                <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="eA8-WK-DnH"/>
+                <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="eA8-WK-DnH"/>
                 <constraint firstItem="T0w-kY-8uW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="p5g-Am-UlJ"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
