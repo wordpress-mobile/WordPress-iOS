@@ -38,8 +38,8 @@ class RevisionsTableViewCell: UITableViewCell {
     var avatarURL: String? {
         didSet {
             if let avatarURL = avatarURL,
-                let url = URL(string: avatarURL),
                 let placeholder = UIImage(named: "gravatar") {
+                let url = URL(string: avatarURL)
                 avatarImageView.downloadGravatar(url.flatMap { Gravatar($0) },
                                                  placeholder: placeholder,
                                                  animate: false)
