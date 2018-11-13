@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -87,15 +87,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="WU8-ke-OqW" secondAttribute="bottom" constant="10" id="Fdu-Vk-RXt"/>
-                            <constraint firstAttribute="trailing" secondItem="VPZ-yr-cJj" secondAttribute="trailing" id="UBU-ep-8EU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VPZ-yr-cJj" secondAttribute="trailing" constant="-8" id="UBU-ep-8EU"/>
                             <constraint firstItem="VPZ-yr-cJj" firstAttribute="leading" secondItem="rQF-5A-jGg" secondAttribute="trailing" id="YHS-tv-hNv"/>
                             <constraint firstItem="VPZ-yr-cJj" firstAttribute="centerY" secondItem="6Um-2J-DCT" secondAttribute="centerY" id="ZcN-mh-atJ"/>
                             <constraint firstItem="VPZ-yr-cJj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tdc-xF-sEY" secondAttribute="trailing" id="ZkS-vz-Fri"/>
                             <constraint firstAttribute="bottom" secondItem="rQF-5A-jGg" secondAttribute="bottom" constant="8" id="bK0-9Y-2OP"/>
                             <constraint firstItem="rQF-5A-jGg" firstAttribute="top" secondItem="6Um-2J-DCT" secondAttribute="top" constant="8" id="dlN-7X-cdr"/>
-                            <constraint firstItem="WU8-ke-OqW" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leading" constant="12" id="gRK-OD-Fgi"/>
-                            <constraint firstItem="rQF-5A-jGg" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leading" constant="15" id="mzM-Ra-7Ms"/>
-                            <constraint firstItem="Tdc-xF-sEY" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leading" priority="749" constant="12" id="nFQ-Ef-UAK"/>
+                            <constraint firstItem="WU8-ke-OqW" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leadingMargin" constant="4" id="gRK-OD-Fgi"/>
+                            <constraint firstItem="rQF-5A-jGg" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leadingMargin" constant="7" id="mzM-Ra-7Ms"/>
+                            <constraint firstItem="Tdc-xF-sEY" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leadingMargin" priority="749" constant="22" id="nFQ-Ef-UAK"/>
                             <constraint firstAttribute="bottom" secondItem="Tdc-xF-sEY" secondAttribute="bottom" constant="10" id="s3d-7J-Bzm"/>
                             <constraint firstItem="Tdc-xF-sEY" firstAttribute="leading" secondItem="WU8-ke-OqW" secondAttribute="trailing" constant="2" id="vu7-vY-aw9"/>
                         </constraints>
