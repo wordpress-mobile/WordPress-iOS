@@ -1,20 +1,28 @@
+// MARK: - SITE INFO
+// MARK: -
+struct SiteInfoNeed {
+    let title: String
+    let subtitle: String
+    let sections: [SiteInfoSection]
+}
+
 // MARK: - PROTOCOL
 // MARK: -
-protocol SiteInfoNeed {
+protocol SiteInfoSection {
     var text: String { get }
     var hint: String? { get }
     var siteOption: Identifier? { get }
 }
 
-extension SiteInfoNeed where Self: Equatable {
-    static func ==(lhs: SiteInfoNeed, rhs: SiteInfoNeed) -> Bool {
+extension SiteInfoSection where Self: Equatable {
+    static func ==(lhs: SiteInfoSection, rhs: SiteInfoSection) -> Bool {
         return lhs.siteOption == rhs.siteOption
     }
 }
 
 // MARK: - IMPLEMENTATIONS
 // MARK: - Text Info
-struct TextInfoNeed: SiteInfoNeed, Equatable {
+struct TextInfoNeed: SiteInfoSection, Equatable {
     private let type = "text"
     let text: String
     let hint: String?
@@ -37,7 +45,7 @@ extension TextInfoNeed: Decodable {
 }
 
 // MARK: - Phone Info
-struct PhoneInfoNeed: SiteInfoNeed, Equatable {
+struct PhoneInfoNeed: SiteInfoSection, Equatable {
     private let type = "phone-num"
     let text: String
     let hint: String?
@@ -60,7 +68,7 @@ extension PhoneInfoNeed: Decodable {
 }
 
 // MARK: - Header
-struct HeaderInfoNeed: SiteInfoNeed, Equatable {
+struct HeaderInfoNeed: SiteInfoSection, Equatable {
     private let type = "header"
     let text: String
     let hint: String? = nil
@@ -79,7 +87,7 @@ extension HeaderInfoNeed: Decodable {
 }
 
 // MARK: - Footer
-struct FooterInfoNeed: SiteInfoNeed, Equatable {
+struct FooterInfoNeed: SiteInfoSection, Equatable {
     private let type = "footer"
     let text: String
     let hint: String? = nil
