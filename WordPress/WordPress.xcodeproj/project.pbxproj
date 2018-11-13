@@ -1145,7 +1145,7 @@
 		D82253E6219956540014D0E2 /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253E4219956540014D0E2 /* AddressCell.xib */; };
 		D82253EA219A8A720014D0E2 /* SiteInformationStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253E9219A8A720014D0E2 /* SiteInformationStep.swift */; };
 		D82253ED219A8A960014D0E2 /* SiteInformationWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253EB219A8A960014D0E2 /* SiteInformationWizardContent.swift */; };
-		D82253EE219A8A960014D0E2 /* SiteInfoWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */; };
+		D82253EE219A8A960014D0E2 /* SiteInformationWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D82253EC219A8A960014D0E2 /* SiteInformationWizardContent.xib */; };
 		D82253F4219A9D650014D0E2 /* SiteInfoNeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */; };
 		D82253F6219A9D8E0014D0E2 /* site-info-need.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253F5219A9D8E0014D0E2 /* site-info-need.json */; };
 		D82253F8219AA25A0014D0E2 /* site-info-section-text.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253F7219AA25A0014D0E2 /* site-info-section-text.json */; };
@@ -3031,7 +3031,7 @@
 		D82253E4219956540014D0E2 /* AddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
 		D82253E9219A8A720014D0E2 /* SiteInformationStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInformationStep.swift; sourceTree = "<group>"; };
 		D82253EB219A8A960014D0E2 /* SiteInformationWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInformationWizardContent.swift; sourceTree = "<group>"; };
-		D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteInfoWizardContent.xib; sourceTree = "<group>"; };
+		D82253EC219A8A960014D0E2 /* SiteInformationWizardContent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteInformationWizardContent.xib; sourceTree = "<group>"; };
 		D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoNeedTests.swift; sourceTree = "<group>"; };
 		D82253F5219A9D8E0014D0E2 /* site-info-need.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-need.json"; sourceTree = "<group>"; };
 		D82253F7219AA25A0014D0E2 /* site-info-section-text.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-section-text.json"; sourceTree = "<group>"; };
@@ -6982,7 +6982,7 @@
 			children = (
 				D82253E9219A8A720014D0E2 /* SiteInformationStep.swift */,
 				D82253EB219A8A960014D0E2 /* SiteInformationWizardContent.swift */,
-				D82253EC219A8A960014D0E2 /* SiteInfoWizardContent.xib */,
+				D82253EC219A8A960014D0E2 /* SiteInformationWizardContent.xib */,
 			);
 			path = SiteInfo;
 			sourceTree = "<group>";
@@ -8118,7 +8118,7 @@
 				5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */,
 				98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
-				D82253EE219A8A960014D0E2 /* SiteInfoWizardContent.xib in Resources */,
+				D82253EE219A8A960014D0E2 /* SiteInformationWizardContent.xib in Resources */,
 				82A062DC2017BC220084CE7C /* ActivityListSectionHeaderView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
