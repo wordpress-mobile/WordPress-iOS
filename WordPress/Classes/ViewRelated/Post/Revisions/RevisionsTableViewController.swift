@@ -147,6 +147,10 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
         let revision = getRevision(at: indexPath)
         print("Select revision \(revision.revisionId.stringValue)")
+
+        let diffVC = RevisionDiffViewController()
+        diffVC.revision = revision
+        navigationController?.pushViewController(diffVC, animated: true)
     }
 }
 
