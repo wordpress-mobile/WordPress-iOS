@@ -1,3 +1,3 @@
-protocol SiteInfoService {
+protocol SiteInformationService {
 
 }

@@ -1,6 +1,6 @@
 final class SiteInfoStep: WizardStep {
     private let creator: SiteCreator
-    private let service: SiteInfoService
+    private let service: SiteInformationService
 
     private(set) lazy var content: UIViewController = {
         //return VerticalsWizardContent(segment: self.creator.segment, service: self.service, selection: self.didSelect)
@@ -9,7 +9,7 @@ final class SiteInfoStep: WizardStep {
 
     var delegate: WizardDelegate?
 
-    init(creator: SiteCreator, service: SiteInfoService) {
+    init(creator: SiteCreator, service: SiteInformationService) {
         self.creator = creator
         self.service = service
     }
