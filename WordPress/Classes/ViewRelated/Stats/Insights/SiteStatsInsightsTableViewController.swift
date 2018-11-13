@@ -40,13 +40,8 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-
         ImmuTable.registerRows([LatestPostSummaryRow.self], tableView: tableView)
-        viewModel = SiteStatsInsightsViewModel(insightsDelegate: self, store: store)
-
-        self.changeReceipt = viewModel!.onChange { [weak self] in
-            self?.refreshModel()
-        }
+        initViewModel()
     }
 
 }
@@ -55,19 +50,28 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
 private extension SiteStatsInsightsTableViewController {
 
-// MARK: - Table Model Refreshing
+    func initViewModel() {
+        viewModel = SiteStatsInsightsViewModel(insightsDelegate: self, store: store)
 
-    func refreshModel() {
+        changeReceipt = viewModel?.onChange { [weak self] in
+            self?.refreshTableView()
+        }
+    }
+
+// MARK: - Table Refreshing
+
+    func refreshTableView() {
         guard let viewModel = viewModel else {
             return
         }
+
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
     }
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
-        refreshModel()
+        viewModel?.refreshInsights()
     }
 
 }
@@ -84,7 +88,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showCreatePost() {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
-            self?.refreshModel()
+            self?.viewModel?.refreshInsights()
         }
     }
 

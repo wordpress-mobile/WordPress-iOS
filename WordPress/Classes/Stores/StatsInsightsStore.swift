@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 
 enum InsightAction: Action {
     case receivedLatestPostSummary(_ latestPostSummary: StatsLatestPostSummary?)
+    case refreshInsights()
 }
 
 enum InsightQuery {
@@ -24,12 +25,15 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
     override func onDispatch(_ action: Action) {
 
         guard let insightAction = action as? InsightAction else {
+            DDLogInfo("Stats Insights invalid action: \(action)")
             return
         }
 
         switch insightAction {
         case .receivedLatestPostSummary(let latestPostSummary):
             receivedLatestPostSummary(latestPostSummary)
+        case .refreshInsights():
+            refreshInsights()
         }
     }
 
@@ -65,7 +69,7 @@ private extension StatsInsightsStore {
 
         }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
             if error != nil {
-                DDLogDebug("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedLatestPostSummary(latestPostSummary))
         }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
@@ -87,6 +91,15 @@ private extension StatsInsightsStore {
         }, andOverallCompletionHandler: {
 
         })
+    }
+
+    func refreshInsights() {
+        guard shouldFetch() else {
+            DDLogInfo("Stats Insights refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchInsights()
     }
 
     func receivedLatestPostSummary(_ latestPostSummary: StatsLatestPostSummary?) {

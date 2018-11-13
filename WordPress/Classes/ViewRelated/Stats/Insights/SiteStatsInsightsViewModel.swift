@@ -11,7 +11,6 @@ class SiteStatsInsightsViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
-
     private let store: StatsInsightsStore
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?
@@ -42,6 +41,12 @@ class SiteStatsInsightsViewModel: Observable {
             ImmuTableSection(
                 rows: tableRows)
             ])
+    }
+
+    // MARK: - Refresh Data
+
+    func refreshInsights() {
+        ActionDispatcher.dispatch(InsightAction.refreshInsights())
     }
 
 }
