@@ -13,6 +13,7 @@ final class MockSiteInformationService: SiteInformationService {
     }
 
     private func mockSiteInformation() -> SiteInformation {
+        /// This json file should only be part of the tests target. It will have to be removed from the main bundle when this mock is not necessary anymore
         let json = Bundle(for: MockSiteInformationService.self).url(forResource: "site-info-need", withExtension: "json")!
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
