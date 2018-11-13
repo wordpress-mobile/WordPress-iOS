@@ -3,7 +3,7 @@ final class SiteInformationStep: WizardStep {
     private let service: SiteInformationService
 
     private(set) lazy var content: UIViewController = {
-        return SiteInformationWizardContent(service: self.service)
+        return SiteInformationWizardContent(service: self.service, completion: didGoNext)
     }()
 
     var delegate: WizardDelegate?
@@ -11,5 +11,11 @@ final class SiteInformationStep: WizardStep {
     init(creator: SiteCreator, service: SiteInformationService) {
         self.creator = creator
         self.service = service
+    }
+
+    private func didGoNext(_ data: SiteInformationCollectedData) {
+        //creator.vertical = vertical
+        // Will have to change to the basic information instead
+        delegate?.wizard(self, willNavigateTo: WebAddressStep.identifier)
     }
 }
