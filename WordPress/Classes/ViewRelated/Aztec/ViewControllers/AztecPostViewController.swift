@@ -17,18 +17,46 @@ import MobileCoreServices
 //
 class AztecPostViewController: UIViewController, PostEditor {
 
+    // MARK: - PostEditor conformance
+
     /// Closure to be executed when the editor gets closed.
     /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
     /// (PostPost) flow being displayed after the editor is closed.
     ///
     var onClose: ((_ changesSaved: Bool, _ showPostEpilogue: Bool) -> ())?
 
+    var verificationPromptHelper: VerificationPromptHelper? {
+        return aztecVerificationPromptHelper
+    }
+
+    var postTitle: String {
+        get {
+            return titleTextField.text
+        }
+        set {
+            titleTextField.text = newValue
+        }
+    }
+
+    var isUploadingMedia: Bool {
+        return mediaCoordinator.isUploadingMedia(for: post)
+    }
 
     /// Indicates if Aztec was launched for Photo Posting
     ///
     var isOpenedDirectlyForPhotoPost = false
 
-    private let navigationBarManager = PostEditorNavigationBarManager()
+    func cancelUploadOfAllMedia(for post: AbstractPost) {
+        mediaCoordinator.cancelUploadOfAllMedia(for: post)
+    }
+    
+    let navigationBarManager = PostEditorNavigationBarManager()
+
+    // MARK: - fileprivate & private variables
+
+    fileprivate lazy var postEditorUtil = {
+       return PostEditorUtil(context: self)
+    }()
 
     /// Format Bar
     ///
@@ -231,7 +259,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Post being currently edited
     ///
-    fileprivate(set) var post: AbstractPost {
+    var post: AbstractPost {
         didSet {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
@@ -250,7 +278,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
-    fileprivate var shouldRemovePostOnDismiss = false
+    fileprivate(set) var shouldRemovePostOnDismiss = false
 
 
     /// Media Library Data Source
@@ -291,7 +319,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate lazy var postEditorStateContext: PostEditorStateContext = {
+    lazy var postEditorStateContext: PostEditorStateContext = {
         return self.createEditorStateContext(for: self.post)
     }()
 
@@ -329,7 +357,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Verification Prompt Helper
     ///
     /// - Returns: `nil` when there's no need for showing the verification prompt.
-    fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
+    fileprivate lazy var aztecVerificationPromptHelper: AztecVerificationPromptHelper? = {
         return AztecVerificationPromptHelper(account: self.post.blog.account)
     }()
 
@@ -350,11 +378,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Helps choosing the correct view controller for previewing a media asset
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
-
-    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
-    /// In this case every 0.5 second
-    ///
-    var debouncer = Debouncer(delay: Constants.autoSavingDelay)
 
     // MARK: - Initializers
 
@@ -377,20 +400,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
-
-        // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
-        debouncer.callback = { [weak self] in
-            guard let strongSelf = self else {
-                assertionFailure("self was nil while trying to save a post using Debouncer")
-                return
-            }
-            if strongSelf.post.hasLocalChanges() {
-                guard let context = strongSelf.post.managedObjectContext else {
-                    return
-                }
-                ContextManager.sharedInstance().save(context)
-            }
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -421,7 +430,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost()
+        postEditorUtil.createRevisionOfPost()
 
         // Setup
         configureNavigationBar()
@@ -551,23 +560,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Returns a new Editor Context for a given Post instance.
     ///
     private func createEditorStateContext(for post: AbstractPost) -> PostEditorStateContext {
-        var originalPostStatus: BasePost.Status? = nil
-
-        if let originalPost = post.original, let postStatus = originalPost.status, originalPost.hasRemote() {
-            originalPostStatus = postStatus
-        }
-
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
-        // to showing Publish Now instead of Submit for Review.
-        //
-        let userCanPublish = post.blog.capabilities != nil ? post.blog.isPublishingPostsAllowed() : true
-
-        return PostEditorStateContext(originalPostStatus: originalPostStatus,
-                                      userCanPublish: userCanPublish,
-                                      publishDate: post.dateCreated,
-                                      delegate: self)
+        return PostEditorStateContext(post: post, delegate: self)
     }
-
 
     // MARK: - Configuration Methods
 
@@ -1004,12 +998,7 @@ extension AztecPostViewController: AztecNavigationControllerDelegate {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIButton) {
-        let action = self.postEditorStateContext.action
-
-        publishPost(
-                action: action,
-                dismissWhenDone: action.dismissesEditor,
-                analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+        postEditorUtil.handlePublishButtonTap()
     }
 
     @IBAction func secondaryPublishButtonTapped() {
@@ -1023,7 +1012,7 @@ extension AztecPostViewController {
         let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
 
         let publishPostClosure = { [unowned self] in
-            self.publishPost(
+            self.postEditorUtil.publishPost(
                 action: action,
                 dismissWhenDone: action.dismissesEditor,
                 analyticsStat: secondaryStat)
@@ -1036,148 +1025,8 @@ extension AztecPostViewController {
         }
     }
 
-    func showPostHasChangesAlert() {
-        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-        let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already saved draft.")
-        let updatePostTitle = NSLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
-        let updatePageTitle = NSLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
-        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-
-        // Button: Keep editing
-        alertController.addCancelActionWithTitle(cancelTitle)
-
-        // Button: Save Draft/Update Draft
-        if post.hasLocalChanges() {
-            let title: String = {
-                if post.status == .draft {
-                    if !post.hasRemote() {
-                        return saveTitle
-                    } else {
-                        return updateTitle
-                    }
-                } else if post is Page {
-                    return updatePageTitle
-                } else {
-                    return updatePostTitle
-                }
-            }()
-
-            // The post is a local or remote draft
-            alertController.addDefaultActionWithTitle(title) { _ in
-                let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
-                self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
-            }
-        }
-
-        // Button: Discard
-        alertController.addDestructiveActionWithTitle(discardTitle) { _ in
-            self.discardChangesAndUpdateGUI()
-        }
-
-        alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
-        present(alertController, animated: true, completion: nil)
-    }
-
-    private func publishPost(
-        action: PostEditorAction,
-        dismissWhenDone: Bool,
-        analyticsStat: WPAnalyticsStat?) {
-
-        // Cancel publishing if media is currently being uploaded
-        if !action.isAsync && !dismissWhenDone && mediaCoordinator.isUploadingMedia(for: post) {
-            displayMediaIsUploadingAlert()
-            return
-        }
-
-        // If there is any failed media allow it to be removed or cancel publishing
-        if hasFailedMedia {
-            displayHasFailedMediaAlert(then: {
-                // Failed media is removed, try again.
-                // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
-                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
-            })
-            return
-        }
-
-        // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
-            verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
-                // User could've been plausibly silently verified in the background.
-                // If so, proceed to publishing the post as normal, otherwise save it as a draft.
-                if !verifiedInBackground {
-                    self.post.status = .draft
-                }
-
-                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
-            }
-            return
-        }
-
-        let isPage = post is Page
-
-        let publishBlock = { [unowned self] in
-            if action == .saveAsDraft {
-                self.post.status = .draft
-            } else if action == .publish {
-                if self.post.date_created_gmt == nil {
-                    self.post.date_created_gmt = Date()
-                }
-
-                if self.post.status != .publishPrivate {
-                    self.post.status = .publish
-                }
-            } else if action == .publishNow {
-                self.post.date_created_gmt = Date()
-
-                if self.post.status != .publishPrivate {
-                    self.post.status = .publish
-                }
-            }
-
-
-            if let analyticsStat = analyticsStat {
-                self.trackPostSave(stat: analyticsStat)
-            }
-
-            if action.isAsync || dismissWhenDone {
-                self.asyncUploadPost(action: action)
-            } else {
-                self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
-            }
-        }
-
-        let promoBlock = { [unowned self] in
-            UserDefaults.standard.asyncPromoWasDisplayed = true
-
-            let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = self
-            self.present(controller, animated: true, completion: nil)
-        }
-
-        if action.isAsync {
-            if !UserDefaults.standard.asyncPromoWasDisplayed {
-                promoBlock()
-            } else {
-                displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
-            }
-        } else {
-            publishBlock()
-        }
-    }
-
-    func displayMediaIsUploadingAlert() {
-        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-        present(alertController, animated: true, completion: nil)
-    }
-
     @IBAction func closeWasPressed() {
-        cancelEditing()
+        postEditorUtil.cancelEditing()
     }
 
     @IBAction func blogPickerWasPressed() {
@@ -1194,28 +1043,6 @@ extension AztecPostViewController {
         displayMoreSheet()
     }
 
-    private func trackPostSave(stat: WPAnalyticsStat) {
-        guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post.blog)
-            return
-        }
-
-        let originalWordCount = post.original?.content?.wordCount() ?? 0
-        let wordCount = post.content?.wordCount() ?? 0
-        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
-        if post.hasRemote() {
-            properties["word_diff_count"] = originalWordCount
-        }
-
-        if stat == .editorPublishedPost {
-            properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = post.hasCategories()
-            properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto()
-            properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags()
-            properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
-        }
-
-        WPAppAnalytics.track(stat, withProperties: properties, with: post)
-    }
 }
 
 
@@ -1405,16 +1232,7 @@ private extension AztecPostViewController {
         navigationController?.pushViewController(previewController, animated: true)
     }
 
-    func displayHasFailedMediaAlert(then: @escaping () -> ()) {
-        let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle(FailedMediaRemovalAlert.acceptTitle) { alertAction in
-            self.removeFailedMedia()
-            then()
-        }
 
-        alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
-        present(alertController, animated: true, completion: nil)
-    }
 
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
@@ -1424,26 +1242,6 @@ private extension AztecPostViewController {
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
         return
-    }
-
-    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
-    ///
-    func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
-        let title = action.publishingActionQuestionLabel
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = action.publishActionLabel
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-
-        alertController.addCancelActionWithTitle(keepEditingTitle)
-        alertController.addDefaultActionWithTitle(publishTitle) { _ in
-            publishAction()
-        }
-        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -1530,7 +1328,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        mapUIContentToPostAndSave()
+        postEditorUtil.mapUIContentToPostAndSave()
         refreshPlaceholderVisibility()
 
         switch textView {
@@ -1632,7 +1430,7 @@ extension AztecPostViewController: UITextViewDelegate {
 //
 extension AztecPostViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
-        mapUIContentToPostAndSave()
+        postEditorUtil.mapUIContentToPostAndSave()
         editorContentWasUpdated()
     }
 }
@@ -2510,24 +2308,6 @@ private extension AztecPostViewController {
 //
 private extension AztecPostViewController {
 
-    // TODO: Rip this out and put it into the PostService
-    func createRevisionOfPost() {
-        guard let context = post.managedObjectContext else {
-            return
-        }
-
-        // Using performBlock: with the AbstractPost on the main context:
-        // Prevents a hang on opening this view on slow and fast devices
-        // by deferring the cloning and UI update.
-        // Slower devices have the effect of the content appearing after
-        // a short delay
-
-        context.performAndWait {
-            self.post = self.post.createRevision()
-            ContextManager.sharedInstance().save(context)
-        }
-    }
-
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
         let shouldCreatePage = post is Page
@@ -2545,65 +2325,17 @@ private extension AztecPostViewController {
             target.tags = source.tags
         }
 
-        discardChanges()
+        postEditorUtil.discardChanges()
         post = newPost
-        createRevisionOfPost()
+        postEditorUtil.createRevisionOfPost()
         RecentSitesService().touch(blog: blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
     }
 
-    func cancelEditing() {
-        stopEditing()
-
-        if post.canSave() && post.hasUnsavedChanges() {
-            showPostHasChangesAlert()
-        } else {
-            discardChangesAndUpdateGUI()
-        }
-    }
-
     func stopEditing() {
         view.endEditing(true)
-    }
-
-    func discardChanges() {
-        guard let context = post.managedObjectContext, let originalPost = post.original else {
-            return
-        }
-
-        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
-
-        post = originalPost
-        post.deleteRevision()
-
-        if shouldRemovePostOnDismiss {
-            post.remove()
-        }
-
-        mediaCoordinator.cancelUploadOfAllMedia(for: post)
-        ContextManager.sharedInstance().save(context)
-    }
-
-    func discardChangesAndUpdateGUI() {
-        discardChanges()
-
-        dismissOrPopView(didSave: false)
-    }
-
-    func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
-        stopEditing()
-
-        WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
-
-        if let onClose = onClose {
-            onClose(didSave, shouldShowPostEpilogue)
-        } else if isModal() {
-            presentingViewController?.dismiss(animated: true, completion: nil)
-        } else {
-            _ = navigationController?.popViewController(animated: true)
-        }
     }
 
     func contentByStrippingMediaAttachments() -> String {
@@ -2619,83 +2351,6 @@ private extension AztecPostViewController {
         }
 
         return strippedHTML
-    }
-
-    func mapUIContentToPostAndSave() {
-        post.postTitle = titleTextField.text
-        post.content = getHTML()
-        debouncer.call()
-    }
-}
-
-// MARK: - Publishing
-
-private extension AztecPostViewController {
-
-    /// Shows the publishing overlay and starts the publishing process.
-    ///
-    func uploadPost(action: PostEditorAction, dismissWhenDone: Bool) {
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: action.publishingActionLabel)
-        postEditorStateContext.updated(isBeingPublished: true)
-
-        uploadPost() { uploadedPost, error in
-            self.postEditorStateContext.updated(isBeingPublished: false)
-            SVProgressHUD.dismiss()
-
-            let generator = UINotificationFeedbackGenerator()
-            generator.prepare()
-
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
-                generator.notificationOccurred(.error)
-            } else if let uploadedPost = uploadedPost {
-                self.post = uploadedPost
-
-                generator.notificationOccurred(.success)
-            }
-
-            if dismissWhenDone {
-                self.dismissOrPopView(didSave: true)
-            } else {
-                self.createRevisionOfPost()
-            }
-        }
-    }
-
-    /// Starts the publishing process.
-    ///
-    func asyncUploadPost(action: PostEditorAction) {
-        postEditorStateContext.updated(isBeingPublished: true)
-
-        mapUIContentToPostAndSave()
-
-        post.updatePathForDisplayImageBasedOnContent()
-
-        PostCoordinator.shared.save(post: post)
- 
-        dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
-
-        self.postEditorStateContext.updated(isBeingPublished: false)
-    }
-
-    /// Uploads the post
-    ///
-    /// - Parameters:
-    ///     - completion: the closure to execute when the publish operation completes.
-    ///
-    private func uploadPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
-        mapUIContentToPostAndSave()
-
-        let managedObjectContext = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: managedObjectContext)
-        postService.uploadPost(post, success: { uploadedPost in
-            completion?(uploadedPost, nil)
-        }) { error in
-            completion?(nil, error)
-        }
     }
 }
 
@@ -3085,11 +2740,11 @@ extension AztecPostViewController {
         return failedIDs
     }
 
-    fileprivate var hasFailedMedia: Bool {
+    var hasFailedMedia: Bool {
         return !failedMediaIDs.isEmpty
     }
 
-    fileprivate func removeFailedMedia() {
+    func removeFailedMedia() {
         for mediaID in failedMediaIDs {
             if let attachment = self.findAttachment(withUploadID: mediaID) {
                 richTextView.remove(attachmentID: attachment.identifier)
@@ -3801,8 +3456,6 @@ extension AztecPostViewController {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
             static let formatBarMediaButtonRotationAngle: CGFloat = .pi / 4.0
         }
-
-        static let autoSavingDelay = Double(0.5)
     }
 
     struct MoreSheetAlert {
@@ -3865,19 +3518,6 @@ extension AztecPostViewController {
         static let cancelTitle              = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
 
-    struct MediaUploadingAlert {
-        static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
-        static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-    }
-
-    struct FailedMediaRemovalAlert {
-        static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
-        static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-        static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
-        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
-    }
-
     struct MediaUploadingCancelAlert {
         static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is cancelling an upload.")
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
@@ -3890,16 +3530,6 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 
-}
-
-extension AztecPostViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        guard presented is FancyAlertViewController else {
-            return nil
-        }
-
-        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-    }
 }
 
 extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {

@@ -84,7 +84,7 @@ class EditorSettings: NSObject {
     // a configure block as a hack.
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the caller configure the editor.
-    @objc func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
@@ -97,7 +97,7 @@ class EditorSettings: NSObject {
         }
     }
 
-    @objc func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)

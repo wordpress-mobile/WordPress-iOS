@@ -3,19 +3,68 @@ import React
 import WPMediaPicker
 
 class GutenbergController: UIViewController, PostEditor {
+    
+    var html: String = ""
+    var postTitle: String = "" //TODO
+
+    lazy var postEditorUtil = {
+        return PostEditorUtil(context: self)
+    }()
+
+    /// Maintainer of state for editor - like for post button
+    ///
+    lazy var postEditorStateContext: PostEditorStateContext = {
+        return PostEditorStateContext(post: post, delegate: self)
+    }()
+
+    var verificationPromptHelper: VerificationPromptHelper?
 
     var onClose: ((Bool, Bool) -> Void)?
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
-    let post: AbstractPost
+    var isUploadingMedia: Bool {
+        return false
+    }
+
+    func removeFailedMedia() {
+        // TODO
+    }
+    
+    var shouldRemovePostOnDismiss: Bool {
+        return false
+    }
+    
+    func cancelUploadOfAllMedia(for post: AbstractPost) {
+        //TODO
+    }
+    
+    func setHTML(_ html: String) {
+        self.html = html
+        //TODO: Update Gutenberg UI
+    }
+    
+    func getHTML() -> String {
+        return html
+    }
+    
+    var post: AbstractPost {
+        didSet {
+            postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
+        }
+    }
+    
     let gutenberg: Gutenberg
 
-    let navBarManager = PostEditorNavigationBarManager()
+    let navigationBarManager = PostEditorNavigationBarManager()
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
     }()
+
+    var hasFailedMedia: Bool {
+        return false
+    }
 
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -35,10 +84,11 @@ class GutenbergController: UIViewController, PostEditor {
             fatalError()
         }
         self.post = post
-        self.gutenberg = Gutenberg(props: ["initialData": post.content ?? ""])
+        self.html = post.content ?? ""
+        self.gutenberg = Gutenberg(props: ["initialData": self.html])
         super.init(nibName: nil, bundle: nil)
 
-        navBarManager.delegate = self
+        navigationBarManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -63,8 +113,8 @@ class GutenbergController: UIViewController, PostEditor {
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
-        navigationItem.leftBarButtonItems = navBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navBarManager.rightBarButtonItems
+        navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
     }
 
     func reloadBlogPickerButton() {
@@ -73,32 +123,16 @@ class GutenbergController: UIViewController, PostEditor {
             pickerTitle = blogName
         }
 
-        navBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
+        navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
     }
 
     @objc private func close(sender: UIBarButtonItem) {
-        close(didSave: false)
+        closeWasPressed()
     }
 
-    private func close(didSave: Bool) {
-        onClose?(didSave, false)
-    }
-}
-
-extension GutenbergController {
-    func closeButtonPressed() {
-        close(didSave: false)
-    }
-
-    func saveButtonPressed(with content: String) {
-        guard let post = post as? Post else {
-            return
-        }
-        post.content = content
-        PostCoordinator.shared.save(post: post)
-        DispatchQueue.main.async { [weak self] in
-            self?.close(didSave: true)
-        }
+    private func closeWasPressed() {
+        postEditorUtil.cancelEditing()
+        onClose?(false, false)
     }
 }
 
@@ -110,9 +144,28 @@ extension GutenbergController: GutenbergBridgeDelegate {
                                                        callback: callback)
     }
 
-    func gutenbergDidProvideHTML(_ html: String) {
+    func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
+        self.html = html
+        postEditorStateContext.updated(hasChanges: changed)
 
+        postEditorUtil.handlePublishButtonTap()
     }
+}
+
+extension GutenbergController: PostEditorStateContextDelegate {
+
+    func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
+        reloadPublishButton()
+    }
+
+    func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
+        reloadPublishButton()
+    }
+
+    func reloadPublishButton() {
+        navigationBarManager.reloadPublishButton()
+    }
+
 }
 
 extension GutenbergController: PostEditorNavigationBarManagerDelegate {
@@ -121,7 +174,7 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     var isPublishButtonEnabled: Bool {
-        return true
+        return self.postEditorStateContext.isPublishButtonEnabled
     }
 
     var uploadingButtonSize: CGSize {
@@ -129,7 +182,7 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        close(didSave: false)
+        closeWasPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
