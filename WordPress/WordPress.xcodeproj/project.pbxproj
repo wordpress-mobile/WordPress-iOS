@@ -1152,6 +1152,8 @@
 		D82253F6219A9D8E0014D0E2 /* site-info-need.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253F5219A9D8E0014D0E2 /* site-info-need.json */; };
 		D82253F8219AA25A0014D0E2 /* site-info-section-text.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253F7219AA25A0014D0E2 /* site-info-section-text.json */; };
 		D82253FA219AA2870014D0E2 /* SiteInfoSectionTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253F9219AA2870014D0E2 /* SiteInfoSectionTextTests.swift */; };
+		D82253FC219AA3D40014D0E2 /* SiteInfoFooterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82253FB219AA3D40014D0E2 /* SiteInfoFooterTests.swift */; };
+		D82253FE219AA3EE0014D0E2 /* site-info-section-footer.json in Resources */ = {isa = PBXBuildFile; fileRef = D82253FD219AA3EE0014D0E2 /* site-info-section-footer.json */; };
 		D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */; };
 		D826D682211D51E300A5D8FE /* ReaderNewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */; };
 		D8281CF1212AB34C00D09098 /* NewsStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8281CF0212AB34C00D09098 /* NewsStats.swift */; };
@@ -3031,6 +3033,8 @@
 		D82253F5219A9D8E0014D0E2 /* site-info-need.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-need.json"; sourceTree = "<group>"; };
 		D82253F7219AA25A0014D0E2 /* site-info-section-text.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-section-text.json"; sourceTree = "<group>"; };
 		D82253F9219AA2870014D0E2 /* SiteInfoSectionTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoSectionTextTests.swift; sourceTree = "<group>"; };
+		D82253FB219AA3D40014D0E2 /* SiteInfoFooterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteInfoFooterTests.swift; sourceTree = "<group>"; };
+		D82253FD219AA3EE0014D0E2 /* site-info-section-footer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-info-section-footer.json"; sourceTree = "<group>"; };
 		D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullMockUserDefaults.swift; sourceTree = "<group>"; };
 		D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderNewsCard.swift; sourceTree = "<group>"; };
 		D8281CF0212AB34C00D09098 /* NewsStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStats.swift; sourceTree = "<group>"; };
@@ -4693,6 +4697,7 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D82253FB219AA3D40014D0E2 /* SiteInfoFooterTests.swift */,
 				D82253F9219AA2870014D0E2 /* SiteInfoSectionTextTests.swift */,
 				D82253F3219A9D650014D0E2 /* SiteInfoNeedTests.swift */,
 				D818FFE521918CCD000E5FEE /* SiteSegmentsCellTests.swift */,
@@ -7062,6 +7067,7 @@
 				D8A468E12181C8290094B82F /* site-vertical.json */,
 				D82253F5219A9D8E0014D0E2 /* site-info-need.json */,
 				D82253F7219AA25A0014D0E2 /* site-info-section-text.json */,
+				D82253FD219AA3EE0014D0E2 /* site-info-section-footer.json */,
 			);
 			name = "Site Creation";
 			sourceTree = "<group>";
@@ -8260,6 +8266,7 @@
 				D8A468E02181C6450094B82F /* site-type.json in Resources */,
 				D82247FB2113F50600918CEB /* News.strings in Resources */,
 				7E4A772B20F7E5FD001C706D /* activity-log-site-content.json in Resources */,
+				D82253FE219AA3EE0014D0E2 /* site-info-section-footer.json in Resources */,
 				7EF2EEA0210A67B60007A76B /* notifications-unapproved-comment.json in Resources */,
 				D871F98C214235C9002849B0 /* NewsBadFormed.strings in Resources */,
 				748437EC1F1D4A4800E8DDAF /* gallery-reader-post-public.json in Resources */,
@@ -9873,6 +9880,7 @@
 				7E442FCF20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift in Sources */,
 				E1926C091C779868009F3C2C /* PlanListViewControllerTest.swift in Sources */,
 				D81C2F6620F8ACCD002AE1F1 /* FormattableContentFormatterTests.swift in Sources */,
+				D82253FC219AA3D40014D0E2 /* SiteInfoFooterTests.swift in Sources */,
 				D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */,
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
