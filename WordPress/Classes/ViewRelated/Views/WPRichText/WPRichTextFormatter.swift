@@ -194,11 +194,33 @@ class WPRichTextFormatter {
     ///
     func processAndExtractTags(_ string: String) -> ParsedSource {
         var attachments = [WPTextAttachment]()
+        var processedString = string
 
         guard string.count > 0 else {
-            return (string, attachments)
+            return (processedString, attachments)
         }
 
+        for tag in tags {
+            // process string for each tag processor
+            let (str, attchs) = processString(processedString, forTag: tag)
+            processedString = str
+            attachments.append(contentsOf: attchs)
+        }
+
+        return (processedString, attachments)
+    }
+
+
+    /// Processes the supplied string, scanning for and handling the specified tag.
+    ///
+    /// - Parameters:
+    ///     - string: The string to process.
+    ///     - tag: An HtmlTagProcessor.
+    ///
+    /// - Returns: An instance of ParsedSource containing the modified string and any attachments.
+    ///
+    func processString(_ string: String, forTag tag:HtmlTagProcessor ) -> ParsedSource {
+        var attachments = [WPTextAttachment]()
         var processedString = ""
         let scanner = Scanner(string: string)
         scanner.charactersToBeSkipped = nil
@@ -229,8 +251,7 @@ class WPRichTextFormatter {
             scanner.scanLocation = tagStartLocation
 
             // Process tags of interest.
-            if let tagName = tagName,
-                let tag = processorForTagName(tagName as String) {
+            if tag.tagName == tagName as String? {
 
                 let (string, attachment) = tag.process(scanner)
                 processedString += string
@@ -247,7 +268,6 @@ class WPRichTextFormatter {
                 scanner.scanLocation += 1
             }
         }
-
         return (processedString, attachments)
     }
 
