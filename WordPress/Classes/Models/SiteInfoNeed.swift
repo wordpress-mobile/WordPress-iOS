@@ -1,9 +1,66 @@
+fileprivate enum SiteInfoNeedType: String, Decodable {
+    case text
+    case phoneNum = "phone-num"
+    case header
+    case footer
+}
+
+fileprivate struct GenericNeed: Decodable {
+    let type: SiteInfoNeedType
+    let text: String
+    let hint: String?
+    let siteOption: Identifier?
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case text
+        case hint
+        case siteOption = "site-option"
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        type = try values.decode(SiteInfoNeedType.self, forKey: .type)
+        text = try values.decode(String.self, forKey: .text)
+        hint = try values.decode(String.self, forKey: .hint)
+        siteOption = try Identifier(value: values.decode(String.self, forKey: .siteOption))
+    }
+}
+
+
 // MARK: - SITE INFO
 // MARK: -
 struct SiteInfoNeed {
     let title: String
     let subtitle: String
     let sections: [SiteInfoSection]
+}
+
+extension SiteInfoNeed: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case title
+        case subtitle
+        case needs
+    }
+
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        title = try values.decode(String.self, forKey: .title)
+        subtitle = try values.decode(String.self, forKey: .subtitle)
+        sections = try values.decode([GenericNeed].self, forKey: .needs).map { need in
+            switch need.type {
+            case .text:
+                return TextInfoNeed(text: need.text, hint: need.hint, siteOption: need.siteOption)
+            case .phoneNum:
+                return PhoneInfoNeed(text: need.text, hint: need.hint, siteOption: need.siteOption)
+            case .header:
+                return HeaderInfoNeed(text: need.text)
+            case .footer:
+                return FooterInfoNeed(text: need.text)
+            }
+        }
+    }
 }
 
 // MARK: - PROTOCOL
