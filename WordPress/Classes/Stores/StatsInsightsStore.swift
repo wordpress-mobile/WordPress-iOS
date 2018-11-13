@@ -32,7 +32,7 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         switch insightAction {
         case .receivedLatestPostSummary(let latestPostSummary):
             receivedLatestPostSummary(latestPostSummary)
-        case .refreshInsights():
+        case .refreshInsights:
             refreshInsights()
         }
     }
