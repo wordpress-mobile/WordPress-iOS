@@ -1,16 +1,16 @@
 class RevisionsNavigationController: UINavigationController {
-    var post: AbstractPost? {
+    var revision: Revision? {
         didSet {
-            setupForPost()
+            setupForRevision()
         }
     }
 
-    private func setupForPost() {
-        guard let post = post,
+    private func setupForRevision() {
+        guard let revision = revision,
             let revisionView = viewControllers.first as? RevisionDiffsBrowserViewController else {
             return
         }
 
-        revisionView.post = post
+        revisionView.revision = revision
     }
 }

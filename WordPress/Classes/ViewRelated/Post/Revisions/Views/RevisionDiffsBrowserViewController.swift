@@ -1,5 +1,5 @@
 class RevisionDiffsBrowserViewController: UIViewController {
-    var post: AbstractPost?
+    var revision: Revision?
     var diffVC: RevisionDiffViewController?
 
 
@@ -9,9 +9,6 @@ class RevisionDiffsBrowserViewController: UIViewController {
             self?.dismiss(animated: true)
         }
         doneItem.title = "Done"
-        //        let doneItem = UIBarButtonItem(customView: self.doneButton)
-        //        doneItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
-        //        doneItem.accessibilityIdentifier = "Close"
         return doneItem
     }()
 
@@ -23,7 +20,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }
 
     private func showRevision() {
-        guard let revision = post?.revisions?.first as? Revision else {
+        guard let revision = revision else {
             return
         }
 

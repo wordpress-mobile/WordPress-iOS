@@ -146,18 +146,13 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let revision = getRevision(at: indexPath)
-        print("Select revision \(revision.revisionId.stringValue)")
-
-        let diffVC = RevisionDiffViewController()
-        diffVC.revision = revision
-//        navigationController?.pushViewController(diffVC, animated: true)
 
         let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: nil)
         guard let revisionsNC = revisionsStoryboard.instantiateInitialViewController() as? RevisionsNavigationController else {
             return
         }
 
-        revisionsNC.post = post
+        revisionsNC.revision = revision
         present(revisionsNC, animated: true)
     }
 }
