@@ -14,11 +14,15 @@ class SiteStatsInsightsViewModel: Observable {
     private let store: StatsInsightsStore
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?
+    private var insightsToShow = [InsightType]()
 
     // MARK: - Constructor
 
-    init(insightsDelegate: SiteStatsInsightsDelegate, store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
+    init(insightsToShow: [InsightType],
+         insightsDelegate: SiteStatsInsightsDelegate,
+         store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
         self.siteStatsInsightsDelegate = insightsDelegate
+        self.insightsToShow = insightsToShow
         self.store = store
         insightsReceipt = store.query(.insights())
 
@@ -33,9 +37,33 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        let latestPostSummaryRow = LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
-                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-        tableRows.append(latestPostSummaryRow)
+        insightsToShow.forEach {
+            switch $0 {
+            case .latestPostSummary:
+                tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+            case .allTimeStats:
+                DDLogDebug("Show \($0) here.")
+            case .followersTotals:
+                DDLogDebug("Show \($0) here.")
+            case .mostPopularDayAndHour:
+                DDLogDebug("Show \($0) here.")
+            case .tagsAndCategories:
+                DDLogDebug("Show \($0) here.")
+            case .annualSiteStats:
+                DDLogDebug("Show \($0) here.")
+            case .comments:
+                DDLogDebug("Show \($0) here.")
+            case .followers:
+                DDLogDebug("Show \($0) here.")
+            case .todaysStats:
+                DDLogDebug("Show \($0) here.")
+            case .postingActivity:
+                DDLogDebug("Show \($0) here.")
+            case .publicize:
+                DDLogDebug("Show \($0) here.")
+            }
+        }
 
         return ImmuTable(sections: [
             ImmuTableSection(

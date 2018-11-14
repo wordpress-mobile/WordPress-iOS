@@ -79,7 +79,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsDelegate: self, store: store)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, store: store)
 
         changeReceipt = viewModel?.onChange { [weak self] in
             self?.refreshTableView()
