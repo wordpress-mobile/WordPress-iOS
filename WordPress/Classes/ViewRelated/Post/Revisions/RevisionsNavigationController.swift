@@ -5,6 +5,11 @@ class RevisionsNavigationController: UINavigationController {
         }
     }
 
+    override func viewDidLoad() {
+        navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.darkGrey()), for: .default)
+        navigationBar.shadowImage = UIImage(color: WPStyleGuide.greyDarken30())
+    }
+
     private func setupForRevision() {
         guard let revision = revision,
             let revisionView = viewControllers.first as? RevisionDiffsBrowserViewController else {
