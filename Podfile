@@ -6,6 +6,7 @@ use_frameworks!
 platform :ios, '10.0'
 workspace 'WordPress.xcworkspace'
 
+plugin 'cocoapods-repo-update'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
