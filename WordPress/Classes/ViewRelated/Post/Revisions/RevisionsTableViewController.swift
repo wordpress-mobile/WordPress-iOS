@@ -150,7 +150,15 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 
         let diffVC = RevisionDiffViewController()
         diffVC.revision = revision
-        navigationController?.pushViewController(diffVC, animated: true)
+//        navigationController?.pushViewController(diffVC, animated: true)
+
+        let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: nil)
+        guard let revisionsNC = revisionsStoryboard.instantiateInitialViewController() as? RevisionsNavigationController else {
+            return
+        }
+
+        revisionsNC.post = post
+        present(revisionsNC, animated: true)
     }
 }
 

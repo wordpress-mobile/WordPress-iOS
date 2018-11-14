@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9BX-ta-eQr">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Revisions Navigation Controller-->
+        <scene sceneID="o5X-4p-fHI">
+            <objects>
+                <navigationController id="9BX-ta-eQr" customClass="RevisionsNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XL2-Md-hno">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="aEY-1G-H9o" kind="relationship" relationship="rootViewController" id="4mG-9K-gZh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mli-cr-2uK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1258" y="-170"/>
+        </scene>
+        <!--Revision Diffs Browser View Controller-->
+        <scene sceneID="b16-UI-OVT">
+            <objects>
+                <viewController id="aEY-1G-H9o" customClass="RevisionDiffsBrowserViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cG0-G3-XU5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rsS-xc-ge8">
+                                <rect key="frame" x="0.0" y="609" width="375" height="58"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2sd-Cz-oer">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Revision Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Hg-z8-YVh">
+                                                <rect key="frame" x="133.5" y="8" width="108" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="LKL-8N-EMV"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lX5-TG-I8s" customClass="RevisionOperationView" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="109" y="30" width="157" height="20"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="157" id="aRQ-VC-MRE"/>
+                                                    <constraint firstAttribute="height" constant="20" id="aY8-Rb-pLu"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="1Hg-z8-YVh" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="BXl-ng-Iq7"/>
+                                            <constraint firstAttribute="bottom" secondItem="lX5-TG-I8s" secondAttribute="bottom" id="E5A-BC-UV1"/>
+                                            <constraint firstItem="lX5-TG-I8s" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="dDU-Jy-Qqk"/>
+                                            <constraint firstItem="lX5-TG-I8s" firstAttribute="top" secondItem="1Hg-z8-YVh" secondAttribute="bottom" constant="8" id="dNN-sf-POj"/>
+                                            <constraint firstItem="1Hg-z8-YVh" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" constant="8" id="m4x-Gg-2Ya"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottomMargin" secondItem="2sd-Cz-oer" secondAttribute="bottom" id="07B-Ah-IAY"/>
+                                    <constraint firstAttribute="trailing" secondItem="2sd-Cz-oer" secondAttribute="trailing" id="Mos-24-tGJ"/>
+                                    <constraint firstItem="2sd-Cz-oer" firstAttribute="top" secondItem="rsS-xc-ge8" secondAttribute="top" id="a54-V2-8On"/>
+                                    <constraint firstItem="2sd-Cz-oer" firstAttribute="leading" secondItem="rsS-xc-ge8" secondAttribute="leading" id="mBV-uA-g4X"/>
+                                </constraints>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uhq-mq-TeO">
+                                <rect key="frame" x="0.0" y="64" width="375" height="545"/>
+                                <connections>
+                                    <segue destination="zhH-St-dBr" kind="embed" id="NWf-65-zXh"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="rsS-xc-ge8" firstAttribute="trailing" secondItem="lB6-fr-eSA" secondAttribute="trailing" id="5ac-K6-cHa"/>
+                            <constraint firstItem="rsS-xc-ge8" firstAttribute="bottom" secondItem="lB6-fr-eSA" secondAttribute="bottom" id="5dU-hU-vJF"/>
+                            <constraint firstItem="rsS-xc-ge8" firstAttribute="leading" secondItem="lB6-fr-eSA" secondAttribute="leading" id="BPA-G1-UR0"/>
+                            <constraint firstItem="uhq-mq-TeO" firstAttribute="trailing" secondItem="lB6-fr-eSA" secondAttribute="trailing" id="N9d-9c-2sc"/>
+                            <constraint firstItem="2sd-Cz-oer" firstAttribute="top" secondItem="uhq-mq-TeO" secondAttribute="bottom" id="THE-MA-LZh"/>
+                            <constraint firstItem="uhq-mq-TeO" firstAttribute="top" secondItem="lB6-fr-eSA" secondAttribute="top" id="fNe-Eg-VBR"/>
+                            <constraint firstItem="uhq-mq-TeO" firstAttribute="leading" secondItem="lB6-fr-eSA" secondAttribute="leading" id="kqQ-bM-OaU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="lB6-fr-eSA"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="2wo-o9-BHQ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tS6-Ip-YDF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-359.19999999999999" y="-170.46476761619192"/>
+        </scene>
+        <!--Revision Diff View Controller-->
+        <scene sceneID="hhd-wv-eJw">
+            <objects>
+                <viewController id="zhH-St-dBr" customClass="RevisionDiffViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lxH-jU-9dc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="545"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ndw-Da-gts" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="426" y="-170"/>
+        </scene>
+    </scenes>
+</document>

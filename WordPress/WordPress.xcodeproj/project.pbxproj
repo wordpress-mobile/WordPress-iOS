@@ -300,6 +300,9 @@
 		4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */; };
 		439F4F352196537500F8D0C7 /* RevisionDiffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */; };
 		439F4F362196537500F8D0C7 /* RevisionDiffViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 439F4F342196537500F8D0C7 /* RevisionDiffViewController.xib */; };
+		439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F4F37219B636500F8D0C7 /* Revisions.storyboard */; };
+		439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */; };
+		439F4F3C219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
 		43AF2F972107D3810069C012 /* QuickStartTourState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AF2F962107D3800069C012 /* QuickStartTourState.swift */; };
 		43B27968216809AC00ECC046 /* QuickStartNavigationWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B27967216809AC00ECC046 /* QuickStartNavigationWatcher.swift */; };
@@ -2008,6 +2011,9 @@
 		4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistCell.swift; sourceTree = "<group>"; };
 		439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffViewController.swift; sourceTree = "<group>"; };
 		439F4F342196537500F8D0C7 /* RevisionDiffViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionDiffViewController.xib; sourceTree = "<group>"; };
+		439F4F37219B636500F8D0C7 /* Revisions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Revisions.storyboard; sourceTree = "<group>"; };
+		439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionsNavigationController.swift; sourceTree = "<group>"; };
+		439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffsBrowserViewController.swift; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
 		43AF2F962107D3800069C012 /* QuickStartTourState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartTourState.swift; sourceTree = "<group>"; };
 		43B27967216809AC00ECC046 /* QuickStartNavigationWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartNavigationWatcher.swift; sourceTree = "<group>"; };
@@ -4373,6 +4379,7 @@
 				9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */,
 				4349B0AB218A45270034118A /* RevisionsTableViewController.swift */,
 				9A2B28F2219211B900458F2A /* Views */,
+				439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */,
 			);
 			path = Revisions;
 			sourceTree = "<group>";
@@ -5890,6 +5897,8 @@
 				9A5CF43E218C54A60060F81B /* Cell */,
 				439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */,
 				439F4F342196537500F8D0C7 /* RevisionDiffViewController.xib */,
+				439F4F37219B636500F8D0C7 /* Revisions.storyboard */,
+				439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -8055,6 +8064,7 @@
 				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
 				4349B0B0218A477F0034118A /* RevisionsTableViewCell.xib in Resources */,
+				439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */,
 				4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */,
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
@@ -9090,6 +9100,7 @@
 				439F4F352196537500F8D0C7 /* RevisionDiffViewController.swift in Sources */,
 				E137B1661F8B77D4006AC7FC /* WebNavigationDelegate.swift in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
+				439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */,
 				D818FFDE219177DA000E5FEE /* SiteSegmentsDelegate.swift in Sources */,
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				98A437AE20069098004A8A57 /* DomainSuggestionsTableViewController.swift in Sources */,
@@ -9486,6 +9497,7 @@
 				D86572172186C3600023A99C /* WizardDelegate.swift in Sources */,
 				178EDE701C74CE7F008C5C14 /* PlanPostPurchaseViewController.swift in Sources */,
 				73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */,
+				439F4F3C219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
