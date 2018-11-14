@@ -46,7 +46,7 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="LKL-8N-EMV"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lX5-TG-I8s">
@@ -77,25 +77,28 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uhq-mq-TeO">
-                                <rect key="frame" x="0.0" y="64" width="375" height="545"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="544"/>
                                 <connections>
                                     <segue destination="zhH-St-dBr" kind="embed" id="NWf-65-zXh"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.84313725490000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="rsS-xc-ge8" firstAttribute="trailing" secondItem="lB6-fr-eSA" secondAttribute="trailing" id="5ac-K6-cHa"/>
-                            <constraint firstItem="rsS-xc-ge8" firstAttribute="bottom" secondItem="lB6-fr-eSA" secondAttribute="bottom" id="5dU-hU-vJF"/>
+                            <constraint firstItem="rsS-xc-ge8" firstAttribute="bottom" secondItem="cG0-G3-XU5" secondAttribute="bottom" id="5dU-hU-vJF"/>
                             <constraint firstItem="rsS-xc-ge8" firstAttribute="leading" secondItem="lB6-fr-eSA" secondAttribute="leading" id="BPA-G1-UR0"/>
                             <constraint firstItem="uhq-mq-TeO" firstAttribute="trailing" secondItem="lB6-fr-eSA" secondAttribute="trailing" id="N9d-9c-2sc"/>
-                            <constraint firstItem="2sd-Cz-oer" firstAttribute="top" secondItem="uhq-mq-TeO" secondAttribute="bottom" id="THE-MA-LZh"/>
+                            <constraint firstItem="2sd-Cz-oer" firstAttribute="top" secondItem="uhq-mq-TeO" secondAttribute="bottom" constant="1" id="THE-MA-LZh"/>
                             <constraint firstItem="uhq-mq-TeO" firstAttribute="top" secondItem="lB6-fr-eSA" secondAttribute="top" id="fNe-Eg-VBR"/>
                             <constraint firstItem="uhq-mq-TeO" firstAttribute="leading" secondItem="lB6-fr-eSA" secondAttribute="leading" id="kqQ-bM-OaU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="lB6-fr-eSA"/>
                     </view>
                     <navigationItem key="navigationItem" id="2wo-o9-BHQ"/>
+                    <connections>
+                        <outlet property="revisionTitle" destination="1Hg-z8-YVh" id="cXY-5C-yT6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tS6-Ip-YDF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -106,7 +109,7 @@
             <objects>
                 <viewController id="zhH-St-dBr" customClass="RevisionDiffViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lxH-jU-9dc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="545"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="544"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="LhI-on-qxn"/>

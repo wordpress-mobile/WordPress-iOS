@@ -1,6 +1,7 @@
 class RevisionDiffsBrowserViewController: UIViewController {
     var revision: Revision?
     var diffVC: RevisionDiffViewController?
+    @IBOutlet var revisionTitle: UILabel!
 
 
     private lazy var doneBarButtonItem: UIBarButtonItem = {
@@ -25,6 +26,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         }
 
         diffVC?.revision = revision
+        revisionTitle?.text = revision.postTitle ?? ""
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
