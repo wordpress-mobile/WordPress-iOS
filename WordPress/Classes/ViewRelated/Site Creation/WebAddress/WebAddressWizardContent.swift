@@ -3,7 +3,7 @@ import UIKit
 final class WebAddressWizardContent: UIViewController {
     private let service: SiteAddressService
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
-    private let selection: (SiteAddress) -> Void
+    private let selection: (DomainSuggestion) -> Void
 
     @IBOutlet weak var table: UITableView!
 
@@ -15,7 +15,7 @@ final class WebAddressWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
-    init(service: SiteAddressService, selection: @escaping (SiteAddress) -> Void) {
+    init(service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
         self.service = service
         self.selection = selection
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
@@ -108,14 +108,14 @@ final class WebAddressWizardContent: UIViewController {
         debugPrint("=== handling error===")
     }
 
-    private func handleData(_ data: [SiteAddress]) {
+    private func handleData(_ data: [DomainSuggestion]) {
         dataCoordinator = TableDataCoordinator(data: data, cellType: AddressCell.self, selection: didSelect)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()
     }
 
-    private func didSelect(_ segment: SiteAddress) {
+    private func didSelect(_ segment: DomainSuggestion) {
         selection(segment)
     }
 }

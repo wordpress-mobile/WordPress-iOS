@@ -1,11 +1,12 @@
 import UIKit
+import WordPressKit
 
 final class AddressCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var title: UILabel!
 
-    var model: SiteAddress? {
+    var model: DomainSuggestion? {
         didSet {
-            title.text = model?.title
+            title.text = model?.domainName
         }
     }
 
