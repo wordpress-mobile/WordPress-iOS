@@ -72,9 +72,11 @@ final class WebAddressWizardContent: UIViewController {
         table.tableHeaderView = header
 
         // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
-        header.centerXAnchor.constraint(equalTo: table.centerXAnchor).isActive = true
-        header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor).isActive = true
-        header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+            ])
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
