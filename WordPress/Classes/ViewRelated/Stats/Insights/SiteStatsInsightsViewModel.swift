@@ -37,31 +37,31 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        insightsToShow.forEach {
-            switch $0 {
+        insightsToShow.forEach { insightType in
+            switch insightType {
             case .latestPostSummary:
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .followersTotals:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .tagsAndCategories:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .comments:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .followers:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .todaysStats:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .postingActivity:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             case .publicize:
-                DDLogDebug("Show \($0) here.")
+                DDLogDebug("Show \(insightType) here.")
             }
         }
 
