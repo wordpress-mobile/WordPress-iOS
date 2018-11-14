@@ -8,7 +8,7 @@ enum InsightAction: Action {
 }
 
 enum InsightQuery {
-    case insights()
+    case insights
 }
 
 struct InsightStoreState {

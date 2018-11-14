@@ -24,7 +24,7 @@ class SiteStatsInsightsViewModel: Observable {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.store = store
-        insightsReceipt = store.query(.insights())
+        insightsReceipt = store.query(.insights)
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
