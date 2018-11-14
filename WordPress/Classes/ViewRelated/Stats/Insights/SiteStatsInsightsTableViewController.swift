@@ -1,18 +1,19 @@
 import UIKit
 import WordPressComStatsiOS
+import WordPressFlux
 
 @objc protocol SiteStatsInsightsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func showCreatePost()
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
-    @objc optional func latestPostSummaryLoaded(_ summaryData: StatsLatestPostSummary?)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var latestPostSummary: StatsLatestPostSummary?
+    private let store = StoreContainer.shared.statsInsights
+    private var changeReceipt: Receipt?
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -26,9 +27,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         return PostService(managedObjectContext: mainContext)
     }()
 
-    private var viewModel: SiteStatsInsightsViewModel {
-        return SiteStatsInsightsViewModel(insightsDelegate: self)
-    }
+    private var viewModel: SiteStatsInsightsViewModel?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -38,10 +37,11 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows([LatestPostSummaryRow.self], tableView: tableView)
-        viewModel.fetchStats()
+        initViewModel()
     }
 
 }
@@ -50,27 +50,28 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
 private extension SiteStatsInsightsTableViewController {
 
-    // MARK: - Table Model
+    func initViewModel() {
+        viewModel = SiteStatsInsightsViewModel(insightsDelegate: self, store: store)
 
-    func tableViewModel() -> ImmuTable {
-        let latestPostSummaryRow = LatestPostSummaryRow(summaryData: latestPostSummary, siteStatsInsightsDelegate: self)
-
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: [
-                    latestPostSummaryRow
-                ])
-            ])
+        changeReceipt = viewModel?.onChange { [weak self] in
+            self?.refreshTableView()
+        }
     }
 
-    func refreshModel() {
-        tableHandler.viewModel = tableViewModel()
+// MARK: - Table Refreshing
+
+    func refreshTableView() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
     }
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
-        viewModel.fetchStats()
+        viewModel?.refreshInsights()
     }
 
 }
@@ -78,11 +79,6 @@ private extension SiteStatsInsightsTableViewController {
 // MARK: - SiteStatsInsightsDelegate Methods
 
 extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
-
-    func latestPostSummaryLoaded(_ summaryData: StatsLatestPostSummary?) {
-        latestPostSummary = summaryData
-        refreshModel()
-    }
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
@@ -92,7 +88,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showCreatePost() {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
-            self?.viewModel.fetchStats()
+            self?.viewModel?.refreshInsights()
         }
     }
 
