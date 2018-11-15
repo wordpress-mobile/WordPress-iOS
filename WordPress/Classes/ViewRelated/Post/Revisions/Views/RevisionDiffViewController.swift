@@ -3,10 +3,18 @@ import Aztec
 
 class RevisionDiffViewController: UIViewController {
     @IBOutlet var webView: WKWebView?
-    var revision: Revision?
+    var revision: Revision? {
+        didSet {
+            showRevision()
+        }
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        showRevision()
+    }
+    private func showRevision() {
         guard let revision = revision else {
             return
         }

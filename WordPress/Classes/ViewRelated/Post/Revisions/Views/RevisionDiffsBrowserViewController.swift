@@ -7,6 +7,12 @@ struct RevisionBrowserState {
     func currentRevision() -> Revision {
         return revisions[currentIndex]
     }
+    mutating func decreaseIndex() {
+        currentIndex = max(currentIndex - 1, 0)
+    }
+    mutating func increaseIndex() {
+        currentIndex = min(currentIndex + 1, revisions.count)
+    }
 }
 
 class RevisionDiffsBrowserViewController: UIViewController {
@@ -29,9 +35,9 @@ class RevisionDiffsBrowserViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        showRevision()
         setupNavbarItems()
         setNextPreviousButtons()
+        showRevision()
     }
 
     private func showRevision() {
@@ -42,6 +48,8 @@ class RevisionDiffsBrowserViewController: UIViewController {
         let revision = revisionState.currentRevision()
         diffVC?.revision = revision
         revisionTitle?.text = revision.postTitle ?? ""
+
+        updateNextPreviousButtons()
     }
 
     private func setNextPreviousButtons() {
@@ -56,8 +64,6 @@ class RevisionDiffsBrowserViewController: UIViewController {
         nextButton.on(.touchUpInside) { [weak self] _ in
             self?.showNext()
         }
-
-        updateNextPreviousButtons()
     }
 
     private func setupNavbarItems() {
@@ -74,9 +80,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }
 
     private func showNext() {
+        revisionState?.increaseIndex()
+        showRevision()
     }
 
     private func showPrevious() {
+        revisionState?.decreaseIndex()
+        showRevision()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
