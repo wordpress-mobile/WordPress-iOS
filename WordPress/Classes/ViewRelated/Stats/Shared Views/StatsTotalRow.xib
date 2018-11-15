@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="StatsTotalRow" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mSM-N7-rqk" userLabel="Row Stack View">
+                    <rect key="frame" x="0.0" y="11" width="375" height="23"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="23"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
+                                    <rect key="frame" x="0.0" y="0.0" width="20" height="23"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="20" id="Ope-3W-fHa"/>
+                                    </constraints>
+                                </imageView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
+                                    <rect key="frame" x="20" y="0.0" width="20" height="23"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="20" id="qRY-b9-qyj"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Item Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-XE-8Zu">
+                            <rect key="frame" x="40" y="1.5" width="283.5" height="20.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
+                            <rect key="frame" x="323.5" y="1.5" width="31.5" height="20.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCN-at-Jm0" userLabel="Disclosure Stack View">
+                            <rect key="frame" x="355" y="0.0" width="20" height="23"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKq-Lw-qOg" userLabel="Spacer">
+                                    <rect key="frame" x="0.0" y="0.0" width="10" height="23"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="10" id="dhV-kW-aex"/>
+                                    </constraints>
+                                </view>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="lva-cI-tIa" userLabel="Disclosure Image">
+                                    <rect key="frame" x="10" y="0.0" width="10" height="23"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="10" id="9R3-gZ-9nk"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="mSM-N7-rqk" secondAttribute="trailing" id="18g-Bb-BOK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="mSM-N7-rqk" secondAttribute="bottom" constant="11" id="BbJ-Ll-OWP"/>
+                <constraint firstItem="mSM-N7-rqk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="oZ9-dj-L3q"/>
+                <constraint firstItem="mSM-N7-rqk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="qih-kX-a7N"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="dataLabel" destination="AaN-c7-zu2" id="9rP-Mj-snh"/>
+                <outlet property="disclosureStackView" destination="MCN-at-Jm0" id="UcQ-WC-xKS"/>
+                <outlet property="imageStackView" destination="cH2-js-8i2" id="KIb-Ks-QNn"/>
+                <outlet property="imageView" destination="NMN-Qx-YFo" id="bmF-PE-KbE"/>
+                <outlet property="itemLabel" destination="CNg-XE-8Zu" id="Ayp-eR-mXV"/>
+            </connections>
+            <point key="canvasLocation" x="-511" y="-201"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="disclosure-chevron" width="8" height="13"/>
+    </resources>
+</document>

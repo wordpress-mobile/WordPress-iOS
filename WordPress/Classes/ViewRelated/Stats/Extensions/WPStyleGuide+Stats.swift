@@ -46,6 +46,15 @@ extension WPStyleGuide {
             label.font = summaryFont
         }
 
+
+        static func configureLabelAsCellRowTitle(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
+        static func configureLabelAsData(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
@@ -62,12 +71,8 @@ extension WPStyleGuide {
         }
 
         static func imageForGridiconType(_ iconType: GridiconType,
-                                         withTint tintColor: ImageTintColor? = nil) -> UIImage? {
-            if let tintColor = tintColor {
+                                         withTint tintColor: ImageTintColor = .grey) -> UIImage? {
                 return Gridicon.iconOfType(iconType).imageWithTintColor(tintColor.styleGuideColor)
-            }
-
-            return Gridicon.iconOfType(iconType)
         }
 
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
@@ -79,6 +84,7 @@ extension WPStyleGuide {
         // MARK: - Style Values
 
         static let defaultTextColor = WPStyleGuide.darkGrey()
+        static let secondaryTextColor = WPStyleGuide.grey()
         static let actionTextColor = WPStyleGuide.wordPressBlue()
         static let summaryTextColor = WPStyleGuide.darkGrey()
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
