@@ -1,6 +1,6 @@
 struct SiteInformation {
     let title: String
-    let tagLine: String
+    let tagLine: String?
 }
 
 extension SiteInformation: Equatable {
