@@ -1,7 +1,16 @@
 import Gridicons
 
+struct RevisionBrowserState {
+    let revisions: [Revision]
+    var currentIndex: Int
+
+    func currentRevision() -> Revision {
+        return revisions[currentIndex]
+    }
+}
+
 class RevisionDiffsBrowserViewController: UIViewController {
-    var revision: Revision?
+    var revisionState: RevisionBrowserState?
     var diffVC: RevisionDiffViewController?
     @IBOutlet var revisionTitle: UILabel!
     @IBOutlet var previousButton: UIButton!
@@ -26,10 +35,11 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }
 
     private func showRevision() {
-        guard let revision = revision else {
+        guard let revisionState = revisionState else {
             return
         }
 
+        let revision = revisionState.currentRevision()
         diffVC?.revision = revision
         revisionTitle?.text = revision.postTitle ?? ""
     }

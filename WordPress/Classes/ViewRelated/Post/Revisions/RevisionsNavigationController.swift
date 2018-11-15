@@ -1,7 +1,7 @@
 class RevisionsNavigationController: UINavigationController {
-    var revision: Revision? {
+    var revisionState: RevisionBrowserState? {
         didSet {
-            setupForRevision()
+            setupForBrowserState()
         }
     }
 
@@ -10,12 +10,12 @@ class RevisionsNavigationController: UINavigationController {
         navigationBar.shadowImage = UIImage(color: WPStyleGuide.greyDarken30())
     }
 
-    private func setupForRevision() {
-        guard let revision = revision,
+    private func setupForBrowserState() {
+        guard let revisionState = revisionState,
             let revisionView = viewControllers.first as? RevisionDiffsBrowserViewController else {
             return
         }
 
-        revisionView.revision = revision
+        revisionView.revisionState = revisionState
     }
 }
