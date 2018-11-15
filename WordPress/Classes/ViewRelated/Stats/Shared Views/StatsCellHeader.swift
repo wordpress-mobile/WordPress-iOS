@@ -6,8 +6,13 @@ class StatsCellHeader: UIView, NibLoadable {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var manageInsightButton: UIButton!
 
-    var showManageInsightButton = false
     private typealias Style = WPStyleGuide.Stats
+
+    var showManageInsightButton = false {
+        didSet {
+            manageInsightButton.isHidden = !showManageInsightButton
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

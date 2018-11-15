@@ -7,7 +7,7 @@ class LatestPostSummaryCell: UITableViewCell {
     // MARK: - Properties
 
     @IBOutlet weak var borderedView: UIView!
-    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var summaryLabel: UILabel!
 
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
@@ -40,6 +40,7 @@ class LatestPostSummaryCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        addHeader()
         applyStyles()
     }
 
@@ -74,13 +75,17 @@ class LatestPostSummaryCell: UITableViewCell {
 
 private extension LatestPostSummaryCell {
 
+    func addHeader() {
+        let header = StatsCellHeader.loadFromNib()
+        header.headerLabel.text = CellStrings.header
+        headerStackView.addArrangedSubview(header)
+    }
+
     func applyStyles() {
 
         Style.configureCell(self)
         Style.configureBorderForView(borderedView)
 
-        headerLabel.text = CellStrings.header
-        Style.configureLabelAsHeader(headerLabel)
         Style.configureLabelAsSummary(summaryLabel)
 
         viewsLabel.text = CellStrings.views
