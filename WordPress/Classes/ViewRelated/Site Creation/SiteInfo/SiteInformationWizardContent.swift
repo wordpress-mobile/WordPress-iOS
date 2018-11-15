@@ -1,14 +1,12 @@
 import UIKit
 
 final class SiteInformationWizardContent: UIViewController {
-    private let service: SiteInformationService
-    private let completion: (SiteInformationCollectedData) -> Void
+    private let completion: (SiteInformation) -> Void
 
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var nextStep: UIButton!
 
-    init(service: SiteInformationService, completion: @escaping (SiteInformationCollectedData) -> Void) {
-        self.service = service
+    init(completion: @escaping (SiteInformation) -> Void) {
         self.completion = completion
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
@@ -58,23 +56,6 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func render() {
-        service.information(for: Locale.current) { [weak self] result in
-            switch result {
-            case .error(let error):
-                self?.handleError(error)
-            case .success(let data):
-                self?.handleData(data)
-            }
-        }
-    }
-
-    private func handleError(_ error: Error) {
-        debugPrint("=== handling error===")
-    }
-
-    private func handleData(_ data: SiteInformation) {
-        let headerData = SiteCreationHeaderData(title: data.title, subtitle: data.subtitle)
-        setupHeader(headerData)
     }
 
     private func setupHeader(_ headerData: SiteCreationHeaderData) {
@@ -95,8 +76,7 @@ final class SiteInformationWizardContent: UIViewController {
 
     @objc
     private func goNext() {
-        // This object is used to pass all user-entered data. I am not sure how we are goind to do that yet
-        let collectedData = SiteInformationCollectedData()
+        let collectedData = SiteInformation(title: "Change me", tagLine: "Change me")
         completion(collectedData)
     }
 }
