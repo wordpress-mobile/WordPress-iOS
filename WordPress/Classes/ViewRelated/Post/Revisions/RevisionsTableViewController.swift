@@ -210,6 +210,7 @@ extension RevisionsTableViewController: RevisionsView {
     func stopLoading(success: Bool, error: Error?) {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
+        tableViewFooter.isHidden = sectionCount == 0
 
         if !success, sectionCount == 0 {
             configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
@@ -217,8 +218,6 @@ extension RevisionsTableViewController: RevisionsView {
         } else {
             hideNoResults()
         }
-
-        tableViewFooter.isHidden = sectionCount == 0
     }
 }
 
