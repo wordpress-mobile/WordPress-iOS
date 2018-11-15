@@ -194,43 +194,43 @@ class PostEditorUtil: NSObject {
 
         WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
-    
-    //MARK:- Close button handling
-    
+
+    // MARK: - Close button handling
+
     func cancelEditing() {
         stopEditing()
-        
+
         if post.canSave() && post.hasUnsavedChanges() {
             showPostHasChangesAlert()
         } else {
             discardChangesAndUpdateGUI()
         }
     }
-    
+
     func discardChangesAndUpdateGUI() {
         discardChanges()
-        
+
         dismissOrPopView(didSave: false)
     }
-    
+
     func discardChanges() {
         guard let managedObjectContext = post.managedObjectContext, let originalPost = post.original else {
             return
         }
-        
+
         WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
-        
+
         context.post = originalPost
         context.post.deleteRevision()
-        
+
         if context.shouldRemovePostOnDismiss {
             post.remove()
         }
-        
+
         context.cancelUploadOfAllMedia(for: post)
         ContextManager.sharedInstance().save(managedObjectContext)
     }
-    
+
     func showPostHasChangesAlert() {
         let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
@@ -239,12 +239,12 @@ class PostEditorUtil: NSObject {
         let updatePostTitle = NSLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
         let updatePageTitle = NSLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        
+
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        
+
         // Button: Keep editing
         alertController.addCancelActionWithTitle(cancelTitle)
-        
+
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             let title: String = {
@@ -260,19 +260,19 @@ class PostEditorUtil: NSObject {
                     return updatePostTitle
                 }
             }()
-            
+
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
                 let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
                 self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
-        
+
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
             self.discardChangesAndUpdateGUI()
         }
-        
+
         alertController.popoverPresentationController?.barButtonItem = context.navigationBarManager.closeBarButtonItem
         context.present(alertController, animated: true, completion: nil)
     }

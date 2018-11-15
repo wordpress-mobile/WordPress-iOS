@@ -24,12 +24,12 @@ protocol PostEditor: class {
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
     var shouldRemovePostOnDismiss: Bool { get }
-    
+
     /// Cancels all ongoing uploads
     ///
     ///TODO: We won't need this once media uploading is extracted to PostEditorUtil
     func cancelUploadOfAllMedia(for post: AbstractPost)
-    
+
     /// Whether the editor has failed media or not
     ///
     //TODO: We won't need this once media uploading is extracted to PostEditorUtil
@@ -50,17 +50,17 @@ protocol PostEditor: class {
 
     /// Update editor UI with given html
     func setHTML(_ html: String)
-    
+
     /// Return the current html in the editor
     func getHTML() -> String
 
     /// Title of the post
     var postTitle: String { get set }
-    
+
     var navigationBarManager: PostEditorNavigationBarManager { get }
 }
 
-protocol PostEditorNavigationBarManagerDelegate: class { 
+protocol PostEditorNavigationBarManagerDelegate: class {
     var publishButtonText: String { get }
     var isPublishButtonEnabled: Bool { get }
     var uploadingButtonSize: CGSize { get }

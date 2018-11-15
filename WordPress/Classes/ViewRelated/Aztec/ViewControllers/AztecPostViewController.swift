@@ -49,7 +49,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
-    
+
     let navigationBarManager = PostEditorNavigationBarManager()
 
     // MARK: - fileprivate & private variables

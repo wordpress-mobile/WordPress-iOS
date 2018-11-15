@@ -3,13 +3,22 @@ import React
 import WPMediaPicker
 
 class GutenbergController: UIViewController, PostEditor {
-    
-    var html: String = ""
-    var postTitle: String = "" //TODO
 
-    lazy var postEditorUtil = {
-        return PostEditorUtil(context: self)
-    }()
+    enum RequestHTMLReason {
+        case publish
+        case close
+    }
+
+    var html: String {
+        set {
+            post.content = newValue
+        }
+        get {
+            return post.content ?? ""
+        }
+    }
+
+    var postTitle: String
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -30,31 +39,29 @@ class GutenbergController: UIViewController, PostEditor {
     func removeFailedMedia() {
         // TODO
     }
-    
+
     var shouldRemovePostOnDismiss: Bool {
         return false
     }
-    
+
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         //TODO
     }
-    
+
     func setHTML(_ html: String) {
         self.html = html
         //TODO: Update Gutenberg UI
     }
-    
+
     func getHTML() -> String {
         return html
     }
-    
+
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
         }
     }
-    
-    let gutenberg: Gutenberg
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
@@ -79,13 +86,22 @@ class GutenbergController: UIViewController, PostEditor {
         return currentBlogCount <= 1 || post.hasRemote()
     }
 
+    fileprivate var requestHTMLReason: RequestHTMLReason?
+
+    fileprivate lazy var postEditorUtil = {
+        return PostEditorUtil(context: self)
+    }()
+
+    fileprivate let gutenberg: Gutenberg
+
     required init(post: AbstractPost) {
         guard let post = post as? Post else {
             fatalError()
         }
         self.post = post
-        self.html = post.content ?? ""
-        self.gutenberg = Gutenberg(props: ["initialData": self.html])
+        self.postTitle = post.postTitle ?? ""
+        self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
+        self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         super.init(nibName: nil, bundle: nil)
 
         navigationBarManager.delegate = self
@@ -105,9 +121,15 @@ class GutenbergController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        postEditorUtil.createRevisionOfPost()
         configureNavigationBar()
         reloadBlogPickerButton()
         gutenberg.delegate = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        verificationPromptHelper?.updateVerificationStatus()
     }
 
     func configureNavigationBar() {
@@ -125,15 +147,6 @@ class GutenbergController: UIViewController, PostEditor {
 
         navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
     }
-
-    @objc private func close(sender: UIBarButtonItem) {
-        closeWasPressed()
-    }
-
-    private func closeWasPressed() {
-        postEditorUtil.cancelEditing()
-        onClose?(false, false)
-    }
 }
 
 extension GutenbergController: GutenbergBridgeDelegate {
@@ -148,7 +161,15 @@ extension GutenbergController: GutenbergBridgeDelegate {
         self.html = html
         postEditorStateContext.updated(hasChanges: changed)
 
-        postEditorUtil.handlePublishButtonTap()
+        if let reason = requestHTMLReason {
+            requestHTMLReason = nil // clear the reason
+            switch reason {
+            case .publish:
+                postEditorUtil.handlePublishButtonTap()
+            case .close:
+                postEditorUtil.cancelEditing()
+            }
+        }
     }
 }
 
@@ -182,7 +203,8 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        closeWasPressed()
+        requestHTMLReason = .close
+        gutenberg.requestHTML()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
@@ -194,6 +216,7 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+        requestHTMLReason = .publish
         gutenberg.requestHTML()
     }
 
