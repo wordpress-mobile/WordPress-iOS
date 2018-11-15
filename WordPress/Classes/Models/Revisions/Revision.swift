@@ -27,13 +27,15 @@ class Revision: NSManagedObject {
         return formatter
     }()
 
-    @objc var revisionDate: String {
-        let date = revisionFormatter.date(from: postDateGmt ?? "") ?? Date()
-        return date.toStringForPageSections()
+    var revisionDate: Date {
+        return revisionFormatter.date(from: postDateGmt ?? "") ?? Date()
     }
 
-    @objc var revisionModifiedDate: String {
-        let date = revisionFormatter.date(from: postModifiedGmt ?? "") ?? Date()
-        return date.toStringForPageSections()
+    var revisionModifiedDate: Date {
+        return revisionFormatter.date(from: postModifiedGmt ?? "") ?? Date()
+    }
+
+    @objc var revisionDateForSection: String {
+        return revisionDate.longUTCStringWithoutTime()
     }
 }

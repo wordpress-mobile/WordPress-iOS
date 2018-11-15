@@ -25,6 +25,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         super.awakeFromNib()
         styleTitle()
         styleSubtitle()
+        styleAccessoryView()
     }
 
     override func prepareForReuse() {
@@ -34,10 +35,16 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleTitle() {
-
+        title.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        title.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleSubtitle() {
+        subtitle.font = WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .regular)
+        subtitle.textColor = WPStyleGuide.darkGrey()
+    }
 
+    private func styleAccessoryView() {
+        accessoryType = .disclosureIndicator
     }
 }

@@ -10,7 +10,6 @@ final class VerticalsWizardContent: UIViewController {
 
     private let throttle = Scheduler(seconds: 1)
 
-    @IBOutlet weak var search: UITextField!
     @IBOutlet weak var table: UITableView!
 
     private lazy var headerData: SiteCreationHeaderData = {
@@ -33,23 +32,61 @@ final class VerticalsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setupTable()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        setupSearchField()
+        applyTitle()
+        setupBackground()
+        setupTable()
+    }
+
+    private func applyTitle() {
+        title = NSLocalizedString("1 of 3", comment: "Site creation. Step 2. Screen title")
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func setupTable() {
+        setupTableBackground()
+        setupCell()
+        setupHeader()
+        hideSeparators()
+    }
+
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func hideSeparators() {
+        table.tableFooterView = UIView(frame: .zero)
+    }
+
+    private func setupCell() {
         let cellName = VerticalsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
     }
 
-    private func setupSearchField() {
-        search.leftViewMode = .always
+    private func setupHeader() {
+        let header = TitleSubtitleTextfieldHeader(frame: .zero)
+        header.setTitle(headerData.title)
+        header.setSubtitle(headerData.subtitle)
 
-        search.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+
+        table.tableHeaderView = header
+
+        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
+        NSLayoutConstraint.activate([
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+        ])
+
+        table.tableHeaderView?.layoutIfNeeded()
+        table.tableHeaderView = table.tableHeaderView
     }
 
     @objc
@@ -83,8 +120,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        let tableCoordinator = TableDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect)
-        dataCoordinator = SiteCreationDataCoordinator(decorated: tableCoordinator, headerData: headerData)
+        dataCoordinator = TableDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()

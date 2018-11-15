@@ -65,7 +65,6 @@ namespace :dependencies do
 
     task :install do
       fold("install.cocoapds") do
-        pod %w[repo update --silent]
         pod %w[install]
       end
     end
