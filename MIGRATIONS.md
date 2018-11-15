@@ -3,8 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 85
+@danielebogo 2018-11-12
+- Added `BlogAuthor` to store the data of a *blog author*.
+- `Blog` added `authors` property to store a set of `BlogAuthor`.
+
 ## WordPress 84
-- @jklausa / @pinarol 2018-11-01
+@jklausa / @pinarol 2018-11-01
 - `Blog` added a `hasDomainCredit` property to see whether user can redeem their credit for a free domain.
 
 ## WordPress 83

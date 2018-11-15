@@ -49,6 +49,9 @@ extension PostService {
         let siteId = NSNumber(value: siteId)
         let revisionId = NSNumber(value: remoteRevision.id)
         let revision = findPostRevision(with: revisionId, and: siteId)
+        revision.revisionId = revisionId
+        revision.siteId = siteId
+        revision.postId = NSNumber(value: postId)
 
         if let postAuthorId = remoteRevision.postAuthorId,
             let postAuthorIdAsInt = Int(postAuthorId) {
@@ -94,13 +97,13 @@ extension PostService {
     }
 
     private func findPostRevision(with revisionId: NSNumber, and siteId: NSNumber) -> Revision {
-        return findFirst(Revision.self,
-                         predicate: NSPredicate(format: "\(#keyPath(Revision.revisionId)) = %@ AND \(#keyPath(Revision.siteId)) = %@", revisionId, siteId))
+        return managedObjectContext.entity(of: Revision.self,
+                                           with: NSPredicate(format: "\(#keyPath(Revision.revisionId)) = %@ AND \(#keyPath(Revision.siteId)) = %@", revisionId, siteId))
     }
 
     private func findDiff(for revision: Revision) -> RevisionDiff {
-        return findFirst(RevisionDiff.self,
-                         predicate: NSPredicate(format: "\(#keyPath(RevisionDiff.revision)) = %@", revision))
+        return managedObjectContext.entity(of: RevisionDiff.self,
+                                           with: NSPredicate(format: "\(#keyPath(RevisionDiff.revision)) = %@", revision))
     }
 
     private func diffValue<Value: DiffAbstractValue>(for type: Value.Type, with remoteValue: RemoteDiffValue, at index: Int) -> Value {
@@ -110,13 +113,5 @@ extension PostService {
         diffValue.value = remoteValue.value
         diffValue.index = index
         return diffValue
-    }
-
-    private func findFirst<Entity: NSManagedObject>(_ type: Entity.Type, predicate: NSPredicate) -> Entity {
-        guard let entity = managedObjectContext.firstObject(ofType: type, matching: predicate) else {
-            return managedObjectContext.insertNewObject(ofType: type)
-        }
-
-        return entity
     }
 }

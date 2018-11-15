@@ -10,6 +10,14 @@ class RevisionsTableViewController: UITableViewController {
         return tableViewHandler
     }()
 
+    private var tableViewFooter: RevisionsTableViewFooter {
+        let footerView = RevisionsTableViewFooter(frame: CGRect(origin: .zero,
+                                                                size: CGSize(width: tableView.frame.width,
+                                                                             height: Sizes.sectionFooterHeight)))
+        footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+        return footerView
+    }
+
 
     convenience init(post: AbstractPost) {
         self.init()
@@ -32,14 +40,18 @@ private extension RevisionsTableViewController {
     private func setupUI() {
         navigationItem.title = NSLocalizedString("History", comment: "Title of the post history screen")
 
-        let cellNib = UINib(nibName: "RevisionsTableViewCell", bundle: Bundle(for: RevisionsTableViewCell.self))
+        let cellNib = UINib(nibName: RevisionsTableViewCell.classNameWithoutNamespaces(),
+                            bundle: Bundle(for: RevisionsTableViewCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: RevisionsTableViewCell.reuseIdentifier)
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshRevisions), for: .valueChanged)
-        tableView.addSubview(refreshControl)
-
         self.refreshControl = refreshControl
+
+        tableView.tableFooterView = tableViewFooter
+
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     private func setupPresenter() {
@@ -71,7 +83,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     func sectionNameKeyPath() -> String {
-        return #keyPath(Revision.revisionDate)
+        return #keyPath(Revision.revisionDateForSection)
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
@@ -80,7 +92,10 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         }
 
         let revision = getRevision(at: indexPath)
-        cell.revisionNum = revision.revisionId.intValue
+        cell.title = revision.revisionModifiedDate.shortTimeString()
+        cell.subtitle = "author name"
+        cell.totalAdd = revision.diff?.totalAdditions.intValue
+        cell.totalDel = revision.diff?.totalDeletions.intValue
     }
 
     func getRevision(at indexPath: IndexPath) -> Revision {
@@ -99,7 +114,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -107,9 +122,10 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let nibName = String(describing: PageListSectionHeaderView.self)
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section],
-            let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView else {
+            let headerView = Bundle.main.loadNibNamed(PageListSectionHeaderView.classNameWithoutNamespaces(),
+                                                      owner: nil,
+                                                      options: nil)?.first as? PageListSectionHeaderView else {
                 return UIView()
         }
 
@@ -125,6 +141,13 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         configureCell(cell, at: indexPath)
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let revision = getRevision(at: indexPath)
+        print("Select revision \(revision.revisionId.stringValue)")
+    }
 }
 
 
@@ -138,5 +161,20 @@ extension RevisionsTableViewController: RevisionsView {
 
 private struct Sizes {
     static let sectionHeaderHeight = CGFloat(40.0)
+    static let sectionFooterHeight = CGFloat(48.0)
     static let cellEstimatedRowHeight = CGFloat(60.0)
+}
+
+
+private extension Date {
+    private static let shortTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.doesRelativeDateFormatting = true
+        formatter.timeStyle = .short
+        return formatter
+    }()
+
+    func shortTimeString() -> String {
+        return Date.shortTimeFormatter.string(from: self)
+    }
 }
