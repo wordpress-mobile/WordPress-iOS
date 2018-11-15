@@ -131,7 +131,7 @@ private extension LatestPostSummaryCell {
 
     func setActionImageFor(action: ActionType) {
         let iconType: GridiconType = action == .sharePost ? .shareIOS : .create
-        actionImageView.image = Style.imageForGridiconType(iconType)
+        actionImageView.image = Style.imageForGridiconType(iconType, withTint: .blue)
     }
 
     func attributedSummary() -> NSAttributedString {

@@ -6,6 +6,20 @@ extension WPStyleGuide {
     //
     class Stats {
 
+        enum ImageTintColor: Int {
+            case blue
+            case grey
+
+            var styleGuideColor: UIColor {
+                switch self {
+                case .blue:
+                    return WPStyleGuide.mediumBlue()
+                case .grey:
+                    return WPStyleGuide.greyLighten10()
+                }
+            }
+        }
+
         // MARK: - Style Methods
 
         static func configureTable(_ table: UITableView) {
@@ -47,8 +61,13 @@ extension WPStyleGuide {
             return attributedString
         }
 
-        static func imageForGridiconType(_ iconType: GridiconType) -> UIImage? {
-            return Gridicon.iconOfType(iconType).imageWithTintColor(imageTintColor)
+        static func imageForGridiconType(_ iconType: GridiconType,
+                                         withTint tintColor: ImageTintColor? = nil) -> UIImage? {
+            if let tintColor = tintColor {
+                return Gridicon.iconOfType(iconType).imageWithTintColor(tintColor.styleGuideColor)
+            }
+
+            return Gridicon.iconOfType(iconType)
         }
 
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
@@ -63,8 +82,6 @@ extension WPStyleGuide {
         static let actionTextColor = WPStyleGuide.wordPressBlue()
         static let summaryTextColor = WPStyleGuide.darkGrey()
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
-
-        static let imageTintColor = WPStyleGuide.mediumBlue()
 
         static let headerFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
