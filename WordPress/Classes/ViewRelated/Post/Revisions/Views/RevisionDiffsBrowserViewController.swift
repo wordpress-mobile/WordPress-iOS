@@ -47,8 +47,36 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private func setNextPreviousButtons() {
         previousButton.setTitle("", for: .normal)
         previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        previousButton.on(.touchUpInside) { [weak self] _ in
+            self?.showPrevious()
+        }
+
         nextButton.setTitle("", for: .normal)
         nextButton.setImage(Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        nextButton.on(.touchUpInside) { [weak self] _ in
+            self?.showNext()
+        }
+
+        updateNextPreviousButtons()
+    }
+
+    private func setupNavbarItems() {
+        navigationItem.leftBarButtonItems = [doneBarButtonItem]
+        navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
+    }
+
+    private func updateNextPreviousButtons() {
+        guard let revisionState = revisionState else {
+            return
+        }
+        previousButton.isHidden = revisionState.currentIndex == 0
+        nextButton.isHidden = revisionState.currentIndex == revisionState.revisions.count - 1
+    }
+
+    private func showNext() {
+    }
+
+    private func showPrevious() {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,10 +85,5 @@ class RevisionDiffsBrowserViewController: UIViewController {
         if let diffVC = segue.destination as? RevisionDiffViewController {
             self.diffVC = diffVC
         }
-    }
-
-    private func setupNavbarItems() {
-        navigationItem.leftBarButtonItems = [doneBarButtonItem]
-        navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
     }
 }
