@@ -1,6 +1,6 @@
 import Foundation
 
-typealias PostEditorViewControllerType = UIViewController & PostEditor
+typealias PostEditorViewControllerType = UIViewController & PublishablePostEditor
 
 class PostEditorUtil: NSObject {
 

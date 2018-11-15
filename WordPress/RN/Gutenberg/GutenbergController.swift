@@ -2,7 +2,7 @@ import UIKit
 import React
 import WPMediaPicker
 
-class GutenbergController: UIViewController, PostEditor {
+class GutenbergController: UIViewController, PublishablePostEditor {
 
     enum RequestHTMLReason {
         case publish

@@ -15,7 +15,7 @@ import MobileCoreServices
 
 // MARK: - Aztec's Native Editor!
 //
-class AztecPostViewController: UIViewController, PostEditor {
+class AztecPostViewController: UIViewController, PublishablePostEditor {
 
     // MARK: - PostEditor conformance
 

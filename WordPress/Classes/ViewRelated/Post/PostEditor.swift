@@ -20,7 +20,9 @@ protocol PostEditor: class {
     /// Whether the editor should open directly to the media picker.
     ///
     var isOpenedDirectlyForPhotoPost: Bool { get set }
+}
 
+protocol PublishablePostEditor: PostEditor {
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
     var shouldRemovePostOnDismiss: Bool { get }
