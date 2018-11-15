@@ -45,15 +45,14 @@ class AutomatedTransferHelper {
         return alertController
     }
 
-    private func startAutomatedTransferProcess() {
+    func startAutomatedTransferProcess(retryingAfterFailure: Bool = false) {
         DDLogInfo("[AT] Kicking off the AT process.")
 
         // fake coefficient, just so it doesn't look weird empty!
         SVProgressHUD.showProgress(0.02, status: Constants.PluginNameStrings.progressHudTitle(plugin.name))
 
 
-        verifyEligibility(
-            success: {
+        verifyEligibility(retryingAfterFailure: retryingAfterFailure, success: {
                 DDLogInfo("[AT] Site was confirmed eligible, proceeding to initiating AT process.")
                 self.initiateAutomatedTransfer()
         },
@@ -63,7 +62,7 @@ class AutomatedTransferHelper {
         })
     }
 
-    private func verifyEligibility(success: @escaping (() -> ()), failure: @escaping (() -> ())) {
+    private func verifyEligibility(retryingAfterFailure: Bool, success: @escaping (() -> ()), failure: @escaping (() -> ())) {
         DDLogInfo("[AT] Starting eligibility check.")
 
         WPAnalytics.track(.automatedTransferEligibilityCheckInitiated)
@@ -71,12 +70,12 @@ class AutomatedTransferHelper {
         automatedTransferService.checkTransferEligibility(
             siteID: site.siteID,
             success: {
+                self.delayWrapper?.delayedRetryAction.cancel()
+                self.delayWrapper = nil
                 success()
         },
             failure: { (error) in
                 DDLogInfo(("[AT] Site ineligible for AT, error: \(error)"))
-
-                WPAnalytics.track(.automatedTransferSiteIneligible)
 
                 let errorMessage: String
 
@@ -103,8 +102,45 @@ class AutomatedTransferHelper {
                     errorMessage = Constants.EligibilityErrors.eligibilityEligibilityGenericError
                 }
 
-                SVProgressHUD.dismiss()
-                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: errorMessage)))
+
+                // If the AT process is kicked off *right* after purchasing a domain, it can take
+                // a while for the eligiblity check to return a new, correct value.
+                // In that case, we want to retry few times until it catches on.
+                // Otherwise, let's just fail in the regular way.
+                guard retryingAfterFailure else {
+                    WPAnalytics.track(.automatedTransferSiteIneligible)
+                    SVProgressHUD.dismiss()
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: errorMessage)))
+                    return
+                }
+
+                guard var wrapper = self.delayWrapper else {
+                    DDLogInfo("[AT] Eligiblity check failure after purchasing a domain. Scheduling another try.")
+                    // This means it's the first retry attempt.
+
+                    let wrapper = DelayStateWrapper(delaySequence: [Constants.afterDomainPurchaseRefreshInterval]) {
+                        self.verifyEligibility(retryingAfterFailure: true, success: success, failure: failure)
+                    }
+
+                    self.delayWrapper = wrapper
+                    return
+                }
+
+                DDLogInfo("[AT] Eligibility check retry #\(wrapper.retryAttempt)")
+                guard wrapper.retryAttempt < Constants.afterDomainPurchaseMaxRetries else {
+
+                    wrapper.delayedRetryAction.cancel()
+                    self.delayWrapper = nil
+
+                    WPAnalytics.track(.automatedTransferSiteIneligible)
+                    SVProgressHUD.dismiss()
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: errorMessage)))
+                    return
+                }
+
+                DDLogInfo("[AT] Incrementing eligibility check counter.")
+                wrapper.increment()
+                self.delayWrapper = wrapper
         })
     }
 
@@ -326,6 +362,10 @@ class AutomatedTransferHelper {
         static let refreshInterval: Int = 3
         static let delaySequence = [Constants.refreshInterval]
         static let maxRetries = 10
+
+        static let afterDomainPurchaseRefreshInterval: Int = 10
+        static let afterDomainPurchaseMaxRetries = 14
+        // It takes a bit longer to issue the SSL certificate for the new domain for AT process. We're more lenient here because of this.
     }
 
 

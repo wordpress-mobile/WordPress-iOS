@@ -24,7 +24,7 @@ class RegisterDomainDetailsViewModel {
 
         case checkMarkRowsUpdated(sectionIndex: Int)
 
-        case registerSucceeded(items: [String: String])
+        case registerSucceeded(domain: String)
 
         case loading(Bool)
 
@@ -49,6 +49,7 @@ class RegisterDomainDetailsViewModel {
 
     let domain: DomainSuggestion
     let site: JetpackSiteRef
+    let domainPurchasedCallback: ((String) -> Void)
 
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
     private(set) var states: [CodeNameTuple]?
@@ -67,9 +68,10 @@ class RegisterDomainDetailsViewModel {
         }
     }
 
-    init(site: JetpackSiteRef, domain: DomainSuggestion) {
+    init(site: JetpackSiteRef, domain: DomainSuggestion, domainPurchasedCallback: @escaping ((String) -> Void)) {
         self.site = site
         self.domain = domain
+        self.domainPurchasedCallback = domainPurchasedCallback
         manuallyTriggerValidation()
     }
 
@@ -205,8 +207,11 @@ class RegisterDomainDetailsViewModel {
                                                                              newDomain: strongSelf.domain.domainName,
                                                                              success: {
                                                                                 //TODO: fall back to the AT process.
+
+                                // We've succeeded! The domain is purchased and set to the primary one — time to drop out of this flow
+                                // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
                                 strongSelf.isLoading = false
-                                strongSelf.onChange?(.registerSucceeded(items: strongSelf.jsonRepresentation()))
+                                strongSelf.onChange?(.registerSucceeded(domain: strongSelf.domain.domainName))
                             },
                             failure: { error in
 
