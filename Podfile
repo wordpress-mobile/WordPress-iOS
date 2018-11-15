@@ -6,6 +6,7 @@ use_frameworks!
 platform :ios, '10.0'
 workspace 'WordPress.xcworkspace'
 
+plugin 'cocoapods-repo-update'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|
@@ -37,7 +38,7 @@ def aztec
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'cc56f1886a6e3f566f6af65b1a663007c2aa82c9'
-    pod 'WordPress-Editor-iOS', '1.1'
+    pod 'WordPress-Editor-iOS', '1.2'
 end
 
 def wordpress_ui

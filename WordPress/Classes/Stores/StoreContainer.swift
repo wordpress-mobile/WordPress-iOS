@@ -15,5 +15,6 @@ class StoreContainer {
     let notice = NoticeStore()
     let timezone = TimeZoneStore()
     let activity = ActivityStore()
+    let statsInsights = StatsInsightsStore()
 
 }
