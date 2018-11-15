@@ -191,7 +191,7 @@ extension GutenbergController: PostEditorStateContextDelegate {
 
 extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     var publishButtonText: String {
-        return "Publish"
+        return self.postEditorStateContext.publishButtonText
     }
 
     var isPublishButtonEnabled: Bool {
