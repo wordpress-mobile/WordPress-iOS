@@ -48,7 +48,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
         let revision = revisionState.currentRevision()
         diffVC?.revision = revision
-        revisionTitle?.text = revision.postTitle ?? ""
+        revisionTitle?.text = revision.revisionDate.mediumString()
         operationVC?.revision = revision
 
         updateNextPreviousButtons()
