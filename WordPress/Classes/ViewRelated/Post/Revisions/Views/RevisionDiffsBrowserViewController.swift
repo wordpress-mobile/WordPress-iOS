@@ -1,7 +1,11 @@
+import Gridicons
+
 class RevisionDiffsBrowserViewController: UIViewController {
     var revision: Revision?
     var diffVC: RevisionDiffViewController?
     @IBOutlet var revisionTitle: UILabel!
+    @IBOutlet var previousButton: UIButton!
+    @IBOutlet var nextButton: UIButton!
 
 
     private lazy var doneBarButtonItem: UIBarButtonItem = {
@@ -18,6 +22,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
         showRevision()
         setupNavbarItems()
+        setNextPreviousButtons()
     }
 
     private func showRevision() {
@@ -27,6 +32,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
         diffVC?.revision = revision
         revisionTitle?.text = revision.postTitle ?? ""
+    }
+
+    private func setNextPreviousButtons() {
+        previousButton.setTitle("", for: .normal)
+        previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        nextButton.setTitle("", for: .normal)
+        nextButton.setImage(Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -39,5 +51,6 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
     private func setupNavbarItems() {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
+        navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
     }
 }
