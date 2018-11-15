@@ -86,6 +86,12 @@ class ParentPageSettingsViewController: UIViewController {
         stopListeningToKeyboardNotifications()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(.pageSetParentViewed)
+    }
+
 
     func set(pages: [Page], for page: Page) {
         selectedPage = page
@@ -226,6 +232,8 @@ class ParentPageSettingsViewController: UIViewController {
     // MARK: IBAction
 
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
+        WPAnalytics.track(.pageSetParentDonePressed)
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: NSLocalizedString("Updating...",
                                                          comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
@@ -323,6 +331,7 @@ extension ParentPageSettingsViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         isSearching = true
         searchBar.showsCancelButton = true
+        WPAnalytics.track(.pageSetParentSearchAccessed)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
