@@ -18,6 +18,7 @@ struct RevisionBrowserState {
 class RevisionDiffsBrowserViewController: UIViewController {
     var revisionState: RevisionBrowserState?
     var diffVC: RevisionDiffViewController?
+    var operationVC: RevisionOperationViewController?
     @IBOutlet var revisionTitle: UILabel!
     @IBOutlet var previousButton: UIButton!
     @IBOutlet var nextButton: UIButton!
@@ -48,6 +49,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         let revision = revisionState.currentRevision()
         diffVC?.revision = revision
         revisionTitle?.text = revision.postTitle ?? ""
+        operationVC?.revision = revision
 
         updateNextPreviousButtons()
     }
@@ -94,6 +96,8 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
         if let diffVC = segue.destination as? RevisionDiffViewController {
             self.diffVC = diffVC
+        } else if let operationVC = segue.destination as? RevisionOperationViewController {
+            self.operationVC = operationVC
         }
     }
 }

@@ -49,14 +49,16 @@
                                                 <color key="textColor" red="0.32549019607843138" green="0.47450980392156861" blue="0.58039215686274503" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lX5-TG-I8s">
-                                                <rect key="frame" x="109" y="29" width="157" height="18"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2k-GK-3TX">
+                                                <rect key="frame" x="107.5" y="29" width="160" height="18"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="157" id="aRQ-VC-MRE"/>
-                                                    <constraint firstAttribute="height" constant="18" id="aY8-Rb-pLu"/>
+                                                    <constraint firstAttribute="width" constant="160" id="ENz-lo-ACI"/>
+                                                    <constraint firstAttribute="height" constant="18" id="Mzl-br-Npx"/>
                                                 </constraints>
-                                            </view>
+                                                <connections>
+                                                    <segue destination="NGj-2N-mgj" kind="embed" id="yNH-Su-ENV"/>
+                                                </connections>
+                                            </containerView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rSD-aC-9V4">
                                                 <rect key="frame" x="-5" y="0.0" width="50" height="50"/>
                                                 <constraints>
@@ -79,11 +81,11 @@
                                             <constraint firstItem="rSD-aC-9V4" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" id="0NR-XG-8oT"/>
                                             <constraint firstItem="rSD-aC-9V4" firstAttribute="leading" secondItem="2sd-Cz-oer" secondAttribute="leading" constant="-5" id="0Yx-9O-f8Z"/>
                                             <constraint firstItem="Und-hy-I90" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" id="5yn-Ry-XWr"/>
+                                            <constraint firstItem="T2k-GK-3TX" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="7Cm-Jp-MCY"/>
                                             <constraint firstAttribute="trailing" secondItem="Und-hy-I90" secondAttribute="trailing" constant="-5" id="9ir-ww-2ld"/>
                                             <constraint firstItem="1Hg-z8-YVh" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="BXl-ng-Iq7"/>
-                                            <constraint firstAttribute="bottom" secondItem="lX5-TG-I8s" secondAttribute="bottom" id="E5A-BC-UV1"/>
-                                            <constraint firstItem="lX5-TG-I8s" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="dDU-Jy-Qqk"/>
-                                            <constraint firstItem="lX5-TG-I8s" firstAttribute="top" secondItem="1Hg-z8-YVh" secondAttribute="bottom" constant="4" id="dNN-sf-POj"/>
+                                            <constraint firstItem="T2k-GK-3TX" firstAttribute="top" secondItem="1Hg-z8-YVh" secondAttribute="bottom" constant="4" id="H2J-G4-f1h"/>
+                                            <constraint firstAttribute="bottom" secondItem="T2k-GK-3TX" secondAttribute="bottom" id="ZFA-eY-Y7g"/>
                                             <constraint firstItem="1Hg-z8-YVh" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" constant="7" id="m4x-Gg-2Ya"/>
                                         </constraints>
                                     </view>
@@ -140,6 +142,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ndw-Da-gts" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="426" y="-170"/>
+        </scene>
+        <!--Revision Operation View Controller-->
+        <scene sceneID="8bZ-0Y-ew9">
+            <objects>
+                <viewController id="NGj-2N-mgj" customClass="RevisionOperationViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GfE-RI-5IB">
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="18"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jks-0l-3eh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="214" y="227"/>
         </scene>
     </scenes>
 </document>
