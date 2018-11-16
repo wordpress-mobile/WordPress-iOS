@@ -148,8 +148,10 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             showAlert(message: message)
         case .loading(let isLoading):
             if isLoading {
+                footerView.submitButton.isEnabled = false
                 SVProgressHUD.show()
             } else {
+                footerView.submitButton.isEnabled = true
                 SVProgressHUD.dismiss()
             }
         case .prefillSuccess:
