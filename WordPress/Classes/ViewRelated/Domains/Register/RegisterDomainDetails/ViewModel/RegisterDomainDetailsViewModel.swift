@@ -206,7 +206,6 @@ class RegisterDomainDetailsViewModel {
                             strongSelf.registerDomainDetailsService.changePrimaryDomain(siteID: strongSelf.site.siteID,
                                                                              newDomain: strongSelf.domain.domainName,
                                                                              success: {
-                                                                                //TODO: fall back to the AT process.
 
                                 // We've succeeded! The domain is purchased and set to the primary one — time to drop out of this flow
                                 // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
