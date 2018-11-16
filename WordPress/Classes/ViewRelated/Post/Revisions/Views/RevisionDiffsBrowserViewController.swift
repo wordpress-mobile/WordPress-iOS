@@ -61,13 +61,15 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
     private func setNextPreviousButtons() {
         previousButton.setTitle("", for: .normal)
-        previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        previousButton.setImage(Gridicon.iconOfType(.chevronLeft), for: .normal)
+        previousButton.tintColor = WPStyleGuide.darkGrey()
         previousButton.on(.touchUpInside) { [weak self] _ in
             self?.showPrevious()
         }
 
         nextButton.setTitle("", for: .normal)
-        nextButton.setImage(Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        nextButton.setImage(Gridicon.iconOfType(.chevronRight), for: .normal)
+        nextButton.tintColor = WPStyleGuide.darkGrey()
         nextButton.on(.touchUpInside) { [weak self] _ in
             self?.showNext()
         }
