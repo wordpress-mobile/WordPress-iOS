@@ -7,5 +7,9 @@
 ///
 - (BOOL)isRunningTestSuite;
 
+/// Returns *true* when the Screenshot Generation Suite is running the app.
+///
+- (BOOL)isCreatingScreenshots;
+
 @end
 
