@@ -505,7 +505,7 @@ class PluginViewModel: Observable {
     }
 
     private func presentDomainRegistration() {
-        let controller = RegisterDomainSuggestionsViewController.instance(siteName: siteNameForSuggestions())
+        let controller = RegisterDomainSuggestionsViewController.instance(site: site)
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }
@@ -536,19 +536,6 @@ class PluginViewModel: Observable {
         return BlogService.blog(with: site)?.settings?.name?.nonEmptyString()
     }
 
-    private func siteNameForSuggestions() -> String? {
-        if let siteTitle = getSiteTitle() {
-            return siteTitle
-        }
-
-        if let siteUrl = BlogService.blog(with: site)?.url {
-            let components = URLComponents(string: siteUrl)
-            if let firstComponent = components?.host?.split(separator: ".").first {
-                return String(firstComponent)
-            }
-        }
-        return nil
-    }
 
     private func setHTMLTextAttributes(_ htmlText: NSAttributedString) -> NSAttributedString {
         guard let copy = htmlText.mutableCopy() as? NSMutableAttributedString else { return htmlText }

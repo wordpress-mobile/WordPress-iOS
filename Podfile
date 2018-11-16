@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.4'
+    pod 'WordPressShared', '~> 1.5.0-beta.1'
 
     ## for development:
     ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -51,8 +51,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 1.5.0-beta.1'
-    ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '4e5eeff2dda03c6daf655746c597e489f4a3cfe0'
+    pod 'WordPressKit', '=  1.5.0-beta.1'
+    ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '79fb867'
+    ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
 
 def shared_with_all_pods
