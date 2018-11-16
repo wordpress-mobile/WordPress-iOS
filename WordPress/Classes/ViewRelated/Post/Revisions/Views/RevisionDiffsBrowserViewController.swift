@@ -1,16 +1,21 @@
 import Gridicons
 
-struct RevisionBrowserState {
+class RevisionBrowserState {
     let revisions: [Revision]
     var currentIndex: Int
+
+    init(revisions: [Revision], currentIndex: Int) {
+        self.revisions = revisions
+        self.currentIndex = currentIndex
+    }
 
     func currentRevision() -> Revision {
         return revisions[currentIndex]
     }
-    mutating func decreaseIndex() {
+    func decreaseIndex() {
         currentIndex = max(currentIndex - 1, 0)
     }
-    mutating func increaseIndex() {
+    func increaseIndex() {
         currentIndex = min(currentIndex + 1, revisions.count)
     }
 }
@@ -29,7 +34,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         doneItem.on() { [weak self] _ in
             self?.dismiss(animated: true)
         }
-        doneItem.title = "Done"
+        doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
         return doneItem
     }()
 
@@ -94,10 +99,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let diffVC = segue.destination as? RevisionDiffViewController {
+        switch segue.destination {
+        case let diffVC as RevisionDiffViewController:
             self.diffVC = diffVC
-        } else if let operationVC = segue.destination as? RevisionOperationViewController {
+        case let operationVC as RevisionOperationViewController:
             self.operationVC = operationVC
+        default:
+            break
         }
     }
 }

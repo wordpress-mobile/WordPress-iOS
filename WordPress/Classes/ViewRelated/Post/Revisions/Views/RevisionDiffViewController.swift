@@ -2,7 +2,7 @@ import WebKit
 import Aztec
 
 class RevisionDiffViewController: UIViewController {
-    @IBOutlet var webView: WKWebView?
+    @IBOutlet private var webView: WKWebView?
     var revision: Revision? {
         didSet {
             showRevision()

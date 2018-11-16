@@ -1,5 +1,5 @@
 class RevisionOperationViewController: UIViewController {
-    var revision = Revision() {
+    var revision: Revision? {
         didSet {
             update()
         }
@@ -28,8 +28,8 @@ class RevisionOperationViewController: UIViewController {
     }
 
     private func update() {
-        addView.total = revision.diff?.totalAdditions.intValue ?? 0
-        delView.total = revision.diff?.totalDeletions.intValue ?? 0
+        addView.total = revision?.diff?.totalAdditions.intValue ?? 0
+        delView.total = revision?.diff?.totalDeletions.intValue ?? 0
     }
 
     private enum Constants {
