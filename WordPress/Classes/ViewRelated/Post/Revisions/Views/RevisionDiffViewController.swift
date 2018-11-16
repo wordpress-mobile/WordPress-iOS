@@ -15,9 +15,25 @@ class RevisionDiffViewController: UIViewController {
         super.viewDidLoad()
 
         aztext.translatesAutoresizingMaskIntoConstraints = false
+        aztext.isEditable = false
         view.addSubview(aztext)
         view.pinSubviewToAllEdges(aztext)
         aztext.load(WordPressPlugin())
+
+        registerAttachmentImageProviders()
+    }
+
+    func registerAttachmentImageProviders() {
+        let providers: [TextViewAttachmentImageProvider] = [
+            SpecialTagAttachmentRenderer(),
+            CommentAttachmentRenderer(font: AztecPostViewController.Fonts.regular),
+            HTMLAttachmentRenderer(font: AztecPostViewController.Fonts.regular),
+            GutenpackAttachmentRenderer()
+        ]
+
+        for provider in providers {
+            aztext.registerAttachmentImageProvider(provider)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +47,9 @@ class RevisionDiffViewController: UIViewController {
             return
         }
 
+        let title = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
+
         let html = revision.postContent ?? ""
-        aztext.setHTML(html)
+        aztext.setHTML(title + "\n\n" + html)
      }
 }
