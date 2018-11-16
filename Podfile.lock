@@ -138,8 +138,6 @@ PODS:
   - React/RCTImage (0.57.1):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.57.1):
-    - React/Core
   - React/RCTNetwork (0.57.1):
     - React/Core
   - React/RCTText (0.57.1):
@@ -149,16 +147,7 @@ PODS:
     - React/fishhook
     - React/RCTBlob
   - RNReactNativeGutenbergBridge (0.1.0):
-    - React/Core (= 0.57.1)
-    - React/CxxBridge (= 0.57.1)
-    - React/DevSupport (= 0.57.1)
-    - React/RCTActionSheet (= 0.57.1)
-    - React/RCTAnimation (= 0.57.1)
-    - React/RCTImage (= 0.57.1)
-    - React/RCTLinkingIOS (= 0.57.1)
-    - React/RCTNetwork (= 0.57.1)
-    - React/RCTText (= 0.57.1)
-    - yoga (= 0.57.1.React)
+    - React
   - RNSVG (6.5.2):
     - React
   - RNTAztecView (0.0.2):
@@ -356,7 +345,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
-  RNReactNativeGutenbergBridge: 665447f21909219f6acdc2c429e5a3f9a592c4d3
+  RNReactNativeGutenbergBridge: 808f8ede2e7f9e56bc8efd35f42e8b64f2e1bdf8
   RNSVG: 3c037ade1c42014de732e27e3879bf2b77ea78ea
   RNTAztecView: e7134bf19a4ad5cedf4093477c0f0da8ddcfdb9d
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
