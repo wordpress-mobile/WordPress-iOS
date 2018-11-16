@@ -17,7 +17,7 @@ import MobileCoreServices
 //
 class AztecPostViewController: UIViewController, PublishablePostEditor {
 
-    // MARK: - PostEditor conformance
+    // MARK: - PublishablePostEditor conformance
 
     /// Closure to be executed when the editor gets closed.
     /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
@@ -25,9 +25,16 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
     ///
     var onClose: ((_ changesSaved: Bool, _ showPostEpilogue: Bool) -> ())?
 
+    /// Verification Prompt Helper
+    ///
+    /// - Returns: `nil` when there's no need for showing the verification prompt.
     var verificationPromptHelper: VerificationPromptHelper? {
         return aztecVerificationPromptHelper
     }
+
+    fileprivate lazy var aztecVerificationPromptHelper: AztecVerificationPromptHelper? = {
+        return AztecVerificationPromptHelper(account: self.post.blog.account)
+    }()
 
     var postTitle: String {
         get {
@@ -46,11 +53,11 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
     ///
     var isOpenedDirectlyForPhotoPost = false
 
+    let navigationBarManager = PostEditorNavigationBarManager()
+
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
-
-    let navigationBarManager = PostEditorNavigationBarManager()
 
     // MARK: - fileprivate & private variables
 
@@ -319,7 +326,7 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    lazy var postEditorStateContext: PostEditorStateContext = {
+    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
         return self.createEditorStateContext(for: self.post)
     }()
 
@@ -353,13 +360,6 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
     fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
-
-    /// Verification Prompt Helper
-    ///
-    /// - Returns: `nil` when there's no need for showing the verification prompt.
-    fileprivate lazy var aztecVerificationPromptHelper: AztecVerificationPromptHelper? = {
-        return AztecVerificationPromptHelper(account: self.post.blog.account)
-    }()
 
     /// The view to show when media picker has no assets to show.
     ///

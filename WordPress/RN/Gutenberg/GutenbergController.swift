@@ -22,7 +22,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    lazy var postEditorStateContext: PostEditorStateContext = {
+    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
         return PostEditorStateContext(post: post, delegate: self)
     }()
 
