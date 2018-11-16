@@ -1,6 +1,21 @@
 @testable import WordPress
 import XCTest
 
+private extension JetpackSiteRef {
+    static func mock(siteID: Int, username: String) -> JetpackSiteRef {
+        let payload: NSString = """
+        {
+            "siteID": 9001,
+            "username": "test"
+        }
+        """
+
+
+        return try! JSONDecoder().decode(JetpackSiteRef.self, from: payload.data(using: 8)!)
+    }
+}
+
+
 class RegisterDomainDetailsViewModelTests: XCTestCase {
     typealias Change = RegisterDomainDetailsViewModel.Change
     typealias CellIndex = RegisterDomainDetailsViewModel.CellIndex
@@ -13,12 +28,14 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     var viewModel: RegisterDomainDetailsViewModel!
     var changeArray: [Change] = []
 
+
     override func setUp() {
         super.setUp()
 
         let domainSuggestion = try! DomainSuggestion(json: ["domain_name": "" as AnyObject])
+        let site = JetpackSiteRef.mock(siteID: 9001, username: "test")
 
-        viewModel = RegisterDomainDetailsViewModel(domain: domainSuggestion)
+        viewModel = RegisterDomainDetailsViewModel(site: site, domain: domainSuggestion)
         viewModel.onChange = { [weak self] (change: Change) in
             self?.changeArray.append(change)
         }
