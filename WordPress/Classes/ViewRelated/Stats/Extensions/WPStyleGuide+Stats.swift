@@ -46,6 +46,11 @@ extension WPStyleGuide {
             label.font = summaryFont
         }
 
+        static func configureLabelAsSubtitle(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+            label.font = subTitleFont
+            label.text = label.text?.localizedUppercase
+        }
 
         static func configureLabelAsCellRowTitle(_ label: UILabel) {
             label.textColor = defaultTextColor
@@ -90,6 +95,7 @@ extension WPStyleGuide {
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
 
         static let headerFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
