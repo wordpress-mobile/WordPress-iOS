@@ -128,13 +128,13 @@ extension SiteInformationWizardContent: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: InlineEditableNameValueCell.defaultReuseID, for: indexPath) as? InlineEditableNameValueCell {
-            configure(cell, index: indexPath)
-
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: InlineEditableNameValueCell.defaultReuseID, for: indexPath) as? InlineEditableNameValueCell else {
+            assertionFailure("SiteInformationWizardContent. Could not dequeue a cell")
+            return UITableViewCell()
         }
 
-        return UITableViewCell()
+        configure(cell, index: indexPath)
+        return cell
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
