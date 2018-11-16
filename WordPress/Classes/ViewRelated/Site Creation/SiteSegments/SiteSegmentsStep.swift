@@ -17,6 +17,6 @@ final class SiteSegmentsStep: WizardStep {
 
     private func didSelect(_ segment: SiteSegment) {
         creator.segment = segment
-        delegate?.wizard(self, willNavigateTo: VerticalsStep.identifier)
+        delegate?.nextStep()
     }
 }
