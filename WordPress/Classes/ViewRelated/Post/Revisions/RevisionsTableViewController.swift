@@ -154,6 +154,13 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         cell.avatarURL = authors?.avatarURL
     }
 
+    func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
+        let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
+        let selectedRevision = getRevision(at: indexPath)
+        let selectedIndex = allRevisions.index(of: selectedRevision) ?? 0
+
+        return RevisionBrowserState(revisions: allRevisions, currentIndex: selectedIndex)
+    }
 
     // MARK: Override delegate methodds
 
@@ -193,8 +200,15 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let revision = getRevision(at: indexPath)
-        print("Select revision \(revision.revisionId.stringValue)")
+        let state = getRevisionState(at: indexPath)
+
+        let revisionsStoryboard = UIStoryboard(name: "Revisions", bundle: nil)
+        guard let revisionsNC = revisionsStoryboard.instantiateInitialViewController() as? RevisionsNavigationController else {
+            return
+        }
+
+        revisionsNC.revisionState = state
+        present(revisionsNC, animated: true)
     }
 }
 
