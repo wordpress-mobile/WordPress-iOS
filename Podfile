@@ -119,10 +119,6 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
-    ## Screenshot Generation Helper
-    ## ====================
-    ##
-    pod 'SimulatorStatusMagic', :configurations => ['Debug']
 
     ## Automattic libraries
     ## ====================
@@ -238,4 +234,15 @@ target 'WordPressComStatsiOS' do
 
         shared_test_pods
     end
+end
+
+## Screenshot Generation
+## ===================
+##
+target 'WordPressScreenshotGeneration' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    inherit! :search_paths
+
+    pod 'SimulatorStatusMagic'
 end
