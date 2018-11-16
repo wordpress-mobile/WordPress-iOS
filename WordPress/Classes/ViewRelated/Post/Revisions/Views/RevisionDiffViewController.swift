@@ -1,5 +1,6 @@
 import WebKit
 import Aztec
+import WordPressEditor
 
 class RevisionDiffViewController: UIViewController {
     @IBOutlet private var webView: WKWebView?
@@ -16,6 +17,7 @@ class RevisionDiffViewController: UIViewController {
         aztext.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(aztext)
         view.pinSubviewToAllEdges(aztext)
+        aztext.load(WordPressPlugin())
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -30,7 +32,6 @@ class RevisionDiffViewController: UIViewController {
         }
 
         let html = revision.postContent ?? ""
-        aztext.setHTML("")
-        aztext.insertText(html)
+        aztext.setHTML(html)
      }
 }
