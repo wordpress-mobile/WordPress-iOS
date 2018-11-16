@@ -1,4 +1,6 @@
-class RevisionsTableViewController: UITableViewController {
+class RevisionsTableViewController: UITableViewController, SelectedRevisionLoadedProtocol {
+    var selectedRevisionLoaded: SelectedRevisionBlock
+
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
 
@@ -27,9 +29,14 @@ class RevisionsTableViewController: UITableViewController {
         return tableViewHandler.resultsController.sections?.count ?? 0
     }
 
-    convenience init(post: AbstractPost) {
-        self.init()
+    required init(post: AbstractPost, _ selectedRevisionLoaded: @escaping SelectedRevisionBlock) {
         self.post = post
+        self.selectedRevisionLoaded = selectedRevisionLoaded
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -78,6 +85,16 @@ private extension RevisionsTableViewController {
     private func getAuthor(for id: NSNumber?) -> BlogAuthor? {
         let authors: [BlogAuthor]? = post?.blog.authors?.allObjects as? [BlogAuthor]
         return authors?.first { $0.userID == id }
+    }
+
+    private func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
+        let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
+        let selectedRevision = getRevision(at: indexPath)
+        let selectedIndex = allRevisions.index(of: selectedRevision) ?? 0
+        return RevisionBrowserState(post: post,
+                                    revisions: allRevisions,
+                                    currentIndex: selectedIndex,
+                                    selectedRevisionLoaded: selectedRevisionLoaded)
     }
 
     @objc private func refreshRevisions() {
@@ -154,13 +171,6 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         cell.avatarURL = authors?.avatarURL
     }
 
-    func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
-        let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
-        let selectedRevision = getRevision(at: indexPath)
-        let selectedIndex = allRevisions.index(of: selectedRevision) ?? 0
-
-        return RevisionBrowserState(revisions: allRevisions, currentIndex: selectedIndex)
-    }
 
     // MARK: Override delegate methodds
 

@@ -868,6 +868,7 @@
 		9A38DC6B218899FB006A409B /* DiffContentValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC66218899FB006A409B /* DiffContentValue.swift */; };
 		9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
 		9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC68218899FB006A409B /* DiffAbstractValue.swift */; };
+		9A49B96B219F1925008A9CED /* SelectedRevisionLoadedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B96A219F1925008A9CED /* SelectedRevisionLoadedProtocol.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */; };
@@ -2705,6 +2706,7 @@
 		9A38DC66218899FB006A409B /* DiffContentValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffContentValue.swift; path = Revisions/DiffContentValue.swift; sourceTree = "<group>"; };
 		9A38DC67218899FB006A409B /* RevisionDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiff.swift; path = Revisions/RevisionDiff.swift; sourceTree = "<group>"; };
 		9A38DC68218899FB006A409B /* DiffAbstractValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffAbstractValue.swift; path = Revisions/DiffAbstractValue.swift; sourceTree = "<group>"; };
+		9A49B96A219F1925008A9CED /* SelectedRevisionLoadedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedRevisionLoadedProtocol.swift; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
@@ -4409,6 +4411,7 @@
 				4349B0AB218A45270034118A /* RevisionsTableViewController.swift */,
 				9A2B28F2219211B900458F2A /* Views */,
 				439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */,
+				9A49B96A219F1925008A9CED /* SelectedRevisionLoadedProtocol.swift */,
 			);
 			path = Revisions;
 			sourceTree = "<group>";
@@ -9566,6 +9569,7 @@
 				D86572212186EFEE0023A99C /* SiteCreationWizardTitle.swift in Sources */,
 				436D562C2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */,
 				98579BC7203DD86F004086E4 /* EpilogueSectionHeaderFooter.swift in Sources */,
+				9A49B96B219F1925008A9CED /* SelectedRevisionLoadedProtocol.swift in Sources */,
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
 				D816C1F420E0895E00C4D82F /* MarkAsSpam.swift in Sources */,
