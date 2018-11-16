@@ -124,7 +124,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         app.tables["PostsTable"].tap()
 
         let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
-        XCTAssert(editorNavigationBar.exists, "Post editor not found")
+        waitForElementToExist(element: editorNavigationBar)
+
         sleep(imagesWaitTime) // wait for post images to load
         // The title field gets focus automatically
         snapshot("1-PostEditor")
