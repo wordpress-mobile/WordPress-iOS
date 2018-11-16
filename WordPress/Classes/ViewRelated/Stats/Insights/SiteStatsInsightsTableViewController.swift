@@ -2,6 +2,23 @@ import UIKit
 import WordPressComStatsiOS
 import WordPressFlux
 
+enum InsightType: Int {
+    case latestPostSummary
+    case allTimeStats
+    case followersTotals
+    case mostPopularDayAndHour
+    case tagsAndCategories
+    case annualSiteStats
+    case comments
+    case followers
+    case todaysStats
+    case postingActivity
+    case publicize
+
+    // TODO: remove when Manage Insights is implemented.
+    static let allValues = [InsightType.latestPostSummary, .allTimeStats, .followersTotals, .mostPopularDayAndHour, .tagsAndCategories, .annualSiteStats, .comments, .followers, .todaysStats, .postingActivity, .publicize]
+}
+
 @objc protocol SiteStatsInsightsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func showCreatePost()
@@ -14,6 +31,11 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     private let store = StoreContainer.shared.statsInsights
     private var changeReceipt: Receipt?
+
+    // TODO: update this array when Manage Insights is implemented.
+    // Types of Insights to display. The array order dictates the display order.
+    private var insightsToShow = [InsightType]()
+    private let userDefaultsKey = "StatsInsightTypes"
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -41,7 +63,13 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows([LatestPostSummaryRow.self], tableView: tableView)
+        loadInsightsFromUserDefaults()
         initViewModel()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        writeInsightsToUserDefaults()
     }
 
 }
@@ -51,14 +79,14 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsDelegate: self, store: store)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, store: store)
 
         changeReceipt = viewModel?.onChange { [weak self] in
             self?.refreshTableView()
         }
     }
 
-// MARK: - Table Refreshing
+    // MARK: - Table Refreshing
 
     func refreshTableView() {
         guard let viewModel = viewModel else {
@@ -72,6 +100,23 @@ private extension SiteStatsInsightsTableViewController {
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
         viewModel?.refreshInsights()
+    }
+
+    // MARK: User Defaults
+
+    func loadInsightsFromUserDefaults() {
+
+        // TODO: remove when Manage Insights is implemented.
+        // For now, we'll show all Insights in the default order.
+        let allTypesInts = InsightType.allValues.map { $0.rawValue }
+
+        let insightTypesInt = UserDefaults.standard.array(forKey: userDefaultsKey) as? [Int] ?? allTypesInts
+        insightsToShow = insightTypesInt.compactMap { InsightType(rawValue: $0) }
+    }
+
+    func writeInsightsToUserDefaults() {
+        let insightTypesInt = insightsToShow.compactMap { $0.rawValue }
+        UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsKey)
     }
 
 }
