@@ -159,7 +159,10 @@ extension GutenbergController: GutenbergBridgeDelegate {
 
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
         self.html = html
-        postEditorStateContext.updated(hasChanges: changed)
+
+        // TODO: currently we don't need to set this because Update button is always active
+        // but in the future we might need this
+        // postEditorStateContext.updated(hasChanges: changed)
 
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
