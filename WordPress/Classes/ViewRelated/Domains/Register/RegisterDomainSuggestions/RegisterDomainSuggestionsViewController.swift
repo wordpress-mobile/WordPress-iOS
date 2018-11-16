@@ -7,6 +7,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     private var site: JetpackSiteRef!
+    private var domainPurchasedCallback: ((String) -> Void)!
 
     private var domain: DomainSuggestion?
     private var siteName: String?
@@ -38,10 +39,11 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         return buttonViewController
     }()
 
-    static func instance(site: JetpackSiteRef) -> RegisterDomainSuggestionsViewController {
+    static func instance(site: JetpackSiteRef, domainPurchasedCallback: @escaping ((String) -> Void)) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: "RegisterDomain", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "RegisterDomainSuggestionsViewController") as! RegisterDomainSuggestionsViewController
         controller.site = site
+        controller.domainPurchasedCallback = domainPurchasedCallback
         controller.siteName = siteNameForSuggestions(for: site)
         return controller
     }
@@ -104,7 +106,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
         let controller = RegisterDomainDetailsViewController()
-        controller.viewModel = RegisterDomainDetailsViewModel(site: site, domain: domain)
+        controller.viewModel = RegisterDomainDetailsViewModel(site: site, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }
