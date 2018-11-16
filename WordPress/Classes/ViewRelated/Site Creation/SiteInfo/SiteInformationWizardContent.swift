@@ -1,7 +1,7 @@
 import UIKit
 
 final class SiteInformationWizardContent: UIViewController {
-    fileprivate enum Rows: Int, CaseIterable {
+    private enum Rows: Int, CaseIterable {
         case title = 0
         case tagline = 1
 
