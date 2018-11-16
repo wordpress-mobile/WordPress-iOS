@@ -171,7 +171,7 @@ class AutomatedTransferHelper {
             // The async nature of AT process bites us here again. Sometimes, even though the backend says
             // 'hell yeah son, everything's fine, go ahead!' in the eligibility check, trying to actually
             // start the AT process (usually only after a custom domain was _just_ purchased) fails spectacularly.
-            // In those ceases, we'll retry this request a few times.
+            // In those cases, we'll retry this request a few times.
             guard retryingAfterFailure else {
                 DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
 
