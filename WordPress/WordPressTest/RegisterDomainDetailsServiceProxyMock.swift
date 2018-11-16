@@ -98,15 +98,22 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         success([state1, state2])
     }
 
-    func createShoppingCart(siteID: Int, domainSuggestion: DomainSuggestion, success: @escaping (String) -> Void, failure: @escaping (Error) -> Void) {
-        guard self.success else {
-            failure(NSError())
-            return
-        }
-
-        let token = "RandomStringRepresentingACart"
-
-        success(token)
+    func createShoppingCart(siteID: Int,
+                            domainSuggestion: DomainSuggestion,
+                            privacyProtectionEnabled: Bool,
+                            success: @escaping (CartResponse) -> Void,
+                            failure: @escaping (Error) -> Void) {
+        fatalError("not implemented")
     }
+
+    func redeemCartUsingCredits(cart: CartResponse, domainContactInformation: [String: String], success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        fatalError("not implemented")
+    }
+
+    func changePrimaryDomain(siteID: Int, newDomain: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+         fatalError("not implemented")
+    }
+
+
 
 }
