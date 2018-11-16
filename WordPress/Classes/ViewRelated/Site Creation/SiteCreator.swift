@@ -2,6 +2,7 @@
 final class SiteCreator {
     var segment: SiteSegment?
     var vertical: SiteVertical?
+    var information: SiteInformation?
     var address: DomainSuggestion?
 
 
