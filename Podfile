@@ -71,14 +71,11 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :branch => 'try/podspec'
     pod 'React', :podspec => 'Podspecs/React.podspec.json'
     pod 'yoga', :podspec => 'Podspecs/yoga.podspec.json'
-    pod 'Folly', :podspec => 'Gutenberg/node_modules/react-native/third-party-podspecs/Folly.podspec'
-
-    pod 'RNReactNativeGutenbergBridge', :path => 'Gutenberg/react-native-gutenberg-bridge/'
-
-    pod 'RNSVG', :podspec => 'Gutenberg/node_modules/react-native-svg/RNSVG.podspec'
-    pod 'RNTAztecView', :path => 'Gutenberg/react-native-aztec/'
+    pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '6.5.2'
+    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git'
 
     ## Third party libraries
     ## =====================
