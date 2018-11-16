@@ -75,6 +75,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
 
+        // Set up the editor for screenshot generation, if needed
+        if UIApplication.shared.isCreatingScreenshots() {
+            textView.autocorrectionType = .no
+        }
+
         return textView
     }()
 
