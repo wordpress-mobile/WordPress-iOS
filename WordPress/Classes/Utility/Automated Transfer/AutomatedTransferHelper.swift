@@ -54,7 +54,7 @@ class AutomatedTransferHelper {
 
         verifyEligibility(retryingAfterFailure: retryingAfterFailure, success: {
                 DDLogInfo("[AT] Site was confirmed eligible, proceeding to initiating AT process.")
-                self.initiateAutomatedTransfer()
+                self.initiateAutomatedTransfer(retryingAfterFailure: true)
         },
             failure: {
                 SVProgressHUD.dismiss()
@@ -144,12 +144,15 @@ class AutomatedTransferHelper {
         })
     }
 
-    private func initiateAutomatedTransfer() {
+    private func initiateAutomatedTransfer(retryingAfterFailure: Bool = false) {
         DDLogInfo("[AT] Initiating Automated Transfer.")
 
         WPAnalytics.track(.automatedTransferInitiate)
 
         automatedTransferService.initiateAutomatedTransfer(siteID: site.siteID, pluginSlug: plugin.slug, success: { transferID, status in
+            self.delayWrapper?.delayedRetryAction.cancel()
+            self.delayWrapper = nil
+
             DDLogInfo("[AT] Succesfully started Automated Transfer process. Transfer ID: \(transferID), status: \(status)")
 
             WPAnalytics.track(.automatedTransferInitiated)
@@ -164,12 +167,54 @@ class AutomatedTransferHelper {
             }
 
         }, failure: { (error) in
-            DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
 
-            WPAnalytics.track(.automatedTransferInitiationFailed)
+            // The async nature of AT process bites us here again. Sometimes, even though the backend says
+            // 'hell yeah son, everything's fine, go ahead!' in the eligibility check, trying to actually
+            // start the AT process (usually only after a custom domain was _just_ purchased) fails spectacularly.
+            // In those ceases, we'll retry this request a few times.
+            guard retryingAfterFailure else {
+                DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
 
-            SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
+                WPAnalytics.track(.automatedTransferInitiationFailed)
+
+                SVProgressHUD.dismiss()
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
+
+                return
+            }
+
+            guard var wrapper = self.delayWrapper else {
+                DDLogInfo("[AT] Kickoff failure after purchasing a domain. Scheduling another try.")
+                // This means it's the first retry attempt.
+
+                let wrapper = DelayStateWrapper(delaySequence: [Constants.afterDomainPurchaseRefreshInterval]) {
+                    self.initiateAutomatedTransfer(retryingAfterFailure: true)
+                }
+
+                self.delayWrapper = wrapper
+                return
+            }
+
+            DDLogInfo("[AT] Kickoff retry #\(wrapper.retryAttempt)")
+            guard wrapper.retryAttempt < Constants.afterDomainPurchaseMaxRetries else {
+
+                wrapper.delayedRetryAction.cancel()
+                self.delayWrapper = nil
+
+                DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
+
+                WPAnalytics.track(.automatedTransferInitiationFailed)
+
+                SVProgressHUD.dismiss()
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
+
+                return
+            }
+
+            DDLogInfo("[AT] Incrementing kickoff  counter.")
+            wrapper.increment()
+            self.delayWrapper = wrapper
+
         })
     }
 
