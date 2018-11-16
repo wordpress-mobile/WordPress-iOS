@@ -1,5 +1,7 @@
 import UIKit
 
+typealias SIteInformationCompletion = (SiteInformation) -> Void
+
 final class SiteInformationWizardContent: UIViewController {
     private enum Rows: Int, CaseIterable {
         case title = 0
@@ -14,7 +16,7 @@ final class SiteInformationWizardContent: UIViewController {
         }
     }
 
-    private let completion: (SiteInformation) -> Void
+    private let completion: SIteInformationCompletion
 
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var nextStep: UIButton!
@@ -26,7 +28,7 @@ final class SiteInformationWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
-    init(completion: @escaping (SiteInformation) -> Void) {
+    init(completion: @escaping SIteInformationCompletion) {
         self.completion = completion
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
