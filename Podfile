@@ -119,6 +119,10 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
+    ## Screenshot Generation Helper
+    ## ====================
+    ##
+    pod 'SimulatorStatusMagic', :configurations => ['Debug']
 
     ## Automattic libraries
     ## ====================
