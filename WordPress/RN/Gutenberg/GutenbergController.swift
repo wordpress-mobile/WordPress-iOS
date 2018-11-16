@@ -110,7 +110,7 @@ extension GutenbergController: GutenbergBridgeDelegate {
                                                        callback: callback)
     }
 
-    func gutenbergDidProvideHTML(_ html: String) {
+    func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
 
     }
 }
