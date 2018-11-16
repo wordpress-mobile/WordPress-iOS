@@ -16,6 +16,6 @@ final class VerticalsStep: WizardStep {
 
     private func didSelect(_ vertical: SiteVertical) {
         creator.vertical = vertical
-        delegate?.wizard(self, willNavigateTo: SiteInformationStep.identifier)
+        delegate?.nextStep()
     }
 }
