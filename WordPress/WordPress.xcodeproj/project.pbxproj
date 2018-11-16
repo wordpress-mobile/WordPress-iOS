@@ -829,6 +829,12 @@
 		9874766F219630240080967F /* SiteStatsTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874766E219630240080967F /* SiteStatsTableViewCells.swift */; };
 		9874767321963D330080967F /* SiteStatsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874767221963D320080967F /* SiteStatsInformation.swift */; };
 		988056032183CCE50083B643 /* SiteStatsInsightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */; };
+		98812966219CE42A0075FF33 /* StatsTotalRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98812964219CE42A0075FF33 /* StatsTotalRow.swift */; };
+		98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98812965219CE42A0075FF33 /* StatsTotalRow.xib */; };
+		9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9881296C219CF1300075FF33 /* StatsCellHeader.swift */; };
+		9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9881296D219CF1310075FF33 /* StatsCellHeader.xib */; };
+		98812972219CF5100075FF33 /* SimpleTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98812970219CF5100075FF33 /* SimpleTotalsCell.swift */; };
+		98812973219CF5100075FF33 /* SimpleTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98812971219CF5100075FF33 /* SimpleTotalsCell.xib */; };
 		98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF621372E12004949AA /* MediaCoordinator.swift */; };
 		98921EF921372E30004949AA /* LocalNewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF821372E30004949AA /* LocalNewsService.swift */; };
 		98921EFB21372E57004949AA /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EFA21372E57004949AA /* NewsService.swift */; };
@@ -2646,6 +2652,12 @@
 		9874766E219630240080967F /* SiteStatsTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsTableViewCells.swift; sourceTree = "<group>"; };
 		9874767221963D320080967F /* SiteStatsInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsInformation.swift; sourceTree = "<group>"; };
 		988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsTableViewController.swift; sourceTree = "<group>"; };
+		98812964219CE42A0075FF33 /* StatsTotalRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTotalRow.swift; sourceTree = "<group>"; };
+		98812965219CE42A0075FF33 /* StatsTotalRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsTotalRow.xib; sourceTree = "<group>"; };
+		9881296C219CF1300075FF33 /* StatsCellHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsCellHeader.swift; sourceTree = "<group>"; };
+		9881296D219CF1310075FF33 /* StatsCellHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsCellHeader.xib; sourceTree = "<group>"; };
+		98812970219CF5100075FF33 /* SimpleTotalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTotalsCell.swift; sourceTree = "<group>"; };
+		98812971219CF5100075FF33 /* SimpleTotalsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimpleTotalsCell.xib; sourceTree = "<group>"; };
 		98921EF621372E12004949AA /* MediaCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaCoordinator.swift; sourceTree = "<group>"; };
 		98921EF821372E30004949AA /* LocalNewsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNewsService.swift; sourceTree = "<group>"; };
 		98921EFA21372E57004949AA /* NewsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
@@ -4333,6 +4345,7 @@
 				98747670219638990080967F /* Extensions */,
 				98747674219644E40080967F /* Helpers */,
 				98747671219638BF0080967F /* Insights */,
+				98F89D47219E008600190EE6 /* Shared Views */,
 				7470840D1E269669002CA726 /* JetpackLoginViewController.swift */,
 				7470840E1E269669002CA726 /* JetpackLoginViewController.xib */,
 				981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */,
@@ -5864,6 +5877,8 @@
 				980026CE2187B97200A0C30A /* LatestPostSummaryCell.xib */,
 				988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */,
 				9865257C2194D77E0078B916 /* SiteStatsInsightsViewModel.swift */,
+				98812970219CF5100075FF33 /* SimpleTotalsCell.swift */,
+				98812971219CF5100075FF33 /* SimpleTotalsCell.xib */,
 			);
 			path = Insights;
 			sourceTree = "<group>";
@@ -5895,6 +5910,17 @@
 				9859DF85202107C600FB848E /* SiteCreationCategoryTableViewCells.swift */,
 			);
 			name = "Select Site Category";
+			sourceTree = "<group>";
+		};
+		98F89D47219E008600190EE6 /* Shared Views */ = {
+			isa = PBXGroup;
+			children = (
+				9881296C219CF1300075FF33 /* StatsCellHeader.swift */,
+				9881296D219CF1310075FF33 /* StatsCellHeader.xib */,
+				98812964219CE42A0075FF33 /* StatsTotalRow.swift */,
+				98812965219CE42A0075FF33 /* StatsTotalRow.xib */,
+			);
+			path = "Shared Views";
 			sourceTree = "<group>";
 		};
 		9A22D9BE214A6B9800BAEAF2 /* Utils */ = {
@@ -8101,6 +8127,7 @@
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
+				9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */,
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */,
 				98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */,
@@ -8161,8 +8188,10 @@
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
+				98812973219CF5100075FF33 /* SimpleTotalsCell.xib in Resources */,
 				981C34912183871200FC2683 /* SiteStatsDashboard.storyboard in Resources */,
 				435035991EDCAB99004ECF47 /* post.json in Resources */,
+				98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */,
 				D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */,
 				980026D02187B97200A0C30A /* LatestPostSummaryCell.xib in Resources */,
 			);
@@ -8929,6 +8958,7 @@
 				825327581FBF7CD600B8B7D2 /* ActivityUtils.swift in Sources */,
 				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
+				98812972219CF5100075FF33 /* SimpleTotalsCell.swift in Sources */,
 				E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */,
 				9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */,
 				FF4C069F206560E500E0B2BC /* MediaThumbnailCoordinator.swift in Sources */,
@@ -9054,6 +9084,7 @@
 				FF7E510A1FBDE0C500AD2918 /* MediaAttachment+WordPress.swift in Sources */,
 				402B2A7920ACD7690027C1DC /* ActivityStore.swift in Sources */,
 				E62AFB6A1DC8E593007484FC /* NSAttributedString+WPRichText.swift in Sources */,
+				98812966219CE42A0075FF33 /* StatsTotalRow.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
 				E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */,
@@ -9459,6 +9490,7 @@
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
 				D816B8D92112D85F0052CE4D /* News.swift in Sources */,
 				8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */,
+				9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
 				98921EF921372E30004949AA /* LocalNewsService.swift in Sources */,
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
