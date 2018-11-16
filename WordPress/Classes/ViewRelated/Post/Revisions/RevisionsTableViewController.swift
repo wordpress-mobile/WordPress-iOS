@@ -2,6 +2,11 @@ class RevisionsTableViewController: UITableViewController {
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
 
+    private lazy var noResultsViewController: NoResultsViewController = {
+        let noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
+        return noResultsViewController
+    }()
     private lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
         tableViewHandler.cacheRowHeights = false
@@ -35,7 +40,7 @@ class RevisionsTableViewController: UITableViewController {
 
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
-        manager?.getRevisions()
+        refreshRevisions()
     }
 }
 
@@ -76,7 +81,39 @@ private extension RevisionsTableViewController {
     }
 
     @objc private func refreshRevisions() {
+        if sectionCount == 0 {
+            configureAndDisplayNoResults(title: NoResultsText.loadingTitle,
+                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
+
         manager?.getRevisions()
+    }
+
+    private func configureAndDisplayNoResults(title: String,
+                                      subtitle: String? = nil,
+                                      buttonTitle: String? = nil,
+                                      accessoryView: UIView? = nil,
+                                      forNoSearchResults: Bool = false) {
+
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: buttonTitle,
+                                          subtitle: subtitle,
+                                          accessoryView: accessoryView)
+        displayNoResults()
+    }
+
+    private func displayNoResults() {
+        addChild(noResultsViewController)
+        noResultsViewController.view.frame = tableView.frame
+        noResultsViewController.view.frame.origin.y = 0
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    private func hideNoResults() {
+        noResultsViewController.removeFromView()
+        tableView.reloadData()
     }
 }
 
@@ -162,11 +199,25 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 }
 
 
+extension RevisionsTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        refreshRevisions()
+    }
+}
+
+
 extension RevisionsTableViewController: RevisionsView {
     func stopLoading(success: Bool, error: Error?) {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
+
+        if !success, sectionCount == 0 {
+            configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
+                                         buttonTitle: NoResultsText.reloadButtonTitle)
+        } else {
+            hideNoResults()
+        }
     }
 }
 
@@ -189,4 +240,11 @@ private extension Date {
     func shortTimeString() -> String {
         return Date.shortTimeFormatter.string(from: self)
     }
+}
+
+
+struct NoResultsText {
+    static let loadingTitle = NSLocalizedString("Loading...", comment: "Loading revisions.")
+    static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load revisions again.")
+    static let noResultsTitle = NSLocalizedString("No revisions found.", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
 }
