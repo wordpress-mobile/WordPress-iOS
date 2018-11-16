@@ -20,6 +20,7 @@ PODS:
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
+  - boost-for-react-native (1.63.0)
   - BuddyBuildSDK (1.0.17)
   - CocoaLumberjack (3.4.2):
     - CocoaLumberjack/Default (= 3.4.2)
@@ -29,12 +30,18 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.10.8):
     - Fabric (~> 1.7.12)
+  - DoubleConversion (1.1.5)
   - Fabric (1.7.13)
+  - Folly (2016.10.31.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gifu (3.1.0)
   - GiphyCoreSDK (1.4.0)
+  - glog (0.3.4)
   - GoogleSignInRepacked (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
@@ -47,11 +54,17 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.16)
-  - Gutenberg (0.1.0):
-    - React (= 0.57.1)
-    - RNSVG
-    - RNTAztecView
-    - Yoga
+  - Gutenberg (0.1.2):
+    - React/Core (= 0.57.1)
+    - React/CxxBridge (= 0.57.1)
+    - React/DevSupport (= 0.57.1)
+    - React/RCTActionSheet (= 0.57.1)
+    - React/RCTAnimation (= 0.57.1)
+    - React/RCTImage (= 0.57.1)
+    - React/RCTLinkingIOS (= 0.57.1)
+    - React/RCTNetwork (= 0.57.1)
+    - React/RCTText (= 0.57.1)
+    - yoga (= 0.57.1.React)
   - HockeySDK (5.1.4):
     - HockeySDK/DefaultLib (= 5.1.4)
   - HockeySDK/DefaultLib (5.1.4)
@@ -109,6 +122,43 @@ PODS:
     - React/Core (= 0.57.1)
   - React/Core (0.57.1):
     - yoga (= 0.57.1.React)
+  - React/CxxBridge (0.57.1):
+    - Folly (= 2016.10.31.00)
+    - React/Core
+    - React/cxxreact
+  - React/cxxreact (0.57.1):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2016.10.31.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/DevSupport (0.57.1):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.57.1)
+  - React/jschelpers (0.57.1):
+    - Folly (= 2016.10.31.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.57.1)
+  - React/PrivateDatabase (0.57.1)
+  - React/RCTActionSheet (0.57.1):
+    - React/Core
+  - React/RCTAnimation (0.57.1):
+    - React/Core
+  - React/RCTBlob (0.57.1):
+    - React/Core
+  - React/RCTImage (0.57.1):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.57.1):
+    - React/Core
+  - React/RCTNetwork (0.57.1):
+    - React/Core
+  - React/RCTText (0.57.1):
+    - React/Core
+  - React/RCTWebSocket (0.57.1):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
   - RNSVG (6.5.2):
     - React
   - RNTAztecView (0.0.2):
@@ -148,7 +198,6 @@ PODS:
   - WPMediaPicker (1.3.1)
   - wpxmlrpc (0.8.3)
   - yoga (0.57.1.React)
-  - Yoga (1.9.0)
   - ZendeskSDK (2.2.0):
     - ZendeskSDK/Providers (= 2.2.0)
     - ZendeskSDK/UI (= 2.2.0)
@@ -167,6 +216,7 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.10.8)
+  - Folly (from `Podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.1.0)
   - GiphyCoreSDK (~> 1.4.0)
@@ -204,13 +254,16 @@ SPEC REPOS:
     - 1PasswordExtension
     - AFNetworking
     - Alamofire
+    - boost-for-react-native
     - BuddyBuildSDK
     - CocoaLumberjack
     - Crashlytics
+    - DoubleConversion
     - Fabric
     - FormatterKit
     - Gifu
     - GiphyCoreSDK
+    - glog
     - GoogleSignInRepacked
     - GoogleToolboxForMac
     - Gridicons
@@ -235,13 +288,14 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
-    - Yoga
     - ZendeskSDK
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  Folly:
+    :podspec: Podspecs/Folly.podspec.json
   Gutenberg:
     :branch: try/podspec
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -260,7 +314,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Gutenberg:
-    :commit: fa0c3593d4a07fac0ebb4a9d2d3c5e28d82fd29e
+    :commit: d8a894907a469bf50bf263edee602be4937091d4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
@@ -274,17 +328,21 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 058dc1ba579f6c100bc60a6878703779bff383c4
+  DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Fabric: 25d0963b691fc97be566392243ff0ecef5a68338
+  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
   GiphyCoreSDK: 1fe401c5fc65f182e7aa8b7fb2c9005f2a523374
+  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
-  Gutenberg: 038a49e889640d720a4f588c8f7622a7de5ec9fd
+  Gutenberg: f54b45bfa99c064913bfdd72ed393ad874ddc919
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -309,10 +367,9 @@ SPEC CHECKSUMS:
   WordPressUI: e50965adee24b4f10da398f6cdbdd3a822274158
   WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
-  Yoga: aaae8abea68951f60bee05f6277d3eed90bb91bb
   yoga: 833ba47f05b90adf77b2941ee6eef250a90cc39c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: d4af11f65d66a7d83fbfe05c8e1d19fd1df3fdae
+PODFILE CHECKSUM: 8ed4a1df634b2240bd4dbebc194d742d8bfc89dd
 
 COCOAPODS: 1.5.3
