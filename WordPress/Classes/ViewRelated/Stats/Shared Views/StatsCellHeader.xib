@@ -13,23 +13,26 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="StatsCellHeader" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Yw-KF-i1G">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="CkM-4y-ChA">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cell Header Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KlA-v8-RRf">
-                                    <rect key="frame" x="0.0" y="0.0" width="309" height="65"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="351" height="40"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8jd-aL-8Rx">
-                                    <rect key="frame" x="309" y="0.0" width="66" height="65"/>
+                                    <rect key="frame" x="351" y="0.0" width="24" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="24" id="auP-tV-2Rs"/>
+                                    </constraints>
                                     <connections>
                                         <action selector="manageInsightButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="lTr-Kv-cN6"/>
                                     </connections>
@@ -59,7 +62,7 @@
                 <outlet property="headerLabel" destination="KlA-v8-RRf" id="YQW-B3-0cr"/>
                 <outlet property="manageInsightButton" destination="8jd-aL-8Rx" id="5Mm-gp-F21"/>
             </connections>
-            <point key="canvasLocation" x="138.40000000000001" y="-282.90854572713647"/>
+            <point key="canvasLocation" x="138.40000000000001" y="-271.664167916042"/>
         </view>
     </objects>
 </document>

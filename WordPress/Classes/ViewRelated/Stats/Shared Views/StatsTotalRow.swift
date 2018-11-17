@@ -14,7 +14,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     var showImage = true {
         didSet {
-            toggleImage()
+            imageStackView.isHidden = !showImage
         }
     }
 
@@ -40,7 +40,7 @@ class StatsTotalRow: UIView, NibLoadable {
         super.awakeFromNib()
 
         applyStyles()
-        toggleImage()
+        imageStackView.isHidden = !showImage
         disclosureStackView.isHidden = !showDisclosure
         separatorLine.isHidden = !showSeparator
         itemDetailLabel.isHidden = !showItemDetailLabel
@@ -57,11 +57,4 @@ private extension StatsTotalRow {
         Style.configureViewAsSeperator(separatorLine)
     }
 
-    func toggleImage() {
-        if imageView.image == nil {
-            imageStackView.isHidden = true
-        } else {
-            imageStackView.isHidden = !showImage
-        }
-    }
 }
