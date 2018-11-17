@@ -101,7 +101,9 @@ extension RevisionDiff {
 
 private extension Array where Element == DiffAbstractValue {
     func toAttributedString() -> NSAttributedString? {
-        return sorted { $0.index < $1.index }.reduce(NSMutableAttributedString(), +).copy() as? NSAttributedString
+        return sorted { $0.index < $1.index }
+            .reduce(NSMutableAttributedString(), +)
+            .copy() as? NSAttributedString
     }
 }
 
