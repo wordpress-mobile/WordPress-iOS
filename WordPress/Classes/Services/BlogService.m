@@ -267,7 +267,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                             }];
 
     dispatch_group_enter(syncGroup);
-    [remote getAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+    [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
         [self updateMultiAuthor:users forBlog:blogObjectID];
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {

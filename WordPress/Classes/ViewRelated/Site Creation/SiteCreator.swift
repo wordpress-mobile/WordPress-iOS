@@ -2,6 +2,8 @@
 final class SiteCreator {
     var segment: SiteSegment?
     var vertical: SiteVertical?
+    var information: SiteInformation?
+    var address: DomainSuggestion?
 
 
     /// Generates the final object that will be posted to the backend

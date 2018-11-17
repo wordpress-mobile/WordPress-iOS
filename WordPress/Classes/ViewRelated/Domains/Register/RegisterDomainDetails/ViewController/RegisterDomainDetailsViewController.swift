@@ -140,15 +140,18 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             tableView.reloadRows(at: [indexPath], with: .none)
         case .checkMarkRowsUpdated:
             tableView.reloadData()
-        case .registerSucceeded(let items):
-            //TODO: temporarily show as an alert
-            showAlert(title: "Success", message: items.description)
+        case .registerSucceeded(let domain):
+
+            viewModel.domainPurchasedCallback(domain)
+            dismiss(animated: true)
         case .unexpectedError(let message):
             showAlert(message: message)
         case .loading(let isLoading):
             if isLoading {
+                footerView.submitButton.isEnabled = false
                 SVProgressHUD.show()
             } else {
+                footerView.submitButton.isEnabled = true
                 SVProgressHUD.dismiss()
             }
         case .prefillSuccess:

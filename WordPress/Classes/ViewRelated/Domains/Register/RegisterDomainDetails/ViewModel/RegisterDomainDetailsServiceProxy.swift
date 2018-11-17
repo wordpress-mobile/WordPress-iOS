@@ -21,8 +21,19 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
 
     func createShoppingCart(siteID: Int,
                             domainSuggestion: DomainSuggestion,
-                            success: @escaping (String) -> Void,
+                            privacyProtectionEnabled: Bool,
+                            success: @escaping (CartResponse) -> Void,
                             failure: @escaping (Error) -> Void)
+
+    func redeemCartUsingCredits(cart: CartResponse,
+                                domainContactInformation: [String: String],
+                                success: @escaping () -> Void,
+                                failure: @escaping (Error) -> Void)
+
+    func changePrimaryDomain(siteID: Int,
+                             newDomain: String,
+                             success: @escaping () -> Void,
+                             failure: @escaping (Error) -> Void)
 
 
 }
@@ -76,11 +87,35 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
 
     func createShoppingCart(siteID: Int,
                             domainSuggestion: DomainSuggestion,
-                            success: @escaping (String) -> Void,
+                            privacyProtectionEnabled: Bool,
+                            success: @escaping (CartResponse) -> Void,
                             failure: @escaping (Error) -> Void) {
         transactionsServiceRemote.createShoppingCart(siteID: siteID,
                                                      domainSuggestion: domainSuggestion,
+                                                     privacyProtectionEnabled: privacyProtectionEnabled,
                                                      success: success,
                                                      failure: failure)
     }
+
+    func redeemCartUsingCredits(cart: CartResponse,
+                                domainContactInformation: [String: String],
+                                success: @escaping () -> Void,
+                                failure: @escaping (Error) -> Void) {
+        transactionsServiceRemote.redeemCartUsingCredits(cart: cart,
+                                                         domainContactInformation: domainContactInformation,
+                                                         success: success,
+                                                         failure: failure)
+    }
+
+    func changePrimaryDomain(siteID: Int,
+                             newDomain: String,
+                             success: @escaping () -> Void,
+                             failure: @escaping (Error) -> Void) {
+        domainsServiceRemote.setPrimaryDomainForSite(siteID: siteID,
+                                                     domain: newDomain,
+                                                     success: success,
+                                                     failure: failure)
+    }
+
+
 }

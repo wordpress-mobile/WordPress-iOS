@@ -24,7 +24,7 @@ class RegisterDomainDetailsViewModel {
 
         case checkMarkRowsUpdated(sectionIndex: Int)
 
-        case registerSucceeded(items: [String: String])
+        case registerSucceeded(domain: String)
 
         case loading(Bool)
 
@@ -47,8 +47,11 @@ class RegisterDomainDetailsViewModel {
 
     var registerDomainDetailsService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()
 
+    let domain: DomainSuggestion
+    let site: JetpackSiteRef
+    let domainPurchasedCallback: ((String) -> Void)
+
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
-    private(set) var domain: DomainSuggestion
     private(set) var states: [CodeNameTuple]?
     private(set) var countries: [CodeNameTuple]?
 
@@ -65,8 +68,10 @@ class RegisterDomainDetailsViewModel {
         }
     }
 
-    init(domain: DomainSuggestion) {
+    init(site: JetpackSiteRef, domain: DomainSuggestion, domainPurchasedCallback: @escaping ((String) -> Void)) {
+        self.site = site
         self.domain = domain
+        self.domainPurchasedCallback = domainPurchasedCallback
         manuallyTriggerValidation()
     }
 
@@ -175,24 +180,61 @@ class RegisterDomainDetailsViewModel {
     }
 
     func register() {
+        let privacyEnabled = privacySectionSelectedItem() == CellIndex.PrivacyProtection.privately
+
+        isLoading = true
         validateRemotely(successCompletion: { [weak self] in
             guard let strongSelf = self else {
+                self?.isLoading = false
                 return
             }
+            // This is a bit of a callback hell, but our services aren't super mobile friendly.
+            // We'll manage.
 
+            // First step is to create a cart.
+            strongSelf.registerDomainDetailsService.createShoppingCart(siteID: strongSelf.site.siteID,
+                                                                       domainSuggestion: strongSelf.domain,
+                                                                       privacyProtectionEnabled: privacyEnabled,
+                                                                       success: { cart in
 
-            self!.registerDomainDetailsService.createShoppingCart(siteID: 149564365,
-                                                                  domainSuggestion: self!.domain,
-                                                            success: { result in
-                                                                //TODO: purchase flow
+                    // And now that we have a cart — time to redeem it.
+                    strongSelf.registerDomainDetailsService.redeemCartUsingCredits(cart: cart,
+                                                                                   domainContactInformation: strongSelf.jsonRepresentation(),
+                                                                                   success: {
 
-                strongSelf.onChange?(.registerSucceeded(items: strongSelf.jsonRepresentation()))
-                return
+                            // Hey! We redeemed the cart sucessfully. Now we just need to set the new domain to primary...
+                            strongSelf.registerDomainDetailsService.changePrimaryDomain(siteID: strongSelf.site.siteID,
+                                                                             newDomain: strongSelf.domain.domainName,
+                                                                             success: {
+
+                                // We've succeeded! The domain is purchased and set to the primary one — time to drop out of this flow
+                                // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
+                                strongSelf.isLoading = false
+                                strongSelf.onChange?(.registerSucceeded(domain: strongSelf.domain.domainName))
+                            },
+                            failure: { error in
+
+                                // This means we've sucessfully bought/redeemed the domain, but something went wrong
+                                // when setting it to a primary.
+
+                                strongSelf.isLoading = false
+                                strongSelf.onChange?(.prefillError(message: Localized.changingPrimaryDomainError))
+                        })
+                    }, failure: { (error) in
+
+                        // Failure during the purchase step. Not much we can do from the mobile in any case,
+                        // so let's just show a generic error message.
+
+                        strongSelf.isLoading = false
+                        strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
+                    })
             }) { (error) in
-                strongSelf.onChange?(.prefillError(message: Localized.cartError))
-                return
-            }
 
+                // Same as above. If adding items to cart fails, not much we can do to recover :(
+
+                strongSelf.isLoading = false
+                strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
+            }
         })
     }
 
@@ -428,7 +470,6 @@ class RegisterDomainDetailsViewModel {
 extension RegisterDomainDetailsViewModel {
 
     fileprivate func validateRemotely(successCompletion: @escaping () -> Void) {
-        isLoading = true
         registerDomainDetailsService.validateDomainContactInformation(
             contactInformation: jsonRepresentation(),
             domainNames: [domain.domainName],
@@ -436,7 +477,6 @@ extension RegisterDomainDetailsViewModel {
                 guard let strongSelf = self else {
                     return
                 }
-                strongSelf.isLoading = false
                 if response.success {
                     strongSelf.clearValidationErrors()
                     successCompletion()
@@ -448,7 +488,6 @@ extension RegisterDomainDetailsViewModel {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.isLoading = false
             strongSelf.onChange?(.unexpectedError(message: Localized.unexpectedError))
         }
     }
