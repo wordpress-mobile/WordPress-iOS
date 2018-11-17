@@ -2,6 +2,7 @@ import UIKit
 
 class StatsTotalRow: UIView, NibLoadable {
 
+    @IBOutlet weak var seperatorLine: UIView!
     @IBOutlet weak var imageStackView: UIStackView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var itemLabel: UILabel!
@@ -12,7 +13,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     var showImage = true {
         didSet {
-            imageStackView.isHidden = !showImage
+            toggleImage()
         }
     }
 
@@ -22,13 +23,19 @@ class StatsTotalRow: UIView, NibLoadable {
         }
     }
 
+    var showSeparator = true {
+        didSet {
+            seperatorLine.isHidden = !showSeparator
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
         applyStyles()
-
-        imageStackView.isHidden = !showImage
+        toggleImage()
         disclosureStackView.isHidden = !showDisclosure
+        seperatorLine.isHidden = !showSeparator
     }
 
 }
@@ -38,6 +45,14 @@ private extension StatsTotalRow {
     func applyStyles() {
         Style.configureLabelAsCellRowTitle(itemLabel)
         Style.configureLabelAsData(dataLabel)
+        Style.configureViewAsSeperator(seperatorLine)
     }
 
+    func toggleImage() {
+        if imageView.image == nil {
+            imageStackView.isHidden = true
+        } else {
+            imageStackView.isHidden = !showImage
+        }
+    }
 }
