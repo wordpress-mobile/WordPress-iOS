@@ -56,6 +56,10 @@ extension WPStyleGuide {
             label.text = label.text?.localizedUppercase
         }
 
+        static func configureLabelItemDetail(_ label: UILabel) {
+            label.textColor = itemDetailTextColor
+        }
+
         static func configureLabelAsCellRowTitle(_ label: UILabel) {
             label.textColor = defaultTextColor
         }
@@ -94,6 +98,7 @@ extension WPStyleGuide {
 
         static let defaultTextColor = WPStyleGuide.darkGrey()
         static let secondaryTextColor = WPStyleGuide.grey()
+        static let itemDetailTextColor = WPStyleGuide.greyDarken10()
         static let actionTextColor = WPStyleGuide.wordPressBlue()
         static let summaryTextColor = WPStyleGuide.darkGrey()
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
