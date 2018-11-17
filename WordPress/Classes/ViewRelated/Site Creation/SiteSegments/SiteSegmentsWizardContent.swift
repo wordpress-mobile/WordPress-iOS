@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// Contains the UI corresponsing to the list of segments
 final class SiteSegmentsWizardContent: UIViewController {
@@ -8,13 +9,16 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     @IBOutlet weak var table: UITableView!
 
+    private struct StyleConstants {
+        static let rowHeight: CGFloat = 72.0
+        static let separatorInset = UIEdgeInsets(top: 0, left: 64.0, bottom: 0, right: 0)
+    }
+
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
         let subtitle = NSLocalizedString("This helps us suggest a solid foundation. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
-
-
 
     init(service: SiteSegmentsService, selection: @escaping (SiteSegment) -> Void) {
         self.service = service
@@ -26,17 +30,91 @@ final class SiteSegmentsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        applyTitle()
+        setupBackground()
+        setupTable()
+        initCancelButton()
+    }
+
+    private func applyTitle() {
+        title = NSLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupTable()
 
         fetchSegments()
     }
 
     private func setupTable() {
+        setupTableBackground()
+        setupCell()
+        setupHeader()
+        hideSeparators()
+    }
+
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func hideSeparators() {
+        table.tableFooterView = UIView(frame: .zero)
+    }
+
+    private func setupCell() {
+        registerCell()
+        setupCellHeight()
+    }
+
+    private func registerCell() {
         let cellName = SiteSegmentsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
+    }
+
+    private func setupCellHeight() {
+        table.rowHeight = StyleConstants.rowHeight
+        table.estimatedRowHeight = StyleConstants.rowHeight
+        table.separatorInset = StyleConstants.separatorInset
+    }
+
+    private func setupHeader() {
+        let header = TitleSubtitleHeader(frame: .zero)
+        header.setTitle(headerData.title)
+        header.setSubtitle(headerData.subtitle)
+
+        table.tableHeaderView = header
+
+        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
+        NSLayoutConstraint.activate([
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+        ])
+
+        table.tableHeaderView?.layoutIfNeeded()
+        table.tableHeaderView = table.tableHeaderView
+    }
+
+    private func initCancelButton() {
+        navigationItem.leftBarButtonItem = cancelButton()
+    }
+
+    private func cancelButton() -> UIBarButtonItem {
+        let literal = NSLocalizedString("Cancel", comment: "Cancel button. Site creation modal popover.")
+        return UIBarButtonItem(title: literal, style: .plain, target: self, action: #selector(cancelSiteCreation))
+    }
+
+    @objc
+    private func cancelSiteCreation() {
+        dismiss(animated: true, completion: nil)
     }
 
     private func fetchSegments() {
@@ -55,8 +133,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteSegment]) {
-        let tableCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
-        dataCoordinator = SiteCreationDataCoordinator(decorated: tableCoordinator, headerData: headerData)
+        dataCoordinator = TableDataCoordinator(data: data, cellType: SiteSegmentsCell.self, selection: didSelect)
         table.dataSource = dataCoordinator
         table.delegate = dataCoordinator
         table.reloadData()

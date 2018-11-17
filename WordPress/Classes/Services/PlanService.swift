@@ -48,7 +48,7 @@ struct PlanService<S: InAppPurchaseStore> {
                                                       forSite: siteID,
                                                       hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
             },
-            failure: failure)
+            failure: { _ in })
         }
     }
 

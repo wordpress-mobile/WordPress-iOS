@@ -21,5 +21,4 @@ class VerticalsCell: UITableViewCell, ModelSettableCell {
     private func styleTitle() {
 
     }
-
 }

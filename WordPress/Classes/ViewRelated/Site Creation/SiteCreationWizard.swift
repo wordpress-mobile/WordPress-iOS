@@ -8,11 +8,7 @@ final class SiteCreationWizard: Wizard {
     }()
 
     private lazy var navigation: WizardNavigation? = {
-        guard let first = self.firstContentViewController else {
-            return nil
-        }
-
-        return WizardNavigation(root: first)
+        return WizardNavigation(steps: self.steps)
     }()
 
     lazy var content: UIViewController? = {
@@ -24,36 +20,5 @@ final class SiteCreationWizard: Wizard {
 
     init(steps: [WizardStep]) {
         self.steps = steps
-        configureSteps()
-    }
-
-    /// This probably won't fly for too long.
-    private func configureSteps() {
-        for var step in steps {
-            step.delegate = self
-        }
-    }
-}
-
-extension SiteCreationWizard: WizardDelegate {
-    func wizard(_ origin: WizardStep, willNavigateTo destination: Identifier) {
-        navigate(to: destination)
-    }
-
-    func wizard(_ origin: WizardStep, didNavigateTo destination: Identifier) {
-    }
-
-    private func navigate(to: Identifier) {
-        guard let destinationStep = step(identifier: to) else {
-            return
-        }
-
-        navigation?.push(destinationStep.content)
-    }
-
-    private func step(identifier: Identifier) -> WizardStep? {
-        return steps.filter {
-                $0.identifier == identifier
-            }.first
     }
 }

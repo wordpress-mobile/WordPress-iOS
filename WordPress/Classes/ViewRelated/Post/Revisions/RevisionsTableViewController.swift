@@ -6,18 +6,21 @@ class RevisionsTableViewController: UITableViewController {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.delegate = self
-        tableViewHandler.updateRowAnimation = .none
+        tableViewHandler.updateRowAnimation = .fade
         return tableViewHandler
     }()
 
-    private var tableViewFooter: RevisionsTableViewFooter {
+    private lazy var tableViewFooter: RevisionsTableViewFooter = {
         let footerView = RevisionsTableViewFooter(frame: CGRect(origin: .zero,
                                                                 size: CGSize(width: tableView.frame.width,
                                                                              height: Sizes.sectionFooterHeight)))
         footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
         return footerView
-    }
+    }()
 
+    private var sectionCount: Int {
+        return tableViewHandler.resultsController.sections?.count ?? 0
+    }
 
     convenience init(post: AbstractPost) {
         self.init()
@@ -27,10 +30,11 @@ class RevisionsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupPresenter()
+        setupManager()
         setupUI()
 
         tableViewHandler.refreshTableView()
+        tableViewFooter.isHidden = sectionCount == 0
         manager?.getRevisions()
     }
 }
@@ -54,8 +58,21 @@ private extension RevisionsTableViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
-    private func setupPresenter() {
+    private func setupManager() {
         manager = ShowRevisionsListManger(post: post, attach: self)
+    }
+
+    private func getRevision(at indexPath: IndexPath) -> Revision {
+        guard let revision = tableViewHandler.resultsController.object(at: indexPath) as? Revision else {
+            preconditionFailure("Expected a Revision object.")
+        }
+
+        return revision
+    }
+
+    private func getAuthor(for id: NSNumber?) -> BlogAuthor? {
+        let authors: [BlogAuthor]? = post?.blog.authors?.allObjects as? [BlogAuthor]
+        return authors?.first { $0.userID == id }
     }
 
     @objc private func refreshRevisions() {
@@ -92,18 +109,12 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         }
 
         let revision = getRevision(at: indexPath)
-        cell.title = revision.revisionModifiedDate.shortTimeString()
-        cell.subtitle = "author name"
+        let authors = getAuthor(for: revision.postAuthorId)
+        cell.title = revision.revisionDate.shortTimeString()
+        cell.subtitle = authors?.username ?? revision.revisionDate.mediumString()
         cell.totalAdd = revision.diff?.totalAdditions.intValue
         cell.totalDel = revision.diff?.totalDeletions.intValue
-    }
-
-    func getRevision(at indexPath: IndexPath) -> Revision {
-        guard let revision = tableViewHandler.resultsController.object(at: indexPath) as? Revision else {
-            preconditionFailure("Expected a Revision object.")
-        }
-
-        return revision
+        cell.avatarURL = authors?.avatarURL
     }
 
     func getRevisionState(at indexPath: IndexPath) -> RevisionBrowserState {
@@ -169,6 +180,7 @@ extension RevisionsTableViewController: RevisionsView {
     func stopLoading(success: Bool, error: Error?) {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
+        tableViewFooter.isHidden = sectionCount == 0
     }
 }
 

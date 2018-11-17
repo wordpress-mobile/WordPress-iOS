@@ -103,9 +103,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.1)
-  - WordPress-Editor-iOS (1.1):
-    - WordPress-Aztec-iOS (= 1.1)
+  - WordPress-Aztec-iOS (1.2)
+  - WordPress-Editor-iOS (1.2):
+    - WordPress-Aztec-iOS (= 1.2)
   - WordPressAuthenticator (1.1.5):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -120,14 +120,14 @@ PODS:
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressKit (1.4.5-beta.1):
+  - WordPressKit (1.5.0-beta.2):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 0.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.4.0):
+  - WordPressShared (1.5.0-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.1.0)
@@ -169,10 +169,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Editor-iOS (= 1.1)
+  - WordPress-Editor-iOS (= 1.2)
   - WordPressAuthenticator (~> 1.1)
-  - WordPressKit (~> 1.4.5-beta.1)
-  - WordPressShared (~> 1.4)
+  - WordPressKit (~> 1.5.0-beta.2)
+  - WordPressShared (~> 1.5.0-beta.1)
   - WordPressUI (~> 1.1)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
@@ -254,16 +254,16 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 5bb57849aad4583a2e714ba8634eff1db0d03ac3
-  WordPress-Editor-iOS: 5a949802536d73c67ffb4d7705f922ca13a71550
+  WordPress-Aztec-iOS: 507f6a08e176c2a9af6ec532a54697466b5a9114
+  WordPress-Editor-iOS: 28339c1311dcdfdd9e50aba60dcf4c35184d032f
   WordPressAuthenticator: 0e60d89e1637212bc841a0cf66fc5ef8cac01e52
-  WordPressKit: 7363364daa6a642f955453479924442ca522e5f1
-  WordPressShared: f55be10963c8f6dbbc8e896450805ba1dd5353f7
+  WordPressKit: 6992229c6fe98472aca2e01c3bbe6195ae5a2f7a
+  WordPressShared: f6272345642887904f5aefff9d65d566e6c5d634
   WordPressUI: d3dbd0258f12560d6607647d3240c62c83e089fe
   WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: a54f4da00c3ff83fcd11758bf11d114367ffe467
+PODFILE CHECKSUM: 60537e087f357b6e4d18b5720e8f7122ba5f3aa3
 
 COCOAPODS: 1.5.3
