@@ -86,3 +86,42 @@ extension RevisionDiff {
         }
     }
 }
+
+
+extension RevisionDiff {
+    var contentToAttributedString: NSAttributedString? {
+        return (contentDiffs?.operations ?? []).toAttributedString()
+    }
+
+    var titleToAttributedString: NSAttributedString? {
+        return (titleDiffs?.operations ?? []).toAttributedString()
+    }
+}
+
+
+private extension Array where Element == DiffAbstractValue {
+    func toAttributedString() -> NSAttributedString? {
+        return sorted { $0.index < $1.index }.reduce(NSMutableAttributedString(), +).copy() as? NSAttributedString
+    }
+}
+
+
+private extension NSSet {
+    var operations: [DiffAbstractValue]? {
+        return allObjects as? [DiffAbstractValue]
+    }
+}
+
+
+private func +(left: NSMutableAttributedString, right: DiffAbstractValue) -> NSMutableAttributedString {
+    guard let value = right.value else {
+        return left
+    }
+
+    let attribute = NSMutableAttributedString(string: value)
+    if let attributes = right.attributes {
+        attribute.addAttributes(attributes, range: NSRange(location: 0, length: value.count))
+    }
+    left.append(attribute)
+    return left
+}
