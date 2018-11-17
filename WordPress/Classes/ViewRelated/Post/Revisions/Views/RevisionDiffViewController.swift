@@ -48,8 +48,9 @@ class RevisionDiffViewController: UIViewController {
         }
 
         let title = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
+        let titleHTML = "<h3>\(title)</h3>"
 
         let html = revision.postContent ?? ""
-        aztext.setHTML(title + "\n\n" + html)
+        aztext.setHTML(titleHTML + html)
      }
 }
