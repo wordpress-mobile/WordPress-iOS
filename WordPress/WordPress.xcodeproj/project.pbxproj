@@ -300,7 +300,6 @@
 		4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */; };
 		4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */; };
 		439F4F352196537500F8D0C7 /* RevisionDiffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */; };
-		439F4F362196537500F8D0C7 /* RevisionDiffViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 439F4F342196537500F8D0C7 /* RevisionDiffViewController.xib */; };
 		439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F4F37219B636500F8D0C7 /* Revisions.storyboard */; };
 		439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */; };
 		439F4F3C219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */; };
@@ -2026,7 +2025,6 @@
 		4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
 		4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistCell.swift; sourceTree = "<group>"; };
 		439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffViewController.swift; sourceTree = "<group>"; };
-		439F4F342196537500F8D0C7 /* RevisionDiffViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionDiffViewController.xib; sourceTree = "<group>"; };
 		439F4F37219B636500F8D0C7 /* Revisions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Revisions.storyboard; sourceTree = "<group>"; };
 		439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionsNavigationController.swift; sourceTree = "<group>"; };
 		439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffsBrowserViewController.swift; sourceTree = "<group>"; };
@@ -4407,8 +4405,8 @@
 			children = (
 				9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */,
 				4349B0AB218A45270034118A /* RevisionsTableViewController.swift */,
-				9A2B28F2219211B900458F2A /* Views */,
 				439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */,
+				9A2B28F2219211B900458F2A /* Views */,
 			);
 			path = Revisions;
 			sourceTree = "<group>";
@@ -5954,7 +5952,6 @@
 				9A2B28EC2191B4E600458F2A /* Footer */,
 				9A5CF43E218C54A60060F81B /* Cell */,
 				439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */,
-				439F4F342196537500F8D0C7 /* RevisionDiffViewController.xib */,
 				439F4F37219B636500F8D0C7 /* Revisions.storyboard */,
 				439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */,
 			);
@@ -8166,7 +8163,6 @@
 				D82253EE219A8A960014D0E2 /* SiteInformationWizardContent.xib in Resources */,
 				82A062DC2017BC220084CE7C /* ActivityListSectionHeaderView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
-				439F4F362196537500F8D0C7 /* RevisionDiffViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */,
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
