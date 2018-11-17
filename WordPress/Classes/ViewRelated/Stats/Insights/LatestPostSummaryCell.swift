@@ -173,7 +173,7 @@ private extension LatestPostSummaryCell {
     }
 
     struct CellStrings {
-        static let header = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary section header")
+        static let header = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let summaryPostInfo = NSLocalizedString("It's been %@ since %@ was published. ", comment: "Latest post summary text including placeholder for time and the post title.")
         static let summaryPerformance = NSLocalizedString("Here's how the post performed so far.", comment: "Appended to latest post summary text when the post has data.")
         static let summaryNoData = NSLocalizedString("Get the ball rolling and increase your post views by sharing your post.", comment: "Appended to latest post summary text when the post does not have data.")

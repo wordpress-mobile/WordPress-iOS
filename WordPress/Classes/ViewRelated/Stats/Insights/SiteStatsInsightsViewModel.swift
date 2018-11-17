@@ -43,7 +43,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(AllTimeStatsRow())
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:

@@ -20,10 +20,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WbC-hI-HqV" userLabel="Bordered View">
-                        <rect key="frame" x="0.0" y="8" width="375" height="367.5"/>
+                        <rect key="frame" x="0.0" y="16" width="375" height="367.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Mg-WZ-Xz7">
-                                <rect key="frame" x="16" y="12" width="343" height="50"/>
+                                <rect key="frame" x="16" y="12" width="343" height="52"/>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It's been 999 months since Your Post was published. Here's how the post performed so far." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-57-h8x" userLabel="Summary Label">
                                 <rect key="frame" x="16" y="84" width="343" height="38"/>
@@ -151,7 +151,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="MnQ-57-h8x" firstAttribute="leading" secondItem="WbC-hI-HqV" secondAttribute="leading" constant="16" id="3gL-ef-8Z6"/>
-                            <constraint firstItem="MnQ-57-h8x" firstAttribute="top" secondItem="4Mg-WZ-Xz7" secondAttribute="bottom" constant="22" id="BZq-1p-CqS"/>
+                            <constraint firstItem="MnQ-57-h8x" firstAttribute="top" secondItem="4Mg-WZ-Xz7" secondAttribute="bottom" constant="20" id="BZq-1p-CqS"/>
                             <constraint firstItem="yj9-fI-q4P" firstAttribute="bottom" secondItem="MnQ-57-h8x" secondAttribute="bottom" id="Buj-Hh-Tjr"/>
                             <constraint firstItem="4Mg-WZ-Xz7" firstAttribute="top" secondItem="WbC-hI-HqV" secondAttribute="top" constant="12" id="EE5-Hu-Hov"/>
                             <constraint firstItem="3OP-qA-To0" firstAttribute="leading" secondItem="dj8-5c-J6O" secondAttribute="leading" id="ILI-Wv-vrp"/>
@@ -175,8 +175,8 @@
                 <constraints>
                     <constraint firstItem="WbC-hI-HqV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="BcG-y3-7d3"/>
                     <constraint firstAttribute="trailing" secondItem="WbC-hI-HqV" secondAttribute="trailing" id="GUc-Ln-WUC"/>
-                    <constraint firstItem="WbC-hI-HqV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="KbD-hj-p3v"/>
-                    <constraint firstAttribute="bottom" secondItem="WbC-hI-HqV" secondAttribute="bottom" constant="8" id="iKd-Ny-sBY"/>
+                    <constraint firstItem="WbC-hI-HqV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="KbD-hj-p3v"/>
+                    <constraint firstAttribute="bottom" secondItem="WbC-hI-HqV" secondAttribute="bottom" id="iKd-Ny-sBY"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

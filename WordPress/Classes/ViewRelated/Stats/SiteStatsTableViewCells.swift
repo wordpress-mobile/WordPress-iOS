@@ -26,3 +26,25 @@ struct LatestPostSummaryRow: ImmuTableRow {
 
     }
 }
+
+struct AllTimeStatsRow: ImmuTableRow {
+
+    typealias CellType = SimpleTotalsCell
+
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "SimpleTotalsCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        // TODO: configure cell
+
+    }
+}
