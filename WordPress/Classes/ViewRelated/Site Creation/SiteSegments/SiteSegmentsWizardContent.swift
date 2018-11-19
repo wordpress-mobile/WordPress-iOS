@@ -92,11 +92,10 @@ final class SiteSegmentsWizardContent: UIViewController {
 
         table.tableHeaderView = header
 
-        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.topAnchor)
         ])
 
         table.tableHeaderView?.layoutIfNeeded()
