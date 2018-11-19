@@ -23,6 +23,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        styleBackground()
         styleTitle()
         styleSubtitle()
         styleAccessoryView()
@@ -34,13 +35,17 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         icon.image = nil
     }
 
+    private func styleBackground() {
+        backgroundColor = .white
+    }
+
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         title.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleSubtitle() {
-        subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        subtitle.font = WPStyleGuide.subtitleFont()
         subtitle.textColor = WPStyleGuide.darkGrey()
     }
 
