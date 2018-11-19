@@ -2,6 +2,11 @@ class RevisionsTableViewController: UITableViewController {
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
 
+    private lazy var noResultsViewController: NoResultsViewController = {
+        let noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
+        return noResultsViewController
+    }()
     private lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
         tableViewHandler.cacheRowHeights = false
@@ -22,6 +27,13 @@ class RevisionsTableViewController: UITableViewController {
         return tableViewHandler.resultsController.sections?.count ?? 0
     }
 
+    private var postType: String {
+        switch post {
+        case _ as Page: return NSLocalizedString("page", comment: "No Result placeholder when an AbstractPost is a type: Page")
+        default: return NSLocalizedString("post", comment: "No Result placeholder when an AbstractPost is a type: Post ")
+        }
+    }
+
     convenience init(post: AbstractPost) {
         self.init()
         self.post = post
@@ -35,7 +47,7 @@ class RevisionsTableViewController: UITableViewController {
 
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
-        manager?.getRevisions()
+        refreshRevisions()
     }
 }
 
@@ -76,7 +88,38 @@ private extension RevisionsTableViewController {
     }
 
     @objc private func refreshRevisions() {
+        if sectionCount == 0 {
+            configureAndDisplayNoResults(title: String(format: NoResultsText.loadingTitle, postType),
+                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
+
         manager?.getRevisions()
+    }
+
+    private func configureAndDisplayNoResults(title: String,
+                                      subtitle: String? = nil,
+                                      buttonTitle: String? = nil,
+                                      accessoryView: UIView? = nil) {
+
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: buttonTitle,
+                                          subtitle: subtitle,
+                                          accessoryView: accessoryView)
+        displayNoResults()
+    }
+
+    private func displayNoResults() {
+        addChild(noResultsViewController)
+        noResultsViewController.view.frame = tableView.frame
+        noResultsViewController.view.frame.origin.y = 0
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    private func hideNoResults() {
+        noResultsViewController.removeFromView()
+        tableView.reloadData()
     }
 }
 
@@ -176,11 +219,34 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
 }
 
 
+extension RevisionsTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        refreshRevisions()
+    }
+}
+
+
 extension RevisionsTableViewController: RevisionsView {
     func stopLoading(success: Bool, error: Error?) {
         refreshControl?.endRefreshing()
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
+
+        switch (success, sectionCount) {
+        case (false, let count) where count == 0:
+            // When the API call failed and there are no revisions saved yet
+            //
+            configureAndDisplayNoResults(title: NoResultsText.errorTitle,
+                                         subtitle: String(format: NoResultsText.errorSubtitle, postType),
+                                         buttonTitle: NoResultsText.reloadButtonTitle)
+        case (true, let count) where count == 0:
+            // When the API call successed but there are no revisions loaded
+            // This is an edge cas. It shouldn't happen since we open the revisions list only if the post revisions array is not empty.
+            configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
+                                         subtitle: String(format: NoResultsText.noResultsSubtitle, postType))
+        default:
+            hideNoResults()
+        }
     }
 }
 
@@ -203,4 +269,14 @@ private extension Date {
     func shortTimeString() -> String {
         return Date.shortTimeFormatter.string(from: self)
     }
+}
+
+
+struct NoResultsText {
+    static let loadingTitle = NSLocalizedString("Loading %@ history...", comment: "Displayed while a call is loading the history. The placeholder might be 'post' or 'page'.")
+    static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load the history again. It appears if the loading call fails.")
+    static let noResultsTitle = NSLocalizedString("No history yet", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
+    static let noResultsSubtitle = NSLocalizedString("When you make changes to your %@ you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error. The placeholder might be 'post' or 'page'.")
+    static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the history")
+    static let errorSubtitle = NSLocalizedString("There was an error loading the %@ history", comment: "Text displayed when there is a failure loading the history. The placeholder might be 'post' or 'page'.")
 }
