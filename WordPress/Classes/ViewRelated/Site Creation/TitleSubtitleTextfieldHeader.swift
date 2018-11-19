@@ -20,6 +20,8 @@ final class TitleSubtitleTextfieldHeader: UIView {
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.leftViewMode = .always
         returnValue.clearButtonMode = .whileEditing
+        returnValue.font = WPStyleGuide.subtitleFont()
+        returnValue.textColor = WPStyleGuide.darkGrey()
 
         let iconSize = CGSize(width: Constants.iconWidth, height: Constants.iconWidth)
         let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
