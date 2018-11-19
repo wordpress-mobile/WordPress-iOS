@@ -17,18 +17,6 @@ extension DiffAbstractValue {
     }
 }
 
-// This should be moved to WPShared on Revisions V2
-//
-private extension WPStyleGuide {
-    static func extraLightBlue() -> UIColor {
-        return UIColor(hexString: "e7f8ff")
-    }
-
-    static func extraLightRed() -> UIColor {
-        return UIColor(hexString: "fbeeee")
-    }
-}
-
 
 extension Array where Element == DiffAbstractValue {
     func toAttributedString() -> NSAttributedString? {
