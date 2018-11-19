@@ -72,7 +72,6 @@ target 'WordPress' do
     ## =====================
     ##
     pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :branch => 'try/podspec'
-    #pod 'Gutenberg', :git => '../gutenberg-mobile/Gutenberg.podspec'
     pod 'React', :podspec => 'Podspecs/React.podspec.json'
     pod 'yoga', :podspec => 'Podspecs/yoga.podspec.json'
     pod 'Folly', :podspec => 'Podspecs/Folly.podspec.json'
