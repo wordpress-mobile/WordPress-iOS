@@ -314,7 +314,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Gutenberg:
-    :commit: d8a894907a469bf50bf263edee602be4937091d4
+    :commit: 59e8cce99803382dd4023e0a4ba960db8a4cdd94
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
@@ -342,7 +342,7 @@ SPEC CHECKSUMS:
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
-  Gutenberg: f54b45bfa99c064913bfdd72ed393ad874ddc919
+  Gutenberg: c4fe901bedadcc94f0a8ba9a0a0bd72e838b09c1
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -370,6 +370,6 @@ SPEC CHECKSUMS:
   yoga: 833ba47f05b90adf77b2941ee6eef250a90cc39c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 8ed4a1df634b2240bd4dbebc194d742d8bfc89dd
+PODFILE CHECKSUM: ec4687a82d540a05e3db54a916e4ec40cf019f7e
 
 COCOAPODS: 1.5.3
