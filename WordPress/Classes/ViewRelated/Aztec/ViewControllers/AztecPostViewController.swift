@@ -1537,8 +1537,10 @@ private extension AztecPostViewController {
     func displayHistory() {
         let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
             if let post = self?.post.update(from: revision) {
-                self?.navigationController?.popToRootViewController(animated: false)
-                self?.post = post
+                DispatchQueue.main.async {
+                    self?.navigationController?.popToRootViewController(animated: false)
+                    self?.post = post
+                }
             }
         }
         navigationController?.pushViewController(revisionsViewController, animated: true)
