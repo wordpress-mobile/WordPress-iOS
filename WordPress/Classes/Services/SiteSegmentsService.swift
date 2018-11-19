@@ -33,7 +33,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
         let identifier = Identifier(value: id)
         return SiteSegment(identifier: identifier,
                            title: "Mock",
-                           subtitle: "Mock subtitle",
+                           subtitle: "Showcase your portfolio, skills or work",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)
     }
 }
