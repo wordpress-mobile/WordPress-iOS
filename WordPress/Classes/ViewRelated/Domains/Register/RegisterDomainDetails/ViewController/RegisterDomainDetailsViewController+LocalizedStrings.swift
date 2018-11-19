@@ -10,9 +10,13 @@ enum RegisterDomainDetails {
             "Error occurred fetching domain contact information",
             comment: "Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information"
         )
-        static let cartError = NSLocalizedString("Problem purchasing your domain. Please try again.",
+        static let redemptionError = NSLocalizedString("Problem purchasing your domain. Please try again.",
              comment: "Register Domain - error displayed when there's a problem when purchasing the domain."
         )
+        static let changingPrimaryDomainError = NSLocalizedString("We've had problems changing the primary domain on your site — but don't worry, your domain was sucesfully purchased.",
+                                                                  comment: "Register Domain - error displayed when a domain was purchased succesfully, but there was a problem setting it to a primary domain for the site"
+        )
+
 
         static let statesFetchingError = NSLocalizedString(
             "Error occurred fetching states",

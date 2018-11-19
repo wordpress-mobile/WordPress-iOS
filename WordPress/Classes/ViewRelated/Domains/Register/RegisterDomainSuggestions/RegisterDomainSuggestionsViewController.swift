@@ -5,6 +5,10 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
+
+    private var site: JetpackSiteRef!
+    private var domainPurchasedCallback: ((String) -> Void)!
+
     private var domain: DomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
@@ -35,11 +39,28 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         return buttonViewController
     }()
 
-    static func instance(siteName: String? = nil) -> RegisterDomainSuggestionsViewController {
+    static func instance(site: JetpackSiteRef, domainPurchasedCallback: @escaping ((String) -> Void)) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: "RegisterDomain", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "RegisterDomainSuggestionsViewController") as! RegisterDomainSuggestionsViewController
-        controller.siteName = siteName
+        controller.site = site
+        controller.domainPurchasedCallback = domainPurchasedCallback
+        controller.siteName = siteNameForSuggestions(for: site)
         return controller
+    }
+
+    private static func siteNameForSuggestions(for site: JetpackSiteRef) -> String? {
+        if let siteTitle = BlogService.blog(with: site)?.settings?.name?.nonEmptyString() {
+            return siteTitle
+        }
+
+        if let siteUrl = BlogService.blog(with: site)?.url {
+            let components = URLComponents(string: siteUrl)
+            if let firstComponent = components?.host?.split(separator: ".").first {
+                return String(firstComponent)
+            }
+        }
+
+        return nil
     }
 
     private func configure() {
@@ -85,7 +106,7 @@ extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelega
             return
         }
         let controller = RegisterDomainDetailsViewController()
-        controller.viewModel = RegisterDomainDetailsViewModel(domain: domain)
+        controller.viewModel = RegisterDomainDetailsViewModel(site: site, domain: domain, domainPurchasedCallback: domainPurchasedCallback)
         self.navigationController?.pushViewController(controller, animated: true)
     }
 }

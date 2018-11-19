@@ -944,6 +944,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPluginSearchPerformed:
             eventName = @"plugin_search_performed";
             break;
+        case WPAnalyticsStatPageSetParentViewed:
+            eventName = @"site_pages_set_parent_viewed";
+            break;
+        case WPAnalyticsStatPageSetParentSearchAccessed:
+            eventName = @"site_pages_set_parent_search_accessed";
+            break;
+        case WPAnalyticsStatPageSetParentDonePressed:
+            eventName = @"site_pages_set_parent_done_pressed";
+            break;
         case WPAnalyticsStatPostEpilogueDisplayed:
             eventName = @"post_epilogue_displayed";
             break;

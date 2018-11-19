@@ -1,4 +1,4 @@
-Une nouvelle section « Démarrage rapide »vous suggère les étapes à suivre pour vous aider à construire un excellent site.
-Avec les mentions, vous pouvez lire le message de notification push en entier directement depuis votre écran d’accueil.
-Vous voulez copier le lien d’une commentaire ? Faites une pression longue sur son horodatage.
-Vous voulez connaitre le nombre de mots et de caractères dans l’article ? Cliquez sur les 3 points en haut à droite dans la fenêtre d'édition.
+Ajouter des GIF de Giphy directement depuis la barre d’outils de média lors de l’édition d’un article.
+Des messages d’erreurs plus utiles vous aideront lors de la connexion à un site auto-hébergé.
+Visualiser un article avec beaucoup d’images est maintenant plus rapide.
+Corrections de bugs.

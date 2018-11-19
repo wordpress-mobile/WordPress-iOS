@@ -1,4 +1,5 @@
-Bagian Mulai Cepat yang baru memberikan saran langkah untuk membantu Anda membuat situs yang hebat.
-Dengan Sebutan, Anda dapat membaca seluruh pesan pemberitahuan push dari layar awal.
-Ingin menyalin tautan ke komentar? Tekan lama label stempel waktunya.
-Ingin tahu jumlah kata dan karakter pada suatu pos? Lihat judul lembar tindakan penyunting.
+Tambahkan gif dari Giphy langsung dari bilah peralatan media saat menyunting pos.
+Pesan error yang lebih berguna akan membantu Anda saat login ke situs yang dihosting sendiri.
+Menampilkan pos dengan banyak gambar kini lebih cepat.
+Tambahan dukungan untuk iPad Pro.
+Perbaikan bug.
