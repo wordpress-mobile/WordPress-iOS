@@ -11,8 +11,7 @@ class RevisionsNavigationController: UINavigationController {
     }
 
     private func setupForBrowserState() {
-        guard let revisionState = revisionState,
-            let revisionView = viewControllers.first as? RevisionDiffsBrowserViewController else {
+        guard let revisionView = viewControllers.first as? RevisionDiffsBrowserViewController else {
             return
         }
 

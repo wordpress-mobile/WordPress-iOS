@@ -8,4 +8,9 @@
     return testSuite != nil;
 }
 
+- (BOOL)isCreatingScreenshots
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"FASTLANE_SNAPSHOT"];
+}
+
 @end

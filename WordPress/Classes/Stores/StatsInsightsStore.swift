@@ -25,7 +25,6 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
     override func onDispatch(_ action: Action) {
 
         guard let insightAction = action as? InsightAction else {
-            DDLogInfo("Stats Insights invalid action: \(action)")
             return
         }
 

@@ -1,21 +1,32 @@
 import Gridicons
 
-struct RevisionBrowserState: SelectedRevisionLoadedProtocol {
+class RevisionBrowserState: SelectedRevisionLoadedProtocol {
     let post: AbstractPost?
     let revisions: [Revision]
     var currentIndex: Int
     var selectedRevisionLoaded: SelectedRevisionBlock
 
+
+    init(post: AbstractPost?, revisions: [Revision], currentIndex: Int, selectedRevisionLoaded: @escaping SelectedRevisionBlock) {
+        self.post = post
+        self.revisions = revisions
+        self.currentIndex = currentIndex
+        self.selectedRevisionLoaded = selectedRevisionLoaded
+    }
+
     func currentRevision() -> Revision {
         return revisions[currentIndex]
     }
-    mutating func decreaseIndex() {
+
+    func decreaseIndex() {
         currentIndex = max(currentIndex - 1, 0)
     }
-    mutating func increaseIndex() {
+
+    func increaseIndex() {
         currentIndex = min(currentIndex + 1, revisions.count)
     }
 }
+
 
 class RevisionDiffsBrowserViewController: UIViewController {
     var revisionState: RevisionBrowserState?
@@ -31,7 +42,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         doneItem.on() { [weak self] _ in
             self?.dismiss(animated: true)
         }
-        doneItem.title = "Done"
+        doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
         return doneItem
     }()
 
@@ -67,13 +78,15 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
     private func setNextPreviousButtons() {
         previousButton.setTitle("", for: .normal)
-        previousButton.setImage(Gridicon.iconOfType(.chevronLeft).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        previousButton.setImage(Gridicon.iconOfType(.chevronLeft), for: .normal)
+        previousButton.tintColor = WPStyleGuide.darkGrey()
         previousButton.on(.touchUpInside) { [weak self] _ in
             self?.showPrevious()
         }
 
         nextButton.setTitle("", for: .normal)
-        nextButton.setImage(Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.darkGrey()), for: .normal)
+        nextButton.setImage(Gridicon.iconOfType(.chevronRight), for: .normal)
+        nextButton.tintColor = WPStyleGuide.darkGrey()
         nextButton.on(.touchUpInside) { [weak self] _ in
             self?.showNext()
         }
@@ -126,10 +139,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let diffVC = segue.destination as? RevisionDiffViewController {
+        switch segue.destination {
+        case let diffVC as RevisionDiffViewController:
             self.diffVC = diffVC
-        } else if let operationVC = segue.destination as? RevisionOperationViewController {
+        case let operationVC as RevisionOperationViewController:
             self.operationVC = operationVC
+        default:
+            break
         }
     }
 }

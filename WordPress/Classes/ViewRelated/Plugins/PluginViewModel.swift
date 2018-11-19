@@ -465,7 +465,7 @@ class PluginViewModel: Observable {
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain"))
 
         let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
-            self?.presentDomainRegistration()
+            self?.presentDomainRegistration(for: directoryEntry)
         }
 
         alertController.preferredAction = registerDomainAction
@@ -504,8 +504,18 @@ class PluginViewModel: Observable {
         return alert
     }
 
-    private func presentDomainRegistration() {
-        let controller = RegisterDomainSuggestionsViewController.instance(site: site)
+    private func presentDomainRegistration(for directoryEntry: PluginDirectoryEntry) {
+        let controller = RegisterDomainSuggestionsViewController.instance(site: site, domainPurchasedCallback: { [weak self] domain in
+
+            guard let strongSelf = self,
+                let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
+
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                return
+            }
+
+            atHelper.startAutomatedTransferProcess(retryingAfterFailure: true)
+        })
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

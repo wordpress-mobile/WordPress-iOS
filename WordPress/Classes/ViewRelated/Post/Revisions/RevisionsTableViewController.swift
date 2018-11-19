@@ -29,6 +29,14 @@ class RevisionsTableViewController: UITableViewController, SelectedRevisionLoade
         return tableViewHandler.resultsController.sections?.count ?? 0
     }
 
+    private var postType: String {
+        switch post {
+        case _ as Page: return NSLocalizedString("page", comment: "No Result placeholder when an AbstractPost is a type: Page")
+        default: return NSLocalizedString("post", comment: "No Result placeholder when an AbstractPost is a type: Post ")
+        }
+    }
+
+
     required init(post: AbstractPost, _ selectedRevisionLoaded: @escaping SelectedRevisionBlock) {
         self.post = post
         self.selectedRevisionLoaded = selectedRevisionLoaded
@@ -99,7 +107,7 @@ private extension RevisionsTableViewController {
 
     @objc private func refreshRevisions() {
         if sectionCount == 0 {
-            configureAndDisplayNoResults(title: NoResultsText.loadingTitle,
+            configureAndDisplayNoResults(title: String(format: NoResultsText.loadingTitle, postType),
                                          accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
@@ -109,8 +117,7 @@ private extension RevisionsTableViewController {
     private func configureAndDisplayNoResults(title: String,
                                       subtitle: String? = nil,
                                       buttonTitle: String? = nil,
-                                      accessoryView: UIView? = nil,
-                                      forNoSearchResults: Bool = false) {
+                                      accessoryView: UIView? = nil) {
 
         noResultsViewController.configure(title: title,
                                           buttonTitle: buttonTitle,
@@ -236,10 +243,19 @@ extension RevisionsTableViewController: RevisionsView {
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
 
-        if !success, sectionCount == 0 {
-            configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
+        switch (success, sectionCount) {
+        case (false, let count) where count == 0:
+            // When the API call failed and there are no revisions saved yet
+            //
+            configureAndDisplayNoResults(title: NoResultsText.errorTitle,
+                                         subtitle: String(format: NoResultsText.errorSubtitle, postType),
                                          buttonTitle: NoResultsText.reloadButtonTitle)
-        } else {
+        case (true, let count) where count == 0:
+            // When the API call successed but there are no revisions loaded
+            // This is an edge cas. It shouldn't happen since we open the revisions list only if the post revisions array is not empty.
+            configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
+                                         subtitle: String(format: NoResultsText.noResultsSubtitle, postType))
+        default:
             hideNoResults()
         }
     }
@@ -268,7 +284,10 @@ private extension Date {
 
 
 struct NoResultsText {
-    static let loadingTitle = NSLocalizedString("Loading...", comment: "Loading revisions.")
-    static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load revisions again.")
-    static let noResultsTitle = NSLocalizedString("No revisions found.", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
+    static let loadingTitle = NSLocalizedString("Loading %@ history...", comment: "Displayed while a call is loading the history. The placeholder might be 'post' or 'page'.")
+    static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load the history again. It appears if the loading call fails.")
+    static let noResultsTitle = NSLocalizedString("No history yet", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
+    static let noResultsSubtitle = NSLocalizedString("When you make changes to your %@ you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error. The placeholder might be 'post' or 'page'.")
+    static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the history")
+    static let errorSubtitle = NSLocalizedString("There was an error loading the %@ history", comment: "Text displayed when there is a failure loading the history. The placeholder might be 'post' or 'page'.")
 }
