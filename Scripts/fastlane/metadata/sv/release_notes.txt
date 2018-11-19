@@ -1,4 +1,4 @@
-En ny snabbstartssektion föreslår lämpliga steg för att hjälpa dig skapa en utmärkt webbplats.
-Med hjälp av omnämnanden kan du läsa hela pushaviseringsmeddelandet på startskärmen.
-Vill du kopiera länken till en kommentar? Gör ett långt tryck på dess tidsangivelse.
-Vill du kolla antalet ord och tecken i dina inlägg? Kolla in rubriken för redigerarens åtgärdsark.
+Lägg till gif-bilder från Giphy direkt från verktygslisten för media medan du redigerar ett inlägg.
+Mer hjälpsamma felmeddelanden bistår dig när du loggar in på en webbplats som körs på webbhotell.
+Nu går det mycket snabbare att visa inlägg som innehåller många bilder.
+Felrättningar.

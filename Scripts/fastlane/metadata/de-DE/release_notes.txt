@@ -1,4 +1,5 @@
-Ein neuer Schnellstartbereich mit empfohlenen Schritten zur Erstellung einer tollen Website.
-Mit Mentions kannst du die gesamte Push-Benachrichtigung auf dem Startbildschirm lesen.
-Möchtest du den Link in einen Kommentar kopieren? Halte dazu das Label mit dem Zeitstempel gedrückt.
-Möchtest du die Anzahl der Wörter und Zeichen von Beiträgen wissen? Siehe dazu auf dem Blatt mit dem Titel „Aktionen“ des Editors nach.
+Füge Giphy-GIFs direkt aus der Medien-Toolbar hinzu, wenn du einen Beitrag bearbeitest.
+Hilfreichere Fehlermeldungen unterstützen dich, wenn du dich bei einer selbst gehosteten Website anmeldest.
+Beiträge mit vielen Bildern werden jetzt schneller angezeigt.
+Unterstützung für iPad Pro hinzugefügt.
+Fehlerkorrekturen.

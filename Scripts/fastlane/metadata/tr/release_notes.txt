@@ -1,4 +1,5 @@
-Yeni Hızlı Başlangıç bölümü harika bir site kurmanıza yardımcı olacak adımları önerir.
-Bahsedilmeler ile ana sayfa ekranından tüm bildirimlerinizi okuyabilirsiniz.
-Bağlantıyı yoruma kopyalamak mı istiyorsunuz? Zaman damgası etiketine uzunca basılı tutun.
-Gönderilerin sözcük ve karakter sayılarını mı öğrenmek istiyorsunuz? Düzenleyici eylem sayfası başlığını kontrol edin.
+Bir yazıyı düzenlerken ortam araç çubuğu üzerinden direkt olarka Giphy giflerini ekleyin.
+Barındırılan bir siteye giriş yapılırken daha fazla yardımcı olacak hata mesajları.
+Çok fazla görsele sahip yazıları görüntülemek artık daha hızlı.
+iPad Pro desteği eklendi.
+Hata düzeltmeleri.

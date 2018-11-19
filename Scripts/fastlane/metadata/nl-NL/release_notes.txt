@@ -1,0 +1,5 @@
+Voeg Giphy-gifs rechtstreeks toe vanuit de media-werkbalk wanneer je een bericht bewerkt.
+Nuttigere foutmeldingen geven je meer informatie wanneer je inlogt op een zelf-gehoste site.
+Het bekijken van een bericht met veel afbeeldingen gaat nu sneller.
+Ondersteuning voor iPad Pro toegevoegd.
+Bugfixes.
