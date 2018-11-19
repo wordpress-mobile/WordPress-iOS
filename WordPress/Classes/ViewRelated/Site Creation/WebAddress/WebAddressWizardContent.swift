@@ -69,9 +69,13 @@ final class WebAddressWizardContent: UIViewController {
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
+        let placeholderText = NSLocalizedString("Search domains.", comment: "Site creation. Seelect a domain, search field placeholder")
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        header.textField.attributedPlaceholder = attributedPlaceholder
+
         table.tableHeaderView = header
 
-        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
             header.widthAnchor.constraint(equalTo: table.widthAnchor),
