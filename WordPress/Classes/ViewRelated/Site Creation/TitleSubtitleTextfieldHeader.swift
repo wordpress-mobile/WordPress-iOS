@@ -20,7 +20,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.leftViewMode = .always
         returnValue.clearButtonMode = .whileEditing
-        returnValue.font = WPStyleGuide.subtitleFont()
+        returnValue.font = WPStyleGuide.fixedFont(for: .headline)
         returnValue.textColor = WPStyleGuide.darkGrey()
 
         let iconSize = CGSize(width: Constants.iconWidth, height: Constants.iconWidth)
