@@ -43,4 +43,28 @@ final class SiteSegmentsCellTests: XCTestCase {
 
         XCTAssertEqual(cell?.subtitle.text, MockValues.subtitle)
     }
+
+    func testBackgroundIsStyled() {
+        XCTAssertEqual(cell?.backgroundColor, UIColor.white)
+    }
+
+    func testCellTitleIsTheCorrectFont() {
+        XCTAssertEqual(cell?.title.font, WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold))
+    }
+
+    func testCellTitleIsTheCorrectColor() {
+        XCTAssertEqual(cell?.title.textColor, WPStyleGuide.darkGrey())
+    }
+
+    func testCellSubtitleIsTheCorrectFont() {
+        XCTAssertEqual(cell?.subtitle.font, WPStyleGuide.subtitleFont())
+    }
+
+    func testCellSubtitleIsTheCorrectColor() {
+        XCTAssertEqual(cell?.subtitle.textColor, WPStyleGuide.darkGrey())
+    }
+
+    func testCellAccessoryViewIsDisclosure() {
+        XCTAssertEqual(cell?.accessoryType, .disclosureIndicator)
+    }
 }
