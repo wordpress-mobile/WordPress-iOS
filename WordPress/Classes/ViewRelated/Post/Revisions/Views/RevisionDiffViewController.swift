@@ -1,10 +1,7 @@
-import WebKit
-import Aztec
-import WordPressEditor
-
 class RevisionDiffViewController: UIViewController {
-    @IBOutlet private var webView: WKWebView?
-    private let aztext = Aztec.TextView(defaultFont: UIFont.systemFont(ofSize: 15.0), defaultMissingImage: UIImage())
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var contentLabel: UILabel!
+
     var revision: Revision? {
         didSet {
             showRevision()
@@ -14,43 +11,19 @@ class RevisionDiffViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        aztext.translatesAutoresizingMaskIntoConstraints = false
-        aztext.isEditable = false
-        view.addSubview(aztext)
-        view.pinSubviewToAllEdges(aztext)
-        aztext.load(WordPressPlugin())
-
-        registerAttachmentImageProviders()
+        titleLabel.font = WPFontManager.notoBoldFont(ofSize: 24.0)
+        contentLabel.font = WPFontManager.notoRegularFont(ofSize: 16)
     }
+}
 
-    func registerAttachmentImageProviders() {
-        let providers: [TextViewAttachmentImageProvider] = [
-            SpecialTagAttachmentRenderer(),
-            CommentAttachmentRenderer(font: AztecPostViewController.Fonts.regular),
-            HTMLAttachmentRenderer(font: AztecPostViewController.Fonts.regular),
-            GutenpackAttachmentRenderer()
-        ]
 
-        for provider in providers {
-            aztext.registerAttachmentImageProvider(provider)
-        }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        showRevision()
-    }
-
+private extension RevisionDiffViewController {
     private func showRevision() {
         guard let revision = revision else {
             return
         }
 
-        let title = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
-        let titleHTML = "<h3>\(title)</h3>"
-
-        let html = revision.postContent ?? ""
-        aztext.setHTML(titleHTML + html)
-     }
+        titleLabel.attributedText = revision.diff?.titleToAttributedString
+        contentLabel.attributedText = revision.diff?.contentToAttributedString
+    }
 }
