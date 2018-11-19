@@ -23,7 +23,7 @@ final class TitleSubtitleHeader: UIView {
         let returnValue = UIStackView(arrangedSubviews: [self.title, self.subtitle])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
-        //returnValue.spacing = 20
+        returnValue.spacing = 10
 
         return returnValue
     }()
