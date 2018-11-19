@@ -76,6 +76,11 @@ final class VerticalsWizardContent: UIViewController {
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
+        let placeholderText = NSLocalizedString("e.g. Landscaping, Consulting... etc.", comment: "Site creation. Select focus of your business, search field placeholder")
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        header.textField.attributedPlaceholder = attributedPlaceholder
+
         table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
