@@ -86,3 +86,14 @@ final class TitleSubtitleHeader: UIView {
         subtitle.accessibilityLabel = text
     }
 }
+
+// MARK: - Exposing for tests
+extension TitleSubtitleHeader {
+    func titleLabel() -> UILabel {
+        return title
+    }
+
+    func subtitleLabel() -> UILabel {
+        return subtitle
+    }
+}
