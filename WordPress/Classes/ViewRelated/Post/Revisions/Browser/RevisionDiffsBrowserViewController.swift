@@ -1,17 +1,17 @@
 import Gridicons
 
-class RevisionBrowserState: SelectedRevisionLoadedProtocol {
-    let post: AbstractPost?
+class RevisionBrowserState {
+    typealias RevisionSelectedBlock = (Revision) -> Void
+
     let revisions: [Revision]
     var currentIndex: Int
-    var selectedRevisionLoaded: SelectedRevisionBlock
+    var onRevisionSelected: RevisionSelectedBlock
 
 
-    init(post: AbstractPost?, revisions: [Revision], currentIndex: Int, selectedRevisionLoaded: @escaping SelectedRevisionBlock) {
-        self.post = post
+    init(revisions: [Revision], currentIndex: Int, onRevisionSelected: @escaping RevisionSelectedBlock) {
         self.revisions = revisions
         self.currentIndex = currentIndex
-        self.selectedRevisionLoaded = selectedRevisionLoaded
+        self.onRevisionSelected = onRevisionSelected
     }
 
     func currentRevision() -> Revision {
@@ -117,23 +117,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }
 
     private func loadRevision() {
-        guard let blog = revisionState?.post?.blog,
-            let revision = revisionState?.currentRevision() else {
+        guard let revision = revisionState?.currentRevision() else {
             return
         }
 
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading...", comment: "Text displayed in HUD while a revision post is loading."))
-
-        let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.getPostWithID(revision.revisionId, for: blog, success: { (post) in
-            SVProgressHUD.dismiss()
-
-            self.revisionState?.selectedRevisionLoaded(post)
-            self.dismiss(animated: true, completion: nil)
-        }, failure: { error in
-            DDLogError("Error loading revision: \(error.localizedDescription)")
-            SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
-        })
+        dismiss(animated: true) {
+            self.revisionState?.onRevisionSelected(revision)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

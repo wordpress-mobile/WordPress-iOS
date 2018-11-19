@@ -1538,7 +1538,6 @@ private extension AztecPostViewController {
         let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
             if let post = self?.post.update(from: revision) {
                 DispatchQueue.main.async {
-                    self?.navigationController?.popToRootViewController(animated: false)
                     self?.post = post
                 }
             }

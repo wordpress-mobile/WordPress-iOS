@@ -1,5 +1,7 @@
-class RevisionsTableViewController: UITableViewController, SelectedRevisionLoadedProtocol {
-    var selectedRevisionLoaded: SelectedRevisionBlock
+class RevisionsTableViewController: UITableViewController {
+    typealias RevisionLoadedBlock = (AbstractPost) -> Void
+
+    var onRevisionLoaded: RevisionLoadedBlock
 
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
@@ -37,9 +39,9 @@ class RevisionsTableViewController: UITableViewController, SelectedRevisionLoade
     }
 
 
-    required init(post: AbstractPost, _ selectedRevisionLoaded: @escaping SelectedRevisionBlock) {
+    required init(post: AbstractPost, onRevisionLoaded: @escaping RevisionLoadedBlock) {
         self.post = post
-        self.selectedRevisionLoaded = selectedRevisionLoaded
+        self.onRevisionLoaded = onRevisionLoaded
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -99,10 +101,9 @@ private extension RevisionsTableViewController {
         let allRevisions = tableViewHandler.resultsController.fetchedObjects as? [Revision] ?? []
         let selectedRevision = getRevision(at: indexPath)
         let selectedIndex = allRevisions.index(of: selectedRevision) ?? 0
-        return RevisionBrowserState(post: post,
-                                    revisions: allRevisions,
-                                    currentIndex: selectedIndex,
-                                    selectedRevisionLoaded: selectedRevisionLoaded)
+        return RevisionBrowserState(revisions: allRevisions, currentIndex: selectedIndex) { [weak self] revision in
+            self?.load(revision)
+        }
     }
 
     @objc private func refreshRevisions() {
@@ -138,6 +139,24 @@ private extension RevisionsTableViewController {
     private func hideNoResults() {
         noResultsViewController.removeFromView()
         tableView.reloadData()
+    }
+
+    private func load(_ revision: Revision) {
+        guard let blog = post?.blog else {
+            return
+        }
+
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading...", comment: "Text displayed in HUD while a revision post is loading."))
+
+        let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.getPostWithID(revision.revisionId, for: blog, success: { post in
+            SVProgressHUD.dismiss()
+            self.onRevisionLoaded(post)
+            self.navigationController?.popViewController(animated: true)
+        }, failure: { error in
+            DDLogError("Error loading revision: \(error.localizedDescription)")
+            SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
+        })
     }
 }
 
