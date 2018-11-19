@@ -1,6 +1,12 @@
 import UIKit
 
 final class TitleSubtitleHeader: UIView {
+    struct Margins {
+        static let horizontalMargin: CGFloat = 38.0
+        static let verticalMargin: CGFloat = 30.0
+        static let spacing: CGFloat = 10.0
+    }
+
     private lazy var title: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +29,7 @@ final class TitleSubtitleHeader: UIView {
         let returnValue = UIStackView(arrangedSubviews: [self.title, self.subtitle])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
-        returnValue.spacing = 10
+        returnValue.spacing = Margins.spacing
 
         return returnValue
     }()
@@ -42,10 +48,10 @@ final class TitleSubtitleHeader: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
+            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: Margins.horizontalMargin),
+            stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -1 * Margins.horizontalMargin),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.verticalMargin),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.verticalMargin)])
 
         setStyles()
     }

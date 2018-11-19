@@ -26,7 +26,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         let returnValue = UIStackView(arrangedSubviews: [self.titleSubtitle, self.textField])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
-        returnValue.spacing = 10
+        returnValue.spacing = TitleSubtitleHeader.Margins.spacing
         returnValue.isLayoutMarginsRelativeArrangement = true
 
         return returnValue
@@ -49,7 +49,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.verticalMargin)])
 
         setStyles()
     }
