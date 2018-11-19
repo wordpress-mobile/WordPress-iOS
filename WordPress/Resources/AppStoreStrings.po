@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.2-whats-new"
+msgctxt "v11.3-whats-new"
 msgid ""
 "Add Giphy gifs directly from the media toolbar when editing a post.\n"
 "More helpful error messages will assist you when logging in to a self hosted site.\n"
