@@ -102,7 +102,7 @@ target 'WordPress' do
     pod 'MGSwipeTableCell', '1.6.7'
     pod 'lottie-ios', '2.5.0'
     pod 'Starscream', '3.0.6'
-    pod 'ZendeskSDK', '2.2.0'
+    pod 'ZendeskSDK', '2.3.0'
 
 
     ## Automattic libraries
