@@ -19,21 +19,29 @@ final class MockSiteSegmentsService: SiteSegmentsService {
     }
 
     lazy var mockSiteTypes: [SiteSegment] = {
-        return [ singleSiteType(id: "Site Id 1"),
-                 singleSiteType(id: "Site Id 2"),
-                 singleSiteType(id: "Site Id 3"),
-                 singleSiteType(id: "Site Id 4") ]
+        return [ shortSubtitle(id: "Site Id 1"),
+                 longSubtitle(id: "Site Id 2"),
+                 shortSubtitle(id: "Site Id 3"),
+                 shortSubtitle(id: "Site Id 4") ]
     }()
 
     var mockCount: Int {
         return mockSiteTypes.count
     }
 
-    private func singleSiteType(id: String) -> SiteSegment {
+    private func shortSubtitle(id: String) -> SiteSegment {
         let identifier = Identifier(value: id)
         return SiteSegment(identifier: identifier,
-                           title: "Mock",
-                           subtitle: "Showcase your portfolio, skills or work",
+                           title: "Blogger",
+                           subtitle: "Publish a collection of posts",
+                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)
+    }
+
+    private func longSubtitle(id: String) -> SiteSegment {
+        let identifier = Identifier(value: id)
+        return SiteSegment(identifier: identifier,
+                           title: "Professional",
+                           subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)
     }
 }
