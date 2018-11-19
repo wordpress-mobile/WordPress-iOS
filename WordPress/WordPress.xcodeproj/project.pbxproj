@@ -4411,7 +4411,7 @@
 			children = (
 				9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */,
 				4349B0AB218A45270034118A /* RevisionsTableViewController.swift */,
-				439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */,
+				9A4E61FC21A2CC4C0017A925 /* Browser */,
 				9A4E61F421A2C3640017A925 /* Style */,
 				9A2B28F2219211B900458F2A /* Views */,
 			);
@@ -5958,9 +5958,6 @@
 				9A2B28F3219211E700458F2A /* Operation */,
 				9A2B28EC2191B4E600458F2A /* Footer */,
 				9A5CF43E218C54A60060F81B /* Cell */,
-				439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */,
-				439F4F37219B636500F8D0C7 /* Revisions.storyboard */,
-				439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5995,6 +5992,17 @@
 				9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */,
 			);
 			path = Style;
+			sourceTree = "<group>";
+		};
+		9A4E61FC21A2CC4C0017A925 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				439F4F37219B636500F8D0C7 /* Revisions.storyboard */,
+				439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */,
+				439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */,
+				439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */,
+			);
+			path = Browser;
 			sourceTree = "<group>";
 		};
 		9A5CF43E218C54A60060F81B /* Cell */ = {
