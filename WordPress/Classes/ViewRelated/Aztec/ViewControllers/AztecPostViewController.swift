@@ -133,10 +133,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.accessibilityIdentifier = "HTMLContentView"
         textView.autocorrectionType = .no
         textView.autocapitalizationType = .none
-        
+
         // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
-        
+
         if #available(iOS 10, *) {
             textView.adjustsFontForContentSizeCategory = true
         }
@@ -628,7 +628,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func refreshTitlePosition() {
         let referenceView = editorView.activeView
-        
+
         titleTopConstraint.constant = -(referenceView.contentOffset.y + referenceView.contentInset.top)
 
         var contentInset = referenceView.contentInset
@@ -868,7 +868,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func setHTML(_ html: String) {
         editorView.setHTML(html)
-        
+
         if editorView.editingMode == .richText {
             processMediaAttachments()
         }
@@ -1444,7 +1444,7 @@ private extension AztecPostViewController {
                 if let document = PDFDocument(url: documentURL) {
                     text = document.string ?? ""
                 }
-                
+
                 strongSelf.editorView.insertText(text)
             }
         } else {
@@ -1458,7 +1458,7 @@ private extension AztecPostViewController {
                 catch {
                     text = ""
                 }
-                
+
                 strongSelf.editorView.insertText(text)
             }
         }
@@ -1471,7 +1471,7 @@ private extension AztecPostViewController {
 
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
+
         if editorView.editingMode == .richText {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
             let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
