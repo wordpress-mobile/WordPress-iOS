@@ -24,14 +24,14 @@ final class TitleSubtitleHeaderTests: XCTestCase {
     }
 
     func testSetTitleSetsTitleLabel() {
-        let title = "🦄"
+        let title = "Title"
         header?.setTitle(title)
 
         XCTAssertEqual(header?.titleLabel().text, title)
     }
 
     func testSetSubtitleSetsSubtitleLabel() {
-        let text = "🦄🦄"
+        let text = "Subtitle"
         header?.setSubtitle(text)
 
         XCTAssertEqual(header?.subtitleLabel().text, text)
