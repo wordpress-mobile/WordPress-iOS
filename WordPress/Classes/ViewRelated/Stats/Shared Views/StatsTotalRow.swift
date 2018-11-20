@@ -6,17 +6,26 @@ struct StatsTotalRowData {
     var icon: UIImage?
     var nameDetail: String?
     var showDisclosure: Bool
+    var showSeparator: Bool
 
-    init(name: String, data: String, nameDetail: String? = nil, icon: UIImage? = nil, showDisclosure: Bool = false) {
+    init(name: String,
+         data: String,
+         icon: UIImage? = nil,
+         nameDetail: String? = nil,
+         showDisclosure: Bool = false,
+         showSeparator: Bool = true) {
         self.name = name
         self.data = data
         self.nameDetail = nameDetail
         self.icon = icon
         self.showDisclosure = showDisclosure
+        self.showSeparator = showSeparator
     }
 }
 
 class StatsTotalRow: UIView, NibLoadable {
+
+    // MARK: - Properties
 
     @IBOutlet weak var separatorLine: UIView!
     @IBOutlet weak var imageStackView: UIStackView!
@@ -28,38 +37,23 @@ class StatsTotalRow: UIView, NibLoadable {
 
     private typealias Style = WPStyleGuide.Stats
 
-    var showImage = true {
-        didSet {
-            imageStackView.isHidden = !showImage
-        }
-    }
+    // MARK: - Configure
 
-    var showDisclosure = false {
-        didSet {
-            disclosureStackView.isHidden = !showDisclosure
-        }
-    }
+    func configure(rowData: StatsTotalRowData) {
 
-    var showSeparator = true {
-        didSet {
-            separatorLine.isHidden = !showSeparator
-        }
-    }
+        // Set values
+        imageView.image = rowData.icon
+        itemLabel.text = rowData.name
+        itemDetailLabel.text = rowData.nameDetail
+        dataLabel.text = rowData.data
 
-    var showItemDetailLabel = false {
-        didSet {
-            itemDetailLabel.isHidden = !showItemDetailLabel
-        }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
+        // Toggle optionals
+        imageStackView.isHidden = (rowData.icon == nil)
+        disclosureStackView.isHidden = !rowData.showDisclosure
+        separatorLine.isHidden = !rowData.showSeparator
+        itemDetailLabel.isHidden = (rowData.nameDetail == nil)
 
         applyStyles()
-        imageStackView.isHidden = !showImage
-        disclosureStackView.isHidden = !showDisclosure
-        separatorLine.isHidden = !showSeparator
-        itemDetailLabel.isHidden = !showItemDetailLabel
     }
 
 }

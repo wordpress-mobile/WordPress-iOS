@@ -41,23 +41,9 @@ private extension SimpleTotalsCell {
     }
 
     func addRows() {
-        for (index, dataRow) in dataRows.enumerated() {
+        for dataRow in dataRows {
             let row = StatsTotalRow.loadFromNib()
-            row.imageView.image = dataRow.icon
-            row.itemLabel.text = dataRow.name
-
-            if let nameDetail = dataRow.nameDetail {
-                row.itemDetailLabel.text = nameDetail
-                row.showItemDetailLabel = true
-            }
-
-            row.dataLabel.text = dataRow.data
-            row.showDisclosure = dataRow.showDisclosure
-
-            if index == 0 {
-                row.showSeparator = false
-            }
-
+            row.configure(rowData: dataRow)
             rowsStackView.addArrangedSubview(row)
         }
     }
