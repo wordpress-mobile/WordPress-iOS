@@ -100,27 +100,27 @@ private extension SiteStatsInsightsViewModel {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
 
-        if let numberOfPosts = allTimeStats?.numberOfPosts {
+        if let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue, numberOfPostsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: numberOfPosts,
+                                                   data: String(numberOfPostsValue),
                                                    icon: AllTimeStats.postsIcon))
         }
 
-        if let numberOfViews = allTimeStats?.numberOfViews {
+        if let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue, numberOfViewsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: numberOfViews,
+                                                   data: String(numberOfViewsValue),
                                                    icon: AllTimeStats.viewsIcon))
         }
 
-        if let numberOfVisitors = allTimeStats?.numberOfVisitors {
+        if let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue, numberOfVisitorsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: numberOfVisitors,
+                                                   data: String(numberOfVisitorsValue),
                                                    icon: AllTimeStats.visitorsIcon))
         }
 
-        if let bestNumberOfViews = allTimeStats?.bestNumberOfViews {
+        if let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue, bestNumberOfViewsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: bestNumberOfViews,
+                                                   data: String(bestNumberOfViewsValue),
                                                    icon: AllTimeStats.bestViewsIcon,
                                                    nameDetail: allTimeStats?.bestViewsOn,
                                                    showSeparator: false))
