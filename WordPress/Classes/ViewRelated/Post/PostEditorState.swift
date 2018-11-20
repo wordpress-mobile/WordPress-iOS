@@ -187,6 +187,25 @@ public class PostEditorStateContext {
         }
     }
 
+    convenience init(post: AbstractPost,
+                     delegate: PostEditorStateContextDelegate) {
+        var originalPostStatus: BasePost.Status? = nil
+
+        if let originalPost = post.original, let postStatus = originalPost.status, originalPost.hasRemote() {
+            originalPostStatus = postStatus
+        }
+
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
+        // to showing Publish Now instead of Submit for Review.
+        //
+        let userCanPublish = post.blog.capabilities != nil ? post.blog.isPublishingPostsAllowed() : true
+
+        self.init(originalPostStatus: originalPostStatus,
+                  userCanPublish: userCanPublish,
+                  publishDate: post.dateCreated,
+                  delegate: delegate)
+    }
+
     /// The default initializer
     ///
     /// - Parameters:
@@ -195,7 +214,7 @@ public class PostEditorStateContext {
     ///   - publishDate: The post publish date
     ///   - delegate: Delegate for listening to change in state for the editor
     ///
-    init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, publishDate: Date? = nil, delegate: PostEditorStateContextDelegate) {
+    required init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, publishDate: Date? = nil, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.currentPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
