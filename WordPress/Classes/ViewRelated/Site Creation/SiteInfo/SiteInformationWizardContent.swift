@@ -232,7 +232,7 @@ extension SiteInformationWizardContent {
     private func startListeningToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
-                                               name: UIResponder.keyboardDidShowNotification,
+                                               name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
@@ -241,19 +241,25 @@ extension SiteInformationWizardContent {
     }
 
     private func stopListeningToKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc
     private func keyboardDidShow(_ notification: Foundation.Notification) {
-        let keyboardFrame = localKeyboardFrameFromNotification(notification)
-        let keyboardHeight = keyboardFrame.origin.y
+        guard let payload = KeyboardInfo(notification) else { return }
+        let keyboardScreenFrame = payload.frameEnd
 
-        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0
+        let keyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+        let keyboardHeight = keyboardFrame.origin.y - (Constants.bottomMargin + 36)
 
-        bottomConstraint.constant = keyboardHeight - Constants.bottomMargin
+        let animationDuration = payload.animationDuration
+
+        bottomConstraint.constant = keyboardHeight
         view.setNeedsUpdateConstraints()
+//        UIView.animateKeyframes(withDuration: animationDuration, delay: 0.0, options: [payload.animationCurve], animations: { [weak self] in
+//            self?.view.layoutIfNeeded()
+//        }, completion: nil)
         UIView.animate(withDuration: animationDuration, animations: { [weak self] in
             self?.view.layoutIfNeeded()
         })
@@ -271,5 +277,32 @@ extension SiteInformationWizardContent {
         }
 
         return view.convert(keyboardFrame, from: nil)
+    }
+}
+
+private struct KeyboardInfo {
+    var animationCurve: UIView.AnimationCurve
+    var animationDuration: Double
+    var isLocal: Bool
+    var frameBegin: CGRect
+    var frameEnd: CGRect
+}
+
+extension KeyboardInfo {
+    init?(_ notification: Foundation.Notification) {
+        print("=== notification name ", notification.name)
+        print("=== will show ", UIResponder.keyboardWillShowNotification)
+        guard notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillHideNotification else {
+            print("==== returning nil")
+            return nil
+
+        }
+        let u = notification.userInfo!
+
+        animationCurve = UIView.AnimationCurve(rawValue: u[UIWindow.keyboardAnimationCurveUserInfoKey] as! Int)!
+        animationDuration = u[UIWindow.keyboardAnimationDurationUserInfoKey] as! Double
+        isLocal = u[UIWindow.keyboardIsLocalUserInfoKey] as! Bool
+        frameBegin = u[UIWindow.keyboardFrameBeginUserInfoKey] as! CGRect
+        frameEnd = u[UIWindow.keyboardFrameEndUserInfoKey] as! CGRect
     }
 }
