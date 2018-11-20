@@ -15,6 +15,7 @@ class SiteStatsInsightsViewModel: Observable {
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
+    private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Constructor
 
@@ -43,7 +44,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                tableRows.append(AllTimeStatsRow())
+                tableRows.append(AllTimeStatsRow(title: AllTimeStats.headerTitle, dataRows: createAllTimeStatsRows()))
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
@@ -75,6 +76,56 @@ class SiteStatsInsightsViewModel: Observable {
 
     func refreshInsights() {
         ActionDispatcher.dispatch(InsightAction.refreshInsights())
+    }
+
+}
+
+// MARK: - Private Extension
+
+private extension SiteStatsInsightsViewModel {
+
+    struct AllTimeStats {
+        static let headerTitle = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
+        static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
+        static let postsIcon = Style.imageForGridiconType(.posts)
+        static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
+        static let viewsIcon = Style.imageForGridiconType(.visible)
+        static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
+        static let visitorsIcon = Style.imageForGridiconType(.user)
+        static let bestViewsEverTitle = NSLocalizedString("Best Views Ever", comment: "All Time Stats 'Best Views Ever' label")
+        static let bestViewsIcon = Style.imageForGridiconType(.trophy)
+    }
+
+    func createAllTimeStatsRows() -> [StatsTotalRowData] {
+        let allTimeStats = store.getAllTimeStats()
+        var dataRows = [StatsTotalRowData]()
+
+        if let numberOfPosts = allTimeStats?.numberOfPosts {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
+                                                   data: numberOfPosts,
+                                                   icon: AllTimeStats.postsIcon))
+        }
+
+        if let numberOfViews = allTimeStats?.numberOfViews {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
+                                                   data: numberOfViews,
+                                                   icon: AllTimeStats.viewsIcon))
+        }
+
+        if let numberOfVisitors = allTimeStats?.numberOfVisitors {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
+                                                   data: numberOfVisitors,
+                                                   icon: AllTimeStats.visitorsIcon))
+        }
+
+        if let bestNumberOfViews = allTimeStats?.bestNumberOfViews {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
+                                                   data: bestNumberOfViews,
+                                                   nameDetail: allTimeStats?.bestViewsOn,
+                                                   icon: AllTimeStats.bestViewsIcon))
+        }
+
+        return dataRows
     }
 
 }

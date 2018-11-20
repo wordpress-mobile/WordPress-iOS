@@ -36,6 +36,8 @@ struct AllTimeStatsRow: ImmuTableRow {
         return ImmuTableCell.nib(nib, CellType.self)
     }()
 
+    let title: String
+    let dataRows: [StatsTotalRowData]
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -44,7 +46,6 @@ struct AllTimeStatsRow: ImmuTableRow {
             return
         }
 
-        // TODO: configure cell
-
+        cell.configure(withTitle: title, dataRows: dataRows)
     }
 }
