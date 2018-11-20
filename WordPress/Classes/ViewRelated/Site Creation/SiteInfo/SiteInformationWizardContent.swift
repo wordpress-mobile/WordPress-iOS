@@ -26,6 +26,7 @@ final class SiteInformationWizardContent: UIViewController {
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var nextStep: NUXButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonWrapper: UIView!
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Basic information", comment: "Create site, step 3. Select basic information. Title")
@@ -49,6 +50,7 @@ final class SiteInformationWizardContent: UIViewController {
         applyTitle()
         setupBackground()
         setupTable()
+        setupButtonWrapper()
         setupNextButton()
     }
 
@@ -87,6 +89,11 @@ final class SiteInformationWizardContent: UIViewController {
             InlineEditableNameValueCell.defaultNib,
             forCellReuseIdentifier: InlineEditableNameValueCell.defaultReuseID
         )
+    }
+
+    private func setupButtonWrapper() {
+        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+        //buttonWrapper.
     }
 
     private func setupNextButton() {

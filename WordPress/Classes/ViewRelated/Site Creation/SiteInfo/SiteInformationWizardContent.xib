@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiteInformationWizardContent" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="bottomConstraint" destination="SBy-hb-mcs" id="ja0-mh-yl6"/>
+                <outlet property="buttonWrapper" destination="UkU-4z-E9I" id="QI4-xB-gLV"/>
                 <outlet property="nextStep" destination="f1h-X0-IMG" id="ieK-2o-FmG"/>
                 <outlet property="table" destination="r6F-pP-AOC" id="5BK-hB-2E0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
