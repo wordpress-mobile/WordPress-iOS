@@ -138,13 +138,16 @@ final class SiteInformationWizardContent: UIViewController {
 
     @objc
     private func goNext() {
-        guard let titleCell = cell(at: IndexPath(row: Rows.title.rawValue, section: 0)),
-            let taglineCell = cell(at: IndexPath(row: Rows.tagline.rawValue, section: 0)) else {
-            return
-        }
-
-        let collectedData = SiteInformation(title: titleCell.valueTextField.text ?? "", tagLine: taglineCell.valueTextField.text)
+        let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
         completion(collectedData)
+    }
+
+    private func titleString() -> String {
+        return cell(at: IndexPath(row: Rows.title.rawValue, section: 0))?.valueTextField.text ?? ""
+    }
+
+    private func taglineString() -> String {
+        return cell(at: IndexPath(row: Rows.tagline.rawValue, section: 0))?.valueTextField.text ?? ""
     }
 
     private func cell(at: IndexPath) -> InlineEditableNameValueCell? {
