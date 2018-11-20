@@ -1,5 +1,21 @@
 import UIKit
 
+struct StatsTotalRowData {
+    var name: String
+    var data: String
+    var icon: UIImage?
+    var nameDetail: String?
+    var showDisclosure: Bool
+
+    init(name: String, data: String, nameDetail: String? = nil, icon: UIImage? = nil, showDisclosure: Bool = false) {
+        self.name = name
+        self.data = data
+        self.nameDetail = nameDetail
+        self.icon = icon
+        self.showDisclosure = showDisclosure
+    }
+}
+
 class StatsTotalRow: UIView, NibLoadable {
 
     @IBOutlet weak var separatorLine: UIView!
