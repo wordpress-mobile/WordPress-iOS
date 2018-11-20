@@ -41,47 +41,64 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
-    /// Aztec's Awesomeness
+    /// The editor view.
     ///
-    fileprivate(set) lazy var richTextView: Aztec.TextView = {
-
+    fileprivate(set) lazy var editorView: Aztec.EditorView = {
+        
         let paragraphStyle = ParagraphStyle.default
-
+        
         // Paragraph style customizations will go here.
         paragraphStyle.lineSpacing = 4
-
-        let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
-
+        
+        let editorView = Aztec.EditorView(
+            defaultFont: Fonts.regular,
+            defaultHTMLFont: Fonts.monospace,
+            defaultParagraphStyle: paragraphStyle,
+            defaultMissingImage: Assets.defaultMissingImage)
+        
+        editorView.clipsToBounds = false
+        setupHTMLTextView(editorView.htmlTextView)
+        setupRichTextView(editorView.richTextView)
+        
+        return editorView
+    }()
+    
+    /// Aztec's Awesomeness
+    ///
+    private var richTextView: Aztec.TextView {
+        get {
+            return editorView.richTextView
+        }
+    }
+    
+    private func setupRichTextView(_ textView: TextView) {
         textView.load(WordPressPlugin())
-
+        
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
-
+        
         let linkAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
-                                                            .foregroundColor: Colors.aztecLinkColor]
-
+                                                             .foregroundColor: Colors.aztecLinkColor]
+        
         textView.delegate = self
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
         textView.linkTextAttributes = linkAttributes
-        textView.textAlignment = .natural
-
+        
+        // We need this false to be able to set negative `scrollInset` values.
+        textView.clipsToBounds = false
+        
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
         }
-
-        // We need this false to be able to set negative `scrollInset` values.
-        textView.clipsToBounds = false
-
+        
         // Set up the editor for screenshot generation, if needed
         if UIApplication.shared.isCreatingScreenshots() {
             textView.autocorrectionType = .no
         }
-
-        return textView
-    }()
+    }
 
 
     /// Aztec's Text Placeholder
@@ -131,6 +148,26 @@ class AztecPostViewController: UIViewController, PostEditor {
         return textView
 
     }()
+    
+    private func setupHTMLTextView(_ textView: UITextView) {
+        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+        
+        textView.isHidden = true
+        textView.delegate = self
+        textView.accessibilityIdentifier = "HTMLContentView"
+        textView.autocorrectionType = .no
+        textView.autocapitalizationType = .none
+        textView.clipsToBounds = false
+        if #available(iOS 10, *) {
+            textView.adjustsFontForContentSizeCategory = true
+        }
+        
+        if #available(iOS 11, *) {
+            textView.smartDashesType = .no
+            textView.smartQuotesType = .no
+        }
+    }
 
 
     /// Title's UITextView
