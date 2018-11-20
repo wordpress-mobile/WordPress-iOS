@@ -2675,7 +2675,7 @@ private extension AztecPostViewController {
         post.updatePathForDisplayImageBasedOnContent()
 
         PostCoordinator.shared.save(post: post)
- 
+
         dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
