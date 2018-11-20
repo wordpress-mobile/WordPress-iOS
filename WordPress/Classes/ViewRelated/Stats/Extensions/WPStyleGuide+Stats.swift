@@ -41,8 +41,8 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsHeader(_ label: UILabel) {
-            label.textColor = defaultTextColor
-            label.font = headerFont
+            label.textColor = headerTextColor
+            label.text = label.text?.localizedUppercase
         }
 
         static func configureLabelAsSummary(_ label: UILabel) {
@@ -100,13 +100,13 @@ extension WPStyleGuide {
         // MARK: - Style Values
 
         static let defaultTextColor = WPStyleGuide.darkGrey()
+        static let headerTextColor = WPStyleGuide.greyDarken20()
         static let secondaryTextColor = WPStyleGuide.grey()
         static let itemDetailTextColor = WPStyleGuide.greyDarken10()
         static let actionTextColor = WPStyleGuide.wordPressBlue()
         static let summaryTextColor = WPStyleGuide.darkGrey()
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
 
-        static let headerFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
