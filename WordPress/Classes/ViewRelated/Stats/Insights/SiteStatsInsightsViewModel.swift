@@ -41,10 +41,12 @@ class SiteStatsInsightsViewModel: Observable {
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
+                tableRows.append(CellHeaderRow(title: StatsHeaders.latestPostSummary))
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                tableRows.append(AllTimeStatsRow(title: AllTimeStats.headerTitle, dataRows: createAllTimeStatsRows()))
+                tableRows.append(CellHeaderRow(title: StatsHeaders.allTimeStats))
+                tableRows.append(AllTimeStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
@@ -84,8 +86,12 @@ class SiteStatsInsightsViewModel: Observable {
 
 private extension SiteStatsInsightsViewModel {
 
+    struct StatsHeaders {
+        static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
+        static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
+    }
+
     struct AllTimeStats {
-        static let headerTitle = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
         static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
         static let postsIcon = Style.imageForGridiconType(.posts)
         static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
