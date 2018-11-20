@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 typealias SIteInformationCompletion = (SiteInformation) -> Void
 
@@ -19,7 +20,7 @@ final class SiteInformationWizardContent: UIViewController {
     private let completion: SIteInformationCompletion
 
     @IBOutlet weak var table: UITableView!
-    @IBOutlet weak var nextStep: UIButton!
+    @IBOutlet weak var nextStep: NUXButton!
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Basic information", comment: "Create site, step 3. Select basic information. Title")
@@ -84,6 +85,8 @@ final class SiteInformationWizardContent: UIViewController {
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
         nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates tot he next step")
+
+        nextStep.isPrimary = false
     }
 
     private func setupButtonAsNext() {
@@ -91,6 +94,8 @@ final class SiteInformationWizardContent: UIViewController {
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
         nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step saving changes", comment: "Site creation. Navigates tot he next step")
+
+        nextStep.isPrimary = true
     }
 
     private func setupHeader() {
@@ -184,5 +189,24 @@ extension SiteInformationWizardContent: UITableViewDataSource {
             cell.nameLabel.text = TableStrings.tagline
             cell.valueTextField.placeholder = TableStrings.taglinePlaceholder
         }
+
+        if cell.delegate == nil {
+            cell.delegate = self
+        }
+    }
+}
+
+extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
+    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
+                                      valueTextFieldDidChange valueTextField: UITextField) {
+        updateButton()
+    }
+
+    private func updateButton() {
+        formIsFilled() ? setupButtonAsNext() : setupButtonAsSkip()
+    }
+
+    private func formIsFilled() -> Bool {
+        return !titleString().isEmpty || !taglineString().isEmpty
     }
 }
