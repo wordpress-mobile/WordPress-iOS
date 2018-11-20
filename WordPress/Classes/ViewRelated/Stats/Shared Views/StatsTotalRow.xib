@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhI-k5-uUO" userLabel="Seperator Line">
-                    <rect key="frame" x="56" y="0.0" width="319" height="0.5"/>
+                    <rect key="frame" x="56" y="59.5" width="319" height="0.5"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="0.5" id="8Q0-VF-yTk"/>
@@ -96,7 +96,7 @@
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="OyG-1h-jIV"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="hUw-W8-K8p"/>
                 <constraint firstItem="mSM-N7-rqk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="qih-kX-a7N"/>
-                <constraint firstItem="rhI-k5-uUO" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ugR-EV-g6v"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rhI-k5-uUO" secondAttribute="bottom" id="rtJ-TR-3Y4"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

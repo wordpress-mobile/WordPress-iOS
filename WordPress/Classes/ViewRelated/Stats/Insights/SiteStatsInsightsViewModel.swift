@@ -103,8 +103,7 @@ private extension SiteStatsInsightsViewModel {
         if let numberOfPosts = allTimeStats?.numberOfPosts {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
                                                    data: numberOfPosts,
-                                                   icon: AllTimeStats.postsIcon,
-                                                   showSeparator: false))
+                                                   icon: AllTimeStats.postsIcon))
         }
 
         if let numberOfViews = allTimeStats?.numberOfViews {
@@ -123,7 +122,8 @@ private extension SiteStatsInsightsViewModel {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
                                                    data: bestNumberOfViews,
                                                    icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: allTimeStats?.bestViewsOn))
+                                                   nameDetail: allTimeStats?.bestViewsOn,
+                                                   showSeparator: false))
         }
 
         return dataRows
