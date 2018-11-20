@@ -48,9 +48,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
         // TODO
     }
 
-    var shouldRemovePostOnDismiss: Bool {
-        return false
-    }
+    var shouldRemovePostOnDismiss: Bool = false
 
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         //TODO
@@ -110,6 +108,8 @@ class GutenbergController: UIViewController, PublishablePostEditor {
         self.postTitle = post.postTitle ?? ""
         self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
         self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
+        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+
         super.init(nibName: nil, bundle: nil)
 
         navigationBarManager.delegate = self
