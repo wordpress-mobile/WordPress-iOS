@@ -1,4 +1,5 @@
 import UIKit
+import Alamofire
 
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
@@ -10,7 +11,13 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             title.text = model?.title
             subtitle.text = model?.subtitle
             if let modelIcon = model?.icon {
-                icon.setImageWith(modelIcon)
+                icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
+                    let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
+                    if let tintColor = self?.model?.iconColor {
+                        self?.icon.tintColor = tintColor
+                    }
+                    self?.icon.image = tintedImage
+                }, failure: nil)
             }
         }
     }
