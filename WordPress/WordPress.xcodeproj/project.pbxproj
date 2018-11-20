@@ -4410,7 +4410,7 @@
 		402FFB22218C36CF00FF4A0B /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				40F88F631F86C26600AE3FAF /* AztecVerificationPromptHelper.swift */,
+				402FFB23218C36CF00FF4A0B /* AztecVerificationPromptHelper.swift */,
 				91EB11BB219B19700057F17D /* PostEditorUtil.swift */,
 			);
 			path = Helpers;
