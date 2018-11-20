@@ -16,7 +16,7 @@ final class SiteSegmentsCellTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-type", withExtension: "json")!
+        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-segment", withExtension: "json")!
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 
