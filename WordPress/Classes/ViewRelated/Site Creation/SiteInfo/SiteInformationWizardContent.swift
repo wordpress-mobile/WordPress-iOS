@@ -58,9 +58,10 @@ final class SiteInformationWizardContent: UIViewController {
         setupTableBackground()
         registerCell()
         setupHeader()
+        setupFooter()
 
         table.dataSource = self
-        table.delegate = self
+        //table.delegate = self
     }
 
     private func setupTableBackground() {
@@ -97,6 +98,29 @@ final class SiteInformationWizardContent: UIViewController {
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
+    }
+
+    private func setupFooter() {
+        let footer = UIView(frame: CGRect(x: 0.0, y: 0.0, width: table.frame.width, height: 60.0))
+
+        let title = UILabel(frame: .zero)
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.textAlignment = .natural
+        title.numberOfLines = 0
+        title.textColor = WPStyleGuide.greyDarken20()
+        title.font = UIFont.preferredFont(forTextStyle: .footnote)
+        title.text = TableStrings.footer
+
+        footer.addSubview(title)
+
+        NSLayoutConstraint.activate([
+            title.heightAnchor.constraint(equalTo: footer.readableContentGuide.heightAnchor),
+            title.leadingAnchor.constraint(equalTo: footer.readableContentGuide.leadingAnchor),
+            title.trailingAnchor.constraint(equalTo: footer.readableContentGuide.trailingAnchor),
+            title.topAnchor.constraint(equalTo: footer.topAnchor)
+            ])
+
+        table.tableFooterView = footer
     }
 
     @objc
@@ -137,10 +161,6 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return TableStrings.footer
-    }
-
     private func configure(_ cell: InlineEditableNameValueCell, index: IndexPath) {
         if Rows.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
@@ -151,11 +171,5 @@ extension SiteInformationWizardContent: UITableViewDataSource {
             cell.nameLabel.text = TableStrings.tagline
             cell.valueTextField.placeholder = TableStrings.taglinePlaceholder
         }
-    }
-}
-
-extension SiteInformationWizardContent: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionFooter(view)
     }
 }
