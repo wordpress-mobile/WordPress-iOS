@@ -50,7 +50,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '1.4.2.1'
+    pod 'WordPressKit', '1.4.3'
     ## pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '60ac75bb8b9a499dfa5446b53c01fa9d2d6e71cb'
 end
 
@@ -111,7 +111,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
-    pod 'WordPressAuthenticator', '1.1.3'
+    pod 'WordPressAuthenticator', '1.1.4'
 
     aztec
     wordpress_ui

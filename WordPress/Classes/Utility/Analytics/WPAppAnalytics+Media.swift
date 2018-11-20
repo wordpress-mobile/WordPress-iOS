@@ -151,4 +151,5 @@ enum MediaSource {
     case wpMediaLibrary
     case stockPhotos
     case camera
+    case giphy
 }

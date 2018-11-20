@@ -1496,6 +1496,12 @@ private extension AztecPostViewController {
             self.displayPreview()
         }
 
+        if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
+                self.displayHistory()
+            }
+        }
+
         alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
@@ -1534,6 +1540,11 @@ private extension AztecPostViewController {
         let previewController = PostPreviewViewController(post: post)
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
+    }
+
+    func displayHistory() {
+        let revisionsViewController = RevisionsTableViewController(post: post)
+        navigationController?.pushViewController(revisionsViewController, animated: true)
     }
 
     func displayHasFailedMediaAlert(then: @escaping () -> ()) {
@@ -1593,7 +1604,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
                 postEditorStateContext.updated(postStatus: status)
                 editorContentWasUpdated()
             }
-        case #keyPath(AbstractPost.dateCreated):
+        case #keyPath(AbstractPost.date_created_gmt):
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
             editorContentWasUpdated()
@@ -1630,13 +1641,13 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
 
     internal func addObservers(toPost: AbstractPost) {
         toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
         fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
@@ -2950,6 +2961,10 @@ extension AztecPostViewController {
             switch exportableAsset.assetMediaType {
             case .image:
                 attachment = insertImageAttachment()
+
+                if let attachment = attachment {
+                    setGifBadgeIfNecessary(for: attachment, asset: exportableAsset, source: source)
+                }
             case .video:
                 attachment = insertVideoAttachmentWithPlaceholder()
             default:
@@ -2960,6 +2975,23 @@ extension AztecPostViewController {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
         let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
         attachment?.uploadID = media.uploadID
+    }
+
+    /// Sets the badge title of `attachment` to "GIF" if either the media is being imported from Giphy,
+    /// or if it's a PHAsset with an animated playback style.
+    private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset, source: MediaSource) {
+        var isGif = (source == .giphy)
+
+        if #available(iOS 11.0, *) {
+            if let asset = asset as? PHAsset,
+                asset.playbackStyle == .imageAnimated {
+                isGif = true
+            }
+        }
+
+        if isGif {
+            attachment.badgeTitle = Constants.mediaGIFBadgeTitle
+        }
     }
 
     fileprivate func insertExternalMediaWithURL(_ url: URL) {
@@ -2993,6 +3025,11 @@ extension AztecPostViewController {
     private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) -> ImageAttachment {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
+
+        if url.isGif {
+            attachment.badgeTitle = Constants.mediaGIFBadgeTitle
+        }
+
         return attachment
     }
 
@@ -3273,6 +3310,13 @@ extension AztecPostViewController {
             } else {
                 if let videoAttachment = mediaAttachment as? VideoAttachment {
                     self.process(videoAttachment: videoAttachment)
+                }
+            }
+
+            if let imageAttachment = mediaAttachment as? ImageAttachment,
+                let url = imageAttachment.url {
+                if url.isGif {
+                    imageAttachment.badgeTitle = Constants.mediaGIFBadgeTitle
                 }
             }
         }
@@ -3887,6 +3931,14 @@ extension AztecPostViewController: StockPhotosPickerDelegate {
     }
 }
 
+extension AztecPostViewController: GiphyPickerDelegate {
+    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
+        assets.forEach {
+            insert(exportableAsset: $0, source: .giphy)
+        }
+    }
+}
+
 // MARK: - Constants
 //
 extension AztecPostViewController {
@@ -3919,6 +3971,7 @@ extension AztecPostViewController {
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
+        static let mediaGIFBadgeTitle       = NSLocalizedString("GIF", comment: "Badge title displayed on GIF images in the editor.")
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
         static let mediaMessageAttributes: [NSAttributedString.Key: Any] = {
             let paragraphStyle = NSMutableParagraphStyle()
@@ -3943,6 +3996,7 @@ extension AztecPostViewController {
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
