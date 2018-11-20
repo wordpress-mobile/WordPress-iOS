@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.5.0-beta.1'
+    pod 'WordPressShared', '~> 1.5.0'
 
     ## for development:
     ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -51,7 +51,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '=  1.5.0-beta.2'
+    pod 'WordPressKit', '~> 1.5.0'
     ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '79fb867'
     ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
@@ -95,7 +95,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'Crashlytics', '3.10.8'
+    pod 'Crashlytics', '3.11.0'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'

@@ -91,7 +91,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         // The order of cancel and log out in the alert varies by language
         // There is no way to set accessibility identifers on them, so we must try both
         logoutButton.tap()
-        logoutAlert.buttons.buttons.element(boundBy: 1).tap()
+        logoutAlert.buttons.element(boundBy: 1).tap()
 
         if !loginButton.waitForExistence(timeout: 3.0) {
             // Still not logged out, try the other button
@@ -124,7 +124,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         app.tables["PostsTable"].tap()
 
         let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
-        XCTAssert(editorNavigationBar.exists, "Post editor not found")
+        waitForElementToExist(element: editorNavigationBar)
+
         sleep(imagesWaitTime) // wait for post images to load
         // The title field gets focus automatically
         snapshot("1-PostEditor")

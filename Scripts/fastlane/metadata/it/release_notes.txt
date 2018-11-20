@@ -1,0 +1,5 @@
+Aggiungi gif Giphy direttamente dalla barra degli strumenti multimediali quando viene modificato un articolo.
+Messaggi di errore più utili ti aiuteranno durante l'accesso a un sito ospitato personalmente.
+La visualizzazione di un articolo con alcune immagini è diventata ora più rapida.
+Supporto aggiunto per iPad Pro.
+Correzioni di bug.

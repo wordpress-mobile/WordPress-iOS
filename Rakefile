@@ -33,11 +33,10 @@ namespace :dependencies do
   end
 
   namespace :bundle do
-    lockfile = 'Gemfile.lock'
-    manifest = 'vendor/bundle/Manifest.lock'
-
     task :check do
-      unless check_manifest(lockfile, manifest) and File.exist?('.bundle/config')
+      sh "bundle check --path=${BUNDLE_PATH:-vendor/bundle} > /dev/null", verbose: false do |ok, res|
+        next if ok
+        # bundle check exits with a non zero code if install is needed
         dependency_failed("Bundler")
         Rake::Task["dependencies:bundle:install"].invoke
       end
@@ -46,7 +45,6 @@ namespace :dependencies do
     task :install do
       fold("install.bundler") do
         sh "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
-        FileUtils.cp(lockfile, manifest)
       end
     end
     CLOBBER << "vendor/bundle"
@@ -55,9 +53,8 @@ namespace :dependencies do
 
   namespace :pod do
     task :check do
-      lockfile = 'Podfile.lock'
-      manifest = 'Pods/Manifest.lock'
-      unless check_manifest(lockfile, manifest)
+      sh "bundle exec pod check --silent", verbose: false do |ok, res|
+        next if ok
         dependency_failed("CocoaPods")
         Rake::Task["dependencies:pod:install"].invoke
       end
@@ -242,12 +239,6 @@ end
 desc "Open the project in Xcode"
 task :xcode => [:dependencies] do
   sh "open #{XCODE_WORKSPACE}"
-end
-
-def check_manifest(file, manifest)
-  return false unless File.exist?(file)
-  return false unless File.exist?(manifest)
-  FileUtils.identical?(file, manifest)
 end
 
 def fold(label, &block)

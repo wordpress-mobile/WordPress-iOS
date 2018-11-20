@@ -1,4 +1,5 @@
-Una nueva sección de inicio rápido te sugiere pasos para ayudarte a construir un sitio genial.
-Con las menciones, puedes leer el mensaje completo del aviso desde la pantalla de inicio.
-¿Quieres copiar el enlace a un comentario? Haz una pulsación larga en su etiqueta con la fecha y hora.
-¿Quieres saber el número de caracteres y palabras de las entradas? Échale un ojo a la hoja de acciones del título del editor.
+Añade gifs de Giphy directamente desde la barra de herramientas de medios mientras editas una entrada.
+Más mensajes útiles sobre los errores que te ayudarán al acceder a un sitio autoalojado.
+Ver una entrada con muchas imágenes es ahora más rápido.
+Añadida compatibilidad con iPad Pro.
+Soluciones a fallos.

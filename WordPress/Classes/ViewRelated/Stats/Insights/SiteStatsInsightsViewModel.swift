@@ -14,11 +14,15 @@ class SiteStatsInsightsViewModel: Observable {
     private let store: StatsInsightsStore
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?
+    private var insightsToShow = [InsightType]()
 
     // MARK: - Constructor
 
-    init(insightsDelegate: SiteStatsInsightsDelegate, store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
+    init(insightsToShow: [InsightType],
+         insightsDelegate: SiteStatsInsightsDelegate,
+         store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
         self.siteStatsInsightsDelegate = insightsDelegate
+        self.insightsToShow = insightsToShow
         self.store = store
         insightsReceipt = store.query(.insights)
 
@@ -33,9 +37,33 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        let latestPostSummaryRow = LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
-                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-        tableRows.append(latestPostSummaryRow)
+        insightsToShow.forEach { insightType in
+            switch insightType {
+            case .latestPostSummary:
+                tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+            case .allTimeStats:
+                DDLogDebug("Show \(insightType) here.")
+            case .followersTotals:
+                DDLogDebug("Show \(insightType) here.")
+            case .mostPopularDayAndHour:
+                DDLogDebug("Show \(insightType) here.")
+            case .tagsAndCategories:
+                DDLogDebug("Show \(insightType) here.")
+            case .annualSiteStats:
+                DDLogDebug("Show \(insightType) here.")
+            case .comments:
+                DDLogDebug("Show \(insightType) here.")
+            case .followers:
+                DDLogDebug("Show \(insightType) here.")
+            case .todaysStats:
+                DDLogDebug("Show \(insightType) here.")
+            case .postingActivity:
+                DDLogDebug("Show \(insightType) here.")
+            case .publicize:
+                DDLogDebug("Show \(insightType) here.")
+            }
+        }
 
         return ImmuTable(sections: [
             ImmuTableSection(

@@ -75,6 +75,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
 
+        // Set up the editor for screenshot generation, if needed
+        if UIApplication.shared.isCreatingScreenshots() {
+            textView.autocorrectionType = .no
+        }
+
         return textView
     }()
 
@@ -1530,7 +1535,13 @@ private extension AztecPostViewController {
     }
 
     func displayHistory() {
-        let revisionsViewController = RevisionsTableViewController(post: post)
+        let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
+            if let post = self?.post.update(from: revision) {
+                DispatchQueue.main.async {
+                    self?.post = post
+                }
+            }
+        }
         navigationController?.pushViewController(revisionsViewController, animated: true)
     }
 
