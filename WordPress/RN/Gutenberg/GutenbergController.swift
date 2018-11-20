@@ -112,6 +112,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
 
         super.init(nibName: nil, bundle: nil)
 
+        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
 
