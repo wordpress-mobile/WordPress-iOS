@@ -41,6 +41,13 @@ private extension SimpleTotalsCell {
     }
 
     func addRows() {
+
+        if dataRows.count == 0 {
+            let row = StatsNoDataRow.loadFromNib()
+            rowsStackView.addArrangedSubview(row)
+            return
+        }
+
         for dataRow in dataRows {
             let row = StatsTotalRow.loadFromNib()
             row.configure(rowData: dataRow)

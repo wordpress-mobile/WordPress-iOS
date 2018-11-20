@@ -68,6 +68,10 @@ extension WPStyleGuide {
             label.textColor = secondaryTextColor
         }
 
+        static func configureLabelAsNoData(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
