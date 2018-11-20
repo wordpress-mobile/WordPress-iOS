@@ -30,16 +30,16 @@
                             <rect key="frame" x="0.0" y="0.0" width="40" height="38"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
-                                    <rect key="frame" x="0.0" y="0.0" width="20" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="38"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="20" id="Ope-3W-fHa"/>
+                                        <constraint firstAttribute="width" constant="24" id="Ope-3W-fHa"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
-                                    <rect key="frame" x="20" y="0.0" width="20" height="38"/>
+                                    <rect key="frame" x="24" y="0.0" width="16" height="38"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="20" id="qRY-b9-qyj"/>
+                                        <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
                                     </constraints>
                                 </view>
                             </subviews>
