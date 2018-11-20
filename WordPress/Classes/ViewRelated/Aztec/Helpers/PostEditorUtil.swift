@@ -174,13 +174,13 @@ class PostEditorUtil: NSObject {
 
     private func trackPostSave(stat: WPAnalyticsStat) {
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post.blog)
+            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource], with: post.blog)
             return
         }
 
         let originalWordCount = post.original?.content?.wordCount() ?? 0
         let wordCount = post.content?.wordCount() ?? 0
-        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
+        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource]
         if post.hasRemote() {
             properties["word_diff_count"] = originalWordCount
         }
@@ -218,7 +218,7 @@ class PostEditorUtil: NSObject {
             return
         }
 
-        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource], with: post)
 
         context.post = originalPost
         context.post.deleteRevision()
@@ -365,7 +365,7 @@ extension PostEditorUtil {
     func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
         stopEditing()
 
-        WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource], with: post)
 
         if let onClose = context.onClose {
             onClose(didSave, shouldShowPostEpilogue)
@@ -412,7 +412,6 @@ extension PostEditorUtil {
     }
 
     struct Analytics {
-        static let editorSource             = "aztec"
         static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
     }
 

@@ -59,6 +59,9 @@ protocol PublishablePostEditor: PostEditor {
     /// Title of the post
     var postTitle: String { get set }
 
+    /// Describes the editor type to be used in analytics reporting
+    var analyticsEditorSource: String { get }
+
     var navigationBarManager: PostEditorNavigationBarManager { get }
 }
 

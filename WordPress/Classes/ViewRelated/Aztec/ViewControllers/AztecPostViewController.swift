@@ -49,6 +49,10 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         return mediaCoordinator.isUploadingMedia(for: post)
     }
 
+    var analyticsEditorSource: String {
+        return Analytics.editorSource
+    }
+
     /// Indicates if Aztec was launched for Photo Posting
     ///
     var isOpenedDirectlyForPhotoPost = false

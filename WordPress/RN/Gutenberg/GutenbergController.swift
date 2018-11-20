@@ -4,6 +4,10 @@ import WPMediaPicker
 
 class GutenbergController: UIViewController, PublishablePostEditor {
 
+    private struct Analytics {
+        static let editorSource = "gutenberg"
+    }
+
     enum RequestHTMLReason {
         case publish
         case close
@@ -22,11 +26,15 @@ class GutenbergController: UIViewController, PublishablePostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+    private(set) lazy var postEditorStateContext: PostEditorStateContext = {
         return PostEditorStateContext(post: post, delegate: self)
     }()
 
     var verificationPromptHelper: VerificationPromptHelper?
+
+    var analyticsEditorSource: String {
+        return Analytics.editorSource
+    }
 
     var onClose: ((Bool, Bool) -> Void)?
 
@@ -86,13 +94,13 @@ class GutenbergController: UIViewController, PublishablePostEditor {
         return currentBlogCount <= 1 || post.hasRemote()
     }
 
-    fileprivate var requestHTMLReason: RequestHTMLReason?
+    private var requestHTMLReason: RequestHTMLReason?
 
-    fileprivate lazy var postEditorUtil = {
+    private lazy var postEditorUtil = {
         return PostEditorUtil(context: self)
     }()
 
-    fileprivate let gutenberg: Gutenberg
+    private let gutenberg: Gutenberg
 
     required init(post: AbstractPost) {
         guard let post = post as? Post else {
@@ -194,11 +202,11 @@ extension GutenbergController: PostEditorStateContextDelegate {
 
 extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     var publishButtonText: String {
-        return self.postEditorStateContext.publishButtonText
+        return postEditorStateContext.publishButtonText
     }
 
     var isPublishButtonEnabled: Bool {
-        return self.postEditorStateContext.isPublishButtonEnabled
+        return postEditorStateContext.isPublishButtonEnabled
     }
 
     var uploadingButtonSize: CGSize {
