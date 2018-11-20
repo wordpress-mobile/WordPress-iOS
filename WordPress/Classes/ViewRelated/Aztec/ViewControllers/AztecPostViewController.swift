@@ -44,25 +44,25 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// The editor view.
     ///
     fileprivate(set) lazy var editorView: Aztec.EditorView = {
-        
+
         let paragraphStyle = ParagraphStyle.default
-        
+
         // Paragraph style customizations will go here.
         paragraphStyle.lineSpacing = 4
-        
+
         let editorView = Aztec.EditorView(
             defaultFont: Fonts.regular,
             defaultHTMLFont: Fonts.monospace,
             defaultParagraphStyle: paragraphStyle,
             defaultMissingImage: Assets.defaultMissingImage)
-        
+
         editorView.clipsToBounds = false
         setupHTMLTextView(editorView.htmlTextView)
         setupRichTextView(editorView.richTextView)
-        
+
         return editorView
     }()
-    
+
     /// Aztec's Awesomeness
     ///
     private var richTextView: Aztec.TextView {
@@ -70,30 +70,30 @@ class AztecPostViewController: UIViewController, PostEditor {
             return editorView.richTextView
         }
     }
-    
+
     private func setupRichTextView(_ textView: TextView) {
         textView.load(WordPressPlugin())
-        
+
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
-        
+
         let linkAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
                                                              .foregroundColor: Colors.aztecLinkColor]
-        
+
         textView.delegate = self
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
         textView.linkTextAttributes = linkAttributes
-        
+
         // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
-        
+
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
         }
-        
+
         // Set up the editor for screenshot generation, if needed
         if UIApplication.shared.isCreatingScreenshots() {
             textView.autocorrectionType = .no
@@ -118,51 +118,29 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Raw HTML Editor
     ///
-    fileprivate(set) lazy var htmlTextView: UITextView = {
-        let storage = HTMLStorage(defaultFont: Fonts.monospace)
-        let layoutManager = NSLayoutManager()
-        let container = NSTextContainer()
-
-        storage.addLayoutManager(layoutManager)
-        layoutManager.addTextContainer(container)
-
-        let textView = UITextView(frame: .zero, textContainer: container)
-
-        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
-
-        textView.isHidden = true
-        textView.delegate = self
-        textView.accessibilityIdentifier = "HTMLContentView"
-        textView.autocorrectionType = .no
-        textView.autocapitalizationType = .none
-
-        if #available(iOS 11, *) {
-            textView.smartDashesType = .no
-            textView.smartQuotesType = .no
+    private var htmlTextView: UITextView {
+        get {
+            return editorView.htmlTextView
         }
+    }
 
-        // We need this false to be able to set negative `scrollInset` values.
-        textView.clipsToBounds = false
-
-        return textView
-
-    }()
-    
     private func setupHTMLTextView(_ textView: UITextView) {
         let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
-        
+
         textView.isHidden = true
         textView.delegate = self
         textView.accessibilityIdentifier = "HTMLContentView"
         textView.autocorrectionType = .no
         textView.autocapitalizationType = .none
+        
+        // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
+        
         if #available(iOS 10, *) {
             textView.adjustsFontForContentSizeCategory = true
         }
-        
+
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
@@ -354,6 +332,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Editor's Mode
     ///
+    /*
     fileprivate(set) var mode = EditMode.richText {
         willSet {
             switch mode {
@@ -374,11 +353,10 @@ class AztecPostViewController: UIViewController, PostEditor {
 
             updateFormatBar()
 
-            refreshEditorVisibility()
             refreshPlaceholderVisibility()
             refreshTitlePosition()
         }
-    }
+    }*/
 
 
     /// Post being currently edited
@@ -649,8 +627,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - Title and Title placeholder position methods
 
     func refreshTitlePosition() {
-        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
-        titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
+        let referenceView = editorView.activeView
+        
+        titleTopConstraint.constant = -(referenceView.contentOffset.y + referenceView.contentInset.top)
 
         var contentInset = referenceView.contentInset
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
@@ -660,7 +639,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func updateTitleHeight() {
-        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        let referenceView = editorView.activeView
         let layoutMargins = view.layoutMargins
         let insets = titleTextField.textContainerInset
 
@@ -684,7 +663,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func updateScrollInsets() {
-        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        let referenceView = editorView.activeView
         var scrollInsets = referenceView.contentInset
         var rightMargin = (view.frame.maxX - referenceView.frame.maxX)
         if #available(iOS 11.0, *) {
@@ -888,9 +867,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
-        setHTML(html, for: mode)
+        editorView.setHTML(html)
+        
+        if editorView.editingMode == .richText {
+            processMediaAttachments()
+        }
     }
-
+/*
     private func setHTML(_ html: String, for mode: EditMode) {
         switch mode {
         case .html:
@@ -900,10 +883,11 @@ class AztecPostViewController: UIViewController, PostEditor {
 
             processMediaAttachments()
         }
-    }
+    }*/
 
     func getHTML() -> String {
-
+        return editorView.getHTML()
+/*
         let html: String
 
         switch mode {
@@ -913,7 +897,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             html = richTextView.getHTML()
         }
 
-        return html
+        return html*/
     }
 
     func reloadEditorContents() {
@@ -1052,7 +1036,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
-        let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
+        let referenceView = editorView.activeView
 
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
@@ -1069,7 +1053,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 extension AztecPostViewController {
 
     func updateFormatBar() {
-        switch mode {
+        switch editorView.editingMode {
         case .html:
             updateFormatBarForHTMLMode()
         case .richText:
@@ -1080,7 +1064,7 @@ extension AztecPostViewController {
     /// Updates the format bar for HTML mode.
     ///
     private func updateFormatBarForHTMLMode() {
-        assert(mode == .html)
+        assert(editorView.editingMode == .html)
 
         guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
             return
@@ -1092,7 +1076,7 @@ extension AztecPostViewController {
     /// Updates the format bar for visual mode.
     ///
     private func updateFormatBarForVisualMode() {
-        assert(mode == .richText)
+        assert(editorView.editingMode == .richText)
 
         guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
             return
@@ -1460,7 +1444,8 @@ private extension AztecPostViewController {
                 if let document = PDFDocument(url: documentURL) {
                     text = document.string ?? ""
                 }
-                strongSelf.appendText(text: text)
+                
+                strongSelf.editorView.insertText(text)
             }
         } else {
             addContentsActionHandler = { [weak self] in
@@ -1473,7 +1458,8 @@ private extension AztecPostViewController {
                 catch {
                     text = ""
                 }
-                strongSelf.appendText(text: text)
+                
+                strongSelf.editorView.insertText(text)
             }
         }
         alertController.addDefaultActionWithTitle(addContentsToPostTitle) { _ in
@@ -1483,18 +1469,10 @@ private extension AztecPostViewController {
         present(alertController, animated: true)
     }
 
-    func appendText(text: String) {
-        switch mode {
-        case .html:
-            htmlTextView.insertText(text)
-        case .richText:
-            richTextView.insertText(text)
-        }
-    }
-
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        if mode == .richText {
+        
+        if editorView.editingMode == .richText {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
             let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
 
@@ -1510,7 +1488,7 @@ private extension AztecPostViewController {
         }
 
         let toggleModeTitle: String = {
-            if mode == .richText {
+            if editorView.editingMode == .richText {
                 return MoreSheetAlert.htmlTitle
             } else {
                 return MoreSheetAlert.richTitle
@@ -1839,13 +1817,6 @@ extension AztecPostViewController {
                 self = .richText
             }
         }
-    }
-
-    func refreshEditorVisibility() {
-        let isRichEnabled = mode == .richText
-
-        htmlTextView.isHidden = isRichEnabled
-        richTextView.isHidden = !isRichEnabled
     }
 
     func refreshPlaceholderVisibility() {
@@ -2186,7 +2157,7 @@ extension AztecPostViewController {
 
     @objc func tabOnTitle() {
         let activeTextView: UITextView = {
-            switch mode {
+            switch editorView.editingMode {
             case .html:
                 return htmlTextView
             case .richText:
@@ -2287,7 +2258,7 @@ extension AztecPostViewController {
         trackFormatBarAnalytics(stat: .editorTappedHTML)
         formatBar.overflowToolbar(expand: true)
 
-        mode.toggle()
+        editorView.toggleEditingMode()
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
@@ -2784,14 +2755,14 @@ private extension AztecPostViewController {
     }
 
     func contentByStrippingMediaAttachments() -> String {
-        if mode == .html {
+        if editorView.editingMode == .html {
             setHTML(htmlTextView.text)
         }
 
         richTextView.removeMediaAttachments()
         let strippedHTML = getHTML()
 
-        if mode == .html {
+        if editorView.editingMode == .html {
             setHTML(strippedHTML)
         }
 
@@ -3188,7 +3159,7 @@ extension AztecPostViewController {
             return
         }
 
-        switch self.mode {
+        switch editorView.editingMode {
         case .richText:
             guard let attachment = self.findAttachment(withUploadID: mediaUploadID) else {
                 return
