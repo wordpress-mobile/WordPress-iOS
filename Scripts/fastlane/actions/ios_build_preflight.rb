@@ -3,9 +3,11 @@ module Fastlane
     class IosBuildPreflightAction < Action
       def self.run(params)
         # Ensure mobile secrets are up to date. This will do nothing if not a git repo
-        secrets_git_dir = File.expand_path('~/.mobile-secrets/.git')
-        if File.exist?(secrets_git_dir)
-          Action.sh("git --git-dir \"#{secrets_git_dir}\" pull")
+        secrets_git_dir = File.expand_path('~/.mobile-secrets/')
+        if File.exist?(secrets_git_dir + '.git')
+            Dir.chdir(secrets_git_dir) do
+                Action.sh("git pull")
+            end
         end
 
         Action.sh("cd .. && rm -rf ~/Library/Developer/Xcode/DerivedData")
