@@ -16,6 +16,7 @@ final class SiteInformationWizardContent: UIViewController {
         }
     }
 
+    private let segment: SiteSegment?
     private let completion: SIteInformationCompletion
 
     @IBOutlet weak var table: UITableView!
@@ -28,7 +29,8 @@ final class SiteInformationWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
-    init(completion: @escaping SIteInformationCompletion) {
+    init(segment: SiteSegment?, completion: @escaping SIteInformationCompletion) {
+        self.segment = segment
         self.completion = completion
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
@@ -77,10 +79,10 @@ final class SiteInformationWizardContent: UIViewController {
     private func setupNextButton() {
         nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
 
-        let buttonTitle = NSLocalizedString("Next", comment: "Button to progress to the next step")
+        let buttonTitle = NSLocalizedString("Skip", comment: "Button to progress to the next step")
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
-        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step", comment: "Site creation. Navigates tot he next step")
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates tot he next step")
     }
 
     private func setupHeader() {

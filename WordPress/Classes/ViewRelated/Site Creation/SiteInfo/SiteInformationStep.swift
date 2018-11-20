@@ -2,7 +2,7 @@ final class SiteInformationStep: WizardStep {
     private let creator: SiteCreator
 
     private(set) lazy var content: UIViewController = {
-        return SiteInformationWizardContent(completion: didSelect)
+        return SiteInformationWizardContent(segment: self.creator.segment, completion: didSelect)
     }()
 
     var delegate: WizardDelegate?

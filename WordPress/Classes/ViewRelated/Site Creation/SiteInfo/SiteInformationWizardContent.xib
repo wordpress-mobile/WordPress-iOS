@@ -22,26 +22,26 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f1h-X0-IMG">
-                    <rect key="frame" x="313" y="617" width="46" height="30"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="r6F-pP-AOC">
+                    <rect key="frame" x="0.0" y="20" width="375" height="545"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f1h-X0-IMG" customClass="NUXButton" customModule="WordPressAuthenticator">
+                    <rect key="frame" x="275" y="573" width="80" height="42"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="46" id="TLh-gc-cZT"/>
-                        <constraint firstAttribute="height" constant="30" id="gbb-cb-sNW"/>
+                        <constraint firstAttribute="width" constant="80" id="TLh-gc-cZT"/>
+                        <constraint firstAttribute="height" constant="42" id="gbb-cb-sNW"/>
                     </constraints>
                     <state key="normal" title="Button"/>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="r6F-pP-AOC">
-                    <rect key="frame" x="0.0" y="20" width="375" height="589"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="r6F-pP-AOC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="1Rt-BZ-GKI"/>
                 <constraint firstItem="f1h-X0-IMG" firstAttribute="top" secondItem="r6F-pP-AOC" secondAttribute="bottom" constant="8" id="7sZ-2D-yUz"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f1h-X0-IMG" secondAttribute="trailing" constant="16" id="9b2-WX-KXF"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f1h-X0-IMG" secondAttribute="trailing" constant="20" id="9b2-WX-KXF"/>
                 <constraint firstItem="r6F-pP-AOC" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="TBi-Iw-igH"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="f1h-X0-IMG" secondAttribute="bottom" constant="20" id="cwT-KA-DuH"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="f1h-X0-IMG" secondAttribute="bottom" constant="52" id="cwT-KA-DuH"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="r6F-pP-AOC" secondAttribute="trailing" id="nY0-BV-7W4"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
