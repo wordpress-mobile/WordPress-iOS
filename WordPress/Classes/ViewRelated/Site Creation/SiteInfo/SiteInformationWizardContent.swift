@@ -79,10 +79,21 @@ final class SiteInformationWizardContent: UIViewController {
     private func setupNextButton() {
         nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
 
+        setupButtonAsSkip()
+    }
+
+    private func setupButtonAsSkip() {
         let buttonTitle = NSLocalizedString("Skip", comment: "Button to progress to the next step")
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
         nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates tot he next step")
+    }
+
+    private func setupButtonAsNext() {
+        let buttonTitle = NSLocalizedString("Next", comment: "Button to progress to the next step")
+        nextStep.setTitle(buttonTitle, for: .normal)
+        nextStep.accessibilityLabel = buttonTitle
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step saving changes", comment: "Site creation. Navigates tot he next step")
     }
 
     private func setupHeader() {
