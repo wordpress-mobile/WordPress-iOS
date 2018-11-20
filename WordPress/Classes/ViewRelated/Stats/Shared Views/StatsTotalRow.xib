@@ -62,25 +62,26 @@
                             </subviews>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
-                            <rect key="frame" x="154.5" y="9" width="168.5" height="20.5"/>
+                            <rect key="frame" x="154.5" y="9" width="170.5" height="20.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCN-at-Jm0" userLabel="Disclosure Stack View">
-                            <rect key="frame" x="323" y="0.0" width="20" height="38"/>
+                            <rect key="frame" x="325" y="12.5" width="18" height="13"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKq-Lw-qOg" userLabel="Spacer">
-                                    <rect key="frame" x="0.0" y="0.0" width="10" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="10" height="13"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="10" id="dhV-kW-aex"/>
                                     </constraints>
                                 </view>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="lva-cI-tIa" userLabel="Disclosure Image">
-                                    <rect key="frame" x="10" y="0.0" width="10" height="38"/>
+                                    <rect key="frame" x="10" y="0.0" width="8" height="13"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="10" id="9R3-gZ-9nk"/>
+                                        <constraint firstAttribute="width" constant="8" id="9R3-gZ-9nk"/>
+                                        <constraint firstAttribute="height" constant="13" id="JzS-hQ-1qi"/>
                                     </constraints>
                                 </imageView>
                             </subviews>
