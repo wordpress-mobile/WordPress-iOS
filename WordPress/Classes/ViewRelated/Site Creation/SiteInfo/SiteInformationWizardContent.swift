@@ -61,7 +61,6 @@ final class SiteInformationWizardContent: UIViewController {
         setupFooter()
 
         table.dataSource = self
-        //table.delegate = self
     }
 
     private func setupTableBackground() {
