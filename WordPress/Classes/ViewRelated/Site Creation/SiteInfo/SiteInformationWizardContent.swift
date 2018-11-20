@@ -17,10 +17,15 @@ final class SiteInformationWizardContent: UIViewController {
         }
     }
 
+    private struct Constants {
+        static let bottomMargin: CGFloat = 63.0
+    }
+
     private let completion: SIteInformationCompletion
 
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var nextStep: NUXButton!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Basic information", comment: "Create site, step 3. Select basic information. Title")
@@ -45,6 +50,16 @@ final class SiteInformationWizardContent: UIViewController {
         setupBackground()
         setupTable()
         setupNextButton()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToKeyboardNotifications()
     }
 
     private func applyTitle() {
@@ -210,5 +225,51 @@ extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
 
     private func formIsFilled() -> Bool {
         return !titleString().isEmpty || !taglineString().isEmpty
+    }
+}
+
+extension SiteInformationWizardContent {
+    private func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidShow),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardDidShow(_ notification: Foundation.Notification) {
+        let keyboardFrame = localKeyboardFrameFromNotification(notification)
+        let keyboardHeight = keyboardFrame.origin.y
+
+        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0
+
+        bottomConstraint.constant = keyboardHeight - Constants.bottomMargin
+        view.setNeedsUpdateConstraints()
+        UIView.animate(withDuration: animationDuration, animations: { [weak self] in
+            self?.view.layoutIfNeeded()
+        })
+    }
+
+    @objc
+    private func keyboardWillHide(_ notification: Foundation.Notification) {
+        bottomConstraint.constant = Constants.bottomMargin
+    }
+
+    private func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
+        let key = UIResponder.keyboardFrameEndUserInfoKey
+        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
+            return .zero
+        }
+
+        return view.convert(keyboardFrame, from: nil)
     }
 }
