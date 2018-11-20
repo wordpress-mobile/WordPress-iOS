@@ -34,7 +34,8 @@ final class MockSiteSegmentsService: SiteSegmentsService {
         return SiteSegment(identifier: identifier,
                            title: "Blogger",
                            subtitle: "Publish a collection of posts",
-                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)
+                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
+                           iconColor: .red)
     }
 
     private func longSubtitle(id: String) -> SiteSegment {
@@ -42,6 +43,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
         return SiteSegment(identifier: identifier,
                            title: "Professional",
                            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
-                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!)
+                           icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
+                           iconColor: .blue)
     }
 }
