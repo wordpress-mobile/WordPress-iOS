@@ -190,6 +190,8 @@ extension SiteInformationWizardContent: UITableViewDataSource {
             cell.valueTextField.placeholder = TableStrings.taglinePlaceholder
         }
 
+        cell.valueTextField.textColor = WPStyleGuide.greyDarken30()
+
         if cell.delegate == nil {
             cell.delegate = self
         }
