@@ -1,32 +1,27 @@
 import UIKit
 
-class SimpleTotalsCell: UITableViewCell {
+class SimpleTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var borderedView: UIView!
-    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var subtitleStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
     private var dataRows = [StatsTotalRowData]()
-    private let headerView = StatsCellHeader.loadFromNib()
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
 
-    func configure(withTitle title: String,
-                   dataRows: [StatsTotalRowData],
-                   showSubtitles: Bool = false,
+    func configure(dataRows: [StatsTotalRowData],
                    itemSubtitle: String? = nil,
                    dataSubtitle: String? = nil) {
         self.dataRows = dataRows
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
-        subtitleStackView.isHidden = !showSubtitles
-        addHeader(title)
+        subtitleStackView.isHidden = (itemSubtitle != nil || dataSubtitle != nil)
         addRows()
         applyStyles()
     }
@@ -34,11 +29,6 @@ class SimpleTotalsCell: UITableViewCell {
 }
 
 private extension SimpleTotalsCell {
-
-    func addHeader(_ title: String) {
-        headerView.headerLabel.text = title
-        headerStackView.insertArrangedSubview(headerView, at: 0)
-    }
 
     func addRows() {
 

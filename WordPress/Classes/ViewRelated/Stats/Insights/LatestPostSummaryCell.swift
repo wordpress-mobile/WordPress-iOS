@@ -2,12 +2,11 @@ import UIKit
 import WordPressComStatsiOS
 import Gridicons
 
-class LatestPostSummaryCell: UITableViewCell {
+class LatestPostSummaryCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var borderedView: UIView!
-    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var summaryLabel: UILabel!
 
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
@@ -40,7 +39,6 @@ class LatestPostSummaryCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        addHeader()
         applyStyles()
     }
 
@@ -74,12 +72,6 @@ class LatestPostSummaryCell: UITableViewCell {
 // MARK: - Private Extension
 
 private extension LatestPostSummaryCell {
-
-    func addHeader() {
-        let header = StatsCellHeader.loadFromNib()
-        header.headerLabel.text = CellStrings.header
-        headerStackView.addArrangedSubview(header)
-    }
 
     func applyStyles() {
 
@@ -173,7 +165,6 @@ private extension LatestPostSummaryCell {
     }
 
     struct CellStrings {
-        static let header = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let summaryPostInfo = NSLocalizedString("It's been %@ since %@ was published. ", comment: "Latest post summary text including placeholder for time and the post title.")
         static let summaryPerformance = NSLocalizedString("Here's how the post performed so far.", comment: "Appended to latest post summary text when the post has data.")
         static let summaryNoData = NSLocalizedString("Get the ball rolling and increase your post views by sharing your post.", comment: "Appended to latest post summary text when the post does not have data.")
