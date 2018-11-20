@@ -16,7 +16,6 @@ final class SiteInformationWizardContent: UIViewController {
         }
     }
 
-    private let segment: SiteSegment?
     private let completion: SIteInformationCompletion
 
     @IBOutlet weak var table: UITableView!
@@ -29,8 +28,7 @@ final class SiteInformationWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
-    init(segment: SiteSegment?, completion: @escaping SIteInformationCompletion) {
-        self.segment = segment
+    init(completion: @escaping SIteInformationCompletion) {
         self.completion = completion
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
