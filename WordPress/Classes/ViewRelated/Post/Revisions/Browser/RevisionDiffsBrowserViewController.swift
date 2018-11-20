@@ -1,24 +1,32 @@
 import Gridicons
 
 class RevisionBrowserState {
+    typealias RevisionSelectedBlock = (Revision) -> Void
+
     let revisions: [Revision]
     var currentIndex: Int
+    var onRevisionSelected: RevisionSelectedBlock
 
-    init(revisions: [Revision], currentIndex: Int) {
+
+    init(revisions: [Revision], currentIndex: Int, onRevisionSelected: @escaping RevisionSelectedBlock) {
         self.revisions = revisions
         self.currentIndex = currentIndex
+        self.onRevisionSelected = onRevisionSelected
     }
 
     func currentRevision() -> Revision {
         return revisions[currentIndex]
     }
+
     func decreaseIndex() {
         currentIndex = max(currentIndex - 1, 0)
     }
+
     func increaseIndex() {
         currentIndex = min(currentIndex + 1, revisions.count)
     }
 }
+
 
 class RevisionDiffsBrowserViewController: UIViewController {
     var revisionState: RevisionBrowserState?
@@ -36,6 +44,15 @@ class RevisionDiffsBrowserViewController: UIViewController {
         }
         doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
         return doneItem
+    }()
+
+    private lazy var loadBarButtonItem: UIBarButtonItem = {
+        let title = NSLocalizedString("Load", comment: "Title of the screen that load selected the revisions.")
+        let loadItem = UIBarButtonItem(title: title, style: .plain, target: nil, action: nil)
+        loadItem.on() { [weak self] _ in
+            self?.loadRevision()
+        }
+        return loadItem
     }()
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +94,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
     private func setupNavbarItems() {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
+        navigationItem.rightBarButtonItems = [loadBarButtonItem]
         navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
     }
 
@@ -96,6 +114,16 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private func showPrevious() {
         revisionState?.decreaseIndex()
         showRevision()
+    }
+
+    private func loadRevision() {
+        guard let revision = revisionState?.currentRevision() else {
+            return
+        }
+
+        dismiss(animated: true) {
+            self.revisionState?.onRevisionSelected(revision)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
