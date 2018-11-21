@@ -30,6 +30,8 @@ class GutenbergMoreActionsHelper: NSObject {
 
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        //TODO: Comment in when bridge is ready
         /*if mode == .richText {
             // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
             let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
@@ -45,6 +47,7 @@ class GutenbergMoreActionsHelper: NSObject {
             }
         }
 
+        //TODO: Comment in when bridge is ready
         /*let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle
@@ -56,20 +59,22 @@ class GutenbergMoreActionsHelper: NSObject {
         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
             self.toggleEditingMode()
         }*/
+
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak context] _ in
+            context?.displayPreview()
+        }
+
+        //TODO: Comment in when bridge is ready
         /*
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self] _ in
-            self.displayPreview()
-        }
- 
         if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
-            alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
-                self.displayHistory()
+            alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak context] _ in
+                context?.displayHistory()
             }
-        }
-        
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
-            self.displayPostSettings()
         }*/
+
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak context] _ in
+            context?.displayPostSettings()
+        }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
