@@ -4113,7 +4113,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B5F2177A44400FD5797 /* RN */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
@@ -5246,14 +5245,6 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
-		7E3E9B5F2177A44400FD5797 /* RN */ = {
-			isa = PBXGroup;
-			children = (
-				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
-			);
-			path = RN;
-			sourceTree = "<group>";
-		};
 		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
 			isa = PBXGroup;
 			children = (
@@ -5528,6 +5519,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
 				98077B58207555E400109F95 /* Support */,
 				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
