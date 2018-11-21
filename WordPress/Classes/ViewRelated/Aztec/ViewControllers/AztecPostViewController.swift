@@ -75,7 +75,7 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         return self.createToolbar()
     }()
 
-    private let errorDomain = "AztecPostViewController.errorDomain"
+    let errorDomain = "AztecPostViewController.errorDomain"
 
     private enum ErrorCode: Int {
         case expectedSecondaryAction = 1
@@ -1300,13 +1300,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         default:
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
-    }
-
-    private var editorHasContent: Bool {
-        let titleIsEmpty = post.postTitle?.isEmpty ?? true
-        let contentIsEmpty = post.content?.isEmpty ?? true
-
-        return !titleIsEmpty || !contentIsEmpty
     }
 
     private var editorHasChanges: Bool {

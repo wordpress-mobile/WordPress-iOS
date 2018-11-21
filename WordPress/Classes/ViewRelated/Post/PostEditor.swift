@@ -62,7 +62,18 @@ protocol PublishablePostEditor: PostEditor {
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
 
+    /// Error domain used when reporting error to Crashlytics
+    var errorDomain: String { get }
+
     var navigationBarManager: PostEditorNavigationBarManager { get }
+}
+
+extension PublishablePostEditor {
+
+    var editorHasContent: Bool {
+        return post.hasContent()
+    }
+
 }
 
 protocol PostEditorNavigationBarManagerDelegate: class {

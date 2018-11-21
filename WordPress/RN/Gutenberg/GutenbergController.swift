@@ -4,6 +4,8 @@ import WPMediaPicker
 
 class GutenbergController: UIViewController, PublishablePostEditor {
 
+    let errorDomain: String = "GutenbergViewController.errorDomain"
+
     private struct Analytics {
         static let editorSource = "gutenberg"
     }
@@ -11,6 +13,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
     enum RequestHTMLReason {
         case publish
         case close
+        case more
     }
 
     var html: String {
@@ -31,6 +34,10 @@ class GutenbergController: UIViewController, PublishablePostEditor {
     }()
 
     var verificationPromptHelper: VerificationPromptHelper?
+
+    var moreActionsHelper: GutenbergMoreActionsHelper {
+        return GutenbergMoreActionsHelper(postEditorUtil: postEditorUtil)
+    }
 
     var analyticsEditorSource: String {
         return Analytics.editorSource
@@ -66,6 +73,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
+            refreshInterface()
         }
     }
 
@@ -132,7 +140,8 @@ class GutenbergController: UIViewController, PublishablePostEditor {
         super.viewDidLoad()
         postEditorUtil.createRevisionOfPost()
         configureNavigationBar()
-        reloadBlogPickerButton()
+        refreshInterface()
+
         gutenberg.delegate = self
     }
 
@@ -156,6 +165,11 @@ class GutenbergController: UIViewController, PublishablePostEditor {
 
         navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
     }
+
+    func refreshInterface() {
+        reloadBlogPickerButton()
+        reloadPublishButton()
+    }
 }
 
 extension GutenbergController: GutenbergBridgeDelegate {
@@ -168,6 +182,7 @@ extension GutenbergController: GutenbergBridgeDelegate {
 
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
         self.html = html
+        postEditorStateContext.updated(hasContent: editorHasContent)
 
         // TODO: currently we don't need to set this because Update button is always active
         // but in the future we might need this
@@ -180,6 +195,8 @@ extension GutenbergController: GutenbergBridgeDelegate {
                 postEditorUtil.handlePublishButtonTap()
             case .close:
                 postEditorUtil.cancelEditing()
+            case .more:
+                moreActionsHelper.displayMoreSheet()
             }
         }
     }
@@ -207,7 +224,9 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     var isPublishButtonEnabled: Bool {
-        return postEditorStateContext.isPublishButtonEnabled
+        // TODO: return postEditorStateContext.isPublishButtonEnabled when
+        // we have the required bridge communication that informs us every change
+        return true
     }
 
     var uploadingButtonSize: CGSize {
@@ -220,7 +239,8 @@ extension GutenbergController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-
+        requestHTMLReason = .more
+        gutenberg.requestHTML()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
