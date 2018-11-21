@@ -6,10 +6,9 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var borderedView: UIView!
     @IBOutlet weak var summaryLabel: UILabel!
-
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
+
     @IBOutlet weak var summariesStackView: UIStackView!
     @IBOutlet weak var chartStackView: UIStackView!
     @IBOutlet weak var actionStackView: UIStackView!
@@ -24,6 +23,9 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var actionLabel: UILabel!
     @IBOutlet weak var actionImageView: UIImageView!
     @IBOutlet weak var disclosureImageView: UIImageView!
+
+    @IBOutlet weak var topSeparatorLine: UIView!
+    @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -76,9 +78,10 @@ private extension LatestPostSummaryCell {
     func applyStyles() {
 
         Style.configureCell(self)
-        Style.configureBorderForView(borderedView)
 
         Style.configureLabelAsSummary(summaryLabel)
+        Style.configureViewAsSeperator(topSeparatorLine)
+        Style.configureViewAsSeperator(bottomSeparatorLine)
 
         viewsLabel.text = CellStrings.views
         viewsLabel.textColor = Style.defaultTextColor
@@ -160,8 +163,8 @@ private extension LatestPostSummaryCell {
     }
 
     struct ContentStackViewTopConstraint {
-        static let dataShown = CGFloat(20)
-        static let dataHidden = CGFloat(10)
+        static let dataShown = CGFloat(37)
+        static let dataHidden = CGFloat(16)
     }
 
     struct CellStrings {

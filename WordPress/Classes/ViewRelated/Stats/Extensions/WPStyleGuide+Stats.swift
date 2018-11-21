@@ -31,11 +31,6 @@ extension WPStyleGuide {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
-        static func configureBorderForView(_ borderedView: UIView) {
-            borderedView.layer.borderColor = cellBorderColor
-            borderedView.layer.borderWidth = cellBorderWidth
-        }
-
         static func configureViewAsSeperator(_ seperatorView: UIView) {
             seperatorView.backgroundColor = seperatorColor
         }
@@ -112,9 +107,7 @@ extension WPStyleGuide {
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
         static let tableBackgroundColor = WPStyleGuide.greyLighten30()
-        static let cellBackgroundColor = WPStyleGuide.greyLighten30()
-        static let cellBorderColor = WPStyleGuide.greyLighten20().cgColor
-        static let cellBorderWidth = CGFloat(0.5)
+        static let cellBackgroundColor = UIColor.white
         static let seperatorColor = WPStyleGuide.greyLighten20()
 
         static let filterTintColor = WPStyleGuide.wordPressBlue()
