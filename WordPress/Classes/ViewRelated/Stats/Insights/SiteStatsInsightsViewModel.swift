@@ -106,27 +106,38 @@ private extension SiteStatsInsightsViewModel {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
 
-        if let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue, numberOfPostsValue > 0 {
+        // For these tests, we need the string version to display since it comes formatted (ex: numberOfPosts).
+        // And we need the actual number value to test > 0 (ex: numberOfPostsValue).
+
+        if let numberOfPosts = allTimeStats?.numberOfPosts,
+            let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue,
+            numberOfPostsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: String(numberOfPostsValue),
+                                                   data: numberOfPosts,
                                                    icon: AllTimeStats.postsIcon))
         }
 
-        if let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue, numberOfViewsValue > 0 {
+        if let numberOfViews = allTimeStats?.numberOfViews,
+            let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue,
+            numberOfViewsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: String(numberOfViewsValue),
+                                                   data: numberOfViews,
                                                    icon: AllTimeStats.viewsIcon))
         }
 
-        if let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue, numberOfVisitorsValue > 0 {
+        if let numberOfVisitors = allTimeStats?.numberOfVisitors,
+            let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue,
+            numberOfVisitorsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: String(numberOfVisitorsValue),
+                                                   data: numberOfVisitors,
                                                    icon: AllTimeStats.visitorsIcon))
         }
 
-        if let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue, bestNumberOfViewsValue > 0 {
+        if let bestNumberOfViews = allTimeStats?.bestNumberOfViews,
+            let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue,
+            bestNumberOfViewsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: String(bestNumberOfViewsValue),
+                                                   data: bestNumberOfViews,
                                                    icon: AllTimeStats.bestViewsIcon,
                                                    nameDetail: allTimeStats?.bestViewsOn,
                                                    showSeparator: false))
