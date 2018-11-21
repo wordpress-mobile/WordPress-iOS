@@ -47,12 +47,12 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleTitle() {
-        title.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         title.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleSubtitle() {
-        subtitle.font = WPStyleGuide.subtitleFont()
+        subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.darkGrey()
     }
 
