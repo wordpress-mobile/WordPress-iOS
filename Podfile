@@ -79,7 +79,7 @@ def shared_test_pods
 end
 
 def gutenberg_pod(name)
-    gutenberg_branch='podspecs'
+    gutenberg_branch='master'
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 

@@ -216,7 +216,7 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.11.0)
-  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/podspecs/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
+  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
@@ -233,7 +233,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
-  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/podspecs/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
+  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
   - RNSVG (from `https://github.com/react-native-community/react-native-svg.git`, tag `6.5.2`)
   - RNTAztecView (from `https://github.com/wordpress-mobile/react-native-aztec.git`)
   - Starscream (= 3.0.6)
@@ -246,7 +246,7 @@ DEPENDENCIES:
   - WordPressUI (~> 1.1)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
-  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/podspecs/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
+  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.2.0)
 
 SPEC REPOS:
@@ -295,18 +295,18 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Folly:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/podspecs/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   React:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/podspecs/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: 6.5.2
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
   yoga:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/podspecs/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -369,6 +369,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 15747cfa8e17d06d869fdc196d9196de00a8d3a7
+PODFILE CHECKSUM: 8592a9351bc3c203d93d2bcde99cff7041cab951
 
 COCOAPODS: 1.5.3
