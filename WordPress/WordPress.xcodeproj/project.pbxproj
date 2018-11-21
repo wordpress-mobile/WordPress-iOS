@@ -629,7 +629,7 @@
 		7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
 		7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
 		7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */; };
-		7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */; };
+		7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -2401,7 +2401,7 @@
 		7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContentGroup.swift; sourceTree = "<group>"; };
 		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaProvider.swift; sourceTree = "<group>"; };
-		7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergController.swift; sourceTree = "<group>"; };
+		7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergViewController.swift; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -5250,7 +5250,7 @@
 		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */,
+				7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */,
 				91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */,
 				7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */,
 			);
@@ -9238,7 +9238,7 @@
 				43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */,
 				1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
-				7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */,
+				7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */,
 				FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,

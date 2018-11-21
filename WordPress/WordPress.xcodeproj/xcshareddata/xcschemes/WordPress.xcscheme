@@ -165,7 +165,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-gutenberg"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-debugJetpackConnectionFlow"
