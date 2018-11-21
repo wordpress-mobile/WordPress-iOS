@@ -35,10 +35,6 @@ class GutenbergController: UIViewController, PublishablePostEditor {
 
     var verificationPromptHelper: VerificationPromptHelper?
 
-    var moreActionsHelper: GutenbergMoreActionsHelper {
-        return GutenbergMoreActionsHelper(postEditorUtil: postEditorUtil)
-    }
-
     var analyticsEditorSource: String {
         return Analytics.editorSource
     }
@@ -102,7 +98,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
 
     private var requestHTMLReason: RequestHTMLReason?
 
-    private lazy var postEditorUtil = {
+    private(set) lazy var postEditorUtil = {
         return PostEditorUtil(context: self)
     }()
 
@@ -196,7 +192,7 @@ extension GutenbergController: GutenbergBridgeDelegate {
             case .close:
                 postEditorUtil.cancelEditing()
             case .more:
-                moreActionsHelper.displayMoreSheet()
+                displayMoreSheet()
             }
         }
     }

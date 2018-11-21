@@ -1,31 +1,11 @@
 import Foundation
 
-/// This class handles the "more" actions triggered by the top right
+/// This extension handles the "more" actions triggered by the top right
 /// navigation bar button of Gutenberg editor.
-class GutenbergMoreActionsHelper: NSObject {
+extension GutenbergController {
 
     private enum ErrorCode: Int {
         case expectedSecondaryAction = 1
-    }
-
-    private let postEditorUtil: PostEditorUtil
-
-    private var context: PostEditorViewControllerType {
-        return postEditorUtil.context
-    }
-
-    private var post: AbstractPost {
-        return context.post
-    }
-
-    private var postEditorStateContext: PostEditorStateContext {
-        return context.postEditorStateContext
-    }
-
-    init(postEditorUtil: PostEditorUtil) {
-        self.postEditorUtil = postEditorUtil
-
-        super.init()
     }
 
     func displayMoreSheet() {
@@ -60,33 +40,33 @@ class GutenbergMoreActionsHelper: NSObject {
             self.toggleEditingMode()
         }*/
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak context] _ in
-            context?.displayPreview()
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak self] _ in
+            self?.displayPreview()
         }
 
         //TODO: Comment in when bridge is ready
         /*
         if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
-            alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak context] _ in
-                context?.displayHistory()
+            alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
+                self?.displayHistory()
             }
         }*/
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak context] _ in
-            context?.displayPostSettings()
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
+            self?.displayPostSettings()
         }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        alert.popoverPresentationController?.barButtonItem = context.navigationBarManager.moreBarButtonItem
+        alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
 
-        context.present(alert, animated: true)
+        present(alert, animated: true)
     }
 
     func secondaryPublishButtonTapped() {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
-            let error = NSError(domain: context.errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
+            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
             Crashlytics.sharedInstance().recordError(error)
             return
         }
@@ -100,15 +80,17 @@ class GutenbergMoreActionsHelper: NSObject {
                 analyticsStat: secondaryStat)
         }
 
-        if context.presentedViewController != nil {
-            context.dismiss(animated: true, completion: publishPostClosure)
+        if presentedViewController != nil {
+            dismiss(animated: true, completion: publishPostClosure)
         } else {
             publishPostClosure()
         }
     }
 }
 
-extension GutenbergMoreActionsHelper {
+// MARK: - Constants
+
+extension GutenbergController {
     private struct MoreSheetAlert {
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
