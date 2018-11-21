@@ -12,6 +12,7 @@ final class TitleSubtitleHeader: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
 
         return label
     }()
@@ -21,6 +22,7 @@ final class TitleSubtitleHeader: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
 
         return label
     }()
@@ -48,9 +50,9 @@ final class TitleSubtitleHeader: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor, constant: Margins.horizontalMargin),
-            stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor, constant: -1 * Margins.horizontalMargin),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.verticalMargin),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1 * Margins.horizontalMargin),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 2 * Margins.verticalMargin),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.verticalMargin)])
 
         setStyles()
@@ -67,12 +69,12 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func styleTitle() {
-        title.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        title.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         title.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleSubtitle() {
-        subtitle.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.greyDarken10()
     }
 
