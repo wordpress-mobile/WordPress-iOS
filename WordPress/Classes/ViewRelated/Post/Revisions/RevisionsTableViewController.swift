@@ -31,13 +31,6 @@ class RevisionsTableViewController: UITableViewController {
         return tableViewHandler.resultsController.sections?.count ?? 0
     }
 
-    private var postType: String {
-        switch post {
-        case _ as Page: return NSLocalizedString("page", comment: "No Result placeholder when an AbstractPost is a type: Page")
-        default: return NSLocalizedString("post", comment: "No Result placeholder when an AbstractPost is a type: Post ")
-        }
-    }
-
 
     required init(post: AbstractPost, onRevisionLoaded: @escaping RevisionLoadedBlock) {
         self.post = post
@@ -108,7 +101,7 @@ private extension RevisionsTableViewController {
 
     @objc private func refreshRevisions() {
         if sectionCount == 0 {
-            configureAndDisplayNoResults(title: String(format: NoResultsText.loadingTitle, postType),
+            configureAndDisplayNoResults(title: NoResultsText.loadingTitle,
                                          accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
@@ -267,13 +260,13 @@ extension RevisionsTableViewController: RevisionsView {
             // When the API call failed and there are no revisions saved yet
             //
             configureAndDisplayNoResults(title: NoResultsText.errorTitle,
-                                         subtitle: String(format: NoResultsText.errorSubtitle, postType),
+                                         subtitle: NoResultsText.errorSubtitle,
                                          buttonTitle: NoResultsText.reloadButtonTitle)
         case (true, let count) where count == 0:
             // When the API call successed but there are no revisions loaded
             // This is an edge cas. It shouldn't happen since we open the revisions list only if the post revisions array is not empty.
             configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
-                                         subtitle: String(format: NoResultsText.noResultsSubtitle, postType))
+                                         subtitle: NoResultsText.noResultsSubtitle)
         default:
             hideNoResults()
         }
