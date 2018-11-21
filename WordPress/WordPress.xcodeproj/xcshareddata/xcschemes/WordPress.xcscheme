@@ -53,6 +53,9 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "EditorSettingsTests/testGutenbergEnabledByDefaultButNotForcedAgain()">
+               </Test>
+               <Test
                   Identifier = "RemoteTestCase">
                </Test>
             </SkippedTests>
@@ -158,6 +161,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-debugPinghub"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-gutenberg"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument

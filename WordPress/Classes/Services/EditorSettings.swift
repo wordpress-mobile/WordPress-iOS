@@ -54,7 +54,7 @@ class EditorSettings: NSObject {
     // MARK: Public accessors
 
     private var current: Editor {
-        return .gutenberg
+        return Feature.enabled(.gutenberg) ? .gutenberg : .aztec
     }
 
     @objc func isEnabled(_ editor: Editor) -> Bool {
