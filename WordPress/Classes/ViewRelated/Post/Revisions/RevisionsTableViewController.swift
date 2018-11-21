@@ -303,10 +303,10 @@ private extension Date {
 
 
 struct NoResultsText {
-    static let loadingTitle = NSLocalizedString("Loading %@ history...", comment: "Displayed while a call is loading the history. The placeholder might be 'post' or 'page'.")
+    static let loadingTitle = NSLocalizedString("Loading history...", comment: "Displayed while a call is loading the history.")
     static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load the history again. It appears if the loading call fails.")
     static let noResultsTitle = NSLocalizedString("No history yet", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
-    static let noResultsSubtitle = NSLocalizedString("When you make changes to your %@ you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error. The placeholder might be 'post' or 'page'.")
+    static let noResultsSubtitle = NSLocalizedString("When you make changes in the editor you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error.")
     static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the history")
-    static let errorSubtitle = NSLocalizedString("There was an error loading the %@ history", comment: "Text displayed when there is a failure loading the history. The placeholder might be 'post' or 'page'.")
+    static let errorSubtitle = NSLocalizedString("There was an error loading the history", comment: "Text displayed when there is a failure loading the history.")
 }
