@@ -2,7 +2,7 @@ import UIKit
 
 final class TitleSubtitleHeader: UIView {
     struct Margins {
-        static let horizontalMargin: CGFloat = 38.0
+        static let horizontalMargin: CGFloat = 30.0
         static let verticalMargin: CGFloat = 30.0
         static let spacing: CGFloat = 10.0
     }
