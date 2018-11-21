@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.5'
+    pod 'WordPressShared', '~> 1.5.1'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'

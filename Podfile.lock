@@ -172,7 +172,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.2)
   - WordPressAuthenticator (~> 1.1)
   - WordPressKit (~> 1.5.0)
-  - WordPressShared (~> 1.5)
+  - WordPressShared (~> 1.5.1)
   - WordPressUI (~> 1.1)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
@@ -264,6 +264,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 068c73d7d3426ba7fa5186bec36f0c07c31688f4
+PODFILE CHECKSUM: 9f31cd9f30d5b80fc282675de522e7498ef5f71c
 
 COCOAPODS: 1.5.3
