@@ -53,6 +53,9 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "EditorSettingsTests/testGutenbergEnabledByDefaultButNotForcedAgain()">
+               </Test>
+               <Test
                   Identifier = "RemoteTestCase">
                </Test>
             </SkippedTests>
