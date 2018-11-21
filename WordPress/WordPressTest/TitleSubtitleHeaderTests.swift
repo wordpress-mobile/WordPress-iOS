@@ -38,7 +38,7 @@ final class TitleSubtitleHeaderTests: XCTestCase {
     }
 
     func testTitleFont() {
-        XCTAssertEqual(header?.titleLabel().font, WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold))
+        XCTAssertEqual(header?.titleLabel().font, WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold))
     }
 
     func testTitleFontColor() {
@@ -46,7 +46,7 @@ final class TitleSubtitleHeaderTests: XCTestCase {
     }
 
     func testSubtitleFont() {
-        XCTAssertEqual(header?.subtitleLabel().font, WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular))
+        XCTAssertEqual(header?.subtitleLabel().font, WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular))
     }
 
     func testSubtitleFontColor() {
