@@ -78,6 +78,11 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
+def gutenberg_pod(name)
+    gutenberg_branch='podspecs'
+    pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -91,9 +96,9 @@ target 'WordPress' do
     ## =====================
     ##
     pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/'
-    pod 'React', :podspec => 'Podspecs/React.podspec.json'
-    pod 'yoga', :podspec => 'Podspecs/yoga.podspec.json'
-    pod 'Folly', :podspec => 'Podspecs/Folly.podspec.json'
+    gutenberg_pod 'React'
+    gutenberg_pod 'yoga'
+    gutenberg_pod 'Folly'
     pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '6.5.2'
     pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git'
 
