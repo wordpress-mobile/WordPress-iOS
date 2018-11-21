@@ -41,11 +41,11 @@ class SiteStatsInsightsViewModel: Observable {
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
-                tableRows.append(CellHeaderRow(title: StatsHeaders.latestPostSummary))
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.latestPostSummary))
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                tableRows.append(CellHeaderRow(title: StatsHeaders.allTimeStats))
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
                 tableRows.append(AllTimeStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
@@ -86,7 +86,7 @@ class SiteStatsInsightsViewModel: Observable {
 
 private extension SiteStatsInsightsViewModel {
 
-    struct StatsHeaders {
+    struct InsightsHeaders {
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
     }
