@@ -3,7 +3,8 @@ import UIKit
 final class TitleSubtitleHeader: UIView {
     struct Margins {
         static let horizontalMargin: CGFloat = 30.0
-        static let verticalMargin: CGFloat = 30.0
+        static let bottomMargin: CGFloat = 30.0
+        static let topMargin: CGFloat = 50.0
         static let spacing: CGFloat = 10.0
     }
 
@@ -52,8 +53,8 @@ final class TitleSubtitleHeader: UIView {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1 * Margins.horizontalMargin),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 2 * Margins.verticalMargin),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.verticalMargin)])
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.topMargin),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.bottomMargin)])
 
         setStyles()
     }
