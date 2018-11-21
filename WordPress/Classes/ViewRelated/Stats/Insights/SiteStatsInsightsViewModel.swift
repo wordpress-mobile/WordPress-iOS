@@ -50,7 +50,10 @@ class SiteStatsInsightsViewModel: Observable {
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
+                tableRows.append(MostPopularStatsRow(itemSubtitle: MostPopularStats.itemSubtitle,
+                                                     dataSubtitle: MostPopularStats.dataSubtitle,
+                                                     dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
@@ -89,6 +92,7 @@ private extension SiteStatsInsightsViewModel {
     struct InsightsHeaders {
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
+        static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
     }
 
     struct AllTimeStats {
@@ -100,6 +104,11 @@ private extension SiteStatsInsightsViewModel {
         static let visitorsIcon = Style.imageForGridiconType(.user)
         static let bestViewsEverTitle = NSLocalizedString("Best Views Ever", comment: "All Time Stats 'Best Views Ever' label")
         static let bestViewsIcon = Style.imageForGridiconType(.trophy)
+    }
+
+    struct MostPopularStats {
+        static let itemSubtitle = NSLocalizedString("Day/Hour", comment: "Most Popular Day and Hour label for day and hour")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Most Popular Day and Hour label for number of views")
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -141,6 +150,26 @@ private extension SiteStatsInsightsViewModel {
                                                    icon: AllTimeStats.bestViewsIcon,
                                                    nameDetail: allTimeStats?.bestViewsOn,
                                                    showSeparator: false))
+        }
+
+        return dataRows
+    }
+
+    func createMostPopularStatsRows() -> [StatsTotalRowData] {
+        let mostPopularStats = store.getMostPopularStats()
+        var dataRows = [StatsTotalRowData]()
+
+        if let highestDayOfWeek = mostPopularStats?.highestDayOfWeek,
+            let highestDayPercent = mostPopularStats?.highestDayPercent,
+            let highestHour = mostPopularStats?.highestHour,
+            let highestHourPercent = mostPopularStats?.highestHourPercent {
+
+            // Day
+            dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek, data: highestDayPercent))
+
+            // Hour
+            let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
+            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent, showSeparator: false))
         }
 
         return dataRows
