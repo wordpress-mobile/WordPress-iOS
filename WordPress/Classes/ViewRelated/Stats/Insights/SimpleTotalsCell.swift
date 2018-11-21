@@ -48,6 +48,8 @@ private extension SimpleTotalsCell {
 
     func addRows() {
 
+        removeExistingRows()
+
         if dataRows.count == 0 {
             let row = StatsNoDataRow.loadFromNib()
             rowsStackView.addArrangedSubview(row)
@@ -58,6 +60,13 @@ private extension SimpleTotalsCell {
             let row = StatsTotalRow.loadFromNib()
             row.configure(rowData: dataRow)
             rowsStackView.addArrangedSubview(row)
+        }
+    }
+
+    func removeExistingRows() {
+        rowsStackView.arrangedSubviews.forEach {
+            rowsStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
         }
     }
 
