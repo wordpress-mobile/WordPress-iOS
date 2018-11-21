@@ -7,7 +7,25 @@ module Fastlane
         other_action.configure_validate
 
         Action.sh("cd .. && rm -rf ~/Library/Developer/Xcode/DerivedData")
-        
+
+        # Verify that ImageMagick exists on this machine and can be called from the command-line.
+        # Internal Builds use it to generate the App Icon as part of the build process
+        begin
+            Action.sh("which magick")
+        rescue
+            UI.user_error!("Couldn't find ImageMagick. Please install it by running `brew install imagemagick`")
+            raise
+        end
+
+        # Verify that Ghostscript exists on this machine and can be called from the command-line.
+        # Internal Builds use it to generate the App Icon as part of the build process
+        begin
+            Action.sh("which gs")
+        rescue
+            UI.user_error!("Couldn't find Ghostscript. Please install it by running `brew install ghostscript`")
+            raise
+        end
+
         # Check gems and pods are up to date. This will exit if it fails
         begin
           Action.sh("bundle check")
