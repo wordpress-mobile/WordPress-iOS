@@ -68,6 +68,10 @@ extension WPStyleGuide {
             label.textColor = secondaryTextColor
         }
 
+        static func configureLabelAsNoData(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
@@ -83,9 +87,8 @@ extension WPStyleGuide {
             return attributedString
         }
 
-        static func imageForGridiconType(_ iconType: GridiconType,
-                                         withTint tintColor: ImageTintColor = .grey) -> UIImage? {
-                return Gridicon.iconOfType(iconType).imageWithTintColor(tintColor.styleGuideColor)
+        static func imageForGridiconType(_ iconType: GridiconType, withTint tintColor: ImageTintColor = .grey) -> UIImage? {
+            return Gridicon.iconOfType(iconType, withSize: gridiconSize).imageWithTintColor(tintColor.styleGuideColor)
         }
 
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
@@ -117,6 +120,8 @@ extension WPStyleGuide {
         static let filterTintColor = WPStyleGuide.wordPressBlue()
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()
         static let filterDividerColor = WPStyleGuide.greyLighten20()
+
+        static let gridiconSize = CGSize(width: 24, height: 24)
     }
 
 }

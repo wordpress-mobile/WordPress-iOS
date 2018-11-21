@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhI-k5-uUO" userLabel="Seperator Line">
-                    <rect key="frame" x="56" y="0.0" width="319" height="0.5"/>
+                    <rect key="frame" x="56" y="59.5" width="319" height="0.5"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="0.5" id="8Q0-VF-yTk"/>
@@ -30,16 +30,16 @@
                             <rect key="frame" x="0.0" y="0.0" width="40" height="38"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
-                                    <rect key="frame" x="0.0" y="0.0" width="20" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="38"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="20" id="Ope-3W-fHa"/>
+                                        <constraint firstAttribute="width" constant="24" id="Ope-3W-fHa"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
-                                    <rect key="frame" x="20" y="0.0" width="20" height="38"/>
+                                    <rect key="frame" x="24" y="0.0" width="16" height="38"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="20" id="qRY-b9-qyj"/>
+                                        <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -62,25 +62,26 @@
                             </subviews>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
-                            <rect key="frame" x="154.5" y="9" width="168.5" height="20.5"/>
+                            <rect key="frame" x="154.5" y="9" width="170.5" height="20.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCN-at-Jm0" userLabel="Disclosure Stack View">
-                            <rect key="frame" x="323" y="0.0" width="20" height="38"/>
+                            <rect key="frame" x="325" y="12.5" width="18" height="13"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKq-Lw-qOg" userLabel="Spacer">
-                                    <rect key="frame" x="0.0" y="0.0" width="10" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="10" height="13"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="10" id="dhV-kW-aex"/>
                                     </constraints>
                                 </view>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="lva-cI-tIa" userLabel="Disclosure Image">
-                                    <rect key="frame" x="10" y="0.0" width="10" height="38"/>
+                                    <rect key="frame" x="10" y="0.0" width="8" height="13"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="10" id="9R3-gZ-9nk"/>
+                                        <constraint firstAttribute="width" constant="8" id="9R3-gZ-9nk"/>
+                                        <constraint firstAttribute="height" constant="13" id="JzS-hQ-1qi"/>
                                     </constraints>
                                 </imageView>
                             </subviews>
@@ -96,7 +97,7 @@
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="OyG-1h-jIV"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="hUw-W8-K8p"/>
                 <constraint firstItem="mSM-N7-rqk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="qih-kX-a7N"/>
-                <constraint firstItem="rhI-k5-uUO" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ugR-EV-g6v"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rhI-k5-uUO" secondAttribute="bottom" id="rtJ-TR-3Y4"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

@@ -82,6 +82,10 @@ private extension SiteStatsInsightsTableViewController {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, store: store)
 
         changeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.store,
+                !store.isFetching else {
+                return
+            }
             self?.refreshTableView()
         }
     }
