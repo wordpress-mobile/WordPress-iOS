@@ -411,15 +411,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
-//    func showGutenberg(with apost: AbstractPost) {
-//        guard let post = apost as? Post else {
-//            return
-//        }
-//        let gutenberg = GutenbergController(post: post)
-//        let navigation = UINavigationController(rootViewController: gutenberg)
-//        present(navigation, animated: true, completion: nil)
-//    }
-
     private func editPost(apost: AbstractPost) {
         guard let post = apost as? Post else {
             return

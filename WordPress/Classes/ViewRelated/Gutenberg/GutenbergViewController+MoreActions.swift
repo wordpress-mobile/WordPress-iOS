@@ -2,7 +2,7 @@ import Foundation
 
 /// This extension handles the "more" actions triggered by the top right
 /// navigation bar button of Gutenberg editor.
-extension GutenbergController {
+extension GutenbergViewController {
 
     private enum ErrorCode: Int {
         case expectedSecondaryAction = 1
@@ -90,7 +90,7 @@ extension GutenbergController {
 
 // MARK: - Constants
 
-extension GutenbergController {
+extension GutenbergViewController {
     private struct MoreSheetAlert {
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
