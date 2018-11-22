@@ -2,7 +2,7 @@ import UIKit
 import React
 import WPMediaPicker
 
-class GutenbergController: UIViewController, PublishablePostEditor {
+class GutenbergViewController: UIViewController, PublishablePostEditor {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
@@ -101,9 +101,6 @@ class GutenbergController: UIViewController, PublishablePostEditor {
     private let gutenberg: Gutenberg
 
     required init(post: AbstractPost) {
-        guard let post = post as? Post else {
-            fatalError()
-        }
         self.post = post
         self.postTitle = post.postTitle ?? ""
         self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
@@ -171,7 +168,7 @@ class GutenbergController: UIViewController, PublishablePostEditor {
     }
 }
 
-extension GutenbergController: GutenbergBridgeDelegate {
+extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaPicker(callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
@@ -201,7 +198,7 @@ extension GutenbergController: GutenbergBridgeDelegate {
     }
 }
 
-extension GutenbergController: PostEditorStateContextDelegate {
+extension GutenbergViewController: PostEditorStateContextDelegate {
 
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
         reloadPublishButton()
@@ -217,7 +214,7 @@ extension GutenbergController: PostEditorStateContextDelegate {
 
 }
 
-extension GutenbergController: PostEditorNavigationBarManagerDelegate {
+extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     var publishButtonText: String {
         return postEditorStateContext.publishButtonText
     }
