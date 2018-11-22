@@ -1,6 +1,6 @@
 import Foundation
 
-protocol PublishablePostEditor: PostEditor {
+protocol PublishablePostEditor: PostEditor, UIViewControllerTransitioningDelegate {
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
     var shouldRemovePostOnDismiss: Bool { get }
@@ -43,6 +43,19 @@ protocol PublishablePostEditor: PostEditor {
     /// Error domain used when reporting error to Crashlytics
     var errorDomain: String { get }
 
+    /// Returns true if the site mode is on
+    var isSingleSiteMode: Bool { get }
+
+    /// MediaLibraryPickerDataSource
+    var mediaLibraryDataSource: MediaLibraryPickerDataSource { get set }
+
+    /// Returns the media attachment removed version of html
+    func contentByStrippingMediaAttachments() -> String
+
+    /// Debouncer used to save the post locally with a delay
+    var debouncer: Debouncer { get }
+
+    /// Navigation bar manager for this post editor
     var navigationBarManager: PostEditorNavigationBarManager { get }
 }
 
@@ -52,35 +65,16 @@ extension PublishablePostEditor {
         return post.hasContent()
     }
 
-}
-
-extension PublishablePostEditor where Self: UIViewController {
-
-    func displayPostSettings() {
-        let settingsViewController: PostSettingsViewController
-        if post is Page {
-            settingsViewController = PageSettingsViewController(post: post)
-        } else {
-            settingsViewController = PostSettingsViewController(post: post)
-        }
-        settingsViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(settingsViewController, animated: true)
+    var mainContext: NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
     }
 
-    func displayPreview() {
-        let previewController = PostPreviewViewController(post: post)
-        previewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(previewController, animated: true)
+    var currentBlogCount: Int {
+        let service = BlogService(managedObjectContext: mainContext)
+        return service.blogCountForAllAccounts()
     }
 
-    func displayHistory() {
-        let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
-            if let post = self?.post.update(from: revision) {
-                DispatchQueue.main.async {
-                    self?.post = post
-                }
-            }
-        }
-        navigationController?.pushViewController(revisionsViewController, animated: true)
+    var isSingleSiteMode: Bool {
+        return currentBlogCount <= 1 || post.hasRemote()
     }
 }

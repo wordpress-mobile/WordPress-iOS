@@ -745,7 +745,9 @@
 		91C7F2C921A5A7FE00C389A4 /* PublishablePostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F2C821A5A7FE00C389A4 /* PublishablePostEditor.swift */; };
 		91C7F2CD21A5BE4100C389A4 /* GutenbergController+MoreActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F2CC21A5BE4000C389A4 /* GutenbergController+MoreActions.swift */; };
 		91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */; };
-		91EB11BC219B19700057F17D /* PostEditorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EB11BB219B19700057F17D /* PostEditorUtil.swift */; };
+		91DCE84421A6A7840062F134 /* PublishablePostEditor+BlogPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84321A6A7840062F134 /* PublishablePostEditor+BlogPicker.swift */; };
+		91DCE84621A6A7F50062F134 /* PublishablePostEditor+MoreOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84521A6A7F50062F134 /* PublishablePostEditor+MoreOptions.swift */; };
+		91DCE84821A6C58C0062F134 /* PublishablePostEditor+Publish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84721A6C58C0062F134 /* PublishablePostEditor+Publish.swift */; };
 		930D5C8B1ED3298F00D9A771 /* WordPressComStatsiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930D5C8A1ED3298F00D9A771 /* WordPressComStatsiOS.framework */; };
 		930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
@@ -2554,7 +2556,9 @@
 		91C7F2C821A5A7FE00C389A4 /* PublishablePostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishablePostEditor.swift; sourceTree = "<group>"; };
 		91C7F2CC21A5BE4000C389A4 /* GutenbergController+MoreActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GutenbergController+MoreActions.swift"; sourceTree = "<group>"; };
 		91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaPickerHelper.swift; sourceTree = "<group>"; };
-		91EB11BB219B19700057F17D /* PostEditorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorUtil.swift; sourceTree = "<group>"; };
+		91DCE84321A6A7840062F134 /* PublishablePostEditor+BlogPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublishablePostEditor+BlogPicker.swift"; sourceTree = "<group>"; };
+		91DCE84521A6A7F50062F134 /* PublishablePostEditor+MoreOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublishablePostEditor+MoreOptions.swift"; sourceTree = "<group>"; };
+		91DCE84721A6C58C0062F134 /* PublishablePostEditor+Publish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PublishablePostEditor+Publish.swift"; sourceTree = "<group>"; };
 		930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalCoreDataService.h; sourceTree = "<group>"; };
 		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
 		93069F55176237A4000C966D /* ActivityLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogViewController.m; sourceTree = "<group>"; };
@@ -4415,7 +4419,6 @@
 			isa = PBXGroup;
 			children = (
 				402FFB23218C36CF00FF4A0B /* AztecVerificationPromptHelper.swift */,
-				91EB11BB219B19700057F17D /* PostEditorUtil.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -6058,6 +6061,10 @@
 				5D09CBA61ACDE532007A23BD /* Utils */,
 				5DF3DD6A1A93772D0051A229 /* Views */,
 				E13ACCD31EE5672100CCE985 /* PostEditor.swift */,
+				91C7F2C821A5A7FE00C389A4 /* PublishablePostEditor.swift */,
+				91DCE84321A6A7840062F134 /* PublishablePostEditor+BlogPicker.swift */,
+				91DCE84521A6A7F50062F134 /* PublishablePostEditor+MoreOptions.swift */,
+				91DCE84721A6C58C0062F134 /* PublishablePostEditor+Publish.swift */,
 				437542E21DD4E19E00D6B727 /* EditPostViewController.swift */,
 				5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */,
 				5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */,
@@ -6083,7 +6090,6 @@
 				FF0AAE0C1A16550D0089841D /* WPMediaProgressTableViewController.m */,
 				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
 				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
-				91C7F2C821A5A7FE00C389A4 /* PublishablePostEditor.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -9178,6 +9184,7 @@
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
 				436D56292117312700CEAA33 /* RegisterDomainDetailsViewController.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
+				91DCE84421A6A7840062F134 /* PublishablePostEditor+BlogPicker.swift in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
@@ -9206,7 +9213,6 @@
 				D817799420ABFDB300330998 /* ReaderPostCellActions.swift in Sources */,
 				FF7E510A1FBDE0C500AD2918 /* MediaAttachment+WordPress.swift in Sources */,
 				402B2A7920ACD7690027C1DC /* ActivityStore.swift in Sources */,
-				91EB11BC219B19700057F17D /* PostEditorUtil.swift in Sources */,
 				E62AFB6A1DC8E593007484FC /* NSAttributedString+WPRichText.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
@@ -9214,6 +9220,7 @@
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
+				91DCE84621A6A7F50062F134 /* PublishablePostEditor+MoreOptions.swift in Sources */,
 				73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
@@ -9598,6 +9605,7 @@
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
 				D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */,
+				91DCE84821A6C58C0062F134 /* PublishablePostEditor+Publish.swift in Sources */,
 				98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				177B4C2B2123185300CF8084 /* GiphyMediaGroup.swift in Sources */,

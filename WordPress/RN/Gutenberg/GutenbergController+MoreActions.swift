@@ -74,7 +74,7 @@ extension GutenbergController {
         let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
 
         let publishPostClosure = { [unowned self] in
-            self.postEditorUtil.publishPost(
+            self.publishPost(
                 action: action,
                 dismissWhenDone: action.dismissesEditor,
                 analyticsStat: secondaryStat)
