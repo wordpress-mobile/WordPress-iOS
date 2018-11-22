@@ -128,7 +128,7 @@ class NoticePresenter: NSObject {
 
             switch self?.presentingViewController {
             case let vc as UntouchableViewController:
-                noticeContainer.bottomConstraint?.constant = -vc.bottomOffset
+                noticeContainer.bottomConstraint?.constant = -vc.offsetOnscreen
             default:
                 noticeContainer.bottomConstraint?.constant = 0
             }
@@ -185,6 +185,8 @@ class NoticePresenter: NSObject {
     private var offscreenBottomOffset: CGFloat {
         if let tabBarController = presentingViewController as? UITabBarController {
             return tabBarController.tabBar.bounds.height
+        } else if let vc = presentingViewController as? UntouchableViewController {
+            return vc.offsetOffscreen
         } else {
             return 0
         }
@@ -214,6 +216,7 @@ class NoticePresenter: NSObject {
         static let appearanceSpringDamping: CGFloat = 0.7
         static let appearanceSpringVelocity: CGFloat = 0.0
         static let dismissDelay: TimeInterval = 5.0
+        static let offsetWithoutTabbar: CGFloat = 50.0
     }
 }
 

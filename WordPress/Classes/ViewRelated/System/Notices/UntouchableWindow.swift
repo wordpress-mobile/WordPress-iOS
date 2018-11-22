@@ -24,21 +24,35 @@ class UntouchableViewController: UIViewController {
         self.view = UntouchableView()
     }
 
-    var botttomAnchor: NSLayoutAnchor<NSLayoutYAxisAnchor> {
-        if #available(iOS 11, *) {
-            return view.safeAreaLayoutGuide.bottomAnchor
-        } else {
-            return NSLayoutAnchor<NSLayoutYAxisAnchor>()
+    var offsetOnscreen: CGFloat {
+        guard let mainWindow = UIApplication.shared.delegate?.window else {
+            return 0
         }
+        guard let tabBarController = mainWindow?.rootViewController as? WPTabBarController,
+            tabBarController.presentedViewController == nil else {
+            return 0
+        }
+
+        return tabBarController.tabBar.frame.height
     }
 
-    var bottomOffset: CGFloat {
-        // TODO: make this look at the other UIWindow 
-        return 50
+    var offsetOffscreen: CGFloat {
+        // we want 0 unless the tab bar has presented a VC
+        guard let mainWindow = UIApplication.shared.delegate?.window,
+            let tabBarController = mainWindow?.rootViewController as? WPTabBarController,
+            tabBarController.presentedViewController != nil else {
+                return 0
+        }
+
+        return Constants.offsetWithoutTabbar
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    enum Constants {
+        static let offsetWithoutTabbar: CGFloat = 50.0
     }
 }
 
