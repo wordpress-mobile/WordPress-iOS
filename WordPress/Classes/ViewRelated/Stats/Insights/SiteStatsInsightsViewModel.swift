@@ -50,10 +50,14 @@ class SiteStatsInsightsViewModel: Observable {
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
+                let dataRows = createMostPopularStatsRows()
+
+                // Don't show the subtitles if there is no data
+                let itemSubtitle = dataRows.count > 0 ? MostPopularStats.itemSubtitle : nil
+                let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
+
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(MostPopularStatsRow(itemSubtitle: MostPopularStats.itemSubtitle,
-                                                     dataSubtitle: MostPopularStats.dataSubtitle,
-                                                     dataRows: createMostPopularStatsRows()))
+                tableRows.append(MostPopularStatsRow(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
@@ -162,7 +166,9 @@ private extension SiteStatsInsightsViewModel {
         if let highestDayOfWeek = mostPopularStats?.highestDayOfWeek,
             let highestDayPercent = mostPopularStats?.highestDayPercent,
             let highestHour = mostPopularStats?.highestHour,
-            let highestHourPercent = mostPopularStats?.highestHourPercent {
+            let highestHourPercent = mostPopularStats?.highestHourPercent,
+            let highestDayPercentValue = mostPopularStats?.highestDayPercentValue,
+            highestDayPercentValue.intValue > 0 {
 
             // Day
             dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek, data: highestDayPercent))

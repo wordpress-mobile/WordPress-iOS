@@ -55,8 +55,8 @@ struct MostPopularStatsRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let itemSubtitle: String
-    let dataSubtitle: String
+    let itemSubtitle: String?
+    let dataSubtitle: String?
     let dataRows: [StatsTotalRowData]
     let action: ImmuTableAction? = nil
 
