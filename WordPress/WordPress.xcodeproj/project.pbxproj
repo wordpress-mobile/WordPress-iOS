@@ -629,7 +629,7 @@
 		7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */; };
 		7E3E7A6620E44F200075D159 /* HeaderContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */; };
 		7E3E9B6D2177C7BD00FD5797 /* MediaProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */; };
-		7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */; };
+		7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */; };
 		7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */; };
 		7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */; };
 		7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */; };
@@ -660,6 +660,7 @@
 		7E4A773820F80414001C706D /* ActivityPostRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773120F800CB001C706D /* ActivityPostRange.swift */; };
 		7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773320F800ED001C706D /* ActivityPluginRange.swift */; };
 		7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */; };
+		7E504D4A21A5B8D400E341A8 /* PostEditorNavigationBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E504D4921A5B8D400E341A8 /* PostEditorNavigationBarManager.swift */; };
 		7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */; };
 		7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0120FE5EAE005796FE /* ContentRouter.swift */; };
 		7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */; };
@@ -2400,7 +2401,7 @@
 		7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectContentGroup.swift; sourceTree = "<group>"; };
 		7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContentGroup.swift; sourceTree = "<group>"; };
 		7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaProvider.swift; sourceTree = "<group>"; };
-		7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergController.swift; sourceTree = "<group>"; };
+		7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergViewController.swift; sourceTree = "<group>"; };
 		7E4123AC20F4097900DF8486 /* FormattableContentFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentFactory.swift; sourceTree = "<group>"; };
 		7E4123AD20F4097900DF8486 /* FormattableContentGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattableContentGroup.swift; sourceTree = "<group>"; };
 		7E4123AF20F4097A00DF8486 /* DefaultFormattableContentAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultFormattableContentAction.swift; sourceTree = "<group>"; };
@@ -2431,6 +2432,7 @@
 		7E4A773320F800ED001C706D /* ActivityPluginRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPluginRange.swift; sourceTree = "<group>"; };
 		7E4A773520F80146001C706D /* ActivityRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRangesFactory.swift; sourceTree = "<group>"; };
 		7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactory.swift; sourceTree = "<group>"; };
+		7E504D4921A5B8D400E341A8 /* PostEditorNavigationBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditorNavigationBarManager.swift; sourceTree = "<group>"; };
 		7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0120FE5EAE005796FE /* ContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouterTests.swift; sourceTree = "<group>"; };
@@ -4113,7 +4115,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B5F2177A44400FD5797 /* RN */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
@@ -5246,18 +5247,10 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
-		7E3E9B5F2177A44400FD5797 /* RN */ = {
-			isa = PBXGroup;
-			children = (
-				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
-			);
-			path = RN;
-			sourceTree = "<group>";
-		};
 		7E3E9B6E2177C9C300FD5797 /* Gutenberg */ = {
 			isa = PBXGroup;
 			children = (
-				7E3E9B6F2177C9DC00FD5797 /* GutenbergController.swift */,
+				7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */,
 				91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */,
 				7E3E9B6C2177C7BD00FD5797 /* MediaProvider.swift */,
 			);
@@ -5528,6 +5521,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
 				98077B58207555E400109F95 /* Support */,
 				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
@@ -6053,6 +6047,7 @@
 				5D09CBA61ACDE532007A23BD /* Utils */,
 				5DF3DD6A1A93772D0051A229 /* Views */,
 				E13ACCD31EE5672100CCE985 /* PostEditor.swift */,
+				7E504D4921A5B8D400E341A8 /* PostEditorNavigationBarManager.swift */,
 				437542E21DD4E19E00D6B727 /* EditPostViewController.swift */,
 				5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */,
 				5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */,
@@ -9092,6 +9087,7 @@
 				735752C9218A7C7700E75EF6 /* BottomSheetDemoViewController.swift in Sources */,
 				D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */,
 				7E4123BC20F4097B00DF8486 /* DefaultFormattableContentAction.swift in Sources */,
+				7E504D4A21A5B8D400E341A8 /* PostEditorNavigationBarManager.swift in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				17B7C89E20EC1D0D0042E260 /* UniversalLinkRouter.swift in Sources */,
 				177B4C352123706400CF8084 /* GiphyResultsPage.swift in Sources */,
@@ -9242,7 +9238,7 @@
 				43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */,
 				1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
-				7E3E9B702177C9DC00FD5797 /* GutenbergController.swift in Sources */,
+				7E3E9B702177C9DC00FD5797 /* GutenbergViewController.swift in Sources */,
 				FFB7B8201A0012E80032E723 /* ApiCredentials.m in Sources */,
 				B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */,
 				E6311C411EC9FF4A00122529 /* UsersService.swift in Sources */,

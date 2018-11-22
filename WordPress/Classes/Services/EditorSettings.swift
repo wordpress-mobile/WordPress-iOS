@@ -91,7 +91,7 @@ class EditorSettings: NSObject {
             configure(vc, vc)
             return vc
         case .gutenberg:
-            let vc = GutenbergController(post: post)
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
         }
@@ -104,7 +104,7 @@ class EditorSettings: NSObject {
             configure(vc, vc)
             return vc
         case .gutenberg:
-            let vc = GutenbergController(post: post)
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
         }
