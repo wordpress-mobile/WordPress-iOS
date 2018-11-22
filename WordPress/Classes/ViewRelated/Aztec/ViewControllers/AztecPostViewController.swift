@@ -3501,7 +3501,6 @@ extension AztecPostViewController {
 
     struct Constants {
         static let defaultMargin            = CGFloat(20)
-        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
         static let uploadingButtonSize      = CGSize(width: 150, height: 30)
@@ -3573,9 +3572,7 @@ extension AztecPostViewController {
 
     struct Fonts {
         static let regular                  = WPFontManager.notoRegularFont(ofSize: 16)
-        static let semiBold                 = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static let title                    = WPFontManager.notoBoldFont(ofSize: 24.0)
-        static let blogPicker               = Fonts.semiBold
         static let mediaPickerInsert        = WPFontManager.systemMediumFont(ofSize: 15.0)
         static let mediaOverlay             = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
         static let monospace                = UIFont(name: "Menlo-Regular", size: 16.0)!
