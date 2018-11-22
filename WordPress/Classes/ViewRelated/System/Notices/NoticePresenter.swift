@@ -125,7 +125,13 @@ class NoticePresenter: NSObject {
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
-            noticeContainer.bottomConstraint?.constant = 0
+
+            switch self?.presentingViewController {
+            case let vc as UntouchableViewController:
+                noticeContainer.bottomConstraint?.constant = -vc.bottomOffset
+            default:
+                noticeContainer.bottomConstraint?.constant = 0
+            }
 
             view.layoutIfNeeded()
         }
@@ -171,6 +177,7 @@ class NoticePresenter: NSObject {
             // Force unwrapping, as the calling method has already guarded against a nil view
             constraint = container.bottomAnchor.constraint(equalTo: presentingViewController.view!.bottomAnchor)
         }
+
         container.bottomConstraint = constraint
         constraint.isActive = true
     }
