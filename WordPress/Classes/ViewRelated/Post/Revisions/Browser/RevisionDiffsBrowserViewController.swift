@@ -1,4 +1,5 @@
 import Gridicons
+import WordPressFlux
 
 
 class RevisionBrowserState {
@@ -166,6 +167,12 @@ class RevisionDiffsBrowserViewController: UIViewController {
         dismiss(animated: true) {
             self.revisionState?.onRevisionSelected(revision)
         }
+
+        // Temp code to demonstrate how this will look
+        let notice = Notice(title: "Revision loaded", message: nil, feedbackType: .success, notificationInfo: nil, actionTitle: "Undo", cancelTitle: nil) { (happened) in
+
+        }
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 
