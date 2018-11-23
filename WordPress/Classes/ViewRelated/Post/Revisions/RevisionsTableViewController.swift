@@ -23,7 +23,7 @@ class RevisionsTableViewController: UITableViewController {
         let footerView = RevisionsTableViewFooter(frame: CGRect(origin: .zero,
                                                                 size: CGSize(width: tableView.frame.width,
                                                                              height: Sizes.sectionFooterHeight)))
-        footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+        footerView.setFooterText(post?.dateCreated?.shortDateString())
         return footerView
     }()
 
@@ -288,6 +288,17 @@ private extension Date {
         formatter.timeStyle = .short
         return formatter
     }()
+
+    private static let shortDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        return formatter
+    }()
+
+    func shortDateString() -> String {
+        return Date.shortDateFormatter.string(from: self)
+    }
 
     func shortTimeString() -> String {
         return Date.shortTimeFormatter.string(from: self)
