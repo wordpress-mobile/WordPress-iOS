@@ -2,7 +2,7 @@ import UIKit
 import React
 import WPMediaPicker
 
-class GutenbergViewController: UIViewController, PublishablePostEditor {
+class GutenbergViewController: UIViewController, PostEditor {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 

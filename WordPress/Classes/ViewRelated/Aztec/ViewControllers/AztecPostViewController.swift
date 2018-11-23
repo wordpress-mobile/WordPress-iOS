@@ -15,9 +15,9 @@ import MobileCoreServices
 
 // MARK: - Aztec's Native Editor!
 //
-class AztecPostViewController: UIViewController, PublishablePostEditor {
+class AztecPostViewController: UIViewController, PostEditor {
 
-    // MARK: - PublishablePostEditor conformance
+    // MARK: - PostEditor conformance
 
     /// Closure to be executed when the editor gets closed.
     /// Pass `false` for `showPostEpilogue` to prevent the post epilogue

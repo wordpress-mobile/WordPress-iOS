@@ -1,6 +1,6 @@
 import Foundation
 
-extension PublishablePostEditor where Self: UIViewController {
+extension PostEditor where Self: UIViewController {
 
     func blogPickerWasPressed() {
         assert(isSingleSiteMode == false)

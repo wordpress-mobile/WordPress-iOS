@@ -1,6 +1,6 @@
 import Foundation
 
-extension PublishablePostEditor where Self: UIViewController {
+extension PostEditor where Self: UIViewController {
 
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
     var debouncerCallback: (() -> Void) {
@@ -257,7 +257,7 @@ extension PublishablePostEditor where Self: UIViewController {
     }
 }
 
-extension PublishablePostEditor where Self: UIViewController {
+extension PostEditor where Self: UIViewController {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
@@ -269,7 +269,7 @@ extension PublishablePostEditor where Self: UIViewController {
 
 // MARK: - Publishing
 
-extension PublishablePostEditor where Self: UIViewController {
+extension PostEditor where Self: UIViewController {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///

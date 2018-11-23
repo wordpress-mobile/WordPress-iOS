@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension PublishablePostEditor where Self: UIViewController {
+extension PostEditor where Self: UIViewController {
 
     func displayPostSettings() {
         let settingsViewController: PostSettingsViewController
