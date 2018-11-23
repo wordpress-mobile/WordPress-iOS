@@ -75,7 +75,7 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         return self.createToolbar()
     }()
 
-    private let errorDomain = "AztecPostViewController.errorDomain"
+    let errorDomain = "AztecPostViewController.errorDomain"
 
     private enum ErrorCode: Int {
         case expectedSecondaryAction = 1
@@ -1235,36 +1235,6 @@ private extension AztecPostViewController {
         present(alert, animated: true)
     }
 
-    func displayPostSettings() {
-        let settingsViewController: PostSettingsViewController
-        if post is Page {
-            settingsViewController = PageSettingsViewController(post: post)
-        } else {
-            settingsViewController = PostSettingsViewController(post: post)
-        }
-        settingsViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(settingsViewController, animated: true)
-    }
-
-    func displayPreview() {
-        let previewController = PostPreviewViewController(post: post)
-        previewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(previewController, animated: true)
-    }
-
-    func displayHistory() {
-        let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
-            if let post = self?.post.update(from: revision) {
-                DispatchQueue.main.async {
-                    self?.post = post
-                }
-            }
-        }
-        navigationController?.pushViewController(revisionsViewController, animated: true)
-    }
-
-
-
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
@@ -1300,13 +1270,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         default:
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
-    }
-
-    private var editorHasContent: Bool {
-        let titleIsEmpty = post.postTitle?.isEmpty ?? true
-        let contentIsEmpty = post.content?.isEmpty ?? true
-
-        return !titleIsEmpty || !contentIsEmpty
     }
 
     private var editorHasChanges: Bool {

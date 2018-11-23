@@ -4,7 +4,7 @@ typealias PostEditorViewControllerType = UIViewController & PublishablePostEdito
 
 class PostEditorUtil: NSObject {
 
-    fileprivate unowned let context: PostEditorViewControllerType
+    fileprivate(set) unowned var context: PostEditorViewControllerType
 
     fileprivate var post: AbstractPost {
         return context.post
