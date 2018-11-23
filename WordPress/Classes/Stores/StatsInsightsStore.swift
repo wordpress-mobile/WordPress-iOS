@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 
 enum InsightAction: Action {
     case receivedLatestPostSummary(_ latestPostSummary: StatsLatestPostSummary?)
+    case receivedAllTimeStats(_ allTimeStats: StatsAllTime?)
     case refreshInsights()
 }
 
@@ -14,6 +15,8 @@ enum InsightQuery {
 struct InsightStoreState {
     var latestPostSummary: StatsLatestPostSummary?
     var fetchingLatestPostSummary = false
+    var allTimeStats: StatsAllTime?
+    var fetchingAllTimeStats = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -31,6 +34,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         switch insightAction {
         case .receivedLatestPostSummary(let latestPostSummary):
             receivedLatestPostSummary(latestPostSummary)
+        case .receivedAllTimeStats(let allTimeStats):
+            receivedAllTimeStats(allTimeStats)
         case .refreshInsights:
             refreshInsights()
         }
@@ -59,9 +64,13 @@ private extension StatsInsightsStore {
     func fetchInsights() {
 
         state.fetchingLatestPostSummary = true
+        state.fetchingAllTimeStats = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching all time stats: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimeStats))
         }, insightsCompletionHandler: { (mostPopularStats, error) in
 
         }, todaySummaryCompletionHandler: { (todaySummary, error) in
@@ -108,17 +117,20 @@ private extension StatsInsightsStore {
         }
     }
 
-    func shouldFetch() -> Bool {
-        return !isFetching()
+    func receivedAllTimeStats(_ allTimeStats: StatsAllTime?) {
+        transaction { state in
+            state.allTimeStats = allTimeStats
+            state.fetchingAllTimeStats = false
+        }
     }
 
-    func isFetching() -> Bool {
-        return state.fetchingLatestPostSummary
+    func shouldFetch() -> Bool {
+        return !isFetching
     }
 
 }
 
-// MARK: - Selectors
+// MARK: - Public Accessors
 
 extension StatsInsightsStore {
 
@@ -126,4 +138,11 @@ extension StatsInsightsStore {
         return state.latestPostSummary
     }
 
+    func getAllTimeStats() -> StatsAllTime? {
+        return state.allTimeStats
+    }
+
+    var isFetching: Bool {
+        return state.fetchingLatestPostSummary || state.fetchingAllTimeStats
+    }
 }
