@@ -99,7 +99,7 @@ target 'WordPress' do
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
-    pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '6.5.2'
+    pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '8.0.8'
     pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git'
 
     ## Third party libraries
