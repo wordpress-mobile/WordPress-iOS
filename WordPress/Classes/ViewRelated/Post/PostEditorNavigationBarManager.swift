@@ -23,9 +23,9 @@ class PostEditorNavigationBarManager {
     /// Dismiss Button
     ///
     lazy var closeButton: WPButtonForNavigationBar = {
-        let cancelButton = WPStyleGuide.buttonForBar(with: AztecPostViewController.Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = AztecPostViewController.Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = AztecPostViewController.Constants.cancelButtonPadding.right
+        let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
+        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
+        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
         return cancelButton
     }()
@@ -170,10 +170,25 @@ class PostEditorNavigationBarManager {
 
     func reloadBlogPickerButton(with title: String, enabled: Bool) {
 
-        let titleText = NSAttributedString(string: title, attributes: [.font: AztecPostViewController.Fonts.blogPicker])
+        let titleText = NSAttributedString(string: title, attributes: [.font: Fonts.blogPicker])
 
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.buttonMode = enabled ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = enabled
+    }
+}
+
+extension PostEditorNavigationBarManager {
+    private enum Constants {
+        static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+    }
+
+    private enum Fonts {
+        static let semiBold = WPFontManager.systemSemiBoldFont(ofSize: 16)
+        static let blogPicker = Fonts.semiBold
+    }
+
+    private enum Assets {
+        static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
     }
 }
