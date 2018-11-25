@@ -91,8 +91,8 @@ final class SiteInformationWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.topAnchor)
             ])
 
         table.tableHeaderView?.layoutIfNeeded()
