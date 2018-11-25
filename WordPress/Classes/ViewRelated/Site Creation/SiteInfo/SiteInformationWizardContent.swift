@@ -138,7 +138,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupFooter() {
-        let footer = UIView(frame: CGRect(x: 0.0, y: 0.0, width: table.frame.width, height: 60.0))
+        let footer = UIView(frame: CGRect(x: 0.0, y: 0.0, width: table.frame.width, height: 42.0))
 
         let title = UILabel(frame: .zero)
         title.translatesAutoresizingMaskIntoConstraints = false
@@ -151,9 +151,9 @@ final class SiteInformationWizardContent: UIViewController {
         footer.addSubview(title)
 
         NSLayoutConstraint.activate([
-            title.heightAnchor.constraint(equalTo: footer.readableContentGuide.heightAnchor),
-            title.leadingAnchor.constraint(equalTo: footer.readableContentGuide.leadingAnchor),
-            title.trailingAnchor.constraint(equalTo: footer.readableContentGuide.trailingAnchor),
+            title.heightAnchor.constraint(equalTo: footer.heightAnchor),
+            title.leadingAnchor.constraint(equalTo: footer.leadingAnchor, constant: 16.0),
+            title.trailingAnchor.constraint(equalTo: footer.trailingAnchor, constant: -1 * 16.0),
             title.topAnchor.constraint(equalTo: footer.topAnchor)
             ])
 
