@@ -264,7 +264,7 @@ extension SiteInformationWizardContent {
         let keyboardScreenFrame = payload.frameEnd
 
         let keyboardFrame = view.convert(keyboardScreenFrame, from: nil)
-        let keyboardHeight = keyboardFrame.origin.y - (Constants.bottomMargin + 36)
+        let keyboardHeight = keyboardFrame.origin.y - (Constants.bottomMargin + 30)
 
         let animationDuration = payload.animationDuration
 
