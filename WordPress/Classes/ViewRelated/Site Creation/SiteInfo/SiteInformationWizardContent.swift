@@ -29,7 +29,7 @@ final class SiteInformationWizardContent: UIViewController {
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var nextStep: NUXButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonWrapper: UIView!
+    @IBOutlet weak var buttonWrapper: ShadowView!
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Basic information", comment: "Create site, step 3. Select basic information. Title")
@@ -271,6 +271,8 @@ extension SiteInformationWizardContent {
         bottomConstraint.constant = keyboardHeight
         view.setNeedsUpdateConstraints()
 
+        buttonWrapper.addShadow()
+
         UIView.animate(withDuration: animationDuration,
                        delay: 0,
                        options: .beginFromCurrentState,
@@ -282,6 +284,7 @@ extension SiteInformationWizardContent {
 
     @objc
     private func keyboardWillHide(_ notification: Foundation.Notification) {
+        buttonWrapper.clearShadow()
         bottomConstraint.constant = Constants.bottomMargin
     }
 

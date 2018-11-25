@@ -28,7 +28,7 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="502"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UkU-4z-E9I">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UkU-4z-E9I" customClass="ShadowView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="530" width="375" height="74"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f1h-X0-IMG" customClass="NUXButton" customModule="WordPressAuthenticator">
