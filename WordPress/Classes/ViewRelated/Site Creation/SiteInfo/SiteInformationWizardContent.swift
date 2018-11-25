@@ -264,12 +264,14 @@ extension SiteInformationWizardContent {
 
         bottomConstraint.constant = keyboardHeight
         view.setNeedsUpdateConstraints()
-//        UIView.animateKeyframes(withDuration: animationDuration, delay: 0.0, options: [payload.animationCurve], animations: { [weak self] in
-//            self?.view.layoutIfNeeded()
-//        }, completion: nil)
-        UIView.animate(withDuration: animationDuration, animations: { [weak self] in
-            self?.view.layoutIfNeeded()
-        })
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+        },
+                       completion: nil)
     }
 
     @objc
