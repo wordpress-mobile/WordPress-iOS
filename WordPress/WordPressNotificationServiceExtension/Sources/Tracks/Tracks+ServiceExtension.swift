@@ -13,6 +13,8 @@ private enum ServiceExtensionEvents: String {
     case discarded  = "wpios_notification_service_extension_discarded"
     case failed     = "wpios_notification_service_extension_failed"
     case assembled  = "wpios_notification_service_extension_assembled"
+    case malformed  = "wpios_notification_service_extension_malformed_payload"
+    case timedOut   = "wpios_notification_service_extension_timed_out"
 }
 
 // MARK: - Supports tracking notification service extension events.
@@ -55,6 +57,16 @@ extension Tracks {
     /// Tracks the successful retrieval & assembly of a rich notification.
     func trackNotificationAssembled() {
         trackEvent(ServiceExtensionEvents.assembled)
+    }
+
+    /// Tracks the unsuccessful unwrapping of push notification payload data.
+    func trackNotificationMalformed() {
+        trackEvent(ServiceExtensionEvents.malformed)
+    }
+
+    /// Tracks the timeout of service extension processing.
+    func trackNotificationTimedOut() {
+        trackEvent(ServiceExtensionEvents.timedOut)
     }
 
     /// Utility method to capture an event & submit it to Tracks.
