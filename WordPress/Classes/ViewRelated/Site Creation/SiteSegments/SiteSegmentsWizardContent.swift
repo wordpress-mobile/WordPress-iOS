@@ -83,8 +83,6 @@ final class SiteSegmentsWizardContent: UIViewController {
     private func setupCellHeight() {
         table.rowHeight = UITableView.automaticDimension
         table.estimatedRowHeight = StyleConstants.rowHeight
-//        table.rowHeight = StyleConstants.rowHeight
-//        table.estimatedRowHeight = StyleConstants.rowHeight
         table.separatorInset = StyleConstants.separatorInset
     }
 
