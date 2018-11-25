@@ -96,7 +96,6 @@ final class SiteInformationWizardContent: UIViewController {
 
     private func setupButtonWrapper() {
         buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
-        //buttonWrapper.
     }
 
     private func setupNextButton() {
