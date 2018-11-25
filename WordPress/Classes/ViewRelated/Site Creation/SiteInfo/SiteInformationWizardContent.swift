@@ -212,6 +212,10 @@ extension SiteInformationWizardContent: UITableViewDataSource {
             cell.valueTextField.placeholder = TableStrings.taglinePlaceholder
         }
 
+        cell.nameLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        cell.nameLabel.textColor = WPStyleGuide.darkGrey()
+
+        cell.valueTextField.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         cell.valueTextField.textColor = WPStyleGuide.greyDarken30()
 
         if cell.delegate == nil {
