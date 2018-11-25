@@ -49,11 +49,14 @@
                         </subviews>
                     </stackView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="eoX-z0-fgX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14.5" id="Fip-xq-HvB"/>
+                    <constraint firstAttribute="bottom" secondItem="eoX-z0-fgX" secondAttribute="bottom" constant="14" id="XeY-Ff-CDh"/>
+                </constraints>
             </tableViewCellContentView>
             <constraints>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="eoX-z0-fgX" secondAttribute="trailing" constant="52" id="7aI-t1-EYY"/>
                 <constraint firstItem="eoX-z0-fgX" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="22" id="myK-7A-aBL"/>
-                <constraint firstItem="eoX-z0-fgX" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="ygP-H7-m3O"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
