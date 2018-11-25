@@ -19,6 +19,9 @@ final class SiteInformationWizardContent: UIViewController {
 
     private struct Constants {
         static let bottomMargin: CGFloat = 63.0
+        static let footerHeight: CGFloat = 42.0
+        static let footerVerticalMargin: CGFloat = 6.0
+        static let footerHorizontalMargin: CGFloat = 16.0
     }
 
     private let completion: SIteInformationCompletion
@@ -138,23 +141,23 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupFooter() {
-        let footer = UIView(frame: CGRect(x: 0.0, y: 0.0, width: table.frame.width, height: 42.0))
+        let footer = UIView(frame: CGRect(x: 0.0, y: 0.0, width: table.frame.width, height: Constants.footerHeight))
 
         let title = UILabel(frame: .zero)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textAlignment = .natural
         title.numberOfLines = 0
         title.textColor = WPStyleGuide.greyDarken20()
-        title.font = UIFont.preferredFont(forTextStyle: .footnote)
+        title.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         title.text = TableStrings.footer
 
         footer.addSubview(title)
 
         NSLayoutConstraint.activate([
             title.heightAnchor.constraint(equalTo: footer.heightAnchor),
-            title.leadingAnchor.constraint(equalTo: footer.leadingAnchor, constant: 16.0),
-            title.trailingAnchor.constraint(equalTo: footer.trailingAnchor, constant: -1 * 16.0),
-            title.topAnchor.constraint(equalTo: footer.topAnchor)
+            title.leadingAnchor.constraint(equalTo: footer.leadingAnchor, constant: Constants.footerHorizontalMargin),
+            title.trailingAnchor.constraint(equalTo: footer.trailingAnchor, constant: -1 * Constants.footerHorizontalMargin),
+            title.topAnchor.constraint(equalTo: footer.topAnchor, constant: Constants.footerVerticalMargin)
             ])
 
         table.tableFooterView = footer
@@ -184,7 +187,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         static let site = NSLocalizedString("Site Title", comment: "Site info. Title")
         static let tagline = NSLocalizedString("Tagline", comment: "Site info. Tagline")
         static let taglinePlaceholder = NSLocalizedString("Optional Tagline", comment: "Site info. Tagline placeholder")
-        static let footer = NSLocalizedString("The tagline is a short line of text shown right below the title", comment: "Site info. Table footer.")
+        static let footer = NSLocalizedString("The tagline is a short line of text shown right below the title.", comment: "Site info. Table footer.")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
