@@ -158,6 +158,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Lifecycle methods
     override func loadView() {
         let stackView = UIStackView(arrangedSubviews: [titleTextField,
+                                                       separatorView,
                                                        gutenberg.rootView])
         stackView.axis = .vertical
         stackView.backgroundColor = Colors.background
