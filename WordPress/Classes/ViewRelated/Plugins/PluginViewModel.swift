@@ -185,6 +185,7 @@ class PluginViewModel: Observable {
 
                     if FeatureFlag.automatedTransfersCustomDomain.enabled && !hasCustomDomain && hasDomainCredits {
                         let alert = self.confirmRegisterDomainAlert(for: directoryEntry)
+                        WPAnalytics.track(.automatedTransferCustomDomainDialogShown)
                         self.present?(alert)
                     } else {
 
@@ -462,7 +463,9 @@ class PluginViewModel: Observable {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain"))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain")) { _ in
+            WPAnalytics.track(.automatedTransferCustomDomainDialogCancelled)
+        }
 
         let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
             self?.presentDomainRegistration(for: directoryEntry)

@@ -89,11 +89,13 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
     func domainSelected(_ domain: DomainSuggestion) {
+        WPAnalytics.track(.automatedTransferCustomDomainSuggestionSelected)
         self.domain = domain
         showButtonView(show: true, withAnimation: true)
     }
 
     func newSearchStarted() {
+        WPAnalytics.track(.automatedTransferCustomDomainSuggestionQueried)
         showButtonView(show: false, withAnimation: true)
     }
 }
