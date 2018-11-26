@@ -73,6 +73,6 @@ custom_rules:
 
   string_interpolation_in_localized_string:
     name: "String Interpolation in Localized String"
-    regex: 'NSLocalizedString\("[^"]+\\\(\S*\)'
+    regex: 'NSLocalizedString\("[^"]*\\\(\S*\)'
     message: "Localized strings must not use interpolated variables. Instead, use `String(format:`"
     severity: error
