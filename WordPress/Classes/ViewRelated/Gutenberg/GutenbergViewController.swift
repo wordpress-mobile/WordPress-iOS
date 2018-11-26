@@ -6,15 +6,41 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
-    private struct Analytics {
-        static let editorSource = "gutenberg"
-    }
-
     enum RequestHTMLReason {
         case publish
         case close
         case more
     }
+
+    // MARK: - UI
+
+    private let titleTextField: UITextField = {
+        let textField = UITextField()
+        textField.borderStyle = .none
+        textField.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
+        textField.font = Fonts.title
+        textField.textColor = Colors.title
+        textField.backgroundColor = Colors.background
+        textField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        let leftView = UIView()
+        leftView.translatesAutoresizingMaskIntoConstraints = false
+        leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
+        leftView.widthAnchor.constraint(equalToConstant: Size.titleTextFieldLeftPadding).isActive = true
+        leftView.backgroundColor = Colors.background
+        textField.leftView = leftView
+        textField.leftViewMode = .always
+        return textField
+    }()
+
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: Size.titleTextFieldBottomSeparatorHeight).isActive = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.separator
+        return view
+    }()
+
+    // MARK: - PostEditor
 
     var html: String {
         set {
@@ -25,7 +51,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
-    var postTitle: String
+    var postTitle: String {
+        get {
+            return titleTextField.text ?? ""
+        }
+        set {
+            titleTextField.text = newValue
+        }
+    }
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -83,8 +116,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         return false
     }
 
-    private var requestHTMLReason: RequestHTMLReason?
-
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
     ///
@@ -98,16 +129,20 @@ class GutenbergViewController: UIViewController, PostEditor {
         return MediaLibraryPickerDataSource(post: self.post)
     }()
 
-    private let gutenberg: Gutenberg
+    // MARK: - Private variables
 
+    private let gutenberg: Gutenberg
+    private var requestHTMLReason: RequestHTMLReason?
+
+    // MARK: - Initializers
     required init(post: AbstractPost) {
         self.post = post
-        self.postTitle = post.postTitle ?? ""
         self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
         self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         super.init(nibName: nil, bundle: nil)
+        self.postTitle = post.postTitle ?? ""
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -120,8 +155,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.invalidate()
     }
 
+    // MARK: - Lifecycle methods
     override func loadView() {
-        view = gutenberg.rootView
+        let stackView = UIStackView(arrangedSubviews: [titleTextField,
+                                                       separatorView,
+                                                       gutenberg.rootView])
+        stackView.axis = .vertical
+        stackView.backgroundColor = Colors.background
+        view = stackView
     }
 
     override func viewDidLoad() {
@@ -129,6 +170,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
+        titleTextField.becomeFirstResponder()
 
         gutenberg.delegate = self
     }
@@ -138,14 +180,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         verificationPromptHelper?.updateVerificationStatus()
     }
 
-    func configureNavigationBar() {
+    // MARK: - Functions
+
+    private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
         navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
     }
 
-    func reloadBlogPickerButton() {
+    private func reloadBlogPickerButton() {
         var pickerTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
             pickerTitle = blogName
@@ -154,8 +198,16 @@ class GutenbergViewController: UIViewController, PostEditor {
         navigationBarManager.reloadBlogPickerButton(with: pickerTitle, enabled: !isSingleSiteMode)
     }
 
-    func refreshInterface() {
+    private func reloadEditorContents() {
+        let content = post.content ?? String()
+
+        titleTextField.text = post.postTitle
+        setHTML(content)
+    }
+
+    private func refreshInterface() {
         reloadBlogPickerButton()
+        reloadEditorContents()
         reloadPublishButton()
     }
 
@@ -167,6 +219,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         return presentationController(forPresented: presented, presenting: presenting)
     }
 }
+
+// MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
@@ -214,7 +268,10 @@ extension GutenbergViewController: PostEditorStateContextDelegate {
 
 }
 
+// MARK: - PostEditorNavigationBarManagerDelegate
+
 extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
+
     var publishButtonText: String {
         return postEditorStateContext.publishButtonText
     }
@@ -250,5 +307,30 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
 
+    }
+}
+
+// MARK: - Constants
+
+private extension GutenbergViewController {
+
+    enum Analytics {
+        static let editorSource = "gutenberg"
+    }
+
+    enum Colors {
+        static let title = UIColor.darkText
+        static let separator = WPStyleGuide.greyLighten30()
+        static let background = UIColor.white
+    }
+
+    enum Fonts {
+        static let title = WPFontManager.notoBoldFont(ofSize: 24.0)
+    }
+
+    enum Size {
+        static let titleTextFieldHeight: CGFloat = 50.0
+        static let titleTextFieldLeftPadding: CGFloat = 10.0
+        static let titleTextFieldBottomSeparatorHeight: CGFloat = 1.0
     }
 }
