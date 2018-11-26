@@ -8,8 +8,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
     typealias CellType = LatestPostSummaryCell
 
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "LatestPostSummaryCell", bundle: Bundle(for: CellType.self))
-        return ImmuTableCell.nib(nib, CellType.self)
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
     let summaryData: StatsLatestPostSummary?
@@ -32,11 +31,9 @@ struct AllTimeStatsRow: ImmuTableRow {
     typealias CellType = SimpleTotalsCell
 
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "SimpleTotalsCell", bundle: Bundle(for: CellType.self))
-        return ImmuTableCell.nib(nib, CellType.self)
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let title: String
     let dataRows: [StatsTotalRowData]
     let action: ImmuTableAction? = nil
 
@@ -46,6 +43,27 @@ struct AllTimeStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(withTitle: title, dataRows: dataRows)
+        cell.configure(dataRows: dataRows)
+    }
+}
+
+struct CellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let title: String
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(withTitle: title)
     }
 }
