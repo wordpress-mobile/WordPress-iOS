@@ -168,7 +168,7 @@ private extension SiteStatsInsightsViewModel {
             let highestHour = mostPopularStats?.highestHour,
             let highestHourPercent = mostPopularStats?.highestHourPercent,
             let highestDayPercentValue = mostPopularStats?.highestDayPercentValue,
-            highestDayPercentValue.intValue > 0 {
+            highestDayPercentValue.floatValue > 0 {
 
             // Day
             dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek, data: highestDayPercent))
