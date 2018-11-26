@@ -25,9 +25,6 @@ NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick
 NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
 
 NSString * const WPAppAnalyticsKeySource                            = @"source";
-NSString * const WPAppAnalyticsValueList                            = @"list";
-NSString * const WPAppAnalyticsValueSwipe                           = @"swipe";
-NSString * const WPAppAnalyticsValueChevron                         = @"chevron";
 
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
