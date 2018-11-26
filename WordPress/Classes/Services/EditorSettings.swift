@@ -4,11 +4,14 @@ class EditorSettings: NSObject {
     @objc
     enum Editor: Int {
         case aztec
+        case gutenberg
     }
 
     // MARK: - Enabled Editors Keys
 
     fileprivate let aztecEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
+    fileprivate let gutenbergEditorEnabledKey = "kUserDefaultsGutenbergEditorEnabled"
+
 
     // MARK: - Forcing Aztec Keys
 
@@ -51,7 +54,7 @@ class EditorSettings: NSObject {
     // MARK: Public accessors
 
     private var current: Editor {
-        return .aztec
+        return Feature.enabled(.gutenberg) ? .gutenberg : .aztec
     }
 
     @objc func isEnabled(_ editor: Editor) -> Bool {
@@ -72,6 +75,8 @@ class EditorSettings: NSObject {
         switch editor {
         case .aztec:
             database.set(true, forKey: aztecEditorEnabledKey)
+        case .gutenberg:
+            database.set(false, forKey: aztecEditorEnabledKey)
         }
     }
 
@@ -79,19 +84,27 @@ class EditorSettings: NSObject {
     // a configure block as a hack.
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the caller configure the editor.
-    @objc func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
+        case .gutenberg:
+            let vc = GutenbergViewController(post: post)
+            configure(vc, vc)
+            return vc
         }
     }
 
-    @objc func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case .gutenberg:
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
         }

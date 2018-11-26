@@ -1,15 +1,16 @@
-import CocoaLumberjack
+
+import UIKit
 
 /// Common interface to all editors
 ///
-@objc protocol PostEditor: class {
+protocol PostEditor: class {
     /// Initialize editor with a post.
     ///
     init(post: AbstractPost)
 
     /// The post being edited.
     ///
-    var post: AbstractPost { get }
+    var post: AbstractPost { get set }
 
     /// Closure to be executed when the editor gets closed.
     ///
