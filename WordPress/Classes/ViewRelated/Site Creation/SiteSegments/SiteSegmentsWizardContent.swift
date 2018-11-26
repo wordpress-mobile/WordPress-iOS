@@ -16,8 +16,9 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
-        let subtitle = NSLocalizedString("This helps us suggest a solid foundation. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
-        return SiteCreationHeaderData(title: title, subtitle: subtitle)
+        let subtitle = NSLocalizedString("This helps us make recommendations. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
+        let dashSubtitle = subtitle.replacingMatches(of: "--", with: "\u{2014}")
+        return SiteCreationHeaderData(title: title, subtitle: dashSubtitle)
     }()
 
     init(service: SiteSegmentsService, selection: @escaping (SiteSegment) -> Void) {
@@ -92,11 +93,11 @@ final class SiteSegmentsWizardContent: UIViewController {
 
         table.tableHeaderView = header
 
-        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.topAnchor),
+            header.bottomAnchor.constraint(equalTo: table.bottomAnchor)
         ])
 
         table.tableHeaderView?.layoutIfNeeded()
