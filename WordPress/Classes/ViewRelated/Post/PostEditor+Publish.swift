@@ -383,13 +383,8 @@ extension PostEditor where Self: UIViewController {
     }
 }
 
-
 struct PostEditorDebouncerConstants {
     static let autoSavingDelay = Double(0.5)
-}
-
-private struct Analytics {
-    static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
 }
 
 private struct MediaUploadingAlert {
