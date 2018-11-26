@@ -1249,6 +1249,7 @@
 		D8A468E22181C8290094B82F /* site-vertical.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468E12181C8290094B82F /* site-vertical.json */; };
 		D8A468E521828D940094B82F /* SiteVerticalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468E421828D940094B82F /* SiteVerticalsService.swift */; };
 		D8B1873E218AABF9002920A2 /* SiteCreationWizardLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1873D218AABF9002920A2 /* SiteCreationWizardLauncher.swift */; };
+		D8B22DAC21ABBFDF003019C8 /* KeyboardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B22DAB21ABBFDF003019C8 /* KeyboardInfo.swift */; };
 		D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */; };
 		D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */; };
 		D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */; };
@@ -3145,6 +3146,7 @@
 		D8A468E12181C8290094B82F /* site-vertical.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-vertical.json"; sourceTree = "<group>"; };
 		D8A468E421828D940094B82F /* SiteVerticalsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalsService.swift; sourceTree = "<group>"; };
 		D8B1873D218AABF9002920A2 /* SiteCreationWizardLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardLauncher.swift; sourceTree = "<group>"; };
+		D8B22DAB21ABBFDF003019C8 /* KeyboardInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInfo.swift; sourceTree = "<group>"; };
 		D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+LoadFromNib.swift"; sourceTree = "<group>"; };
 		D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAware.swift; sourceTree = "<group>"; };
 		D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+NetworkAware.swift"; sourceTree = "<group>"; };
@@ -7129,6 +7131,7 @@
 				D8380CA02192E33400250609 /* WizardNavigation.swift */,
 				D853724021953B310076F461 /* TitleSubtitleHeader.swift */,
 				D82253D621990F1C0014D0E2 /* TitleSubtitleTextfieldHeader.swift */,
+				D8B22DAB21ABBFDF003019C8 /* KeyboardInfo.swift */,
 			);
 			path = "Site Creation";
 			sourceTree = "<group>";
@@ -8929,6 +8932,7 @@
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */,
 				D826D682211D51E300A5D8FE /* ReaderNewsCard.swift in Sources */,
+				D8B22DAC21ABBFDF003019C8 /* KeyboardInfo.swift in Sources */,
 				174C9697205A846E00CEEF6E /* PostNoticeViewModel.swift in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */,
