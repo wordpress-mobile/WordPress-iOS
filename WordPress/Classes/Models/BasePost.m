@@ -97,4 +97,12 @@
     return [self valueForKey:@"status"];
 }
 
+- (BOOL)hasContent
+{
+    BOOL titleIsEmpty = self.postTitle ? self.postTitle.isEmpty : YES;
+    BOOL contentIsEmpty = self.content ? self.content.isEmpty : YES;
+    
+    return !titleIsEmpty || !contentIsEmpty;
+}
+
 @end

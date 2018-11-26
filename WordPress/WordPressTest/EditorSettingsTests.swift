@@ -10,19 +10,19 @@ class EditorSettingsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testAztecEnabledByDefaultButNotForcedAgain() {
+    func testGutenbergEnabledByDefaultButNotForcedAgain() {
         let testClosure: () -> () = { () in
             let database = EphemeralKeyValueDatabase()
 
             // This simulates the first launch
             let editorSettings = EditorSettings(database: database)
 
-            XCTAssertTrue(editorSettings.isEnabled(.aztec))
+            XCTAssertTrue(editorSettings.isEnabled(.gutenberg))
 
             // This simulates a second launch
             let secondEditorSettings = EditorSettings(database: database)
 
-            XCTAssertTrue(secondEditorSettings.isEnabled(.aztec))
+            XCTAssertTrue(secondEditorSettings.isEnabled(.gutenberg))
         }
 
         BuildConfiguration.localDeveloper.test(testClosure)

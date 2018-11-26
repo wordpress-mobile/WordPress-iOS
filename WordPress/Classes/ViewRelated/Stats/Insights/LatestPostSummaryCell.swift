@@ -7,7 +7,7 @@ class LatestPostSummaryCell: UITableViewCell {
     // MARK: - Properties
 
     @IBOutlet weak var borderedView: UIView!
-    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var summaryLabel: UILabel!
 
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
@@ -40,6 +40,7 @@ class LatestPostSummaryCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        addHeader()
         applyStyles()
     }
 
@@ -74,13 +75,17 @@ class LatestPostSummaryCell: UITableViewCell {
 
 private extension LatestPostSummaryCell {
 
+    func addHeader() {
+        let header = StatsCellHeader.loadFromNib()
+        header.headerLabel.text = CellStrings.header
+        headerStackView.addArrangedSubview(header)
+    }
+
     func applyStyles() {
 
         Style.configureCell(self)
         Style.configureBorderForView(borderedView)
 
-        headerLabel.text = CellStrings.header
-        Style.configureLabelAsHeader(headerLabel)
         Style.configureLabelAsSummary(summaryLabel)
 
         viewsLabel.text = CellStrings.views
@@ -131,7 +136,7 @@ private extension LatestPostSummaryCell {
 
     func setActionImageFor(action: ActionType) {
         let iconType: GridiconType = action == .sharePost ? .shareIOS : .create
-        actionImageView.image = Style.imageForGridiconType(iconType)
+        actionImageView.image = Style.imageForGridiconType(iconType, withTint: .blue)
     }
 
     func attributedSummary() -> NSAttributedString {
@@ -168,7 +173,7 @@ private extension LatestPostSummaryCell {
     }
 
     struct CellStrings {
-        static let header = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary section header")
+        static let header = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let summaryPostInfo = NSLocalizedString("It's been %@ since %@ was published. ", comment: "Latest post summary text including placeholder for time and the post title.")
         static let summaryPerformance = NSLocalizedString("Here's how the post performed so far.", comment: "Appended to latest post summary text when the post has data.")
         static let summaryNoData = NSLocalizedString("Get the ball rolling and increase your post views by sharing your post.", comment: "Appended to latest post summary text when the post does not have data.")
