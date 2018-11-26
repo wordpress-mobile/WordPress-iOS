@@ -37,6 +37,8 @@ class RevisionsTableViewCell: UITableViewCell {
 
     var avatarURL: String? {
         didSet {
+            avatarImageView.image = UIImage(named: "gravatar")
+
             if let avatarURL = avatarURL,
                 let placeholder = UIImage(named: "gravatar") {
                 let url = URL(string: avatarURL)
