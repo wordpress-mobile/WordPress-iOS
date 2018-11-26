@@ -28,12 +28,19 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f4p-Ic-8S4" secondAttribute="trailing" id="C2l-ve-ryB"/>
+                <constraint firstItem="f4p-Ic-8S4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="NJZ-be-EMQ"/>
                 <constraint firstItem="f4p-Ic-8S4" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="SdL-q9-yVZ"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f4p-Ic-8S4" secondAttribute="trailing" id="axN-2h-IQP"/>
-                <constraint firstItem="f4p-Ic-8S4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="mPf-Fb-0pn"/>
+                <constraint firstItem="f4p-Ic-8S4" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="m51-h4-AyY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="f4p-Ic-8S4" secondAttribute="bottom" id="paj-Pj-gcF"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="NJZ-be-EMQ"/>
+                    <exclude reference="C2l-ve-ryB"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="138.40000000000001" y="136.28185907046478"/>
         </view>
     </objects>
