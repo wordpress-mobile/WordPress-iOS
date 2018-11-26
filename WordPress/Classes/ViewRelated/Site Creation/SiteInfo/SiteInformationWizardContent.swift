@@ -263,9 +263,14 @@ extension SiteInformationWizardContent {
         guard let payload = KeyboardInfo(notification) else { return }
         let keyboardScreenFrame = payload.frameEnd
 
-        let convertedKeyboardFrame = view.window?.convert(keyboardScreenFrame, to: view) ?? keyboardScreenFrame
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
 
-        let constraintConstant = view.frame.height - convertedKeyboardFrame.origin.y
+        var constraintConstant = convertedKeyboardFrame.height
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
 
         let animationDuration = payload.animationDuration
 
