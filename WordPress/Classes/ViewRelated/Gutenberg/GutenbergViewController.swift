@@ -14,28 +14,25 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - UI
 
-    private lazy var titleStackView: UIStackView = {
-        let leftView = UIView()
-        leftView.translatesAutoresizingMaskIntoConstraints = false
-        leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
-        leftView.widthAnchor.constraint(equalToConstant: Size.titleTextFieldLeftPadding).isActive = true
-        leftView.backgroundColor = Colors.background
-        let stackView = UIStackView(arrangedSubviews: [leftView, titleTextField])
-        stackView.axis = .horizontal
-        return stackView
-    }()
-
-    private lazy var titleTextField: UITextField = {
+    private let titleTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .none
         textField.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
         textField.font = Fonts.title
         textField.textColor = Colors.title
         textField.backgroundColor = Colors.background
+        textField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        let leftView = UIView()
+        leftView.translatesAutoresizingMaskIntoConstraints = false
+        leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
+        leftView.widthAnchor.constraint(equalToConstant: Size.titleTextFieldLeftPadding).isActive = true
+        leftView.backgroundColor = Colors.background
+        textField.leftView = leftView
+        textField.leftViewMode = .always
         return textField
     }()
 
-    private lazy var separatorView: UIView = {
+    private let separatorView: UIView = {
         let view = UIView()
         view.heightAnchor.constraint(equalToConstant: Size.titleTextFieldBottomSeparatorHeight).isActive = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -160,8 +157,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Lifecycle methods
     override func loadView() {
-        let stackView = UIStackView(arrangedSubviews: [titleStackView,
-                                                       separatorView,
+        let stackView = UIStackView(arrangedSubviews: [titleTextField,
                                                        gutenberg.rootView])
         stackView.axis = .vertical
         stackView.backgroundColor = Colors.background
@@ -173,6 +169,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
+        titleTextField.becomeFirstResponder()
 
         gutenberg.delegate = self
     }
