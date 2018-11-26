@@ -95,9 +95,8 @@ final class SiteSegmentsWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.topAnchor),
-            header.bottomAnchor.constraint(equalTo: table.bottomAnchor)
+            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
+            header.topAnchor.constraint(equalTo: table.topAnchor)
         ])
 
         table.tableHeaderView?.layoutIfNeeded()
