@@ -24,13 +24,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.5.0'
+    pod 'WordPressShared', '~> 1.5.1'
 
     ## for development:
-    ## pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '14a5ebae28fdc09130b091330d84a3a310132cd2'
+    ##pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'd664be9e496112b8f2d98f41607db41cbcc6fd0b'
 end
 
 def aztec
@@ -78,6 +78,11 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
+def gutenberg_pod(name)
+    gutenberg_branch='master'
+    pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -86,6 +91,16 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
+
+    ## React Native
+    ## =====================
+    ##
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    gutenberg_pod 'React'
+    gutenberg_pod 'yoga'
+    gutenberg_pod 'Folly'
+    pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '8.0.8'
+    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git'
 
     ## Third party libraries
     ## =====================

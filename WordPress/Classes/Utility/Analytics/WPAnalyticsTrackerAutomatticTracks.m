@@ -277,6 +277,30 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
             eventName = @"app_settings_video_optimization_changed";
             break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainDialogShown:
+            eventName = @"automated_transfer_custom_domain_dialog_shown";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainDialogCancelled:
+            eventName = @"automated_transfer_custom_domain_dialog_cancelled";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainSuggestionQueried:
+            eventName = @"automated_transfer_custom_domain_suggestion_queried";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainSuggestionSelected:
+            eventName = @"automated_transfer_custom_domain_suggestion_selected";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainContactInfoValidated:
+            eventName = @"automated_transfer_custom_domain_contact_information_validated";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainContactInfoValidationFailed:
+            eventName = @"automated_transfer_custom_domain_contact_information_validation_failed";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainPurchased:
+            eventName = @"automated_transfer_custom_domain_purchased";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainPurchaseFailed:
+            eventName = @"automated_transfer_custom_domain_purchase_failed";
+            break;
         case WPAnalyticsStatAutomatedTransferDialogShown:
             eventName = @"automated_transfer_confirm_dialog_shown";
             break;

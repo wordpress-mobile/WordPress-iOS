@@ -1,11 +1,19 @@
 import UIKit
 
 final class TitleSubtitleHeader: UIView {
+    struct Margins {
+        static let horizontalMargin: CGFloat = 30.0
+        static let bottomMargin: CGFloat = 30.0
+        static let topMargin: CGFloat = 50.0
+        static let spacing: CGFloat = 10.0
+    }
+
     private lazy var title: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
 
         return label
     }()
@@ -15,6 +23,7 @@ final class TitleSubtitleHeader: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
 
         return label
     }()
@@ -23,7 +32,7 @@ final class TitleSubtitleHeader: UIView {
         let returnValue = UIStackView(arrangedSubviews: [self.title, self.subtitle])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
-        returnValue.spacing = 20
+        returnValue.spacing = Margins.spacing
 
         return returnValue
     }()
@@ -42,10 +51,10 @@ final class TitleSubtitleHeader: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1 * Margins.horizontalMargin),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.topMargin),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.bottomMargin)])
 
         setStyles()
     }
@@ -61,12 +70,12 @@ final class TitleSubtitleHeader: UIView {
     }
 
     private func styleTitle() {
-        title.font = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .bold)
+        title.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         title.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleSubtitle() {
-        subtitle.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.greyDarken10()
     }
 
@@ -78,5 +87,16 @@ final class TitleSubtitleHeader: UIView {
     func setSubtitle(_ text: String) {
         subtitle.text = text
         subtitle.accessibilityLabel = text
+    }
+}
+
+// MARK: - Exposing for tests
+extension TitleSubtitleHeader {
+    func titleLabel() -> UILabel {
+        return title
+    }
+
+    func subtitleLabel() -> UILabel {
+        return subtitle
     }
 }
