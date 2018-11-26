@@ -18,7 +18,7 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private struct Constants {
-        static let bottomMargin: CGFloat = 63.0
+        static let bottomMargin: CGFloat = 0.0
         static let footerHeight: CGFloat = 42.0
         static let footerVerticalMargin: CGFloat = 6.0
         static let footerHorizontalMargin: CGFloat = 16.0
