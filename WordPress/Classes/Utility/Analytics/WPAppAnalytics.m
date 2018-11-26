@@ -24,6 +24,11 @@ NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_
 NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";
 NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
 
+NSString * const WPAppAnalyticsKeySource                            = @"source";
+NSString * const WPAppAnalyticsValueList                            = @"list";
+NSString * const WPAppAnalyticsValueSwipe                           = @"swipe";
+NSString * const WPAppAnalyticsValueChevron                         = @"chevron";
+
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
