@@ -2,7 +2,7 @@ import UIKit
 import React
 import WPMediaPicker
 
-class GutenbergViewController: UIViewController, PublishablePostEditor {
+class GutenbergViewController: UIViewController, PostEditor {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
@@ -83,23 +83,19 @@ class GutenbergViewController: UIViewController, PublishablePostEditor {
         return false
     }
 
-    var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
-    }
-
-    var currentBlogCount: Int {
-        let service = BlogService(managedObjectContext: mainContext)
-        return service.blogCountForAllAccounts()
-    }
-
-    var isSingleSiteMode: Bool {
-        return currentBlogCount <= 1 || post.hasRemote()
-    }
-
     private var requestHTMLReason: RequestHTMLReason?
 
-    private(set) lazy var postEditorUtil = {
-        return PostEditorUtil(context: self)
+    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
+    /// In this case every 0.5 second
+    ///
+    fileprivate(set) lazy var debouncer: Debouncer = {
+        return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
+    }()
+
+    /// Media Library Data Source
+    ///
+    lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
+        return MediaLibraryPickerDataSource(post: self.post)
     }()
 
     private let gutenberg: Gutenberg
@@ -112,7 +108,6 @@ class GutenbergViewController: UIViewController, PublishablePostEditor {
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         super.init(nibName: nil, bundle: nil)
-
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -131,7 +126,7 @@ class GutenbergViewController: UIViewController, PublishablePostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        postEditorUtil.createRevisionOfPost()
+        createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
 
@@ -163,6 +158,14 @@ class GutenbergViewController: UIViewController, PublishablePostEditor {
         reloadBlogPickerButton()
         reloadPublishButton()
     }
+
+    func contentByStrippingMediaAttachments() -> String {
+        return html //TODO: return media attachment stripped version in future
+    }
+
+    @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return presentationController(forPresented: presented, presenting: presenting)
+    }
 }
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
@@ -185,9 +188,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             requestHTMLReason = nil // clear the reason
             switch reason {
             case .publish:
-                postEditorUtil.handlePublishButtonTap()
+                handlePublishButtonTap()
             case .close:
-                postEditorUtil.cancelEditing()
+                cancelEditing()
             case .more:
                 displayMoreSheet()
             }
@@ -237,7 +240,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-
+        blogPickerWasPressed()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {

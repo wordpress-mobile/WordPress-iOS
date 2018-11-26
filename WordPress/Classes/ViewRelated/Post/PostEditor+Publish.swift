@@ -1,31 +1,10 @@
 import Foundation
 
-typealias PostEditorViewControllerType = UIViewController & PublishablePostEditor
+extension PostEditor where Self: UIViewController {
 
-class PostEditorUtil: NSObject {
-
-    fileprivate(set) unowned var context: PostEditorViewControllerType
-
-    fileprivate var post: AbstractPost {
-        return context.post
-    }
-
-    var postEditorStateContext: PostEditorStateContext {
-        return context.postEditorStateContext
-    }
-
-    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
-    /// In this case every 0.5 second
-    ///
-    fileprivate var debouncer = Debouncer(delay: Constants.autoSavingDelay)
-
-    init(context: PostEditorViewControllerType) {
-        self.context = context
-
-        super.init()
-
-        // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
-        debouncer.callback = { [weak self] in
+    // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
+    var debouncerCallback: (() -> Void) {
+        return { [weak self] in
             guard let strongSelf = self else {
                 assertionFailure("self was nil while trying to save a post using Debouncer")
                 return
@@ -54,13 +33,13 @@ class PostEditorUtil: NSObject {
         analyticsStat: WPAnalyticsStat?) {
 
         // Cancel publishing if media is currently being uploaded
-        if !action.isAsync && !dismissWhenDone && context.isUploadingMedia {
+        if !action.isAsync && !dismissWhenDone && isUploadingMedia {
             displayMediaIsUploadingAlert()
             return
         }
 
         // If there is any failed media allow it to be removed or cancel publishing
-        if context.hasFailedMedia {
+        if hasFailedMedia {
             displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
@@ -70,8 +49,8 @@ class PostEditorUtil: NSObject {
         }
 
         // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = context.verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
-            verificationHelper.displayVerificationPrompt(from: context) { [unowned self] verifiedInBackground in
+        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
+            verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
                 // User could've been plausibly silently verified in the background.
                 // If so, proceed to publishing the post as normal, otherwise save it as a draft.
                 if !verifiedInBackground {
@@ -121,7 +100,7 @@ class PostEditorUtil: NSObject {
             let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
             controller.modalPresentationStyle = .custom
             controller.transitioningDelegate = self
-            self.context.present(controller, animated: true, completion: nil)
+            self.present(controller, animated: true, completion: nil)
         }
 
         if action.isAsync {
@@ -138,18 +117,18 @@ class PostEditorUtil: NSObject {
     fileprivate func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-        context.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     fileprivate func displayHasFailedMediaAlert(then: @escaping () -> ()) {
         let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(FailedMediaRemovalAlert.acceptTitle) { [weak self] alertAction in
-            self?.context.removeFailedMedia()
+            self?.removeFailedMedia()
             then()
         }
 
         alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
-        context.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
@@ -169,18 +148,18 @@ class PostEditorUtil: NSObject {
         alertController.addDefaultActionWithTitle(publishTitle) { _ in
             publishAction()
         }
-        context.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource], with: post.blog)
+            WPAppAnalytics.track(stat, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post.blog)
             return
         }
 
         let originalWordCount = post.original?.content?.wordCount() ?? 0
         let wordCount = post.content?.wordCount() ?? 0
-        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource]
+        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSource]
         if post.hasRemote() {
             properties["word_diff_count"] = originalWordCount
         }
@@ -218,16 +197,16 @@ class PostEditorUtil: NSObject {
             return
         }
 
-        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource], with: post)
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
-        context.post = originalPost
-        context.post.deleteRevision()
+        post = originalPost
+        post.deleteRevision()
 
-        if context.shouldRemovePostOnDismiss {
+        if shouldRemovePostOnDismiss {
             post.remove()
         }
 
-        context.cancelUploadOfAllMedia(for: post)
+        cancelUploadOfAllMedia(for: post)
         ContextManager.sharedInstance().save(managedObjectContext)
     }
 
@@ -273,14 +252,13 @@ class PostEditorUtil: NSObject {
             self.discardChangesAndUpdateGUI()
         }
 
-        alertController.popoverPresentationController?.barButtonItem = context.navigationBarManager.closeBarButtonItem
-        context.present(alertController, animated: true, completion: nil)
+        alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
+        present(alertController, animated: true, completion: nil)
     }
-
 }
 
-extension PostEditorUtil: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+extension PostEditor where Self: UIViewController {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
         }
@@ -291,7 +269,7 @@ extension PostEditorUtil: UIViewControllerTransitioningDelegate {
 
 // MARK: - Publishing
 
-extension PostEditorUtil {
+extension PostEditor where Self: UIViewController {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
@@ -316,7 +294,7 @@ extension PostEditorUtil {
                 SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
-                strongSelf.context.post = uploadedPost
+                strongSelf.post = uploadedPost
 
                 generator.notificationOccurred(.success)
             }
@@ -365,24 +343,24 @@ extension PostEditorUtil {
     func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
         stopEditing()
 
-        WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: context.analyticsEditorSource], with: post)
+        WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
-        if let onClose = context.onClose {
+        if let onClose = onClose {
             onClose(didSave, shouldShowPostEpilogue)
-        } else if context.isModal() {
-            context.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else if isModal() {
+            presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
-            _ = context.navigationController?.popViewController(animated: true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
 
     func stopEditing() {
-        context.view.endEditing(true)
+        view.endEditing(true)
     }
 
     func mapUIContentToPostAndSave() {
-        post.postTitle = context.postTitle
-        post.content = context.getHTML()
+        post.postTitle = postTitle
+        post.content = getHTML()
         debouncer.call()
     }
 
@@ -399,32 +377,25 @@ extension PostEditorUtil {
         // a short delay
 
         managedObjectContext.performAndWait {
-            context.post = self.post.createRevision()
+            post = self.post.createRevision()
             ContextManager.sharedInstance().save(managedObjectContext)
         }
     }
 }
 
-extension PostEditorUtil {
+struct PostEditorDebouncerConstants {
+    static let autoSavingDelay = Double(0.5)
+}
 
-    struct Constants {
-        static let autoSavingDelay = Double(0.5)
-    }
+private struct MediaUploadingAlert {
+    static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
+    static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+    static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+}
 
-    struct Analytics {
-        static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
-    }
-
-    struct MediaUploadingAlert {
-        static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
-        static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-    }
-
-    struct FailedMediaRemovalAlert {
-        static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
-        static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-        static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
-        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
-    }
+private struct FailedMediaRemovalAlert {
+    static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
+    static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+    static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
+    static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
 }

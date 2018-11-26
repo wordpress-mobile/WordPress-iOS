@@ -137,7 +137,6 @@ public protocol PostEditorStateContextDelegate: class {
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }
 
-
 /// Encapsulates all of the editor UI state based upon actions performed on the post being edited.
 ///
 public class PostEditorStateContext {

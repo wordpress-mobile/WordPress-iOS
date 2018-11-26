@@ -15,9 +15,9 @@ import MobileCoreServices
 
 // MARK: - Aztec's Native Editor!
 //
-class AztecPostViewController: UIViewController, PublishablePostEditor {
+class AztecPostViewController: UIViewController, PostEditor {
 
-    // MARK: - PublishablePostEditor conformance
+    // MARK: - PostEditor conformance
 
     /// Closure to be executed when the editor gets closed.
     /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
@@ -63,11 +63,14 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
 
-    // MARK: - fileprivate & private variables
-
-    fileprivate lazy var postEditorUtil = {
-       return PostEditorUtil(context: self)
+    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
+    /// In this case every 0.5 second
+    ///
+    fileprivate(set) lazy var debouncer: Debouncer = {
+        return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
+
+    // MARK: - fileprivate & private variables
 
     /// Format Bar
     ///
@@ -286,20 +289,17 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         }
     }
 
-
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloader.Task]()
-
 
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
     fileprivate(set) var shouldRemovePostOnDismiss = false
 
-
     /// Media Library Data Source
     ///
-    fileprivate lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
+    lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
         return MediaLibraryPickerDataSource(post: self.post)
     }()
 
@@ -402,7 +402,6 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         self.post = post
 
         super.init(nibName: nil, bundle: nil)
-
         self.restorationIdentifier = Restoration.restorationIdentifier
         self.restorationClass = type(of: self)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
@@ -438,7 +437,7 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        postEditorUtil.createRevisionOfPost()
+        createRevisionOfPost()
 
         // Setup
         configureNavigationBar()
@@ -909,6 +908,10 @@ class AztecPostViewController: UIViewController, PublishablePostEditor {
 
         updateScrollInsets()
     }
+
+    @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return presentationController(forPresented: presented, presenting: presenting)
+    }
 }
 
 
@@ -1006,7 +1009,7 @@ extension AztecPostViewController: AztecNavigationControllerDelegate {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIButton) {
-        postEditorUtil.handlePublishButtonTap()
+        handlePublishButtonTap()
     }
 
     @IBAction func secondaryPublishButtonTapped() {
@@ -1020,7 +1023,7 @@ extension AztecPostViewController {
         let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
 
         let publishPostClosure = { [unowned self] in
-            self.postEditorUtil.publishPost(
+            self.publishPost(
                 action: action,
                 dismissWhenDone: action.dismissesEditor,
                 analyticsStat: secondaryStat)
@@ -1034,69 +1037,18 @@ extension AztecPostViewController {
     }
 
     @IBAction func closeWasPressed() {
-        postEditorUtil.cancelEditing()
-    }
-
-    @IBAction func blogPickerWasPressed() {
-        assert(isSingleSiteMode == false)
-        guard post.hasSiteSpecificChanges() else {
-            displayBlogSelector()
-            return
-        }
-
-        displaySwitchSiteAlert()
+        cancelEditing()
     }
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
     }
-
 }
 
 
 // MARK: - Private Helpers
 //
 private extension AztecPostViewController {
-
-    func displayBlogSelector() {
-        guard let sourceView = navigationBarManager.blogPickerButton.imageView else {
-            fatalError()
-        }
-
-        // Setup Handlers
-        let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
-            self.dismiss(animated: true)
-
-            guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
-                return
-            }
-            self.recreatePostRevision(in: blog)
-            self.mediaLibraryDataSource = MediaLibraryPickerDataSource(post: self.post)
-        }
-
-        let dismissHandler: BlogSelectorDismissHandler = {
-            self.dismiss(animated: true)
-        }
-
-        // Setup Picker
-        let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: post.blog.objectID,
-                                                                successHandler: successHandler,
-                                                                dismissHandler: dismissHandler)
-        selectorViewController.title = NSLocalizedString("Select Site", comment: "Blog Picker's Title")
-        selectorViewController.displaysPrimaryBlogOnTop = true
-
-        // Note:
-        // On iPad Devices, we'll disable the Picker's SearchController's "Autohide Navbar Feature", since
-        // upon dismissal, it may force the NavigationBar to show up, even when it was initially hidden.
-        selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
-
-        // Setup Navigation
-        let navigationController = AdaptiveNavigationController(rootViewController: selectorViewController)
-        navigationController.configurePopoverPresentationStyle(from: sourceView)
-
-        // Done!
-        present(navigationController, animated: true)
-    }
 
     /// Presents an alert controller, allowing the user to insert a link to either:
     ///
@@ -1223,18 +1175,6 @@ private extension AztecPostViewController {
         present(alert, animated: true)
     }
 
-    func displaySwitchSiteAlert() {
-        let alert = UIAlertController(title: SwitchSiteAlert.title, message: SwitchSiteAlert.message, preferredStyle: .alert)
-
-        alert.addDefaultActionWithTitle(SwitchSiteAlert.acceptTitle) { _ in
-            self.displayBlogSelector()
-        }
-
-        alert.addCancelActionWithTitle(SwitchSiteAlert.cancelTitle)
-
-        present(alert, animated: true)
-    }
-
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
@@ -1322,7 +1262,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        postEditorUtil.mapUIContentToPostAndSave()
+        mapUIContentToPostAndSave()
         refreshPlaceholderVisibility()
 
         switch textView {
@@ -1424,7 +1364,7 @@ extension AztecPostViewController: UITextViewDelegate {
 //
 extension AztecPostViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
-        postEditorUtil.mapUIContentToPostAndSave()
+        mapUIContentToPostAndSave()
         editorContentWasUpdated()
     }
 }
@@ -2297,38 +2237,9 @@ private extension AztecPostViewController {
     }
 }
 
+extension AztecPostViewController {
 
-// MARK: - Cancel/Dismiss/Persistence Logic
-//
-private extension AztecPostViewController {
-
-    // TODO: Rip this and put it into PostService, as well
-    func recreatePostRevision(in blog: Blog) {
-        let shouldCreatePage = post is Page
-        let postService = PostService(managedObjectContext: mainContext)
-        let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
-
-        newPost.content = contentByStrippingMediaAttachments()
-        newPost.postTitle = post.postTitle
-        newPost.password = post.password
-        newPost.status = post.status
-        newPost.dateCreated = post.dateCreated
-        newPost.dateModified = post.dateModified
-
-        if let source = post as? Post, let target = newPost as? Post {
-            target.tags = source.tags
-        }
-
-        postEditorUtil.discardChanges()
-        post = newPost
-        postEditorUtil.createRevisionOfPost()
-        RecentSitesService().touch(blog: blog)
-
-        // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
-        //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-    }
-
-    func stopEditing() {
+    private func stopEditing() {
         view.endEditing(true)
     }
 
@@ -2350,23 +2261,11 @@ private extension AztecPostViewController {
 
 // MARK: - Computed Properties
 
-private extension AztecPostViewController {
-    var mainContext: NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
-    }
-
-    var currentBlogCount: Int {
-        let service = BlogService(managedObjectContext: mainContext)
-        return service.blogCountForAllAccounts()
-    }
-
-    var isSingleSiteMode: Bool {
-        return currentBlogCount <= 1 || post.hasRemote()
-    }
+extension AztecPostViewController {
 
     /// Height to use for the inline media picker based on iOS version and screen orientation.
     ///
-    var mediaKeyboardHeight: CGFloat {
+    private var mediaKeyboardHeight: CGFloat {
         var keyboardHeight: CGFloat
 
         // Let's assume a sensible default for the keyboard height based on orientation
@@ -3545,14 +3444,6 @@ extension AztecPostViewController {
         static let restorationIdentifier    = "AztecPostViewController"
         static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
         static let shouldRemovePostKey      = "shouldRemovePostOnDismiss"
-    }
-
-    struct SwitchSiteAlert {
-        static let title                    = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
-        static let message                  = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
-
-        static let acceptTitle              = NSLocalizedString("OK", comment: "Accept Action")
-        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
 
     struct MediaUploadingCancelAlert {
