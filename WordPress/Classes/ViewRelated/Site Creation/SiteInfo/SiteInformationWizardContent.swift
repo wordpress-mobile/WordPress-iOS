@@ -244,7 +244,7 @@ extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
 extension SiteInformationWizardContent {
     private func startListeningToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardDidShow),
+                                               selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
@@ -259,16 +259,17 @@ extension SiteInformationWizardContent {
     }
 
     @objc
-    private func keyboardDidShow(_ notification: Foundation.Notification) {
+    private func keyboardWillShow(_ notification: Foundation.Notification) {
         guard let payload = KeyboardInfo(notification) else { return }
         let keyboardScreenFrame = payload.frameEnd
 
-        let keyboardFrame = view.convert(keyboardScreenFrame, from: nil)
-        let keyboardHeight = keyboardFrame.origin.y - (Constants.bottomMargin + 30)
+        let convertedKeyboardFrame = view.window?.convert(keyboardScreenFrame, to: view) ?? keyboardScreenFrame
+
+        let constraintConstant = view.frame.height - convertedKeyboardFrame.origin.y
 
         let animationDuration = payload.animationDuration
 
-        bottomConstraint.constant = keyboardHeight
+        bottomConstraint.constant = constraintConstant
         view.setNeedsUpdateConstraints()
 
         buttonWrapper.addShadow()
@@ -287,15 +288,6 @@ extension SiteInformationWizardContent {
         buttonWrapper.clearShadow()
         bottomConstraint.constant = Constants.bottomMargin
     }
-
-    private func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
-        let key = UIResponder.keyboardFrameEndUserInfoKey
-        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
-            return .zero
-        }
-
-        return view.convert(keyboardFrame, from: nil)
-    }
 }
 
 private struct KeyboardInfo {
@@ -308,13 +300,10 @@ private struct KeyboardInfo {
 
 extension KeyboardInfo {
     init?(_ notification: Foundation.Notification) {
-        print("=== notification name ", notification.name)
-        print("=== will show ", UIResponder.keyboardWillShowNotification)
         guard notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillHideNotification else {
-            print("==== returning nil")
             return nil
-
         }
+
         let u = notification.userInfo!
 
         animationCurve = UIView.AnimationCurve(rawValue: u[UIWindow.keyboardAnimationCurveUserInfoKey] as! Int)!
