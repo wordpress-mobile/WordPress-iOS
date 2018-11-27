@@ -32,4 +32,18 @@ class GutenbergSettings: NSObject {
             database.set(true, forKey: gutenbergEditorEnabledKey)
         }
     }
+
+    // MARK: - Gutenberg Choice Logic
+
+    /// Call this method to know if Gutenberg must be used for the specified post.
+    ///
+    /// - Parameters:
+    ///     - post: the post that will be edited.
+    ///
+    /// - Returns: true if the post must be edited with Gutenberg.
+    ///
+    func mustUseGutenberg(for post: AbstractPost) -> Bool {
+        return isGutenbergEnabled()
+            && (!post.hasRemote() || post.containsGutenbergBlocks())
+    }
 }
