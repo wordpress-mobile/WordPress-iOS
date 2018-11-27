@@ -129,27 +129,48 @@ final class SiteInformationWizardContent: UIViewController {
         header.subtitle.text = headerData.subtitle
 
         table.tableHeaderView = header
-
-        header.centerXAnchor.constraint(equalTo: table.centerXAnchor).isActive = true
-        header.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
-        header.topAnchor.constraint(equalTo: table.topAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.topAnchor.constraint(equalTo: table.topAnchor)
+            ])
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
-//        let header = TitleSubtitleHeader(frame: .zero)
-//        header.setTitle(headerData.title)
-//        header.setSubtitle(headerData.subtitle)
-//
-//        table.tableHeaderView = header
-//
-//        NSLayoutConstraint.activate([
-//            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-//            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-//            header.topAnchor.constraint(equalTo: table.topAnchor)
-//            ])
 
-//        table.tableHeaderView?.layoutIfNeeded()
-//        table.tableHeaderView = table.tableHeaderView
+        refreshTableViewHeaderLayout()
+    }
+
+    func refreshTableViewHeaderLayout() {
+        guard let headerView = table.tableHeaderView else {
+            return
+        }
+
+        // The tableView may need to layout, run this layout now, if needed.
+        // This ensures the proper margins, such as readable margins, are
+        // inherited and calculated by the headerView.
+        table.layoutIfNeeded()
+
+        // Start with the provided UILayoutFittingCompressedSize to let iOS handle its own magic
+        // number for a "compressed" height, meaning we want our fitting size to be the minimal height.
+        var fittingSize = UIView.layoutFittingCompressedSize
+
+        // Set the width to the tableView's width since this is a known width for the headerView.
+        // Otherwise, the layout will try and adopt 'any' width and may break based on the how
+        // the constraints are set up in the nib.
+        fittingSize.width = table.frame.size.width
+
+        // Require horizontal fitting since our width is known.
+        // Use the lower fitting size priority as we want to minimize our height consumption
+        // according to the layout's contraints and intrinsic size.
+        let size = headerView.systemLayoutSizeFitting(fittingSize,
+                                                      withHorizontalFittingPriority: .required,
+                                                      verticalFittingPriority: .fittingSizeLevel)
+        // Update the tableHeaderView itself. Classic.
+        var headerFrame = headerView.frame
+        headerFrame.size.height = size.height
+        headerView.frame = headerFrame
+        table.tableHeaderView = headerView
     }
 
     private func setupFooter() {

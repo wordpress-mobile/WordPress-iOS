@@ -6,8 +6,6 @@ final class TitleSubtitle: UIView {
         super.awakeFromNib()
 
         applyStyles()
-
-        backgroundColor = .green
     }
 
     private func applyStyles() {
@@ -23,14 +21,13 @@ final class TitleSubtitle: UIView {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         title.textColor = WPStyleGuide.darkGrey()
-        title.backgroundColor = .blue
+        title.adjustsFontForContentSizeCategory = true
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.greyDarken10()
-
-        subtitle.backgroundColor = .blue
+        subtitle.adjustsFontForContentSizeCategory = true
     }
 
     func setTitle(_ text: String) {
