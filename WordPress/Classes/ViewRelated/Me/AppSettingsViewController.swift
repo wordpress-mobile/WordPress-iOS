@@ -306,7 +306,7 @@ private extension AppSettingsViewController {
         let editorSettings = EditorSettings()
         let enabled = editorSettings.isEnabled(.gutenberg)
         let gutenbergEditor = SwitchRow(
-            title: "(A8C) Gutenberg",
+            title: "(A8C) Enable Gutenberg editor",
             value: enabled,
             onChange: toggleEditor()
         )
