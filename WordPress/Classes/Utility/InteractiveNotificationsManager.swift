@@ -472,6 +472,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
         let textInputResponse = response as? UNTextInputNotificationResponse
 
+        // Analytics
+        PushNotificationsManager.shared.trackNotification(with: userInfo)
+
         if handleAction(with: response.actionIdentifier,
                         category: response.notification.request.content.categoryIdentifier,
                         userInfo: userInfo,
