@@ -163,8 +163,7 @@ private extension SiteStatsInsightsViewModel {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
                                                    data: bestNumberOfViews,
                                                    icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: allTimeStats?.bestViewsOn,
-                                                   showSeparator: false))
+                                                   nameDetail: allTimeStats?.bestViewsOn))
         }
 
         return dataRows
@@ -186,7 +185,7 @@ private extension SiteStatsInsightsViewModel {
 
             // Hour
             let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
-            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent, showSeparator: false))
+            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent))
         }
 
         return dataRows
@@ -213,8 +212,7 @@ private extension SiteStatsInsightsViewModel {
             !totalPublicizeFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
                                                    data: totalPublicizeFollowers,
-                                                   icon: FollowerTotals.socialIcon,
-                                                   showSeparator: false))
+                                                   icon: FollowerTotals.socialIcon))
         }
 
         return dataRows

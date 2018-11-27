@@ -56,9 +56,15 @@ private extension SimpleTotalsCell {
             return
         }
 
-        for dataRow in dataRows {
+        for (index, dataRow) in dataRows.enumerated() {
             let row = StatsTotalRow.loadFromNib()
             row.configure(rowData: dataRow)
+
+            // Don't show the separator line on the last row.
+            if index == (dataRows.count - 1) {
+                row.showSeparator = false
+            }
+
             rowsStackView.addArrangedSubview(row)
         }
     }
