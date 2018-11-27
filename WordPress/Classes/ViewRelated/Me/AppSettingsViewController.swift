@@ -76,12 +76,12 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-
-        return ImmuTable(sections: [
+        let tableSections = [
             mediaTableSection(),
             privacyTableSection(),
             otherTableSection()
-            ])
+        ]
+        return ImmuTable(sections: tableSections)
     }
 
     // MARK: - Media cache methods
@@ -230,6 +230,19 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func clearSiriActivityDonations() -> ImmuTableAction {
+        return { [tableView] _ in
+            tableView?.deselectSelectedRowWithAnimation(true)
+
+            if #available(iOS 12.0, *) {
+                NSUserActivity.deleteAllSavedUserActivities {}
+            }
+
+            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
+    }
+
     func clearSpotlightCache() -> ImmuTableAction {
         return { [weak self] row in
             self?.tableView.deselectSelectedRowWithAnimation(true)
@@ -348,22 +361,33 @@ private extension AppSettingsViewController {
             action: openPrivacySettings()
         )
 
-        return ImmuTableSection(
-            headerText: privacyHeader,
-            rows: [
-                mediaRemoveLocation,
-                privacySettings
-            ]
-        )
-    }
-
-    func otherTableSection() -> ImmuTableSection {
-        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
-
         let spotlightClearCacheRow = DestructiveButtonRow(
             title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
+
+        var tableRows: [ImmuTableRow] = [
+            mediaRemoveLocation,
+            privacySettings,
+            spotlightClearCacheRow
+        ]
+
+        if #available(iOS 12.0, *) {
+            let siriClearCacheRow = DestructiveButtonRow(
+                title: NSLocalizedString("Siri Reset Prompt", comment: "Label for button that clears user activities donated to Siri."),
+                action: clearSiriActivityDonations(),
+                accessibilityIdentifier: "spotlightClearCacheButton")
+
+            tableRows.append(siriClearCacheRow)
+        }
+
+        return ImmuTableSection(
+            headerText: privacyHeader,
+            rows: tableRows)
+    }
+
+    func otherTableSection() -> ImmuTableSection {
+        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
 
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
@@ -378,7 +402,6 @@ private extension AppSettingsViewController {
         return ImmuTableSection(
             headerText: otherHeader,
             rows: [
-                spotlightClearCacheRow,
                 settingsRow,
                 aboutRow
             ],
