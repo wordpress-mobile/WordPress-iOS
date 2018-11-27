@@ -210,12 +210,12 @@ extension StatsInsightsStore {
         return state.mostPopularStats
     }
 
-    func getTotalDotComFollers() -> String? {
-        return state.totalDotComFollowers
+    func getTotalDotComFollowers() -> String? {
+        return state.totalDotComFollowers == "0" ? "" : state.totalDotComFollowers
     }
 
     func getTotalEmailFollowers() -> String? {
-        return state.totalEmailFollowers
+        return state.totalEmailFollowers == "0" ? "" : state.totalEmailFollowers
     }
 
     func getTotalPublicizeFollowers() -> String? {

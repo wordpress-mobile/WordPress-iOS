@@ -196,7 +196,7 @@ private extension SiteStatsInsightsViewModel {
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
-        if let totalDotComFollowers = store.getTotalDotComFollers(),
+        if let totalDotComFollowers = store.getTotalDotComFollowers(),
             !totalDotComFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPressTitle,
                                                    data: totalDotComFollowers,
