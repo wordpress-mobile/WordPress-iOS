@@ -123,20 +123,33 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
-        header.setTitle(headerData.title)
-        header.setSubtitle(headerData.subtitle)
+        let header = Bundle.main.loadNibNamed("TitleSubtitle", owner: nil, options: nil)!.first as! TitleSubtitle
+
+        header.title.text = headerData.title
+        header.subtitle.text = headerData.subtitle
 
         table.tableHeaderView = header
 
-        NSLayoutConstraint.activate([
-            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: table.topAnchor)
-            ])
+        header.centerXAnchor.constraint(equalTo: table.centerXAnchor).isActive = true
+        header.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
+        header.topAnchor.constraint(equalTo: table.topAnchor).isActive = true
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
+//        let header = TitleSubtitleHeader(frame: .zero)
+//        header.setTitle(headerData.title)
+//        header.setSubtitle(headerData.subtitle)
+//
+//        table.tableHeaderView = header
+//
+//        NSLayoutConstraint.activate([
+//            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+//            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
+//            header.topAnchor.constraint(equalTo: table.topAnchor)
+//            ])
+
+//        table.tableHeaderView?.layoutIfNeeded()
+//        table.tableHeaderView = table.tableHeaderView
     }
 
     private func setupFooter() {
