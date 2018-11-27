@@ -77,6 +77,7 @@ final class SiteInformationWizardContent: UIViewController, RedrawableTableHeade
 
     private func setupTable() {
         setupTableBackground()
+    setupTableSeparator()
         registerCell()
         setupHeader()
         setupFooter()
@@ -87,6 +88,11 @@ final class SiteInformationWizardContent: UIViewController, RedrawableTableHeade
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
     }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
     private func registerCell() {
         table.register(
             InlineEditableNameValueCell.defaultNib,
