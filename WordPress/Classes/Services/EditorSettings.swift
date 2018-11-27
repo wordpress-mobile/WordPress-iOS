@@ -12,11 +12,6 @@ class EditorSettings: NSObject {
     fileprivate let aztecEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
     fileprivate let gutenbergEditorEnabledKey = "kUserDefaultsGutenbergEditorEnabled"
 
-
-    // MARK: - Forcing Aztec Keys
-
-    fileprivate let lastVersionWhereAztecWasForced = "lastVersionWhereAztecWasForced"
-
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
 
@@ -24,31 +19,10 @@ class EditorSettings: NSObject {
     init(database: KeyValueDatabase) {
         self.database = database
         super.init()
-
-        setDefaultsForVersionFirstLaunch()
     }
 
     convenience override init() {
         self.init(database: UserDefaults() as KeyValueDatabase)
-    }
-
-    // MARK: - Native Editor By Default
-
-    fileprivate let aztecEditorMadeDefault = "aztecEditorMadeDefault"
-
-    /// Contains the logic for setting the defaults the first time a version is launched.
-    ///
-    @objc func setDefaultsForVersionFirstLaunch() {
-        let bundleVersion = Bundle.main.bundleVersion()
-
-        let lastInternalForcedVersion = database.object(forKey: lastVersionWhereAztecWasForced) as? String ?? ""
-
-        guard lastInternalForcedVersion != bundleVersion else {
-            return
-        }
-
-        enable(.aztec)
-        database.set(bundleVersion, forKey: lastVersionWhereAztecWasForced)
     }
 
     // MARK: Public accessors
@@ -80,31 +54,44 @@ class EditorSettings: NSObject {
         }
     }
 
-    // We can't return a type that's both a PostEditor and a UIViewController, so using
-    // a configure block as a hack.
-    // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
-    // and then let the caller configure the editor.
+    // MARK: - Editor: Choice Logic
+
+    /// Call this method to know if Gutenberg must be used for the specified post.
+    ///
+    /// - Parameters:
+    ///     - post: the post that will be edited.
+    ///
+    /// - Returns: true if the post must be edited with Gutenberg.
+    ///
+    private func useGutenberg(for post: AbstractPost) -> Bool {
+        return Feature.enabled(.gutenberg) && post.containsGutenbergBlocks()
+    }
+
+    // MARK: - Editor: Instantiation
+
+    /// We can't return a type that's both a PostEditor and a UIViewController, so using
+    /// a configure block as a hack.
+    /// In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
+    /// and then let the caller configure the editor.
     func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch current {
-        case .aztec:
-            let vc = AztecPostViewController(post: post)
+        if useGutenberg(for: post) {
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
-        case .gutenberg:
-            let vc = GutenbergViewController(post: post)
+        } else {
+            let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
         }
     }
 
     func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch current {
-        case .aztec:
-            let vc = AztecPostViewController(post: post)
+        if useGutenberg(for: post) {
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
-        case .gutenberg:
-            let vc = GutenbergViewController(post: post)
+        } else {
+            let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
         }
