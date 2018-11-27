@@ -97,28 +97,32 @@ class EditorSettings: NSObject {
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the caller configure the editor.
     func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch current {
-        case .aztec:
-            let vc = AztecPostViewController(post: post)
+        switch (gutenbergCanHandle(post: post), current) {
+        case (true, .gutenberg):
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
-        case .gutenberg:
-            let vc = GutenbergViewController(post: post)
+        default:
+            let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
         }
     }
 
     func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch current {
-        case .aztec:
-            let vc = AztecPostViewController(post: post)
-            configure(vc, vc)
-            return vc
-        case .gutenberg:
+        switch (gutenbergCanHandle(post: post), current) {
+        case (true, .gutenberg):
             let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
+        default:
+            let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
         }
+    }
+
+    private func gutenbergCanHandle(post: AbstractPost) -> Bool {
+        return !post.hasRemote() || post.containsGutenbergBlocks()
     }
 }
