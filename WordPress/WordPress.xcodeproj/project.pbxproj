@@ -1191,6 +1191,7 @@
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
 		D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */; };
 		D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */; };
+		D846BED621AD44D000F5A839 /* RedrawableTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D846BED521AD44D000F5A839 /* RedrawableTableHeader.swift */; };
 		D848CBF720FEEE7F00A9038F /* notifications-text-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CBF620FEEE7F00A9038F /* notifications-text-content.json */; };
 		D848CBF920FEF82100A9038F /* NotificationsContentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CBF820FEF82100A9038F /* NotificationsContentFactoryTests.swift */; };
 		D848CBFB20FEFA4800A9038F /* notifications-comment-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CBFA20FEFA4800A9038F /* notifications-comment-content.json */; };
@@ -3097,6 +3098,7 @@
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
 		D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataLoader.swift; sourceTree = "<group>"; };
+		D846BED521AD44D000F5A839 /* RedrawableTableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedrawableTableHeader.swift; sourceTree = "<group>"; };
 		D848CBF620FEEE7F00A9038F /* notifications-text-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-text-content.json"; sourceTree = "<group>"; };
 		D848CBF820FEF82100A9038F /* NotificationsContentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsContentFactoryTests.swift; sourceTree = "<group>"; };
 		D848CBFA20FEFA4800A9038F /* notifications-comment-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-comment-content.json"; sourceTree = "<group>"; };
@@ -7167,6 +7169,7 @@
 				D8B22DAB21ABBFDF003019C8 /* KeyboardInfo.swift */,
 				D80F78AC21AD2D04009D6A1A /* TitleSubtitle.swift */,
 				D80F78AA21AD2CF5009D6A1A /* TitleSubtitle.xib */,
+				D846BED521AD44D000F5A839 /* RedrawableTableHeader.swift */,
 			);
 			path = "Site Creation";
 			sourceTree = "<group>";
@@ -8947,6 +8950,7 @@
 				E66E2A651FE4311300788F22 /* SettingsTitleSubtitleController.swift in Sources */,
 				E1222B671F878E4700D23173 /* WebViewControllerFactory.swift in Sources */,
 				E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */,
+				D846BED621AD44D000F5A839 /* RedrawableTableHeader.swift in Sources */,
 				9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */,
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
