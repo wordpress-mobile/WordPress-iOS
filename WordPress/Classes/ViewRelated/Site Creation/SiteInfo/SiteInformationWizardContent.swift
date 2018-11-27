@@ -206,12 +206,12 @@ extension SiteInformationWizardContent: UITableViewDataSource {
     private func configure(_ cell: InlineEditableNameValueCell, index: IndexPath) {
         if Rows.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
-            cell.valueTextField.placeholder = TableStrings.site
+            cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.site)
         }
 
         if Rows.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
-            cell.valueTextField.placeholder = TableStrings.taglinePlaceholder
+            cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.taglinePlaceholder)
         }
 
         cell.nameLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
@@ -223,6 +223,15 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         if cell.delegate == nil {
             cell.delegate = self
         }
+    }
+
+    private func attributedPlaceholder(text: String) -> NSAttributedString {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: WPStyleGuide.grey(),
+            .font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        ]
+
+        return NSAttributedString(string: text, attributes: attributes)
     }
 }
 
