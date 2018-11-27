@@ -219,8 +219,9 @@ extension StatsInsightsStore {
     }
 
     func getTotalPublicizeFollowers() -> String? {
-        // TODO: return total of all items
-        return state.publicizeItems?.first?.value
+        // TODO: When the API is able to, return total of all state.publicizeItems formatted/localized.
+        // For now, we'll just show a bogus number.
+        return "666,6666,666"
     }
 
     var isFetching: Bool {

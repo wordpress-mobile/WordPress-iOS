@@ -58,7 +58,9 @@ class SiteStatsInsightsViewModel: Observable {
                 let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
 
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle,
+                                                               dataSubtitle: dataSubtitle,
+                                                               dataRows: dataRows))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
