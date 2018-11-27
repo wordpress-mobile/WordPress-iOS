@@ -103,11 +103,14 @@ class GutenbergViewController: UIViewController, PostEditor {
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
+            attachmentDelegate = AztecAttachmentDelegate(post: post)
             refreshInterface()
         }
     }
 
     let navigationBarManager = PostEditorNavigationBarManager()
+
+    lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
@@ -138,8 +141,8 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(post: AbstractPost) {
         self.post = post
-        self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
+        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         super.init(nibName: nil, bundle: nil)
         self.postTitle = post.postTitle ?? ""
@@ -153,6 +156,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     deinit {
         gutenberg.invalidate()
+        attachmentDelegate.cancelAllPendingMediaRequests()
     }
 
     // MARK: - Lifecycle methods
@@ -259,9 +263,11 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
-        return AztecAttachmentDelegate(post: post)
+        return attachmentDelegate
     }
 }
+
+// MARK: - PostEditorStateContextDelegate
 
 extension GutenbergViewController: PostEditorStateContextDelegate {
 
