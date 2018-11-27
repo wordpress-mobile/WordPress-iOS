@@ -46,7 +46,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
-                tableRows.append(AllTimeStatsRow(dataRows: createAllTimeStatsRows()))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
@@ -57,7 +57,7 @@ class SiteStatsInsightsViewModel: Observable {
                 let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
 
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(MostPopularStatsRow(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
