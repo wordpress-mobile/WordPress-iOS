@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 /// Contains the UI corresponsing to the list of segments
-final class SiteSegmentsWizardContent: UIViewController {
+final class SiteSegmentsWizardContent: UIViewController, RedrawableTableHeader {
     private let service: SiteSegmentsService
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
     private let selection: (SiteSegment) -> Void
@@ -87,21 +87,22 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
-        header.setTitle(headerData.title)
-        header.setSubtitle(headerData.subtitle)
+        let header = Bundle.main.loadNibNamed("TitleSubtitle", owner: nil, options: nil)!.first as! TitleSubtitle
+
+        header.title.text = headerData.title
+        header.subtitle.text = headerData.subtitle
 
         table.tableHeaderView = header
-
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
             header.widthAnchor.constraint(equalTo: table.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.topAnchor),
-            header.bottomAnchor.constraint(equalTo: table.bottomAnchor)
-        ])
+            header.topAnchor.constraint(equalTo: table.topAnchor)
+            ])
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
+
+        refreshTableViewHeaderLayout(table)
     }
 
     private func initCancelButton() {
