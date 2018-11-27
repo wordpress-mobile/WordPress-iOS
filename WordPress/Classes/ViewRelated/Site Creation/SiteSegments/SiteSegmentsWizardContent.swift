@@ -87,7 +87,7 @@ final class SiteSegmentsWizardContent: UIViewController, RedrawableTableHeader {
     }
 
     private func setupHeader() {
-        let header = Bundle.main.loadNibNamed("TitleSubtitle", owner: nil, options: nil)!.first as! TitleSubtitle
+        let header = TitleSubtitle.loadFromNib()
 
         header.title.text = headerData.title
         header.subtitle.text = headerData.subtitle

@@ -1,4 +1,4 @@
-final class TitleSubtitle: UIView {
+final class TitleSubtitle: UIView, NibLoadable {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
 
