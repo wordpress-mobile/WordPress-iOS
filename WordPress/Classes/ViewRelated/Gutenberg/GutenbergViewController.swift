@@ -1,6 +1,7 @@
 import UIKit
-import React
 import WPMediaPicker
+import Gutenberg
+import Aztec
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -131,13 +132,12 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Private variables
 
-    private let gutenberg: Gutenberg
+    private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
 
     // MARK: - Initializers
     required init(post: AbstractPost) {
         self.post = post
-        self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
         self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
@@ -223,6 +223,10 @@ class GutenbergViewController: UIViewController, PostEditor {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+    func gutenbergDidRequestMediaPicker(with callback: (String?) -> Void) {
+
+    }
+
 
     func gutenbergDidRequestMediaPicker(callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
@@ -249,6 +253,18 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             }
         }
+    }
+}
+
+// MARK: - GutenbergBridgeDataSource
+
+extension GutenbergViewController: GutenbergBridgeDataSource {
+    func gutenbergInitialContent() -> String? {
+        return post.content ?? ""
+    }
+
+    func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
+        
     }
 }
 

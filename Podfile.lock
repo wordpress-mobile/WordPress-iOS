@@ -64,6 +64,8 @@ PODS:
     - React/RCTLinkingIOS (= 0.57.5)
     - React/RCTNetwork (= 0.57.5)
     - React/RCTText (= 0.57.5)
+    - RNTAztecView
+    - WordPress-Aztec-iOS
     - yoga (= 0.57.5.React)
   - HockeySDK (5.1.4):
     - HockeySDK/DefaultLib (= 5.1.4)
@@ -221,7 +223,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (= 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`)
+  - Gutenberg (from `../gutenberg-mobile/`)
   - HockeySDK (= 5.1.4)
   - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.7)
@@ -297,7 +299,7 @@ EXTERNAL SOURCES:
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
-    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :path: "../gutenberg-mobile/"
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   RNSVG:
@@ -312,9 +314,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  Gutenberg:
-    :commit: 1cd29ab02f26bfecc06b7c41b75ae4ebe5f4ed50
-    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: 8.0.8
@@ -341,7 +340,7 @@ SPEC CHECKSUMS:
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
-  Gutenberg: c650fdbab730350e00d0cde3475a83041ba6aebe
+  Gutenberg: cb1c69f596935f86fdb3c41906b3de66b6b68343
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -369,6 +368,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 5c46b4523240aa9e3d6ca58bd485e03a47292101
+PODFILE CHECKSUM: 28fb80a2c7efe3ef73a1175d05936547dcc90d68
 
 COCOAPODS: 1.5.3
