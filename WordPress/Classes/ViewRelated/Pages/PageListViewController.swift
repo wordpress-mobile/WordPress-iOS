@@ -468,8 +468,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate func showEditor(post: AbstractPost) {
         let filterIndex = filterSettings.currentFilterIndex()
-        let editorSettings = EditorSettings()
-        let postViewController = editorSettings.instantiatePageEditor(page: post) { (editor, vc) in
+        let editorFactory = EditorFactory()
+        let postViewController = editorFactory.instantiatePageEditor(page: post) { (editor, vc) in
             editor.onClose = { [weak self] changesSaved, _ in
                 if changesSaved {
                     if let postStatus = editor.post.status {

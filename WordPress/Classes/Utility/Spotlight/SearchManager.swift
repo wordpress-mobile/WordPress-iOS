@@ -439,8 +439,8 @@ fileprivate extension SearchManager {
     func openEditor(for page: Page) {
         closePreviewIfNeeded(for: page)
         openListView(for: page)
-        let editorSettings = EditorSettings()
-        let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
+        let editorFactory = EditorFactory()
+        let postViewController = editorFactory.instantiatePageEditor(page: page) { (editor, vc) in
             editor.onClose = { changesSaved, _ in
                 vc.dismiss(animated: true)
             }

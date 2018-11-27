@@ -12,7 +12,6 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate var handler: ImmuTableViewHandler!
-    fileprivate static let aztecEditorFooterHeight = CGFloat(34.0)
 
     // MARK: - Initialization
 
@@ -77,7 +76,8 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
 
-        return ImmuTable(sections: [
+        return ImmuTable(optionalSections: [
+            editorTableSection(),
             mediaTableSection(),
             privacyTableSection(),
             otherTableSection()
@@ -196,9 +196,9 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func enableEditor(_ editor: EditorSettings.Editor) -> ImmuTableAction {
+    func toggleGutenberg() -> (Bool) -> Void {
         return { [weak self] _ in
-            EditorSettings().enable(editor)
+            GutenbergSettings().toggleGutenberg()
             self?.reloadViewModel()
         }
     }
@@ -297,6 +297,28 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 // MARK: - Table Sections Private Extension
 
 private extension AppSettingsViewController {
+
+    func editorTableSection() -> ImmuTableSection? {
+        guard Feature.enabled(.gutenberg) else {
+            return nil
+        }
+
+        let gutenbergSettings = GutenbergSettings()
+        let enabled = gutenbergSettings.isGutenbergEnabled()
+        let gutenbergEditor = SwitchRow(
+            title: "(A8C) Enable Gutenberg editor",
+            value: enabled,
+            onChange: toggleGutenberg()
+        )
+
+        // I'm intentionally not localizing strings since this is a temporary workaround for internal versions
+        let headerText = "Gutenberg"
+        let footerTextDisabled = "💣 This is still an experimental version of Gutenberg 🙈"
+        let footerTextEnabled = "💣 This is still an experimental version of Gutenberg 🙊"
+        let footerText = enabled ? footerTextEnabled : footerTextDisabled
+
+        return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
+    }
 
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
