@@ -48,7 +48,8 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.followerTotals))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
                 let dataRows = createMostPopularStatsRows()
 
@@ -97,6 +98,7 @@ private extension SiteStatsInsightsViewModel {
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
         static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
+        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
     }
 
     struct AllTimeStats {
@@ -113,6 +115,15 @@ private extension SiteStatsInsightsViewModel {
     struct MostPopularStats {
         static let itemSubtitle = NSLocalizedString("Day/Hour", comment: "Most Popular Day and Hour label for day and hour")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Most Popular Day and Hour label for number of views")
+    }
+
+    struct FollowerTotals {
+        static let wordPressTitle = NSLocalizedString("WordPress.com", comment: "Follower Totals label for WordPress.com followers")
+        static let wordPressIcon = Style.imageForGridiconType(.mySites)
+        static let emailTitle = NSLocalizedString("Email", comment: "Follower Totals label for email followers")
+        static let emailIcon = Style.imageForGridiconType(.mail)
+        static let socialTitle = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
+        static let socialIcon = Style.imageForGridiconType(.share)
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -176,6 +187,34 @@ private extension SiteStatsInsightsViewModel {
             // Hour
             let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
             dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent, showSeparator: false))
+        }
+
+        return dataRows
+    }
+
+    func createTotalFollowersRows() -> [StatsTotalRowData] {
+        var dataRows = [StatsTotalRowData]()
+
+        if let totalDotComFollowers = store.getTotalDotComFollers(),
+            !totalDotComFollowers.isEmpty {
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPressTitle,
+                                                   data: totalDotComFollowers,
+                                                   icon: FollowerTotals.wordPressIcon))
+        }
+
+        if let totalEmailFollowers = store.getTotalEmailFollowers(),
+            !totalEmailFollowers.isEmpty {
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.emailTitle,
+                                                   data: totalEmailFollowers,
+                                                   icon: FollowerTotals.emailIcon))
+        }
+
+        if let totalPublicizeFollowers = store.getTotalPublicizeFollowers(),
+            !totalPublicizeFollowers.isEmpty {
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
+                                                   data: totalPublicizeFollowers,
+                                                   icon: FollowerTotals.socialIcon,
+                                                   showSeparator: false))
         }
 
         return dataRows
