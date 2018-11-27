@@ -57,7 +57,7 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
             onFailure()
             return
         }
-        mediaUtility.fetchPosterImageFor(sourceURL: videoSrcURL, onSuccess: onSuccess, onFailure: onFailure)
+        mediaUtility.fetchPosterImage(for: videoSrcURL, onSuccess: onSuccess, onFailure: onFailure)
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {

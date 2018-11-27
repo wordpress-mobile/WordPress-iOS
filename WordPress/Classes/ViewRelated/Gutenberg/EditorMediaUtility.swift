@@ -26,7 +26,7 @@ class EditorMediaUtility {
         return icon
     }
 
-    func fetchPosterImageFor(sourceURL: URL, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
+    func fetchPosterImage(for sourceURL: URL, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
         let thumbnailGenerator = MediaVideoExporter(url: sourceURL)
         thumbnailGenerator.exportPreviewImageForVideo(atURL: sourceURL, imageOptions: nil, onCompletion: { (exportResult) in
             guard let image = UIImage(contentsOfFile: exportResult.url.path) else {

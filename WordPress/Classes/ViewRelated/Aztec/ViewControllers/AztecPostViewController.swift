@@ -59,6 +59,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
+    let mediaUtility = EditorMediaUtility()
+
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
@@ -2945,85 +2947,16 @@ extension AztecPostViewController {
         return
     }
 
-    func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
-        let icon: UIImage
-        switch attachment {
-        case let imageAttachment as ImageAttachment:
-            if imageAttachment.url == Constants.placeholderDocumentLink {
-                icon = Gridicon.iconOfType(.pages, withSize: Constants.mediaPlaceholderImageSize)
-            } else {
-                icon = Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
-            }
-        case _ as VideoAttachment:
-            icon = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
-        default:
-            icon = Gridicon.iconOfType(.attachment, withSize: Constants.mediaPlaceholderImageSize)
-        }
-
-        icon.addAccessibilityForAttachment(attachment)
-        return icon
-    }
-
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
         guard let videoSrcURL = videoAttachment.url, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil else {
             onFailure()
             return
         }
-        let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
-        thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
-            guard let image = UIImage(contentsOfFile: exportResult.url.path) else {
-                onFailure()
-                return
-            }
-            DispatchQueue.main.async {
-                onSuccess(image)
-            }
-        }, onError: { (error) in
-            DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
-            onFailure()
-        })
+        mediaUtility.fetchPosterImage(for: videoSrcURL, onSuccess: onSuccess, onFailure: onFailure)
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        var requestURL = url
-        let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-        //use height zero to maintain the aspect ratio when fetching
-        var size = CGSize(width: imageMaxDimension, height: 0)
-        let request: URLRequest
-        if url.isFileURL {
-            request = URLRequest(url: url)
-        } else if self.post.blog.isPrivate() {
-            // private wpcom image needs special handling.
-            // the size that WPImageHelper expects is pixel size
-            size.width = size.width * UIScreen.main.scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
-        } else if !self.post.blog.isHostedAtWPcom && self.post.blog.isBasicAuthCredentialStored() {
-            size.width = size.width * UIScreen.main.scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
-        } else {
-            // the size that PhotonImageURLHelper expects is points size
-            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
-        }
-
-        let receipt = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
-            guard let _ = self else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                guard let image = image else {
-                    DDLogError("Unable to download image for attachment with url = \(url). Details: \(String(describing: error?.localizedDescription))")
-                    failure()
-                    return
-                }
-
-                success(image)
-            }
-        }
-
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: failure)
         activeMediaRequests.append(receipt)
     }
 
@@ -3158,7 +3091,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
-        return placeholderImage(for: attachment)
+        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize)
     }
 }
 
