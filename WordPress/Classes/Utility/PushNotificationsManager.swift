@@ -165,9 +165,6 @@ final public class PushNotificationsManager: NSObject {
             return
         }
 
-        // Analytics
-        trackNotification(with: userInfo)
-
         // Handling!
         let handlers = [ handleSupportNotification,
                          handleAuthenticationNotification,
@@ -179,6 +176,29 @@ final public class PushNotificationsManager: NSObject {
                 break
             }
         }
+    }
+
+    /// Tracks a Notification Event
+    ///
+    /// - Parameter userInfo: The Notification's Payload
+    ///
+    func trackNotification(with userInfo: NSDictionary) {
+        var properties = [String: String]()
+
+        if let noteId = userInfo.number(forKey: Notification.identifierKey) {
+            properties[Tracking.identifierKey] = noteId.stringValue
+        }
+
+        if let type = userInfo.string(forKey: Notification.typeKey) {
+            properties[Tracking.typeKey] = type
+        }
+
+        if let theToken = deviceToken {
+            properties[Tracking.tokenKey] = theToken
+        }
+
+        let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
+        WPAnalytics.track(event, withProperties: properties)
     }
 }
 
@@ -314,35 +334,6 @@ extension PushNotificationsManager {
         }
 
         return true
-    }
-}
-
-
-// MARK: - Private Methods
-//
-private extension PushNotificationsManager {
-
-    /// Tracks a Notification Event
-    ///
-    /// - Parameter userInfo: The Notification's Payload
-    ///
-    func trackNotification(with userInfo: NSDictionary) {
-        var properties = [String: String]()
-
-        if let noteId = userInfo.number(forKey: Notification.identifierKey) {
-            properties[Tracking.identifierKey] = noteId.stringValue
-        }
-
-        if let type = userInfo.string(forKey: Notification.typeKey) {
-            properties[Tracking.typeKey] = type
-        }
-
-        if let theToken = deviceToken {
-            properties[Tracking.tokenKey] = theToken
-        }
-
-        let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
-        WPAnalytics.track(event, withProperties: properties)
     }
 }
 
