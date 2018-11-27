@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -48,15 +47,14 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="tud-BO-vk6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="37" id="Qfv-V7-AiA"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="tud-BO-vk6" secondAttribute="bottom" constant="30" id="WXK-43-m1D"/>
-                <constraint firstItem="tud-BO-vk6" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="30" id="kww-VH-Qv3"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tud-BO-vk6" secondAttribute="trailing" constant="37" id="y6n-rY-92l"/>
+                <constraint firstItem="tud-BO-vk6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="37" id="Qfv-V7-AiA"/>
+                <constraint firstAttribute="bottom" secondItem="tud-BO-vk6" secondAttribute="bottom" constant="30" id="WXK-43-m1D"/>
+                <constraint firstItem="tud-BO-vk6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="kww-VH-Qv3"/>
+                <constraint firstAttribute="trailing" secondItem="tud-BO-vk6" secondAttribute="trailing" constant="37" id="y6n-rY-92l"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="subtitle" destination="0bN-dz-nb9" id="3xg-s2-H18"/>
                 <outlet property="title" destination="kaK-g6-zJe" id="pNH-B9-k96"/>
