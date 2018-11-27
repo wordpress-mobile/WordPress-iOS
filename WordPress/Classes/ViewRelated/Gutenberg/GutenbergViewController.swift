@@ -223,12 +223,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
-    func gutenbergDidRequestMediaPicker(with callback: (String?) -> Void) {
-
-    }
-
-
-    func gutenbergDidRequestMediaPicker(callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
                                                        callback: callback)
@@ -264,7 +259,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
-        
+        return AztecAttachmentDelegate(post: post)
     }
 }
 
