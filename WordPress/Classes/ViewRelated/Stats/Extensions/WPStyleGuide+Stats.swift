@@ -31,18 +31,13 @@ extension WPStyleGuide {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
-        static func configureBorderForView(_ borderedView: UIView) {
-            borderedView.layer.borderColor = cellBorderColor
-            borderedView.layer.borderWidth = cellBorderWidth
-        }
-
         static func configureViewAsSeperator(_ seperatorView: UIView) {
             seperatorView.backgroundColor = seperatorColor
         }
 
         static func configureLabelAsHeader(_ label: UILabel) {
-            label.textColor = defaultTextColor
-            label.font = headerFont
+            label.textColor = headerTextColor
+            label.text = label.text?.localizedUppercase
         }
 
         static func configureLabelAsSummary(_ label: UILabel) {
@@ -100,21 +95,19 @@ extension WPStyleGuide {
         // MARK: - Style Values
 
         static let defaultTextColor = WPStyleGuide.darkGrey()
+        static let headerTextColor = WPStyleGuide.greyDarken20()
         static let secondaryTextColor = WPStyleGuide.grey()
         static let itemDetailTextColor = WPStyleGuide.greyDarken10()
         static let actionTextColor = WPStyleGuide.wordPressBlue()
         static let summaryTextColor = WPStyleGuide.darkGrey()
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
 
-        static let headerFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
         static let tableBackgroundColor = WPStyleGuide.greyLighten30()
-        static let cellBackgroundColor = WPStyleGuide.greyLighten30()
-        static let cellBorderColor = WPStyleGuide.greyLighten20().cgColor
-        static let cellBorderWidth = CGFloat(0.5)
+        static let cellBackgroundColor = UIColor.white
         static let seperatorColor = WPStyleGuide.greyLighten20()
 
         static let filterTintColor = WPStyleGuide.wordPressBlue()

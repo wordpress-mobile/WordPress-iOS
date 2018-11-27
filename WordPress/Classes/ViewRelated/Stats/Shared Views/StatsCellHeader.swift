@@ -1,21 +1,15 @@
 import UIKit
 import Gridicons
 
-class StatsCellHeader: UIView, NibLoadable {
+class StatsCellHeader: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var manageInsightButton: UIButton!
 
     private typealias Style = WPStyleGuide.Stats
 
-    var showManageInsightButton = false {
-        didSet {
-            manageInsightButton.isHidden = !showManageInsightButton
-        }
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    func configure(withTitle title: String) {
+        headerLabel.text = title
         applyStyles()
     }
 
@@ -31,7 +25,9 @@ private extension StatsCellHeader {
     }
 
     func configureManageInsightButton() {
-        manageInsightButton.isHidden = !showManageInsightButton
+        // TODO: remove this when Manage Insights implemented
+        manageInsightButton.isHidden = true
+
         manageInsightButton.tintColor = Style.ImageTintColor.grey.styleGuideColor
         manageInsightButton.setImage(Style.imageForGridiconType(.ellipsis), for: .normal)
         manageInsightButton.accessibilityLabel = NSLocalizedString("Manage Insight", comment: "Action button to display manage insight options.")

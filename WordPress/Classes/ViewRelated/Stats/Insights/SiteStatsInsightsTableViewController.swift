@@ -62,7 +62,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        ImmuTable.registerRows([LatestPostSummaryRow.self, AllTimeStatsRow.self], tableView: tableView)
+        ImmuTable.registerRows([LatestPostSummaryRow.self, AllTimeStatsRow.self, CellHeaderRow.self], tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
     }
