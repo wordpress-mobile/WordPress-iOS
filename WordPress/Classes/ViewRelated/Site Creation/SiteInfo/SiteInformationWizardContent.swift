@@ -277,7 +277,13 @@ extension SiteInformationWizardContent {
         bottomConstraint.constant = constraintConstant
         view.setNeedsUpdateConstraints()
 
-        buttonWrapper.addShadow()
+        if table.frame.contains(convertedKeyboardFrame.origin) {
+            let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: constraintConstant, right: 0.0)
+            table.contentInset = contentInsets
+            table.scrollIndicatorInsets = contentInsets
+
+            buttonWrapper.addShadow()
+        }
 
         UIView.animate(withDuration: animationDuration,
                        delay: 0,
