@@ -54,7 +54,11 @@ class EditorSettings: NSObject {
     // MARK: Public accessors
 
     private var current: Editor {
-        return Feature.enabled(.gutenberg) ? .gutenberg : .aztec
+        guard Feature.enabled(.gutenberg),
+            let gutenbergEnabled = database.object(forKey: gutenbergEditorEnabledKey) as? Bool else {
+                return .aztec
+        }
+        return gutenbergEnabled ? .gutenberg : .aztec
     }
 
     @objc func isEnabled(_ editor: Editor) -> Bool {
@@ -74,9 +78,17 @@ class EditorSettings: NSObject {
 
         switch editor {
         case .aztec:
-            database.set(true, forKey: aztecEditorEnabledKey)
+            database.set(false, forKey: gutenbergEditorEnabledKey)
         case .gutenberg:
-            database.set(false, forKey: aztecEditorEnabledKey)
+            database.set(true, forKey: gutenbergEditorEnabledKey)
+        }
+    }
+
+    func toggle() {
+        if isEnabled(.gutenberg) {
+            database.set(false, forKey: gutenbergEditorEnabledKey)
+        } else {
+            database.set(true, forKey: gutenbergEditorEnabledKey)
         }
     }
 
