@@ -27,7 +27,6 @@ extension GutenbergViewController {
             }
         }
 
-        //TODO: Comment in when bridge is ready
         let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle
