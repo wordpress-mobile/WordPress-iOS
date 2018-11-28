@@ -12,7 +12,6 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate var handler: ImmuTableViewHandler!
-    fileprivate static let aztecEditorFooterHeight = CGFloat(34.0)
 
     // MARK: - Initialization
 
@@ -76,13 +75,13 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-
-        return ImmuTable(optionalSections: [
+        let tableSections = [
             editorTableSection(),
             mediaTableSection(),
             privacyTableSection(),
             otherTableSection()
-            ])
+        ]
+        return ImmuTable(optionalSections: tableSections)
     }
 
     // MARK: - Media cache methods
@@ -197,9 +196,9 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func toggleEditor() -> (Bool) -> Void {
+    func toggleGutenberg() -> (Bool) -> Void {
         return { [weak self] _ in
-            EditorSettings().toggle()
+            GutenbergSettings().toggleGutenberg()
             self?.reloadViewModel()
         }
     }
@@ -228,6 +227,19 @@ class AppSettingsViewController: UITableViewController {
             }
 
             self?.tableView.deselectSelectedRowWithAnimation(true)
+        }
+    }
+
+    func clearSiriActivityDonations() -> ImmuTableAction {
+        return { [tableView] _ in
+            tableView?.deselectSelectedRowWithAnimation(true)
+
+            if #available(iOS 12.0, *) {
+                NSUserActivity.deleteAllSavedUserActivities {}
+            }
+
+            let notice = Notice(title: NSLocalizedString("Siri Reset Confirmation", comment: "Notice displayed to the user after clearing the Siri activity donations."), feedbackType: .success)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 
@@ -303,18 +315,21 @@ private extension AppSettingsViewController {
         guard Feature.enabled(.gutenberg) else {
             return nil
         }
-        let editorSettings = EditorSettings()
-        let enabled = editorSettings.isEnabled(.gutenberg)
+
+        let gutenbergSettings = GutenbergSettings()
+        let enabled = gutenbergSettings.isGutenbergEnabled()
         let gutenbergEditor = SwitchRow(
             title: "(A8C) Enable Gutenberg editor",
             value: enabled,
-            onChange: toggleEditor()
+            onChange: toggleGutenberg()
         )
+
         // I'm intentionally not localizing strings since this is a temporary workaround for internal versions
         let headerText = "Gutenberg"
         let footerTextDisabled = "💣 This is still an experimental version of Gutenberg 🙈"
         let footerTextEnabled = "💣 This is still an experimental version of Gutenberg 🙊"
         let footerText = enabled ? footerTextEnabled : footerTextDisabled
+
         return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
     }
 
@@ -368,22 +383,33 @@ private extension AppSettingsViewController {
             action: openPrivacySettings()
         )
 
-        return ImmuTableSection(
-            headerText: privacyHeader,
-            rows: [
-                mediaRemoveLocation,
-                privacySettings
-            ]
-        )
-    }
-
-    func otherTableSection() -> ImmuTableSection {
-        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
-
         let spotlightClearCacheRow = DestructiveButtonRow(
             title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
+
+        var tableRows: [ImmuTableRow] = [
+            mediaRemoveLocation,
+            privacySettings,
+            spotlightClearCacheRow
+        ]
+
+        if #available(iOS 12.0, *) {
+            let siriClearCacheRow = DestructiveButtonRow(
+                title: NSLocalizedString("Siri Reset Prompt", comment: "Label for button that clears user activities donated to Siri."),
+                action: clearSiriActivityDonations(),
+                accessibilityIdentifier: "spotlightClearCacheButton")
+
+            tableRows.append(siriClearCacheRow)
+        }
+
+        return ImmuTableSection(
+            headerText: privacyHeader,
+            rows: tableRows)
+    }
+
+    func otherTableSection() -> ImmuTableSection {
+        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
 
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
@@ -398,7 +424,6 @@ private extension AppSettingsViewController {
         return ImmuTableSection(
             headerText: otherHeader,
             rows: [
-                spotlightClearCacheRow,
                 settingsRow,
                 aboutRow
             ],

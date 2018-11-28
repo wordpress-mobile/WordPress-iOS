@@ -150,7 +150,13 @@ import Foundation
     // MARK: - Presentation Evaluation Logic
 
     private func mustPresent(for post: AbstractPost) -> Bool {
-        return canPresentAlert() && isGutenbergPost(post)
+        return canPresentAlert() && mustShowAlertForCurrentEditor(and: post)
+    }
+
+    /// Only showing this alert for Gutenberg posts opened in Aztec.
+    ///
+    private func mustShowAlertForCurrentEditor(and post: AbstractPost) -> Bool {
+        return !GutenbergSettings().isGutenbergEnabled() && post.containsGutenbergBlocks()
     }
 
     // MARK: - User Defaults
@@ -161,12 +167,6 @@ import Foundation
 
     private func doNotShowAgain() {
         userDefaults.set(true, forKey: key)
-    }
-
-    // MARK: - Gutenber Post Introspection
-
-    private func isGutenbergPost(_ post: AbstractPost) -> Bool {
-        return post.content?.contains("<!-- wp:") ?? false
     }
 
     // MARK: - Analytics
