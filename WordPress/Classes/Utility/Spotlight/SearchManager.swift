@@ -439,11 +439,12 @@ fileprivate extension SearchManager {
     func openEditor(for page: Page) {
         closePreviewIfNeeded(for: page)
         openListView(for: page)
-        let editorSettings = EditorSettings()
-        let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
-            editor.onClose = { changesSaved, _ in
-                vc.dismiss(animated: true)
-            }
+        let editorFactory = EditorFactory()
+
+        let postViewController = editorFactory.instantiateEditor(for: page)
+
+        postViewController.onClose = { [weak postViewController] changesSaved, _ in
+            postViewController?.dismiss(animated: true)
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
