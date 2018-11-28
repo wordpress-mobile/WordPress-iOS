@@ -38,7 +38,7 @@ enum FeatureFlag: Int {
         case .bottomSheetDemo:
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
-            return BuildConfiguration.current == .localDeveloper && CommandLine.arguments.contains("-gutenberg")
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
         }
     }
 }
