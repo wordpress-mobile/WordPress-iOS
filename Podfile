@@ -95,7 +95,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :branch => "feature/switch-to-html"
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/'
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
