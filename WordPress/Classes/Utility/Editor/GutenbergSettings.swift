@@ -1,6 +1,8 @@
 import Foundation
 
-class GutenbergSettings: NSObject {
+/// Takes care of storing and accessing Gutenberg settings.
+///
+class GutenbergSettings {
 
     // MARK: - Enabled Editors Keys
 
@@ -12,20 +14,19 @@ class GutenbergSettings: NSObject {
     // MARK: - Initialization
     init(database: KeyValueDatabase) {
         self.database = database
-        super.init()
     }
 
-    convenience override init() {
+    convenience init() {
         self.init(database: UserDefaults() as KeyValueDatabase)
     }
 
     // MARK: Public accessors
 
-    @objc func isGutenbergEnabled() -> Bool {
+    func isGutenbergEnabled() -> Bool {
         return database.object(forKey: gutenbergEditorEnabledKey) as? Bool ?? false
     }
 
-    @objc func toggleGutenberg() {
+    func toggleGutenberg() {
         if isGutenbergEnabled() {
             database.set(false, forKey: gutenbergEditorEnabledKey)
         } else {

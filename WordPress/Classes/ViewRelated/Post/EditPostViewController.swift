@@ -117,23 +117,25 @@ class EditPostViewController: UIViewController {
 
     fileprivate func showEditor() {
         let editorFactory = EditorFactory()
-        let editor = editorFactory.instantiatePostEditor(post: postToEdit()) { (editor, vc) in
-            editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-            editor.onClose = { [weak self, weak vc, weak editor] changesSaved, showPostEpilogue in
-                guard let strongSelf = self else {
-                    vc?.dismiss(animated: true) {}
-                    return
-                }
 
-                // NOTE:
-                // We need to grab the latest Post Reference, since it may have changed (ie. revision / user picked a
-                // new blog).
-                if changesSaved {
-                    strongSelf.post = editor?.post as? Post
-                }
-                strongSelf.closeEditor(changesSaved, showPostEpilogue: showPostEpilogue)
+        let editor = editorFactory.instantiateEditor(for: postToEdit())
+
+        editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
+        editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
+            guard let strongSelf = self else {
+                editor?.dismiss(animated: true) {}
+                return
             }
+
+            // NOTE:
+            // We need to grab the latest Post Reference, since it may have changed (ie. revision / user picked a
+            // new blog).
+            if changesSaved {
+                strongSelf.post = editor?.post as? Post
+            }
+            strongSelf.closeEditor(changesSaved, showPostEpilogue: showPostEpilogue)
         }
+
         // Neutralize iOS's Restoration:
         // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
         // This effectively prevents double editor instantiation!
