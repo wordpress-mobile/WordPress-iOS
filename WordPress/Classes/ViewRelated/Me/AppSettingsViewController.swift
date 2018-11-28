@@ -77,11 +77,12 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
         let tableSections = [
+            editorTableSection(),
             mediaTableSection(),
             privacyTableSection(),
             otherTableSection()
         ]
-        return ImmuTable(sections: tableSections)
+        return ImmuTable(optionalSections: tableSections)
     }
 
     // MARK: - Media cache methods
@@ -196,9 +197,9 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func enableEditor(_ editor: EditorSettings.Editor) -> ImmuTableAction {
+    func toggleEditor() -> (Bool) -> Void {
         return { [weak self] _ in
-            EditorSettings().enable(editor)
+            EditorSettings().toggle()
             self?.reloadViewModel()
         }
     }
@@ -310,6 +311,25 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 // MARK: - Table Sections Private Extension
 
 private extension AppSettingsViewController {
+
+    func editorTableSection() -> ImmuTableSection? {
+        guard Feature.enabled(.gutenberg) else {
+            return nil
+        }
+        let editorSettings = EditorSettings()
+        let enabled = editorSettings.isEnabled(.gutenberg)
+        let gutenbergEditor = SwitchRow(
+            title: "(A8C) Enable Gutenberg editor",
+            value: enabled,
+            onChange: toggleEditor()
+        )
+        // I'm intentionally not localizing strings since this is a temporary workaround for internal versions
+        let headerText = "Gutenberg"
+        let footerTextDisabled = "💣 This is still an experimental version of Gutenberg 🙈"
+        let footerTextEnabled = "💣 This is still an experimental version of Gutenberg 🙊"
+        let footerText = enabled ? footerTextEnabled : footerTextDisabled
+        return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
+    }
 
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
