@@ -193,6 +193,15 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
  */
 - (void)trackApplicationOpened
 {
+    // UIApplicationDidBecomeActiveNotification will be dispatched if the user
+    // returns from a system overlay (like notification center) or when multi
+    // tasking on the iPad and adjusting the split screen divider. This happens
+    // without previously dispatching UIApplicationDidEnterBackgroundNotification.
+    // We don't want to track application opened in thise cases so check for a
+    // nil applicationOpenedTime first.
+    if (self.applicationOpenedTime != nil) {
+        return;
+    }
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
 }
