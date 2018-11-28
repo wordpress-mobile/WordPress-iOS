@@ -1,7 +1,6 @@
 
 import XCTest
 @testable import WordPress
-@testable import Gridicons
 
 final class SiteSegmentsCellTests: XCTestCase {
     private struct MockValues {
