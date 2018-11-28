@@ -34,6 +34,8 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var itemDetailLabel: UILabel!
     @IBOutlet weak var dataLabel: UILabel!
     @IBOutlet weak var disclosureStackView: UIStackView!
+    @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
 
@@ -86,11 +88,19 @@ private extension StatsTotalRow {
     func downloadImageFrom(_ iconURL: URL) {
         WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
             self.imageView.image = image
+
+            self.imageWidthConstraint.constant = Constants.socialImageSize
+            self.imageHeightConstraint.constant = Constants.socialImageSize
+
             self.imageStackView.isHidden = false
         }, failure: { error in
             DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
             self.imageStackView.isHidden = true
         })
+    }
+
+    struct Constants {
+        static let socialImageSize = CGFloat(20)
     }
 
 }

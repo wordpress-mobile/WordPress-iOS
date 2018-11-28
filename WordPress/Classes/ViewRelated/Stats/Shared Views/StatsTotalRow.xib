@@ -27,16 +27,17 @@
                     <rect key="frame" x="16" y="11" width="343" height="38"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
-                            <rect key="frame" x="0.0" y="0.0" width="40" height="38"/>
+                            <rect key="frame" x="0.0" y="7" width="40" height="24"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
-                                    <rect key="frame" x="0.0" y="0.0" width="24" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="Ope-3W-fHa"/>
+                                        <constraint firstAttribute="height" constant="24" id="wd4-9h-nci"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
-                                    <rect key="frame" x="24" y="0.0" width="16" height="38"/>
+                                    <rect key="frame" x="24" y="0.0" width="16" height="24"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
@@ -104,8 +105,10 @@
             <connections>
                 <outlet property="dataLabel" destination="AaN-c7-zu2" id="9rP-Mj-snh"/>
                 <outlet property="disclosureStackView" destination="MCN-at-Jm0" id="UcQ-WC-xKS"/>
+                <outlet property="imageHeightConstraint" destination="wd4-9h-nci" id="8Sc-2f-0bO"/>
                 <outlet property="imageStackView" destination="cH2-js-8i2" id="KIb-Ks-QNn"/>
                 <outlet property="imageView" destination="NMN-Qx-YFo" id="bmF-PE-KbE"/>
+                <outlet property="imageWidthConstraint" destination="Ope-3W-fHa" id="Lbb-lR-omi"/>
                 <outlet property="itemDetailLabel" destination="pDc-Hw-vuk" id="Jd2-Zw-yZg"/>
                 <outlet property="itemLabel" destination="CNg-XE-8Zu" id="Ayp-eR-mXV"/>
                 <outlet property="separatorLine" destination="rhI-k5-uUO" id="bld-3U-q5B"/>
