@@ -5,6 +5,7 @@ class RevisionsTableViewController: UITableViewController {
 
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
+    private var viewDidAppear: Bool = false
 
     private lazy var noResultsViewController: NoResultsViewController = {
         let noResultsViewController = NoResultsViewController.controller()
@@ -51,6 +52,14 @@ class RevisionsTableViewController: UITableViewController {
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
         refreshRevisions()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !viewDidAppear {
+            viewDidAppear.toggle()
+            WPAnalytics.track(.postRevisionsListViewed)
+        }
     }
 }
 
@@ -144,6 +153,7 @@ private extension RevisionsTableViewController {
         let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.getPostWithID(revision.revisionId, for: blog, success: { post in
             SVProgressHUD.dismiss()
+            WPAnalytics.track(.postRevisionsRevisionLoaded)
             self.onRevisionLoaded(post)
             self.navigationController?.popViewController(animated: true)
         }, failure: { error in
