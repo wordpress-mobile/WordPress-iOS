@@ -47,7 +47,6 @@ class StatsTotalRow: UIView, NibLoadable {
 
     func configure(rowData: StatsTotalRowData) {
 
-
         // Configure icon
         imageStackView.isHidden = true
 

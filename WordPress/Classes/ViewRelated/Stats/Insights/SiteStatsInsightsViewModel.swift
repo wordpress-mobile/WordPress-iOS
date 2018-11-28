@@ -51,16 +51,10 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.followerTotals))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
-                let dataRows = createMostPopularStatsRows()
-
-                // Don't show the subtitles if there is no data
-                let itemSubtitle = dataRows.count > 0 ? MostPopularStats.itemSubtitle : nil
-                let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
-
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle,
-                                                               dataSubtitle: dataSubtitle,
-                                                               dataRows: dataRows))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: MostPopularStats.itemSubtitle,
+                                                               dataSubtitle: MostPopularStats.dataSubtitle,
+                                                               dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
@@ -74,16 +68,10 @@ class SiteStatsInsightsViewModel: Observable {
             case .postingActivity:
                 DDLogDebug("Show \(insightType) here.")
             case .publicize:
-                let dataRows = createPublicizeRows()
-
-                // Don't show the subtitles if there is no data
-                let itemSubtitle = dataRows.count > 0 ? Publicize.itemSubtitle : nil
-                let dataSubtitle = dataRows.count > 0 ? Publicize.dataSubtitle : nil
-
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.publicize))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle,
-                                                               dataSubtitle: dataSubtitle,
-                                                               dataRows: dataRows))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: Publicize.itemSubtitle,
+                                                               dataSubtitle: Publicize.dataSubtitle,
+                                                               dataRows: createPublicizeRows()))
             }
         }
 
