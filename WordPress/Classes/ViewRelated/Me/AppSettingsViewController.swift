@@ -12,7 +12,6 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate var handler: ImmuTableViewHandler!
-    fileprivate static let aztecEditorFooterHeight = CGFloat(34.0)
 
     // MARK: - Initialization
 
@@ -197,9 +196,9 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func toggleEditor() -> (Bool) -> Void {
+    func toggleGutenberg() -> (Bool) -> Void {
         return { [weak self] _ in
-            EditorSettings().toggle()
+            GutenbergSettings().toggleGutenberg()
             self?.reloadViewModel()
         }
     }
@@ -303,18 +302,21 @@ private extension AppSettingsViewController {
         guard Feature.enabled(.gutenberg) else {
             return nil
         }
-        let editorSettings = EditorSettings()
-        let enabled = editorSettings.isEnabled(.gutenberg)
+
+        let gutenbergSettings = GutenbergSettings()
+        let enabled = gutenbergSettings.isGutenbergEnabled()
         let gutenbergEditor = SwitchRow(
             title: "(A8C) Enable Gutenberg editor",
             value: enabled,
-            onChange: toggleEditor()
+            onChange: toggleGutenberg()
         )
+
         // I'm intentionally not localizing strings since this is a temporary workaround for internal versions
         let headerText = "Gutenberg"
         let footerTextDisabled = "💣 This is still an experimental version of Gutenberg 🙈"
         let footerTextEnabled = "💣 This is still an experimental version of Gutenberg 🙊"
         let footerText = enabled ? footerTextEnabled : footerTextDisabled
+
         return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
     }
 
