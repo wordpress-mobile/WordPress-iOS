@@ -1,5 +1,6 @@
 import UIKit
 import Alamofire
+import Gridicons
 
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
@@ -57,6 +58,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleAccessoryView() {
-        accessoryType = .disclosureIndicator
+        let accessoryImage = Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.greyLighten20())
+        accessoryView = UIImageView(image: accessoryImage)
     }
 }
