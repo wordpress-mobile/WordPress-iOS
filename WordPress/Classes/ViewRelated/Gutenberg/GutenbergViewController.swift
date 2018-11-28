@@ -133,6 +133,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     private let gutenberg: Gutenberg
     private var requestHTMLReason: RequestHTMLReason?
+    private(set) var mode: EditMode = .richText
 
     // MARK: - Initializers
     required init(post: AbstractPost) {
@@ -217,6 +218,11 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
+    }
+
+    func toggleEditingMode() {
+        gutenberg.toggleHTMLMode()
+        mode.toggle()
     }
 }
 
