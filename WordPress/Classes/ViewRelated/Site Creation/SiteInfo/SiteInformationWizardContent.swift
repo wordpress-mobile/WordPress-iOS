@@ -3,7 +3,7 @@ import WordPressAuthenticator
 
 typealias SiteInformationCompletion = (SiteInformation) -> Void
 
-final class SiteInformationWizardContent: UIViewController, RedrawableTableHeader {
+final class SiteInformationWizardContent: UIViewController {
     private enum Rows: Int, CaseIterable {
         case title = 0
         case tagline = 1
@@ -77,7 +77,7 @@ final class SiteInformationWizardContent: UIViewController, RedrawableTableHeade
 
     private func setupTable() {
         setupTableBackground()
-    setupTableSeparator()
+        setupTableSeparator()
         registerCell()
         setupHeader()
         setupFooter()
@@ -129,10 +129,9 @@ final class SiteInformationWizardContent: UIViewController, RedrawableTableHeade
     }
 
     private func setupHeader() {
-        let header = TitleSubtitle.loadFromNib()
-
-        header.title.text = headerData.title
-        header.subtitle.text = headerData.subtitle
+        let header = TitleSubtitleHeader(frame: .zero)
+        header.setTitle(headerData.title)
+        header.setSubtitle(headerData.subtitle)
 
         table.tableHeaderView = header
         NSLayoutConstraint.activate([
@@ -143,8 +142,6 @@ final class SiteInformationWizardContent: UIViewController, RedrawableTableHeade
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
-
-        refreshTableViewHeaderLayout(table)
     }
 
     private func setupFooter() {
