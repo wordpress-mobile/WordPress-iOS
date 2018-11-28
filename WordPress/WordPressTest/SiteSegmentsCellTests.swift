@@ -1,6 +1,7 @@
 
 import XCTest
 @testable import WordPress
+@testable import Gridicons
 
 final class SiteSegmentsCellTests: XCTestCase {
     private struct MockValues {
@@ -62,9 +63,5 @@ final class SiteSegmentsCellTests: XCTestCase {
 
     func testCellSubtitleIsTheCorrectColor() {
         XCTAssertEqual(cell?.subtitle.textColor, WPStyleGuide.darkGrey())
-    }
-
-    func testCellAccessoryViewIsDisclosure() {
-        XCTAssertEqual(cell?.accessoryType, .disclosureIndicator)
     }
 }
