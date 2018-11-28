@@ -56,6 +56,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
+        setupTableSeparator()
         setupCell()
         setupHeader()
         hideSeparators()
@@ -63,6 +64,10 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     private func hideSeparators() {
