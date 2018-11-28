@@ -56,7 +56,7 @@ final class SiteInformationWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
-        setupSeparators()
+        setupTableSeparators()
         registerCell()
         setupHeader()
 
