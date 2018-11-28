@@ -27,18 +27,17 @@ extension GutenbergViewController {
             }
         }
 
-        //TODO: Comment in when bridge is ready
-        /*let toggleModeTitle: String = {
+        let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle
             } else {
                 return MoreSheetAlert.richTitle
             }
         }()
-        
+
         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
             self.toggleEditingMode()
-        }*/
+        }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak self] _ in
             self?.displayPreview()
