@@ -441,7 +441,10 @@ fileprivate extension SearchManager {
         openListView(for: page)
         let editorFactory = EditorFactory()
 
-        let postViewController = editorFactory.instantiateEditor(for: page)
+        let postViewController = editorFactory.instantiateEditor(
+            for: page,
+            switchToAztec: { _ in },
+            switchToGutenberg: { _ in })
 
         postViewController.onClose = { [weak postViewController] changesSaved, _ in
             postViewController?.dismiss(animated: true)

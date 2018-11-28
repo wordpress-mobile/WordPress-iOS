@@ -470,7 +470,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let filterIndex = filterSettings.currentFilterIndex()
         let editorFactory = EditorFactory()
 
-        let postViewController = editorFactory.instantiateEditor(for: post)
+        let postViewController = editorFactory.instantiateEditor(
+            for: post,
+            switchToAztec: { _ in },
+            switchToGutenberg: { _ in })
 
         postViewController.onClose = { [weak self, weak postViewController] changesSaved, _ in
             if changesSaved {
