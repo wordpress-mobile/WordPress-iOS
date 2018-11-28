@@ -313,7 +313,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Gutenberg:
-    :commit: 1cd29ab02f26bfecc06b7c41b75ae4ebe5f4ed50
+    :commit: 7ac7875094b52bb13eacb8d36005aeba36ed0cf8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
