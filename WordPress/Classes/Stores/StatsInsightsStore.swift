@@ -224,6 +224,10 @@ extension StatsInsightsStore {
         return "666,6666,666"
     }
 
+    func getPublicize() -> [StatsItem]? {
+        return state.publicizeItems
+    }
+
     var isFetching: Bool {
         return state.fetchingLatestPostSummary ||
             state.fetchingAllTimeStats ||
