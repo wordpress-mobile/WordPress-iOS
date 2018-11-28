@@ -54,7 +54,11 @@ class EditorSettings: NSObject {
     // MARK: Public accessors
 
     private var current: Editor {
-        return Feature.enabled(.gutenberg) ? .gutenberg : .aztec
+        guard Feature.enabled(.gutenberg),
+            let gutenbergEnabled = database.object(forKey: gutenbergEditorEnabledKey) as? Bool else {
+                return .aztec
+        }
+        return gutenbergEnabled ? .gutenberg : .aztec
     }
 
     @objc func isEnabled(_ editor: Editor) -> Bool {
@@ -74,9 +78,17 @@ class EditorSettings: NSObject {
 
         switch editor {
         case .aztec:
-            database.set(true, forKey: aztecEditorEnabledKey)
+            database.set(false, forKey: gutenbergEditorEnabledKey)
         case .gutenberg:
-            database.set(false, forKey: aztecEditorEnabledKey)
+            database.set(true, forKey: gutenbergEditorEnabledKey)
+        }
+    }
+
+    func toggle() {
+        if isEnabled(.gutenberg) {
+            database.set(false, forKey: gutenbergEditorEnabledKey)
+        } else {
+            database.set(true, forKey: gutenbergEditorEnabledKey)
         }
     }
 
@@ -85,28 +97,32 @@ class EditorSettings: NSObject {
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the caller configure the editor.
     func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch current {
-        case .aztec:
-            let vc = AztecPostViewController(post: post)
+        switch (gutenbergCanHandle(post: post), current) {
+        case (true, .gutenberg):
+            let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
-        case .gutenberg:
-            let vc = GutenbergViewController(post: post)
+        default:
+            let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
         }
     }
 
     func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch current {
-        case .aztec:
-            let vc = AztecPostViewController(post: post)
-            configure(vc, vc)
-            return vc
-        case .gutenberg:
+        switch (gutenbergCanHandle(post: post), current) {
+        case (true, .gutenberg):
             let vc = GutenbergViewController(post: post)
             configure(vc, vc)
             return vc
+        default:
+            let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
         }
+    }
+
+    private func gutenbergCanHandle(post: AbstractPost) -> Bool {
+        return !post.hasRemote() || post.containsGutenbergBlocks()
     }
 }
