@@ -122,9 +122,7 @@ class NoticeView: UIView {
 
         contentStackView.addArrangedSubview(labelStackView)
 
-        NSLayoutConstraint.activate([
-            labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor)
-            ])
+        labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor).isActive = true
 
         titleLabel.font = notice.style.titleLabelFont
         messageLabel.font = notice.style.messageLabelFont
@@ -134,7 +132,9 @@ class NoticeView: UIView {
         messageLabel.textColor = notice.style.messageColor
 
         messageLabel.numberOfLines = 0
-        messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive = true
+        if notice.cancelTitle != nil {
+            messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive = true
+        }
     }
 
     private func configureActionButton() {
