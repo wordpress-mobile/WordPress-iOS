@@ -170,7 +170,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.2)
-  - WordPressAuthenticator (~> 1.1)
+  - WordPressAuthenticator (~> 1.1.6)
   - WordPressKit (~> 1.5.0)
   - WordPressShared (~> 1.6.0)
   - WordPressUI (~> 1.1)
