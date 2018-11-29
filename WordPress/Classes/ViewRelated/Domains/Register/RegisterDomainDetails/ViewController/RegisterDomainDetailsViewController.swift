@@ -66,10 +66,9 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         setupEditingEndingTapGestureRecognizer()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        configureTableFooterView()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        configureTableFooterView(width: size.width)
         changeBottomSafeAreaInset()
-
     }
 
     private func changeBottomSafeAreaInset() {
@@ -118,6 +117,8 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
         tableView.estimatedSectionFooterHeight = Constants.estimatedRowHeight
         tableView.sectionFooterHeight = UITableView.automaticDimension
+
+        tableView.cellLayoutMarginsFollowReadableWidth = false
 
         tableView.reloadData()
     }
