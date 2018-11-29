@@ -1228,15 +1228,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         }
     }
 
-    private var editorHasChanges: Bool {
-        return post.hasUnsavedChanges()
-    }
-
-    internal func editorContentWasUpdated() {
-        postEditorStateContext.updated(hasContent: editorHasContent)
-        postEditorStateContext.updated(hasChanges: editorHasChanges)
-    }
-
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
         reloadPublishButton()
     }
@@ -1398,19 +1389,6 @@ extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
 // MARK: - HTML Mode Switch methods
 //
 extension AztecPostViewController {
-    enum EditMode {
-        case richText
-        case html
-
-        mutating func toggle() {
-            switch self {
-            case .richText:
-                self = .html
-            case .html:
-                self = .richText
-            }
-        }
-    }
 
     func refreshEditorVisibility() {
         let isRichEnabled = mode == .richText

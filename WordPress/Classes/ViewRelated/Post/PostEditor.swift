@@ -1,6 +1,20 @@
 
 import UIKit
 
+enum EditMode {
+    case richText
+    case html
+
+    mutating func toggle() {
+        switch self {
+        case .richText:
+            self = .html
+        case .html:
+            self = .richText
+        }
+    }
+}
+
 /// Common interface to all editors
 ///
 protocol PostEditor: class, UIViewControllerTransitioningDelegate {
@@ -79,6 +93,15 @@ extension PostEditor {
 
     var editorHasContent: Bool {
         return post.hasContent()
+    }
+
+    var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
+    }
+
+    func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
     var mainContext: NSManagedObjectContext {

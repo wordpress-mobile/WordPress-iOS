@@ -23,6 +23,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         textField.textColor = Colors.title
         textField.backgroundColor = Colors.background
         textField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        textField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
         let leftView = UIView()
         leftView.translatesAutoresizingMaskIntoConstraints = false
         leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
@@ -138,6 +139,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     private let gutenberg: Gutenberg
     private var requestHTMLReason: RequestHTMLReason?
+    private(set) var mode: EditMode = .richText
 
     // MARK: - Initializers
     required init(
@@ -224,8 +226,27 @@ class GutenbergViewController: UIViewController, PostEditor {
         return html //TODO: return media attachment stripped version in future
     }
 
+    func toggleEditingMode() {
+        gutenberg.toggleHTMLMode()
+        mode.toggle()
+    }
+
+    // MARK: - Event handlers
+
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
+    }
+
+    @objc func titleTextFieldDidChange(_ textField: UITextField) {
+        mapUIContentToPostAndSave()
+        editorContentWasUpdated()
+    }
+
+    // MARK: - Switch to Aztec
+
+    func savePostEditsAndSwitchToAztec() {
+        requestHTMLReason = .switchToAztec
+        gutenberg.requestHTML()
     }
 }
 
@@ -240,12 +261,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
-        self.html = html
-        postEditorStateContext.updated(hasContent: editorHasContent)
-
-        // TODO: currently we don't need to set this because Update button is always active
-        // but in the future we might need this
-        // postEditorStateContext.updated(hasChanges: changed)
+        if changed {
+            self.html = html
+            editorContentWasUpdated()
+        }
 
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
@@ -343,85 +362,5 @@ private extension GutenbergViewController {
         static let titleTextFieldHeight: CGFloat = 50.0
         static let titleTextFieldLeftPadding: CGFloat = 10.0
         static let titleTextFieldBottomSeparatorHeight: CGFloat = 1.0
-    }
-}
-
-// MARK: - MoreActions
-
-/// This extension handles the "more" actions triggered by the top right
-/// navigation bar button of Gutenberg editor.
-extension GutenbergViewController {
-
-    private enum ErrorCode: Int {
-        case expectedSecondaryAction = 1
-    }
-
-    func displayMoreSheet() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
-            }
-        }
-
-        alert.addDefaultActionWithTitle(MoreSheetAlert.classicTitle) { [unowned self] _ in
-            self.requestHTMLReason = .switchToAztec
-            self.gutenberg.requestHTML()
-        }
-
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak self] _ in
-            self?.displayPreview()
-        }
-
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
-            self?.displayPostSettings()
-        }
-
-        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
-
-        alert.popoverPresentationController?.barButtonItem = navigationBarManager.moreBarButtonItem
-
-        present(alert, animated: true)
-    }
-
-    func secondaryPublishButtonTapped() {
-        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
-            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
-            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            Crashlytics.sharedInstance().recordError(error)
-            return
-        }
-
-        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
-
-        let publishPostClosure = { [unowned self] in
-            self.publishPost(
-                action: action,
-                dismissWhenDone: action.dismissesEditor,
-                analyticsStat: secondaryStat)
-        }
-
-        if presentedViewController != nil {
-            dismiss(animated: true, completion: publishPostClosure)
-        } else {
-            publishPostClosure()
-        }
-    }
-}
-
-// MARK: - Constants
-
-extension GutenbergViewController {
-    private struct MoreSheetAlert {
-        static let classicTitle = NSLocalizedString("Switch to Classic Editor", comment: "Switches from Gutenberg mobile to the Classic editor")
-        static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
-        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
-        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
-        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 }
