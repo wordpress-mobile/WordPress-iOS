@@ -1,5 +1,6 @@
 import Gridicons
 
+
 class RevisionBrowserState {
     typealias RevisionSelectedBlock = (Revision) -> Void
 
@@ -30,19 +31,21 @@ class RevisionBrowserState {
 
 class RevisionDiffsBrowserViewController: UIViewController {
     var revisionState: RevisionBrowserState?
-    var diffVC: RevisionDiffViewController?
-    var operationVC: RevisionOperationViewController?
-    @IBOutlet var revisionTitle: UILabel!
-    @IBOutlet var previousButton: UIButton!
-    @IBOutlet var nextButton: UIButton!
 
+    private var operationVC: RevisionOperationViewController?
+    private var pageViewController: UIPageViewController?
+    private var pageManager: RevisionDiffsPageManager?
+
+    @IBOutlet private var revisionTitle: UILabel!
+    @IBOutlet private var previousButton: UIButton!
+    @IBOutlet private var nextButton: UIButton!
 
     private lazy var doneBarButtonItem: UIBarButtonItem = {
         let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
+        doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
         doneItem.on() { [weak self] _ in
             self?.dismiss(animated: true)
         }
-        doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
         return doneItem
     }()
 
@@ -55,6 +58,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         return loadItem
     }()
 
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -63,13 +67,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
         showRevision()
     }
 
+
     private func showRevision() {
         guard let revisionState = revisionState else {
             return
         }
 
         let revision = revisionState.currentRevision()
-        diffVC?.revision = revision
         revisionTitle?.text = revision.revisionDate.mediumString()
         operationVC?.revision = revision
 
@@ -109,11 +113,26 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private func showNext() {
         revisionState?.increaseIndex()
         showRevision()
+        scroll(.reverse)
     }
 
     private func showPrevious() {
         revisionState?.decreaseIndex()
         showRevision()
+        scroll(.forward)
+    }
+
+    private func scroll(_ direction: UIPageViewController.NavigationDirection, animated: Bool = false) {
+        guard let revisionState = revisionState,
+            let pageManager = pageManager,
+            !pageManager.viewControllers.isEmpty else {
+            return
+        }
+
+        pageViewController?.setViewControllers([pageManager.viewControllers[revisionState.currentIndex]],
+                                               direction: direction,
+                                               animated: animated,
+                                               completion: nil)
     }
 
     private func loadRevision() {
@@ -130,12 +149,45 @@ class RevisionDiffsBrowserViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
 
         switch segue.destination {
-        case let diffVC as RevisionDiffViewController:
-            self.diffVC = diffVC
+        case let pageViewController as UIPageViewController:
+            pageManager = RevisionDiffsPageManager(delegate: self)
+            pageManager?.viewControllers = (revisionState?.revisions ?? []).map {
+                let diffVc = RevisionDiffViewController.loadFromStoryboard()
+                diffVc.revision = $0
+                return diffVc
+            }
+
+            self.pageViewController = pageViewController
+            self.pageViewController?.dataSource = pageManager
+            self.pageViewController?.delegate = pageManager
+
+            scroll(.forward, animated: true)
         case let operationVC as RevisionOperationViewController:
             self.operationVC = operationVC
         default:
             break
         }
+    }
+}
+
+
+extension RevisionDiffsBrowserViewController: RevisionDiffsPageManagerDelegate {
+    func pageWillScroll(to direction: UIPageViewController.NavigationDirection) {
+        switch direction {
+        case .forward:
+            revisionState?.increaseIndex()
+        case .reverse:
+            revisionState?.decreaseIndex()
+        }
+    }
+
+    func pageDidFinishAnimating(completed: Bool) {
+        if completed {
+            showRevision()
+        }
+    }
+
+    func currentIndex() -> Int {
+        return revisionState?.currentIndex ?? 0
     }
 }
