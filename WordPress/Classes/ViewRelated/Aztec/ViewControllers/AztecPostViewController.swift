@@ -1212,15 +1212,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         }
     }
 
-    private var editorHasChanges: Bool {
-        return post.hasUnsavedChanges()
-    }
-
-    internal func editorContentWasUpdated() {
-        postEditorStateContext.updated(hasContent: editorHasContent)
-        postEditorStateContext.updated(hasChanges: editorHasChanges)
-    }
-
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
         reloadPublishButton()
     }

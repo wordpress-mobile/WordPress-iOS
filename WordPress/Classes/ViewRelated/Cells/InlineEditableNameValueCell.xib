@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7hQ-Qd-7gD">
-                        <rect key="frame" x="0.0" y="0.0" width="102" height="45.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="129" height="45.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYy-XU-9v8">
-                                <rect key="frame" x="16" y="12" width="83" height="21.5"/>
+                                <rect key="frame" x="16" y="12" width="110" height="21.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -38,7 +37,7 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aoI-Bw-gsZ" customClass="LoginTextField" customModule="WordPressAuthenticator">
-                        <rect key="frame" x="102" y="0.0" width="256" height="45.5"/>
+                        <rect key="frame" x="129" y="0.0" width="234" height="45.5"/>
                         <nil key="textColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
@@ -47,7 +46,7 @@
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="aoI-Bw-gsZ" secondAttribute="bottom" id="6sO-Yu-79x"/>
                     <constraint firstItem="aoI-Bw-gsZ" firstAttribute="leading" secondItem="7hQ-Qd-7gD" secondAttribute="trailing" id="7da-If-Hjk"/>
-                    <constraint firstItem="7hQ-Qd-7gD" firstAttribute="width" secondItem="aoI-Bw-gsZ" secondAttribute="width" multiplier="0.45" id="T1g-JA-BoX"/>
+                    <constraint firstItem="7hQ-Qd-7gD" firstAttribute="width" secondItem="aoI-Bw-gsZ" secondAttribute="width" multiplier="0.55" id="T1g-JA-BoX"/>
                     <constraint firstItem="aoI-Bw-gsZ" firstAttribute="top" secondItem="6tg-46-1kN" secondAttribute="top" id="cht-u8-Mxn"/>
                     <constraint firstItem="7hQ-Qd-7gD" firstAttribute="leading" secondItem="6tg-46-1kN" secondAttribute="leading" id="jfM-h3-9Cc"/>
                     <constraint firstAttribute="bottom" secondItem="7hQ-Qd-7gD" secondAttribute="bottom" id="kAm-Mb-ESq"/>

@@ -256,6 +256,7 @@ extension DomainSuggestionsTableViewController {
         cell.placeholder = searchFieldPlaceholder
         cell.delegate = self
         cell.selectionStyle = .none
+        cell.backgroundColor = .clear
 
         return cell
     }
