@@ -27,16 +27,17 @@
                     <rect key="frame" x="16" y="11" width="343" height="38"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
-                            <rect key="frame" x="0.0" y="0.0" width="40" height="38"/>
+                            <rect key="frame" x="0.0" y="7" width="40" height="24"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
-                                    <rect key="frame" x="0.0" y="0.0" width="24" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="24" id="Ope-3W-fHa"/>
+                                        <constraint firstAttribute="width" secondItem="NMN-Qx-YFo" secondAttribute="height" multiplier="1:1" id="gla-bY-oRI"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
-                                    <rect key="frame" x="24" y="0.0" width="16" height="38"/>
+                                    <rect key="frame" x="24" y="0.0" width="16" height="24"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
