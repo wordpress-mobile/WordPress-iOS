@@ -98,6 +98,15 @@ extension PostEditor {
         return post.hasContent()
     }
 
+    var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
+    }
+
+    func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
+    }
+
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
