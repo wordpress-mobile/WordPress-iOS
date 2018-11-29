@@ -5,6 +5,7 @@ import WordPressComStatsiOS
 enum InsightAction: Action {
     case receivedLatestPostSummary(_ latestPostSummary: StatsLatestPostSummary?)
     case receivedAllTimeStats(_ allTimeStats: StatsAllTime?)
+    case receivedMostPopularStats(_ mostPopularStats: StatsInsights?)
     case refreshInsights()
 }
 
@@ -17,6 +18,8 @@ struct InsightStoreState {
     var fetchingLatestPostSummary = false
     var allTimeStats: StatsAllTime?
     var fetchingAllTimeStats = false
+    var mostPopularStats: StatsInsights?
+    var fetchingMostPopularStats = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -36,6 +39,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedLatestPostSummary(latestPostSummary)
         case .receivedAllTimeStats(let allTimeStats):
             receivedAllTimeStats(allTimeStats)
+        case .receivedMostPopularStats(let mostPopularStats):
+            receivedMostPopularStats(mostPopularStats)
         case .refreshInsights:
             refreshInsights()
         }
@@ -65,6 +70,7 @@ private extension StatsInsightsStore {
 
         state.fetchingLatestPostSummary = true
         state.fetchingAllTimeStats = true
+        state.fetchingMostPopularStats = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -72,7 +78,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimeStats))
         }, insightsCompletionHandler: { (mostPopularStats, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching most popular stats: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedMostPopularStats(mostPopularStats))
         }, todaySummaryCompletionHandler: { (todaySummary, error) in
 
         }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
@@ -124,6 +133,13 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedMostPopularStats(_ mostPopularStats: StatsInsights?) {
+        transaction { state in
+            state.mostPopularStats = mostPopularStats
+            state.fetchingMostPopularStats = false
+        }
+    }
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
@@ -142,7 +158,11 @@ extension StatsInsightsStore {
         return state.allTimeStats
     }
 
+    func getMostPopularStats() -> StatsInsights? {
+        return state.mostPopularStats
+    }
+
     var isFetching: Bool {
-        return state.fetchingLatestPostSummary || state.fetchingAllTimeStats
+        return state.fetchingLatestPostSummary || state.fetchingAllTimeStats || state.fetchingMostPopularStats
     }
 }
