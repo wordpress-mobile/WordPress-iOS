@@ -171,7 +171,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
-        titleTextField.becomeFirstResponder()
 
         gutenberg.delegate = self
     }
@@ -179,6 +178,11 @@ class GutenbergViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         verificationPromptHelper?.updateVerificationStatus()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        titleTextField.becomeFirstResponder()
     }
 
     // MARK: - Functions
