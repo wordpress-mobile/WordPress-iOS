@@ -26,7 +26,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
     }
 }
 
-struct AllTimeStatsRow: ImmuTableRow {
+struct SimpleTotalsStatsRow: ImmuTableRow {
 
     typealias CellType = SimpleTotalsCell
 
@@ -47,7 +47,7 @@ struct AllTimeStatsRow: ImmuTableRow {
     }
 }
 
-struct MostPopularStatsRow: ImmuTableRow {
+struct SimpleTotalsStatsSubtitlesRow: ImmuTableRow {
 
     typealias CellType = SimpleTotalsCell
 

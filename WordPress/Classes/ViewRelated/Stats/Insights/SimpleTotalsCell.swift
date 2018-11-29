@@ -8,8 +8,12 @@ class SimpleTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
+
+    // If the subtitles are not shown, this is active.
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
+    // If the subtitles are shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
+
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
@@ -37,13 +41,8 @@ private extension SimpleTotalsCell {
     func setSubtitleVisibility() {
         let showSubtitles = (itemSubtitleLabel.text != nil || dataSubtitleLabel.text != nil)
         subtitleStackView.isHidden = !showSubtitles
-
-        if showSubtitles {
-            let subtitleBottom = subtitleStackView.frame.origin.y + subtitleStackView.frame.size.height
-            // The top and bottom subtitle margins are the same, so whatever the top constraint
-            // is, add that to the bottom margin.
-            rowsStackViewTopConstraint.constant = subtitleBottom + subtitlesStackViewTopConstraint.constant
-        }
+        rowsStackViewTopConstraint.isActive = !showSubtitles
+        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
     }
 
     func addRows() {
@@ -56,9 +55,15 @@ private extension SimpleTotalsCell {
             return
         }
 
-        for dataRow in dataRows {
+        for (index, dataRow) in dataRows.enumerated() {
             let row = StatsTotalRow.loadFromNib()
             row.configure(rowData: dataRow)
+
+            // Don't show the separator line on the last row.
+            if index == (dataRows.count - 1) {
+                row.showSeparator = false
+            }
+
             rowsStackView.addArrangedSubview(row)
         }
     }

@@ -66,9 +66,15 @@
                     <constraint firstAttribute="trailing" secondItem="Tyj-5B-MLc" secondAttribute="trailing" constant="16" id="XOL-9m-28D"/>
                     <constraint firstAttribute="trailing" secondItem="cBd-Ut-Uch" secondAttribute="trailing" id="bwo-8W-tHL"/>
                     <constraint firstAttribute="bottom" secondItem="9px-XX-eCP" secondAttribute="bottom" id="e26-py-r2V"/>
+                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="Tyj-5B-MLc" secondAttribute="bottom" constant="7" id="kke-sY-9lr"/>
                     <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="olb-Fp-tx9"/>
                     <constraint firstItem="9px-XX-eCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qfo-Hn-1HP"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="kke-sY-9lr"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
@@ -77,8 +83,8 @@
                 <outlet property="itemSubtitleLabel" destination="vbE-CG-voj" id="eZl-wI-KfG"/>
                 <outlet property="rowsStackView" destination="w2N-OJ-hIR" id="5DU-xj-fcC"/>
                 <outlet property="rowsStackViewTopConstraint" destination="olb-Fp-tx9" id="Xed-rK-meE"/>
+                <outlet property="rowsStackViewTopConstraintWithSubtitles" destination="kke-sY-9lr" id="cwW-Pl-qJ9"/>
                 <outlet property="subtitleStackView" destination="Tyj-5B-MLc" id="mua-cf-sfq"/>
-                <outlet property="subtitlesStackViewTopConstraint" destination="3w8-O5-egA" id="mIe-Qk-rxL"/>
                 <outlet property="topSeparatorLine" destination="cBd-Ut-Uch" id="C1i-Zd-yPU"/>
             </connections>
             <point key="canvasLocation" x="55.200000000000003" y="17.991004497751124"/>
