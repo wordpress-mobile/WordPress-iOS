@@ -72,7 +72,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Gutenberg Support
 
-    private let gutenbergSettings = GutenbergSettings()
     private let switchToGutenberg: (UIViewController & PostEditor) -> ()
 
     // MARK: - fileprivate & private variables
@@ -1149,7 +1148,7 @@ private extension AztecPostViewController {
             }
         }
 
-        if gutenbergSettings.isGutenbergEnabled(),
+        if GutenbergSettings().isGutenbergEnabled(),
             let postContent = post.content,
             postContent.count > 0 && post.containsGutenbergBlocks() {
 
