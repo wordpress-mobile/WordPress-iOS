@@ -10,6 +10,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case publish
         case close
         case more
+        case switchToAztec
     }
 
     // MARK: - UI
@@ -255,6 +256,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 cancelEditing()
             case .more:
                 displayMoreSheet()
+            case .switchToAztec:
+                switchToAztec(self)
             }
         }
     }
@@ -356,14 +359,6 @@ extension GutenbergViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        //TODO: Comment in when bridge is ready
-        /*if mode == .richText {
-         // NB : This is a candidate for plurality via .stringsdict, but is limited by https://github.com/wordpress-mobile/WordPress-iOS/issues/6327
-         let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
-         
-         alert.title = textCounterTitle
-         }*/
-
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 
@@ -372,34 +367,14 @@ extension GutenbergViewController {
             }
         }
 
-        //TODO: Comment in when bridge is ready
-        /*let toggleModeTitle: String = {
-         if mode == .richText {
-         return MoreSheetAlert.htmlTitle
-         } else {
-         return MoreSheetAlert.richTitle
-         }
-         }()
-         
-         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
-         self.toggleEditingMode()
-         }*/
-
         alert.addDefaultActionWithTitle(MoreSheetAlert.classicTitle) { [unowned self] _ in
-            self.switchToAztec(self)
+            self.requestHTMLReason = .switchToAztec
+            self.gutenberg.requestHTML()
         }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [weak self] _ in
             self?.displayPreview()
         }
-
-        //TODO: Comment in when bridge is ready
-        /*
-         if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
-         alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
-         self?.displayHistory()
-         }
-         }*/
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
             self?.displayPostSettings()
