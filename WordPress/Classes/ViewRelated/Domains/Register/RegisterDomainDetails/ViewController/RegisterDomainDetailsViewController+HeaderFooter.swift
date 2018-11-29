@@ -6,7 +6,7 @@ extension RegisterDomainDetailsViewController {
         static let privacyProtectionSectionTitleTopDistance: CGFloat = 8
     }
 
-    func configureTableFooterView() {
+    func configureTableFooterView(width: CGFloat = 0) {
         var safeAreaInset: CGFloat = 0
 
         if #available(iOS 11.0, *) {
@@ -17,7 +17,7 @@ extension RegisterDomainDetailsViewController {
         //Creating a UIView with a custom frame because table tableFooterView doesn't support autolayout
         let footer = UIView(frame: CGRect(x: 0,
                                           y: 0,
-                                          width: view.frame.size.width,
+                                          width: (width >= 0 ? width : view.frame.size.width),
                                           height: Constants.buttonContainerHeight + safeAreaInset))
         footerView.frame = footer.frame
         footer.addSubview(footerView)
