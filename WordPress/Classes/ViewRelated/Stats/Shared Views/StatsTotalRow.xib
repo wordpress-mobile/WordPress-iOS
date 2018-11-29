@@ -92,7 +92,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="mSM-N7-rqk" secondAttribute="trailing" constant="16" id="18g-Bb-BOK"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="mSM-N7-rqk" secondAttribute="bottom" constant="11" id="3T2-gi-KTg"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="mSM-N7-rqk" secondAttribute="bottom" priority="999" constant="11" id="3T2-gi-KTg"/>
                 <constraint firstItem="mSM-N7-rqk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="HSW-Wq-ZKH"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="OyG-1h-jIV"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="hUw-W8-K8p"/>
