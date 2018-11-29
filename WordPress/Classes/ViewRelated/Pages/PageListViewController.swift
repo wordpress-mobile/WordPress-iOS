@@ -468,20 +468,23 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate func showEditor(post: AbstractPost) {
         let filterIndex = filterSettings.currentFilterIndex()
-        let editorSettings = EditorSettings()
-        let postViewController = editorSettings.instantiatePageEditor(page: post) { (editor, vc) in
-            editor.onClose = { [weak self] changesSaved, _ in
-                if changesSaved {
-                    if let postStatus = editor.post.status {
-                        self?.updateFilterWithPostStatus(postStatus)
-                    }
-                } else {
-                    self?.updateFilter(index: filterIndex)
+        let editorFactory = EditorFactory()
+
+        let postViewController = editorFactory.instantiateEditor(for: post)
+
+        postViewController.onClose = { [weak self, weak postViewController] changesSaved, _ in
+            if changesSaved {
+                if let postStatus = postViewController?.post.status {
+                    self?.updateFilterWithPostStatus(postStatus)
                 }
-                self?._tableViewHandler.isSearching = false
-                vc.dismiss(animated: true)
+            } else {
+                self?.updateFilter(index: filterIndex)
             }
+
+            self?._tableViewHandler.isSearching = false
+            postViewController?.dismiss(animated: true)
         }
+
         let navController = UINavigationController(rootViewController: postViewController)
         navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen

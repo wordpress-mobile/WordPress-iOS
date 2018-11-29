@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-class EditorSettingsTests: XCTestCase {
+class GutenbergSettingsTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
@@ -10,19 +10,21 @@ class EditorSettingsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testAztecEnabledByDefaultButNotForcedAgain() {
+    func testGutenbergDisabledByDefaultAndToggleEnablesInSecondLaunch() {
         let testClosure: () -> () = { () in
             let database = EphemeralKeyValueDatabase()
 
             // This simulates the first launch
-            let editorSettings = EditorSettings(database: database)
+            let settings = GutenbergSettings(database: database)
 
-            XCTAssertTrue(editorSettings.isEnabled(.aztec))
+            XCTAssertFalse(settings.isGutenbergEnabled())
+
+            settings.toggleGutenberg()
 
             // This simulates a second launch
-            let secondEditorSettings = EditorSettings(database: database)
+            let secondEditorSettings = GutenbergSettings(database: database)
 
-            XCTAssertTrue(secondEditorSettings.isEnabled(.aztec))
+            XCTAssertTrue(secondEditorSettings.isGutenbergEnabled())
         }
 
         BuildConfiguration.localDeveloper.test(testClosure)

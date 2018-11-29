@@ -188,6 +188,10 @@ class RegisterDomainDetailsViewModel {
                 self?.isLoading = false
                 return
             }
+
+
+            WPAnalytics.track(.automatedTransferCustomDomainContactInfoValidated)
+
             // This is a bit of a callback hell, but our services aren't super mobile friendly.
             // We'll manage.
 
@@ -196,6 +200,7 @@ class RegisterDomainDetailsViewModel {
                                                                        domainSuggestion: strongSelf.domain,
                                                                        privacyProtectionEnabled: privacyEnabled,
                                                                        success: { cart in
+
 
                     // And now that we have a cart — time to redeem it.
                     strongSelf.registerDomainDetailsService.redeemCartUsingCredits(cart: cart,
@@ -209,6 +214,8 @@ class RegisterDomainDetailsViewModel {
 
                                 // We've succeeded! The domain is purchased and set to the primary one — time to drop out of this flow
                                 // and return control to the Plugins, which will present the AT flow. (The VC handles that after getting the `.registerSucceeded` message.)
+                                WPAnalytics.track(.automatedTransferCustomDomainPurchased)
+
                                 strongSelf.isLoading = false
                                 strongSelf.onChange?(.registerSucceeded(domain: strongSelf.domain.domainName))
                             },
@@ -224,14 +231,14 @@ class RegisterDomainDetailsViewModel {
 
                         // Failure during the purchase step. Not much we can do from the mobile in any case,
                         // so let's just show a generic error message.
-
+                        WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
                         strongSelf.isLoading = false
                         strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
                     })
             }) { (error) in
 
                 // Same as above. If adding items to cart fails, not much we can do to recover :(
-
+                WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
                 strongSelf.isLoading = false
                 strongSelf.onChange?(.prefillError(message: Localized.redemptionError))
             }
@@ -484,6 +491,7 @@ extension RegisterDomainDetailsViewModel {
                     strongSelf.clearValidationErrors()
                     successCompletion()
                 } else {
+                    WPAnalytics.track(.automatedTransferCustomDomainContactInfoValidationFailed)
                     strongSelf.updateValidationErrors(with: response.messages)
                 }
                 strongSelf.onChange?(.remoteValidationFinished)

@@ -15,6 +15,7 @@ class SiteStatsInsightsViewModel: Observable {
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
+    private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Constructor
 
@@ -40,14 +41,23 @@ class SiteStatsInsightsViewModel: Observable {
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.latestPostSummary))
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
+                tableRows.append(AllTimeStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
                 DDLogDebug("Show \(insightType) here.")
             case .mostPopularDayAndHour:
-                DDLogDebug("Show \(insightType) here.")
+                let dataRows = createMostPopularStatsRows()
+
+                // Don't show the subtitles if there is no data
+                let itemSubtitle = dataRows.count > 0 ? MostPopularStats.itemSubtitle : nil
+                let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
+
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
+                tableRows.append(MostPopularStatsRow(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
@@ -75,6 +85,100 @@ class SiteStatsInsightsViewModel: Observable {
 
     func refreshInsights() {
         ActionDispatcher.dispatch(InsightAction.refreshInsights())
+    }
+
+}
+
+// MARK: - Private Extension
+
+private extension SiteStatsInsightsViewModel {
+
+    struct InsightsHeaders {
+        static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
+        static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
+        static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
+    }
+
+    struct AllTimeStats {
+        static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
+        static let postsIcon = Style.imageForGridiconType(.posts)
+        static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
+        static let viewsIcon = Style.imageForGridiconType(.visible)
+        static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
+        static let visitorsIcon = Style.imageForGridiconType(.user)
+        static let bestViewsEverTitle = NSLocalizedString("Best Views Ever", comment: "All Time Stats 'Best Views Ever' label")
+        static let bestViewsIcon = Style.imageForGridiconType(.trophy)
+    }
+
+    struct MostPopularStats {
+        static let itemSubtitle = NSLocalizedString("Day/Hour", comment: "Most Popular Day and Hour label for day and hour")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Most Popular Day and Hour label for number of views")
+    }
+
+    func createAllTimeStatsRows() -> [StatsTotalRowData] {
+        let allTimeStats = store.getAllTimeStats()
+        var dataRows = [StatsTotalRowData]()
+
+        // For these tests, we need the string version to display since it comes formatted (ex: numberOfPosts).
+        // And we need the actual number value to test > 0 (ex: numberOfPostsValue).
+
+        if let numberOfPosts = allTimeStats?.numberOfPosts,
+            let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue,
+            numberOfPostsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
+                                                   data: numberOfPosts,
+                                                   icon: AllTimeStats.postsIcon))
+        }
+
+        if let numberOfViews = allTimeStats?.numberOfViews,
+            let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue,
+            numberOfViewsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
+                                                   data: numberOfViews,
+                                                   icon: AllTimeStats.viewsIcon))
+        }
+
+        if let numberOfVisitors = allTimeStats?.numberOfVisitors,
+            let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue,
+            numberOfVisitorsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
+                                                   data: numberOfVisitors,
+                                                   icon: AllTimeStats.visitorsIcon))
+        }
+
+        if let bestNumberOfViews = allTimeStats?.bestNumberOfViews,
+            let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue,
+            bestNumberOfViewsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
+                                                   data: bestNumberOfViews,
+                                                   icon: AllTimeStats.bestViewsIcon,
+                                                   nameDetail: allTimeStats?.bestViewsOn,
+                                                   showSeparator: false))
+        }
+
+        return dataRows
+    }
+
+    func createMostPopularStatsRows() -> [StatsTotalRowData] {
+        let mostPopularStats = store.getMostPopularStats()
+        var dataRows = [StatsTotalRowData]()
+
+        if let highestDayOfWeek = mostPopularStats?.highestDayOfWeek,
+            let highestDayPercent = mostPopularStats?.highestDayPercent,
+            let highestHour = mostPopularStats?.highestHour,
+            let highestHourPercent = mostPopularStats?.highestHourPercent,
+            let highestDayPercentValue = mostPopularStats?.highestDayPercentValue,
+            highestDayPercentValue.floatValue > 0 {
+
+            // Day
+            dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek, data: highestDayPercent))
+
+            // Hour
+            let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
+            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent, showSeparator: false))
+        }
+
+        return dataRows
     }
 
 }
