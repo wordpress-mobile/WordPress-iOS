@@ -68,6 +68,10 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureTableFooterView(width: size.width)
+
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         changeBottomSafeAreaInset()
     }
 
