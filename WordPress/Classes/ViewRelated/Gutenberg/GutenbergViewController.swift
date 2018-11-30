@@ -22,6 +22,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         textField.textColor = Colors.title
         textField.backgroundColor = Colors.background
         textField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        textField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
         let leftView = UIView()
         leftView.translatesAutoresizingMaskIntoConstraints = false
         leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
@@ -133,6 +134,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     private let gutenberg: Gutenberg
     private var requestHTMLReason: RequestHTMLReason?
+    private(set) var mode: EditMode = .richText
 
     // MARK: - Initializers
     required init(post: AbstractPost) {
@@ -215,8 +217,20 @@ class GutenbergViewController: UIViewController, PostEditor {
         return html //TODO: return media attachment stripped version in future
     }
 
+    func toggleEditingMode() {
+        gutenberg.toggleHTMLMode()
+        mode.toggle()
+    }
+
+    // MARK: - Event handlers
+
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
+    }
+
+    @objc func titleTextFieldDidChange(_ textField: UITextField) {
+        mapUIContentToPostAndSave()
+        editorContentWasUpdated()
     }
 }
 
@@ -231,12 +245,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
-        self.html = html
-        postEditorStateContext.updated(hasContent: editorHasContent)
-
-        // TODO: currently we don't need to set this because Update button is always active
-        // but in the future we might need this
-        // postEditorStateContext.updated(hasChanges: changed)
+        if changed {
+            self.html = html
+            editorContentWasUpdated()
+        }
 
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason

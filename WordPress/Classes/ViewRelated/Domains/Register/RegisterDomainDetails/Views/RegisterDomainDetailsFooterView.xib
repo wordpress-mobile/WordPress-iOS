@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,13 +23,16 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-fc-OkB" customClass="NUXButton" customModule="WordPressAuthenticator">
-                    <rect key="frame" x="20" y="16" width="335" height="110"/>
+                    <rect key="frame" x="20" y="16" width="335" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="ujS-fE-lvl"/>
+                    </constraints>
                     <state key="normal" title="Button"/>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="WWz-Oe-Kaz" firstAttribute="bottom" secondItem="aWW-fc-OkB" secondAttribute="bottom" constant="16" id="5N8-7U-xow"/>
+                <constraint firstItem="WWz-Oe-Kaz" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="aWW-fc-OkB" secondAttribute="bottom" constant="16" id="5N8-7U-xow"/>
                 <constraint firstItem="XTo-NK-MSn" firstAttribute="top" secondItem="WWz-Oe-Kaz" secondAttribute="top" constant="-10" id="BTF-Va-qsg"/>
                 <constraint firstItem="WWz-Oe-Kaz" firstAttribute="trailing" secondItem="aWW-fc-OkB" secondAttribute="trailing" constant="20" id="NCI-OG-04F"/>
                 <constraint firstItem="WWz-Oe-Kaz" firstAttribute="trailing" secondItem="XTo-NK-MSn" secondAttribute="trailing" id="QsD-jY-ATt"/>

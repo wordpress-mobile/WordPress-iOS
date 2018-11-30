@@ -170,7 +170,7 @@ PODS:
   - WordPress-Aztec-iOS (1.2)
   - WordPress-Editor-iOS (1.2):
     - WordPress-Aztec-iOS (= 1.2)
-  - WordPressAuthenticator (1.1.5):
+  - WordPressAuthenticator (1.1.6):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -313,7 +313,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Gutenberg:
-    :commit: 1cd29ab02f26bfecc06b7c41b75ae4ebe5f4ed50
+    :commit: 7ac7875094b52bb13eacb8d36005aeba36ed0cf8
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
@@ -360,7 +360,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 507f6a08e176c2a9af6ec532a54697466b5a9114
   WordPress-Editor-iOS: 28339c1311dcdfdd9e50aba60dcf4c35184d032f
-  WordPressAuthenticator: 0e60d89e1637212bc841a0cf66fc5ef8cac01e52
+  WordPressAuthenticator: 83f495cce863d3f65bb440f6dea57161af401729
   WordPressKit: 46fe8a4fa2ff4195f73a992f0f6f3a1eb2972b70
   WordPressShared: 2a2d74bbe0ee4c31452f8c33aafe255278dc56f6
   WordPressUI: d3dbd0258f12560d6607647d3240c62c83e089fe

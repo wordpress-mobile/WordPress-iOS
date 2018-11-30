@@ -399,6 +399,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         // Also clear the spotlight index
         SearchManager.shared.deleteAllSearchableItems()
+
+        // Delete donated user activities (e.g., for Siri Shortcuts)
+        if #available(iOS 12.0, *) {
+            NSUserActivity.deleteAllSavedUserActivities {}
+        }
     }
 
 
