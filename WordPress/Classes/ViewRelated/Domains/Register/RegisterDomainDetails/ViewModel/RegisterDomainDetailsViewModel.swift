@@ -484,6 +484,9 @@ extension RegisterDomainDetailsViewModel {
                 guard let strongSelf = self else {
                     return
                 }
+
+                strongSelf.isLoading = false
+
                 if response.success {
                     strongSelf.clearValidationErrors()
                     successCompletion()
@@ -496,6 +499,7 @@ extension RegisterDomainDetailsViewModel {
             guard let strongSelf = self else {
                 return
             }
+            strongSelf.isLoading = false
             strongSelf.onChange?(.unexpectedError(message: Localized.unexpectedError))
         }
     }

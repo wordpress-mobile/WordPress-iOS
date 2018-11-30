@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,21 +24,22 @@
                                     <segue destination="CFb-K0-jrQ" kind="embed" id="v6Z-QC-UcC"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N47-hP-xDu" userLabel="Button Container View">
+                            <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N47-hP-xDu" userLabel="Button Container View">
                                 <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" placeholder="YES" id="ATd-iH-oJG"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="j00-iE-vY5"/>
                                 </constraints>
+                                <viewLayoutGuide key="safeArea" id="0hA-Vo-wWt"/>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="N47-hP-xDu" firstAttribute="trailing" secondItem="qDC-aT-Sfz" secondAttribute="trailing" id="00z-KU-gma"/>
+                            <constraint firstItem="N47-hP-xDu" firstAttribute="trailing" secondItem="hr1-AR-Kcc" secondAttribute="trailing" id="00z-KU-gma"/>
                             <constraint firstItem="N47-hP-xDu" firstAttribute="bottom" secondItem="hr1-AR-Kcc" secondAttribute="bottom" id="CbP-Yl-3OZ"/>
-                            <constraint firstItem="qDC-aT-Sfz" firstAttribute="trailing" secondItem="qRW-a0-uEt" secondAttribute="trailing" id="NvV-4f-UXu"/>
-                            <constraint firstItem="qRW-a0-uEt" firstAttribute="leading" secondItem="qDC-aT-Sfz" secondAttribute="leading" id="Owz-yP-dfr"/>
-                            <constraint firstItem="N47-hP-xDu" firstAttribute="leading" secondItem="qDC-aT-Sfz" secondAttribute="leading" id="aq0-ab-Svm"/>
+                            <constraint firstAttribute="trailing" secondItem="qRW-a0-uEt" secondAttribute="trailing" id="NvV-4f-UXu"/>
+                            <constraint firstItem="qRW-a0-uEt" firstAttribute="leading" secondItem="hr1-AR-Kcc" secondAttribute="leading" id="Owz-yP-dfr"/>
+                            <constraint firstItem="N47-hP-xDu" firstAttribute="leading" secondItem="hr1-AR-Kcc" secondAttribute="leading" id="aq0-ab-Svm"/>
                             <constraint firstItem="qRW-a0-uEt" firstAttribute="top" secondItem="qDC-aT-Sfz" secondAttribute="top" id="g17-8h-gCH"/>
                             <constraint firstItem="N47-hP-xDu" firstAttribute="top" secondItem="qRW-a0-uEt" secondAttribute="bottom" id="kYJ-aF-Uio"/>
                         </constraints>

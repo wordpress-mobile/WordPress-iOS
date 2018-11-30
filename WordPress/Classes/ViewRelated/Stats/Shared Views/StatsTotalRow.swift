@@ -6,20 +6,17 @@ struct StatsTotalRowData {
     var icon: UIImage?
     var nameDetail: String?
     var showDisclosure: Bool
-    var showSeparator: Bool
 
     init(name: String,
          data: String,
          icon: UIImage? = nil,
          nameDetail: String? = nil,
-         showDisclosure: Bool = false,
-         showSeparator: Bool = true) {
+         showDisclosure: Bool = false) {
         self.name = name
         self.data = data
         self.nameDetail = nameDetail
         self.icon = icon
         self.showDisclosure = showDisclosure
-        self.showSeparator = showSeparator
     }
 }
 
@@ -37,6 +34,12 @@ class StatsTotalRow: UIView, NibLoadable {
 
     private typealias Style = WPStyleGuide.Stats
 
+    var showSeparator = true {
+        didSet {
+            separatorLine.isHidden = !showSeparator
+        }
+    }
+
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData) {
@@ -50,8 +53,8 @@ class StatsTotalRow: UIView, NibLoadable {
         // Toggle optionals
         imageStackView.isHidden = (rowData.icon == nil)
         disclosureStackView.isHidden = !rowData.showDisclosure
-        separatorLine.isHidden = !rowData.showSeparator
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
+        separatorLine.isHidden = !showSeparator
 
         applyStyles()
     }

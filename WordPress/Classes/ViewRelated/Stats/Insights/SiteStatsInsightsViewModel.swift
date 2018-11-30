@@ -46,11 +46,21 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
-                tableRows.append(AllTimeStatsRow(dataRows: createAllTimeStatsRows()))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.followerTotals))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
-                DDLogDebug("Show \(insightType) here.")
+                let dataRows = createMostPopularStatsRows()
+
+                // Don't show the subtitles if there is no data
+                let itemSubtitle = dataRows.count > 0 ? MostPopularStats.itemSubtitle : nil
+                let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
+
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle,
+                                                               dataSubtitle: dataSubtitle,
+                                                               dataRows: dataRows))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
@@ -89,6 +99,8 @@ private extension SiteStatsInsightsViewModel {
     struct InsightsHeaders {
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
+        static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
+        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
     }
 
     struct AllTimeStats {
@@ -102,34 +114,107 @@ private extension SiteStatsInsightsViewModel {
         static let bestViewsIcon = Style.imageForGridiconType(.trophy)
     }
 
+    struct MostPopularStats {
+        static let itemSubtitle = NSLocalizedString("Day/Hour", comment: "Most Popular Day and Hour label for day and hour")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Most Popular Day and Hour label for number of views")
+    }
+
+    struct FollowerTotals {
+        static let wordPressTitle = NSLocalizedString("WordPress.com", comment: "Follower Totals label for WordPress.com followers")
+        static let wordPressIcon = Style.imageForGridiconType(.mySites)
+        static let emailTitle = NSLocalizedString("Email", comment: "Follower Totals label for email followers")
+        static let emailIcon = Style.imageForGridiconType(.mail)
+        static let socialTitle = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
+        static let socialIcon = Style.imageForGridiconType(.share)
+    }
+
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
 
-        if let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue, numberOfPostsValue > 0 {
+        // For these tests, we need the string version to display since it comes formatted (ex: numberOfPosts).
+        // And we need the actual number value to test > 0 (ex: numberOfPostsValue).
+
+        if let numberOfPosts = allTimeStats?.numberOfPosts,
+            let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue,
+            numberOfPostsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: String(numberOfPostsValue),
+                                                   data: numberOfPosts,
                                                    icon: AllTimeStats.postsIcon))
         }
 
-        if let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue, numberOfViewsValue > 0 {
+        if let numberOfViews = allTimeStats?.numberOfViews,
+            let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue,
+            numberOfViewsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: String(numberOfViewsValue),
+                                                   data: numberOfViews,
                                                    icon: AllTimeStats.viewsIcon))
         }
 
-        if let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue, numberOfVisitorsValue > 0 {
+        if let numberOfVisitors = allTimeStats?.numberOfVisitors,
+            let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue,
+            numberOfVisitorsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: String(numberOfVisitorsValue),
+                                                   data: numberOfVisitors,
                                                    icon: AllTimeStats.visitorsIcon))
         }
 
-        if let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue, bestNumberOfViewsValue > 0 {
+        if let bestNumberOfViews = allTimeStats?.bestNumberOfViews,
+            let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue,
+            bestNumberOfViewsValue > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: String(bestNumberOfViewsValue),
+                                                   data: bestNumberOfViews,
                                                    icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: allTimeStats?.bestViewsOn,
-                                                   showSeparator: false))
+                                                   nameDetail: allTimeStats?.bestViewsOn))
+        }
+
+        return dataRows
+    }
+
+    func createMostPopularStatsRows() -> [StatsTotalRowData] {
+        let mostPopularStats = store.getMostPopularStats()
+        var dataRows = [StatsTotalRowData]()
+
+        if let highestDayOfWeek = mostPopularStats?.highestDayOfWeek,
+            let highestDayPercent = mostPopularStats?.highestDayPercent,
+            let highestHour = mostPopularStats?.highestHour,
+            let highestHourPercent = mostPopularStats?.highestHourPercent,
+            let highestDayPercentValue = mostPopularStats?.highestDayPercentValue,
+            highestDayPercentValue.floatValue > 0 {
+
+            // Day
+            dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek, data: highestDayPercent))
+
+            // Hour
+            let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
+            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent))
+        }
+
+        return dataRows
+    }
+
+    func createTotalFollowersRows() -> [StatsTotalRowData] {
+        var dataRows = [StatsTotalRowData]()
+
+        if let totalDotComFollowers = store.getTotalDotComFollowers(),
+            !totalDotComFollowers.isEmpty {
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPressTitle,
+                                                   data: totalDotComFollowers,
+                                                   icon: FollowerTotals.wordPressIcon))
+        }
+
+        if let totalEmailFollowers = store.getTotalEmailFollowers(),
+            !totalEmailFollowers.isEmpty {
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.emailTitle,
+                                                   data: totalEmailFollowers,
+                                                   icon: FollowerTotals.emailIcon))
+        }
+
+        if let totalPublicizeFollowers = store.getTotalPublicizeFollowers(),
+            !totalPublicizeFollowers.isEmpty {
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
+                                                   data: totalPublicizeFollowers,
+                                                   icon: FollowerTotals.socialIcon))
         }
 
         return dataRows
