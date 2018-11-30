@@ -56,6 +56,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
+        setupTableSeparator()
         setupCell()
         setupHeader()
         hideSeparators()
@@ -63,6 +64,10 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     private func hideSeparators() {
@@ -81,7 +86,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupCellHeight() {
-        table.rowHeight = StyleConstants.rowHeight
+        table.rowHeight = UITableView.automaticDimension
         table.estimatedRowHeight = StyleConstants.rowHeight
         table.separatorInset = StyleConstants.separatorInset
     }
@@ -94,9 +99,9 @@ final class SiteSegmentsWizardContent: UIViewController {
         table.tableHeaderView = header
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
             header.topAnchor.constraint(equalTo: table.topAnchor)
-            ])
+        ])
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView

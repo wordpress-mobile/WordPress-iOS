@@ -8,6 +8,7 @@ final class SiteSegmentTests: XCTestCase {
         static let title = "Blogger"
         static let subtitle = "Publish a collection of posts."
         static let icon = URL(string: "https://wordpress.com/icon/blogger.png")!
+        static let iconColor = UIColor(hexString: "FFFAFA")
     }
 
     private var subject: SiteSegment?
@@ -15,7 +16,7 @@ final class SiteSegmentTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-type", withExtension: "json")!
+        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-segment", withExtension: "json")!
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 
@@ -43,8 +44,12 @@ final class SiteSegmentTests: XCTestCase {
         XCTAssertEqual(subject?.icon, MockValues.icon)
     }
 
+    func testIconColorIsNotMutated() {
+        XCTAssertEqual(subject?.iconColor, MockValues.iconColor)
+    }
+
     func testSiteTypesWithSameIdAreEqual() {
-        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon)
+        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon, iconColor: .white)
 
         XCTAssertEqual(subject, secondSiteType)
     }

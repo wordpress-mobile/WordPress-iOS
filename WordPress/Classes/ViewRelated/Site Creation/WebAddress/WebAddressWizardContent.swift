@@ -78,7 +78,7 @@ final class WebAddressWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
             header.topAnchor.constraint(equalTo: table.topAnchor)
             ])
 
