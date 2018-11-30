@@ -471,8 +471,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let postViewController = editorFactory.instantiateEditor(
             for: post,
-            switchToAztec: { [unowned self] gutenberg in self.switchToAztec(dismissing: gutenberg) },
-            switchToGutenberg: { [unowned self] aztec in self.switchToGutenberg(dismissing: aztec) })
+            switchToAztec: switchToAztec,
+            switchToGutenberg: switchToGutenberg)
 
         show(postViewController)
     }
