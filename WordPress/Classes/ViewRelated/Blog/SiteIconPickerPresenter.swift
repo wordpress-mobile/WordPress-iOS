@@ -183,7 +183,10 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
         noResultsView.removeFromView()
-        noResultsView.configureForNoSearchResult()
+
+        if (mediaLibraryDataSource.searchQuery?.count ?? 0) > 0 {
+            noResultsView.configureForNoSearchResult()
+        }
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShow asset: WPMediaAsset) -> Bool {
