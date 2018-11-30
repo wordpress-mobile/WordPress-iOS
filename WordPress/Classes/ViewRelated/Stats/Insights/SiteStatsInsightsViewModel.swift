@@ -148,38 +148,31 @@ private extension SiteStatsInsightsViewModel {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
 
-        // For these tests, we need the string version to display since it comes formatted (ex: numberOfPosts).
-        // And we need the actual number value to test > 0 (ex: numberOfPostsValue).
-
-        if let numberOfPosts = allTimeStats?.numberOfPosts,
-            let numberOfPostsValue = allTimeStats?.numberOfPostsValue.intValue,
-            numberOfPostsValue > 0 {
+        if let numberOfPosts = allTimeStats?.numberOfPostsValue.doubleValue,
+            numberOfPosts > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: numberOfPosts,
+                                                   data: numberOfPosts.abbreviatedString(),
                                                    icon: AllTimeStats.postsIcon))
         }
 
-        if let numberOfViews = allTimeStats?.numberOfViews,
-            let numberOfViewsValue = allTimeStats?.numberOfViewsValue.intValue,
-            numberOfViewsValue > 0 {
+        if let numberOfViews = allTimeStats?.numberOfViewsValue.doubleValue,
+            numberOfViews > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: numberOfViews,
+                                                   data: numberOfViews.abbreviatedString(),
                                                    icon: AllTimeStats.viewsIcon))
         }
 
-        if let numberOfVisitors = allTimeStats?.numberOfVisitors,
-            let numberOfVisitorsValue = allTimeStats?.numberOfVisitorsValue.intValue,
-            numberOfVisitorsValue > 0 {
+        if let numberOfVisitors = allTimeStats?.numberOfVisitorsValue.doubleValue,
+            numberOfVisitors > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: numberOfVisitors,
+                                                   data: numberOfVisitors.abbreviatedString(),
                                                    icon: AllTimeStats.visitorsIcon))
         }
 
-        if let bestNumberOfViews = allTimeStats?.bestNumberOfViews,
-            let bestNumberOfViewsValue = allTimeStats?.bestNumberOfViewsValue.intValue,
-            bestNumberOfViewsValue > 0 {
+        if let bestNumberOfViews = allTimeStats?.bestNumberOfViewsValue.doubleValue,
+            bestNumberOfViews > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: bestNumberOfViews,
+                                                   data: bestNumberOfViews.abbreviatedString(),
                                                    icon: AllTimeStats.bestViewsIcon,
                                                    nameDetail: allTimeStats?.bestViewsOn))
         }
@@ -212,6 +205,9 @@ private extension SiteStatsInsightsViewModel {
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
+        // TODO: when the API returns the actual value for followers,
+        // send value.abbreviatedString() to the row.
+
         if let totalDotComFollowers = store.getTotalDotComFollowers(),
             !totalDotComFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPressTitle,
@@ -240,6 +236,9 @@ private extension SiteStatsInsightsViewModel {
         let publicize = store.getPublicize()
         var dataRows = [StatsTotalRowData]()
 
+        // TODO: when the API returns the actual value for followers,
+        // send value.abbreviatedString() to the row.
+
         publicize?.forEach { item in
             dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, iconURL: item.iconURL))
         }
@@ -251,38 +250,31 @@ private extension SiteStatsInsightsViewModel {
         let todaysStats = store.getTodaysStats()
         var dataRows = [StatsTotalRowData]()
 
-        // For these tests, we need the string version to display since it comes formatted (ex: views).
-        // And we need the actual number value to test > 0 (ex: viewsValue).
-
-        if let views = todaysStats?.views,
-        let viewsValue = todaysStats?.viewsValue.intValue,
-            viewsValue > 0 {
+        if let views = todaysStats?.viewsValue.doubleValue,
+            views > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.viewsTitle,
-                                                   data: views,
+                                                   data: views.abbreviatedString(),
                                                    icon: TodaysStats.viewsIcon))
         }
 
-        if let visitors = todaysStats?.visitors,
-        let visitorsValue = todaysStats?.visitorsValue.intValue,
-            visitorsValue > 0 {
+        if let visitors = todaysStats?.visitorsValue.doubleValue,
+            visitors > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.visitorsTitle,
-                                                   data: visitors,
+                                                   data: visitors.abbreviatedString(),
                                                    icon: TodaysStats.visitorsIcon))
         }
 
-        if let likes = todaysStats?.likes,
-        let likesValue = todaysStats?.likesValue.intValue,
-            likesValue > 0 {
+        if let likes = todaysStats?.likesValue.doubleValue,
+            likes > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.likesTitle,
-                                                   data: likes,
+                                                   data: likes.abbreviatedString(),
                                                    icon: TodaysStats.likesIcon))
         }
 
-        if let comments = todaysStats?.comments,
-            let commentsValue = todaysStats?.commentsValue.intValue,
-            commentsValue > 0 {
+        if let comments = todaysStats?.commentsValue.doubleValue,
+            comments > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.commentsTitle,
-                                                   data: comments,
+                                                   data: comments.abbreviatedString(),
                                                    icon: TodaysStats.commentsIcon))
         }
 

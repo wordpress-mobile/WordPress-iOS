@@ -227,17 +227,20 @@ extension StatsInsightsStore {
     }
 
     func getTotalDotComFollowers() -> String? {
+        // TODO: When the API is able to, return the actual value (not a String).
         return state.totalDotComFollowers == "0" ? "" : state.totalDotComFollowers
     }
 
     func getTotalEmailFollowers() -> String? {
+        // TODO: When the API is able to, return the actual value (not a String).
         return state.totalEmailFollowers == "0" ? "" : state.totalEmailFollowers
     }
 
     func getTotalPublicizeFollowers() -> String? {
-        // TODO: When the API is able to, return total of all state.publicizeItems formatted/localized.
+        // TODO: When the API is able to, return the actual value (not a String)
+        // total of all publicize items.
         // For now, we'll just show a bogus number.
-        return "666,6666,666"
+        return "666,666,666"
     }
 
     func getPublicize() -> [StatsItem]? {
