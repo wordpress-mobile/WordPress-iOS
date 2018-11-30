@@ -133,15 +133,23 @@ final class SiteInformationWizardContent: UIViewController {
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
-        table.tableHeaderView = header
-        NSLayoutConstraint.activate([
-            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: table.topAnchor)
-            ])
+        var fittingSize = UIView.layoutFittingCompressedSize
+        fittingSize.width = table.frame.size.width
+        let size = header.systemLayoutSizeFitting(fittingSize,
+                                                  withHorizontalFittingPriority: .required,
+                                                  verticalFittingPriority: .fittingSizeLevel)
 
-        table.tableHeaderView?.layoutIfNeeded()
-        table.tableHeaderView = table.tableHeaderView
+        let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: Int(table.frame.width), height: Int(size.height)))
+
+        table.tableHeaderView = headerContainer
+        headerContainer.addSubview(header)
+
+        NSLayoutConstraint.activate([
+            header.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
+            header.widthAnchor.constraint(lessThanOrEqualTo: headerContainer.widthAnchor, multiplier: 1.0),
+            header.topAnchor.constraint(equalTo: headerContainer.topAnchor),
+            header.heightAnchor.constraint(equalTo: headerContainer.heightAnchor)
+            ])
     }
 
     private func setupFooter() {
