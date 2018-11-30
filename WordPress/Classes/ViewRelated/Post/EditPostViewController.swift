@@ -2,6 +2,11 @@ import UIKit
 
 class EditPostViewController: UIViewController {
 
+    // MARK: - Editor Factory
+    private let editorFactory = EditorFactory()
+
+    // MARK: - Configurations
+
     /// appear instantly, without animations
     @objc var showImmediately: Bool = false
     /// appear with the media picker open
@@ -113,13 +118,46 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    // MARK: show the editor
+    // MARK: - Show a specific editor
+
+    private func showAztec(loading post: AbstractPost) {
+        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
+
+        showEditor(editor)
+    }
+
+    private func showGutenberg(loading post: AbstractPost) {
+        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
+
+        showEditor(editor)
+    }
+
+    // MARK: - Switching Editors
+
+    private func switchToAztec(dismissing editor: EditorViewController) {
+        editor.dismiss(animated: true) { [weak self] in
+            self?.showAztec(loading: editor.post)
+        }
+    }
+
+    private func switchToGutenberg(dismissing editor: EditorViewController) {
+        editor.dismiss(animated: true) { [weak self] in
+            self?.showGutenberg(loading: editor.post)
+        }
+    }
+
+    // MARK: - Show editor by settings and post
 
     fileprivate func showEditor() {
-        let editorFactory = EditorFactory()
+        let editor = editorFactory.instantiateEditor(
+            for: postToEdit(),
+            switchToAztec: switchToAztec,
+            switchToGutenberg: switchToGutenberg)
 
-        let editor = editorFactory.instantiateEditor(for: postToEdit())
+        showEditor(editor)
+    }
 
+    private func showEditor(_ editor: EditorViewController) {
         editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
         editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
             guard let strongSelf = self else {
@@ -135,13 +173,6 @@ class EditPostViewController: UIViewController {
             }
             strongSelf.closeEditor(changesSaved, showPostEpilogue: showPostEpilogue)
         }
-
-        // Neutralize iOS's Restoration:
-        // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
-        // This effectively prevents double editor instantiation!
-        //
-        editor.restorationClass = nil
-        editor.restorationIdentifier = nil
 
         let navController = AztecNavigationController(rootViewController: editor)
         navController.modalPresentationStyle = .fullScreen
