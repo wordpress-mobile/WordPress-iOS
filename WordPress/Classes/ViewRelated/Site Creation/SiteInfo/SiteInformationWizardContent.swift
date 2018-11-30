@@ -212,11 +212,13 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         if Rows.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.site)
+            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
         }
 
         if Rows.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
             cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.taglinePlaceholder)
+            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
         }
 
         cell.nameLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)

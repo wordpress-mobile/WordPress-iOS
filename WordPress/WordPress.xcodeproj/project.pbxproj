@@ -1181,6 +1181,7 @@
 		D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */; };
 		D826D682211D51E300A5D8FE /* ReaderNewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */; };
 		D8281CF1212AB34C00D09098 /* NewsStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8281CF0212AB34C00D09098 /* NewsStats.swift */; };
+		D829C33B21B12EFE00B09F12 /* UIView+Borders.swift in Sources */ = {isa = PBXBuildFile; fileRef = D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */; };
 		D8380CA12192E33400250609 /* WizardNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8380CA02192E33400250609 /* WizardNavigation.swift */; };
 		D8380CA42192E77F00250609 /* VerticalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8380CA22192E77F00250609 /* VerticalsCell.swift */; };
 		D8380CA52192E77F00250609 /* VerticalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8380CA32192E77F00250609 /* VerticalsCell.xib */; };
@@ -3086,6 +3087,7 @@
 		D826D67E211D21C700A5D8FE /* NullMockUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullMockUserDefaults.swift; sourceTree = "<group>"; };
 		D826D681211D51E300A5D8FE /* ReaderNewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderNewsCard.swift; sourceTree = "<group>"; };
 		D8281CF0212AB34C00D09098 /* NewsStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsStats.swift; sourceTree = "<group>"; };
+		D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Borders.swift"; sourceTree = "<group>"; };
 		D8380CA02192E33400250609 /* WizardNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardNavigation.swift; sourceTree = "<group>"; };
 		D8380CA22192E77F00250609 /* VerticalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalsCell.swift; sourceTree = "<group>"; };
 		D8380CA32192E77F00250609 /* VerticalsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VerticalsCell.xib; sourceTree = "<group>"; };
@@ -6506,6 +6508,7 @@
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
 				E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */,
 				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
+				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -9635,6 +9638,7 @@
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */,
 				E1F47D4D1FE0290C00C1D44E /* PluginListCell.swift in Sources */,
+				D829C33B21B12EFE00B09F12 /* UIView+Borders.swift in Sources */,
 				D818FFE021917916000E5FEE /* TableDataCoordinator.swift in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
