@@ -428,6 +428,8 @@ fileprivate extension SearchManager {
         WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: siteID)
     }
 
+    // MARK: - Editor
+
     func openEditor(for post: Post) {
         closePreviewIfNeeded(for: post)
         openListView(for: post)
@@ -441,17 +443,54 @@ fileprivate extension SearchManager {
         openListView(for: page)
         let editorFactory = EditorFactory()
 
-        let postViewController = editorFactory.instantiateEditor(for: page)
+        let editor = editorFactory.instantiateEditor(
+            for: page,
+            switchToAztec: switchToAztec,
+            switchToGutenberg: switchToGutenberg)
 
-        postViewController.onClose = { [weak postViewController] changesSaved, _ in
-            postViewController?.dismiss(animated: true)
+        open(editor)
+    }
+
+    private func open(_ editor: EditorViewController) {
+        editor.onClose = { [unowned editor] changesSaved, _ in
+            editor.dismiss(animated: true)
         }
 
-        let navController = UINavigationController(rootViewController: postViewController)
+        let navController = UINavigationController(rootViewController: editor)
         navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen
         WPTabBarController.sharedInstance().present(navController, animated: true)
     }
+
+    // MARK: - Opening Specific Editors
+
+    private func showAztec(loading post: AbstractPost) {
+        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
+
+        open(editor)
+    }
+
+    private func showGutenberg(loading post: AbstractPost) {
+        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
+
+        open(editor)
+    }
+
+    // MARK: - Switching Editors
+
+    private func switchToAztec(dismissing editor: EditorViewController) {
+        editor.dismiss(animated: true) { [unowned self] in
+            self.showAztec(loading: editor.post)
+        }
+    }
+
+    private func switchToGutenberg(dismissing editor: EditorViewController) {
+        editor.dismiss(animated: true) { [unowned self] in
+            self.showGutenberg(loading: editor.post)
+        }
+    }
+
+    // MARK: - Preview
 
     func openPreview(for apost: AbstractPost) {
         WPTabBarController.sharedInstance().showMySitesTab()

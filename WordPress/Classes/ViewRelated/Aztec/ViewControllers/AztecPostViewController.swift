@@ -70,6 +70,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
 
+    // MARK: - Gutenberg Support
+
+    private let switchToGutenberg: (EditorViewController) -> ()
+
     // MARK: - fileprivate & private variables
 
     /// Format Bar
@@ -396,14 +400,16 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
     ///             since that's necessary for the edits to be saved.
     ///
-    required init(post: AbstractPost) {
+    required init(
+        post: AbstractPost,
+        switchToGutenberg: @escaping (EditorViewController) -> ()) {
+
         precondition(post.managedObjectContext != nil)
 
         self.post = post
+        self.switchToGutenberg = switchToGutenberg
 
         super.init(nibName: nil, bundle: nil)
-        self.restorationIdentifier = Restoration.restorationIdentifier
-        self.restorationClass = type(of: self)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
@@ -1139,6 +1145,15 @@ private extension AztecPostViewController {
 
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
                 self.secondaryPublishButtonTapped()
+            }
+        }
+
+        if GutenbergSettings().isGutenbergEnabled(),
+            let postContent = post.content,
+            postContent.count > 0 && post.containsGutenbergBlocks() {
+
+            alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
+                self.switchToGutenberg(self)
             }
         }
 
@@ -3253,40 +3268,6 @@ extension UIImage {
     }
 }
 
-
-// MARK: - State Restoration
-//
-extension AztecPostViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        return restoreAztec(withCoder: coder)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
-        coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
-    }
-
-    class func restoreAztec(withCoder coder: NSCoder) -> AztecPostViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-        guard let postURI = coder.decodeObject(forKey: Restoration.postIdentifierKey) as? URL,
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURI) else {
-                return nil
-        }
-
-        let post = try? context.existingObject(with: objectID)
-        guard let restoredPost = post as? AbstractPost else {
-            return nil
-        }
-
-        let aztecViewController = AztecPostViewController(post: restoredPost)
-        aztecViewController.shouldRemovePostOnDismiss = coder.decodeBool(forKey: Restoration.shouldRemovePostKey)
-
-        return aztecViewController
-    }
-}
-
 // MARK: - UIDocumentPickerDelegate
 
 extension AztecPostViewController: UIDocumentPickerDelegate {
@@ -3374,6 +3355,7 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
+        static let gutenbergTitle = NSLocalizedString("Switch to Gutenberg", comment: "Switches from the classic editor to Gutenberg.")
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")

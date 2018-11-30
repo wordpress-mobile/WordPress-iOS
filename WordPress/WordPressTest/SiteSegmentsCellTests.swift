@@ -16,7 +16,7 @@ final class SiteSegmentsCellTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-type", withExtension: "json")!
+        let json = Bundle(for: SiteSegmentTests.self).url(forResource: "site-segment", withExtension: "json")!
         let data = try! Data(contentsOf: json)
         let jsonDecoder = JSONDecoder()
 
@@ -42,5 +42,25 @@ final class SiteSegmentsCellTests: XCTestCase {
         cell?.model = segment
 
         XCTAssertEqual(cell?.subtitle.text, MockValues.subtitle)
+    }
+
+    func testBackgroundIsStyled() {
+        XCTAssertEqual(cell?.backgroundColor, UIColor.white)
+    }
+
+    func testCellTitleIsTheCorrectFont() {
+        XCTAssertEqual(cell?.title.font, WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold))
+    }
+
+    func testCellTitleIsTheCorrectColor() {
+        XCTAssertEqual(cell?.title.textColor, WPStyleGuide.darkGrey())
+    }
+
+    func testCellSubtitleIsTheCorrectFont() {
+        XCTAssertEqual(cell?.subtitle.font, WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular))
+    }
+
+    func testCellSubtitleIsTheCorrectColor() {
+        XCTAssertEqual(cell?.subtitle.textColor, WPStyleGuide.darkGrey())
     }
 }

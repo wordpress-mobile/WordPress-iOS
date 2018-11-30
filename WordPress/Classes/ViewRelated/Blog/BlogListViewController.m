@@ -824,24 +824,10 @@ static NSInteger HideSearchMinSites = 3;
 
         self.firstHide = nil;
         self.hideCount = 0;
-    }
-    else {
+    } else {
+        self.tableView.tableHeaderView = nil;
         [self updateViewsForCurrentSiteCount];
         [self updateSearchVisibility];
-
-        __weak __typeof(self) weakSelf = self;
-        if (@available(iOS 11.0, *)) {
-            [UIView setAnimationsEnabled:NO];
-            [self.tableView performBatchUpdates:^{
-                weakSelf.tableView.tableHeaderView = nil;
-            } completion:^(BOOL finished) {
-                [UIView setAnimationsEnabled:YES];
-            }];
-        } else {
-            [self.tableView beginUpdates];
-            self.tableView.tableHeaderView = nil;
-            [self.tableView endUpdates];
-        }
     }
 }
 
