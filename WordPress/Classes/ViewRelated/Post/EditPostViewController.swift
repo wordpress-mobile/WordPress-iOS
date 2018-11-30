@@ -155,8 +155,8 @@ class EditPostViewController: UIViewController {
     fileprivate func showEditor() {
         let editor = editorFactory.instantiateEditor(
             for: postToEdit(),
-            switchToAztec: { gutenberg in self.switchToAztec(dismissing: gutenberg) },
-            switchToGutenberg: { aztec in self.switchToGutenberg(dismissing: aztec) })
+            switchToAztec: { [unowned self] gutenberg in self.switchToAztec(dismissing: gutenberg) },
+            switchToGutenberg: { [unowned self] aztec in self.switchToGutenberg(dismissing: aztec) })
 
         showEditor(editor)
     }
