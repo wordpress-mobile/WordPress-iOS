@@ -27,6 +27,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.52941176470588003" blue="0.74509803921568996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="FfR-yo-4a1" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-40" id="T0u-ej-Kyp"/>
                             <constraint firstItem="FfR-yo-4a1" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="a6p-Lx-MaV"/>
                         </constraints>
                     </view>
