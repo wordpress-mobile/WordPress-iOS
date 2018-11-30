@@ -29,4 +29,8 @@ final class TableDataCoordinator<Model, Cell>: NSObject, UITableViewDataSource, 
         let selectedModel = data[indexPath.row]
         selection(selectedModel)
     }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1.0))
+    }
 }
