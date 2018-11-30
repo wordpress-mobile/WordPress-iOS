@@ -180,11 +180,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         verificationPromptHelper?.updateVerificationStatus()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        titleTextField.becomeFirstResponder()
-    }
-
     // MARK: - Functions
 
     private func configureNavigationBar() {
