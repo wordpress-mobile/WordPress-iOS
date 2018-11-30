@@ -428,6 +428,8 @@ fileprivate extension SearchManager {
         WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: siteID)
     }
 
+    // MARK: - Editor
+
     func openEditor(for post: Post) {
         closePreviewIfNeeded(for: post)
         openListView(for: post)
@@ -443,8 +445,8 @@ fileprivate extension SearchManager {
 
         let editor = editorFactory.instantiateEditor(
             for: page,
-            switchToAztec: { [unowned self] gutenberg in self.switchToAztec(dismissing: gutenberg) },
-            switchToGutenberg: { [unowned self] aztec in self.switchToGutenberg(dismissing: aztec) })
+            switchToAztec: switchToAztec,
+            switchToGutenberg: switchToGutenberg)
 
         open(editor)
     }
@@ -463,17 +465,13 @@ fileprivate extension SearchManager {
     // MARK: - Opening Specific Editors
 
     private func showAztec(loading post: AbstractPost) {
-        let editor = AztecPostViewController(post: post) { [unowned self] aztec in
-            self.switchToGutenberg(dismissing: aztec)
-        }
+        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
 
         open(editor)
     }
 
     private func showGutenberg(loading post: AbstractPost) {
-        let editor = GutenbergViewController(post: post) { [unowned self] gutenberg in
-            self.switchToAztec(dismissing: gutenberg)
-        }
+        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
 
         open(editor)
     }

@@ -505,17 +505,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Opening Specific Editors
 
     private func showAztec(loading post: AbstractPost) {
-        let editor = AztecPostViewController(post: post) { [unowned self] aztec in
-            self.switchToGutenberg(dismissing: aztec)
-        }
+        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
 
         show(editor)
     }
 
     private func showGutenberg(loading post: AbstractPost) {
-        let editor = GutenbergViewController(post: post) { [unowned self] gutenberg in
-            self.switchToAztec(dismissing: gutenberg)
-        }
+        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
 
         show(editor)
     }

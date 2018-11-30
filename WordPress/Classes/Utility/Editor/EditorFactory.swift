@@ -13,8 +13,8 @@ class EditorFactory {
 
     func instantiateEditor(
         for post: AbstractPost,
-        switchToAztec: @escaping (UIViewController & PostEditor) -> (),
-        switchToGutenberg: @escaping (UIViewController & PostEditor) -> ()) -> UIViewController & PostEditor {
+        switchToAztec: @escaping (EditorViewController) -> (),
+        switchToGutenberg: @escaping (EditorViewController) -> ()) -> EditorViewController {
 
         if gutenbergSettings.mustUseGutenberg(for: post) {
             return GutenbergViewController(post: post, switchToAztec: switchToAztec)

@@ -120,18 +120,14 @@ class EditPostViewController: UIViewController {
 
     // MARK: - Show a specific editor
 
-    private func showAztec() {
-        let editor = AztecPostViewController(post: postToEdit()) { [unowned self] aztec in
-            self.switchToGutenberg(dismissing: aztec)
-        }
+    private func showAztec(loading post: AbstractPost) {
+        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
 
         showEditor(editor)
     }
 
-    private func showGutenberg() {
-        let editor = GutenbergViewController(post: postToEdit()) { [unowned self] gutenberg in
-            self.switchToAztec(dismissing: gutenberg)
-        }
+    private func showGutenberg(loading post: AbstractPost) {
+        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
 
         showEditor(editor)
     }
@@ -140,13 +136,13 @@ class EditPostViewController: UIViewController {
 
     private func switchToAztec(dismissing editor: EditorViewController) {
         editor.dismiss(animated: true) { [weak self] in
-            self?.showAztec()
+            self?.showAztec(loading: editor.post)
         }
     }
 
     private func switchToGutenberg(dismissing editor: EditorViewController) {
         editor.dismiss(animated: true) { [weak self] in
-            self?.showGutenberg()
+            self?.showGutenberg(loading: editor.post)
         }
     }
 
@@ -155,8 +151,8 @@ class EditPostViewController: UIViewController {
     fileprivate func showEditor() {
         let editor = editorFactory.instantiateEditor(
             for: postToEdit(),
-            switchToAztec: { [unowned self] gutenberg in self.switchToAztec(dismissing: gutenberg) },
-            switchToGutenberg: { [unowned self] aztec in self.switchToGutenberg(dismissing: aztec) })
+            switchToAztec: switchToAztec,
+            switchToGutenberg: switchToGutenberg)
 
         showEditor(editor)
     }
