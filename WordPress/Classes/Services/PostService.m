@@ -586,7 +586,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
     post.suggested_slug = remotePost.suggestedSlug;
-    post.revisions = [remotePost.revisions copy];
+    
+    if ([remotePost.revisions wp_isValidObject]) {
+        post.revisions = [remotePost.revisions copy];
+    }
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];

@@ -1043,6 +1043,21 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"view" };
             break;
+        case WPAnalyticsStatPostRevisionsListViewed:
+            eventName = @"revisions_list_viewed";
+            break;
+        case WPAnalyticsStatPostRevisionsDetailViewed:
+            eventName = @"revisions_detail_viewed";
+            break;
+        case WPAnalyticsStatPostRevisionsDetailCancelled:
+            eventName = @"revisions_detail_cancelled";
+            break;
+        case WPAnalyticsStatPostRevisionsRevisionLoaded:
+            eventName = @"revisions_revision_loaded";
+            break;
+        case WPAnalyticsStatPostRevisionsLoadUndone:
+            eventName = @"revisions_load_undone";
+            break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";
             break;
