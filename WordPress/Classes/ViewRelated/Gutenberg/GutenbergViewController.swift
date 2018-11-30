@@ -172,7 +172,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
-        titleTextField.becomeFirstResponder()
 
         gutenberg.delegate = self
     }
