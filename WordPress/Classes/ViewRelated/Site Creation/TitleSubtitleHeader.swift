@@ -3,9 +3,13 @@ import UIKit
 final class TitleSubtitleHeader: UIView {
     struct Margins {
         static let horizontalMargin: CGFloat = 30.0
-        static let bottomMargin: CGFloat = 30.0
-        static let topMargin: CGFloat = 30.0
+        private static let compactVerticalMargin: CGFloat = 30.0
+        private static let regularVerticalMargin: CGFloat = 40.0
         static let spacing: CGFloat = 10.0
+
+        static func vertical() -> CGFloat {
+            return WPDeviceIdentification.isiPad() ? regularVerticalMargin : compactVerticalMargin
+        }
     }
 
     private lazy var title: UILabel = {
@@ -53,8 +57,8 @@ final class TitleSubtitleHeader: UIView {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1 * Margins.horizontalMargin),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.topMargin),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.bottomMargin)])
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.vertical()),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.vertical())])
 
         setStyles()
     }

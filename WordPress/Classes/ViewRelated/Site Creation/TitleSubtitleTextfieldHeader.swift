@@ -78,7 +78,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.bottomMargin)])
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.vertical())])
 
         setStyles()
     }
