@@ -320,7 +320,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: 8.0.8
   RNTAztecView:
-    :commit: 08916a6d6491132969f33c1867af8a5b1d733758
+    :commit: 1e0ed52336ef099c72e5bb0a2a878508a85ad021
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
 
 SPEC CHECKSUMS:
