@@ -81,14 +81,12 @@ class RevisionDiffsBrowserViewController: UIViewController {
     }
 
     private func setNextPreviousButtons() {
-        previousButton.setTitle("", for: .normal)
         previousButton.setImage(Gridicon.iconOfType(.chevronLeft), for: .normal)
         previousButton.tintColor = WPStyleGuide.darkGrey()
         previousButton.on(.touchUpInside) { [weak self] _ in
             self?.showPrevious()
         }
 
-        nextButton.setTitle("", for: .normal)
         nextButton.setImage(Gridicon.iconOfType(.chevronRight), for: .normal)
         nextButton.tintColor = WPStyleGuide.darkGrey()
         nextButton.on(.touchUpInside) { [weak self] _ in
@@ -122,7 +120,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         scroll(.forward)
     }
 
-    private func scroll(_ direction: UIPageViewController.NavigationDirection, animated: Bool = false) {
+    private func scroll(_ direction: UIPageViewController.NavigationDirection, animated: Bool = false, completion: ((Bool) -> Void)? = nil) {
         guard let revisionState = revisionState,
             let pageManager = pageManager,
             !pageManager.viewControllers.isEmpty else {
@@ -131,8 +129,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
         pageViewController?.setViewControllers([pageManager.viewControllers[revisionState.currentIndex]],
                                                direction: direction,
-                                               animated: animated,
-                                               completion: nil)
+                                               animated: animated)
     }
 
     private func loadRevision() {

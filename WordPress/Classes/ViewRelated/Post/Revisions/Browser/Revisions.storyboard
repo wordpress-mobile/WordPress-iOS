@@ -65,7 +65,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="kHo-9b-a0K"/>
                                                     <constraint firstAttribute="width" constant="50" id="xyN-oS-DyY"/>
                                                 </constraints>
-                                                <state key="normal" title="&lt;"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Und-hy-I90">
                                                 <rect key="frame" x="330" y="0.0" width="50" height="50"/>
@@ -73,7 +72,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="MHQ-95-69R"/>
                                                     <constraint firstAttribute="width" constant="50" id="gYY-PG-gPN"/>
                                                 </constraints>
-                                                <state key="normal" title="&gt;"/>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7EM-Lu-3t1" userLabel="Stroke">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
