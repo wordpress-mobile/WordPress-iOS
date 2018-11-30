@@ -4,7 +4,7 @@ final class TitleSubtitleHeader: UIView {
     struct Margins {
         static let horizontalMargin: CGFloat = 30.0
         static let bottomMargin: CGFloat = 30.0
-        static let topMargin: CGFloat = 50.0
+        static let topMargin: CGFloat = 30.0
         static let spacing: CGFloat = 10.0
     }
 
@@ -72,11 +72,15 @@ final class TitleSubtitleHeader: UIView {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
         title.textColor = WPStyleGuide.darkGrey()
+        title.layer.borderColor = UIColor.red.cgColor
+        title.layer.borderWidth = 1
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.greyDarken10()
+        subtitle.layer.borderColor = UIColor.red.cgColor
+        subtitle.layer.borderWidth = 1
     }
 
     func setTitle(_ text: String) {
