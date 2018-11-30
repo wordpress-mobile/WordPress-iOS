@@ -15,6 +15,8 @@ enum EditMode {
     }
 }
 
+typealias EditorViewController = UIViewController & PostEditor
+
 /// Common interface to all editors
 ///
 protocol PostEditor: class, UIViewControllerTransitioningDelegate {

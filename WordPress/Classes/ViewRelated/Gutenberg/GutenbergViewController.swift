@@ -44,7 +44,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    private let switchToAztec: (UIViewController & PostEditor) -> ()
+    private let switchToAztec: (EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -144,7 +144,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
-        switchToAztec: @escaping (UIViewController & PostEditor) -> ()) {
+        switchToAztec: @escaping (EditorViewController) -> ()) {
 
         self.post = post
         self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])

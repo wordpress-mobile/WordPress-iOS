@@ -72,7 +72,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Gutenberg Support
 
-    private let switchToGutenberg: (UIViewController & PostEditor) -> ()
+    private let switchToGutenberg: (EditorViewController) -> ()
 
     // MARK: - fileprivate & private variables
 
@@ -402,7 +402,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     required init(
         post: AbstractPost,
-        switchToGutenberg: @escaping (UIViewController & PostEditor) -> ()) {
+        switchToGutenberg: @escaping (EditorViewController) -> ()) {
 
         precondition(post.managedObjectContext != nil)
 

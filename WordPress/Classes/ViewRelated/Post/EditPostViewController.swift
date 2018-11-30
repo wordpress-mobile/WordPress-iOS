@@ -138,13 +138,13 @@ class EditPostViewController: UIViewController {
 
     // MARK: - Switching Editors
 
-    private func switchToAztec(dismissing editor: UIViewController & PostEditor) {
+    private func switchToAztec(dismissing editor: EditorViewController) {
         editor.dismiss(animated: true) { [weak self] in
             self?.showAztec()
         }
     }
 
-    private func switchToGutenberg(dismissing editor: UIViewController & PostEditor) {
+    private func switchToGutenberg(dismissing editor: EditorViewController) {
         editor.dismiss(animated: true) { [weak self] in
             self?.showGutenberg()
         }
@@ -161,7 +161,7 @@ class EditPostViewController: UIViewController {
         showEditor(editor)
     }
 
-    private func showEditor(_ editor: UIViewController & PostEditor) {
+    private func showEditor(_ editor: EditorViewController) {
         editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
         editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
             guard let strongSelf = self else {
