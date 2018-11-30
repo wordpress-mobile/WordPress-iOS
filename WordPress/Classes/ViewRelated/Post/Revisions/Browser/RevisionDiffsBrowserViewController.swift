@@ -199,6 +199,7 @@ extension RevisionDiffsBrowserViewController: RevisionDiffsPageManagerDelegate {
     func pageDidFinishAnimating(completed: Bool) {
         if completed {
             showRevision()
+            trackRevisionsDetailViewed(with: .swipe)
         }
     }
 
