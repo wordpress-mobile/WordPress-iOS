@@ -96,9 +96,6 @@ final class SiteSegmentsWizardContent: UIViewController {
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
-        header.layer.borderWidth = 1
-        header.layer.borderColor = UIColor.red.cgColor
-
         var fittingSize = UIView.layoutFittingCompressedSize
         fittingSize.width = table.frame.size.width
         let size = header.systemLayoutSizeFitting(fittingSize,
