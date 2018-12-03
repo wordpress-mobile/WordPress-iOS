@@ -682,6 +682,8 @@
 		7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */; };
 		7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F592108122A00CAFB88 /* NotificationUtility.swift */; };
 		7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */; };
+		7EA30DB521ADA20F0092F894 /* EditorMediaUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */; };
+		7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */; };
 		7EAD7CD0206D761200BEDCFD /* MediaExternalExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */; };
 		7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5824620EC41B200002702 /* NotificationContentFactory.swift */; };
 		7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB4125206C388100012D98 /* StockPhotosService.swift */; };
@@ -2466,6 +2468,8 @@
 		7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouterTests.swift; sourceTree = "<group>"; };
 		7E987F592108122A00CAFB88 /* NotificationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtility.swift; sourceTree = "<group>"; };
 		7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManagerType.swift; sourceTree = "<group>"; };
+		7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorMediaUtility.swift; sourceTree = "<group>"; };
+		7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AztecAttachmentDelegate.swift; sourceTree = "<group>"; };
 		7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExternalExporter.swift; sourceTree = "<group>"; };
 		7EB5824620EC41B200002702 /* NotificationContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentFactory.swift; sourceTree = "<group>"; };
 		7EBB4125206C388100012D98 /* StockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosService.swift; sourceTree = "<group>"; };
@@ -5277,6 +5281,8 @@
 				7E3E9B6F2177C9DC00FD5797 /* GutenbergViewController.swift */,
 				F10E654F21B06139007AB2EE /* GutenbergViewController+MoreActions.swift */,
 				91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */,
+				7EA30DB421ADA20F0092F894 /* AztecAttachmentDelegate.swift */,
+				7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */,
 			);
 			path = Gutenberg;
 			sourceTree = "<group>";
@@ -9467,6 +9473,7 @@
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
 				4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */,
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
+				7EA30DB521ADA20F0092F894 /* EditorMediaUtility.swift in Sources */,
 				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
 				17A4A36C20EE55320071C2CA /* ReaderCoordinator.swift in Sources */,
 				B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */,
@@ -9585,6 +9592,7 @@
 				E1468DE71E794A4D0044D80F /* LanguageSelectorViewController.swift in Sources */,
 				E14694071F3459E2004052C8 /* PluginListViewController.swift in Sources */,
 				FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */,
+				7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */,
 				82B67B361FC726CD006FB593 /* Memoize.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
@@ -10559,7 +10567,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(inherited)/Gutenberg/react-native-aztec/ios/**",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
@@ -10629,7 +10636,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(inherited)/Gutenberg/react-native-aztec/ios/**",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
@@ -11481,7 +11487,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(inherited)/Gutenberg/react-native-aztec/ios/**",
 				);
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
@@ -11967,7 +11972,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(inherited)/Gutenberg/react-native-aztec/ios/**",
 				);
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";

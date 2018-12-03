@@ -1,7 +1,7 @@
 import Foundation
 import CoreServices
 import WPMediaPicker
-
+import Gutenberg
 
 class GutenbergMediaPickerHelper: NSObject {
 
