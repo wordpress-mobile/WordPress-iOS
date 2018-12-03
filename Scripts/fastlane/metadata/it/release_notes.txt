@@ -1,5 +1,7 @@
-Aggiungi gif Giphy direttamente dalla barra degli strumenti multimediali quando viene modificato un articolo.
-Messaggi di errore più utili ti aiuteranno durante l'accesso a un sito ospitato personalmente.
-La visualizzazione di un articolo con alcune immagini è diventata ora più rapida.
-Supporto aggiunto per iPad Pro.
-Correzioni di bug.
+- Abbiamo aggiunto il supporto per Post Revision, che ti permette di visualizzare la cronologia delle modifiche apportate a un articolo. Puoi anche tornare indietro a una revisione specifica, se necessario!
+- Abbiamo aggiunto l'opzione di riscattare i domini da WordPress.com.
+- Abbiamo migliorato l'editor per renderlo compatibile con Gutenberg.
+- Abbiamo reintrodotto il supporto per i collegamenti a YouTube e Vimeo!
+- Abbiamo migliorato l'accuratezza del conteggio dei caratteri nella modifica degli articoli.
+- Ora è un po' più semplice gestire gli utenti del tuo sito (è usata la barra dei filtri invece di un menu a tendina)
+- Abbiamo corretto alcuni bug (un crash che si verifica quando l'app è offline e un bug che potrebbe causare la perdita di alcuni dati nell'editor), migliorato l'esperienza di lettura e ottimizzato l'interfaccia utente in alcuni punti.

@@ -1,5 +1,7 @@
-Add Giphy gifs directly from the media toolbar when editing a post.
-More helpful error messages will assist you when logging in to a self hosted site.
-Viewing a post with many images is now faster.
-Added support for iPad Pro.
-Bug fixes.
+- We've added support for Post Revisions, which allow you to view a history of changes to a post. You can even roll back to a specific revision, if necessary!
+- We've added the ability to redeem domain credits from WordPress.com.
+- We've made improvements to the editor for Gutenberg compatibility.
+- We've brought back support for YouTube and Vimeo embeds!
+- We've improved the accuracy of the character count when editing posts
+- Now it's a little easier to manage the users on your site (uses a filter bar instead of a dropdown)
+- Fixes some bugs (a crash when the app is offline, improved reader stability, and a bug that could cause some data loss in the editor), and polished up the UI in a few places
