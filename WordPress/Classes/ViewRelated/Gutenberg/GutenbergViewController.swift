@@ -10,6 +10,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case publish
         case close
         case more
+        case switchToAztec
     }
 
     // MARK: - UI
@@ -40,6 +41,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         view.backgroundColor = Colors.separator
         return view
     }()
+
+    // MARK: - Aztec
+
+    private let switchToAztec: (EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -137,11 +142,15 @@ class GutenbergViewController: UIViewController, PostEditor {
     private(set) var mode: EditMode = .richText
 
     // MARK: - Initializers
-    required init(post: AbstractPost) {
+    required init(
+        post: AbstractPost,
+        switchToAztec: @escaping (EditorViewController) -> ()) {
+
         self.post = post
         self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
         self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        self.switchToAztec = switchToAztec
 
         super.init(nibName: nil, bundle: nil)
         self.postTitle = post.postTitle ?? ""
@@ -231,6 +240,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         mapUIContentToPostAndSave()
         editorContentWasUpdated()
     }
+
+    // MARK: - Switch to Aztec
+
+    func savePostEditsAndSwitchToAztec() {
+        requestHTMLReason = .switchToAztec
+        gutenberg.requestHTML()
+    }
 }
 
 // MARK: - GutenbergBridgeDelegate
@@ -258,6 +274,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 cancelEditing()
             case .more:
                 displayMoreSheet()
+            case .switchToAztec:
+                switchToAztec(self)
             }
         }
     }

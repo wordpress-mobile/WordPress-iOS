@@ -11,11 +11,15 @@ class EditorFactory {
 
     // MARK: - Editor: Instantiation
 
-    func instantiateEditor(for post: AbstractPost) -> UIViewController & PostEditor {
+    func instantiateEditor(
+        for post: AbstractPost,
+        switchToAztec: @escaping (EditorViewController) -> (),
+        switchToGutenberg: @escaping (EditorViewController) -> ()) -> EditorViewController {
+
         if gutenbergSettings.mustUseGutenberg(for: post) {
-            return GutenbergViewController(post: post)
+            return GutenbergViewController(post: post, switchToAztec: switchToAztec)
         } else {
-            return AztecPostViewController(post: post)
+            return AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
         }
     }
 }

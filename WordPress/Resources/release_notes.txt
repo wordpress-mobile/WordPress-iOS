@@ -1,7 +1,6 @@
 - We've added support for Post Revisions, which allow you to view a history of changes to a post. You can even roll back to a specific revision, if necessary!
-- We've added the ability to redeem domain credits from WordPress.com.
+- Build your site out on the go: add plugins to websites on the business plan right from the app. If your site’s brand new and doesn’t have a custom domain — which is a prerequisite for adding plugins — we’ll help you get one set up.
 - We've made improvements to the editor for Gutenberg compatibility.
-- We've brought back support for YouTube and Vimeo embeds!
 - We've improved the accuracy of the character count when editing posts
 - Now it's a little easier to manage the users on your site (uses a filter bar instead of a dropdown)
 - Fixes some bugs (a crash when the app is offline, improved reader stability, and a bug that could cause some data loss in the editor), and polished up the UI in a few places

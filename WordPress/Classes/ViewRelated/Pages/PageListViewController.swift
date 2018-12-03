@@ -467,14 +467,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func showEditor(post: AbstractPost) {
-        let filterIndex = filterSettings.currentFilterIndex()
         let editorFactory = EditorFactory()
 
-        let postViewController = editorFactory.instantiateEditor(for: post)
+        let postViewController = editorFactory.instantiateEditor(
+            for: post,
+            switchToAztec: switchToAztec,
+            switchToGutenberg: switchToGutenberg)
 
-        postViewController.onClose = { [weak self, weak postViewController] changesSaved, _ in
+        show(postViewController)
+    }
+
+    private func show(_ editorViewController: EditorViewController) {
+        let filterIndex = filterSettings.currentFilterIndex()
+
+        editorViewController.onClose = { [weak self, weak editorViewController] changesSaved, _ in
             if changesSaved {
-                if let postStatus = postViewController?.post.status {
+                if let postStatus = editorViewController?.post.status {
                     self?.updateFilterWithPostStatus(postStatus)
                 }
             } else {
@@ -482,10 +490,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             }
 
             self?._tableViewHandler.isSearching = false
-            postViewController?.dismiss(animated: true)
+            editorViewController?.dismiss(animated: true)
         }
 
-        let navController = UINavigationController(rootViewController: postViewController)
+        let navController = UINavigationController(rootViewController: editorViewController)
         navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen
 
@@ -493,6 +501,36 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.updateFilterWithPostStatus(.draft)
         })
     }
+
+    // MARK: - Opening Specific Editors
+
+    private func showAztec(loading post: AbstractPost) {
+        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
+
+        show(editor)
+    }
+
+    private func showGutenberg(loading post: AbstractPost) {
+        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
+
+        show(editor)
+    }
+
+    // MARK: - Switching Editors
+
+    private func switchToAztec(dismissing editor: EditorViewController) {
+        editor.dismiss(animated: true) { [unowned self] in
+            self.showAztec(loading: editor.post)
+        }
+    }
+
+    private func switchToGutenberg(dismissing editor: EditorViewController) {
+        editor.dismiss(animated: true) { [unowned self] in
+            self.showGutenberg(loading: editor.post)
+        }
+    }
+
+    // MARK: - Alert
 
     func presentAlertForPageBeingUploaded() {
         let message = NSLocalizedString("This page is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
