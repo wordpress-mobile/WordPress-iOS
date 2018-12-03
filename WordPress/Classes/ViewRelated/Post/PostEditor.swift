@@ -15,12 +15,11 @@ enum EditMode {
     }
 }
 
+typealias EditorViewController = UIViewController & PostEditor
+
 /// Common interface to all editors
 ///
 protocol PostEditor: class, UIViewControllerTransitioningDelegate {
-    /// Initialize editor with a post.
-    ///
-    init(post: AbstractPost)
 
     /// The post being edited.
     ///
@@ -96,6 +95,15 @@ extension PostEditor {
 
     var editorHasContent: Bool {
         return post.hasContent()
+    }
+
+    var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
+    }
+
+    func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
     var mainContext: NSManagedObjectContext {

@@ -62,7 +62,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        ImmuTable.registerRows([LatestPostSummaryRow.self, AllTimeStatsRow.self, CellHeaderRow.self], tableView: tableView)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
     }
@@ -88,6 +88,13 @@ private extension SiteStatsInsightsTableViewController {
             }
             self?.refreshTableView()
         }
+    }
+
+    func tableRowTypes() -> [ImmuTableRow.Type] {
+        return [CellHeaderRow.self,
+                LatestPostSummaryRow.self,
+                SimpleTotalsStatsRow.self,
+                SimpleTotalsStatsSubtitlesRow.self]
     }
 
     // MARK: - Table Refreshing

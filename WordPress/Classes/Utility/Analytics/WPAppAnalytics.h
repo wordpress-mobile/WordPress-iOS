@@ -17,6 +17,7 @@ extern NSString * const WPAppAnalyticsKeyEditorSource;
 extern NSString * const WPAppAnalyticsKeyCommentID;
 extern NSString * const WPAppAnalyticsKeyLegacyQuickAction;
 extern NSString * const WPAppAnalyticsKeyQuickAction;
+extern NSString * const WPAppAnalyticsKeySource;
 
 /**
  *  @class      WPAppAnalytics

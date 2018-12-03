@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.5.1'
+    pod 'WordPressShared', '~> 1.6.0'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -96,7 +96,6 @@ target 'WordPress' do
     ## =====================
     ##
     pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/'
-
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
@@ -130,7 +129,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
-    pod 'WordPressAuthenticator', '~> 1.1'
+    pod 'WordPressAuthenticator', '~> 1.1.6'
 
     aztec
     wordpress_ui

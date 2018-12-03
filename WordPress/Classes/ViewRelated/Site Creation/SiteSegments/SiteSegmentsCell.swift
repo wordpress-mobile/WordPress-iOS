@@ -1,4 +1,6 @@
 import UIKit
+import Alamofire
+import Gridicons
 
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
@@ -10,7 +12,13 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             title.text = model?.title
             subtitle.text = model?.subtitle
             if let modelIcon = model?.icon {
-                icon.setImageWith(modelIcon)
+                icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
+                    let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
+                    if let tintColor = self?.model?.iconColor {
+                        self?.icon.tintColor = tintColor
+                    }
+                    self?.icon.image = tintedImage
+                }, failure: nil)
             }
         }
     }
@@ -23,6 +31,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        styleBackground()
         styleTitle()
         styleSubtitle()
         styleAccessoryView()
@@ -34,17 +43,22 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         icon.image = nil
     }
 
+    private func styleBackground() {
+        backgroundColor = .white
+    }
+
     private func styleTitle() {
-        title.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+        title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         title.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleSubtitle() {
-        subtitle.font = WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .regular)
+        subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.darkGrey()
     }
 
     private func styleAccessoryView() {
-        accessoryType = .disclosureIndicator
+        let accessoryImage = Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.greyLighten20())
+        accessoryView = UIImageView(image: accessoryImage)
     }
 }

@@ -1,4 +1,7 @@
-Lägg till gif-bilder från Giphy direkt från verktygslisten för media medan du redigerar ett inlägg.
-Mer hjälpsamma felmeddelanden bistår dig när du loggar in på en webbplats som körs på webbhotell.
-Nu går det mycket snabbare att visa inlägg som innehåller många bilder.
-Felrättningar.
+- Vi har lagt till stöd för inläggsversioner, vilket låter dig se historiken över hur ett inlägg har ändrats. Om du skulle behöva kan du t.o.m. rulla tillbaka till en viss version!
+- Var har lagt till en möjligt att använda tillgodohavande för domännamn från WordPress.com.
+- Vi har förbättrat redigeraren för kompatibilitet med Gutenberg.
+- Nu är stödet för inbäddningar av video från YouTube och Vimeo tillbaka!
+- Vi har förbättrat noggrannheten i antalet tecken när man redigerar inlägg.
+- Nu är det lite enklare att administrera användarna på din webbplats (med hjälp av ett filtreringsfält istället för nedrullningslist)
+- Rättat några fel (krasch när appen är off-line, förbättrad stabilitet i läsaren och ett fel som kunde innebära förlust av data i redigeraren) och snyggat till användargränssnittet här och där.
