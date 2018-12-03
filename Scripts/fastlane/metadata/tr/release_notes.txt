@@ -1,5 +1,7 @@
-Bir yazıyı düzenlerken ortam araç çubuğu üzerinden direkt olarka Giphy giflerini ekleyin.
-Barındırılan bir siteye giriş yapılırken daha fazla yardımcı olacak hata mesajları.
-Çok fazla görsele sahip yazıları görüntülemek artık daha hızlı.
-iPad Pro desteği eklendi.
-Hata düzeltmeleri.
+- Yazı sürümleri desteği ekledik, böylece bir yazıdaki değişim geçmişini görebileceksiniz. Eğer gerekirse, bir sürüme geri dönebilirsiniz de!
+- WordPress.com'dan alan adı kredisi kullanma yeteneği ekledik.
+- Gutenberg uyumluluğu için düzenleyicide iyileştirmeler yaptık.
+- YouTube ve Vimeo gömüleri için desteği geri getirdik!
+- Yazı düzenleme sırasında karakter sayımının hassasiyetini geliştirdik.
+- Artık sitenizdeki kullanıcıları yönetmek biraz daha kolay (Açılır menü yerine bir filtre çubuğu kullanılıyor)
+- Bazı hatalar giderildi (uygulama çevrimdışıyken çökme, okuyucu kararlılığında geliştirme, ve düzenleyicide veri kaybına sebep olan bir hatanın giderilmesi), ayrıca arayüzü bir kaç alanda cilaladık.
