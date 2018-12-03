@@ -1,4 +1,7 @@
-Ajouter des GIF de Giphy directement depuis la barre d’outils de média lors de l’édition d’un article.
-Des messages d’erreurs plus utiles vous aideront lors de la connexion à un site auto-hébergé.
-Visualiser un article avec beaucoup d’images est maintenant plus rapide.
-Corrections de bugs.
+- Nous avons ajouté la prise en charge des révisions d'article pour vous permettre de voir un historique des modifications apportées à un article. Vous avez même accès à une révision spécifique, au besoin !
+- Nous avons ajouté la possibilité de rembourser les crédits de domaine à partir de WordPress.com.
+- Nous avons amélioré l'éditeur pour assurer la compatibilité avec Gutenberg.
+- Nous avons réintroduit la prise en charge des intégrations YouTube et Vimeo !
+- Nous avons amélioré la précision du comptage des caractères lors de la modification des articles
+- Il est désormais plus facile de gérer les utilisateurs de votre site (grâce à la barre de filtres qui remplace une liste déroulante)
+- Résolution de certains bugs (défaillance lorsque l'application est hors ligne, amélioration de la stabilité du lecteur, bug pouvant entraîner une perte de données dans l'éditeur) et épuration de l'interface utilisateur à certains endroits
