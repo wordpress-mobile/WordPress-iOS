@@ -86,8 +86,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         case expectedSecondaryAction = 1
     }
 
-    lazy var attachmentDelegate = AztecAttachmentDelegate(post: post) //test only
-
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
@@ -109,7 +107,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textView.delegate = self
         textView.formattingDelegate = self
-        textView.textAttachmentDelegate = attachmentDelegate //test only
+        textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural

@@ -61,20 +61,8 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-
-        // For testing only.
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data, let image = UIImage(data: data) else {
-                failure()
-                return
-            }
-            DispatchQueue.main.async {
-                print("--> success loading image")
-                success(image)
-            }
-        }.resume()
-//        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: failure)
-//        activeMediaRequests.append(receipt)
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: failure)
+        activeMediaRequests.append(receipt)
     }
 }
 
