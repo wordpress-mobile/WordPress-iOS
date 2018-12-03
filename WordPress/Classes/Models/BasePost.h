@@ -39,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 //comments
 - (void)findComments;
 
+// Returns true if title or content is non empty
+- (BOOL)hasContent;
+
 @end
 
 NS_ASSUME_NONNULL_END

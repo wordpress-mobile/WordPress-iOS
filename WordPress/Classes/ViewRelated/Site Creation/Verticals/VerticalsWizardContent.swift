@@ -76,13 +76,17 @@ final class VerticalsWizardContent: UIViewController {
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
+        let placeholderText = NSLocalizedString("e.g. Landscaping, Consulting... etc.", comment: "Site creation. Select focus of your business, search field placeholder")
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        header.textField.attributedPlaceholder = attributedPlaceholder
+
         table.tableHeaderView = header
 
-        // This is the only way I found to insert a stack view into the header without breaking the autolayout constraints. We do something similar in Reader
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
+            header.topAnchor.constraint(equalTo: table.topAnchor)
         ])
 
         table.tableHeaderView?.layoutIfNeeded()
