@@ -4,10 +4,10 @@ import Reachability
 import UIDeviceIdentifier
 import WordPressAuthenticator
 
-
 // MARK: - Utility Configuration
 
 extension WordPressAppDelegate {
+
     @objc func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)

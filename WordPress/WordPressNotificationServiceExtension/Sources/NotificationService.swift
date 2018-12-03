@@ -40,7 +40,9 @@ class NotificationService: UNNotificationServiceExtension {
             let notificationKind = NotificationKind(rawValue: notificationType),
             token != nil else {
 
+            tracks.trackNotificationMalformed()
             contentHandler(request.content)
+
             return
         }
 
@@ -93,6 +95,8 @@ class NotificationService: UNNotificationServiceExtension {
     }
 
     override func serviceExtensionTimeWillExpire() {
+        tracks.trackNotificationTimedOut()
+
         notificationService?.wordPressComRestApi.invalidateAndCancelTasks()
 
         if let contentHandler = contentHandler,

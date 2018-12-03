@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressShared
 
 final class TitleSubtitleTextfieldHeader: UIView {
     private struct Animation {
@@ -7,6 +8,12 @@ final class TitleSubtitleTextfieldHeader: UIView {
         static let delay: TimeInterval = 0.0
         static let damping: CGFloat = 0.9
         static let spring: CGFloat = 1.0
+    }
+
+    private struct Constants {
+        static let iconWidth: CGFloat = 18.0
+        static let searchHeight: CGFloat = 44.0
+        static let searchMarging: CGFloat = 6.0
     }
 
     private lazy var titleSubtitle: TitleSubtitleHeader = {
@@ -20,24 +27,46 @@ final class TitleSubtitleTextfieldHeader: UIView {
         let returnValue = UITextField(frame: .zero)
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.leftViewMode = .always
-        returnValue.backgroundColor = .white
+        returnValue.clearButtonMode = .whileEditing
+        returnValue.font = WPStyleGuide.fixedFont(for: .headline)
+        returnValue.textColor = WPStyleGuide.darkGrey()
 
         returnValue.delegate = self
 
-        let loupeIcon = Gridicon.iconOfType(.search)
+        let iconSize = CGSize(width: Constants.iconWidth, height: Constants.iconWidth)
+        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
         let imageView = UIImageView(image: loupeIcon)
         returnValue.leftView = imageView
 
         return returnValue
     }()
 
+    private lazy var searchBackground: UIView = {
+        let returnValue = UIView(frame: .zero)
+        returnValue.translatesAutoresizingMaskIntoConstraints = false
+        returnValue.backgroundColor = .white
+
+        return returnValue
+    }()
+
     private lazy var stackView: UIStackView = {
-        let returnValue = UIStackView(arrangedSubviews: [self.titleSubtitle, self.textField])
+        let search = self.searchBackground
+        search.addSubview(self.textField)
+        NSLayoutConstraint.activate([
+            self.textField.heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+            self.textField.centerYAnchor.constraint(equalTo: search.centerYAnchor),
+            self.textField.leadingAnchor.constraint(equalTo: search.leadingAnchor, constant: Constants.searchMarging),
+            self.textField.trailingAnchor.constraint(equalTo: search.trailingAnchor, constant: -1 * Constants.searchMarging)
+            ])
+
+        let returnValue = UIStackView(arrangedSubviews: [self.titleSubtitle, search])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
-        returnValue.spacing = 20
+        returnValue.spacing = TitleSubtitleHeader.Margins.spacing
         returnValue.isLayoutMarginsRelativeArrangement = true
-        returnValue.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        NSLayoutConstraint.activate([
+            search.heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+        ])
 
         return returnValue
     }()
@@ -56,10 +85,10 @@ final class TitleSubtitleTextfieldHeader: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)])
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.bottomMargin)])
 
         setStyles()
     }

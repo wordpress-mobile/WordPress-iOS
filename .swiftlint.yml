@@ -70,3 +70,9 @@ custom_rules:
     regex: 'NSLocalizedString([^,]+,\s+comment:\s*"")'
     message: "Localized strings should include a description giving context for how the string is used."
     severity: warning
+
+  string_interpolation_in_localized_string:
+    name: "String Interpolation in Localized String"
+    regex: 'NSLocalizedString\("[^"]*\\\(\S*\)'
+    message: "Localized strings must not use interpolated variables. Instead, use `String(format:`"
+    severity: error

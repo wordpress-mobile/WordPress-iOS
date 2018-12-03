@@ -5,6 +5,7 @@ class RevisionsTableViewController: UITableViewController {
 
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
+    private var viewDidAppear: Bool = false
 
     private lazy var noResultsViewController: NoResultsViewController = {
         let noResultsViewController = NoResultsViewController.controller()
@@ -23,19 +24,12 @@ class RevisionsTableViewController: UITableViewController {
         let footerView = RevisionsTableViewFooter(frame: CGRect(origin: .zero,
                                                                 size: CGSize(width: tableView.frame.width,
                                                                              height: Sizes.sectionFooterHeight)))
-        footerView.setFooterText(post?.dateCreated?.mediumStringWithTime())
+        footerView.setFooterText(post?.dateCreated?.shortDateString())
         return footerView
     }()
 
     private var sectionCount: Int {
         return tableViewHandler.resultsController.sections?.count ?? 0
-    }
-
-    private var postType: String {
-        switch post {
-        case _ as Page: return NSLocalizedString("page", comment: "No Result placeholder when an AbstractPost is a type: Page")
-        default: return NSLocalizedString("post", comment: "No Result placeholder when an AbstractPost is a type: Post ")
-        }
     }
 
 
@@ -58,6 +52,14 @@ class RevisionsTableViewController: UITableViewController {
         tableViewHandler.refreshTableView()
         tableViewFooter.isHidden = sectionCount == 0
         refreshRevisions()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !viewDidAppear {
+            viewDidAppear.toggle()
+            WPAnalytics.track(.postRevisionsListViewed)
+        }
     }
 }
 
@@ -108,7 +110,7 @@ private extension RevisionsTableViewController {
 
     @objc private func refreshRevisions() {
         if sectionCount == 0 {
-            configureAndDisplayNoResults(title: String(format: NoResultsText.loadingTitle, postType),
+            configureAndDisplayNoResults(title: NoResultsText.loadingTitle,
                                          accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
@@ -151,6 +153,7 @@ private extension RevisionsTableViewController {
         let service = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.getPostWithID(revision.revisionId, for: blog, success: { post in
             SVProgressHUD.dismiss()
+            WPAnalytics.track(.postRevisionsRevisionLoaded)
             self.onRevisionLoaded(post)
             self.navigationController?.popViewController(animated: true)
         }, failure: { error in
@@ -267,13 +270,13 @@ extension RevisionsTableViewController: RevisionsView {
             // When the API call failed and there are no revisions saved yet
             //
             configureAndDisplayNoResults(title: NoResultsText.errorTitle,
-                                         subtitle: String(format: NoResultsText.errorSubtitle, postType),
+                                         subtitle: NoResultsText.errorSubtitle,
                                          buttonTitle: NoResultsText.reloadButtonTitle)
         case (true, let count) where count == 0:
             // When the API call successed but there are no revisions loaded
             // This is an edge cas. It shouldn't happen since we open the revisions list only if the post revisions array is not empty.
             configureAndDisplayNoResults(title: NoResultsText.noResultsTitle,
-                                         subtitle: String(format: NoResultsText.noResultsSubtitle, postType))
+                                         subtitle: NoResultsText.noResultsSubtitle)
         default:
             hideNoResults()
         }
@@ -296,6 +299,17 @@ private extension Date {
         return formatter
     }()
 
+    private static let shortDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        return formatter
+    }()
+
+    func shortDateString() -> String {
+        return Date.shortDateFormatter.string(from: self)
+    }
+
     func shortTimeString() -> String {
         return Date.shortTimeFormatter.string(from: self)
     }
@@ -303,10 +317,10 @@ private extension Date {
 
 
 struct NoResultsText {
-    static let loadingTitle = NSLocalizedString("Loading %@ history...", comment: "Displayed while a call is loading the history. The placeholder might be 'post' or 'page'.")
+    static let loadingTitle = NSLocalizedString("Loading history...", comment: "Displayed while a call is loading the history.")
     static let reloadButtonTitle = NSLocalizedString("Try again", comment: "Re-load the history again. It appears if the loading call fails.")
     static let noResultsTitle = NSLocalizedString("No history yet", comment: "Displayed when a call is made to load the revisions but there's no result or an error.")
-    static let noResultsSubtitle = NSLocalizedString("When you make changes to your %@ you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error. The placeholder might be 'post' or 'page'.")
+    static let noResultsSubtitle = NSLocalizedString("When you make changes in the editor you'll be able to see the history here", comment: "Displayed when a call is made to load the history but there's no result or an error.")
     static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the history")
-    static let errorSubtitle = NSLocalizedString("There was an error loading the %@ history", comment: "Text displayed when there is a failure loading the history. The placeholder might be 'post' or 'page'.")
+    static let errorSubtitle = NSLocalizedString("There was an error loading the history", comment: "Text displayed when there is a failure loading the history.")
 }

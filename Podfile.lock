@@ -20,6 +20,7 @@ PODS:
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
+  - boost-for-react-native (1.63.0)
   - BuddyBuildSDK (1.0.17)
   - CocoaLumberjack (3.4.2):
     - CocoaLumberjack/Default (= 3.4.2)
@@ -29,12 +30,18 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.11.0):
     - Fabric (~> 1.8.0)
+  - DoubleConversion (1.1.5)
   - Fabric (1.8.2)
+  - Folly (2016.10.31.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gifu (3.2.0)
   - GiphyCoreSDK (1.4.0)
+  - glog (0.3.4)
   - GoogleSignInRepacked (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
@@ -47,6 +54,17 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.16)
+  - Gutenberg (0.2.0):
+    - React/Core (= 0.57.5)
+    - React/CxxBridge (= 0.57.5)
+    - React/DevSupport (= 0.57.5)
+    - React/RCTActionSheet (= 0.57.5)
+    - React/RCTAnimation (= 0.57.5)
+    - React/RCTImage (= 0.57.5)
+    - React/RCTLinkingIOS (= 0.57.5)
+    - React/RCTNetwork (= 0.57.5)
+    - React/RCTText (= 0.57.5)
+    - yoga (= 0.57.5.React)
   - HockeySDK (5.1.4):
     - HockeySDK/DefaultLib (= 5.1.4)
   - HockeySDK/DefaultLib (5.1.4)
@@ -100,13 +118,59 @@ PODS:
   - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
+  - React (0.57.5):
+    - React/Core (= 0.57.5)
+  - React/Core (0.57.5):
+    - yoga (= 0.57.5.React)
+  - React/CxxBridge (0.57.5):
+    - Folly (= 2016.10.31.00)
+    - React/Core
+    - React/cxxreact
+  - React/cxxreact (0.57.5):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2016.10.31.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/DevSupport (0.57.5):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.57.5)
+  - React/jschelpers (0.57.5):
+    - Folly (= 2016.10.31.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.57.5)
+  - React/PrivateDatabase (0.57.5)
+  - React/RCTActionSheet (0.57.5):
+    - React/Core
+  - React/RCTAnimation (0.57.5):
+    - React/Core
+  - React/RCTBlob (0.57.5):
+    - React/Core
+  - React/RCTImage (0.57.5):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.57.5):
+    - React/Core
+  - React/RCTNetwork (0.57.5):
+    - React/Core
+  - React/RCTText (0.57.5):
+    - React/Core
+  - React/RCTWebSocket (0.57.5):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - RNSVG (8.0.8):
+    - React
+  - RNTAztecView (1.0.0):
+    - React
+    - WordPress-Aztec-iOS
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.2)
   - WordPress-Editor-iOS (1.2):
     - WordPress-Aztec-iOS (= 1.2)
-  - WordPressAuthenticator (1.1.5):
+  - WordPressAuthenticator (1.1.6):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -127,12 +191,13 @@ PODS:
     - UIDeviceIdentifier (~> 0.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.5.0):
+  - WordPressShared (1.6.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.1.0)
   - WPMediaPicker (1.3.1)
   - wpxmlrpc (0.8.3)
+  - yoga (0.57.5.React)
   - ZendeskSDK (2.2.0):
     - ZendeskSDK/Providers (= 2.2.0)
     - ZendeskSDK/UI (= 2.2.0)
@@ -151,10 +216,12 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.11.0)
+  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (= 0.16)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v0.2.0`)
   - HockeySDK (= 5.1.4)
   - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.7)
@@ -166,16 +233,20 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
+  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
+  - RNSVG (from `https://github.com/react-native-community/react-native-svg.git`, tag `8.0.8`)
+  - RNTAztecView (from `https://github.com/wordpress-mobile/react-native-aztec.git`)
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.2)
   - WordPressAuthenticator (~> 1.1)
   - WordPressKit (~> 1.5.0)
-  - WordPressShared (~> 1.5.0)
+  - WordPressShared (~> 1.6.0)
   - WordPressUI (~> 1.1)
   - WPMediaPicker (= 1.3.1)
   - wpxmlrpc (= 0.8.3)
+  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.2.0)
 
 SPEC REPOS:
@@ -183,13 +254,16 @@ SPEC REPOS:
     - 1PasswordExtension
     - AFNetworking
     - Alamofire
+    - boost-for-react-native
     - BuddyBuildSDK
     - CocoaLumberjack
     - Crashlytics
+    - DoubleConversion
     - Fabric
     - FormatterKit
     - Gifu
     - GiphyCoreSDK
+    - glog
     - GoogleSignInRepacked
     - GoogleToolboxForMac
     - Gridicons
@@ -220,27 +294,55 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  Folly:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
+  Gutenberg:
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v0.2.0
+  React:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
+  RNSVG:
+    :git: https://github.com/react-native-community/react-native-svg.git
+    :tag: 8.0.8
+  RNTAztecView:
+    :git: https://github.com/wordpress-mobile/react-native-aztec.git
+  yoga:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  Gutenberg:
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v0.2.0
+  RNSVG:
+    :git: https://github.com/react-native-community/react-native-svg.git
+    :tag: 8.0.8
+  RNTAztecView:
+    :commit: 1e0ed52336ef099c72e5bb0a2a878508a85ad021
+    :git: https://github.com/wordpress-mobile/react-native-aztec.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 1448070c1d2731ab71ea7c3faf84ac0f69657287
+  DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   Fabric: d2b22f443ba195d8a7cc204da230977c72733b40
+  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   GiphyCoreSDK: 1fe401c5fc65f182e7aa8b7fb2c9005f2a523374
+  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
+  Gutenberg: ad2285ae4b6fe6707c50ecd7bf884d8ff6acfc59
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -251,19 +353,23 @@ SPEC CHECKSUMS:
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  React: 01aa04500b2957c2767e1dff9fe12e09444a467c
+  RNSVG: 2d4741933313f02e79b12af1b49b2856228b382a
+  RNTAztecView: 57bb73dba9d88a27aabda2cefb1b1e0dcad90502
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 507f6a08e176c2a9af6ec532a54697466b5a9114
   WordPress-Editor-iOS: 28339c1311dcdfdd9e50aba60dcf4c35184d032f
-  WordPressAuthenticator: 0e60d89e1637212bc841a0cf66fc5ef8cac01e52
+  WordPressAuthenticator: 83f495cce863d3f65bb440f6dea57161af401729
   WordPressKit: 46fe8a4fa2ff4195f73a992f0f6f3a1eb2972b70
-  WordPressShared: c5a14738ee94e8306b37e862db1133c665709c21
+  WordPressShared: a2fc2db66c210a05d317ae9678b5823dd6a4d708
   WordPressUI: d3dbd0258f12560d6607647d3240c62c83e089fe
   WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
+  yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 794cf0e8a9ddb2d66ebc11851c1496c19d8e5af9
+PODFILE CHECKSUM: 2c7aed60e263a24173a39a73558e9a9a98908283
 
 COCOAPODS: 1.5.3
