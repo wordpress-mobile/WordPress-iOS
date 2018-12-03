@@ -267,12 +267,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                             }];
 
     dispatch_group_enter(syncGroup);
-    [remote getAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+    [remote getAllAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
         [self updateMultiAuthor:users forBlog:blogObjectID];
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
+    }];
+
+    PlanServiceWrapper *planWrapper = [[PlanServiceWrapper alloc] initWithBlog:blog];
+    dispatch_group_enter(syncGroup);
+    [planWrapper syncPlansWithCompletion:^(BOOL success, NSError *error) {
+
+        dispatch_group_leave(syncGroup);
+
+        if (!success) {
+            DDLogError(@"Failed updating the plans for blog %@: %@", blog.url, error);
+        }
     }];
 
     // When everything has left the syncGroup (all calls have ended with success
@@ -848,6 +859,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         if (!blog) {
             return;
         }
+        
+        [self blogAuthorsFor:blog with:users];
+        
         blog.isMultiAuthor = users.count > 1;
         /// Search for a matching user ID
         /// - wp.com hosted: blog.account.userID

@@ -1,13 +1,8 @@
 import UIKit
-import WordPressComStatsiOS
 
 class SiteStatsDashboardViewController: UIViewController {
 
     // MARK: - Properties
-
-    @objc var siteID: NSNumber?
-    @objc var siteTimeZone: TimeZone?
-    @objc var oauth2Token: String?
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var insightsContainerView: UIView!
@@ -30,7 +25,6 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
-            insightsTableVC.statsService = initStatsService()
             insightsTableViewController = insightsTableVC
         }
     }
@@ -46,7 +40,6 @@ private extension SiteStatsDashboardViewController {
         static let progressViewInitialProgress = Float(0.03)
         static let progressViewHideDelay = 1
         static let progressViewHideDuration = 0.15
-        static let cacheExpirationInterval = Double(300)
     }
 
     enum StatsPeriodType: Int {
@@ -99,19 +92,6 @@ private extension SiteStatsDashboardViewController {
         return shouldShow
     }
 
-    func initStatsService() -> WPStatsService? {
-
-        guard let siteID = siteID,
-            let siteTimeZone = siteTimeZone,
-            let oauth2Token = oauth2Token else {
-            return nil
-        }
-
-        return WPStatsService.init(siteId: siteID,
-                                   siteTimeZone: siteTimeZone,
-                                   oauth2Token: oauth2Token,
-                                   andCacheExpirationInterval: Constants.cacheExpirationInterval)
-    }
 }
 
 // MARK: - FilterTabBar Support
@@ -119,10 +99,7 @@ private extension SiteStatsDashboardViewController {
 private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
-        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
-
+        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.items = StatsPeriodType.allPeriods.map { $0.filterTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }

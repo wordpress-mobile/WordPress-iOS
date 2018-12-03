@@ -47,10 +47,6 @@ private class AccountSettingsController: SettingsController {
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     func refreshModel() {
         service.refreshSettings()
     }
@@ -168,7 +164,9 @@ private class AccountSettingsController: SettingsController {
             return nil
         }
 
-        return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
-                                 comment: "Displayed when there's a pending Email Change")
+        let localizedNotice = NSLocalizedString("There is a pending change of your email to %@. Please check your inbox for a confirmation link.",
+            comment: "Displayed when there's a pending Email Change. The variable is the new email address.")
+
+        return String(format: localizedNotice, pendingAddress)
     }
 }

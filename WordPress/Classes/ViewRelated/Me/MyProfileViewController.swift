@@ -87,10 +87,6 @@ private class MyProfileController: SettingsController {
         notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     func refreshModel() {
         service.refreshSettings()
     }
@@ -154,10 +150,10 @@ private class MyProfileController: SettingsController {
             if let updatedGravatarImage = image {
                 self?.uploadGravatarImage(updatedGravatarImage, presenter: viewController)
             }
-            viewController.dismiss(animated: true, completion: nil)
+            viewController.dismiss(animated: true)
         }
         pickerViewController.modalPresentationStyle = .formSheet
-        viewController.present(pickerViewController, animated: true, completion: nil)
+        viewController.present(pickerViewController, animated: true)
     }
 
     // MARK: - Helpers

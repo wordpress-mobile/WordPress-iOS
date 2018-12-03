@@ -17,11 +17,6 @@
 
 @implementation MenusSelectionView
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];

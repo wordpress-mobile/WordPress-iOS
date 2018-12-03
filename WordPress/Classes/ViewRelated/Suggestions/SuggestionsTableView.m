@@ -149,11 +149,6 @@ CGFloat const STVSeparatorHeight = 1.f;
                                                object:nil];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];

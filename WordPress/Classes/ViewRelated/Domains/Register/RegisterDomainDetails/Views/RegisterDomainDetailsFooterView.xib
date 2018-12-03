@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="84X-RM-jeo" customClass="RegisterDomainDetailsFooterView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="142"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="XTo-NK-MSn">
+                    <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="59G-OJ-yES"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-fc-OkB" customClass="NUXButton" customModule="WordPressAuthenticator">
+                    <rect key="frame" x="20" y="16" width="335" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="ujS-fE-lvl"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="WWz-Oe-Kaz" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="aWW-fc-OkB" secondAttribute="bottom" constant="16" id="5N8-7U-xow"/>
+                <constraint firstItem="XTo-NK-MSn" firstAttribute="top" secondItem="WWz-Oe-Kaz" secondAttribute="top" constant="-10" id="BTF-Va-qsg"/>
+                <constraint firstItem="WWz-Oe-Kaz" firstAttribute="trailing" secondItem="aWW-fc-OkB" secondAttribute="trailing" constant="20" id="NCI-OG-04F"/>
+                <constraint firstItem="WWz-Oe-Kaz" firstAttribute="trailing" secondItem="XTo-NK-MSn" secondAttribute="trailing" id="QsD-jY-ATt"/>
+                <constraint firstItem="XTo-NK-MSn" firstAttribute="leading" secondItem="WWz-Oe-Kaz" secondAttribute="leading" id="Tq3-b0-42k"/>
+                <constraint firstItem="aWW-fc-OkB" firstAttribute="leading" secondItem="WWz-Oe-Kaz" secondAttribute="leading" constant="20" id="Ybh-ay-OT6"/>
+                <constraint firstItem="aWW-fc-OkB" firstAttribute="top" secondItem="WWz-Oe-Kaz" secondAttribute="top" constant="16" id="jfq-jx-l3y"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="WWz-Oe-Kaz"/>
+            <connections>
+                <outlet property="submitButton" destination="aWW-fc-OkB" id="DEN-2Z-ph6"/>
+            </connections>
+            <point key="canvasLocation" x="-5.5" y="-480"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="darkgrey-shadow" width="10" height="10"/>
+    </resources>
+</document>

@@ -191,7 +191,7 @@ class MediaItemViewController: UITableViewController {
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
 
-        self.present(controller, animated: true, completion: nil)
+        self.present(controller, animated: true)
     }
 
     private func presentVideoViewControllerForMedia() {
@@ -250,11 +250,11 @@ class MediaItemViewController: UITableViewController {
                         WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
                     }
                 }
-                present(activityController, animated: true, completion: nil)
+                present(activityController, animated: true)
         } else {
             let alertController = UIAlertController(title: nil, message: NSLocalizedString("Unable to get URL for media item.", comment: "Error message displayed when we were unable to copy the URL for an item in the user's media library."), preferredStyle: .alert)
             alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to share media."))
-            present(alertController, animated: true, completion: nil)
+            present(alertController, animated: true)
         }
     }
 
@@ -271,7 +271,7 @@ class MediaItemViewController: UITableViewController {
             self.deleteMediaItem()
         })
 
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
     }
 
     private func deleteMediaItem() {

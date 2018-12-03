@@ -144,7 +144,10 @@ class PluginViewModel: Observable {
             return nil
         }
 
-        let isHostedAtWPCom = BlogService.blog(with: site)?.isHostedAtWPcom ?? false
+        let blog = BlogService.blog(with: site)
+        let isHostedAtWPCom = blog?.isHostedAtWPcom ?? false
+        let hasDomainCredits = blog?.hasDomainCredit ?? false
+        let hasCustomDomain = blog?.url?.hasSuffix("wordpress.com") == false
 
         guard isHostedAtWPCom || capabilities?.modify == true else {
             // If we know about versions, but we can't update/install the plugin, just show the version number.
@@ -172,7 +175,20 @@ class PluginViewModel: Observable {
                 subtitle: nil,
                 actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
-                    if isHostedAtWPCom {
+
+                    // If the site isn't hosted at .com, then we have a straight-forward process on how to handle it.
+                    // Let's just install the plugin and bail early here.
+                    guard isHostedAtWPCom else {
+                        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                        return
+                    }
+
+                    if FeatureFlag.automatedTransfersCustomDomain.enabled && !hasCustomDomain && hasDomainCredits {
+                        let alert = self.confirmRegisterDomainAlert(for: directoryEntry)
+                        WPAnalytics.track(.automatedTransferCustomDomainDialogShown)
+                        self.present?(alert)
+                    } else {
+
                         guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
                             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
                             return
@@ -182,9 +198,6 @@ class PluginViewModel: Observable {
 
                         let alertController = atHelper.automatedTransferConfirmationPrompt()
                         self.present?(alertController)
-                    }
-                    else {
-                        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
                     }
                 }
             )
@@ -443,6 +456,25 @@ class PluginViewModel: Observable {
             ])
     }
 
+    private func confirmRegisterDomainAlert(for directoryEntry: PluginDirectoryEntry) -> UIAlertController {
+        let title = NSLocalizedString("Install Plugin", comment: "Install Plugin dialog title.")
+        let message = NSLocalizedString("To install plugins, you need to have a custom domain associated with your site.", comment: "Install Plugin dialog text.")
+        let registerDomainActionTitle = NSLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain")) { _ in
+            WPAnalytics.track(.automatedTransferCustomDomainDialogCancelled)
+        }
+
+        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
+            self?.presentDomainRegistration(for: directoryEntry)
+        }
+
+        alertController.preferredAction = registerDomainAction
+        return alertController
+    }
+
     private func confirmRemovalAlert(plugin: Plugin) -> UIAlertController {
         let question: String
         if let siteTitle = getSiteTitle() {
@@ -475,6 +507,22 @@ class PluginViewModel: Observable {
         return alert
     }
 
+    private func presentDomainRegistration(for directoryEntry: PluginDirectoryEntry) {
+        let controller = RegisterDomainSuggestionsViewController.instance(site: site, domainPurchasedCallback: { [weak self] domain in
+
+            guard let strongSelf = self,
+                let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
+
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                return
+            }
+
+            atHelper.startAutomatedTransferProcess(retryingAfterFailure: true)
+        })
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present?(navigationController)
+    }
+
     private func presentBrowser(`for` url: URL) {
         let controller = WebViewControllerFactory.controller(url: url)
         let navigationController = UINavigationController(rootViewController: controller)
@@ -498,10 +546,9 @@ class PluginViewModel: Observable {
     }
 
     private func getSiteTitle() -> String? {
-        let service = BlogService.withMainContext()
-        let blog = service.blog(byBlogId: site.siteID as NSNumber)
-        return blog?.settings?.name?.nonEmptyString()
+        return BlogService.blog(with: site)?.settings?.name?.nonEmptyString()
     }
+
 
     private func setHTMLTextAttributes(_ htmlText: NSAttributedString) -> NSAttributedString {
         guard let copy = htmlText.mutableCopy() as? NSMutableAttributedString else { return htmlText }

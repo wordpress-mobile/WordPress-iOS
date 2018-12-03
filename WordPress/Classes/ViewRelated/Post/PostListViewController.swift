@@ -208,7 +208,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             if self.isViewLoaded {
                 self.tableView.reloadData()
             }
-            }, completion: nil)
+            })
     }
 
     // MARK: - Sync Methods
@@ -235,7 +235,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                                                             self?.updateAuthorFilter()
                                                             self?.refreshAndReload()
                                                             self?.syncItemsWithUserInteraction(false)
-                                                            self?.dismiss(animated: true, completion: nil)
+                                                            self?.dismiss(animated: true)
         }
 
         ForcePopoverPresenter.configurePresentationControllerForViewController(filterController, presentingFromView: sender)
@@ -428,7 +428,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: nil)
+        present(editor, animated: false)
         WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
     }
 

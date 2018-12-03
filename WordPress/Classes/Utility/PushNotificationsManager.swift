@@ -23,7 +23,6 @@ final public class PushNotificationsManager: NSObject {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Device.tokenKey)
-            UserDefaults.standard.synchronize()
         }
     }
 
@@ -36,7 +35,6 @@ final public class PushNotificationsManager: NSObject {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Device.idKey)
-            UserDefaults.standard.synchronize()
         }
     }
 

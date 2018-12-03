@@ -24,6 +24,8 @@ NSString * const WPAppAnalyticsKeyCommentID                         = @"comment_
 NSString * const WPAppAnalyticsKeyLegacyQuickAction                 = @"is_quick_action";
 NSString * const WPAppAnalyticsKeyQuickAction                       = @"quick_action";
 
+NSString * const WPAppAnalyticsKeySource                            = @"source";
+
 NSString * const WPAppAnalyticsKeyHasGutenbergBlocks                = @"has_gutenberg_blocks";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen          = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_app";
@@ -45,13 +47,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
 @end
 
 @implementation WPAppAnalytics
-
-#pragma mark - Dealloc
-
-- (void)dealloc
-{
-    [self stopObservingNotifications];
-}
 
 #pragma mark - Init
 
@@ -128,11 +123,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
                                                object:nil];
 }
 
-- (void)stopObservingNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark - Notifications
 
 - (void)applicationDidBecomeActive:(NSNotification*)notification
@@ -174,7 +164,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 
     return sessionCount;
 }
@@ -346,8 +335,6 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
     if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
         [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
                                                 forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
     }
 }
 

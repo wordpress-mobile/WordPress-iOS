@@ -127,27 +127,27 @@ class PostPostViewController: UIViewController {
 
             UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
                 self.shadeView.alpha = WPAlphaZero
-                }, completion: nil)
+                })
 
             UIView.animate(withDuration: animationDuration * 0.66, delay: 0, options: .curveEaseOut, animations: {
                 self.postInfoView.alpha = WPAlphaFull
-                }, completion: nil)
+                })
 
             UIView.animate(withDuration: 0.2, delay: animationDuration * 0.5, options: .curveEaseOut, animations: {
                 self.shareButton.alpha = WPAlphaFull
                 self.shareButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
-                }, completion: nil)
+                })
             UIView.animate(withDuration: 0.2, delay: animationDuration * 0.6, options: .curveEaseOut, animations: {
                 self.editButton.alpha = WPAlphaFull
                 self.editButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
-                }, completion: nil)
+                })
             UIView.animate(withDuration: 0.2, delay: animationDuration * 0.7, options: .curveEaseOut, animations: {
                 self.viewButton.alpha = WPAlphaFull
                 self.viewButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
-                }, completion: nil)
+                })
         }) { (context) in }
     }
 

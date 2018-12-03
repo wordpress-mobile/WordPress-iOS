@@ -78,7 +78,7 @@ open class AboutViewController: UITableViewController {
 
     // MARK: - Button Helpers
     @IBAction func dismissWasPressed(_ sender: AnyObject) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
 
@@ -146,7 +146,7 @@ open class AboutViewController: UITableViewController {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {
             let navController = UINavigationController(rootViewController: webViewController)
-            present(navController, animated: true, completion: nil)
+            present(navController, animated: true)
         }
     }
 
@@ -190,7 +190,8 @@ open class AboutViewController: UITableViewController {
     // MARK: - Private Properties
     fileprivate lazy var footerTitleText: String = {
         let year = Calendar.current.component(.year, from: Date())
-        return NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
+        let localizedTitleText = NSLocalizedString("© %@ Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
+        return String(format: localizedTitleText, year)
     }()
 
     fileprivate var rows: [[Row]] {

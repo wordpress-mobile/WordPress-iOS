@@ -13,7 +13,7 @@ public extension SiteSettingsViewController {
         tableView.deselectSelectedRowWithAnimation(true)
 
         WPAppAnalytics.track(.siteSettingsExportSiteAccessed, with: self.blog)
-        present(confirmExportController(), animated: true, completion: nil)
+        present(confirmExportController(), animated: true)
     }
 
     /// Creates confirmation alert for Export Content
@@ -92,7 +92,7 @@ public extension SiteSettingsViewController {
                     strongSelf.navigationController?.pushViewController(DeleteSiteViewController.controller(strongSelf.blog), animated: true)
                 } else {
                     WPAppAnalytics.track(.siteSettingsDeleteSitePurchasesShown, with: strongSelf.blog)
-                    strongSelf.present(strongSelf.warnPurchasesController(), animated: true, completion: nil)
+                    strongSelf.present(strongSelf.warnPurchasesController(), animated: true)
                 }
             },
             failure: { error in

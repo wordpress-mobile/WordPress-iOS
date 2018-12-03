@@ -233,7 +233,7 @@ class InvitePersonViewController: UITableViewController {
 extension InvitePersonViewController {
 
     @IBAction func cancelWasPressed() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     @IBAction func sendWasPressed() {
@@ -347,7 +347,7 @@ private extension InvitePersonViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alert.addDefaultActionWithTitle(okTitle)
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     var sendActionEnabled: Bool {

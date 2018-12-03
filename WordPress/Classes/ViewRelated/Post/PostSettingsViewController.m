@@ -113,7 +113,6 @@ FeaturedImageViewControllerDelegate>
 {
     [self.internetReachability stopNotifier];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
     [self removeMediaObserver];
 }
@@ -1495,7 +1494,10 @@ FeaturedImageViewControllerDelegate>
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount
 {
     [self.noResultsView removeFromView];
-    [self.noResultsView configureForNoSearchResult];
+  
+    if (self.mediaDataSource.searchQuery.wordCount > 0) {
+        [self.noResultsView configureForNoSearchResult];
+    }
 }
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets

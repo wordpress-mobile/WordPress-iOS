@@ -2,14 +2,13 @@ import UIKit
 import WordPressAuthenticator
 import WordPressShared
 
-
-class SiteCreationDomainsViewController: NUXViewController {
+class SiteCreationDomainsViewController: NUXViewController, DomainSuggestionsButtonViewPresenter {
 
     // MARK: - Properties
 
     // Used to hide/show the Buttom View
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     override var sourceTag: WordPressSupportSourceTag {
         get {
@@ -17,7 +16,7 @@ class SiteCreationDomainsViewController: NUXViewController {
         }
     }
 
-    private var domainsTableViewController: SiteCreationDomainsTableViewController?
+    private var domainsTableViewController: SiteCreationDomainSuggestionsTableViewController?
 
     // MARK: - ButtonViewController
 
@@ -70,12 +69,12 @@ class SiteCreationDomainsViewController: NUXViewController {
                 // Move the view down double the height to ensure it's off the screen.
                 // i.e. to defy iPhone X bottom gap.
                 self.buttonContainerViewBottomConstraint.constant +=
-                    self.buttonContainerHeightConstraint.constant * 2
+                    self.buttonContainerViewHeightConstraint.constant * 2
             }
 
             // Since the Button View uses auto layout, need to call this so the animation works properly.
             self.view.layoutIfNeeded()
-        }, completion: nil)
+        })
     }
 
     // MARK: - Navigation
@@ -83,7 +82,7 @@ class SiteCreationDomainsViewController: NUXViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? SiteCreationDomainsTableViewController {
+        if let vc = segue.destination as? SiteCreationDomainSuggestionsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
             domainsTableViewController?.siteName = SiteCreationFields.sharedInstance.title
@@ -91,11 +90,13 @@ class SiteCreationDomainsViewController: NUXViewController {
     }
 }
 
-// MARK: - SiteCreationDomainsTableViewControllerDelegate
+// MARK: - DomainSuggestionsTableViewControllerDelegate
 
-extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControllerDelegate {
-    func domainSelected(_ domain: String) {
-        SiteCreationFields.sharedInstance.domain = domain
+extension SiteCreationDomainsViewController: DomainSuggestionsTableViewControllerDelegate {
+    func domainSelected(_ domain: DomainSuggestion) {
+        let domainName = domain.domainName.removingSuffix(".wordpress.com")
+
+        SiteCreationFields.sharedInstance.domain = domainName
         showButtonView(show: true, withAnimation: true)
     }
 

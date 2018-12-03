@@ -78,7 +78,7 @@ open class ReaderPostMenu {
 
         if UIDevice.isPad() {
             alertController.modalPresentationStyle = .popover
-            viewController.present(alertController, animated: true, completion: nil)
+            viewController.present(alertController, animated: true)
             if let presentationController = alertController.popoverPresentationController {
                 presentationController.permittedArrowDirections = .any
                 presentationController.sourceView = anchorView
@@ -86,7 +86,7 @@ open class ReaderPostMenu {
             }
 
         } else {
-            viewController.present(alertController, animated: true, completion: nil)
+            viewController.present(alertController, animated: true)
         }
     }
 
@@ -193,6 +193,6 @@ open class ReaderPostMenu {
         configuration.addsWPComReferrer = true
         let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
-        viewController.present(navController, animated: true, completion: nil)
+        viewController.present(navController, animated: true)
     }
 }
