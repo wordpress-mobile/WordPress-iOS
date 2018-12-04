@@ -81,6 +81,7 @@ final class SiteInformationWizardContent: UIViewController {
         registerCell()
         setupHeader()
         setupFooter()
+        setupConstraints()
 
         table.dataSource = self
     }
@@ -114,7 +115,7 @@ final class SiteInformationWizardContent: UIViewController {
         let buttonTitle = NSLocalizedString("Skip", comment: "Button to progress to the next step")
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
-        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates tot he next step")
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates to the next step")
 
         nextStep.isPrimary = false
     }
@@ -123,7 +124,7 @@ final class SiteInformationWizardContent: UIViewController {
         let buttonTitle = NSLocalizedString("Next", comment: "Button to progress to the next step")
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
-        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step saving changes", comment: "Site creation. Navigates tot he next step")
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step saving changes", comment: "Site creation. Navigates to the next step")
 
         nextStep.isPrimary = true
     }
@@ -151,7 +152,7 @@ final class SiteInformationWizardContent: UIViewController {
             header.widthAnchor.constraint(lessThanOrEqualTo: headerContainer.widthAnchor, multiplier: 1.0),
             header.topAnchor.constraint(equalTo: headerContainer.topAnchor),
             header.heightAnchor.constraint(equalTo: headerContainer.heightAnchor)
-            ])
+        ])
     }
 
     private func setupFooter() {
@@ -175,6 +176,26 @@ final class SiteInformationWizardContent: UIViewController {
             ])
 
         table.tableFooterView = footer
+    }
+
+    private func setupConstraints() {
+        let prevailingLayoutGuide: UILayoutGuide
+        if WPDeviceIdentification.isiPad() {
+            prevailingLayoutGuide = view.readableContentGuide
+        } else {
+            if #available(iOS 11.0, *) {
+                prevailingLayoutGuide = view.safeAreaLayoutGuide
+            } else {
+                prevailingLayoutGuide = view.layoutMarginsGuide
+            }
+        }
+
+        NSLayoutConstraint.activate([
+            table.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor),
+        ])
+
+        table.cellLayoutMarginsFollowReadableWidth = true
     }
 
     @objc
