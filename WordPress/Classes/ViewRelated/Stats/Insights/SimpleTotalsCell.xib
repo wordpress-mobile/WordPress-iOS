@@ -66,7 +66,7 @@
                     <constraint firstAttribute="trailing" secondItem="Tyj-5B-MLc" secondAttribute="trailing" constant="16" id="XOL-9m-28D"/>
                     <constraint firstAttribute="trailing" secondItem="cBd-Ut-Uch" secondAttribute="trailing" id="bwo-8W-tHL"/>
                     <constraint firstAttribute="bottom" secondItem="9px-XX-eCP" secondAttribute="bottom" id="e26-py-r2V"/>
-                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="Tyj-5B-MLc" secondAttribute="bottom" constant="7" id="kke-sY-9lr"/>
+                    <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="Tyj-5B-MLc" secondAttribute="bottom" priority="999" constant="7" id="kke-sY-9lr"/>
                     <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="olb-Fp-tx9"/>
                     <constraint firstItem="9px-XX-eCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qfo-Hn-1HP"/>
                 </constraints>
