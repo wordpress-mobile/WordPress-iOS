@@ -5,26 +5,30 @@ import WordPressFlux
 
 class NoticePresenter: NSObject {
     private let store: NoticeStore
-    private let presentingViewController: UIViewController
+    private var presentingViewController: UIViewController
     private var currentContainer: NoticeContainerView?
+    private var window: UIWindow?
 
     let generator = UINotificationFeedbackGenerator()
 
     private var storeReceipt: Receipt?
 
-    private init(store: NoticeStore, presentingViewController: UIViewController) {
+    private init(store: NoticeStore) {
         self.store = store
-        self.presentingViewController = presentingViewController
+
+        self.presentingViewController = UIViewController()
 
         super.init()
+
+        self.presentingViewController = createOrReturnWindow().rootViewController!
 
         storeReceipt = store.onChange { [weak self] in
             self?.presentNextNoticeIfAvailable()
         }
     }
 
-    @objc convenience init(presentingViewController: UIViewController) {
-        self.init(store: StoreContainer.shared.notice, presentingViewController: presentingViewController)
+    @objc override convenience init() {
+        self.init(store: StoreContainer.shared.notice)
     }
 
     private func presentNextNoticeIfAvailable() {
@@ -101,6 +105,31 @@ class NoticePresenter: NSObject {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
+    }
+
+    private func createOrReturnWindow() -> UIWindow {
+        guard let window = window else {
+            let newWindow = createNewWindow()
+            self.window = newWindow
+            return newWindow
+        }
+        return window
+    }
+
+    private func createNewWindow() -> UIWindow {
+        guard let mainWindow = UIApplication.shared.keyWindow else {
+            fatalError("The key window shouldn't be nil")
+        }
+
+        let offsetWindowFrame = mainWindow.frame.inset(by: UIEdgeInsets(top: Offsets.minimalEdgeOffset,
+                                                        left: Offsets.minimalEdgeOffset,
+                                                        bottom: Offsets.minimalEdgeOffset,
+                                                        right: Offsets.minimalEdgeOffset))
+        let newWindow = UntouchableWindow(frame: offsetWindowFrame)
+        newWindow.windowLevel = .alert
+        newWindow.makeKeyAndVisible()
+        mainWindow.makeKey()
+        return newWindow
     }
 
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
@@ -216,7 +245,9 @@ class NoticePresenter: NSObject {
         static let appearanceSpringDamping: CGFloat = 0.7
         static let appearanceSpringVelocity: CGFloat = 0.0
         static let dismissDelay: TimeInterval = 5.0
-        static let offsetWithoutTabbar: CGFloat = 50.0
+    }
+    private enum Offsets {
+        static let minimalEdgeOffset: CGFloat = 1.0
     }
 }
 

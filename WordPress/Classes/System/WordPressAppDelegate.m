@@ -52,7 +52,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
-@property (nonatomic, strong, readwrite) UIWindow *noticeWindow;
 
 @end
 
@@ -167,10 +166,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)configureNoticePresenter
 {
-    self.noticeWindow = [[UntouchableWindow alloc] initWithFrame:CGRectMake(0, 500, 414.0, 896.0-500.0)];
-    self.noticeWindow.windowLevel = UIWindowLevelAlert;
-    [[self noticeWindow] makeKeyAndVisible];
-    self.noticePresenter = [[NoticePresenter alloc] initWithPresentingViewController:self.noticeWindow.rootViewController];
+    self.noticePresenter = [[NoticePresenter alloc] init];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
