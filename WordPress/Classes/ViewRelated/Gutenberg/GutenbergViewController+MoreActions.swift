@@ -47,13 +47,11 @@ extension GutenbergViewController {
             self?.displayPreview()
         }
 
-        //TODO: Comment in when bridge is ready
-        /*
         if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
                 self?.displayHistory()
             }
-        }*/
+        }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [weak self] _ in
             self?.displayPostSettings()
