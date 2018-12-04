@@ -51,16 +51,10 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.followerTotals))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
-                let dataRows = createMostPopularStatsRows()
-
-                // Don't show the subtitles if there is no data
-                let itemSubtitle = dataRows.count > 0 ? MostPopularStats.itemSubtitle : nil
-                let dataSubtitle = dataRows.count > 0 ? MostPopularStats.dataSubtitle : nil
-
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: itemSubtitle,
-                                                               dataSubtitle: dataSubtitle,
-                                                               dataRows: dataRows))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: MostPopularStats.itemSubtitle,
+                                                               dataSubtitle: MostPopularStats.dataSubtitle,
+                                                               dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 DDLogDebug("Show \(insightType) here.")
             case .annualSiteStats:
@@ -74,7 +68,10 @@ class SiteStatsInsightsViewModel: Observable {
             case .postingActivity:
                 DDLogDebug("Show \(insightType) here.")
             case .publicize:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.publicize))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: Publicize.itemSubtitle,
+                                                               dataSubtitle: Publicize.dataSubtitle,
+                                                               dataRows: createPublicizeRows()))
             }
         }
 
@@ -101,6 +98,7 @@ private extension SiteStatsInsightsViewModel {
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
         static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
+        static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
     }
 
     struct AllTimeStats {
@@ -126,6 +124,11 @@ private extension SiteStatsInsightsViewModel {
         static let emailIcon = Style.imageForGridiconType(.mail)
         static let socialTitle = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
         static let socialIcon = Style.imageForGridiconType(.share)
+    }
+
+    struct Publicize {
+        static let itemSubtitle = NSLocalizedString("Service", comment: "Publicize label for connected service")
+        static let dataSubtitle = NSLocalizedString("Followers", comment: "Publicize label for number of followers")
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -220,4 +223,14 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
+    func createPublicizeRows() -> [StatsTotalRowData] {
+        let publicize = store.getPublicize()
+        var dataRows = [StatsTotalRowData]()
+
+        publicize?.forEach { item in
+            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, iconURL: item.iconURL))
+        }
+
+        return dataRows
+    }
 }
