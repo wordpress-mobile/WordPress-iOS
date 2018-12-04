@@ -4,22 +4,18 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var monthsStackView: UIStackView!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        addMonths()
-    }
-
-    func configure() {
-        
+    func configure(monthsData: [[PostingActivityDayData]]) {
+        addMonths(monthsData: monthsData)
     }
 
 }
 
 private extension PostingActivityCell {
 
-    func addMonths() {
-        for _ in 1...3 {
+    func addMonths(monthsData: [[PostingActivityDayData]]) {
+        for monthData in monthsData {
             let monthView = PostingActivityMonth.loadFromNib()
+            monthView.configure(monthData: monthData)
             monthsStackView.addArrangedSubview(monthView)
         }
     }

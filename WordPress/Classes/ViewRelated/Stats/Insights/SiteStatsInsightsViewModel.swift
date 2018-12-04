@@ -68,7 +68,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.postingActivity))
-                tableRows.append(PostingActivityRow())
+                tableRows.append(createPostingActivityRow())
             case .publicize:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.publicize))
                 tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: Publicize.itemSubtitle,
@@ -283,4 +283,17 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
+    func createPostingActivityRow() -> PostingActivityRow {
+        var monthsData = [[PostingActivityDayData]]()
+
+        let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date())!
+        monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
+
+        let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+        monthsData.append(store.getMonthlyPostingActivityFor(date: oneMonthAgo))
+
+        monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
+
+        return PostingActivityRow(monthsData: monthsData)
+    }
 }

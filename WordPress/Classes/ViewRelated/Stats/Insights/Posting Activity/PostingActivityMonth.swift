@@ -9,14 +9,28 @@ class PostingActivityMonth: UIView, NibLoadable {
     @IBOutlet weak var week5StackView: UIStackView!
     @IBOutlet weak var monthLabel: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    private var monthData: [PostingActivityDayData]?
+
+    func configure(monthData: [PostingActivityDayData]) {
+        self.monthData = monthData
+        setMonthLabel()
         addDays()
     }
 
 }
 
 private extension PostingActivityMonth {
+
+    func setMonthLabel() {
+        guard let firstDay = monthData?.first else {
+            monthLabel.text = ""
+            return
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "LLL"
+        monthLabel.text = dateFormatter.string(from: firstDay.date)
+    }
 
     func addDays() {
         addDaysToStackView(week1StackView)

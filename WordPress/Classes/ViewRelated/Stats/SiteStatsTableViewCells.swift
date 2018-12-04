@@ -82,6 +82,7 @@ struct PostingActivityRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
+    let monthsData: [[PostingActivityDayData]]
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -90,7 +91,7 @@ struct PostingActivityRow: ImmuTableRow {
             return
         }
 
-        cell.configure()
+        cell.configure(monthsData: monthsData)
     }
 }
 struct CellHeaderRow: ImmuTableRow {
