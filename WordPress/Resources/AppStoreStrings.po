@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.3-whats-new"
+msgctxt "v11.4-whats-new"
 msgid ""
 "- We've added support for Post Revisions, which allow you to view a history of changes to a post. You can even roll back to a specific revision, if necessary!\n"
 "- Build your site out on the go: add plugins to websites on the business plan right from the app. If your site’s brand new and doesn’t have a custom domain — which is a prerequisite for adding plugins — we’ll help you get one set up.\n"

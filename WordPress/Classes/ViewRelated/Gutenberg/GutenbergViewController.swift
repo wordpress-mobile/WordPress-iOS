@@ -1,6 +1,7 @@
 import UIKit
-import React
 import WPMediaPicker
+import Gutenberg
+import Aztec
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -108,11 +109,14 @@ class GutenbergViewController: UIViewController, PostEditor {
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
+            attachmentDelegate = AztecAttachmentDelegate(post: post)
             refreshInterface()
         }
     }
 
     let navigationBarManager = PostEditorNavigationBarManager()
+
+    lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
@@ -137,7 +141,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Private variables
 
-    private let gutenberg: Gutenberg
+    private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
 
@@ -147,13 +151,12 @@ class GutenbergViewController: UIViewController, PostEditor {
         switchToAztec: @escaping (EditorViewController) -> ()) {
 
         self.post = post
-        self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
-        self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
         self.switchToAztec = switchToAztec
+        verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
+        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         super.init(nibName: nil, bundle: nil)
-        self.postTitle = post.postTitle ?? ""
+        postTitle = post.postTitle ?? ""
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -164,6 +167,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     deinit {
         gutenberg.invalidate()
+        attachmentDelegate.cancelAllPendingMediaRequests()
     }
 
     // MARK: - Lifecycle methods
@@ -252,8 +256,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
-
-    func gutenbergDidRequestMediaPicker(callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
                                                        callback: callback)
@@ -280,6 +283,20 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 }
+
+// MARK: - GutenbergBridgeDataSource
+
+extension GutenbergViewController: GutenbergBridgeDataSource {
+    func gutenbergInitialContent() -> String? {
+        return post.content ?? ""
+    }
+
+    func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
+        return attachmentDelegate
+    }
+}
+
+// MARK: - PostEditorStateContextDelegate
 
 extension GutenbergViewController: PostEditorStateContextDelegate {
 
