@@ -267,6 +267,41 @@ extension StatsInsightsStore {
         return state.todaysStats
     }
 
+    func getMonthlyPostingActivityFor(date: Date) -> [PostingActivityDayData] {
+
+        var monthData = [PostingActivityDayData]()
+        let dateComponents = Calendar.current.dateComponents([.year, .month], from: date.normalizedDate())
+
+        // Add every day in the month to the array, seeding with 0 counts.
+        guard let dayRange = Calendar.current.range(of: .day, in: .month, for: date) else {
+            return monthData
+        }
+
+        dayRange.forEach { day in
+            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: day)
+            guard let date = Calendar.current.date(from: components) else {
+                return
+            }
+
+            monthData.append(PostingActivityDayData(date: date, count: 0))
+        }
+
+        // If there is no posting activity at all, return.
+        guard let allPostingActivity = state.postingActivity?.items else {
+            return monthData
+        }
+
+        // If the posting occurred in the requested month, increment the count for that day.
+        allPostingActivity.forEach { postingActivity in
+            let postDate = postingActivity.date.normalizedDate()
+            if let dayIndex = monthData.index(where: { $0.date == postDate }) {
+                monthData[dayIndex].count += 1
+            }
+        }
+
+        return monthData
+    }
+
     var isFetching: Bool {
         return state.fetchingLatestPostSummary ||
             state.fetchingAllTimeStats ||
