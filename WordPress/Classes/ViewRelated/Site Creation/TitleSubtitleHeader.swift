@@ -18,6 +18,8 @@ final class TitleSubtitleHeader: UIView {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        // Necessary to force the label to render in more than one line when the text doe snot fit in one line
+        label.preferredMaxLayoutWidth = self.frame.size.width - 2 * (Margins.horizontalMargin + 10)
 
         return label
     }()
@@ -28,6 +30,8 @@ final class TitleSubtitleHeader: UIView {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        // Necessary to force the label to render in more than one line when the text doe snot fit in one line
+        label.preferredMaxLayoutWidth = self.frame.size.width - 2 * Margins.horizontalMargin
 
         return label
     }()

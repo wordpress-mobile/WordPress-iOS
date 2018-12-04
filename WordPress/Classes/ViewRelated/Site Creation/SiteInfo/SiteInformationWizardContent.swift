@@ -129,7 +129,9 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
+        print("==== table width ===", table.frame.width )
+        let initialHeaderFrame = CGRect(x: 0, y: 0, width: Int(table.frame.width), height: 0)
+        let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
