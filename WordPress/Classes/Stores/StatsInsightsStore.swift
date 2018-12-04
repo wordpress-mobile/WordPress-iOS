@@ -10,6 +10,7 @@ enum InsightAction: Action {
     case receivedEmailFollowers(total: String?)
     case receivedPublicize(items: [StatsItem]?)
     case receivedTodaysStats(_ todaysStats: StatsSummary?)
+    case receivedPostingActivity(_ postingActivity: StatsStreak?)
     case refreshInsights()
 }
 
@@ -32,6 +33,8 @@ struct InsightStoreState {
     var fetchingPublicize = false
     var todaysStats: StatsSummary?
     var fetchingTodaysStats = false
+    var postingActivity: StatsStreak?
+    var fetchingPostingActivity = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -61,6 +64,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedPublicize(items: items)
         case .receivedTodaysStats(let todaysStats):
             receivedTodaysStats(todaysStats)
+        case .receivedPostingActivity(let postingActivity):
+            receivedPostingActivity(postingActivity)
         case .refreshInsights:
             refreshInsights()
         }
@@ -95,6 +100,7 @@ private extension StatsInsightsStore {
         state.fetchingEmailFollowers = true
         state.fetchingPublicize = true
         state.fetchingTodaysStats = true
+        state.fetchingPostingActivity = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -138,7 +144,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedPublicize(items: publicize?.items as? [StatsItem]))
         }, streakCompletionHandler: { (statsStreak, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching stats streak: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(statsStreak))
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
         }, andOverallCompletionHandler: {
@@ -204,6 +213,13 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedPostingActivity(_ postingActivity: StatsStreak?) {
+        transaction { state in
+            state.postingActivity = postingActivity
+            state.fetchingPostingActivity = false
+        }
+    }
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
@@ -258,6 +274,8 @@ extension StatsInsightsStore {
             state.fetchingDotComFollowers ||
             state.fetchingEmailFollowers ||
             state.fetchingPublicize ||
-            state.fetchingTodaysStats
+            state.fetchingTodaysStats ||
+            state.fetchingPostingActivity
     }
+
 }
