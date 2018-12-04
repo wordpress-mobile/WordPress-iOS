@@ -30,7 +30,7 @@ extension Double {
         }
 
         let exp: Int = Int(log10(num) / 3.0)
-        let units: [String] = ["k", "M", "B", "T", "P", "E"]
+        let units: [String] = ["K", "M", "B", "T", "P", "E"]
         let roundedNum: Double = Foundation.round(10 * num / pow(1000.0, Double(exp))) / 10
 
         if roundedNum == 1000.0 {
