@@ -3,13 +3,15 @@ import UIKit
 final class TitleSubtitleHeader: UIView {
     struct Margins {
         static let horizontalMargin: CGFloat = 30.0
+
         private static let compactVerticalMargin: CGFloat = 30.0
         private static let regularVerticalMargin: CGFloat = 40.0
-        static let spacing: CGFloat = 10.0
 
-        static func vertical() -> CGFloat {
+        static var verticalMargin: CGFloat {
             return WPDeviceIdentification.isiPad() ? regularVerticalMargin : compactVerticalMargin
         }
+
+        static let interLabelVerticalSpacing = CGFloat(10)
     }
 
     private(set) lazy var titleLabel: UILabel = {
@@ -18,8 +20,6 @@ final class TitleSubtitleHeader: UIView {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
-        // Necessary to force the label to render in more than one line when the text doe snot fit in one line
-        label.preferredMaxLayoutWidth = self.frame.size.width - 2 * (Margins.horizontalMargin + 10)
 
         return label
     }()
@@ -30,19 +30,8 @@ final class TitleSubtitleHeader: UIView {
         label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
-        // Necessary to force the label to render in more than one line when the text doe snot fit in one line
-        label.preferredMaxLayoutWidth = self.frame.size.width - 2 * Margins.horizontalMargin
 
         return label
-    }()
-
-    private lazy var stackView: UIStackView = {
-        let returnValue = UIStackView(arrangedSubviews: [self.titleLabel, self.subtitleLabel])
-        returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.axis = .vertical
-        returnValue.spacing = Margins.spacing
-
-        return returnValue
     }()
 
     override init(frame: CGRect) {
@@ -57,12 +46,19 @@ final class TitleSubtitleHeader: UIView {
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stackView)
+
+        addSubview(titleLabel)
+        addSubview(subtitleLabel)
+
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1 * Margins.horizontalMargin),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Margins.vertical()),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * Margins.vertical())])
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Margins.verticalMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Margins.horizontalMargin),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Margins.interLabelVerticalSpacing),
+            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
+            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Margins.horizontalMargin),
+            subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Margins.verticalMargin)
+        ])
 
         setStyles()
     }

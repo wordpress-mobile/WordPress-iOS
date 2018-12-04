@@ -67,6 +67,22 @@ final class SiteInformationWizardContent: UIViewController {
         stopListeningToKeyboardNotifications()
     }
 
+    // via https://collindonnell.com/2015/09/29/dynamically-sized-table-view-header-or-footer-using-auto-layout/
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if let headerView = table.tableHeaderView {
+            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            var headerFrame = headerView.frame
+
+            if height != headerFrame.size.height {
+                headerFrame.size.height = height
+                headerView.frame = headerFrame
+                table.tableHeaderView = headerView
+            }
+        }
+    }
+
     private func applyTitle() {
         title = NSLocalizedString("2 of 3", comment: "Site creation. Step 2. Screen title")
     }
@@ -136,22 +152,11 @@ final class SiteInformationWizardContent: UIViewController {
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
-        var fittingSize = UIView.layoutFittingCompressedSize
-        fittingSize.width = table.frame.size.width
-        let size = header.systemLayoutSizeFitting(fittingSize,
-                                                  withHorizontalFittingPriority: .required,
-                                                  verticalFittingPriority: .fittingSizeLevel)
-
-        let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: Int(table.frame.width), height: Int(size.height)))
-
-        table.tableHeaderView = headerContainer
-        headerContainer.addSubview(header)
+        table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
-            header.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: headerContainer.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: headerContainer.topAnchor),
-            header.heightAnchor.constraint(equalTo: headerContainer.heightAnchor)
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
         ])
     }
 

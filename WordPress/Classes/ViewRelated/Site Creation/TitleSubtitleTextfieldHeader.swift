@@ -6,7 +6,8 @@ final class TitleSubtitleTextfieldHeader: UIView {
     private struct Constants {
         static let iconWidth: CGFloat = 18.0
         static let searchHeight: CGFloat = 44.0
-        static let searchMarging: CGFloat = 6.0
+        static let searchMargins: CGFloat = 6.0
+        static let spacing: CGFloat = 10.0
     }
     private lazy var titleSubtitle: TitleSubtitleHeader = {
         let returnValue = TitleSubtitleHeader(frame: .zero)
@@ -45,14 +46,14 @@ final class TitleSubtitleTextfieldHeader: UIView {
         NSLayoutConstraint.activate([
             self.textField.heightAnchor.constraint(equalToConstant: Constants.searchHeight),
             self.textField.centerYAnchor.constraint(equalTo: search.centerYAnchor),
-            self.textField.leadingAnchor.constraint(equalTo: search.leadingAnchor, constant: Constants.searchMarging),
-            self.textField.trailingAnchor.constraint(equalTo: search.trailingAnchor, constant: -1 * Constants.searchMarging)
+            self.textField.leadingAnchor.constraint(equalTo: search.leadingAnchor, constant: Constants.searchMargins),
+            self.textField.trailingAnchor.constraint(equalTo: search.trailingAnchor, constant: -1 * Constants.searchMargins)
             ])
 
         let returnValue = UIStackView(arrangedSubviews: [self.titleSubtitle, search])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
-        returnValue.spacing = TitleSubtitleHeader.Margins.spacing
+        returnValue.spacing = Constants.spacing
         returnValue.isLayoutMarginsRelativeArrangement = true
         NSLayoutConstraint.activate([
             search.heightAnchor.constraint(equalToConstant: Constants.searchHeight),
@@ -78,7 +79,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.vertical())])
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.verticalMargin)])
 
         setStyles()
     }
