@@ -64,7 +64,8 @@ class SiteStatsInsightsViewModel: Observable {
             case .followers:
                 DDLogDebug("Show \(insightType) here.")
             case .todaysStats:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.todaysStats))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
             case .postingActivity:
                 DDLogDebug("Show \(insightType) here.")
             case .publicize:
@@ -99,6 +100,7 @@ private extension SiteStatsInsightsViewModel {
         static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
+        static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
     }
 
     struct AllTimeStats {
@@ -129,6 +131,17 @@ private extension SiteStatsInsightsViewModel {
     struct Publicize {
         static let itemSubtitle = NSLocalizedString("Service", comment: "Publicize label for connected service")
         static let dataSubtitle = NSLocalizedString("Followers", comment: "Publicize label for number of followers")
+    }
+
+    struct TodaysStats {
+        static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
+        static let viewsIcon = Style.imageForGridiconType(.visible)
+        static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
+        static let visitorsIcon = Style.imageForGridiconType(.user)
+        static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
+        static let likesIcon = Style.imageForGridiconType(.star)
+        static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
+        static let commentsIcon = Style.imageForGridiconType(.comment)
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -233,4 +246,47 @@ private extension SiteStatsInsightsViewModel {
 
         return dataRows
     }
+
+    func createTodaysStatsRows() -> [StatsTotalRowData] {
+        let todaysStats = store.getTodaysStats()
+        var dataRows = [StatsTotalRowData]()
+
+        // For these tests, we need the string version to display since it comes formatted (ex: views).
+        // And we need the actual number value to test > 0 (ex: viewsValue).
+
+        if let views = todaysStats?.views,
+        let viewsValue = todaysStats?.viewsValue.intValue,
+            viewsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: TodaysStats.viewsTitle,
+                                                   data: views,
+                                                   icon: TodaysStats.viewsIcon))
+        }
+
+        if let visitors = todaysStats?.visitors,
+        let visitorsValue = todaysStats?.visitorsValue.intValue,
+            visitorsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: TodaysStats.visitorsTitle,
+                                                   data: visitors,
+                                                   icon: TodaysStats.visitorsIcon))
+        }
+
+        if let likes = todaysStats?.likes,
+        let likesValue = todaysStats?.likesValue.intValue,
+            likesValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: TodaysStats.likesTitle,
+                                                   data: likes,
+                                                   icon: TodaysStats.likesIcon))
+        }
+
+        if let comments = todaysStats?.comments,
+            let commentsValue = todaysStats?.commentsValue.intValue,
+            commentsValue > 0 {
+            dataRows.append(StatsTotalRowData.init(name: TodaysStats.commentsTitle,
+                                                   data: comments,
+                                                   icon: TodaysStats.commentsIcon))
+        }
+
+        return dataRows
+    }
+
 }
