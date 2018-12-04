@@ -16,40 +16,40 @@ final class TitleSubtitleHeaderTests: XCTestCase {
     }
 
     func testHeaderContainsTitleLabel() {
-        XCTAssertNotNil(header?.titleLabel())
+        XCTAssertNotNil(header?.titleLabel)
     }
 
     func testHeaderContainsSubtitleLabel() {
-        XCTAssertNotNil(header?.subtitleLabel())
+        XCTAssertNotNil(header?.subtitleLabel)
     }
 
     func testSetTitleSetsTitleLabel() {
         let title = "Title"
         header?.setTitle(title)
 
-        XCTAssertEqual(header?.titleLabel().text, title)
+        XCTAssertEqual(header?.titleLabel.text, title)
     }
 
     func testSetSubtitleSetsSubtitleLabel() {
         let text = "Subtitle"
         header?.setSubtitle(text)
 
-        XCTAssertEqual(header?.subtitleLabel().text, text)
+        XCTAssertEqual(header?.subtitleLabel.text, text)
     }
 
     func testTitleFont() {
-        XCTAssertEqual(header?.titleLabel().font, WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold))
+        XCTAssertEqual(header?.titleLabel.font, WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold))
     }
 
     func testTitleFontColor() {
-        XCTAssertEqual(header?.titleLabel().textColor, WPStyleGuide.darkGrey())
+        XCTAssertEqual(header?.titleLabel.textColor, WPStyleGuide.darkGrey())
     }
 
     func testSubtitleFont() {
-        XCTAssertEqual(header?.subtitleLabel().font, WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular))
+        XCTAssertEqual(header?.subtitleLabel.font, WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular))
     }
 
     func testSubtitleFontColor() {
-        XCTAssertEqual(header?.subtitleLabel().textColor, WPStyleGuide.greyDarken10())
+        XCTAssertEqual(header?.subtitleLabel.textColor, WPStyleGuide.greyDarken10())
     }
 }
