@@ -241,8 +241,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `0041573e602b2fc4249448492e9837098330da43`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `0041573e602b2fc4249448492e9837098330da43`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f36c319efabba738f81cf09ab1275cc0e0196a68`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f36c319efabba738f81cf09ab1275cc0e0196a68`)
   - WordPressAuthenticator (~> 1.1.6)
   - WordPressKit (~> 1.5.1)
   - WordPressShared (~> 1.6.0)
@@ -308,10 +308,10 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
   WordPress-Aztec-iOS:
-    :commit: 0041573e602b2fc4249448492e9837098330da43
+    :commit: f36c319efabba738f81cf09ab1275cc0e0196a68
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: 0041573e602b2fc4249448492e9837098330da43
+    :commit: f36c319efabba738f81cf09ab1275cc0e0196a68
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
@@ -330,10 +330,10 @@ CHECKOUT OPTIONS:
     :commit: daf2d1ca165cf8431dae629be7207ea2f10a2d80
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
   WordPress-Aztec-iOS:
-    :commit: 0041573e602b2fc4249448492e9837098330da43
+    :commit: f36c319efabba738f81cf09ab1275cc0e0196a68
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: 0041573e602b2fc4249448492e9837098330da43
+    :commit: f36c319efabba738f81cf09ab1275cc0e0196a68
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
@@ -383,6 +383,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 420045de9be07581b6bfbd71773599351682d19a
+PODFILE CHECKSUM: 98171482025eadc151c5824098baa5f9a3f452c7
 
 COCOAPODS: 1.5.3

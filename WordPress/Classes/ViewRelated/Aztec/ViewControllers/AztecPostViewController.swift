@@ -981,9 +981,9 @@ extension AztecPostViewController {
         var identifiers = Set<FormattingIdentifier>()
 
         if richTextView.selectedRange.length > 0 {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+            identifiers = richTextView.formattingIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+            identifiers = richTextView.formattingIdentifiersForTypingAttributes()
         }
 
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
@@ -1463,6 +1463,8 @@ extension AztecPostViewController {
                 insertMore()
             case .code:
                 toggleCode()
+            default:
+                break
             }
 
             updateFormatBar()
@@ -1571,9 +1573,9 @@ extension AztecPostViewController {
     func listTypeForSelectedText() -> TextList.Style? {
         var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+            identifiers = richTextView.formattingIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+            identifiers = richTextView.formattingIdentifiersForTypingAttributes()
         }
         let mapping: [FormattingIdentifier: TextList.Style] = [
             .orderedlist: .ordered,
@@ -1894,9 +1896,9 @@ extension AztecPostViewController {
     func headerLevelForSelectedText() -> Header.HeaderType {
         var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+            identifiers = richTextView.formattingIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+            identifiers = richTextView.formattingIdentifiersForTypingAttributes()
         }
         let mapping: [FormattingIdentifier: Header.HeaderType] = [
             .header1: .h1,
