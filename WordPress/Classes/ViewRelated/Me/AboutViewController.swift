@@ -190,7 +190,7 @@ open class AboutViewController: UITableViewController {
     // MARK: - Private Properties
     fileprivate lazy var footerTitleText: String = {
         let year = Calendar.current.component(.year, from: Date())
-        let localizedTitleText = NSLocalizedString("© %@ Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
+        let localizedTitleText = NSLocalizedString("© %d Automattic, Inc.", comment: "About View's Footer Text. The variable is the current year")
         return String(format: localizedTitleText, year)
     }()
 
