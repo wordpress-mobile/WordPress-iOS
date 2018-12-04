@@ -277,6 +277,30 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
             eventName = @"app_settings_video_optimization_changed";
             break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainDialogShown:
+            eventName = @"automated_transfer_custom_domain_dialog_shown";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainDialogCancelled:
+            eventName = @"automated_transfer_custom_domain_dialog_cancelled";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainSuggestionQueried:
+            eventName = @"automated_transfer_custom_domain_suggestion_queried";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainSuggestionSelected:
+            eventName = @"automated_transfer_custom_domain_suggestion_selected";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainContactInfoValidated:
+            eventName = @"automated_transfer_custom_domain_contact_information_validated";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainContactInfoValidationFailed:
+            eventName = @"automated_transfer_custom_domain_contact_information_validation_failed";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainPurchased:
+            eventName = @"automated_transfer_custom_domain_purchased";
+            break;
+        case WPAnalyticsStatAutomatedTransferCustomDomainPurchaseFailed:
+            eventName = @"automated_transfer_custom_domain_purchase_failed";
+            break;
         case WPAnalyticsStatAutomatedTransferDialogShown:
             eventName = @"automated_transfer_confirm_dialog_shown";
             break;
@@ -1018,6 +1042,21 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPostListViewAction:
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"view" };
+            break;
+        case WPAnalyticsStatPostRevisionsListViewed:
+            eventName = @"revisions_list_viewed";
+            break;
+        case WPAnalyticsStatPostRevisionsDetailViewed:
+            eventName = @"revisions_detail_viewed";
+            break;
+        case WPAnalyticsStatPostRevisionsDetailCancelled:
+            eventName = @"revisions_detail_cancelled";
+            break;
+        case WPAnalyticsStatPostRevisionsRevisionLoaded:
+            eventName = @"revisions_revision_loaded";
+            break;
+        case WPAnalyticsStatPostRevisionsLoadUndone:
+            eventName = @"revisions_load_undone";
             break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";

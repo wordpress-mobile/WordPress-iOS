@@ -1,5 +1,8 @@
-Añade gifs de Giphy directamente desde la barra de herramientas de medios mientras editas una entrada.
-Más mensajes útiles sobre los errores que te ayudarán al acceder a un sitio autoalojado.
-Ver una entrada con muchas imágenes es ahora más rápido.
-Añadida compatibilidad con iPad Pro.
-Soluciones a fallos.
+- Hemos añadido compatibilidad con revisiones de entradas, que te permiten ver un historial de cambios en una entrada. ¡Puedes incluso retroceder a una revisión específica, si es necesario! 
+- Hemos añadido la posibilidad de canjear créditos de dominio de WordPress.com.
+- Hemos hecho mejoras en el editor para la compatibilidad con Gutenberg.
+- ¡Hemos añadido compatibilidad con incrustados de YouTube y Vimeo! 
+- Hemos mejorado la precisión del recuento de caracteres al editar entradas
+- Ahora es un poco más fácil administrar los usuarios de tu sitio (utiliza una barra de filtros en lugar de un menú desplegable)
+- Corregidos algunos errores (un fallo cuando la aplicación está desconectada, mejoró la estabilidad del lector y un error que podría causar alguna pérdida de datos en el editor), y se pulió la interfaz de usuario en unos pocos sitios
+

@@ -1,5 +1,7 @@
-Füge Giphy-GIFs direkt aus der Medien-Toolbar hinzu, wenn du einen Beitrag bearbeitest.
-Hilfreichere Fehlermeldungen unterstützen dich, wenn du dich bei einer selbst gehosteten Website anmeldest.
-Beiträge mit vielen Bildern werden jetzt schneller angezeigt.
-Unterstützung für iPad Pro hinzugefügt.
-Fehlerkorrekturen.
+- Wir haben Support für die Revision von Beiträgen hinzugefügt. So kannst du einen Verlauf von Änderungen an einem Beitrag ansehen. Falls nötig, kannst du auch zu einer bestimmten Revision zurückblättern.
+- Wir haben die Möglichkeit hinzugefügt, Domain-Guthaben von WordPress.com einzulösen.
+- Wir haben Verbesserungen am Editor für die Kompatibilität mit Gutenberg vorgenommen.
+- Wir haben den Support für YouTube- und Vimeo-Einbettungen wiederaufgenommen.
+- Wir haben die Genauigkeit der Wortzählfunktion beim Bearbeiten von Beiträgen verbessert
+- Jetzt ist es durch die Verwendung einer Filterleiste statt eines Aufklappmenüs ein bisschen einfacher, die Benutzer auf deiner Website zu verwalten
+- Einige Fehlerbehebungen (Absturz, wenn die App offline ist, Stabilitätsverbesserungen des Readers, Fehler im Editor, der zu Datenverlust führen könnte) und Verbesserungen der Benutzeroberfläche

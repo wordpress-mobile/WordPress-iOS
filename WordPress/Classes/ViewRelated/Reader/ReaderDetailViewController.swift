@@ -288,7 +288,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             alongsideTransition: { (_) in
                 if let position = position, let textRange = self.textView.textRange(from: position, to: position) {
                     let rect = self.textView.firstRect(for: textRange)
-                    self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
+                    if rect.origin.y.isFinite {
+                        self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
+                    }
                 }
             },
             completion: { (_) in

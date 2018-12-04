@@ -219,7 +219,7 @@ class AutomatedTransferHelper {
     }
 
     private func updateAutomatedTransferStatus() {
-        // Definining this here, because we also want to be able to call it if we "sucesfully" fetch a status update
+        // Definining this here, because we also want to be able to call it if we "successfully" fetch a status update
         // and the resulting status is `failed`.
         let failureBlock: ((Error?) -> ()) = { (error) in
             DDLogInfo("[AT] Status update failed: \(String(describing: error))")
@@ -280,7 +280,7 @@ class AutomatedTransferHelper {
         }
 
         service.syncBlog(blog, success: {
-            DDLogInfo("[AT] Sucesfully synced the site.")
+            DDLogInfo("[AT] Successfully synced the site.")
             self.delayWrapper = nil
 
             // after we refreshed the site, we need to manually fetch plugins so the directory/detail screens has correct data.
@@ -325,7 +325,7 @@ class AutomatedTransferHelper {
         let pluginsRemote = PluginServiceRemote(wordPressComRestApi: automatedTransferService.wordPressComRestApi)
         pluginsRemote.getPlugins(siteID: site.siteID, success: { (plugins) in
             // This was the last step in the process! The transfer is complete. Time to celebrate 🎇🎉✨
-            DDLogInfo("[AT] Sucesfully fetched plugins.")
+            DDLogInfo("[AT] Successfully fetched plugins.")
             DDLogInfo("[AT] AT Process complete.")
 
             WPAnalytics.track(.automatedTransferFlowComplete)

@@ -56,6 +56,7 @@ final class SiteInformationWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
+        setupTableSeparator()
         registerCell()
         setupHeader()
 
@@ -66,6 +67,11 @@ final class SiteInformationWizardContent: UIViewController {
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
     }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
     private func registerCell() {
         table.register(
             InlineEditableNameValueCell.defaultNib,
@@ -91,8 +97,8 @@ final class SiteInformationWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(equalTo: table.layoutMarginsGuide.widthAnchor),
-            header.topAnchor.constraint(equalTo: table.layoutMarginsGuide.topAnchor)
+            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
+            header.topAnchor.constraint(equalTo: table.topAnchor)
             ])
 
         table.tableHeaderView?.layoutIfNeeded()

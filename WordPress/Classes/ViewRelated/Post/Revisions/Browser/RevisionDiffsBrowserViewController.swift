@@ -40,6 +40,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private lazy var doneBarButtonItem: UIBarButtonItem = {
         let doneItem = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: nil)
         doneItem.on() { [weak self] _ in
+            WPAnalytics.track(.postRevisionsDetailCancelled)
             self?.dismiss(animated: true)
         }
         doneItem.title = NSLocalizedString("Done", comment: "Label on button to dismiss revisions view")
@@ -61,6 +62,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         setupNavbarItems()
         setNextPreviousButtons()
         showRevision()
+        trackRevisionsDetailViewed(with: .list)
     }
 
     private func showRevision() {
@@ -109,11 +111,13 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private func showNext() {
         revisionState?.increaseIndex()
         showRevision()
+        trackRevisionsDetailViewed(with: .chevron)
     }
 
     private func showPrevious() {
         revisionState?.decreaseIndex()
         showRevision()
+        trackRevisionsDetailViewed(with: .chevron)
     }
 
     private func loadRevision() {
@@ -137,5 +141,19 @@ class RevisionDiffsBrowserViewController: UIViewController {
         default:
             break
         }
+    }
+}
+
+
+private extension RevisionDiffsBrowserViewController {
+    enum ShowRevisionSource: String {
+        case list
+        case chevron
+        case swipe
+    }
+
+    func trackRevisionsDetailViewed(with source: ShowRevisionSource) {
+        WPAnalytics.track(.postRevisionsDetailViewed,
+                          withProperties: [WPAppAnalyticsKeySource: source.rawValue])
     }
 }

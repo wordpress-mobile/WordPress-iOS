@@ -586,7 +586,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
     post.suggested_slug = remotePost.suggestedSlug;
-    post.revisions = [remotePost.revisions copy];
+    
+    if ([remotePost.revisions wp_isValidObject]) {
+        post.revisions = [remotePost.revisions copy];
+    }
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
@@ -602,7 +605,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         postPost.postType = remotePost.type;
-        postPost.isStickyPost = remotePost.isStickyPost;
+        postPost.isStickyPost = (remotePost.isStickyPost != nil) ? remotePost.isStickyPost.boolValue : NO;
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
         Coordinate *geolocation = nil;
@@ -682,7 +685,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
-        remotePost.isStickyPost = postPost.isStickyPost;
+
+        // Because we can't get what's the self-hosted non JetPack site capabilities
+        // only Admin users are allowed to set a post as sticky.
+        // This doesn't affect WPcom sites.
+        //
+        BOOL canMarkPostAsSticky = ([post.blog supports:BlogFeatureWPComRESTAPI] || post.blog.isAdmin);
+        remotePost.isStickyPost = canMarkPostAsSticky ? @(postPost.isStickyPost) : nil;
     }
 
     remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
