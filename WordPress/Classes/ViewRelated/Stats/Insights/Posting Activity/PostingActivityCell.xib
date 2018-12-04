@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="282" id="KGk-i7-Jjw" customClass="PostingActivityCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="342" height="282"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="342" height="281.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="BVC-pc-qhM" userLabel="Months Stack View">
+                        <rect key="frame" x="20" y="0.0" width="302" height="185.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="135" id="Gdi-iJ-OMR"/>
+                        </constraints>
+                    </stackView>
+                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MNM-OS-iwT" userLabel="Legend View">
+                        <rect key="frame" x="0.0" y="193.5" width="342" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="mRd-EA-DY4"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="View More" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ebf-DK-vok" userLabel="View More">
+                        <rect key="frame" x="0.0" y="237.5" width="342" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="wMp-MS-MvI"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Ebf-DK-vok" secondAttribute="bottom" id="4rF-UC-r4K"/>
+                    <constraint firstAttribute="trailing" secondItem="Ebf-DK-vok" secondAttribute="trailing" id="9NC-2a-AZw"/>
+                    <constraint firstAttribute="trailing" secondItem="MNM-OS-iwT" secondAttribute="trailing" id="Dpp-ja-Ppb"/>
+                    <constraint firstItem="Ebf-DK-vok" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="JDd-cy-7tq"/>
+                    <constraint firstItem="MNM-OS-iwT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KRO-SV-yPt"/>
+                    <constraint firstItem="BVC-pc-qhM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="OWn-0r-61f"/>
+                    <constraint firstItem="Ebf-DK-vok" firstAttribute="top" secondItem="MNM-OS-iwT" secondAttribute="bottom" id="Uhe-Yp-REL"/>
+                    <constraint firstAttribute="trailing" secondItem="BVC-pc-qhM" secondAttribute="trailing" constant="20" id="bCQ-sr-6gB"/>
+                    <constraint firstItem="BVC-pc-qhM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="nBp-6G-xOQ"/>
+                    <constraint firstItem="MNM-OS-iwT" firstAttribute="top" secondItem="BVC-pc-qhM" secondAttribute="bottom" constant="8" id="zfF-S9-Fqj"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="monthsStackView" destination="BVC-pc-qhM" id="IlC-oK-tm8"/>
+            </connections>
+            <point key="canvasLocation" x="-502.39999999999998" y="82.758620689655174"/>
+        </tableViewCell>
+    </objects>
+</document>

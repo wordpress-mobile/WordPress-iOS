@@ -67,7 +67,8 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.todaysStats))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
             case .postingActivity:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.postingActivity))
+                tableRows.append(PostingActivityRow())
             case .publicize:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.publicize))
                 tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: Publicize.itemSubtitle,
@@ -101,6 +102,7 @@ private extension SiteStatsInsightsViewModel {
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
+        static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
     }
 
     struct AllTimeStats {
