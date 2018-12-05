@@ -479,6 +479,7 @@
 		738B9A5921B85CF20005062B /* KeyboardInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4C21B85CF20005062B /* KeyboardInfo.swift */; };
 		738B9A5A21B85CF20005062B /* SiteCreationHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4D21B85CF20005062B /* SiteCreationHeaderData.swift */; };
 		738B9A5C21B85EB00005062B /* UIView+ContentLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A5B21B85EB00005062B /* UIView+ContentLayout.swift */; };
+		738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A5D21B8632E0005062B /* UITableView+Header.swift */; };
 		7396FE66210F730600496D0D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
 		73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */; };
 		73ACDF9C2118AF7000233AD4 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -2293,6 +2294,7 @@
 		738B9A4C21B85CF20005062B /* KeyboardInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardInfo.swift; sourceTree = "<group>"; };
 		738B9A4D21B85CF20005062B /* SiteCreationHeaderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderData.swift; sourceTree = "<group>"; };
 		738B9A5B21B85EB00005062B /* UIView+ContentLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ContentLayout.swift"; sourceTree = "<group>"; };
+		738B9A5D21B8632E0005062B /* UITableView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Header.swift"; sourceTree = "<group>"; };
 		7396FE65210F730600496D0D /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSupportService.swift; sourceTree = "<group>"; };
 		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -5055,6 +5057,7 @@
 				738B9A4A21B85CF20005062B /* TableDataCoordinator.swift */,
 				738B9A4B21B85CF20005062B /* TitleSubtitleHeader.swift */,
 				738B9A4821B85CF20005062B /* TitleSubtitleTextfieldHeader.swift */,
+				738B9A5D21B8632E0005062B /* UITableView+Header.swift */,
 				738B9A5B21B85EB00005062B /* UIView+ContentLayout.swift */,
 			);
 			path = Shared;
@@ -9775,6 +9778,7 @@
 				D865721221869C590023A99C /* WizardStep.swift in Sources */,
 				43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */,
 				43290D0A215E8B1200F6B398 /* QuickStartSpotlightView.swift in Sources */,
+				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
 				D8A468DB2181BC8B0094B82F /* SiteVertical.swift in Sources */,
 				7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */,
