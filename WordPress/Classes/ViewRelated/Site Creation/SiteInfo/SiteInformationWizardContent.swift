@@ -184,23 +184,12 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupConstraints() {
-        let prevailingLayoutGuide: UILayoutGuide
-        if WPDeviceIdentification.isiPad() {
-            prevailingLayoutGuide = view.readableContentGuide
-        } else {
-            if #available(iOS 11.0, *) {
-                prevailingLayoutGuide = view.safeAreaLayoutGuide
-            } else {
-                prevailingLayoutGuide = view.layoutMarginsGuide
-            }
-        }
+        table.cellLayoutMarginsFollowReadableWidth = true
 
         NSLayoutConstraint.activate([
-            table.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor),
-            table.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor),
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
-
-        table.cellLayoutMarginsFollowReadableWidth = true
     }
 
     @objc
