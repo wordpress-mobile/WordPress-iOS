@@ -1,7 +1,10 @@
 @objc class UntouchableWindow: UIWindow {
+    let untouchableViewController: UntouchableViewController
+
     override init(frame: CGRect) {
+        untouchableViewController = UntouchableViewController()
         super.init(frame: frame)
-        rootViewController = UntouchableViewController()
+        rootViewController = untouchableViewController
     }
 
     required init?(coder aDecoder: NSCoder) {

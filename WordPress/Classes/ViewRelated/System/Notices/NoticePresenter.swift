@@ -5,9 +5,14 @@ import WordPressFlux
 
 class NoticePresenter: NSObject {
     private let store: NoticeStore
-    private var presentingViewController: UIViewController
+    private let window: UntouchableWindow
+    private var view: UIView {
+        guard let view = window.rootViewController?.view else {
+            fatalError("Root view controller shouldn't be nil")
+        }
+        return view
+    }
     private var currentContainer: NoticeContainerView?
-    private var window: UIWindow?
 
     let generator = UINotificationFeedbackGenerator()
 
@@ -16,11 +21,17 @@ class NoticePresenter: NSObject {
     private init(store: NoticeStore) {
         self.store = store
 
-        self.presentingViewController = UIViewController()
+        let windowFrame: CGRect
+        if let mainWindow = UIApplication.shared.keyWindow {
+            windowFrame = mainWindow.offsetToAvoidStatusBar()
+        } else {
+            windowFrame = .zero
+        }
+        window = UntouchableWindow(frame: windowFrame)
+        window.windowLevel = .alert
+        window.makeKeyAndVisible()
 
         super.init()
-
-        self.presentingViewController = createOrReturnWindow().rootViewController!
 
         storeReceipt = store.onChange { [weak self] in
             self?.presentNextNoticeIfAvailable()
@@ -63,10 +74,6 @@ class NoticePresenter: NSObject {
     }
 
     private func presentNoticeInForeground(_ notice: Notice) {
-        guard let view = presentingViewController.view else {
-            return
-        }
-
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
@@ -107,59 +114,30 @@ class NoticePresenter: NSObject {
         })
     }
 
-    private func createOrReturnWindow() -> UIWindow {
-        guard let window = window else {
-            let newWindow = createNewWindow()
-            self.window = newWindow
-            return newWindow
-        }
-        return window
-    }
-
-    private func createNewWindow() -> UIWindow {
-        guard let mainWindow = UIApplication.shared.keyWindow else {
-            fatalError("The key window shouldn't be nil")
-        }
-
-        let offsetWindowFrame = mainWindow.offsetToAvoidStatusBar()
-        let newWindow = UntouchableWindow(frame: offsetWindowFrame)
-        newWindow.windowLevel = .alert
-        newWindow.makeKeyAndVisible()
-        mainWindow.makeKey()
-        return newWindow
-    }
-
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
         return { [weak self] in
-            guard let strongSelf = self,
-                let view = strongSelf.presentingViewController.view else {
+            guard let self = self else {
                 return
             }
 
             noticeContainer.noticeView.alpha = WPAlphaZero
-            noticeContainer.bottomConstraint?.constant = strongSelf.offscreenBottomOffset
+            noticeContainer.bottomConstraint?.constant = self.window.untouchableViewController.offsetOffscreen
 
-            view.layoutIfNeeded()
+            self.view.layoutIfNeeded()
         }
     }
 
     private func onscreenState(for noticeContainer: NoticeContainerView)  -> (() -> ()) {
         return { [weak self] in
-            guard let strongSelf = self,
-                let view = strongSelf.presentingViewController.view else {
-                    return
+            guard let self = self else {
+                return
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
 
-            switch self?.presentingViewController {
-            case let vc as UntouchableViewController:
-                noticeContainer.bottomConstraint?.constant = -vc.offsetOnscreen
-            default:
-                noticeContainer.bottomConstraint?.constant = 0
-            }
+            noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
 
-            view.layoutIfNeeded()
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -188,34 +166,13 @@ class NoticePresenter: NSObject {
     }
 
     private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
-        if let tabBarController = presentingViewController as? UITabBarController {
-            tabBarController.view.insertSubview(noticeContainer, belowSubview: tabBarController.tabBar)
-        } else {
-            presentingViewController.view.addSubview(noticeContainer)
-        }
+        view.addSubview(noticeContainer)
     }
 
     private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
-        let constraint: NSLayoutConstraint
-        if let tabBarController = presentingViewController as? UITabBarController {
-            constraint = container.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor)
-        } else {
-            // Force unwrapping, as the calling method has already guarded against a nil view
-            constraint = container.bottomAnchor.constraint(equalTo: presentingViewController.view!.bottomAnchor)
-        }
-
+        let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
-    }
-
-    private var offscreenBottomOffset: CGFloat {
-        if let tabBarController = presentingViewController as? UITabBarController {
-            return tabBarController.tabBar.bounds.height
-        } else if let vc = presentingViewController as? UntouchableViewController {
-            return vc.offsetOffscreen
-        } else {
-            return 0
-        }
     }
 
     typealias AnimationBlock = () -> Void
