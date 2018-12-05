@@ -92,20 +92,29 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
+        print("==== table width ===", table.frame.width )
+        let initialHeaderFrame = CGRect(x: 0, y: 0, width: Int(table.frame.width), height: 0)
+        let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
-        table.tableHeaderView = header
+        var fittingSize = UIView.layoutFittingCompressedSize
+        fittingSize.width = table.frame.size.width
+        let size = header.systemLayoutSizeFitting(fittingSize,
+                                                  withHorizontalFittingPriority: .required,
+                                                  verticalFittingPriority: .fittingSizeLevel)
+
+        let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: Int(table.frame.width), height: Int(size.height)))
+
+        table.tableHeaderView = headerContainer
+        headerContainer.addSubview(header)
 
         NSLayoutConstraint.activate([
-            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: table.topAnchor)
-        ])
-
-        table.tableHeaderView?.layoutIfNeeded()
-        table.tableHeaderView = table.tableHeaderView
+            header.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
+            header.widthAnchor.constraint(lessThanOrEqualTo: headerContainer.widthAnchor, multiplier: 1.0),
+            header.topAnchor.constraint(equalTo: headerContainer.topAnchor),
+            header.heightAnchor.constraint(equalTo: headerContainer.heightAnchor)
+            ])
     }
 
     private func initCancelButton() {
