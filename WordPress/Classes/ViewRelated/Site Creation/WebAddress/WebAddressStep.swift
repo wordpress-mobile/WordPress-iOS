@@ -17,7 +17,6 @@ final class WebAddressStep: WizardStep {
 
     private func didSelect(_ address: DomainSuggestion) {
         creator.address = address
-//        // Will have to transit to the success step
-//        delegate?.wizard(self, willNavigateTo: FinalStep.identifier)
+        delegate?.nextStep()
     }
 }
