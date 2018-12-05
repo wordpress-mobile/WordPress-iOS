@@ -121,10 +121,7 @@ class NoticePresenter: NSObject {
             fatalError("The key window shouldn't be nil")
         }
 
-        let offsetWindowFrame = mainWindow.frame.inset(by: UIEdgeInsets(top: Offsets.minimalEdgeOffset,
-                                                        left: Offsets.minimalEdgeOffset,
-                                                        bottom: Offsets.minimalEdgeOffset,
-                                                        right: Offsets.minimalEdgeOffset))
+        let offsetWindowFrame = mainWindow.offsetToAvoidStatusBar()
         let newWindow = UntouchableWindow(frame: offsetWindowFrame)
         newWindow.windowLevel = .alert
         newWindow.makeKeyAndVisible()
@@ -246,6 +243,21 @@ class NoticePresenter: NSObject {
         static let appearanceSpringVelocity: CGFloat = 0.0
         static let dismissDelay: TimeInterval = 5.0
     }
+}
+
+private extension UIWindow {
+    /// Returns a rectangle based on this window offset such that a new window created
+    /// with this frame will not overtake the status bar responsibilities
+    ///
+    /// - Returns: CGRect based on this window's frame
+    /// - Note: Turns out that a small alteration to the frame is enough to accomplish this.
+    func offsetToAvoidStatusBar() -> CGRect {
+        return self.frame.inset(by: UIEdgeInsets(top: Offsets.minimalEdgeOffset,
+                                                left: Offsets.minimalEdgeOffset,
+                                                bottom: Offsets.minimalEdgeOffset,
+                                                right: Offsets.minimalEdgeOffset))
+    }
+
     private enum Offsets {
         static let minimalEdgeOffset: CGFloat = 1.0
     }
