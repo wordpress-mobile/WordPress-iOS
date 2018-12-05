@@ -2,13 +2,89 @@ import UIKit
 import Gridicons
 import WordPressShared
 
-final class TitleSubtitleTextfieldHeader: UIView {
+// MARK: - SearchTextField
+
+private final class SearchTextField: UITextField {
+
+    // MARK: Properties
+
     private struct Constants {
-        static let iconWidth: CGFloat = 18.0
-        static let searchHeight: CGFloat = 44.0
-        static let searchMargins: CGFloat = 6.0
-        static let spacing: CGFloat = 10.0
+        static let iconDimension    = CGFloat(18)
+        static let iconInset        = CGFloat(19)
+        static let searchHeight     = CGFloat(44)
+        static let textInset        = CGFloat(56)
     }
+
+    // MARK: UIView
+
+    init() {
+        super.init(frame: .zero)
+        initialize()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: UITextField
+
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.insetBy(dx: Constants.textInset, dy: 0)
+    }
+
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.insetBy(dx: Constants.textInset, dy: 0)
+    }
+
+    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        let iconY = (bounds.height - Constants.iconDimension) / 2
+        return CGRect(x: Constants.iconInset, y: iconY, width: Constants.iconDimension, height: Constants.iconDimension)
+    }
+
+    override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        let iconX = bounds.width - Constants.iconInset - Constants.iconDimension
+        let iconY = (bounds.height - Constants.iconDimension) / 2
+        return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: bounds.height)
+    }
+
+    // MARK: Private behavior
+
+    private func initialize() {
+        translatesAutoresizingMaskIntoConstraints = false
+
+        backgroundColor = .white
+        clearButtonMode = .whileEditing
+        font = WPStyleGuide.fixedFont(for: .headline)
+        textColor = WPStyleGuide.darkGrey()
+
+        let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
+        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
+        let imageView = UIImageView(image: loupeIcon)
+
+        if traitCollection.layoutDirection == .rightToLeft {
+            rightView = imageView
+            rightViewMode = .always
+        } else {
+            leftView = imageView
+            leftViewMode = .always
+        }
+
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+            ])
+    }
+}
+
+// MARK: - TitleSubtitleTextfieldHeader
+
+final class TitleSubtitleTextfieldHeader: UIView {
+
+    // MARK: Properties
+
+    private struct Constants {
+        static let spacing = CGFloat(10)
+    }
+
     private lazy var titleSubtitle: TitleSubtitleHeader = {
         let returnValue = TitleSubtitleHeader(frame: .zero)
         returnValue.translatesAutoresizingMaskIntoConstraints = false
@@ -16,51 +92,23 @@ final class TitleSubtitleTextfieldHeader: UIView {
         return returnValue
     }()
 
-    lazy var textField: UITextField = {
-        let returnValue = UITextField(frame: .zero)
-        returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.leftViewMode = .always
-        returnValue.clearButtonMode = .whileEditing
-        returnValue.font = WPStyleGuide.fixedFont(for: .headline)
-        returnValue.textColor = WPStyleGuide.darkGrey()
-
-        let iconSize = CGSize(width: Constants.iconWidth, height: Constants.iconWidth)
-        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
-        let imageView = UIImageView(image: loupeIcon)
-        returnValue.leftView = imageView
-
-        return returnValue
-    }()
-
-    private lazy var searchBackground: UIView = {
-        let returnValue = UIView(frame: .zero)
-        returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.backgroundColor = .white
-
-        return returnValue
-    }()
+    private(set) var textField: UITextField = SearchTextField()
 
     private lazy var stackView: UIStackView = {
-        let search = self.searchBackground
-        search.addSubview(self.textField)
-        NSLayoutConstraint.activate([
-            self.textField.heightAnchor.constraint(equalToConstant: Constants.searchHeight),
-            self.textField.centerYAnchor.constraint(equalTo: search.centerYAnchor),
-            self.textField.leadingAnchor.constraint(equalTo: search.leadingAnchor, constant: Constants.searchMargins),
-            self.textField.trailingAnchor.constraint(equalTo: search.trailingAnchor, constant: -1 * Constants.searchMargins)
-            ])
 
-        let returnValue = UIStackView(arrangedSubviews: [self.titleSubtitle, search])
+        let returnValue = UIStackView(arrangedSubviews: [self.titleSubtitle, self.textField])
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.axis = .vertical
         returnValue.spacing = Constants.spacing
-        returnValue.isLayoutMarginsRelativeArrangement = true
         NSLayoutConstraint.activate([
-            search.heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+            textField.leadingAnchor.constraint(equalTo: returnValue.leadingAnchor),
+            textField.trailingAnchor.constraint(equalTo: returnValue.trailingAnchor)
         ])
 
         return returnValue
     }()
+
+    // MARK: UIView
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -72,14 +120,17 @@ final class TitleSubtitleTextfieldHeader: UIView {
         setupView()
     }
 
+    // MARK: Private behavior
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1 * TitleSubtitleHeader.Margins.verticalMargin)])
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -TitleSubtitleHeader.Margins.verticalMargin)
+        ])
 
         setStyles()
     }
