@@ -115,6 +115,14 @@ extension WPStyleGuide {
         static let filterDividerColor = WPStyleGuide.greyLighten20()
 
         static let gridiconSize = CGSize(width: 24, height: 24)
+
+        struct PostingActivityRangeColors {
+            static let lightGrey = WPStyleGuide.greyLighten20()
+            static let lightBlue = UIColor(fromRGBAColorWithRed: 145.0, green: 226.0, blue: 251.0, alpha: 1)
+            static let mediumBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 190.0, blue: 246.0, alpha: 1)
+            static let darkBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 131.0, blue: 169.0, alpha: 1)
+            static let darkGrey = WPStyleGuide.darkGrey()
+        }
     }
 
 }
