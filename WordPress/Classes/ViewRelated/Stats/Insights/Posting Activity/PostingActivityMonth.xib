@@ -44,7 +44,7 @@
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwA-4h-vvH">
                             <rect key="frame" x="0.0" y="112" width="104" height="15"/>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -70,11 +70,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="monthLabel" destination="bwA-4h-vvH" id="bgh-pj-R3H"/>
-                <outlet property="week1StackView" destination="nbe-Lb-suT" id="Ti1-33-Pb4"/>
-                <outlet property="week2StackView" destination="COM-jH-men" id="2LL-R5-bvJ"/>
-                <outlet property="week3StackView" destination="WDT-0d-NAA" id="uYb-Gx-4wq"/>
-                <outlet property="week4StackView" destination="eV7-Nx-OY2" id="Q4B-gt-zuF"/>
-                <outlet property="week5StackView" destination="3sq-7H-ZRj" id="fnh-Yn-BXR"/>
+                <outlet property="weeksStackView" destination="wsv-pN-Bz5" id="WFe-bf-LeC"/>
             </connections>
             <point key="canvasLocation" x="-1003.2" y="-150.22488755622189"/>
         </view>

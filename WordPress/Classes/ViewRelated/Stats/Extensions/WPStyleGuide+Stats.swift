@@ -67,6 +67,11 @@ extension WPStyleGuide {
             label.textColor = secondaryTextColor
         }
 
+        static func configureLabelAsPostingMonth(_ label: UILabel) {
+            label.textColor = defaultTextColor
+            label.font = subTitleFont
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 

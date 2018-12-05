@@ -286,11 +286,13 @@ private extension SiteStatsInsightsViewModel {
     func createPostingActivityRow() -> PostingActivityRow {
         var monthsData = [[PostingActivityDayData]]()
 
-        let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date())!
-        monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
+        if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
+            monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
+        }
 
-        let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-        monthsData.append(store.getMonthlyPostingActivityFor(date: oneMonthAgo))
+        if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+            monthsData.append(store.getMonthlyPostingActivityFor(date: oneMonthAgo))
+        }
 
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
