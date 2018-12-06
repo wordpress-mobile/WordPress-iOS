@@ -173,6 +173,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showPostingActivityDetails() {
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
+        postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
 }

@@ -15,6 +15,8 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
+    var yearData: [[PostingActivityDayData]]?
+
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Init
@@ -54,6 +56,11 @@ extension PostingActivityViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingActivityCollectionViewCell.defaultReuseID, for: indexPath) as! PostingActivityCollectionViewCell
+
+        if let yearData = yearData,
+            indexPath.row < yearData.count {
+            cell.configure(withData: yearData[indexPath.row])
+        }
 
         return cell
     }

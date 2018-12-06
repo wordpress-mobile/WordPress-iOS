@@ -6,4 +6,8 @@ class PostingActivityCollectionViewCell: UICollectionViewCell, NibReusable {
         super.awakeFromNib()
     }
 
+    func configure(withData monthData: [PostingActivityDayData]) {
+
+    }
+
 }
