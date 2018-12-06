@@ -130,8 +130,7 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
     
-    ## pod 'WordPressAuthenticator', '~> 1.1.6'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS', :branch => 'feature/35-expose-login-text'
+    pod 'WordPressAuthenticator', '~> 1.1.7-beta.1'
 
     aztec
     wordpress_ui
