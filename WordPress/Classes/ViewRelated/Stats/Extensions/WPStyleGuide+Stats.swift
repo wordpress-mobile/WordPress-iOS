@@ -76,6 +76,14 @@ extension WPStyleGuide {
             label.textColor = defaultTextColor
         }
 
+        static func configureLabelAsPostingDate(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
+        static func configureLabelAsPostingCount(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
