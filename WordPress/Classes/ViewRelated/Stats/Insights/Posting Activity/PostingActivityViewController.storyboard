@@ -28,7 +28,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="mMp-tO-KZZ">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="mMp-tO-KZZ" customClass="PostingActivityCollectionViewCell" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -37,6 +37,10 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="pOs-1s-W7x" id="J5E-FX-QvY"/>
+                                    <outlet property="delegate" destination="pOs-1s-W7x" id="6jU-fH-Gmv"/>
+                                </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IqY-8C-H2V" userLabel="Seperator Line">
                                 <rect key="frame" x="0.0" y="578.5" width="375" height="0.5"/>
@@ -99,6 +103,7 @@
                         <viewLayoutGuide key="safeArea" id="3b1-gt-7OF"/>
                     </view>
                     <connections>
+                        <outlet property="collectionView" destination="W1p-n7-SZX" id="fFv-yq-t9F"/>
                         <outlet property="dateLabel" destination="Jvw-o4-5Sa" id="1w6-pk-59K"/>
                         <outlet property="dayDataView" destination="UYH-kF-no5" id="Pqn-xk-E1p"/>
                         <outlet property="legendView" destination="leG-jd-QdI" id="Ad0-B5-a5E"/>

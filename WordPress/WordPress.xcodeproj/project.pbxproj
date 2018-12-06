@@ -828,6 +828,8 @@
 		981C82B62193A7B900A06E84 /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
 		981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C986621B9BDF300A7C0C8 /* PostingActivityViewController.swift */; };
 		981C986B21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 981C986A21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard */; };
+		981C986E21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C986C21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift */; };
+		981C986F21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 981C986D21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.xib */; };
 		981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */; };
 		9822D8DD214194EB0092CBD1 /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		9822D8DE214194EB0092CBD1 /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
@@ -2705,6 +2707,8 @@
 		981C82B52193A7B900A06E84 /* Double+Stats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Stats.swift"; sourceTree = "<group>"; };
 		981C986621B9BDF300A7C0C8 /* PostingActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityViewController.swift; sourceTree = "<group>"; };
 		981C986A21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PostingActivityViewController.storyboard; sourceTree = "<group>"; };
+		981C986C21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityCollectionViewCell.swift; sourceTree = "<group>"; };
+		981C986D21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostingActivityCollectionViewCell.xib; sourceTree = "<group>"; };
 		981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+MediaLibrary.swift"; sourceTree = "<group>"; };
 		9826AE8021B5C6A700C851FA /* LatestPostSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestPostSummaryCell.swift; sourceTree = "<group>"; };
 		9826AE8121B5C6A700C851FA /* LatestPostSummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LatestPostSummaryCell.xib; sourceTree = "<group>"; };
@@ -5975,6 +5979,8 @@
 				9826AE8B21B5CC8D00C851FA /* PostingActivityMonth.xib */,
 				981C986621B9BDF300A7C0C8 /* PostingActivityViewController.swift */,
 				981C986A21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard */,
+				981C986C21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift */,
+				981C986D21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.xib */,
 			);
 			path = "Posting Activity";
 			sourceTree = "<group>";
@@ -8392,6 +8398,7 @@
 				9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */,
 				E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */,
 				B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */,
+				981C986F21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				9826AE8321B5C6A700C851FA /* LatestPostSummaryCell.xib in Resources */,
@@ -9329,6 +9336,7 @@
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
+				981C986E21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift in Sources */,
 				436D55D9210F85DD00CEAA33 /* NibLoadable.swift in Sources */,
 				D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */,
 				436D56222117312700CEAA33 /* RegisterDomainDetailsViewModel.swift in Sources */,

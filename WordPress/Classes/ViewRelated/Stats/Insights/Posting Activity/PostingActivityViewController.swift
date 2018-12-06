@@ -8,11 +8,12 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var separatorLine: UIView!
     @IBOutlet weak var dayDataView: UIView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
-    @IBOutlet weak var separatorLine: UIView!
 
     private typealias Style = WPStyleGuide.Stats
 
@@ -24,9 +25,44 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
         addLegend()
         applyStyles()
 
+        collectionView.register(PostingActivityCollectionViewCell.defaultNib,
+                                forCellWithReuseIdentifier: PostingActivityCollectionViewCell.defaultReuseID)
+
         // Hide the day data view until a day is selected.
         dayDataView.isHidden = true
     }
+
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension PostingActivityViewController: UICollectionViewDelegate {
+
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension PostingActivityViewController: UICollectionViewDataSource {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 12
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingActivityCollectionViewCell.defaultReuseID, for: indexPath) as! PostingActivityCollectionViewCell
+
+        return cell
+    }
+
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension PostingActivityViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
