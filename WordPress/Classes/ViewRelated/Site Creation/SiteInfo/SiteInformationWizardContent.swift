@@ -1,6 +1,7 @@
 import UIKit
+import WordPressAuthenticator
 
-typealias SIteInformationCompletion = (SiteInformation) -> Void
+typealias SiteInformationCompletion = (SiteInformation) -> Void
 
 final class SiteInformationWizardContent: UIViewController {
     private enum Rows: Int, CaseIterable {
@@ -16,10 +17,19 @@ final class SiteInformationWizardContent: UIViewController {
         }
     }
 
-    private let completion: SIteInformationCompletion
+    private struct Constants {
+        static let bottomMargin: CGFloat = 0.0
+        static let footerHeight: CGFloat = 42.0
+        static let footerVerticalMargin: CGFloat = 6.0
+        static let footerHorizontalMargin: CGFloat = 16.0
+    }
+
+    private let completion: SiteInformationCompletion
 
     @IBOutlet weak var table: UITableView!
-    @IBOutlet weak var nextStep: UIButton!
+    @IBOutlet weak var nextStep: NUXButton!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonWrapper: ShadowView!
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("Basic information", comment: "Create site, step 3. Select basic information. Title")
@@ -28,7 +38,7 @@ final class SiteInformationWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
-    init(completion: @escaping SIteInformationCompletion) {
+    init(completion: @escaping SiteInformationCompletion) {
         self.completion = completion
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
@@ -43,7 +53,23 @@ final class SiteInformationWizardContent: UIViewController {
         applyTitle()
         setupBackground()
         setupTable()
+        setupButtonWrapper()
         setupNextButton()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToKeyboardNotifications()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
     }
 
     private func applyTitle() {
@@ -59,9 +85,10 @@ final class SiteInformationWizardContent: UIViewController {
         setupTableSeparator()
         registerCell()
         setupHeader()
+        setupFooter()
+        setupConstraints()
 
         table.dataSource = self
-        table.delegate = self
     }
 
     private func setupTableBackground() {
@@ -79,41 +106,93 @@ final class SiteInformationWizardContent: UIViewController {
         )
     }
 
+    private func setupButtonWrapper() {
+        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
     private func setupNextButton() {
         nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
 
+        setupButtonAsSkip()
+    }
+
+    private func setupButtonAsSkip() {
+        let buttonTitle = NSLocalizedString("Skip", comment: "Button to progress to the next step")
+        nextStep.setTitle(buttonTitle, for: .normal)
+        nextStep.accessibilityLabel = buttonTitle
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates to the next step")
+
+        nextStep.isPrimary = false
+    }
+
+    private func setupButtonAsNext() {
         let buttonTitle = NSLocalizedString("Next", comment: "Button to progress to the next step")
         nextStep.setTitle(buttonTitle, for: .normal)
         nextStep.accessibilityLabel = buttonTitle
-        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step", comment: "Site creation. Navigates tot he next step")
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step saving changes", comment: "Site creation. Navigates to the next step")
+
+        nextStep.isPrimary = true
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
+        print("==== table width ===", table.frame.width )
+        let initialHeaderFrame = CGRect(x: 0, y: 0, width: Int(table.frame.width), height: 0)
+        let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
         table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: table.topAnchor)
+        ])
+    }
+
+    private func setupFooter() {
+        let footer = UIView(frame: CGRect(x: 0.0, y: 0.0, width: table.frame.width, height: Constants.footerHeight))
+
+        let title = UILabel(frame: .zero)
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.textAlignment = .natural
+        title.numberOfLines = 0
+        title.textColor = WPStyleGuide.greyDarken20()
+        title.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
+        title.text = TableStrings.footer
+
+        footer.addSubview(title)
+
+        NSLayoutConstraint.activate([
+            title.heightAnchor.constraint(equalTo: footer.heightAnchor),
+            title.leadingAnchor.constraint(equalTo: footer.leadingAnchor, constant: Constants.footerHorizontalMargin),
+            title.trailingAnchor.constraint(equalTo: footer.trailingAnchor, constant: -1 * Constants.footerHorizontalMargin),
+            title.topAnchor.constraint(equalTo: footer.topAnchor, constant: Constants.footerVerticalMargin)
             ])
 
-        table.tableHeaderView?.layoutIfNeeded()
-        table.tableHeaderView = table.tableHeaderView
+        table.tableFooterView = footer
+    }
+
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
     }
 
     @objc
     private func goNext() {
-        guard let titleCell = cell(at: IndexPath(row: Rows.title.rawValue, section: 0)),
-            let taglineCell = cell(at: IndexPath(row: Rows.tagline.rawValue, section: 0)) else {
-            return
-        }
-
-        let collectedData = SiteInformation(title: titleCell.valueTextField.text ?? "", tagLine: taglineCell.valueTextField.text)
+        let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
         completion(collectedData)
+    }
+
+    private func titleString() -> String {
+        return cell(at: IndexPath(row: Rows.title.rawValue, section: 0))?.valueTextField.text ?? ""
+    }
+
+    private func taglineString() -> String {
+        return cell(at: IndexPath(row: Rows.tagline.rawValue, section: 0))?.valueTextField.text ?? ""
     }
 
     private func cell(at: IndexPath) -> InlineEditableNameValueCell? {
@@ -126,7 +205,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         static let site = NSLocalizedString("Site Title", comment: "Site info. Title")
         static let tagline = NSLocalizedString("Tagline", comment: "Site info. Tagline")
         static let taglinePlaceholder = NSLocalizedString("Optional Tagline", comment: "Site info. Tagline placeholder")
-        static let footer = NSLocalizedString("The tagline is a short line of text shown right below the title", comment: "Site info. Table footer.")
+        static let footer = NSLocalizedString("The tagline is a short line of text shown right below the title.", comment: "Site info. Table footer.")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -143,25 +222,111 @@ extension SiteInformationWizardContent: UITableViewDataSource {
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return TableStrings.footer
-    }
-
     private func configure(_ cell: InlineEditableNameValueCell, index: IndexPath) {
         if Rows.title.matches(index.row) {
             cell.nameLabel.text = TableStrings.site
-            cell.valueTextField.placeholder = TableStrings.site
+            cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.site)
+            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
         }
 
         if Rows.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
-            cell.valueTextField.placeholder = TableStrings.taglinePlaceholder
+            cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.taglinePlaceholder)
+            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
         }
+
+        cell.nameLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        cell.nameLabel.textColor = WPStyleGuide.darkGrey()
+
+        cell.valueTextField.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        cell.valueTextField.textColor = WPStyleGuide.greyDarken30()
+
+        if cell.delegate == nil {
+            cell.delegate = self
+        }
+    }
+
+    private func attributedPlaceholder(text: String) -> NSAttributedString {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: WPStyleGuide.grey(),
+            .font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        ]
+
+        return NSAttributedString(string: text, attributes: attributes)
     }
 }
 
-extension SiteInformationWizardContent: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionFooter(view)
+extension SiteInformationWizardContent: InlineEditableNameValueCellDelegate {
+    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
+                                      valueTextFieldDidChange valueTextField: UITextField) {
+        updateButton()
+    }
+
+    private func updateButton() {
+        formIsFilled() ? setupButtonAsNext() : setupButtonAsSkip()
+    }
+
+    private func formIsFilled() -> Bool {
+        return !titleString().isEmpty || !taglineString().isEmpty
+    }
+}
+
+extension SiteInformationWizardContent {
+    private func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else { return }
+        let keyboardScreenFrame = payload.frameEnd
+
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+
+        var constraintConstant = convertedKeyboardFrame.height
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
+
+        let animationDuration = payload.animationDuration
+
+        bottomConstraint.constant = constraintConstant
+        view.setNeedsUpdateConstraints()
+
+        if table.frame.contains(convertedKeyboardFrame.origin) {
+            let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: constraintConstant, right: 0.0)
+            table.contentInset = contentInsets
+            table.scrollIndicatorInsets = contentInsets
+
+            buttonWrapper.addShadow()
+        }
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+        },
+                       completion: nil)
+    }
+
+    @objc
+    private func keyboardWillHide(_ notification: Foundation.Notification) {
+        buttonWrapper.clearShadow()
+        bottomConstraint.constant = Constants.bottomMargin
     }
 }

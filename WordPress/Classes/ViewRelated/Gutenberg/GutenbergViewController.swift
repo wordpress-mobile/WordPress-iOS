@@ -99,7 +99,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     func setHTML(_ html: String) {
         self.html = html
-        //TODO: Update Gutenberg UI
+        gutenberg.updateHtml(html)
     }
 
     func getHTML() -> String {
