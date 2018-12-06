@@ -137,8 +137,8 @@ final class VerticalsWizardContent: UIViewController {
         throttle.cancel()
 
         dataCoordinator = nil
-        table.dataSource = dataCoordinator
-        table.delegate = dataCoordinator
+        table.dataSource = nil
+        table.delegate = nil
         table.reloadData()
     }
 
