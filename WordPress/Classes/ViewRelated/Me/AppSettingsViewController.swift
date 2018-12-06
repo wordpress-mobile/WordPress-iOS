@@ -403,7 +403,7 @@ private extension AppSettingsViewController {
         }
 
         tableRows.append(mediaRemoveLocation)
-        let removeLocationFooterText = NSLocalizedString("Removes metadata about the location photos were taken before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded RELEASE-NOTES.txtmedia.")
+        let removeLocationFooterText = NSLocalizedString("Removes metadata about the location photos were taken before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded media.")
 
         return ImmuTableSection(
             headerText: privacyHeader,
