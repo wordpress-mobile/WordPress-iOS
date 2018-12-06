@@ -1,4 +1,5 @@
-/// Site Creation. Second screen: Site Verticals
+
+/// Site Creation. Third screen: Domains
 final class WebAddressStep: WizardStep {
     private let creator: SiteCreator
     private let service: SiteAddressService

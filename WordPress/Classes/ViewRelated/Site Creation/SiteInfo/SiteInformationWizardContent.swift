@@ -67,20 +67,9 @@ final class SiteInformationWizardContent: UIViewController {
         stopListeningToKeyboardNotifications()
     }
 
-    // via https://collindonnell.com/2015/09/29/dynamically-sized-table-view-header-or-footer-using-auto-layout/
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
-        if let headerView = table.tableHeaderView {
-            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            var headerFrame = headerView.frame
-
-            if height != headerFrame.size.height {
-                headerFrame.size.height = height
-                headerView.frame = headerFrame
-                table.tableHeaderView = headerView
-            }
-        }
+        table.layoutHeaderView()
     }
 
     private func applyTitle() {
@@ -184,23 +173,12 @@ final class SiteInformationWizardContent: UIViewController {
     }
 
     private func setupConstraints() {
-        let prevailingLayoutGuide: UILayoutGuide
-        if WPDeviceIdentification.isiPad() {
-            prevailingLayoutGuide = view.readableContentGuide
-        } else {
-            if #available(iOS 11.0, *) {
-                prevailingLayoutGuide = view.safeAreaLayoutGuide
-            } else {
-                prevailingLayoutGuide = view.layoutMarginsGuide
-            }
-        }
+        table.cellLayoutMarginsFollowReadableWidth = true
 
         NSLayoutConstraint.activate([
-            table.leadingAnchor.constraint(equalTo: prevailingLayoutGuide.leadingAnchor),
-            table.trailingAnchor.constraint(equalTo: prevailingLayoutGuide.trailingAnchor),
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
-
-        table.cellLayoutMarginsFollowReadableWidth = true
     }
 
     @objc

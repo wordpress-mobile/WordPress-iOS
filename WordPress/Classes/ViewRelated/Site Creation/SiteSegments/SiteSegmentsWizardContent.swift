@@ -54,11 +54,17 @@ final class SiteSegmentsWizardContent: UIViewController {
         fetchSegments()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
+    }
+
     private func setupTable() {
         setupTableBackground()
         setupTableSeparator()
         setupCell()
         setupHeader()
+        setupConstraints()
         hideSeparators()
     }
 
@@ -98,23 +104,23 @@ final class SiteSegmentsWizardContent: UIViewController {
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
-        var fittingSize = UIView.layoutFittingCompressedSize
-        fittingSize.width = table.frame.size.width
-        let size = header.systemLayoutSizeFitting(fittingSize,
-                                                  withHorizontalFittingPriority: .required,
-                                                  verticalFittingPriority: .fittingSizeLevel)
-
-        let headerContainer = UIView(frame: CGRect(x: 0, y: 0, width: Int(table.frame.width), height: Int(size.height)))
-
-        table.tableHeaderView = headerContainer
-        headerContainer.addSubview(header)
+        table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
-            header.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: headerContainer.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: headerContainer.topAnchor),
-            header.heightAnchor.constraint(equalTo: headerContainer.heightAnchor)
-            ])
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+        ])
+    }
+
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
     }
 
     private func initCancelButton() {
