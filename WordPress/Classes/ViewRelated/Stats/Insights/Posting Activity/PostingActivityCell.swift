@@ -8,6 +8,8 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var viewMoreLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
+    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+
     // MARK: - Init
 
     override func awakeFromNib() {
@@ -16,7 +18,8 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
         addLegend()
     }
 
-    func configure(monthsData: [[PostingActivityDayData]]) {
+    func configure(withData monthsData: [[PostingActivityDayData]], andDelegate delegate: SiteStatsInsightsDelegate) {
+        siteStatsInsightsDelegate = delegate
         addMonths(monthsData: monthsData)
     }
 
@@ -55,12 +58,7 @@ private extension PostingActivityCell {
     }
 
     @IBAction func didTapViewMoreButton(_ sender: UIButton) {
-        // TODO: show Posting Activity details
-        let alertController =  UIAlertController(title: "Posting Activity will be shown here.",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        siteStatsInsightsDelegate?.showPostingActivityDetails?()
     }
 
 }
