@@ -4,9 +4,12 @@ class PostingActivityMonth: UIView, NibLoadable {
 
     @IBOutlet weak var weeksStackView: UIStackView!
     @IBOutlet weak var monthLabel: UILabel!
+    @IBOutlet weak var viewWidthConstraint: NSLayoutConstraint!
 
     private var month: Date?
     private var monthData: [PostingActivityDayData]?
+
+    private let lastStackViewWidth = CGFloat(14) // 14 = day width (12) + column margin (2)
 
     func configure(monthData: [PostingActivityDayData]) {
         self.monthData = monthData
@@ -58,7 +61,6 @@ private extension PostingActivityMonth {
 
         var dayIndex = 0
         var weekIndex = 0
-        let lastWeekIndex = weeksStackView.arrangedSubviews.count - 1
 
         while dayIndex < monthData.count {
             guard weekIndex < weeksStackView.arrangedSubviews.count,
@@ -69,7 +71,7 @@ private extension PostingActivityMonth {
             for dayPosition in 0...6 {
                 // For the first and last weeks, add placeholder days so the stack view is spaced properly.
                 if (weekIndex == 0 && dayPosition < firstDayPosition) ||
-                    (weekIndex == lastWeekIndex && dayPosition > lastDayPosition) {
+                    (dayIndex >= monthData.count && dayPosition > lastDayPosition) {
                     addDayToStackView(stackView: weekStackView)
                 } else {
                     guard dayIndex < monthData.count else {
@@ -81,6 +83,8 @@ private extension PostingActivityMonth {
             }
             weekIndex += 1
         }
+
+        toggleLastStackView(lastStackViewUsed: weekIndex - 1)
     }
 
     func addDayToStackView(stackView: UIStackView, dayData: PostingActivityDayData? = nil) {
@@ -88,4 +92,17 @@ private extension PostingActivityMonth {
         dayView.configure(dayData: dayData)
         stackView.addArrangedSubview(dayView)
     }
+
+    func toggleLastStackView(lastStackViewUsed: Int) {
+        // Hide the last stack view if it was not used.
+        // Adjust the Month view width accordingly.
+
+        let lastStackViewIndex = weeksStackView.arrangedSubviews.count - 1
+        let hideLastStackView = lastStackViewUsed < lastStackViewIndex
+
+        weeksStackView.arrangedSubviews.last?.isHidden = hideLastStackView
+        let viewWidthAdjustment = hideLastStackView ? lastStackViewWidth : 0
+        viewWidthConstraint.constant -= viewWidthAdjustment
+    }
+
 }
