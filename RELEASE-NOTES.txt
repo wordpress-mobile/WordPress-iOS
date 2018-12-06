@@ -1,0 +1,1 @@
+#10407 - App Settings Privacy: Added explanation for the Remove Location from Media feature.
