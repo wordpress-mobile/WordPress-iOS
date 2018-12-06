@@ -1,0 +1,95 @@
+import UIKit
+
+final class TitleSubtitleHeader: UIView {
+    struct Margins {
+        static let horizontalMargin: CGFloat = 30.0
+
+        private static let compactVerticalMargin: CGFloat = 30.0
+        private static let regularVerticalMargin: CGFloat = 40.0
+
+        static var verticalMargin: CGFloat {
+            return WPDeviceIdentification.isiPad() ? regularVerticalMargin : compactVerticalMargin
+        }
+
+        static let interLabelVerticalSpacing = CGFloat(10)
+    }
+
+    private(set) lazy var titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+
+        return label
+    }()
+
+    private(set) lazy var subtitleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
+
+        return label
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+
+    private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(titleLabel)
+        addSubview(subtitleLabel)
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Margins.verticalMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Margins.horizontalMargin),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Margins.interLabelVerticalSpacing),
+            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
+            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Margins.horizontalMargin),
+            subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Margins.verticalMargin)
+        ])
+
+        setStyles()
+    }
+
+    private func setStyles() {
+        styleBackground()
+        styleTitle()
+        styleSubtitle()
+    }
+
+    private func styleBackground() {
+        backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func styleTitle() {
+        titleLabel.font = WPStyleGuide.fontForTextStyle(.title1, fontWeight: .bold)
+        titleLabel.textColor = WPStyleGuide.darkGrey()
+    }
+
+    private func styleSubtitle() {
+        subtitleLabel.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        subtitleLabel.textColor = WPStyleGuide.greyDarken10()
+    }
+
+    func setTitle(_ text: String) {
+        titleLabel.text = text
+        titleLabel.accessibilityLabel = text
+    }
+
+    func setSubtitle(_ text: String) {
+        subtitleLabel.text = text
+        subtitleLabel.accessibilityLabel = text
+    }
+}

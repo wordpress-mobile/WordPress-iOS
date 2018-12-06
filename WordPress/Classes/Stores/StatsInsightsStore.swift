@@ -9,6 +9,7 @@ enum InsightAction: Action {
     case receivedDotComFollowers(total: String?)
     case receivedEmailFollowers(total: String?)
     case receivedPublicize(items: [StatsItem]?)
+    case receivedTodaysStats(_ todaysStats: StatsSummary?)
     case refreshInsights()
 }
 
@@ -29,6 +30,8 @@ struct InsightStoreState {
     var fetchingEmailFollowers = false
     var publicizeItems: [StatsItem]?
     var fetchingPublicize = false
+    var todaysStats: StatsSummary?
+    var fetchingTodaysStats = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -56,6 +59,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedEmailFollowers(total: total)
         case .receivedPublicize(let items):
             receivedPublicize(items: items)
+        case .receivedTodaysStats(let todaysStats):
+            receivedTodaysStats(todaysStats)
         case .refreshInsights:
             refreshInsights()
         }
@@ -89,6 +94,7 @@ private extension StatsInsightsStore {
         state.fetchingDotComFollowers = true
         state.fetchingEmailFollowers = true
         state.fetchingPublicize = true
+        state.fetchingTodaysStats = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -101,7 +107,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedMostPopularStats(mostPopularStats))
         }, todaySummaryCompletionHandler: { (todaySummary, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching today summary: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todaySummary))
         }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
             if error != nil {
                 DDLogInfo("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
@@ -188,6 +197,13 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedTodaysStats(_ todaysStats: StatsSummary?) {
+        transaction { state in
+            state.todaysStats = todaysStats
+            state.fetchingTodaysStats = false
+        }
+    }
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
@@ -211,17 +227,28 @@ extension StatsInsightsStore {
     }
 
     func getTotalDotComFollowers() -> String? {
+        // TODO: When the API is able to, return the actual value (not a String).
         return state.totalDotComFollowers == "0" ? "" : state.totalDotComFollowers
     }
 
     func getTotalEmailFollowers() -> String? {
+        // TODO: When the API is able to, return the actual value (not a String).
         return state.totalEmailFollowers == "0" ? "" : state.totalEmailFollowers
     }
 
     func getTotalPublicizeFollowers() -> String? {
-        // TODO: When the API is able to, return total of all state.publicizeItems formatted/localized.
+        // TODO: When the API is able to, return the actual value (not a String)
+        // total of all publicize items.
         // For now, we'll just show a bogus number.
-        return "666,6666,666"
+        return "666,666,666"
+    }
+
+    func getPublicize() -> [StatsItem]? {
+        return state.publicizeItems
+    }
+
+    func getTodaysStats() -> StatsSummary? {
+        return state.todaysStats
     }
 
     var isFetching: Bool {
@@ -230,6 +257,7 @@ extension StatsInsightsStore {
             state.fetchingMostPopularStats ||
             state.fetchingDotComFollowers ||
             state.fetchingEmailFollowers ||
-            state.fetchingPublicize
+            state.fetchingPublicize ||
+            state.fetchingTodaysStats
     }
 }

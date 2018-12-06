@@ -1,6 +1,4 @@
-- We've added support for Post Revisions, which allow you to view a history of changes to a post. You can even roll back to a specific revision, if necessary!
-- Build your site out on the go: add plugins to websites on the business plan right from the app. If your site’s brand new and doesn’t have a custom domain — which is a prerequisite for adding plugins — we’ll help you get one set up.
-- We've made improvements to the editor for Gutenberg compatibility.
-- We've improved the accuracy of the character count when editing posts
-- Now it's a little easier to manage the users on your site (uses a filter bar instead of a dropdown)
-- Fixes some bugs (a crash when the app is offline, improved reader stability, and a bug that could cause some data loss in the editor), and polished up the UI in a few places
+The annoying bug that kept users with author or contributor rights on self-hosted sites from being able to publish posts has been squashed. Publish away, authors!
+Most of what changes in this update is small or behind-the-scenes — even if you don’t see them, you’ll feel them:
+ - There’s better support for translators, especially when they’re trying to translate things with dynamic elements, like email addresses and phone numbers. Ultimately, this means more people whose default language is something other than English will see better translations across the app.
+ - We’re continuing to polish the UI to make the app super-duper to use on an iPad — things like better margins and alignments, especially after rotating from landscape to portrait, that make the whole experience of using the app smoother.

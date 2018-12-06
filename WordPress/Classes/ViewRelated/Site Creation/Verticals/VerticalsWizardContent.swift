@@ -40,6 +40,11 @@ final class VerticalsWizardContent: UIViewController {
         setupTable()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
+    }
+
     private func applyTitle() {
         title = NSLocalizedString("1 of 3", comment: "Site creation. Step 2. Screen title")
     }
@@ -52,6 +57,7 @@ final class VerticalsWizardContent: UIViewController {
         setupTableBackground()
         setupCell()
         setupHeader()
+        setupConstraints()
         hideSeparators()
     }
 
@@ -84,18 +90,26 @@ final class VerticalsWizardContent: UIViewController {
         table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: table.topAnchor)
         ])
+    }
 
-        table.tableHeaderView?.layoutIfNeeded()
-        table.tableHeaderView = table.tableHeaderView
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
     }
 
     @objc
     private func textChanged(sender: UITextField) {
         guard let searchTerm = sender.text, searchTerm.isEmpty == false else {
+            clearContent()
             return
         }
 
@@ -117,6 +131,15 @@ final class VerticalsWizardContent: UIViewController {
                 self?.handleData(data)
             }
         }
+    }
+
+    private func clearContent() {
+        throttle.cancel()
+
+        dataCoordinator = nil
+        table.dataSource = dataCoordinator
+        table.delegate = dataCoordinator
+        table.reloadData()
     }
 
     private func handleError(_ error: Error) {
