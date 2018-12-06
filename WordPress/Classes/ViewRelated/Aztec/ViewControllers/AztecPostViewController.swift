@@ -72,6 +72,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
 
+    // MARK: - Styling Options
+
+    private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
+
     // MARK: - Gutenberg Support
 
     private let switchToGutenberg: (EditorViewController) -> ()
@@ -369,11 +373,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
-
-    /// Options
-    ///
-    fileprivate var optionsViewController: OptionsTableViewController!
-
     /// Media Picker
     ///
     fileprivate lazy var insertToolbarItem: UIButton = {
@@ -519,7 +518,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             self.updateTitleHeight()
         })
 
-        dismissOptionsViewControllerIfNecessary()
+        optionsTablePresenter.dismiss()
     }
 
     override func willMove(toParent parent: UIViewController?) {
@@ -1417,7 +1416,6 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController: Aztec.FormatBarDelegate {
     func formatBarTouchesBegan(_ formatBar: FormatBar) {
-        dismissOptionsViewControllerIfNecessary()
     }
 
     /// Called when the overflow items in the format bar are either shown or hidden
@@ -1548,18 +1546,26 @@ extension AztecPostViewController {
             index = Constants.lists.index(of: listType)
         }
 
-        showOptionsTableViewControllerWithOptions(listOptions,
-                                                  fromBarItem: item,
-                                                  selectedRowIndex: index,
-                                                  onSelect: { [weak self] selected in
+        let optionsTableViewController = OptionsTableViewController(options: listOptions)
 
-                                                    let listType = Constants.lists[selected]
-                                                    switch listType {
-                                                    case .unordered:
-                                                        self?.toggleUnorderedList()
-                                                    case .ordered:
-                                                        self?.toggleOrderedList()
-                                                    }
+        optionsTableViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
+        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsTableViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
+        optionsTableViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+
+        optionsTablePresenter.present(
+            optionsTableViewController,
+            fromBarItem: item,
+            selectedRowIndex: index,
+            onSelect: { [weak self] selected in
+                let listType = Constants.lists[selected]
+
+                switch listType {
+                case .unordered:
+                    self?.toggleUnorderedList()
+                case .ordered:
+                    self?.toggleOrderedList()
+                }
         })
     }
 
@@ -1851,6 +1857,11 @@ extension AztecPostViewController {
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
+        guard !optionsTablePresenter.isOnScreen() else {
+            optionsTablePresenter.dismiss()
+            return
+        }
+
         trackFormatBarAnalytics(stat: .editorTappedHeader)
 
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
@@ -1868,18 +1879,25 @@ extension AztecPostViewController {
 
         let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
 
-        showOptionsTableViewControllerWithOptions(headerOptions,
-                                                  fromBarItem: item,
-                                                  selectedRowIndex: selectedIndex,
-                                                  onSelect: { [weak self] selected in
-                                                    guard let range = self?.richTextView.selectedRange else { return }
+        let optionsTableViewController = OptionsTableViewController(options: headerOptions)
 
-                                                    let selectedStyle = Analytics.headerStyleValues[selected]
-                                                    self?.trackFormatBarAnalytics(stat: .editorTappedHeaderSelection, headingStyle: selectedStyle)
+        optionsTableViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
+        optionsTableViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsTableViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
+        optionsTableViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
 
-                                                    self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
-                                                    self?.optionsViewController = nil
-                                                    self?.changeRichTextInputView(to: nil)
+        optionsTablePresenter.present(
+            optionsTableViewController,
+            fromBarItem: item,
+            selectedRowIndex: selectedIndex,
+            onSelect: { [weak self] selected in
+                guard let range = self?.richTextView.selectedRange else { return }
+
+                let selectedStyle = Analytics.headerStyleValues[selected]
+                self?.trackFormatBarAnalytics(stat: .editorTappedHeaderSelection, headingStyle: selectedStyle)
+
+                self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
+                self?.optionsTablePresenter.dismiss()
         })
     }
 
@@ -1921,87 +1939,11 @@ extension AztecPostViewController {
         moreCoordinator.present(context: moreCoordinatorContext)
     }
 
-    // MARK: - Present Toolbar related VC
-
-    fileprivate func dismissOptionsViewControllerIfNecessary() {
-        guard optionsViewController != nil else {
-            return
-        }
-
-        dismissOptionsViewController()
-    }
-
-    func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
-                                                   fromBarItem barItem: FormatBarItem,
-                                                   selectedRowIndex index: Int?,
-                                                   onSelect: OptionsTableViewController.OnSelectHandler?) {
-        // Hide the input view if we're already showing these options
-        if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
-            self.optionsViewController = nil
-            changeRichTextInputView(to: nil)
-            return
-        }
-
-        optionsViewController = OptionsTableViewController(options: options)
-        optionsViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
-        optionsViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
-        optionsViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
-        optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-        optionsViewController.onSelect = { [weak self] selected in
-            onSelect?(selected)
-            self?.dismissOptionsViewController()
-        }
-
-        let selectRow = {
-            guard let index = index else {
-                return
-            }
-
-            self.optionsViewController?.selectRow(at: index)
-        }
-
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
-        } else {
-            presentToolbarViewControllerAsInputView(optionsViewController)
-            selectRow()
-        }
-    }
-
-    private func presentToolbarViewController(_ viewController: UIViewController,
-                                              asPopoverFromBarItem barItem: FormatBarItem,
-                                              completion: (() -> Void)? = nil) {
-        viewController.modalPresentationStyle = .popover
-        viewController.popoverPresentationController?.permittedArrowDirections = [.down]
-        viewController.popoverPresentationController?.sourceView = view
-
-        let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
-
-        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
-        optionsViewController.popoverPresentationController?.backgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
-        optionsViewController.popoverPresentationController?.delegate = self
-
-        present(viewController, animated: true, completion: completion)
-    }
-
     private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
         self.addChild(viewController)
         changeRichTextInputView(to: viewController.view)
         viewController.didMove(toParent: self)
     }
-
-    private func dismissOptionsViewController() {
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
-            dismiss(animated: true)
-        default:
-            optionsViewController?.removeFromParent()
-            changeRichTextInputView(to: nil)
-        }
-
-        optionsViewController = nil
-    }
-
 
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
@@ -2203,9 +2145,6 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
     }
 
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        if optionsViewController != nil {
-            optionsViewController = nil
-        }
     }
 }
 
@@ -2966,7 +2905,7 @@ extension AztecPostViewController {
     @objc func applicationWillResignActive(_ notification: Foundation.Notification) {
 
         // [2018-03-05] Need to close the options VC on backgrounding to prevent view hierarchy inconsistency crasher.
-        dismissOptionsViewControllerIfNecessary()
+        optionsTablePresenter.dismiss()
 
         // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
         // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents

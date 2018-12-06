@@ -836,7 +836,7 @@ extension ShareExtensionEditorViewController {
     func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
                                                    fromBarItem barItem: FormatBarItem,
                                                    selectedRowIndex index: Int?,
-                                                   onSelect: OptionsTableViewController.OnSelectHandler?) {
+                                                   onSelect: OptionsTablePresenter.OnSelectHandler?) {
         // Hide the input view if we're already showing these options
         if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
             self.optionsViewController = nil
@@ -849,10 +849,6 @@ extension ShareExtensionEditorViewController {
         optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor
         optionsViewController.cellSelectedBackgroundColor = ShareColors.aztecFormatPickerSelectedCellBackgroundColor
         optionsViewController.view.tintColor = ShareColors.aztecFormatBarActiveColor
-        optionsViewController.onSelect = { [weak self] selected in
-            onSelect?(selected)
-            self?.dismissOptionsViewController()
-        }
 
         let selectRow = {
             guard let index = index else {
