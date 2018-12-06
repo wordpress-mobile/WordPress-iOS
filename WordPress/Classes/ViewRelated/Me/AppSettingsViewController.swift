@@ -389,7 +389,6 @@ private extension AppSettingsViewController {
             accessibilityIdentifier: "spotlightClearCacheButton")
 
         var tableRows: [ImmuTableRow] = [
-            mediaRemoveLocation,
             privacySettings,
             spotlightClearCacheRow
         ]
@@ -403,9 +402,14 @@ private extension AppSettingsViewController {
             tableRows.append(siriClearCacheRow)
         }
 
+        tableRows.append(mediaRemoveLocation)
+        let removeLocationFooterText = NSLocalizedString("Removes metadata about the location photos were taken before uploading them to your site.", comment: "Explanatory text for removing the location from uploaded RELEASE-NOTES.txtmedia.")
+
         return ImmuTableSection(
             headerText: privacyHeader,
-            rows: tableRows)
+            rows: tableRows,
+            footerText: removeLocationFooterText
+        )
     }
 
     func otherTableSection() -> ImmuTableSection {
