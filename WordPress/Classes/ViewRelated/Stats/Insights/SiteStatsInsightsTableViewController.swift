@@ -172,10 +172,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showPostingActivityDetails() {
-        let alertController =  UIAlertController(title: "Posting Activity will be shown here.",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
+        navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
 }

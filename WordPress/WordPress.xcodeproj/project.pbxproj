@@ -826,6 +826,8 @@
 		981C34912183871200FC2683 /* SiteStatsDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */; };
 		981C3494218388CA00FC2683 /* SiteStatsDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C3493218388CA00FC2683 /* SiteStatsDashboardViewController.swift */; };
 		981C82B62193A7B900A06E84 /* Double+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C82B52193A7B900A06E84 /* Double+Stats.swift */; };
+		981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C986621B9BDF300A7C0C8 /* PostingActivityViewController.swift */; };
+		981C986B21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 981C986A21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard */; };
 		981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */; };
 		9822D8DD214194EB0092CBD1 /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		9822D8DE214194EB0092CBD1 /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
@@ -2701,6 +2703,8 @@
 		981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SiteStatsDashboard.storyboard; sourceTree = "<group>"; };
 		981C3493218388CA00FC2683 /* SiteStatsDashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsDashboardViewController.swift; sourceTree = "<group>"; };
 		981C82B52193A7B900A06E84 /* Double+Stats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Stats.swift"; sourceTree = "<group>"; };
+		981C986621B9BDF300A7C0C8 /* PostingActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityViewController.swift; sourceTree = "<group>"; };
+		981C986A21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PostingActivityViewController.storyboard; sourceTree = "<group>"; };
 		981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+MediaLibrary.swift"; sourceTree = "<group>"; };
 		9826AE8021B5C6A700C851FA /* LatestPostSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestPostSummaryCell.swift; sourceTree = "<group>"; };
 		9826AE8121B5C6A700C851FA /* LatestPostSummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LatestPostSummaryCell.xib; sourceTree = "<group>"; };
@@ -5969,6 +5973,8 @@
 				9848DF8221B8BB6900B99DA4 /* PostingActivityLegend.xib */,
 				9826AE8921B5CC7300C851FA /* PostingActivityMonth.swift */,
 				9826AE8B21B5CC8D00C851FA /* PostingActivityMonth.xib */,
+				981C986621B9BDF300A7C0C8 /* PostingActivityViewController.swift */,
+				981C986A21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard */,
 			);
 			path = "Posting Activity";
 			sourceTree = "<group>";
@@ -8328,6 +8334,7 @@
 				439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */,
 				4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */,
 				9848DF8321B8BB6900B99DA4 /* PostingActivityLegend.xib in Resources */,
+				981C986B21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard in Resources */,
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */,
@@ -9068,6 +9075,7 @@
 				1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */,
 				4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
+				981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */,
 				E69EF9D51BFA539F00ED0554 /* ReaderDetailViewController.swift in Sources */,
 				17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */,
 				E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */,
