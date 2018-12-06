@@ -1,5 +1,7 @@
 import UIKit
 
+/// Convenience struct to contain information about a single day displayed in Posting Activity.
+///
 struct PostingActivityDayData {
     var date: Date
     var count: Int
@@ -11,7 +13,7 @@ class PostingActivityDay: UIView, NibLoadable {
 
     @IBOutlet weak var dayButton: UIButton!
 
-    private var active = true
+    private var visible = true
     private var dayData: PostingActivityDayData?
     private typealias PostActivityStyle = WPStyleGuide.Stats.PostingActivityRangeColors
 
@@ -19,7 +21,7 @@ class PostingActivityDay: UIView, NibLoadable {
 
     func configure(dayData: PostingActivityDayData? = nil) {
         self.dayData = dayData
-        active = dayData != nil
+        visible = dayData != nil
         configureButton()
     }
 
@@ -30,9 +32,9 @@ class PostingActivityDay: UIView, NibLoadable {
 private extension PostingActivityDay {
 
     func configureButton() {
-        dayButton.isEnabled = active
+        dayButton.isEnabled = visible
 
-        if !active {
+        if !visible {
             dayButton.backgroundColor = .clear
             return
         }

@@ -52,7 +52,6 @@ private extension PostingActivityLegend {
         var numberInRange = 0
         for _ in 1...5 {
             let dayView = PostingActivityDay.loadFromNib()
-            dayView.configure()
             dayView.dayButton.backgroundColor = PostingActivityLegend.colorForCount(numberInRange)
             colorsStackView.addArrangedSubview(dayView)
             numberInRange += 2

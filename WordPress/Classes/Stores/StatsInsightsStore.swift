@@ -267,6 +267,9 @@ extension StatsInsightsStore {
         return state.todaysStats
     }
 
+    /// Summarizes the daily posting count for the month in the given date.
+    /// Returns an array containing every day of the month and associated post count.
+    ///
     func getMonthlyPostingActivityFor(date: Date) -> [PostingActivityDayData] {
 
         var monthData = [PostingActivityDayData]()

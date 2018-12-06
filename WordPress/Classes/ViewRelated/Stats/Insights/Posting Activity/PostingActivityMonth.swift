@@ -2,6 +2,8 @@ import UIKit
 
 class PostingActivityMonth: UIView, NibLoadable {
 
+    // MARK: - Properties
+
     @IBOutlet weak var weeksStackView: UIStackView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var viewWidthConstraint: NSLayoutConstraint!
@@ -9,7 +11,11 @@ class PostingActivityMonth: UIView, NibLoadable {
     private var month: Date?
     private var monthData: [PostingActivityDayData]?
 
-    private let lastStackViewWidth = CGFloat(14) // 14 = day width (12) + column margin (2)
+    // 14 = day width (12) + column margin (2).
+    // Used to adjust the view width when hiding the last stack view.
+    private let lastStackViewWidth = CGFloat(14)
+
+    // MARK: - Configure
 
     func configure(monthData: [PostingActivityDayData]) {
         self.monthData = monthData
@@ -18,6 +24,8 @@ class PostingActivityMonth: UIView, NibLoadable {
     }
 
 }
+
+// MARK: - Private Extension
 
 private extension PostingActivityMonth {
 
