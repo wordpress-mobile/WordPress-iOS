@@ -15,7 +15,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
-    var yearData: [[PostingActivityDayData]]?
+    var yearData = [[PostingActivityDayData]]()
 
     private typealias Style = WPStyleGuide.Stats
 
@@ -27,8 +27,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
         addLegend()
         applyStyles()
 
-        collectionView.register(PostingActivityCollectionViewCell.defaultNib,
-                                forCellWithReuseIdentifier: PostingActivityCollectionViewCell.defaultReuseID)
+        collectionView.register(PostingActivityCollectionViewCell.self, forCellWithReuseIdentifier: PostingActivityCollectionViewCell.reuseIdentifier)
 
         // Hide the day data view until a day is selected.
         dayDataView.isHidden = true
@@ -51,16 +50,13 @@ extension PostingActivityViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        return yearData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingActivityCollectionViewCell.defaultReuseID, for: indexPath) as! PostingActivityCollectionViewCell
 
-        if let yearData = yearData,
-            indexPath.row < yearData.count {
-            cell.configure(withData: yearData[indexPath.row])
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingActivityCollectionViewCell.reuseIdentifier, for: indexPath) as! PostingActivityCollectionViewCell
+        cell.configure(withData: yearData[indexPath.row])
 
         return cell
     }
@@ -70,6 +66,10 @@ extension PostingActivityViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension PostingActivityViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return Style.cellSizeForFrameWidth(collectionView.frame.size.width)
+    }
 
 }
 

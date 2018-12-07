@@ -140,6 +140,25 @@ extension WPStyleGuide {
             static let darkBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 131.0, blue: 169.0, alpha: 1)
             static let darkGrey = WPStyleGuide.darkGrey()
         }
+
+
+        // MARK: - Posting Activity Collection View Styles
+
+        // Value of PostingActivityMonth view width
+        static let minimumColumnWidth: CGFloat = 118
+        // Value of PostingActivityMonth view height
+        static let cellHeight: CGFloat = 135
+
+        static func cellSizeForFrameWidth(_ width: CGFloat) -> CGSize {
+            let cellWidth = cellWidthForFrameWidth(width)
+            return CGSize(width: cellWidth, height: cellHeight)
+        }
+
+        static func cellWidthForFrameWidth(_ width: CGFloat) -> CGFloat {
+            let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
+            let columnWidth = trunc(width / numberOfColumns)
+            return columnWidth
+        }
     }
 
 }
