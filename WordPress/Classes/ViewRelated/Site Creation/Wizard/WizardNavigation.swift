@@ -39,13 +39,8 @@ final class WizardNavigation {
 }
 
 extension WizardNavigation: WizardDelegate {
-    func complete() {
-        debugPrint("Congratulations - we have completed the Site Creation wizard!")
-    }
-
     func nextStep() {
         guard !steps.isEmpty, let nextIndex = pointer.next(maxIndex: steps.count - 1) else {
-            complete()
             return
         }
 
