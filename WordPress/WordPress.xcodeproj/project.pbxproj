@@ -467,8 +467,6 @@
 		73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */; };
 		738B9A4E21B85CF20005062B /* SiteCreationWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4021B85CF20005062B /* SiteCreationWizard.swift */; };
 		738B9A4F21B85CF20005062B /* SiteCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4121B85CF20005062B /* SiteCreator.swift */; };
-		738B9A5021B85CF20005062B /* SiteCreationWizardTitle.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738B9A4221B85CF20005062B /* SiteCreationWizardTitle.xib */; };
-		738B9A5121B85CF20005062B /* SiteCreationWizardTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4321B85CF20005062B /* SiteCreationWizardTitle.swift */; };
 		738B9A5221B85CF20005062B /* SiteCreationWizardLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4421B85CF20005062B /* SiteCreationWizardLauncher.swift */; };
 		738B9A5321B85CF20005062B /* SiteCreatorOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4521B85CF20005062B /* SiteCreatorOutput.swift */; };
 		738B9A5421B85CF20005062B /* WizardNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4621B85CF20005062B /* WizardNavigation.swift */; };
@@ -1228,7 +1226,6 @@
 		D865721221869C590023A99C /* WizardStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865721021869C590023A99C /* WizardStep.swift */; };
 		D865721321869C590023A99C /* Wizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865721121869C590023A99C /* Wizard.swift */; };
 		D86572172186C3600023A99C /* WizardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572162186C3600023A99C /* WizardDelegate.swift */; };
-		D86572292186F3DC0023A99C /* SiteCreationWizardTitleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86572282186F3DC0023A99C /* SiteCreationWizardTitleTests.swift */; };
 		D865722B2186F5410023A99C /* SiteCreationHeaderDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865722A2186F5400023A99C /* SiteCreationHeaderDataTests.swift */; };
 		D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */; };
 		D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */ = {isa = PBXBuildFile; fileRef = D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */; };
@@ -2282,8 +2279,6 @@
 		73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationContent+RemoteNotification.swift"; sourceTree = "<group>"; };
 		738B9A4021B85CF20005062B /* SiteCreationWizard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationWizard.swift; sourceTree = "<group>"; };
 		738B9A4121B85CF20005062B /* SiteCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreator.swift; sourceTree = "<group>"; };
-		738B9A4221B85CF20005062B /* SiteCreationWizardTitle.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteCreationWizardTitle.xib; sourceTree = "<group>"; };
-		738B9A4321B85CF20005062B /* SiteCreationWizardTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardTitle.swift; sourceTree = "<group>"; };
 		738B9A4421B85CF20005062B /* SiteCreationWizardLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardLauncher.swift; sourceTree = "<group>"; };
 		738B9A4521B85CF20005062B /* SiteCreatorOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreatorOutput.swift; sourceTree = "<group>"; };
 		738B9A4621B85CF20005062B /* WizardNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WizardNavigation.swift; sourceTree = "<group>"; };
@@ -3138,7 +3133,6 @@
 		D865721021869C590023A99C /* WizardStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WizardStep.swift; path = Classes/ViewRelated/Wizards/WizardStep.swift; sourceTree = SOURCE_ROOT; };
 		D865721121869C590023A99C /* Wizard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Wizard.swift; path = Classes/ViewRelated/Wizards/Wizard.swift; sourceTree = SOURCE_ROOT; };
 		D86572162186C3600023A99C /* WizardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WizardDelegate.swift; path = Classes/ViewRelated/Wizards/WizardDelegate.swift; sourceTree = SOURCE_ROOT; };
-		D86572282186F3DC0023A99C /* SiteCreationWizardTitleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationWizardTitleTests.swift; sourceTree = "<group>"; };
 		D865722A2186F5400023A99C /* SiteCreationHeaderDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderDataTests.swift; sourceTree = "<group>"; };
 		D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsWizardContent.swift; sourceTree = "<group>"; };
 		D865722D2186F96C0023A99C /* SiteSegmentsWizardContent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteSegmentsWizardContent.xib; sourceTree = "<group>"; };
@@ -4761,7 +4755,6 @@
 				D818FFE32191897C000E5FEE /* SiteCreationDataCoordinatorTests.swift */,
 				D8C31CBD2188383E00A33B35 /* SiteSegmentsStepTests.swift */,
 				D865722A2186F5400023A99C /* SiteCreationHeaderDataTests.swift */,
-				D86572282186F3DC0023A99C /* SiteCreationWizardTitleTests.swift */,
 				D8A468DC2181C23A0094B82F /* SiteVerticalTests.swift */,
 				D8CB56242181B3C300554EAE /* SiteSegmentTests.swift */,
 				D816B8D62112D75C0052CE4D /* NewsCardTests.swift */,
@@ -5039,8 +5032,6 @@
 			children = (
 				738B9A4021B85CF20005062B /* SiteCreationWizard.swift */,
 				738B9A4421B85CF20005062B /* SiteCreationWizardLauncher.swift */,
-				738B9A4321B85CF20005062B /* SiteCreationWizardTitle.swift */,
-				738B9A4221B85CF20005062B /* SiteCreationWizardTitle.xib */,
 				738B9A4121B85CF20005062B /* SiteCreator.swift */,
 				738B9A4521B85CF20005062B /* SiteCreatorOutput.swift */,
 				738B9A4621B85CF20005062B /* WizardNavigation.swift */,
@@ -8367,7 +8358,6 @@
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
 				98812973219CF5100075FF33 /* SimpleTotalsCell.xib in Resources */,
 				981C34912183871200FC2683 /* SiteStatsDashboard.storyboard in Resources */,
-				738B9A5021B85CF20005062B /* SiteCreationWizardTitle.xib in Resources */,
 				435035991EDCAB99004ECF47 /* post.json in Resources */,
 				98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */,
 				D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */,
@@ -9481,7 +9471,6 @@
 				D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */,
 				FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */,
 				0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */,
-				738B9A5121B85CF20005062B /* SiteCreationWizardTitle.swift in Sources */,
 				D800D86420997BA100E7C7E5 /* ReaderMenuItemCreator.swift in Sources */,
 				5DB4683B18A2E718004A89A9 /* LocationService.m in Sources */,
 				173BCE791CEB780800AE8817 /* Domain.swift in Sources */,
@@ -10204,7 +10193,6 @@
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
 				D80A57CF21A2A3C5009CA0CC /* TitleSubtitleHeaderTests.swift in Sources */,
-				D86572292186F3DC0023A99C /* SiteCreationWizardTitleTests.swift in Sources */,
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
