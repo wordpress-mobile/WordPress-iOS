@@ -23,6 +23,9 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
         addMonths(monthsData: monthsData)
     }
 
+    override func prepareForReuse() {
+        removeExistingMonths()
+    }
 }
 
 // MARK: - Private Extension
@@ -40,9 +43,6 @@ private extension PostingActivityCell {
     }
 
     func addMonths(monthsData: [[PostingActivityDayData]]) {
-
-        removeExistingMonths()
-
         for monthData in monthsData {
             let monthView = PostingActivityMonth.loadFromNib()
             monthView.configure(monthData: monthData)
