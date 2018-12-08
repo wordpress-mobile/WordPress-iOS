@@ -76,7 +76,13 @@ extension PostingActivityViewController: PostingActivityDayDelegate {
         selectedDay?.unselect()
         selectedDay = day
 
-        // TODO: show/update dayDataView
+        guard let dayData = day.dayData else {
+            return
+        }
+
+        dayDataView.isHidden = false
+        dateLabel.text = formattedDate(dayData.date)
+        postCountLabel.text = formattedPostCount(dayData.count)
     }
 
 }
@@ -94,5 +100,26 @@ private extension PostingActivityViewController {
         Style.configureLabelAsPostingDate(dateLabel)
         Style.configureLabelAsPostingCount(postCountLabel)
         Style.configureViewAsSeperator(separatorLine)
+    }
+
+    func formattedDate(_ date: Date) -> String {
+        let dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            return formatter
+        }()
+
+        return dateFormatter.string(from: date)
+    }
+
+    func formattedPostCount(_ count: Int) -> String {
+        let postCountText = (count == 1 ? PostCountLabels.singular : PostCountLabels.plural)
+        return String(format: postCountText, count)
+    }
+
+    struct PostCountLabels {
+        static let singular = NSLocalizedString("%d Post", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular).")
+        static let plural = NSLocalizedString("%d Posts", comment: "Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (plural).")
     }
 }

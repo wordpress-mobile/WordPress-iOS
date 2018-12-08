@@ -20,7 +20,7 @@ class PostingActivityDay: UIView, NibLoadable {
 
     private var visible = true
     private var active = true
-    private var dayData: PostingActivityDayData?
+    private(set) var dayData: PostingActivityDayData?
 
     // MARK: - Configure
 
