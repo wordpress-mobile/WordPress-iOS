@@ -2,6 +2,24 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/aerych/Sandbox/xcode_ws/automattic/wpios/WordPress/Classes/Models/PlanGroup+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/aerych/Sandbox/xcode_ws/automattic/wpios/WordPress/Classes/Models/PlanGroup+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/aerych/Sandbox/xcode_ws/automattic/wpios/WordPress/Classes/Models/Plan+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/aerych/Sandbox/xcode_ws/automattic/wpios/WordPress/Classes/Models/Plan+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/aerych/Sandbox/xcode_ws/automattic/wpios/WordPress/Classes/Models/PlanFeature+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/aerych/Sandbox/xcode_ws/automattic/wpios/WordPress/Classes/Models/PlanFeature+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef

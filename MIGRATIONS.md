@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 86
+@aerych 2018-12-08
+- Added `Plan`, `PlanGroup`, and `PlanFeature` entities and properties.
+
 ## WordPress 85
 @danielebogo 2018-11-12
 - Added `BlogAuthor` to store the data of a *blog author*.
