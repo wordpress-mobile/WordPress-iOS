@@ -5,7 +5,7 @@ import WordPressKit
 
 open class PlanService: LocalCoreDataService {
 
-    func getWpcomPlans(_ success: @escaping () -> Void,
+    @objc public func getWpcomPlans(_ success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
 
         let remote = PlanServiceRemote(wordPressComRestApi: WordPressComRestApi())
@@ -179,7 +179,7 @@ open class PlanService: LocalCoreDataService {
 }
 
 extension PlanService {
-    func plansWithPricesForBlog(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    @objc public func plansWithPricesForBlog(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: WordPressComRestApi())
         remote_v1_3.getPlansForSite(
             siteID,
