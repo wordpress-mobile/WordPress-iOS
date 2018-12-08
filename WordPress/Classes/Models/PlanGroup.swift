@@ -7,7 +7,8 @@ public class PlanGroup: NSManagedObject {
         return NSFetchRequest<PlanGroup>(entityName: "PlanGroup")
     }
 
-    @NSManaged public var name: String?
-    @NSManaged public var slug: String?
+    @NSManaged public var order: Int16
+    @NSManaged public var name: String
+    @NSManaged public var slug: String
 
 }
