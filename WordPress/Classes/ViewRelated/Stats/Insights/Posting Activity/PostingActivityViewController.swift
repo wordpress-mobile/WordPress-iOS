@@ -17,6 +17,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
     var yearData = [[PostingActivityDayData]]()
 
+    private var selectedDay: PostingActivityDay?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Init
@@ -35,12 +36,6 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
 }
 
-// MARK: - UICollectionViewDelegate
-
-extension PostingActivityViewController: UICollectionViewDelegate {
-
-}
-
 // MARK: - UICollectionViewDataSource
 
 extension PostingActivityViewController: UICollectionViewDataSource {
@@ -56,7 +51,7 @@ extension PostingActivityViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingActivityCollectionViewCell.reuseIdentifier, for: indexPath) as! PostingActivityCollectionViewCell
-        cell.configure(withData: yearData[indexPath.row])
+        cell.configure(withData: yearData[indexPath.row], postingActivityDayDelegate: self)
 
         return cell
     }
@@ -69,6 +64,19 @@ extension PostingActivityViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return Style.cellSizeForFrameWidth(collectionView.frame.size.width)
+    }
+
+}
+
+// MARK: - PostingActivityDayDelegate
+
+extension PostingActivityViewController: PostingActivityDayDelegate {
+
+    func daySelected(_ day: PostingActivityDay) {
+        selectedDay?.unselect()
+        selectedDay = day
+
+        // TODO: show/update dayDataView
     }
 
 }
