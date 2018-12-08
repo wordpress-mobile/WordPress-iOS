@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressKit
 
 
-open class PlansService: LocalCoreDataService {
+open class PlanService: LocalCoreDataService {
 
     func getWpcomPlans(_ success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
@@ -18,7 +18,7 @@ open class PlansService: LocalCoreDataService {
         }, failure: failure)
     }
 
-    func mergeRemoteWpcomPlans(_ remotePlans: [RemotePlanDescription],
+    func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan],
                                remoteGroups: [RemotePlanGroup],
                                remoteFeatures: [RemotePlanFeature],
                                onComplete: @escaping () -> Void ) {
@@ -89,7 +89,7 @@ open class PlansService: LocalCoreDataService {
     }
 
 
-    func mergeRemoteWpcomPlans(_ remotePlans: [RemotePlanDescription]) {
+    func mergeRemoteWpcomPlans(_ remotePlans: [RemoteWpcomPlan]) {
 
         // create or update plans
         var plansToKeep = [Plan]()
@@ -175,97 +175,29 @@ open class PlansService: LocalCoreDataService {
             }
             managedObjectContext.delete(feature)
         }
-
-    }
-
-}
-
-public typealias PPlan = RemotePlan
-public typealias PPlanFeature = RemotePlanFeature
-public typealias PlanFeatureGroup = RemotePlanFeatureGroup
-public typealias PlanFeatures = RemotePlanFeatures
-
-struct PlanService<S: InAppPurchaseStore> {
-    // FIXME: @koke 2016-03-22
-    // This was going to be generic but it's causing a lot of trouble. Figure out conflicts first
-//    typealias S = StoreKitStore
-    let store: S
-    let remote: PlanServiceRemote
-    fileprivate let featuresRemote: PlanFeatureServiceRemote
-
-    init(store: S, remote: PlanServiceRemote, featuresRemote: PlanFeatureServiceRemote) {
-        self.store = store
-        self.remote = remote
-        self.featuresRemote = featuresRemote
-    }
-
-    func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: @escaping (Error) -> Void) {
-        remote.getPlansForSite(siteID,
-            success: { activePlan, availablePlans in
-                if let activePlan = activePlan {
-                    PlanStorage.activatePlan(activePlan.id, forSite: siteID)
-                }
-
-                // Purchasing is currently disabled in the app, so return empty prices for all the plans.
-                let pricedPlans: [PricedPlan] = availablePlans.map { ($0, "") }
-                let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
-                success(result)
-            }, failure: failure)
-
-        if FeatureFlag.automatedTransfersCustomDomain.enabled {
-            let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: remote.wordPressComRestApi)
-
-            remote_v1_3.getPlansForSite(
-                siteID,
-                success: { (plans) in
-                    guard let planId = plans.activePlan.planID,
-                        let planIdInt = Int(planId) else {
-                            return
-                    }
-                    PlanStorage.updateHasDomainCredit(planIdInt,
-                                                      forSite: siteID,
-                                                      hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
-            },
-            failure: { _ in })
-        }
-    }
-
-    func verifyPurchase(_ siteID: Int, productID: String, receipt: Data, completion: (Bool) -> Void) {
-        // Let's pretend this succeeds for now
-        completion(true)
     }
 }
 
 extension PlanService {
-    init?(siteID: Int, store: S) {
-        self.store = store
-        let manager = ContextManager.sharedInstance()
-        let context = manager.mainContext
-        let service = BlogService(managedObjectContext: context)
-        guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
-            let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
-            assertionFailure(error)
-            DDLogError(error)
-            return nil
-        }
-        guard let account = blog.account else {
-            let error = "Tried to obtain a PlanService for a self hosted site"
-            assertionFailure(error)
-            DDLogError(error)
-            return nil
-        }
-
-        guard let api = account.wordPressComRestApi else {
-            return nil
-        }
-
-        self.remote = PlanServiceRemote(wordPressComRestApi: api)
-        self.featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
+    func plansWithPricesForBlog(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: WordPressComRestApi())
+        remote_v1_3.getPlansForSite(
+            siteID,
+            success: { (plans) in
+                guard let planId = plans.activePlan.planID,
+                    let planIdInt = Int(planId) else {
+                        return
+                }
+                PlanStorage.updateHasDomainCredit(planIdInt,
+                                                  forSite: siteID,
+                                                  hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
+        },
+            failure: { _ in })
     }
 }
 
 struct PlanStorage {
-    static func activatePlan(_ planID: PlanID, forSite siteID: Int) {
+    static func activatePlan(_ planID: Int, forSite siteID: Int) {
         let manager = ContextManager.sharedInstance()
         let context = manager.newDerivedContext()
         let service = BlogService(managedObjectContext: context)
@@ -283,7 +215,7 @@ struct PlanStorage {
         }
     }
 
-    static func updateHasDomainCredit(_ planID: PlanID, forSite siteID: Int, hasDomainCredit: Bool) {
+    static func updateHasDomainCredit(_ planID: Int, forSite siteID: Int, hasDomainCredit: Bool) {
         let manager = ContextManager.sharedInstance()
         let context = manager.newDerivedContext()
         let service = BlogService(managedObjectContext: context)
@@ -302,26 +234,109 @@ struct PlanStorage {
     }
 }
 
-extension PlanService {
-    init?(blog: Blog, store: S) {
-        guard let api = blog.wordPressComRestApi() else {
-            return nil
-        }
-
-        let remote = PlanServiceRemote(wordPressComRestApi: api)
-        let featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
-
-        self.init(store: store, remote: remote, featuresRemote: featuresRemote)
-    }
-}
-
-enum PlanServiceError: Error {
-    case missingFeaturesForPlan
-    case missingFeatureForSlug
-}
-
-extension PlanService {
-    func featureGroupsForPlan(_ plan: Plan, features: PlanFeatures) throws -> [PlanFeatureGroup] {
+//public typealias PPlan = RemotePlan
+//public typealias PPlanFeature = RemotePlanFeature
+//public typealias PlanFeatureGroup = RemotePlanFeatureGroup
+//public typealias PlanFeatures = RemotePlanFeatures
+//
+//struct PlanService<S: InAppPurchaseStore> {
+//    // FIXME: @koke 2016-03-22
+//    // This was going to be generic but it's causing a lot of trouble. Figure out conflicts first
+////    typealias S = StoreKitStore
+//    let store: S
+//    let remote: PlanServiceRemote
+//    fileprivate let featuresRemote: PlanFeatureServiceRemote
+//
+//    init(store: S, remote: PlanServiceRemote, featuresRemote: PlanFeatureServiceRemote) {
+//        self.store = store
+//        self.remote = remote
+//        self.featuresRemote = featuresRemote
+//    }
+//
+//    func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: @escaping (Error) -> Void) {
+//        remote.getPlansForSite(siteID,
+//            success: { activePlan, availablePlans in
+//                if let activePlan = activePlan {
+//                    PlanStorage.activatePlan(activePlan.id, forSite: siteID)
+//                }
+//
+//                // Purchasing is currently disabled in the app, so return empty prices for all the plans.
+//                let pricedPlans: [PricedPlan] = availablePlans.map { ($0, "") }
+//                let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
+//                success(result)
+//            }, failure: failure)
+//
+//        if FeatureFlag.automatedTransfersCustomDomain.enabled {
+//            let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: remote.wordPressComRestApi)
+//
+//            remote_v1_3.getPlansForSite(
+//                siteID,
+//                success: { (plans) in
+//                    guard let planId = plans.activePlan.planID,
+//                        let planIdInt = Int(planId) else {
+//                            return
+//                    }
+//                    PlanStorage.updateHasDomainCredit(planIdInt,
+//                                                      forSite: siteID,
+//                                                      hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
+//            },
+//            failure: { _ in })
+//        }
+//    }
+//
+//    func verifyPurchase(_ siteID: Int, productID: String, receipt: Data, completion: (Bool) -> Void) {
+//        // Let's pretend this succeeds for now
+//        completion(true)
+//    }
+//}
+//
+//extension PlanService {
+//    init?(siteID: Int, store: S) {
+//        self.store = store
+//        let manager = ContextManager.sharedInstance()
+//        let context = manager.mainContext
+//        let service = BlogService(managedObjectContext: context)
+//        guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
+//            let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
+//            assertionFailure(error)
+//            DDLogError(error)
+//            return nil
+//        }
+//        guard let account = blog.account else {
+//            let error = "Tried to obtain a PlanService for a self hosted site"
+//            assertionFailure(error)
+//            DDLogError(error)
+//            return nil
+//        }
+//
+//        guard let api = account.wordPressComRestApi else {
+//            return nil
+//        }
+//
+//        self.remote = PlanServiceRemote(wordPressComRestApi: api)
+//        self.featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
+//    }
+//}
+//extension PlanService {
+//    init?(blog: Blog, store: S) {
+//        guard let api = blog.wordPressComRestApi() else {
+//            return nil
+//        }
+//
+//        let remote = PlanServiceRemote(wordPressComRestApi: api)
+//        let featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
+//
+//        self.init(store: store, remote: remote, featuresRemote: featuresRemote)
+//    }
+//}
+//
+//enum PlanServiceError: Error {
+//    case missingFeaturesForPlan
+//    case missingFeatureForSlug
+//}
+//
+//extension PlanService {
+//    func featureGroupsForPlan(_ plan: Plan, features: PlanFeatures) throws -> [PlanFeatureGroup] {
 //        guard let planFeatures = features[plan.id] else {
 //            throw PlanServiceError.missingFeaturesForPlan
 //        }
@@ -334,41 +349,41 @@ extension PlanService {
 //            })
 //            return PlanFeatureGroup(title: group.title, features: features)
 //        })
-        return [PlanFeatureGroup]()
-    }
-
-    func updateAllPlanFeatures(success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
-        featuresRemote.getPlanFeatures({
-            success($0)
-        }, failure: failure)
-    }
-}
+//        return [PlanFeatureGroup]()
+//    }
+//
+//    func updateAllPlanFeatures(success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
+//        featuresRemote.getPlanFeatures({
+//            success($0)
+//        }, failure: failure)
+//    }
+//}
 
 // We need to call this from Obj-C — there's no way to call `PlanService` directly, with it being
 // a generic Swift struct, so it's just a simple shim that exposes a obj-c compatible API.
-@objc class PlanServiceWrapper: NSObject {
-
-    let service: PlanService<StoreKitStore>
-    let blogID: Int
-
-    @objc init?(blog: Blog) {
-        guard let service = PlanService(blog: blog, store: StoreKitStore()),
-            let blogID = blog.dotComID as? Int else {
-            return nil
-        }
-
-        self.blogID = blogID
-        self.service = service
-    }
-
-    @objc func syncPlans(completion: @escaping (Bool, Error?) -> Void) {
-        service.plansWithPricesForBlog(blogID,
-                                       success: { (_) in
-                                        completion(true, nil)
-        },
-                                       failure: { error in
-                                        completion(false, error)
-        })
-    }
-
-}
+//@objc class PlanServiceWrapper: NSObject {
+//
+//    let service: PlanService<StoreKitStore>
+//    let blogID: Int
+//
+//    @objc init?(blog: Blog) {
+//        guard let service = PlanService(blog: blog, store: StoreKitStore()),
+//            let blogID = blog.dotComID as? Int else {
+//            return nil
+//        }
+//
+//        self.blogID = blogID
+//        self.service = service
+//    }
+//
+//    @objc func syncPlans(completion: @escaping (Bool, Error?) -> Void) {
+//        service.plansWithPricesForBlog(blogID,
+//                                       success: { (_) in
+//                                        completion(true, nil)
+//        },
+//                                       failure: { error in
+//                                        completion(false, error)
+//        })
+//    }
+//
+//}
