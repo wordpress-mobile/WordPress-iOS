@@ -448,6 +448,7 @@
         <attribute name="features" attributeType="String" syncable="YES"/>
         <attribute name="groups" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="products" attributeType="String" syncable="YES"/>
         <attribute name="shortname" attributeType="String" syncable="YES"/>
         <attribute name="summary" attributeType="String" syncable="YES"/>
@@ -460,6 +461,7 @@
     </entity>
     <entity name="PlanGroup" representedClassName=".PlanGroup" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
@@ -787,8 +789,8 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
-        <element name="Plan" positionX="27" positionY="153" width="128" height="150"/>
-        <element name="PlanGroup" positionX="36" positionY="162" width="128" height="75"/>
+        <element name="Plan" positionX="27" positionY="153" width="128" height="165"/>
+        <element name="PlanGroup" positionX="36" positionY="162" width="128" height="90"/>
         <element name="PlanFeature" positionX="45" positionY="171" width="128" height="90"/>
     </elements>
 </model>
