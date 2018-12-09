@@ -3,26 +3,17 @@ import WordPressShared
 
 struct PlanDetailViewModel {
     let plan: Plan
-    let siteID: Int
-    var activePlan: Plan?
-
-    /// Plan price. Empty string for a free plan
-    let price: String
-
     let features: FeaturesViewModel
 
     enum FeaturesViewModel {
         case loading
         case error(String)
-        case ready([PlanFeatureGroup])
+        case ready([PlanFeature])
     }
 
     func withFeatures(_ features: FeaturesViewModel) -> PlanDetailViewModel {
         return PlanDetailViewModel(
             plan: plan,
-            siteID: siteID,
-            activePlan: activePlan,
-            price: price,
             features: features
         )
     }
@@ -31,13 +22,12 @@ struct PlanDetailViewModel {
         switch features {
         case .loading, .error:
             return ImmuTable.Empty
-        case .ready(let groups):
-            return ImmuTable(sections: groups.map { group in
-                let rows: [ImmuTableRow] = group.features.map({ feature in
-                    return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
-                })
-                return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
-                })
+        case .ready(let features):
+            let rows: [ImmuTableRow] = features.map({ feature in
+                let row = FeatureItemRow(title: feature.title, description: feature.summary, iconURL: nil)
+                return row
+            })
+            return ImmuTable(sections: [ImmuTableSection(headerText: "", rows: rows, footerText: nil)])
         }
     }
 
@@ -58,34 +48,6 @@ struct PlanDetailViewModel {
                                                      subtitle: LocalizedText.noConnectionSubtitle)
             }
         }
-    }
-
-    var isActivePlan: Bool {
-        return activePlan == plan
-    }
-
-    var priceText: String? {
-        if price.isEmpty {
-            return nil
-        } else {
-            return String(format: LocalizedText.price, price)
-        }
-    }
-
-    var purchaseButtonVisible: Bool {
-        return purchaseAvailability == .available
-            || purchaseAvailability == .pending
-    }
-
-    var purchaseButtonSelected: Bool {
-        return purchaseAvailability == .pending
-    }
-
-    fileprivate var purchaseAvailability: PurchaseAvailability {
-        guard let activePlan = activePlan else {
-            return PurchaseAvailability.unavailable
-        }
-        return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID, activePlan: activePlan)
     }
 
     private struct LocalizedText {

@@ -9,9 +9,9 @@ open class PlanService: LocalCoreDataService {
                           failure: @escaping (Error?) -> Void) {
 
         let remote = PlanServiceRemote(wordPressComRestApi: WordPressComRestApi())
-        remote.getWpcomPlans({ [weak self] plans in
+        remote.getWpcomPlans({ plans in
 
-            self?.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: {
+            self.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: {
                 success()
             })
 
@@ -34,7 +34,7 @@ open class PlanService: LocalCoreDataService {
 
 
     func allPlans() -> [Plan] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Plan.entityName())
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Plan")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
         do {
             return try managedObjectContext.fetch(fetchRequest) as! [Plan]
@@ -53,7 +53,7 @@ open class PlanService: LocalCoreDataService {
 
 
     func allPlanGroups() -> [PlanGroup] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: PlanGroup.entityName())
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PlanGroup")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
         do {
             return try managedObjectContext.fetch(fetchRequest) as! [PlanGroup]
@@ -72,7 +72,7 @@ open class PlanService: LocalCoreDataService {
 
 
     func allPlanFeatures() -> [PlanFeature] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: PlanFeature.entityName())
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "PlanFeature")
         do {
             return try managedObjectContext.fetch(fetchRequest) as! [PlanFeature]
         } catch let error as NSError {
@@ -96,7 +96,7 @@ open class PlanService: LocalCoreDataService {
         for remotePlan in remotePlans {
             var plan = findPlanByShortname(remotePlan.shortname)
             if plan == nil {
-                plan = NSEntityDescription.insertNewObject(forEntityName: Plan.entityName(), into: managedObjectContext) as? Plan
+                plan = NSEntityDescription.insertNewObject(forEntityName: "Plan", into: managedObjectContext) as? Plan
             }
             plan?.order = Int16(plansToKeep.count)
             plan?.groups = remotePlan.groups
@@ -129,7 +129,7 @@ open class PlanService: LocalCoreDataService {
         for remoteGroup in remoteGroups {
             var group = findPlanGroupBySlug(remoteGroup.slug)
             if group == nil {
-                group = NSEntityDescription.insertNewObject(forEntityName: PlanGroup.entityName(), into: managedObjectContext) as? PlanGroup
+                group = NSEntityDescription.insertNewObject(forEntityName: "PlanGroup", into: managedObjectContext) as? PlanGroup
             }
 
             group?.order = Int16(groupsToKeep.count)
@@ -157,7 +157,7 @@ open class PlanService: LocalCoreDataService {
         for remoteFeature in remoteFeatures {
             var feature = findPlanFeatureBySlug(remoteFeature.slug)
             if feature == nil {
-                feature = NSEntityDescription.insertNewObject(forEntityName: PlanFeature.entityName(), into: managedObjectContext) as? PlanFeature
+                feature = NSEntityDescription.insertNewObject(forEntityName: "PlanFeature", into: managedObjectContext) as? PlanFeature
             }
 
             feature?.slug = remoteFeature.slug

@@ -7,8 +7,8 @@ public class PlanFeature: NSManagedObject {
         return NSFetchRequest<PlanFeature>(entityName: "PlanFeature")
     }
 
-    @NSManaged public var summary: String?
-    @NSManaged public var title: String?
-    @NSManaged public var slug: String?
+    @NSManaged public var summary: String
+    @NSManaged public var title: String
+    @NSManaged public var slug: String
 
 }
