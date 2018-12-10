@@ -18,7 +18,7 @@ scheme "WordPressScreenshotGeneration"
 # clear_previous_screenshots true # remove the '#'' to clear all previously generated screenshots before creating new ones
 
 # Where is your project (or workspace)? Provide the full path here
-workspace "../../WordPress.xcworkspace"
+workspace File.expand_path File.dirname(__FILE__) + "../../WordPress.xcworkspace"
 
 reinstall_app true
 erase_simulator true
