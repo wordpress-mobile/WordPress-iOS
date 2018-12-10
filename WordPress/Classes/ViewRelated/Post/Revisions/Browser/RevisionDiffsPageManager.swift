@@ -13,11 +13,9 @@ class RevisionDiffsPageManager: NSObject {
 
     private unowned var delegate: RevisionDiffsPageManagerDelegate
 
-
     init(delegate: RevisionDiffsPageManagerDelegate) {
         self.delegate = delegate
     }
-
 
     private func index(of viewController: UIViewController?) -> Int? {
         return viewControllers.lazy.firstIndex { $0 === viewController }
