@@ -235,3 +235,14 @@ target 'WordPressComStatsiOS' do
         shared_test_pods
     end
 end
+
+## Screenshot Generation
+## ===================
+##
+target 'WordPressScreenshotGeneration' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    inherit! :search_paths
+
+    pod 'SimulatorStatusMagic'
+end
