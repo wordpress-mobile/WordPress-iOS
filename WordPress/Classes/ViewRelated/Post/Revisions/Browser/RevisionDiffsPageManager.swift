@@ -25,31 +25,31 @@ class RevisionDiffsPageManager: NSObject {
 
 extension RevisionDiffsPageManager: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        return getViewController(at: index(of: viewController),
-                                 direction: .reverse,
-                                 operation: -)
+        guard let index = index(of: viewController) else {
+            return nil
+        }
+        return getViewController(at: index, direction: .reverse)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        return getViewController(at: index(of: viewController),
-                                 direction: .forward,
-                                 operation: +)
-    }
-
-    private func getViewController(at index: Int?, direction: UIPageViewController.NavigationDirection, operation: (Int, Int) -> Int) -> UIViewController? {
-        guard let index = index else {
+        guard let index = index(of: viewController) else {
             return nil
         }
+        return getViewController(at: index, direction: .forward)
+    }
 
-        let nextIndex = operation(index, 1)
+    private func getViewController(at index: Int, direction: UIPageViewController.NavigationDirection) -> UIViewController? {
+        var nextIndex = 0
         let count = viewControllers.count
 
         switch direction {
         case .forward:
+            nextIndex = index + 1
             if count == nextIndex || count < nextIndex {
                 return nil
             }
         case .reverse:
+            nextIndex = index - 1
             if nextIndex < 0 || count < nextIndex {
                 return nil
             }
