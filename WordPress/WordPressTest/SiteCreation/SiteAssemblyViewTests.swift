@@ -4,20 +4,35 @@ import XCTest
 
 class SiteAssemblyViewTests: XCTestCase {
 
+    // MARK: SiteAssemblyContentView
+
+    func testContentView_BackgroundColor_IsCorrect() {
+        // Given
+        let contentView = SiteAssemblyContentView()
+
+        // When
+        let actualBackgroundColor = contentView.backgroundColor
+
+        // Then
+        let expectedBackgroundColor = WPStyleGuide.greyLighten30()
+        XCTAssertEqual(actualBackgroundColor, expectedBackgroundColor)
+    }
+
     // MARK: SiteAssemblyWizardContent
 
-    func testViewLoaded_BackgroundColor_IsCorrect() {
+    func testViewLoaded_IsSiteAssemblyContentView() {
         // Given
         let creator = SiteCreator()
         let service = MockSiteAssemblyService()
         let viewController = SiteAssemblyWizardContent(creator: creator, service: service)
 
         // When
-        let actualBackgroundColor = viewController.view.backgroundColor
+        let contentView = viewController.view
 
         // Then
-        let expectedBackgroundColor = WPStyleGuide.greyLighten30()
-        XCTAssertEqual(actualBackgroundColor, expectedBackgroundColor)
+        XCTAssertNotNil(contentView)
+        let actualView = contentView!
+        XCTAssertTrue(actualView.isKind(of: SiteAssemblyContentView.self))
     }
 
     func testViewLoaded_StatusBar_DefaultContent() {

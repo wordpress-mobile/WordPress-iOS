@@ -499,6 +499,7 @@
 		73C8F06321BEEF2F00DDDF7E /* SiteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3021BEE45300E37C9A /* SiteAssembly.swift */; };
 		73C8F06421BEEF3400DDDF7E /* SiteAssemblyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */; };
 		73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */; };
+		73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06721BF1A5E00DDDF7E /* SiteAssemblyContentView.swift */; };
 		73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */; };
 		73D5AC64212622B200ADDDD2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D5AC5E212622B200ADDDD2 /* Localizable.strings */; };
 		73E32389212CD8B5001B735C /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
@@ -2314,6 +2315,7 @@
 		73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyStep.swift; sourceTree = "<group>"; };
 		73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyWizardContent.swift; sourceTree = "<group>"; };
 		73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyViewTests.swift; sourceTree = "<group>"; };
+		73C8F06721BF1A5E00DDDF7E /* SiteAssemblyContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyContentView.swift; sourceTree = "<group>"; };
 		73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		73D5AC5F212622B200ADDDD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73D5AC60212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -4944,6 +4946,7 @@
 		73178C2D21BEE13E00E37C9A /* FinalAssembly */ = {
 			isa = PBXGroup;
 			children = (
+				73C8F06721BF1A5E00DDDF7E /* SiteAssemblyContentView.swift */,
 				73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */,
 				73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */,
 			);
@@ -9609,6 +9612,7 @@
 				177B4C27212316DC00CF8084 /* GiphyStrings.swift in Sources */,
 				436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */,
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
+				73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
 				D88106FC20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift in Sources */,

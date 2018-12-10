@@ -11,6 +11,8 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     private let service: SiteAssemblyService
 
+    private let contentView = SiteAssemblyContentView()
+
     // MARK: SiteAssemblyWizardContent
 
     init(creator: SiteCreator, service: SiteAssemblyService) {
@@ -26,11 +28,19 @@ final class SiteAssemblyWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+
+    override func loadView() {
+        super.loadView()
+        view = contentView
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         hidesBottomBarWhenPushed = true
-        view.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -38,9 +48,10 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
-    }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        let wizardOutput = siteCreator.build()
+        service.createSite(creatorOutput: wizardOutput) { [contentView] status in
+            contentView.status = status
+        }
     }
 }
