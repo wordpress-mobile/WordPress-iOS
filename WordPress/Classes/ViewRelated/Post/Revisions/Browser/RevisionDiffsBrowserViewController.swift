@@ -59,7 +59,6 @@ class RevisionDiffsBrowserViewController: UIViewController {
         return loadItem
     }()
 
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -69,6 +68,29 @@ class RevisionDiffsBrowserViewController: UIViewController {
         trackRevisionsDetailViewed(with: .list)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        switch segue.destination {
+        case let pageViewController as UIPageViewController:
+            pageManager = RevisionDiffsPageManager(delegate: self)
+            pageManager?.viewControllers = (revisionState?.revisions ?? []).map {
+                let diffVc = RevisionDiffViewController.loadFromStoryboard()
+                diffVc.revision = $0
+                return diffVc
+            }
+
+            self.pageViewController = pageViewController
+            self.pageViewController?.dataSource = pageManager
+            self.pageViewController?.delegate = pageManager
+
+            scroll(.forward, animated: true)
+        case let operationVC as RevisionOperationViewController:
+            self.operationVC = operationVC
+        default:
+            break
+        }
+    }
 
     private func showRevision() {
         guard let revisionState = revisionState else {
@@ -143,30 +165,6 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
         dismiss(animated: true) {
             self.revisionState?.onRevisionSelected(revision)
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-
-        switch segue.destination {
-        case let pageViewController as UIPageViewController:
-            pageManager = RevisionDiffsPageManager(delegate: self)
-            pageManager?.viewControllers = (revisionState?.revisions ?? []).map {
-                let diffVc = RevisionDiffViewController.loadFromStoryboard()
-                diffVc.revision = $0
-                return diffVc
-            }
-
-            self.pageViewController = pageViewController
-            self.pageViewController?.dataSource = pageManager
-            self.pageViewController?.delegate = pageManager
-
-            scroll(.forward, animated: true)
-        case let operationVC as RevisionOperationViewController:
-            self.operationVC = operationVC
-        default:
-            break
         }
     }
 }
