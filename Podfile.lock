@@ -241,8 +241,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `cfa7d0af442438abf852c98834570eb9c5f1850d`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `cfa7d0af442438abf852c98834570eb9c5f1850d`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e0fc55abb4809b3b23b6d8b56791798af864025d`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e0fc55abb4809b3b23b6d8b56791798af864025d`)
   - WordPressAuthenticator (~> 1.1.6)
   - WordPressKit (~> 1.5.1)
   - WordPressShared (~> 1.6.0)
@@ -309,10 +309,10 @@ EXTERNAL SOURCES:
     :commit: 6e98ff2e09924dbba773e539be67396da5438eba
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
   WordPress-Aztec-iOS:
-    :commit: cfa7d0af442438abf852c98834570eb9c5f1850d
+    :commit: e0fc55abb4809b3b23b6d8b56791798af864025d
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: cfa7d0af442438abf852c98834570eb9c5f1850d
+    :commit: e0fc55abb4809b3b23b6d8b56791798af864025d
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
@@ -331,10 +331,10 @@ CHECKOUT OPTIONS:
     :commit: 6e98ff2e09924dbba773e539be67396da5438eba
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
   WordPress-Aztec-iOS:
-    :commit: cfa7d0af442438abf852c98834570eb9c5f1850d
+    :commit: e0fc55abb4809b3b23b6d8b56791798af864025d
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: cfa7d0af442438abf852c98834570eb9c5f1850d
+    :commit: e0fc55abb4809b3b23b6d8b56791798af864025d
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
@@ -384,6 +384,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 345412c847541696bbc63e627d1554fda50be69b
+PODFILE CHECKSUM: 3136c921aa0ba8e8ff15c441f6f8f542b675ae69
 
 COCOAPODS: 1.5.3
