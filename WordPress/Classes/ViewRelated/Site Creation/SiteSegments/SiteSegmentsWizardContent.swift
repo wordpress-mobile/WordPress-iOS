@@ -54,11 +54,17 @@ final class SiteSegmentsWizardContent: UIViewController {
         fetchSegments()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
+    }
+
     private func setupTable() {
         setupTableBackground()
         setupTableSeparator()
         setupCell()
         setupHeader()
+        setupConstraints()
         hideSeparators()
     }
 
@@ -92,20 +98,29 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        let header = TitleSubtitleHeader(frame: .zero)
+        print("==== table width ===", table.frame.width )
+        let initialHeaderFrame = CGRect(x: 0, y: 0, width: Int(table.frame.width), height: 0)
+        let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
         table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
-            header.topAnchor.constraint(equalTo: table.topAnchor)
         ])
+    }
 
-        table.tableHeaderView?.layoutIfNeeded()
-        table.tableHeaderView = table.tableHeaderView
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
     }
 
     private func initCancelButton() {

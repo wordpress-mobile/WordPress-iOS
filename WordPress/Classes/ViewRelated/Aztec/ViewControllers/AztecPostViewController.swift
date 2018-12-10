@@ -59,6 +59,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     let navigationBarManager = PostEditorNavigationBarManager()
 
+    let mediaUtility = EditorMediaUtility()
+
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         mediaCoordinator.cancelUploadOfAllMedia(for: post)
     }
@@ -69,6 +71,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate(set) lazy var debouncer: Debouncer = {
         return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
+
+    // MARK: - Gutenberg Support
+
+    private let switchToGutenberg: (EditorViewController) -> ()
 
     // MARK: - fileprivate & private variables
 
@@ -396,14 +402,16 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
     ///             since that's necessary for the edits to be saved.
     ///
-    required init(post: AbstractPost) {
+    required init(
+        post: AbstractPost,
+        switchToGutenberg: @escaping (EditorViewController) -> ()) {
+
         precondition(post.managedObjectContext != nil)
 
         self.post = post
+        self.switchToGutenberg = switchToGutenberg
 
         super.init(nibName: nil, bundle: nil)
-        self.restorationIdentifier = Restoration.restorationIdentifier
-        self.restorationClass = type(of: self)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
@@ -1139,6 +1147,15 @@ private extension AztecPostViewController {
 
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
                 self.secondaryPublishButtonTapped()
+            }
+        }
+
+        if GutenbergSettings().isGutenbergEnabled(),
+            let postContent = post.content,
+            postContent.count > 0 && post.containsGutenbergBlocks() {
+
+            alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
+                self.switchToGutenberg(self)
             }
         }
 
@@ -2923,85 +2940,16 @@ extension AztecPostViewController {
         return
     }
 
-    func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
-        let icon: UIImage
-        switch attachment {
-        case let imageAttachment as ImageAttachment:
-            if imageAttachment.url == Constants.placeholderDocumentLink {
-                icon = Gridicon.iconOfType(.pages, withSize: Constants.mediaPlaceholderImageSize)
-            } else {
-                icon = Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
-            }
-        case _ as VideoAttachment:
-            icon = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
-        default:
-            icon = Gridicon.iconOfType(.attachment, withSize: Constants.mediaPlaceholderImageSize)
-        }
-
-        icon.addAccessibilityForAttachment(attachment)
-        return icon
-    }
-
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
         guard let videoSrcURL = videoAttachment.url, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil else {
             onFailure()
             return
         }
-        let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
-        thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
-            guard let image = UIImage(contentsOfFile: exportResult.url.path) else {
-                onFailure()
-                return
-            }
-            DispatchQueue.main.async {
-                onSuccess(image)
-            }
-        }, onError: { (error) in
-            DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
-            onFailure()
-        })
+        mediaUtility.fetchPosterImage(for: videoSrcURL, onSuccess: onSuccess, onFailure: onFailure)
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        var requestURL = url
-        let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-        //use height zero to maintain the aspect ratio when fetching
-        var size = CGSize(width: imageMaxDimension, height: 0)
-        let request: URLRequest
-        if url.isFileURL {
-            request = URLRequest(url: url)
-        } else if self.post.blog.isPrivate() {
-            // private wpcom image needs special handling.
-            // the size that WPImageHelper expects is pixel size
-            size.width = size.width * UIScreen.main.scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
-            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
-        } else if !self.post.blog.isHostedAtWPcom && self.post.blog.isBasicAuthCredentialStored() {
-            size.width = size.width * UIScreen.main.scale
-            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
-        } else {
-            // the size that PhotonImageURLHelper expects is points size
-            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
-        }
-
-        let receipt = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
-            guard let _ = self else {
-                return
-            }
-
-            DispatchQueue.main.async {
-                guard let image = image else {
-                    DDLogError("Unable to download image for attachment with url = \(url). Details: \(String(describing: error?.localizedDescription))")
-                    failure()
-                    return
-                }
-
-                success(image)
-            }
-        }
-
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: failure)
         activeMediaRequests.append(receipt)
     }
 
@@ -3136,7 +3084,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
-        return placeholderImage(for: attachment)
+        return mediaUtility.placeholderImage(for: attachment, size: Constants.mediaPlaceholderImageSize)
     }
 }
 
@@ -3253,40 +3201,6 @@ extension UIImage {
     }
 }
 
-
-// MARK: - State Restoration
-//
-extension AztecPostViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        return restoreAztec(withCoder: coder)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
-        coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
-    }
-
-    class func restoreAztec(withCoder coder: NSCoder) -> AztecPostViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-        guard let postURI = coder.decodeObject(forKey: Restoration.postIdentifierKey) as? URL,
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURI) else {
-                return nil
-        }
-
-        let post = try? context.existingObject(with: objectID)
-        guard let restoredPost = post as? AbstractPost else {
-            return nil
-        }
-
-        let aztecViewController = AztecPostViewController(post: restoredPost)
-        aztecViewController.shouldRemovePostOnDismiss = coder.decodeBool(forKey: Restoration.shouldRemovePostKey)
-
-        return aztecViewController
-    }
-}
-
 // MARK: - UIDocumentPickerDelegate
 
 extension AztecPostViewController: UIDocumentPickerDelegate {
@@ -3374,6 +3288,7 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
+        static let gutenbergTitle = NSLocalizedString("Switch to Gutenberg", comment: "Switches from the classic editor to Gutenberg.")
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")

@@ -395,14 +395,22 @@ FeaturedImageViewControllerDelegate>
 
 - (void)configureSections
 {
-    self.sections = @[@(PostSettingsSectionTaxonomy),
-                      @(PostSettingsSectionMeta),
-                      @(PostSettingsSectionFormat),
-                      @(PostSettingsSectionFeaturedImage),
-                      @(PostSettingsSectionStickyPost),
-                      @(PostSettingsSectionShare),
-                      @(PostSettingsSectionGeolocation),
-                      @(PostSettingsSectionMoreOptions)];
+    NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
+    NSMutableArray *sections = [@[ @(PostSettingsSectionTaxonomy),
+                                  @(PostSettingsSectionMeta),
+                                  @(PostSettingsSectionFormat),
+                                  @(PostSettingsSectionFeaturedImage),
+                                  stickyPostSection,
+                                  @(PostSettingsSectionShare),
+                                  @(PostSettingsSectionGeolocation),
+                                  @(PostSettingsSectionMoreOptions) ] mutableCopy];
+    // Remove sticky post section for self-hosted non JetPack site
+    // and non admin user
+    //
+    if (![self.apost.blog supports:BlogFeatureWPComRESTAPI] && !self.apost.blog.isAdmin) {
+        [sections removeObject:stickyPostSection];
+    }
+    self.sections = [sections copy];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

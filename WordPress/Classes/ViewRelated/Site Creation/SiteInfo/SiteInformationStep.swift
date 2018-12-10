@@ -1,3 +1,5 @@
+
+/// Site Creation. Fourth screen: Site Info
 final class SiteInformationStep: WizardStep {
     private let creator: SiteCreator
 

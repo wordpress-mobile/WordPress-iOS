@@ -1,6 +1,7 @@
 import UIKit
-import React
 import WPMediaPicker
+import Gutenberg
+import Aztec
 
 class GutenbergViewController: UIViewController, PostEditor {
 
@@ -10,6 +11,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case publish
         case close
         case more
+        case switchToAztec
     }
 
     // MARK: - UI
@@ -40,6 +42,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         view.backgroundColor = Colors.separator
         return view
     }()
+
+    // MARK: - Aztec
+
+    private let switchToAztec: (EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -93,7 +99,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     func setHTML(_ html: String) {
         self.html = html
-        //TODO: Update Gutenberg UI
+        gutenberg.updateHtml(html)
     }
 
     func getHTML() -> String {
@@ -103,11 +109,14 @@ class GutenbergViewController: UIViewController, PostEditor {
     var post: AbstractPost {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
+            attachmentDelegate = AztecAttachmentDelegate(post: post)
             refreshInterface()
         }
     }
 
     let navigationBarManager = PostEditorNavigationBarManager()
+
+    lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
@@ -132,19 +141,22 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Private variables
 
-    private let gutenberg: Gutenberg
+    private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
 
     // MARK: - Initializers
-    required init(post: AbstractPost) {
+    required init(
+        post: AbstractPost,
+        switchToAztec: @escaping (EditorViewController) -> ()) {
+
         self.post = post
-        self.gutenberg = Gutenberg(props: ["initialData": self.post.content ?? ""])
-        self.verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        self.switchToAztec = switchToAztec
+        verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
+        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         super.init(nibName: nil, bundle: nil)
-        self.postTitle = post.postTitle ?? ""
+        postTitle = post.postTitle ?? ""
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -155,6 +167,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     deinit {
         gutenberg.invalidate()
+        attachmentDelegate.cancelAllPendingMediaRequests()
     }
 
     // MARK: - Lifecycle methods
@@ -231,13 +244,19 @@ class GutenbergViewController: UIViewController, PostEditor {
         mapUIContentToPostAndSave()
         editorContentWasUpdated()
     }
+
+    // MARK: - Switch to Aztec
+
+    func savePostEditsAndSwitchToAztec() {
+        requestHTMLReason = .switchToAztec
+        gutenberg.requestHTML()
+    }
 }
 
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
-
-    func gutenbergDidRequestMediaPicker(callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
                                                        callback: callback)
@@ -258,10 +277,26 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 cancelEditing()
             case .more:
                 displayMoreSheet()
+            case .switchToAztec:
+                switchToAztec(self)
             }
         }
     }
 }
+
+// MARK: - GutenbergBridgeDataSource
+
+extension GutenbergViewController: GutenbergBridgeDataSource {
+    func gutenbergInitialContent() -> String? {
+        return post.content ?? ""
+    }
+
+    func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
+        return attachmentDelegate
+    }
+}
+
+// MARK: - PostEditorStateContextDelegate
 
 extension GutenbergViewController: PostEditorStateContextDelegate {
 

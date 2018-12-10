@@ -504,7 +504,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self.tableView reloadData];
 
-    if (![self splitViewControllerIsHorizontallyCompact]) {
+    BOOL isValidIndexPath = selectedIndexPath.section < self.tableView.numberOfSections &&
+                            selectedIndexPath.row < [self.tableView numberOfRowsInSection:selectedIndexPath.section];
+    if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
 
         [self.tableView selectRowAtIndexPath:selectedIndexPath
