@@ -144,8 +144,8 @@ extension WPStyleGuide {
 
         // MARK: - Posting Activity Collection View Styles
 
-        // Value of PostingActivityMonth view width
-        static let minimumColumnWidth: CGFloat = 118
+        // Value of PostingActivityMonth view width for five columns
+        static let minimumColumnWidth: CGFloat = 104
         // Value of PostingActivityMonth view height
         static let cellHeight: CGFloat = 135
 
