@@ -427,6 +427,7 @@
 		73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */; };
 		73178C2B21BEE09300E37C9A /* SiteVerticalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */; };
 		73178C2C21BEE09300E37C9A /* SiteCreationHeaderDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */; };
+		73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3221BEE94700E37C9A /* SiteAssemblyServiceTests.swift */; };
 		73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */; };
 		7320C8BD2190C9FC0082FED5 /* UITextView+SummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7320C8BC2190C9FC0082FED5 /* UITextView+SummaryTests.swift */; };
 		7326718B210F75D2001FA866 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7326718D210F75D2001FA866 /* Localizable.strings */; };
@@ -493,6 +494,11 @@
 		73B05D2921374F1E0073ECAA /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		73BFDA8A211D054800907245 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BFDA89211D054800907245 /* Notifiable.swift */; };
 		73C31907212F214200769485 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6B42CBE1D9DA6270043E228 /* Noticons.ttf */; };
+		73C8F06021BEED9100DDDF7E /* SiteAssemblyStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */; };
+		73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */; };
+		73C8F06321BEEF2F00DDDF7E /* SiteAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3021BEE45300E37C9A /* SiteAssembly.swift */; };
+		73C8F06421BEEF3400DDDF7E /* SiteAssemblyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */; };
+		73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */; };
 		73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */; };
 		73D5AC64212622B200ADDDD2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D5AC5E212622B200ADDDD2 /* Localizable.strings */; };
 		73E32389212CD8B5001B735C /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
@@ -2251,6 +2257,9 @@
 		73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsCellTests.swift; sourceTree = "<group>"; };
 		73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalTests.swift; sourceTree = "<group>"; };
 		73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderDataTests.swift; sourceTree = "<group>"; };
+		73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyService.swift; sourceTree = "<group>"; };
+		73178C3021BEE45300E37C9A /* SiteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssembly.swift; sourceTree = "<group>"; };
+		73178C3221BEE94700E37C9A /* SiteAssemblyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyServiceTests.swift; sourceTree = "<group>"; };
 		73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleSubtitleHeaderTests.swift; sourceTree = "<group>"; };
 		7320C8BC2190C9FC0082FED5 /* UITextView+SummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+SummaryTests.swift"; path = "Aztec/UITextView+SummaryTests.swift"; sourceTree = "<group>"; };
 		7326718E210F75F0001FA866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2302,6 +2311,9 @@
 		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationContentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73BFDA89211D054800907245 /* Notifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
+		73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyStep.swift; sourceTree = "<group>"; };
+		73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyWizardContent.swift; sourceTree = "<group>"; };
+		73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyViewTests.swift; sourceTree = "<group>"; };
 		73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		73D5AC5F212622B200ADDDD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73D5AC60212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -4916,6 +4928,8 @@
 		73178C2021BEE09300E37C9A /* SiteCreation */ = {
 			isa = PBXGroup;
 			children = (
+				73178C3221BEE94700E37C9A /* SiteAssemblyServiceTests.swift */,
+				73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */,
 				73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */,
 				73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */,
 				73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */,
@@ -4925,6 +4939,15 @@
 				73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */,
 			);
 			path = SiteCreation;
+			sourceTree = "<group>";
+		};
+		73178C2D21BEE13E00E37C9A /* FinalAssembly */ = {
+			isa = PBXGroup;
+			children = (
+				73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */,
+				73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */,
+			);
+			path = FinalAssembly;
 			sourceTree = "<group>";
 		};
 		732A4738218786F30015DA74 /* Views */ = {
@@ -5908,6 +5931,8 @@
 				930F09161C7D110E00995926 /* ShareExtensionService.swift */,
 				E616E4B21C480896002C024E /* SharingService.swift */,
 				D82253DB2199411F0014D0E2 /* SiteAddressService.swift */,
+				73178C3021BEE45300E37C9A /* SiteAssembly.swift */,
+				73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */,
 				984B020D200D59B900179E75 /* SiteCreationService.swift */,
 				FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */,
 				D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */,
@@ -7186,6 +7211,7 @@
 		D865720F21869C380023A99C /* Site Creation */ = {
 			isa = PBXGroup;
 			children = (
+				73178C2D21BEE13E00E37C9A /* FinalAssembly */,
 				738B9A4721B85CF20005062B /* Shared */,
 				D82253E8219A8A5F0014D0E2 /* SiteInfo */,
 				D8C31CBF2188442200A33B35 /* SiteSegments */,
@@ -9554,6 +9580,7 @@
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
 				E6A2158E1D10627500DE5270 /* ReaderMenuViewModel.swift in Sources */,
 				176579F71C63A40F0000978E /* PurchaseButton.swift in Sources */,
+				73C8F06021BEED9100DDDF7E /* SiteAssemblyStep.swift in Sources */,
 				82C420761FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				984B020E200D59B900179E75 /* SiteCreationService.swift in Sources */,
@@ -9699,6 +9726,7 @@
 				D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */,
 				91DCE84821A6C58C0062F134 /* PostEditor+Publish.swift in Sources */,
 				98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */,
+				73C8F06421BEEF3400DDDF7E /* SiteAssemblyService.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				177B4C2B2123185300CF8084 /* GiphyMediaGroup.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
@@ -9743,6 +9771,7 @@
 				7E4123C520F4097B00DF8486 /* FormattableContentAction.swift in Sources */,
 				D8A468E521828D940094B82F /* SiteVerticalsService.swift in Sources */,
 				E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */,
+				73C8F06321BEEF2F00DDDF7E /* SiteAssembly.swift in Sources */,
 				9859DF86202107C600FB848E /* SiteCreationCategoryTableViewCells.swift in Sources */,
 				7435CE7320A4B9170075A1B9 /* AnimatedImageCache.swift in Sources */,
 				43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */,
@@ -9775,6 +9804,7 @@
 				D865721221869C590023A99C /* WizardStep.swift in Sources */,
 				43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */,
 				43290D0A215E8B1200F6B398 /* QuickStartSpotlightView.swift in Sources */,
+				73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */,
 				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
 				D8A468DB2181BC8B0094B82F /* SiteVertical.swift in Sources */,
@@ -10101,6 +10131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73178C2B21BEE09300E37C9A /* SiteVerticalTests.swift in Sources */,
+				73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */,
 				73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */,
 				D81C2F6020F891C4002AE1F1 /* TrashCommentActionTests.swift in Sources */,
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
@@ -10213,6 +10244,7 @@
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */,
+				73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */,
 				D88A6492208D7A0A008AE9BC /* MockStockPhotosService.swift in Sources */,
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
