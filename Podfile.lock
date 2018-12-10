@@ -319,6 +319,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Gutenberg:
+    :commit: 771db65fc0bcf6cc40b208c444dd591e9977240f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v0.2.3
   RNSVG:
