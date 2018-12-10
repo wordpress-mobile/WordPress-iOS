@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+import SimulatorStatusMagic
 
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
@@ -8,6 +9,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         super.setUp()
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        SDStatusBarManager.sharedInstance()?.enableOverrides()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
@@ -28,6 +30,8 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        SDStatusBarManager.sharedInstance()?.disableOverrides()
+
         super.tearDown()
     }
 
