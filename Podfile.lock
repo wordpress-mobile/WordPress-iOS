@@ -298,8 +298,8 @@ EXTERNAL SOURCES:
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
-    :commit: d7fdcfd0f211cf77e2526b68e037da926df05418
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v0.2.3
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   RNSVG:
@@ -322,8 +322,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   Gutenberg:
-    :commit: d7fdcfd0f211cf77e2526b68e037da926df05418
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v0.2.3
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: 8.0.8
@@ -384,6 +384,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 3136c921aa0ba8e8ff15c441f6f8f542b675ae69
+PODFILE CHECKSUM: 9a64a64b8277d54158411ee61b0f53a95fb07273
 
 COCOAPODS: 1.5.3
