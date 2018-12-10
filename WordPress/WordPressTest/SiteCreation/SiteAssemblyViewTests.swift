@@ -4,8 +4,6 @@ import XCTest
 
 class SiteAssemblyViewTests: XCTestCase {
 
-    // MARK: SiteAssemblyContentView
-
     func testContentView_BackgroundColor_IsCorrect() {
         // Given
         let contentView = SiteAssemblyContentView()
@@ -18,35 +16,73 @@ class SiteAssemblyViewTests: XCTestCase {
         XCTAssertEqual(actualBackgroundColor, expectedBackgroundColor)
     }
 
-    // MARK: SiteAssemblyWizardContent
-
-    func testViewLoaded_IsSiteAssemblyContentView() {
+    func testContentView_ViewIsCorrect_WhenStatusIsIdle() {
         // Given
-        let creator = SiteCreator()
-        let service = MockSiteAssemblyService()
-        let viewController = SiteAssemblyWizardContent(creator: creator, service: service)
+        let contentView = SiteAssemblyContentView()
 
         // When
-        let contentView = viewController.view
+        contentView.status = .idle
+        contentView.layoutIfNeeded()
+        wait(for: 0.5)
 
         // Then
-        XCTAssertNotNil(contentView)
-        let actualView = contentView!
-        XCTAssertTrue(actualView.isKind(of: SiteAssemblyContentView.self))
+        let actualCompletionLabelAlpha = contentView.completionLabel.alpha
+        XCTAssertEqual(actualCompletionLabelAlpha, 0, accuracy: 0.01)
+
+        let actualStatusStackViewAlpha = contentView.statusStackView.alpha
+        XCTAssertEqual(actualStatusStackViewAlpha, 0, accuracy: 0.01)
     }
 
-    func testViewLoaded_StatusBar_DefaultContent() {
+    func testContentView_ViewIsCorrect_WhenStatusIsInProgress() {
         // Given
-        let creator = SiteCreator()
-        let service = MockSiteAssemblyService()
-        let viewController = SiteAssemblyWizardContent(creator: creator, service: service)
+        let contentView = SiteAssemblyContentView()
 
         // When
-        _ = viewController.view
-        let actualStatusBarStyle = viewController.preferredStatusBarStyle
+        contentView.status = .inProgress
+        contentView.layoutIfNeeded()
+        wait(for: 0.5)
 
         // Then
-        let expectedStatusBarStyle = UIStatusBarStyle.default
-        XCTAssertEqual(actualStatusBarStyle, expectedStatusBarStyle)
+        let actualStatusStackViewAlpha = contentView.statusStackView.alpha
+        XCTAssertEqual(actualStatusStackViewAlpha, 1, accuracy: 0.01)
+    }
+
+    func testContentView_ViewIsCorrect_WhenStatusIsSucceeded() {
+        // Given
+        let contentView = SiteAssemblyContentView()
+
+        // When
+        contentView.status = .succeeded
+        contentView.layoutIfNeeded()
+        wait(for: 0.75)
+
+        // Then
+        let actualCompletionLabelAlpha = contentView.completionLabel.alpha
+        XCTAssertEqual(actualCompletionLabelAlpha, 1, accuracy: 0.01)
+
+        let actualStatusStackViewAlpha = contentView.statusStackView.alpha
+        XCTAssertEqual(actualStatusStackViewAlpha, 0, accuracy: 0.01)
+    }
+
+    func testContentView_AssembledSiteView_IsProperlyInstalled() {
+        // Given
+        let contentView = SiteAssemblyContentView()
+
+        // When
+        contentView.domainName = "wordpress.com"
+
+        // Then
+        XCTAssertNotNil(contentView.assembledSiteView)
+    }
+
+    func testContentView_ButtonContainerView_IsProperlyInstalled() {
+        // Given
+        let contentView = SiteAssemblyContentView()
+
+        // When
+        contentView.buttonContainerView = UIView()
+
+        // Then
+        XCTAssertNotNil(contentView.buttonContainerView)
     }
 }

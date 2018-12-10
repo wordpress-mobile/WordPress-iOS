@@ -1,6 +1,8 @@
 
 import UIKit
 
+import WordPressAuthenticator
+
 // MARK: - SiteAssemblyWizardContent
 
 final class SiteAssemblyWizardContent: UIViewController {
@@ -12,6 +14,8 @@ final class SiteAssemblyWizardContent: UIViewController {
     private let service: SiteAssemblyService
 
     private let contentView = SiteAssemblyContentView()
+
+    private let buttonViewController = NUXButtonViewController.instance()
 
     // MARK: SiteAssemblyWizardContent
 
@@ -41,6 +45,7 @@ final class SiteAssemblyWizardContent: UIViewController {
         super.viewDidLoad()
 
         hidesBottomBarWhenPushed = true
+        installButtonViewController()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,9 +54,37 @@ final class SiteAssemblyWizardContent: UIViewController {
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
 
+        if let domainName = siteCreator.address?.domainName {
+            contentView.domainName = domainName
+        }
+
         let wizardOutput = siteCreator.build()
         service.createSite(creatorOutput: wizardOutput) { [contentView] status in
             contentView.status = status
         }
+    }
+
+    // MARK: Private behavior
+
+    private func installButtonViewController() {
+        buttonViewController.delegate = self
+
+        let primaryButtonText = NSLocalizedString("Done",
+                                                  comment: "Tapping a button with this label allows the user to exit the Site Creation flow")
+        buttonViewController.setButtonTitles(primary: primaryButtonText)
+
+        contentView.buttonContainerView = buttonViewController.view
+
+        buttonViewController.willMove(toParent: self)
+        addChild(buttonViewController)
+        buttonViewController.didMove(toParent: self)
+    }
+}
+
+// MARK: - NUXButtonViewControllerDelegate
+
+extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
+    func primaryButtonPressed() {
+        navigationController?.dismiss(animated: true)
     }
 }

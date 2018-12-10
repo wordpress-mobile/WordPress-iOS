@@ -3,8 +3,6 @@ import XCTest
 
 class SiteAssemblyServiceTests: XCTestCase {
 
-    // MARK: SiteAssemblyService
-    
     func testSiteAssemblyService_InitialStatus_IsIdle() {
         let service: SiteAssemblyService = MockSiteAssemblyService()
 
@@ -37,22 +35,11 @@ class SiteAssemblyServiceTests: XCTestCase {
                 inProgressExpectation.fulfill()
             }
 
-            if status == .succeeded {
+            if .succeeded == status {
                 successExpectation.fulfill()
             }
         }
 
         wait(for: [inProgressExpectation, successExpectation], timeout: 10, enforceOrder: true)
-    }
-
-    // MARK: SiteAssemblyStatus
-
-    func testSiteAssemblyStatus_InProgressDescription_IsLocalized() {
-        let status: SiteAssemblyStatus = .inProgress
-
-        let actualStatusDescription = status.description
-
-        let expectedStatusDescription = NSLocalizedString("We’re creating your new site.", comment: "")
-        XCTAssertEqual(actualStatusDescription, expectedStatusDescription)
     }
 }

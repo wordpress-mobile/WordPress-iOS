@@ -17,23 +17,6 @@ enum SiteAssemblyStatus {
     case succeeded
 }
 
-extension SiteAssemblyStatus: CustomStringConvertible {
-    var description: String {
-        // NB: The values not localized below are not user-facing.
-        switch self {
-        case .idle:
-            return "Idle"
-        case .inProgress:
-            return NSLocalizedString("We’re creating your new site.",
-                                     comment: "User-facing string, presented to reflect that site assembly is underway.")
-        case .failed:
-            return "Failed"
-        case .succeeded:
-            return "Succeeded"
-        }
-    }
-}
-
 // MARK: - SiteAssemblyService
 
 typealias SiteAssemblyStatusChangedHandler = (SiteAssemblyStatus) -> Void
@@ -55,7 +38,9 @@ protocol SiteAssemblyService {
 // MARK: - MockSiteAssemblyService
 
 /// Fabricated instance of a `SiteAssemblyService`.
-final class MockSiteAssemblyService: SiteAssemblyService {
+final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
+
+    // MARK: Properties
 
     private(set) var currentStatus: SiteAssemblyStatus = .idle {
         didSet {
@@ -70,10 +55,10 @@ final class MockSiteAssemblyService: SiteAssemblyService {
 
     private(set) var statusChangeHandler: SiteAssemblyStatusChangedHandler?
 
+    // MARK: SiteAssemblyService
+
     func createSite(creatorOutput assemblyInput: SiteCreatorOutput, changeHandler: SiteAssemblyStatusChangedHandler?) {
-
         self.statusChangeHandler = changeHandler
-
         currentStatus = .inProgress
 
         let contrivedDelay = DispatchTimeInterval.seconds(3)

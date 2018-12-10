@@ -1,8 +1,12 @@
 
 import Foundation
 
+// MARK: - EnhancedSiteCreationService
+
 /// Working implementation of a `SiteAssemblyService`.
 final class EnhancedSiteCreationService: SiteAssemblyService {
+
+    // MARK: Properties
 
     private(set) var currentStatus: SiteAssemblyStatus = .idle {
         didSet {
@@ -16,6 +20,8 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
     }
 
     private(set) var statusChangeHandler: SiteAssemblyStatusChangedHandler?
+
+    // MARK: SiteAssemblyService
 
     func createSite(creatorOutput assemblyInput: SiteCreatorOutput, changeHandler: SiteAssemblyStatusChangedHandler? = nil) {
         self.statusChangeHandler = changeHandler
