@@ -1,8 +1,7 @@
 @objc class UntouchableWindow: UIWindow {
-    let untouchableViewController: UntouchableViewController
+    let untouchableViewController  = UntouchableViewController()
 
     override init(frame: CGRect) {
-        untouchableViewController = UntouchableViewController()
         super.init(frame: frame)
         rootViewController = untouchableViewController
     }
@@ -23,15 +22,15 @@
 class UntouchableViewController: UIViewController {
     required init() {
         super.init(nibName: nil, bundle: nil)
-
-        self.view = UntouchableView()
+    }
+    override func loadView() {
+        view = UntouchableView()
+        super.loadView()
     }
 
     var offsetOnscreen: CGFloat {
-        guard let mainWindow = UIApplication.shared.delegate?.window else {
-            return 0
-        }
-        guard let tabBarController = mainWindow?.rootViewController as? WPTabBarController,
+        guard let mainWindow = UIApplication.shared.delegate?.window,
+            let tabBarController = mainWindow?.rootViewController as? WPTabBarController,
             tabBarController.presentedViewController == nil else {
             return 0
         }
