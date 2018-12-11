@@ -86,7 +86,7 @@ open class NotificationSettingsViewController: UIViewController {
         })
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.followedSites = siteService.allSiteTopics() ?? []
+            self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isFeed }
             self?.setupSections()
             self?.activityIndicatorView.stopAnimating()
             self?.tableView.reloadData()
@@ -182,7 +182,7 @@ open class NotificationSettingsViewController: UIViewController {
         case .blog where requiresBlogsPagination:
             return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         case .followedSites:
-            return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : loadMoreRowCount
+            return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : min(loadMoreRowCount, rowCountForFollowedSite)
         default:
             return groupedSettings[section]?.count ?? 0
         }
