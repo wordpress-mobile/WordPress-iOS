@@ -11,7 +11,10 @@ final class VerticalsWizardContent: UIViewController {
     private let throttle = Scheduler(seconds: 1)
 
     @IBOutlet weak var table: UITableView!
-    var bottomConstraint: NSLayoutConstraint?
+
+    private lazy var bottomConstraint: NSLayoutConstraint = {
+        return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
+    }()
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
@@ -108,11 +111,10 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupConstraints() {
         table.cellLayoutMarginsFollowReadableWidth = true
-        bottomConstraint = table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor)
 
         NSLayoutConstraint.activate([
             table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            bottomConstraint!,
+            bottomConstraint,
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
@@ -208,7 +210,7 @@ extension VerticalsWizardContent {
 
         let animationDuration = payload.animationDuration
 
-        bottomConstraint?.constant = constraintConstant
+        bottomConstraint.constant = constraintConstant
         view.setNeedsUpdateConstraints()
 
         var contentInsets = UIEdgeInsets.zero
@@ -231,6 +233,6 @@ extension VerticalsWizardContent {
 
     @objc
     private func keyboardWillHide(_ notification: Foundation.Notification) {
-        bottomConstraint?.constant = Constants.bottomMargin
+        bottomConstraint.constant = Constants.bottomMargin
     }
 }
