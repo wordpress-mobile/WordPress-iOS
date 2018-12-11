@@ -84,6 +84,10 @@ extension WPStyleGuide {
             label.textColor = secondaryTextColor
         }
 
+        static func configureLabelAsTotalCount(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 

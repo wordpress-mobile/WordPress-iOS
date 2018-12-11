@@ -4,15 +4,18 @@ struct TabData {
     var tabTitle: String
     var itemSubtitle: String
     var dataSubtitle: String
+    var totalCount: String?
     var dataRows: [StatsTotalRowData]
 
     init(tabTitle: String,
          itemSubtitle: String,
          dataSubtitle: String,
+         totalCount: String? = nil,
          dataRows: [StatsTotalRowData]) {
         self.tabTitle = tabTitle
         self.itemSubtitle = itemSubtitle
         self.dataSubtitle = dataSubtitle
+        self.totalCount = totalCount
         self.dataRows = dataRows
     }
 }
@@ -22,6 +25,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var totalCountLabel: UILabel!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var rowsStackView: UIStackView!
@@ -69,11 +73,13 @@ private extension TabbedTotalsCell {
 
     func applyStyles() {
         Style.configureCell(self)
+        Style.configureLabelAsTotalCount(totalCountLabel)
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
         viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
     }
 
     func configureSubtitles() {
+        totalCountLabel.text = tabsData[filterTabBar.selectedIndex].totalCount
         itemSubtitleLabel.text = tabsData[filterTabBar.selectedIndex].itemSubtitle
         dataSubtitleLabel.text = tabsData[filterTabBar.selectedIndex].dataSubtitle
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
