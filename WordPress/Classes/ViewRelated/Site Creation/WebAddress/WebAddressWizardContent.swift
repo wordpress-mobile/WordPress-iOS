@@ -80,7 +80,7 @@ final class WebAddressWizardContent: UIViewController {
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
             header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
             header.topAnchor.constraint(equalTo: table.topAnchor)
-            ])
+        ])
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
