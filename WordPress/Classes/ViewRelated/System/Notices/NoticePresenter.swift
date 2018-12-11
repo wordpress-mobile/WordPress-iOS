@@ -134,8 +134,9 @@ class NoticePresenter: NSObject {
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
-
             noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+
+            self.window.isHidden = false
 
             self.view.layoutIfNeeded()
         }
@@ -155,9 +156,10 @@ class NoticePresenter: NSObject {
         }
 
         currentContainer = nil
-        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: {
+        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
             container.removeFromSuperview()
-            self.dismiss()
+            self?.window.isHidden = true
+            self?.dismiss()
         })
     }
 
