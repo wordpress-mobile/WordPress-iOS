@@ -209,10 +209,7 @@ private extension UIWindow {
     /// - Returns: CGRect based on this window's frame
     /// - Note: Turns out that a small alteration to the frame is enough to accomplish this.
     func offsetToAvoidStatusBar() -> CGRect {
-        return self.frame.inset(by: UIEdgeInsets(top: Offsets.minimalEdgeOffset,
-                                                left: Offsets.minimalEdgeOffset,
-                                                bottom: Offsets.minimalEdgeOffset,
-                                                right: Offsets.minimalEdgeOffset))
+        return self.frame.insetBy(dx: Offsets.minimalEdgeOffset, dy: Offsets.minimalEdgeOffset)
     }
 
     private enum Offsets {
