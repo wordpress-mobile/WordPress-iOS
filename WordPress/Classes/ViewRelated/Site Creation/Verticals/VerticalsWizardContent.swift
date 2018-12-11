@@ -11,6 +11,7 @@ final class VerticalsWizardContent: UIViewController {
     private let throttle = Scheduler(seconds: 1)
 
     @IBOutlet weak var table: UITableView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
@@ -38,6 +39,16 @@ final class VerticalsWizardContent: UIViewController {
         applyTitle()
         setupBackground()
         setupTable()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToKeyboardNotifications()
     }
 
     override func viewDidLayoutSubviews() {
@@ -155,5 +166,70 @@ final class VerticalsWizardContent: UIViewController {
 
     private func didSelect(_ segment: SiteVertical) {
         selection(segment)
+    }
+}
+
+extension VerticalsWizardContent {
+    private struct Constants {
+        static let bottomMargin: CGFloat = 0.0
+        static let topMargin: CGFloat = 36.0
+    }
+
+    private func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else { return }
+        let keyboardScreenFrame = payload.frameEnd
+
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+
+        var constraintConstant = convertedKeyboardFrame.height
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
+
+        let animationDuration = payload.animationDuration
+
+        bottomConstraint.constant = constraintConstant
+        view.setNeedsUpdateConstraints()
+
+        var contentInsets = UIEdgeInsets.zero
+        if let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+            let textfieldFrame = header.textField.frame
+            contentInsets = UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: constraintConstant, right: 0.0)
+        }
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = contentInsets
+                        self?.table.scrollIndicatorInsets = contentInsets
+
+            },
+                       completion: nil)
+    }
+
+    @objc
+    private func keyboardWillHide(_ notification: Foundation.Notification) {
+        bottomConstraint.constant = Constants.bottomMargin
     }
 }
