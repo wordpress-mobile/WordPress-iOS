@@ -30,6 +30,9 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var rowsStackView: UIStackView!
 
+    @IBOutlet weak var topSeparatorLine: UIView!
+    @IBOutlet weak var bottomSeparatorLine: UIView!
+
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
     private let maxNumberOfDataRows = 6
@@ -77,6 +80,8 @@ private extension TabbedTotalsCell {
     func applyStyles() {
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
+        Style.configureViewAsSeperator(topSeparatorLine)
+        Style.configureViewAsSeperator(bottomSeparatorLine)
     }
 
     func configureSubtitles() {
