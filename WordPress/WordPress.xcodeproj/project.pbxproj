@@ -8965,6 +8965,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"~/.mobile-secrets/iOS/WPiOS/ScreenshotCredentials.swift",
 			);
 			name = "Copy Screenshot Credentials";
 			outputFileListPaths = (
