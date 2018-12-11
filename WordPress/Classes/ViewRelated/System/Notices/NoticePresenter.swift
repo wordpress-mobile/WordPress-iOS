@@ -38,7 +38,7 @@ class NoticePresenter: NSObject {
         }
     }
 
-    @objc override convenience init() {
+    override convenience init() {
         self.init(store: StoreContainer.shared.notice)
     }
 
