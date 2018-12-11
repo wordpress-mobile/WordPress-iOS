@@ -1555,6 +1555,7 @@
 		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
+		F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
@@ -3609,6 +3610,7 @@
 		F373612EEEEF10E500093FF3 /* Pods-WordPress.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressDraftActionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotCredentials.swift; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
@@ -5559,6 +5561,7 @@
 				8511CFC31C60884300B7CEED /* WordPressScreenshotGeneration-Bridging-Header.h */,
 				8511CFC61C60894200B7CEED /* WordPressScreenshotGeneration.swift */,
 				1AA2EFDA2101D75C00734283 /* XCTest+Extensions.swift */,
+				F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */,
 			);
 			path = WordPressScreenshotGeneration;
 			sourceTree = "<group>";
@@ -7968,6 +7971,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8511CFC21C607A7000B7CEED /* Build configuration list for PBXNativeTarget "WordPressScreenshotGeneration" */;
 			buildPhases = (
+				F9463A7121C05BAF0081F11E /* Copy Screenshot Credentials */,
 				2DF08408C90B90D744C56E02 /* [CP] Check Pods Manifest.lock */,
 				8511CFB21C607A7000B7CEED /* Sources */,
 				8511CFB31C607A7000B7CEED /* Frameworks */,
@@ -8954,6 +8958,25 @@
 			shellPath = /bin/sh;
 			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Fabric\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  \"${PODS_ROOT}/Fabric/run\" $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Fabric API Key not found\"\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		F9463A7121C05BAF0081F11E /* Copy Screenshot Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Screenshot Credentials";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/WordPressScreenshotGeneration/ScreenshotCredentials.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nsh ../Scripts/BuildPhases/CopyScreenshotCredentials.sh\n";
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10069,6 +10092,7 @@
 			files = (
 				8511CFC71C60894200B7CEED /* WordPressScreenshotGeneration.swift in Sources */,
 				8511CFC51C60884400B7CEED /* SnapshotHelper.swift in Sources */,
+				F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */,
 				1AA2EFDB2101D75C00734283 /* XCTest+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
