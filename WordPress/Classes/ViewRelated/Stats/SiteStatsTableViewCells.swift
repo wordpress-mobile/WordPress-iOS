@@ -95,6 +95,28 @@ struct PostingActivityRow: ImmuTableRow {
         cell.configure(withData: monthsData, andDelegate: siteStatsInsightsDelegate)
     }
 }
+
+struct TabbedTotalsStatsRow: ImmuTableRow {
+
+    typealias CellType = TabbedTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let tabsData: [TabData]
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(tabsData: tabsData)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader

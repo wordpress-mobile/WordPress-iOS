@@ -107,6 +107,7 @@ extension WPStyleGuide {
             filterTabBar.tintColor = filterTintColor
             filterTabBar.deselectedTabColor = filterDeselectedColor
             filterTabBar.dividerColor = filterDividerColor
+            filterTabBar.tabSizingStyle = .equalWidths
         }
 
         // MARK: - Style Values

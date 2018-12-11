@@ -60,7 +60,8 @@ class SiteStatsInsightsViewModel: Observable {
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
+                tableRows.append(createTabbedTotalsStatsRow())
             case .followers:
                 DDLogDebug("Show \(insightType) here.")
             case .todaysStats:
@@ -103,6 +104,7 @@ private extension SiteStatsInsightsViewModel {
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
+        static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
     }
 
     struct AllTimeStats {
@@ -297,5 +299,13 @@ private extension SiteStatsInsightsViewModel {
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    func createTabbedTotalsStatsRow() -> TabbedTotalsStatsRow {
+
+        let tabOneData = TabData.init(tabTitle: "Tab One", itemSubtitle: "Item One", dataSubtitle: "Data One", dataRows: [])
+        let tabTwoData = TabData.init(tabTitle: "Tab Two", itemSubtitle: "Item Two", dataSubtitle: "Data Two", dataRows: [])
+
+        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData])
     }
 }
