@@ -213,11 +213,7 @@ extension VerticalsWizardContent {
         bottomConstraint.constant = constraintConstant
         view.setNeedsUpdateConstraints()
 
-        var contentInsets = UIEdgeInsets.zero
-        if let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-            let textfieldFrame = header.textField.frame
-            contentInsets = UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: constraintConstant, right: 0.0)
-        }
+        let contentInsets = tableContentInsets(bottom: constraintConstant)
 
         UIView.animate(withDuration: animationDuration,
                        delay: 0,
@@ -229,6 +225,15 @@ extension VerticalsWizardContent {
 
             },
                        completion: nil)
+    }
+
+    private func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
+        guard let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: bottom, right: 0.0)
+        }
+
+        let textfieldFrame = header.textField.frame
+        return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
     }
 
     @objc
