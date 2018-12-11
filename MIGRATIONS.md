@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 86
+@danielebogo 2018-12-11
+- `ReaderSiteTopic` added `isFeed` to store the value id a reader site is a feed.
+
 ## WordPress 85
 @danielebogo 2018-11-12
 - Added `BlogAuthor` to store the data of a *blog author*.
