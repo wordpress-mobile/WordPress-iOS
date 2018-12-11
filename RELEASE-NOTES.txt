@@ -1,1 +1,2 @@
 * App Settings Privacy: Added explanation for the 'Remove Location from Media' feature.
+* History / Revisions: Added swipe action to the revisions browser
