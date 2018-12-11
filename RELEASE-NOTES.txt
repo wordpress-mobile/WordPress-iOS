@@ -1,1 +1,2 @@
 * App Settings Privacy: Added explanation for the 'Remove Location from Media' feature.
+* Added a notice and undo button when loading a revision from a post's history.
