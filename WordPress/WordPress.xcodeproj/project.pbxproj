@@ -890,6 +890,8 @@
 		98AE3DF5219A1789003C0E24 /* StatsInsightsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */; };
 		98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */; };
 		98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B33C87202283860071E1E2 /* NoResults.storyboard */; };
+		98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */; };
+		98B3FA8621C05BF000148DD4 /* ViewMoreRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */; };
 		98BDFF6B20D0732900C72C58 /* SupportTableViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */; };
 		98D60B9B1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */; };
 		98D60B9E1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9C1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift */; };
@@ -2764,6 +2766,8 @@
 		98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsInsightsStore.swift; sourceTree = "<group>"; };
 		98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEpilogueViewController.swift; sourceTree = "<group>"; };
 		98B33C87202283860071E1E2 /* NoResults.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NoResults.storyboard; sourceTree = "<group>"; };
+		98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRow.swift; sourceTree = "<group>"; };
+		98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewMoreRow.xib; sourceTree = "<group>"; };
 		98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SupportTableViewController+Activity.swift"; sourceTree = "<group>"; };
 		98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionViewController.swift; sourceTree = "<group>"; };
 		98D60B9C1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionCell.swift; sourceTree = "<group>"; };
@@ -6102,6 +6106,8 @@
 				98458CB921A39D7A0025D232 /* StatsNoDataRow.xib */,
 				98812964219CE42A0075FF33 /* StatsTotalRow.swift */,
 				98812965219CE42A0075FF33 /* StatsTotalRow.xib */,
+				98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */,
+				98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */,
 			);
 			path = "Shared Views";
 			sourceTree = "<group>";
@@ -8446,6 +8452,7 @@
 				738B9A5021B85CF20005062B /* SiteCreationWizardTitle.xib in Resources */,
 				435035991EDCAB99004ECF47 /* post.json in Resources */,
 				98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */,
+				98B3FA8621C05BF000148DD4 /* ViewMoreRow.xib in Resources */,
 				D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9991,6 +9998,7 @@
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */,
 				40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */,
 				E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */,
+				98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */,
 				D816B8BE2112CC000052CE4D /* NewsItem.swift in Sources */,
 				D8380CA42192E77F00250609 /* VerticalsCell.swift in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
