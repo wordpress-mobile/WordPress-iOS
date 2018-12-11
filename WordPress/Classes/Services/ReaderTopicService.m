@@ -852,6 +852,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.isPrivate = siteInfo.isPrivate;
     topic.isVisible = siteInfo.isVisible;
     topic.postCount = siteInfo.postCount;
+    topic.isFeed = siteInfo.isFeed;
     topic.showInMenu = NO;
     topic.siteBlavatar = siteInfo.siteBlavatar;
     topic.siteDescription = siteInfo.siteDescription;
