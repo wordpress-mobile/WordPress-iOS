@@ -83,10 +83,6 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
     private struct Constants {
         static let spacing = CGFloat(10)
-        static let animationDuration = TimeInterval(0.40)
-        static let animationDelay = TimeInterval(0.0)
-        static let animationDamping = CGFloat(0.9)
-        static let animationSpring = CGFloat(1.0)
     }
 
     private lazy var titleSubtitle: TitleSubtitleHeader = {
@@ -136,14 +132,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -TitleSubtitleHeader.Margins.verticalMargin)
         ])
 
-        setupTextField()
         setStyles()
-    }
-
-    private func setupTextField() {
-        textField.delegate = self
-        textField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-
     }
 
     private func setStyles() {
@@ -156,51 +145,5 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
     func setSubtitle(_ text: String) {
         titleSubtitle.setSubtitle(text)
-    }
-}
-
-extension TitleSubtitleTextfieldHeader: UITextFieldDelegate {
-    @objc
-    func textFieldChanged(sender: UITextField) {
-        if let searchTerm = sender.text, searchTerm.isEmpty {
-            showTitleSubtitle()
-        } else {
-            hideTitleSubtitle()
-        }
-    }
-
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        showTitleSubtitle()
-        return true
-    }
-
-    private func hideTitleSubtitle() {
-        guard titleIsHidden() == false else {
-            return
-        }
-
-        updateTitleSubtitle(visibility: true)
-    }
-
-    private func showTitleSubtitle() {
-        guard titleIsHidden() == true else {
-            return
-        }
-        updateTitleSubtitle(visibility: false)
-    }
-
-    private func titleIsHidden() -> Bool {
-        return stackView.arrangedSubviews.first?.isHidden ?? true
-    }
-
-    private func updateTitleSubtitle(visibility: Bool) {
-        UIView.animate(withDuration: Constants.animationDuration,
-                       delay: Constants.animationDelay,
-                       usingSpringWithDamping: Constants.animationDamping,
-                       initialSpringVelocity: Constants.animationSpring,
-                       options: [],
-                       animations: { [weak self] in
-                        self?.stackView.arrangedSubviews.first?.isHidden = visibility
-            }, completion: nil)
     }
 }
