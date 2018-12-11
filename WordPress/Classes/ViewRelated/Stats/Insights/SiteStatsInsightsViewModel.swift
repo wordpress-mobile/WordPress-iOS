@@ -305,28 +305,27 @@ private extension SiteStatsInsightsViewModel {
 
         // TODO: replace with real data
 
+        let row = StatsTotalRowData.init(name: "Testing",
+                                         data: Double(6666).abbreviatedString(),
+                                         icon: TodaysStats.visitorsIcon)
+
         let tabOneData = TabData.init(tabTitle: "Tab One",
                                       itemSubtitle: "Item One",
                                       dataSubtitle: "Data One",
                                       totalCount: "Total WordPress.com Followers: 999,999",
-                                      dataRows: [StatsTotalRowData.init(name: "Testing 123",
-                                                                        data: Double(6666).abbreviatedString(),
-                                                                        icon: TodaysStats.visitorsIcon),
-                                                 StatsTotalRowData.init(name: "Testing 456",
-                                                                        data: Double(6666666666).abbreviatedString(),
-                                                                        icon: TodaysStats.visitorsIcon)])
+                                      dataRows: [row, row])
+
+        let disclosureRow = StatsTotalRowData.init(name: "Testing",
+                                                   data: Double(99999).abbreviatedString(),
+                                                   showDisclosure: true)
 
         let tabTwoData = TabData.init(tabTitle: "Tab Two",
                                       itemSubtitle: "Item Two",
                                       dataSubtitle: "Data Two",
                                       totalCount: "Total Email Followers: 666,666",
-                                      dataRows: [StatsTotalRowData.init(name: "Testing 789",
-                                                                        data: Double(99999).abbreviatedString(),
-                                                                        showDisclosure: true),
-                                                 StatsTotalRowData.init(name: "Testing 000",
-                                                                        data: Double(9999999999).abbreviatedString(),
-                                                                        showDisclosure: true)])
+                                      dataRows: [disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow])
 
-        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData])
+        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
+
 }

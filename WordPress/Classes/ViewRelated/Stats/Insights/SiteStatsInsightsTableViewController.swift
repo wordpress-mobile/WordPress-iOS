@@ -24,6 +24,7 @@ enum InsightType: Int {
     @objc optional func showCreatePost()
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
+    @objc optional func tabbedTotalsCellUpdated()
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -177,4 +178,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
+
+    func tabbedTotalsCellUpdated() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
 }

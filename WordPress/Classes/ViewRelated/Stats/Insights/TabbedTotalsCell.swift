@@ -29,15 +29,17 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var rowsStackView: UIStackView!
-    @IBOutlet weak var viewMoreLabel: UILabel!
 
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
+    private let maxNumberOfDataRows = 6
+    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - Configure
 
-    func configure(tabsData: [TabData]) {
+    func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate) {
         self.tabsData = tabsData
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         setupFilterBar()
         configureSubtitles()
         addRows()
@@ -63,6 +65,7 @@ private extension TabbedTotalsCell {
         configureSubtitles()
         removeExistingRows()
         addRows()
+        siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
     }
 
 }
@@ -74,8 +77,6 @@ private extension TabbedTotalsCell {
     func applyStyles() {
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
-        viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
-        viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
     }
 
     func configureSubtitles() {
@@ -88,24 +89,39 @@ private extension TabbedTotalsCell {
 
     func addRows() {
         let dataRows = tabsData[filterTabBar.selectedIndex].dataRows
+        let numberOfDataRows = dataRows.count
 
-        if dataRows.count == 0 {
+        if numberOfDataRows == 0 {
             let row = StatsNoDataRow.loadFromNib()
             rowsStackView.addArrangedSubview(row)
+            // TODO: hide subtitles and total count
             return
         }
 
-        for (index, dataRow) in dataRows.enumerated() {
+        let numberOfRowsToAdd = numberOfDataRows > maxNumberOfDataRows ? maxNumberOfDataRows : numberOfDataRows
+
+        for index in 0..<numberOfRowsToAdd {
+            let dataRow = dataRows[index]
             let row = StatsTotalRow.loadFromNib()
             row.configure(rowData: dataRow)
 
             // Don't show the separator line on the last row.
-            if index == (dataRows.count - 1) {
+            if index == (numberOfRowsToAdd - 1) {
                 row.showSeparator = false
             }
 
             rowsStackView.addArrangedSubview(row)
         }
+
+        // If there are more data rows, show 'View more'.
+        if numberOfDataRows > maxNumberOfDataRows {
+            addViewMoreRow()
+        }
+    }
+
+    func addViewMoreRow() {
+        let row = ViewMoreRow.loadFromNib()
+        rowsStackView.addArrangedSubview(row)
     }
 
     func removeExistingRows() {
@@ -113,14 +129,6 @@ private extension TabbedTotalsCell {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-    }
-
-    @IBAction func didTapViewMoreButton(_ sender: UIButton) {
-        let alertController =  UIAlertController(title: "More will be shown here.",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
     }
 
 }

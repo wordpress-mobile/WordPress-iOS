@@ -105,6 +105,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }()
 
     let tabsData: [TabData]
+    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -113,7 +114,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData)
+        cell.configure(tabsData: tabsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 

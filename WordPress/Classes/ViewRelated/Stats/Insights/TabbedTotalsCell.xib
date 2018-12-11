@@ -50,64 +50,22 @@
                         </subviews>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EG5-87-rU0">
-                        <rect key="frame" x="0.0" y="123" width="320" height="101.5"/>
+                        <rect key="frame" x="0.0" y="123" width="320" height="145.5"/>
                     </stackView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xa2-M5-BCc" userLabel="View More View">
-                        <rect key="frame" x="0.0" y="224.5" width="320" height="44"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAd-33-sDJ" userLabel="View More Label">
-                                <rect key="frame" x="16" y="12" width="264" height="20"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="tAc-9h-3Ue" userLabel="Disclosure Image">
-                                <rect key="frame" x="296" y="15.5" width="8" height="13"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="8" id="VQh-L9-de1"/>
-                                    <constraint firstAttribute="height" constant="13" id="wh1-O2-b9j"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="tAc-9h-3Ue" secondAttribute="trailing" constant="16" id="AnP-yY-NQf"/>
-                            <constraint firstItem="YAd-33-sDJ" firstAttribute="top" secondItem="Xa2-M5-BCc" secondAttribute="top" constant="12" id="DIu-1Z-c9C"/>
-                            <constraint firstAttribute="height" constant="44" id="ImN-Z5-zoM"/>
-                            <constraint firstItem="YAd-33-sDJ" firstAttribute="leading" secondItem="Xa2-M5-BCc" secondAttribute="leading" constant="16" id="OUr-Qi-l8F"/>
-                            <constraint firstAttribute="bottom" secondItem="YAd-33-sDJ" secondAttribute="bottom" constant="12" id="OvR-AE-KcH"/>
-                            <constraint firstItem="tAc-9h-3Ue" firstAttribute="leading" secondItem="YAd-33-sDJ" secondAttribute="trailing" constant="16" id="ZfV-gP-ySB"/>
-                            <constraint firstItem="tAc-9h-3Ue" firstAttribute="centerY" secondItem="Xa2-M5-BCc" secondAttribute="centerY" id="uUc-8n-32l"/>
-                        </constraints>
-                    </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gck-DB-Jyu" userLabel="View More Button">
-                        <rect key="frame" x="0.0" y="224.5" width="320" height="44"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <connections>
-                            <action selector="didTapViewMoreButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ou9-xv-R1w"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="Xa2-M5-BCc" secondAttribute="trailing" id="2EL-mG-Q2w"/>
-                    <constraint firstItem="gck-DB-Jyu" firstAttribute="trailing" secondItem="Xa2-M5-BCc" secondAttribute="trailing" id="Cya-qw-cx9"/>
                     <constraint firstItem="6MP-vc-NUk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Hyr-3T-sKb"/>
                     <constraint firstItem="0D1-nR-ode" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="OBn-l1-uyT"/>
                     <constraint firstItem="ieR-0O-N3P" firstAttribute="top" secondItem="6MP-vc-NUk" secondAttribute="bottom" constant="19" id="QlJ-Ru-siG"/>
-                    <constraint firstItem="Xa2-M5-BCc" firstAttribute="top" secondItem="EG5-87-rU0" secondAttribute="bottom" id="S8f-P1-RBS"/>
                     <constraint firstAttribute="trailing" secondItem="EG5-87-rU0" secondAttribute="trailing" id="UyH-vN-A5j"/>
                     <constraint firstAttribute="trailing" secondItem="ieR-0O-N3P" secondAttribute="trailing" constant="16" id="V4F-xN-d4R"/>
                     <constraint firstItem="EG5-87-rU0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="WPB-BI-ATH"/>
-                    <constraint firstAttribute="bottom" secondItem="Xa2-M5-BCc" secondAttribute="bottom" id="cuU-71-Gyq"/>
-                    <constraint firstItem="Xa2-M5-BCc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="dAR-1I-ypt"/>
                     <constraint firstItem="EG5-87-rU0" firstAttribute="top" secondItem="ieR-0O-N3P" secondAttribute="bottom" constant="7" id="dMK-P3-7bL"/>
-                    <constraint firstItem="gck-DB-Jyu" firstAttribute="bottom" secondItem="Xa2-M5-BCc" secondAttribute="bottom" id="jIk-KE-sy0"/>
-                    <constraint firstItem="gck-DB-Jyu" firstAttribute="leading" secondItem="Xa2-M5-BCc" secondAttribute="leading" id="jgV-DH-DPS"/>
                     <constraint firstAttribute="trailing" secondItem="6MP-vc-NUk" secondAttribute="trailing" constant="16" id="q2R-o5-wcS"/>
                     <constraint firstItem="ieR-0O-N3P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="su0-ni-0Ut"/>
                     <constraint firstItem="6MP-vc-NUk" firstAttribute="top" secondItem="0D1-nR-ode" secondAttribute="bottom" constant="19" id="vYp-Bj-AIh"/>
                     <constraint firstItem="0D1-nR-ode" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="vik-MX-wvn"/>
-                    <constraint firstItem="gck-DB-Jyu" firstAttribute="top" secondItem="Xa2-M5-BCc" secondAttribute="top" id="x7r-cm-W0f"/>
+                    <constraint firstAttribute="bottom" secondItem="EG5-87-rU0" secondAttribute="bottom" id="wd4-zu-Vjw"/>
                     <constraint firstAttribute="trailing" secondItem="0D1-nR-ode" secondAttribute="trailing" id="xJo-JW-YjA"/>
                 </constraints>
             </tableViewCellContentView>
@@ -118,12 +76,8 @@
                 <outlet property="itemSubtitleLabel" destination="ABk-vW-HsC" id="BRR-gC-H8q"/>
                 <outlet property="rowsStackView" destination="EG5-87-rU0" id="3eb-fK-5CR"/>
                 <outlet property="totalCountLabel" destination="6MP-vc-NUk" id="CUM-kV-Ce1"/>
-                <outlet property="viewMoreLabel" destination="YAd-33-sDJ" id="jDn-k2-AcL"/>
             </connections>
             <point key="canvasLocation" x="52.799999999999997" y="149.77511244377811"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="disclosure-chevron" width="8" height="13"/>
-    </resources>
 </document>

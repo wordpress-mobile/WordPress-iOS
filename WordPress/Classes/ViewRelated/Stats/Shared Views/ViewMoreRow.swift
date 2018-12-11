@@ -7,7 +7,7 @@ class ViewMoreRow: UIView, NibLoadable {
     @IBOutlet weak var viewMoreLabel: UILabel!
 
     // MARK: - Init
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
