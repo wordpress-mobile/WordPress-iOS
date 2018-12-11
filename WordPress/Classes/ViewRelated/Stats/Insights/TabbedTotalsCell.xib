@@ -61,6 +61,7 @@
                 <outlet property="dataSubtitleLabel" destination="A1z-Hh-le1" id="X6f-Pa-GFA"/>
                 <outlet property="filterTabBar" destination="0D1-nR-ode" id="vHL-h2-cY0"/>
                 <outlet property="itemSubtitleLabel" destination="ABk-vW-HsC" id="BRR-gC-H8q"/>
+                <outlet property="rowsStackView" destination="EG5-87-rU0" id="3eb-fK-5CR"/>
             </connections>
             <point key="canvasLocation" x="52.799999999999997" y="149.77511244377811"/>
         </tableViewCell>

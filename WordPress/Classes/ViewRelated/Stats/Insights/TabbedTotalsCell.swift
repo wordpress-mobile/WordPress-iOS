@@ -24,6 +24,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
+    @IBOutlet weak var rowsStackView: UIStackView!
 
     private var tabsData = [TabData]()
 
@@ -40,7 +41,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     }
 
     override func prepareForReuse() {
-        // TODO: clear cell
+        removeExistingRows()
     }
 }
 
@@ -56,6 +57,8 @@ private extension TabbedTotalsCell {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         configureSubtitles()
+        removeExistingRows()
+        addRows()
         // TODO: update rows per selected filter
     }
 
@@ -73,6 +76,32 @@ private extension TabbedTotalsCell {
     }
 
     func addRows() {
-        // TODO: add rows
+        let dataRows = tabsData[filterTabBar.selectedIndex].dataRows
+
+        if dataRows.count == 0 {
+            let row = StatsNoDataRow.loadFromNib()
+            rowsStackView.addArrangedSubview(row)
+            return
+        }
+
+        for (index, dataRow) in dataRows.enumerated() {
+            let row = StatsTotalRow.loadFromNib()
+            row.configure(rowData: dataRow)
+
+            // Don't show the separator line on the last row.
+            if index == (dataRows.count - 1) {
+                row.showSeparator = false
+            }
+
+            rowsStackView.addArrangedSubview(row)
+        }
     }
+
+    func removeExistingRows() {
+        rowsStackView.arrangedSubviews.forEach {
+            rowsStackView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+    }
+
 }

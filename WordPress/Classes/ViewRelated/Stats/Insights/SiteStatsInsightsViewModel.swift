@@ -303,8 +303,27 @@ private extension SiteStatsInsightsViewModel {
 
     func createTabbedTotalsStatsRow() -> TabbedTotalsStatsRow {
 
-        let tabOneData = TabData.init(tabTitle: "Tab One", itemSubtitle: "Item One", dataSubtitle: "Data One", dataRows: [])
-        let tabTwoData = TabData.init(tabTitle: "Tab Two", itemSubtitle: "Item Two", dataSubtitle: "Data Two", dataRows: [])
+        // TODO: replace with real data
+
+        let tabOneData = TabData.init(tabTitle: "Tab One",
+                                      itemSubtitle: "Item One",
+                                      dataSubtitle: "Data One",
+                                      dataRows: [StatsTotalRowData.init(name: "Testing 123",
+                                                                        data: Double(6666).abbreviatedString(),
+                                                                        icon: TodaysStats.visitorsIcon),
+                                                 StatsTotalRowData.init(name: "Testing 456",
+                                                                        data: Double(6666666666).abbreviatedString(),
+                                                                        icon: TodaysStats.visitorsIcon)])
+
+        let tabTwoData = TabData.init(tabTitle: "Tab Two",
+                                      itemSubtitle: "Item Two",
+                                      dataSubtitle: "Data Two",
+                                      dataRows: [StatsTotalRowData.init(name: "Testing 789",
+                                                                        data: Double(99999).abbreviatedString(),
+                                                                        showDisclosure: true),
+                                                 StatsTotalRowData.init(name: "Testing 000",
+                                                                        data: Double(9999999999).abbreviatedString(),
+                                                                        showDisclosure: true)])
 
         return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData])
     }
