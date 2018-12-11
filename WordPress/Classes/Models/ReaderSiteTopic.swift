@@ -11,6 +11,7 @@ import Foundation
     @NSManaged open var isJetpack: Bool
     @NSManaged open var isPrivate: Bool
     @NSManaged open var isVisible: Bool
+    @NSManaged open var isFeed: Bool
     @NSManaged open var postCount: NSNumber
     @NSManaged open var siteBlavatar: String
     @NSManaged open var siteDescription: String
