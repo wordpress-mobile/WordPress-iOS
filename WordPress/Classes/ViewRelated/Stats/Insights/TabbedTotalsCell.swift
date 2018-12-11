@@ -25,9 +25,9 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var rowsStackView: UIStackView!
+    @IBOutlet weak var viewMoreLabel: UILabel!
 
     private var tabsData = [TabData]()
-
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -37,7 +37,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
         setupFilterBar()
         configureSubtitles()
         addRows()
-        Style.configureCell(self)
+        applyStyles()
     }
 
     override func prepareForReuse() {
@@ -59,7 +59,6 @@ private extension TabbedTotalsCell {
         configureSubtitles()
         removeExistingRows()
         addRows()
-        // TODO: update rows per selected filter
     }
 
 }
@@ -67,6 +66,12 @@ private extension TabbedTotalsCell {
 // MARK: - Private Methods
 
 private extension TabbedTotalsCell {
+
+    func applyStyles() {
+        Style.configureCell(self)
+        viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more stats.")
+        viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
+    }
 
     func configureSubtitles() {
         itemSubtitleLabel.text = tabsData[filterTabBar.selectedIndex].itemSubtitle
@@ -102,6 +107,14 @@ private extension TabbedTotalsCell {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
+    }
+
+    @IBAction func didTapViewMoreButton(_ sender: UIButton) {
+        let alertController =  UIAlertController(title: "More will be shown here.",
+                                                 message: nil,
+                                                 preferredStyle: .alert)
+        alertController.addCancelActionWithTitle("OK")
+        alertController.presentFromRootViewController()
     }
 
 }
