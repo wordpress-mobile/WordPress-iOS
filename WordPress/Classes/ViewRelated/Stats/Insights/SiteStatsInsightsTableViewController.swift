@@ -67,6 +67,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
+        tableView.estimatedRowHeight = 500
     }
 
     override func viewWillDisappear(_ animated: Bool) {
