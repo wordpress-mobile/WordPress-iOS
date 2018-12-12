@@ -23,15 +23,15 @@ class PostingActivityLegend: UIView, NibLoadable {
     static func colorForCount(_ count: Int) -> UIColor? {
         switch count {
         case 0:
-            return Style.PostingActivityRangeColors.lightGrey
+            return Style.PostingActivityColors.lightGrey
         case 1...2:
-            return Style.PostingActivityRangeColors.lightBlue
+            return Style.PostingActivityColors.lightBlue
         case 3...5:
-            return Style.PostingActivityRangeColors.mediumBlue
+            return Style.PostingActivityColors.mediumBlue
         case 6...7:
-            return Style.PostingActivityRangeColors.darkBlue
+            return Style.PostingActivityColors.darkBlue
         default:
-            return Style.PostingActivityRangeColors.darkGrey
+            return Style.PostingActivityColors.darkGrey
         }
     }
 
@@ -52,6 +52,7 @@ private extension PostingActivityLegend {
         var numberInRange = 0
         for _ in 1...5 {
             let dayView = PostingActivityDay.loadFromNib()
+            dayView.configure()
             dayView.dayButton.backgroundColor = PostingActivityLegend.colorForCount(numberInRange)
             colorsStackView.addArrangedSubview(dayView)
             numberInRange += 2

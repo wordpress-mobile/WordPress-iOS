@@ -305,6 +305,19 @@ extension StatsInsightsStore {
         return monthData
     }
 
+    func getYearlyPostingActivityFrom(date: Date) -> [[PostingActivityDayData]] {
+        var monthsData = [[PostingActivityDayData]]()
+
+        // Get last 12 months, in ascending order.
+        for month in (0...11).reversed() {
+            if let monthDate = Calendar.current.date(byAdding: .month, value: -month, to: Date()) {
+                monthsData.append(getMonthlyPostingActivityFor(date: monthDate))
+            }
+        }
+
+        return monthsData
+    }
+
     var isFetching: Bool {
         return state.fetchingLatestPostSummary ||
             state.fetchingAllTimeStats ||

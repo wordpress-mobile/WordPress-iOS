@@ -83,6 +83,7 @@ struct PostingActivityRow: ImmuTableRow {
     }()
 
     let monthsData: [[PostingActivityDayData]]
+    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -91,7 +92,7 @@ struct PostingActivityRow: ImmuTableRow {
             return
         }
 
-        cell.configure(monthsData: monthsData)
+        cell.configure(withData: monthsData, andDelegate: siteStatsInsightsDelegate)
     }
 }
 struct CellHeaderRow: ImmuTableRow {

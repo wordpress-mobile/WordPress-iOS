@@ -10,6 +10,7 @@ class PostingActivityMonth: UIView, NibLoadable {
 
     private var month: Date?
     private var monthData: [PostingActivityDayData]?
+    private var postingActivityDayDelegate: PostingActivityDayDelegate?
 
     // 14 = day width (12) + column margin (2).
     // Used to adjust the view width when hiding the last stack view.
@@ -17,8 +18,9 @@ class PostingActivityMonth: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(monthData: [PostingActivityDayData]) {
+    func configure(monthData: [PostingActivityDayData], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
         self.monthData = monthData
+        self.postingActivityDayDelegate = postingActivityDayDelegate
         getMonth()
         addDays()
     }
@@ -97,7 +99,7 @@ private extension PostingActivityMonth {
 
     func addDayToStackView(stackView: UIStackView, dayData: PostingActivityDayData? = nil) {
         let dayView = PostingActivityDay.loadFromNib()
-        dayView.configure(dayData: dayData)
+        dayView.configure(dayData: dayData, delegate: postingActivityDayDelegate)
         stackView.addArrangedSubview(dayView)
     }
 

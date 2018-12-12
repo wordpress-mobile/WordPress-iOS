@@ -23,6 +23,9 @@
                         <constraint firstAttribute="height" constant="12" id="KNe-zv-HMg"/>
                         <constraint firstAttribute="width" constant="12" id="RAH-IS-NcJ"/>
                     </constraints>
+                    <connections>
+                        <action selector="dayButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="Jda-Kh-3r1"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

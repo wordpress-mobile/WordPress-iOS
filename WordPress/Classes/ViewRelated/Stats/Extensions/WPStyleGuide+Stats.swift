@@ -76,6 +76,14 @@ extension WPStyleGuide {
             label.textColor = defaultTextColor
         }
 
+        static func configureLabelAsPostingDate(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
+        static func configureLabelAsPostingCount(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
@@ -125,12 +133,31 @@ extension WPStyleGuide {
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 
-        struct PostingActivityRangeColors {
+        struct PostingActivityColors {
             static let lightGrey = WPStyleGuide.greyLighten20()
             static let lightBlue = UIColor(fromRGBAColorWithRed: 145.0, green: 226.0, blue: 251.0, alpha: 1)
             static let mediumBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 190.0, blue: 246.0, alpha: 1)
             static let darkBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 131.0, blue: 169.0, alpha: 1)
             static let darkGrey = WPStyleGuide.darkGrey()
+            static let orange = UIColor(fromRGBAColorWithRed: 245.0, green: 131.0, blue: 53.0, alpha: 1)
+        }
+
+        // MARK: - Posting Activity Collection View Styles
+
+        // Value of PostingActivityMonth view width for five columns
+        static let minimumColumnWidth: CGFloat = 104
+        // Value of PostingActivityMonth view height
+        static let cellHeight: CGFloat = 135
+
+        static func cellSizeForFrameWidth(_ width: CGFloat) -> CGSize {
+            let cellWidth = cellWidthForFrameWidth(width)
+            return CGSize(width: cellWidth, height: cellHeight)
+        }
+
+        static func cellWidthForFrameWidth(_ width: CGFloat) -> CGFloat {
+            let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
+            let columnWidth = trunc(width / numberOfColumns)
+            return columnWidth
         }
     }
 

@@ -296,6 +296,6 @@ private extension SiteStatsInsightsViewModel {
 
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
-        return PostingActivityRow(monthsData: monthsData)
+        return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }

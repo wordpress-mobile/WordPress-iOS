@@ -1,5 +1,9 @@
 import UIKit
 
+protocol PostingActivityDayDelegate {
+    func daySelected(_ day: PostingActivityDay)
+}
+
 /// Convenience struct to contain information about a single day displayed in Posting Activity.
 ///
 struct PostingActivityDayData {
@@ -12,19 +16,25 @@ class PostingActivityDay: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var dayButton: UIButton!
+    private var delegate: PostingActivityDayDelegate?
 
     private var visible = true
-    private var dayData: PostingActivityDayData?
-    private typealias PostActivityStyle = WPStyleGuide.Stats.PostingActivityRangeColors
+    private var active = true
+    private(set) var dayData: PostingActivityDayData?
 
     // MARK: - Configure
 
-    func configure(dayData: PostingActivityDayData? = nil) {
+    func configure(dayData: PostingActivityDayData? = nil, delegate: PostingActivityDayDelegate? = nil) {
         self.dayData = dayData
         visible = dayData != nil
+        active = delegate != nil
+        self.delegate = delegate
         configureButton()
     }
 
+    func unselect() {
+        dayButton.backgroundColor = colorForCount()
+    }
 }
 
 // MARK: - Private Extension
@@ -32,18 +42,21 @@ class PostingActivityDay: UIView, NibLoadable {
 private extension PostingActivityDay {
 
     func configureButton() {
-        dayButton.isEnabled = visible
+        dayButton.isEnabled = visible && active
+        dayButton.backgroundColor = visible ? colorForCount() : .clear
+    }
 
-        if !visible {
-            dayButton.backgroundColor = .clear
-            return
-        }
-
+    func colorForCount() -> UIColor? {
         guard let dayData = dayData else {
-            return
+            return .clear
         }
 
-        dayButton.backgroundColor = PostingActivityLegend.colorForCount(dayData.count)
+        return PostingActivityLegend.colorForCount(dayData.count)
+    }
+
+    @IBAction func dayButtonPressed(_ sender: UIButton) {
+        dayButton.backgroundColor = WPStyleGuide.Stats.PostingActivityColors.orange
+        delegate?.daySelected(self)
     }
 
 }
