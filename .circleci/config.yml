@@ -3,8 +3,6 @@ jobs:
   build_and_test:
     macos:
       xcode: "10.1.0"
-    environment:
-      DESTINATION: "platform=iOS Simulator,name=iPhone XS,OS=12.1"
     steps:
       - checkout
       - restore_cache:
@@ -33,10 +31,10 @@ jobs:
             - vendor/bundle
       - run:
           name: Build
-          command: xcodebuild build-for-testing -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty
+          command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -sdk iphonesimulator build-for-testing | bundle exec xcpretty
       - run:
           name: Test
-          command: xcodebuild test-without-building -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty -r junit
+          command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -destination 'platform=iOS Simulator,name=iPhone XS,OS=latest' test-without-building | bundle exec xcpretty -r junit
       - store_test_results:
           path: build/reports
 
