@@ -25,9 +25,13 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+
+    @IBOutlet weak var labelsStackView: UIStackView!
+    @IBOutlet weak var totalCountStackView: UIStackView!
     @IBOutlet weak var totalCountLabel: UILabel!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
+
     @IBOutlet weak var rowsStackView: UIStackView!
 
     @IBOutlet weak var topSeparatorLine: UIView!
@@ -85,11 +89,17 @@ private extension TabbedTotalsCell {
     }
 
     func configureSubtitles() {
-        totalCountLabel.text = tabsData[filterTabBar.selectedIndex].totalCount
-        itemSubtitleLabel.text = tabsData[filterTabBar.selectedIndex].itemSubtitle
-        dataSubtitleLabel.text = tabsData[filterTabBar.selectedIndex].dataSubtitle
+        let tabData = tabsData[filterTabBar.selectedIndex]
+
+        totalCountLabel.text = tabData.totalCount
+        itemSubtitleLabel.text = tabData.itemSubtitle
+        dataSubtitleLabel.text = tabData.dataSubtitle
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
+
+        let numberOfDataRows = tabData.dataRows.count
+        totalCountStackView.isHidden = (numberOfDataRows == 0) || (tabData.totalCount == nil)
+        labelsStackView.isHidden = numberOfDataRows == 0
     }
 
     func addRows() {
@@ -99,7 +109,6 @@ private extension TabbedTotalsCell {
         if numberOfDataRows == 0 {
             let row = StatsNoDataRow.loadFromNib()
             rowsStackView.addArrangedSubview(row)
-            // TODO: hide subtitles and total count
             return
         }
 
