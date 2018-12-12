@@ -45,13 +45,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
             - wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
             - wordpress-ios-danger-
       - run:
-          name: Dependencies
-          command: rake dependencies
+          name: Dependencies for danger
+          command: rake dependencies:bundle:check dependencies:lint:check
       - save_cache:
-          key: wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
+          key: wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/
       - run:
@@ -60,7 +61,7 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
+  wordpress_ios:
     jobs:
       - danger
       - build_and_test
