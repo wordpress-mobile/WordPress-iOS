@@ -33,11 +33,13 @@ jobs:
             - vendor/bundle
       - run:
           name: Build
-          command: xcodebuild build-for-testing -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty && exit ${PIPESTATUS[0]}
+          command: xcodebuild build-for-testing -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty
       - run:
           name: Test
-          command: xcodebuild test-without-building -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty && exit ${PIPESTATUS[0]}
-      
+          command: xcodebuild test-without-building -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty -r junit
+      - store_test_results:
+          path: build/reports
+
   danger:
     macos:
       xcode: "10.1.0"
