@@ -10,6 +10,7 @@ enum InsightAction: Action {
     case receivedEmailFollowers(total: String?)
     case receivedPublicize(items: [StatsItem]?)
     case receivedTodaysStats(_ todaysStats: StatsSummary?)
+    case receivedPostingActivity(_ postingActivity: StatsStreak?)
     case refreshInsights()
 }
 
@@ -32,6 +33,8 @@ struct InsightStoreState {
     var fetchingPublicize = false
     var todaysStats: StatsSummary?
     var fetchingTodaysStats = false
+    var postingActivity: StatsStreak?
+    var fetchingPostingActivity = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -61,6 +64,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedPublicize(items: items)
         case .receivedTodaysStats(let todaysStats):
             receivedTodaysStats(todaysStats)
+        case .receivedPostingActivity(let postingActivity):
+            receivedPostingActivity(postingActivity)
         case .refreshInsights:
             refreshInsights()
         }
@@ -95,6 +100,7 @@ private extension StatsInsightsStore {
         state.fetchingEmailFollowers = true
         state.fetchingPublicize = true
         state.fetchingTodaysStats = true
+        state.fetchingPostingActivity = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -138,7 +144,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedPublicize(items: publicize?.items as? [StatsItem]))
         }, streakCompletionHandler: { (statsStreak, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching stats streak: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(statsStreak))
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
         }, andOverallCompletionHandler: {
@@ -204,6 +213,13 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedPostingActivity(_ postingActivity: StatsStreak?) {
+        transaction { state in
+            state.postingActivity = postingActivity
+            state.fetchingPostingActivity = false
+        }
+    }
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
@@ -251,6 +267,44 @@ extension StatsInsightsStore {
         return state.todaysStats
     }
 
+    /// Summarizes the daily posting count for the month in the given date.
+    /// Returns an array containing every day of the month and associated post count.
+    ///
+    func getMonthlyPostingActivityFor(date: Date) -> [PostingActivityDayData] {
+
+        var monthData = [PostingActivityDayData]()
+        let dateComponents = Calendar.current.dateComponents([.year, .month], from: date.normalizedDate())
+
+        // Add every day in the month to the array, seeding with 0 counts.
+        guard let dayRange = Calendar.current.range(of: .day, in: .month, for: date) else {
+            return monthData
+        }
+
+        dayRange.forEach { day in
+            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: day)
+            guard let date = Calendar.current.date(from: components) else {
+                return
+            }
+
+            monthData.append(PostingActivityDayData(date: date, count: 0))
+        }
+
+        // If there is no posting activity at all, return.
+        guard let allPostingActivity = state.postingActivity?.items else {
+            return monthData
+        }
+
+        // If the posting occurred in the requested month, increment the count for that day.
+        allPostingActivity.forEach { postingActivity in
+            let postDate = postingActivity.date.normalizedDate()
+            if let dayIndex = monthData.index(where: { $0.date == postDate }) {
+                monthData[dayIndex].count += 1
+            }
+        }
+
+        return monthData
+    }
+
     var isFetching: Bool {
         return state.fetchingLatestPostSummary ||
             state.fetchingAllTimeStats ||
@@ -258,6 +312,8 @@ extension StatsInsightsStore {
             state.fetchingDotComFollowers ||
             state.fetchingEmailFollowers ||
             state.fetchingPublicize ||
-            state.fetchingTodaysStats
+            state.fetchingTodaysStats ||
+            state.fetchingPostingActivity
     }
+
 }

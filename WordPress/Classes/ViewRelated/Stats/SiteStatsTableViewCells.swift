@@ -74,6 +74,26 @@ struct SimpleTotalsStatsSubtitlesRow: ImmuTableRow {
     }
 }
 
+struct PostingActivityRow: ImmuTableRow {
+
+    typealias CellType = PostingActivityCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let monthsData: [[PostingActivityDayData]]
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(monthsData: monthsData)
+    }
+}
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
