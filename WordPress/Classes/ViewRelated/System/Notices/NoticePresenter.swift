@@ -28,6 +28,10 @@ class NoticePresenter: NSObject {
             windowFrame = .zero
         }
         window = UntouchableWindow(frame: windowFrame)
+
+        // this window level may affect some UI elements like share sheets.
+        // however, since the alerts aren't permanently on screen, this isn't
+        // often a problem.
         window.windowLevel = .alert
         window.isHidden = false
 
