@@ -531,9 +531,9 @@ extension ShareExtensionEditorViewController {
         var identifiers = Set<FormattingIdentifier>()
 
         if richTextView.selectedRange.length > 0 {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+            identifiers = richTextView.formattingIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+            identifiers = richTextView.formattingIdentifiersForTypingAttributes()
         }
 
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
@@ -574,6 +574,8 @@ extension ShareExtensionEditorViewController {
                 break // Not used here
             case .code:
                 toggleCode()
+            default:
+                break
             }
 
             updateFormatBar()
@@ -645,9 +647,9 @@ extension ShareExtensionEditorViewController {
     func listTypeForSelectedText() -> TextList.Style? {
         var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+            identifiers = richTextView.formattingIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+            identifiers = richTextView.formattingIdentifiersForTypingAttributes()
         }
         let mapping: [FormattingIdentifier: TextList.Style] = [
             .orderedlist: .ordered,
@@ -801,9 +803,9 @@ extension ShareExtensionEditorViewController {
     func headerLevelForSelectedText() -> Header.HeaderType {
         var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+            identifiers = richTextView.formattingIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+            identifiers = richTextView.formattingIdentifiersForTypingAttributes()
         }
         let mapping: [FormattingIdentifier: Header.HeaderType] = [
             .header1: .h1,
@@ -834,7 +836,7 @@ extension ShareExtensionEditorViewController {
     func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
                                                    fromBarItem barItem: FormatBarItem,
                                                    selectedRowIndex index: Int?,
-                                                   onSelect: OptionsTableViewController.OnSelectHandler?) {
+                                                   onSelect: OptionsTablePresenter.OnSelectHandler?) {
         // Hide the input view if we're already showing these options
         if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
             self.optionsViewController = nil
@@ -847,10 +849,6 @@ extension ShareExtensionEditorViewController {
         optionsViewController.cellBackgroundColor = ShareColors.aztecFormatPickerBackgroundColor
         optionsViewController.cellSelectedBackgroundColor = ShareColors.aztecFormatPickerSelectedCellBackgroundColor
         optionsViewController.view.tintColor = ShareColors.aztecFormatBarActiveColor
-        optionsViewController.onSelect = { [weak self] selected in
-            onSelect?(selected)
-            self?.dismissOptionsViewController()
-        }
 
         let selectRow = {
             guard let index = index else {

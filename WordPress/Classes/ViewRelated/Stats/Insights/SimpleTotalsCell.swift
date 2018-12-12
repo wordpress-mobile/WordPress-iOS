@@ -34,6 +34,10 @@ class SimpleTotalsCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
+    override func prepareForReuse() {
+        removeExistingRows()
+    }
+
 }
 
 private extension SimpleTotalsCell {
@@ -46,9 +50,6 @@ private extension SimpleTotalsCell {
     }
 
     func addRows() {
-
-        removeExistingRows()
-
         if dataRows.count == 0 {
             let row = StatsNoDataRow.loadFromNib()
             rowsStackView.addArrangedSubview(row)

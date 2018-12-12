@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PostingActivityMonth" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="151" height="135"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qkV-SQ-ZL4">
+                    <rect key="frame" x="16.5" y="0.0" width="118" height="135"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="wsv-pN-Bz5" userLabel="Weeks Stack View">
+                            <rect key="frame" x="18" y="8" width="82" height="96"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nbe-Lb-suT" userLabel="Week 1 Stack View">
+                                    <rect key="frame" x="0.0" y="0.0" width="12" height="96"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="COM-jH-men" userLabel="Week 2 Stack View">
+                                    <rect key="frame" x="14" y="0.0" width="12" height="96"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="WDT-0d-NAA" userLabel="Week 3 Stack View">
+                                    <rect key="frame" x="28" y="0.0" width="12" height="96"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="eV7-Nx-OY2" userLabel="Week 4 Stack View">
+                                    <rect key="frame" x="42" y="0.0" width="12" height="96"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="3sq-7H-ZRj" userLabel="Week 5 Stack View">
+                                    <rect key="frame" x="56" y="0.0" width="12" height="96"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="UKC-do-E0d" userLabel="Week 6 Stack View">
+                                    <rect key="frame" x="70" y="0.0" width="12" height="96"/>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="96" id="eO8-gx-Jfg"/>
+                            </constraints>
+                        </stackView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwA-4h-vvH">
+                            <rect key="frame" x="0.0" y="112" width="118" height="15"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="wsv-pN-Bz5" firstAttribute="top" secondItem="qkV-SQ-ZL4" secondAttribute="top" constant="8" id="8Mg-MB-iaf"/>
+                        <constraint firstItem="wsv-pN-Bz5" firstAttribute="leading" secondItem="qkV-SQ-ZL4" secondAttribute="leading" constant="18" id="94x-51-F8V"/>
+                        <constraint firstAttribute="width" constant="118" id="BFw-W2-SQ2"/>
+                        <constraint firstAttribute="bottom" secondItem="bwA-4h-vvH" secondAttribute="bottom" constant="8" id="JvY-b9-5gn"/>
+                        <constraint firstAttribute="trailing" secondItem="wsv-pN-Bz5" secondAttribute="trailing" constant="18" id="MEW-Uq-uhm"/>
+                        <constraint firstAttribute="trailing" secondItem="bwA-4h-vvH" secondAttribute="trailing" id="Mhg-F7-Uco"/>
+                        <constraint firstAttribute="height" constant="135" id="iAl-XS-rHq"/>
+                        <constraint firstItem="bwA-4h-vvH" firstAttribute="leading" secondItem="qkV-SQ-ZL4" secondAttribute="leading" id="ufS-Sa-3QT"/>
+                        <constraint firstItem="bwA-4h-vvH" firstAttribute="top" secondItem="wsv-pN-Bz5" secondAttribute="bottom" constant="8" id="wDl-at-VCw"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="qkV-SQ-ZL4" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="glC-LU-7v4"/>
+                <constraint firstItem="qkV-SQ-ZL4" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="l9n-Ps-l0h"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="monthLabel" destination="bwA-4h-vvH" id="bgh-pj-R3H"/>
+                <outlet property="viewWidthConstraint" destination="BFw-W2-SQ2" id="8xg-H6-zUA"/>
+                <outlet property="weeksStackView" destination="wsv-pN-Bz5" id="WFe-bf-LeC"/>
+            </connections>
+            <point key="canvasLocation" x="-965.60000000000002" y="-150.67466266866569"/>
+        </view>
+    </objects>
+</document>

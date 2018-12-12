@@ -1,0 +1,67 @@
+version: 2
+jobs:
+  build_and_test:
+    macos:
+      xcode: "10.1.0"
+    environment:
+      DESTINATION: "platform=iOS Simulator,name=iPhone XS,OS=12.1"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - wordpress-ios-dependencies-{{ checksum "Gemfile.lock" }}-{{ checksum "Podfile.lock" }}
+            - wordpress-ios-dependencies-{{ checksum "Gemfile.lock" }}
+            - wordpress-ios-dependencies-
+      - run:
+          name: Bundle install
+          command: bundle install --path=vendor/bundle
+      - run:
+          name: CocoaPods Check
+          command: (bundle exec pod check && touch .skip_pod_install) || echo "Pods will be updated"
+      - run:
+          name: Fetch CocoaPods Specs (if needed)
+          command: test -e .skip_pod_install || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Pod Install (if needed)
+          command: test -e .skip_pod_install || bundle exec pod install
+          environment:
+            COCOAPODS_DISABLE_STATS: true
+      - save_cache:
+          key: wordpress-ios-dependencies-{{ checksum "Gemfile.lock" }}-{{ checksum "Podfile.lock" }}
+          paths:
+            - Pods/
+            - vendor/bundle
+      - run:
+          name: Build
+          command: xcodebuild build-for-testing -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty && exit ${PIPESTATUS[0]}
+      - run:
+          name: Test
+          command: xcodebuild test-without-building -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty && exit ${PIPESTATUS[0]}
+      
+  danger:
+    macos:
+      xcode: "10.1.0"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+            - wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
+            - wordpress-ios-danger-
+      - run:
+          name: Dependencies for danger
+          command: rake dependencies:bundle:check dependencies:lint:check
+      - save_cache:
+          key: wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/
+      - run:
+          name: Danger
+          command: bundle exec danger --fail-on-errors=true
+
+workflows:
+  version: 2
+  wordpress_ios:
+    jobs:
+      - danger
+      - build_and_test

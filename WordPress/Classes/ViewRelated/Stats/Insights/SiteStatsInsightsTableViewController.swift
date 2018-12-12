@@ -23,6 +23,7 @@ enum InsightType: Int {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func showCreatePost()
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
+    @objc optional func showPostingActivityDetails()
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -94,7 +95,8 @@ private extension SiteStatsInsightsTableViewController {
         return [CellHeaderRow.self,
                 LatestPostSummaryRow.self,
                 SimpleTotalsStatsRow.self,
-                SimpleTotalsStatsSubtitlesRow.self]
+                SimpleTotalsStatsSubtitlesRow.self,
+                PostingActivityRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -169,4 +171,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         })
     }
 
+    func showPostingActivityDetails() {
+        let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
+        postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
+        navigationController?.pushViewController(postingActivityViewController, animated: true)
+    }
 }
