@@ -173,7 +173,7 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (void)cloneFrom:(AbstractPost *)source
+- (AbstractPost *)cloneFrom:(AbstractPost *)source
 {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
         if (![key isEqualToString:@"permalink"]) {
@@ -189,6 +189,8 @@
             [self setValue: [source valueForKey:key] forKey: key];
         }
     }
+
+    return self;
 }
 
 - (AbstractPost *)createRevision
