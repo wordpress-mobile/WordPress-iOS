@@ -22,28 +22,27 @@ extension PostEditor where Self: UIViewController {
 
     func displayHistory() {
         let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
-            guard let self = self else {
+            guard let post = self?.post.update(from: revision) else {
                 return
             }
-            let post = self.post.update(from: revision)
 
             // show the notice with undo button
-            let notice = Notice(title: "Revision loaded", message: nil, feedbackType: .success, notificationInfo: nil, actionTitle: "Undo", cancelTitle: nil) { [weak self] (happened) in
-                guard happened, let self = self else {
+            let notice = Notice(title: "Revision loaded", message: nil, feedbackType: .success, notificationInfo: nil, actionTitle: "Undo", cancelTitle: nil) { (happened) in
+                guard happened else {
                     return
                 }
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self, let original = self.post.original else {
+                DispatchQueue.main.async {
+                    guard let original = self?.post.original,
+                        let clone = self?.post.clone(from: original) else {
                         return
                     }
-                    let clone = self.post.clone(from: original)
-                    self.post = clone
+                    self?.post = clone
                 }
             }
             ActionDispatcher.dispatch(NoticeAction.post(notice))
 
             DispatchQueue.main.async {
-                self.post = post
+                self?.post = post
             }
         }
         navigationController?.pushViewController(revisionsViewController, animated: true)
