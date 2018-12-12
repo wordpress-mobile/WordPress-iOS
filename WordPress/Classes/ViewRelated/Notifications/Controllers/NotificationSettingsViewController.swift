@@ -86,7 +86,7 @@ open class NotificationSettingsViewController: UIViewController {
         })
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isFeed }
+            self?.followedSites = (siteService.allSiteTopics() ?? []).filter { !$0.isExternal }
             self?.setupSections()
             self?.activityIndicatorView.stopAnimating()
             self?.tableView.reloadData()
