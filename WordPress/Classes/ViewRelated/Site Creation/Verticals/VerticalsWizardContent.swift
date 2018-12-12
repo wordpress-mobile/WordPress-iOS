@@ -60,6 +60,7 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
+        setupTableSeparator()
         setupCell()
         setupHeader()
         setupConstraints()
@@ -68,6 +69,10 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     private func hideSeparators() {
