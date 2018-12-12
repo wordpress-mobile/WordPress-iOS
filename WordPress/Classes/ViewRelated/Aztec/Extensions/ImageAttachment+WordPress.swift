@@ -7,52 +7,52 @@ extension ImageAttachment {
 
     @objc var alt: String? {
         get {
-            return extraAttributes["alt"]
+            return extraAttributes["alt"]?.toString()
         }
         set {
             if let nonNilValue = newValue, newValue != "" {
-                extraAttributes["alt"] = nonNilValue
+                extraAttributes["alt"] = .string(nonNilValue)
             } else {
-                extraAttributes.removeValue(forKey: "alt")
+                extraAttributes.remove(named: "alt")
             }
         }
     }
 
     var width: Int? {
         get {
-            guard let stringInt = extraAttributes["width"] else {
+            guard let stringInt = extraAttributes["width"]?.toString() else {
                 return nil
             }
             return Int(stringInt)
         }
         set {
             if let nonNilValue = newValue {
-                extraAttributes["width"] = "\(nonNilValue)"
+                extraAttributes["width"] = .string(String(nonNilValue))
             } else {
-                extraAttributes.removeValue(forKey: "width")
+                extraAttributes.remove(named: "width")
             }
         }
     }
 
     var height: Int? {
         get {
-            guard let stringInt = extraAttributes["height"] else {
+            guard let stringInt = extraAttributes["height"]?.toString() else {
                 return nil
             }
             return Int(stringInt)
         }
         set {
             if let nonNilValue = newValue {
-                extraAttributes["height"] = "\(nonNilValue)"
+                extraAttributes["height"] = .string(String(nonNilValue))
             } else {
-                extraAttributes.removeValue(forKey: "height")
+                extraAttributes.remove(named: "height")
             }
         }
     }
 
     var imageID: Int? {
         get {
-            guard let classAttribute = extraAttributes["class"] else {
+            guard let classAttribute = extraAttributes["class"]?.toString() else {
                 return nil
             }
             let attributes = classAttribute.components(separatedBy: " ")
@@ -66,7 +66,7 @@ extension ImageAttachment {
         }
         set {
             var attributes = [String]()
-            if let classAttribute = extraAttributes["class"] {
+            if let classAttribute = extraAttributes["class"]?.toString() {
                 attributes = classAttribute.components(separatedBy: " ")
             }
             attributes = attributes.filter({ (value) -> Bool in
@@ -76,9 +76,9 @@ extension ImageAttachment {
                 attributes.append("wp-image-\(nonNilValue)")
             }
             if extraAttributes.isEmpty {
-                extraAttributes.removeValue(forKey: "class")
+                extraAttributes.remove(named: "class")
             } else {
-                extraAttributes["class"] = attributes.joined(separator: " ")
+                extraAttributes["class"] = .string(attributes.joined(separator: " "))
             }
         }
     }
