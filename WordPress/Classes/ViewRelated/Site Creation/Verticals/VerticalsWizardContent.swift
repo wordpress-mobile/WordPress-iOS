@@ -12,6 +12,11 @@ final class VerticalsWizardContent: UIViewController {
 
     @IBOutlet weak var table: UITableView!
 
+    private struct StyleConstants {
+        static let rowHeight: CGFloat = 44.0
+        static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
+    }
+
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
         let subtitle = NSLocalizedString("We'll use your answer to add sections to your website.", comment: "Create site, step 2. Select focus of the business. Subtitle")
@@ -70,6 +75,17 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupCell() {
+        registerCell()
+        setupCellHeight()
+    }
+
+    private func setupCellHeight() {
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = StyleConstants.rowHeight
+        table.separatorInset = StyleConstants.separatorInset
+    }
+
+    private func registerCell() {
         let cellName = VerticalsCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
         table.register(nib, forCellReuseIdentifier: cellName)
