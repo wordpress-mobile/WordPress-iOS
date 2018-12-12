@@ -24,8 +24,8 @@ class UntouchableViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     override func loadView() {
-        view = UntouchableView()
         super.loadView()
+        view = UntouchableView()
     }
 
     var offsetOnscreen: CGFloat {
