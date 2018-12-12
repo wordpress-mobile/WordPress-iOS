@@ -40,7 +40,7 @@ class VerticalsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleSubtitle() {
-        subtitle.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        subtitle.font = WPFontManager.systemRegularFont(ofSize: 15.0)
         subtitle.textColor = WPStyleGuide.grey()
     }
 
