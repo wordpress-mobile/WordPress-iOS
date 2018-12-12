@@ -92,10 +92,16 @@
                     <constraint firstItem="EG5-87-rU0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="WPB-BI-ATH"/>
                     <constraint firstAttribute="trailing" secondItem="889-YX-osO" secondAttribute="trailing" constant="16" id="d7h-yn-wt2"/>
                     <constraint firstItem="889-YX-osO" firstAttribute="top" secondItem="0D1-nR-ode" secondAttribute="bottom" constant="7" id="dCc-97-Sr6"/>
+                    <constraint firstItem="EG5-87-rU0" firstAttribute="top" secondItem="0D1-nR-ode" secondAttribute="bottom" id="h6y-gP-ROi"/>
                     <constraint firstItem="0D1-nR-ode" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="vik-MX-wvn"/>
                     <constraint firstAttribute="bottom" secondItem="EG5-87-rU0" secondAttribute="bottom" id="wd4-zu-Vjw"/>
                     <constraint firstAttribute="trailing" secondItem="0D1-nR-ode" secondAttribute="trailing" id="xJo-JW-YjA"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="h6y-gP-ROi"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <constraints>
                 <constraint firstItem="njF-e1-oar" firstAttribute="bottom" secondItem="mrX-mq-7oM" secondAttribute="bottom" id="0zX-ml-WKe"/>
@@ -113,6 +119,8 @@
                 <outlet property="itemSubtitleLabel" destination="ABk-vW-HsC" id="BRR-gC-H8q"/>
                 <outlet property="labelsStackView" destination="889-YX-osO" id="Rv5-dh-FNa"/>
                 <outlet property="rowsStackView" destination="EG5-87-rU0" id="3eb-fK-5CR"/>
+                <outlet property="rowsStackViewTopConstraint" destination="h6y-gP-ROi" id="o0w-yI-4Mg"/>
+                <outlet property="rowsStackViewTopConstraintWithLabels" destination="P2d-bR-K7e" id="Ou0-hj-wPN"/>
                 <outlet property="topSeparatorLine" destination="vDk-Vs-rUU" id="WYH-Xa-6K1"/>
                 <outlet property="totalCountLabel" destination="6MP-vc-NUk" id="CUM-kV-Ce1"/>
                 <outlet property="totalCountStackView" destination="lNV-f4-WuQ" id="ieY-6C-ZPx"/>

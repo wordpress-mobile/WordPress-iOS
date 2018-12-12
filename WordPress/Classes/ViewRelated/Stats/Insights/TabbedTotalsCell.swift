@@ -37,6 +37,11 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    // If the labelsStackView is not shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
+    // If the labelsStackView is shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraintWithLabels: NSLayoutConstraint!
+
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
     private let maxNumberOfDataRows = 6
@@ -100,6 +105,9 @@ private extension TabbedTotalsCell {
         let numberOfDataRows = tabData.dataRows.count
         totalCountStackView.isHidden = (numberOfDataRows == 0) || (tabData.totalCount == nil)
         labelsStackView.isHidden = numberOfDataRows == 0
+
+        rowsStackViewTopConstraint.isActive = labelsStackView.isHidden
+        rowsStackViewTopConstraintWithLabels.isActive = !labelsStackView.isHidden
     }
 
     func addRows() {
