@@ -67,7 +67,7 @@
                         </subviews>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EG5-87-rU0">
-                        <rect key="frame" x="0.0" y="132" width="320" height="136.5"/>
+                        <rect key="frame" x="0.0" y="46" width="320" height="222.5"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDk-Vs-rUU" userLabel="Top Seperator Line">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
@@ -87,7 +87,7 @@
                 <constraints>
                     <constraint firstItem="889-YX-osO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="KuR-St-tSo"/>
                     <constraint firstItem="0D1-nR-ode" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="OBn-l1-uyT"/>
-                    <constraint firstItem="EG5-87-rU0" firstAttribute="top" secondItem="889-YX-osO" secondAttribute="bottom" constant="7" id="P2d-bR-K7e"/>
+                    <constraint firstItem="EG5-87-rU0" firstAttribute="top" secondItem="889-YX-osO" secondAttribute="bottom" priority="999" constant="7" id="P2d-bR-K7e"/>
                     <constraint firstAttribute="trailing" secondItem="EG5-87-rU0" secondAttribute="trailing" id="UyH-vN-A5j"/>
                     <constraint firstItem="EG5-87-rU0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="WPB-BI-ATH"/>
                     <constraint firstAttribute="trailing" secondItem="889-YX-osO" secondAttribute="trailing" constant="16" id="d7h-yn-wt2"/>
@@ -99,7 +99,7 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="h6y-gP-ROi"/>
+                        <exclude reference="P2d-bR-K7e"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
