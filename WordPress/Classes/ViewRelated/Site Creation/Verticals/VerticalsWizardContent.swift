@@ -69,6 +69,8 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
+        table.addTopBorder(withColor: WPStyleGuide.greyLighten20())
+        table.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
     }
 
     private func setupTableSeparator() {
