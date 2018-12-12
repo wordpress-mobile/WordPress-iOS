@@ -312,7 +312,7 @@ private extension SiteStatsInsightsViewModel {
         let tabOneData = TabData.init(tabTitle: "Tab One",
                                       itemSubtitle: "Item One",
                                       dataSubtitle: "Data One",
-                                      totalCount: "Total WordPress.com Followers: 999,999",
+                                      totalCount: "Total WordPress.com Followers: \(Double(369258).abbreviatedString())",
                                       dataRows: [row, row])
 
         let disclosureRow = StatsTotalRowData.init(name: "Testing",
@@ -322,7 +322,7 @@ private extension SiteStatsInsightsViewModel {
         let tabTwoData = TabData.init(tabTitle: "Tab Two",
                                       itemSubtitle: "Item Two",
                                       dataSubtitle: "Data Two",
-                                      totalCount: "Total Email Followers: 666,666",
+                                      totalCount: "Total Email Followers: \(Double(741852).abbreviatedString())",
                                       dataRows: [disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow])
 
         return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
