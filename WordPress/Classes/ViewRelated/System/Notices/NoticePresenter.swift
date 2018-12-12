@@ -29,7 +29,7 @@ class NoticePresenter: NSObject {
         }
         window = UntouchableWindow(frame: windowFrame)
         window.windowLevel = .alert
-        window.makeKeyAndVisible()
+        window.isHidden = false
 
         super.init()
 
