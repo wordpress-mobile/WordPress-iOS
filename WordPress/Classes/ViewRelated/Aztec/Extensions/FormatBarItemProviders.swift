@@ -57,6 +57,8 @@ extension FormattingIdentifier: FormatBarItemProvider {
             return Gridicon.iconOfType(.headingH6)
         case .code:
             return Gridicon.iconOfType(.posts)
+        default:
+            return Gridicon.iconOfType(.help)
         }
     }
 
@@ -106,6 +108,8 @@ extension FormattingIdentifier: FormatBarItemProvider {
             return "format_toolbar_toggle_h6"
         case .code:
             return "format_toolbar_toggle_code"
+        default:
+            return ""
         }
     }
 
@@ -151,6 +155,8 @@ extension FormattingIdentifier: FormatBarItemProvider {
             return NSLocalizedString("Header 6", comment: "Accessibility label for selecting h6 paragraph style button on the formatting toolbar.")
         case .code:
             return NSLocalizedString("Code", comment: "Accessibility label for selecting code style button on the formatting toolbar.")
+        default:
+            return ""
         }
     }
 }
