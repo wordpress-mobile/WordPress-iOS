@@ -17,6 +17,6 @@ final class MockSiteVerticalsService: SiteVerticalsService {
     private func mockVerticals() -> [SiteVertical] {
         return [ SiteVertical(identifier: Identifier(value: "SV 1"), title: "Vertical 1", isNew: false),
                  SiteVertical(identifier: Identifier(value: "SV 2"), title: "Vertical 2", isNew: false),
-                 SiteVertical(identifier: Identifier(value: "SV 3"), title: "Vertical 3", isNew: true) ]
+                 SiteVertical(identifier: Identifier(value: "SV 3"), title: "Landscap", isNew: true) ]
     }
 }
