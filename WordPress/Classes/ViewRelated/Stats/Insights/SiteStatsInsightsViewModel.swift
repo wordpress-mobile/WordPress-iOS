@@ -325,7 +325,7 @@ private extension SiteStatsInsightsViewModel {
                                       totalCount: "Total Email Followers: \(Double(741852).abbreviatedString())",
                                       dataRows: [disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow])
 
-        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData], siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData], siteStatsInsightsDelegate: siteStatsInsightsDelegate, showTotalCount: true)
     }
 
 }

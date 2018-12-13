@@ -26,8 +26,9 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
-    @IBOutlet weak var labelsStackView: UIStackView!
-    @IBOutlet weak var totalCountStackView: UIStackView!
+    @IBOutlet weak var totalCountView: UIView!
+    @IBOutlet weak var subtitlesView: UIView!
+
     @IBOutlet weak var totalCountLabel: UILabel!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
@@ -37,24 +38,21 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
-    // If the labelsStackView is not shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the labelsStackView is shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithLabels: NSLayoutConstraint!
-
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
     private let maxNumberOfDataRows = 6
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private var showTotalCount = false
 
     // MARK: - Configure
 
-    func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate) {
+    func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate, showTotalCount: Bool = false) {
         self.tabsData = tabsData
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.showTotalCount = showTotalCount
         setupFilterBar()
-        configureSubtitles()
         addRows()
+        configureSubtitles()
         applyStyles()
     }
 
@@ -74,9 +72,9 @@ private extension TabbedTotalsCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        configureSubtitles()
         removeExistingRows()
         addRows()
+        configureSubtitles()
         siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
     }
 
@@ -102,12 +100,9 @@ private extension TabbedTotalsCell {
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
 
-        let numberOfDataRows = tabData.dataRows.count
-        totalCountStackView.isHidden = (numberOfDataRows == 0) || (tabData.totalCount == nil)
-        labelsStackView.isHidden = numberOfDataRows == 0
-
-        rowsStackViewTopConstraint.isActive = labelsStackView.isHidden
-        rowsStackViewTopConstraintWithLabels.isActive = !labelsStackView.isHidden
+        let noData = tabData.dataRows.count == 0
+        totalCountView.isHidden = !showTotalCount || noData
+        subtitlesView.isHidden = noData
     }
 
     func addRows() {
