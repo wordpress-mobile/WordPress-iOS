@@ -12,6 +12,10 @@ final class AssembledSiteView: UIView {
     // MARK: Properties
 
     private struct Parameters {
+        static let iPadWidthPortrait        = CGFloat(512)
+        static let iPadWidthLandscape       = CGFloat(704)
+        static let iPhoneWidthScaleFactor   = CGFloat(0.79)
+        static let minimumHeightScaleFactor = CGFloat(0.79)
         static let shadowOffset             = CGSize(width: 0, height: 5)
         static let shadowOpacity            = Float(0.2)
         static let shadowRadius             = CGFloat(8)
@@ -27,6 +31,25 @@ final class AssembledSiteView: UIView {
     private let webView: WKWebView
 
     private var webViewHasLoadedContent: Bool = false
+
+    var preferredSize: CGSize {
+        let screenBounds = UIScreen.main.bounds
+
+        let preferredWidth: CGFloat
+        if WPDeviceIdentification.isiPad() {
+            if UIDevice.current.orientation.isLandscape {
+                preferredWidth = Parameters.iPadWidthLandscape
+            } else {
+                preferredWidth = Parameters.iPadWidthPortrait
+            }
+        } else {
+            preferredWidth = screenBounds.width * Parameters.iPhoneWidthScaleFactor
+        }
+
+        let preferredHeight = screenBounds.height * Parameters.minimumHeightScaleFactor
+
+        return CGSize(width: preferredWidth, height: preferredHeight)
+    }
 
     var urlString: String = "" {
         didSet {
