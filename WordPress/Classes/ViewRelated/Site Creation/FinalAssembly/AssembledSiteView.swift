@@ -7,7 +7,7 @@ import WebKit
 /// This view is intended for use as a subview of `SiteAssemblyContentView`.
 /// It depicts an address bar and a picture of scrollable web content.
 ///
-class AssembledSiteView: UIView {
+final class AssembledSiteView: UIView {
 
     // MARK: Properties
 

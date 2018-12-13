@@ -6,7 +6,7 @@ import UIKit
 /// This view is intended for use as the root view of `SiteAssemblyWizardContent`.
 /// It manages the state transitions that occur as a site is assembled via remote service dialogue.
 ///
-class SiteAssemblyContentView: UIView {
+final class SiteAssemblyContentView: UIView {
 
     // MARK: Properties
 
