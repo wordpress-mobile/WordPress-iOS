@@ -6106,6 +6106,23 @@
 			path = "Shared Views";
 			sourceTree = "<group>";
 		};
+		9A162F2621C2713B00FDC035 /* Diffs */ = {
+			isa = PBXGroup;
+			children = (
+				9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */,
+				439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */,
+			);
+			path = Diffs;
+			sourceTree = "<group>";
+		};
+		9A162F2721C2715100FDC035 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
 		9A22D9BE214A6B9800BAEAF2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -6168,11 +6185,10 @@
 			isa = PBXGroup;
 			children = (
 				439F4F37219B636500F8D0C7 /* Revisions.storyboard */,
-				9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */,
 				439F4F39219B715300F8D0C7 /* RevisionsNavigationController.swift */,
-				439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */,
-				9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */,
 				439F4F3B219B78B500F8D0C7 /* RevisionDiffsBrowserViewController.swift */,
+				9A162F2621C2713B00FDC035 /* Diffs */,
+				9A162F2721C2715100FDC035 /* Preview */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
