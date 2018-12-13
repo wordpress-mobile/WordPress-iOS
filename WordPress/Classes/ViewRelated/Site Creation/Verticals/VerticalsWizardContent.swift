@@ -72,8 +72,6 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
-        table.addTopBorder(withColor: WPStyleGuide.greyLighten20())
-        table.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
     }
 
     private func setupTableSeparator() {
@@ -183,34 +181,12 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let vertical = data[indexPath.row]
-        return configureCell(vertical: vertical, indexPath: indexPath)
+        let cell = configureCell(vertical: vertical, indexPath: indexPath)
+
+        addBorder(cell: cell, at: indexPath)
+
+        return cell
     }
-
-//    private func configureCell(for vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
-//        return vertical.isNew ? configureNewCell(for: vertical, indexPath: indexPath) : configureRegularCell(for: vertical, indexPath: indexPath)
-//    }
-
-//    private func configureRegularCell(for: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
-//        if let cell = table.dequeueReusableCell(withIdentifier: VerticalsCell.cellReuseIdentifier(), for: indexPath) as? VerticalsCell {
-//            let dataItem = data[indexPath.row]
-//            cell.model = dataItem
-//
-//            return cell
-//        }
-//
-//        return UITableViewCell()
-//    }
-
-//    private func configureNewCell(for: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
-//        if let cell = table.dequeueReusableCell(withIdentifier: NewVerticalCell.cellReuseIdentifier(), for: indexPath) as? NewVerticalCell {
-//            let dataItem = data[indexPath.row]
-//            cell.model = dataItem
-//
-//            return cell
-//        }
-//
-//        return UITableViewCell()
-//    }
 
     private func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
         let identifier = cellIdentifier(vertical: vertical)
@@ -228,5 +204,14 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
         return vertical.isNew ? NewVerticalCell.cellReuseIdentifier() : VerticalsCell.cellReuseIdentifier()
     }
 
+    private func addBorder(cell: UITableViewCell, at: IndexPath) {
+        let row = at.row
+        if row == 0 {
+            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
+        }
 
+        if row == data.count - 1 {
+            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+        }
+    }
 }
