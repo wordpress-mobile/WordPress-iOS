@@ -28,6 +28,8 @@ final class AssembledSiteView: UIView {
 
     private let textField: UITextField
 
+    private let activityIndicator: UIActivityIndicatorView
+
     private let webView: WKWebView
 
     private var webViewHasLoadedContent: Bool = false
@@ -80,6 +82,17 @@ final class AssembledSiteView: UIView {
             return textField
         }()
 
+        self.activityIndicator = {
+            let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+
+            activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+            activityIndicator.hidesWhenStopped = true
+            activityIndicator.color = WPStyleGuide.greyDarken10()
+            activityIndicator.startAnimating()
+
+            return activityIndicator
+        }()
+
         webView = {
             let webView = WKWebView(frame: .zero)
 
@@ -107,7 +120,7 @@ final class AssembledSiteView: UIView {
 
         webView.navigationDelegate = self
 
-        addSubviews([ textField, webView ])
+        addSubviews([ textField, webView, activityIndicator ])
 
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: topAnchor, constant: Parameters.textFieldEdgeInset),
@@ -119,6 +132,8 @@ final class AssembledSiteView: UIView {
             webView.leadingAnchor.constraint(equalTo: leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: trailingAnchor),
             webView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -Parameters.textFieldHeight)
         ])
 
         layer.shadowColor = UIColor.black.cgColor
@@ -148,10 +163,12 @@ extension AssembledSiteView: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webViewHasLoadedContent = true
+        activityIndicator.stopAnimating()
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         debugPrint(#function + " ERROR : \(error.localizedDescription)")
+        activityIndicator.stopAnimating()
     }
 
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
