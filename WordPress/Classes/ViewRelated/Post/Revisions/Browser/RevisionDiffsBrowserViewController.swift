@@ -7,8 +7,10 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private var operationVC: RevisionOperationViewController?
     private var pageViewController: UIPageViewController?
     private var pageManager: RevisionDiffsPageManager?
+    private var visualPreviewViewController: RevisionPreviewViewController?
     private var contentPreviewState: ContentPreviewState = .html
 
+    @IBOutlet private var containerView: UIView!
     @IBOutlet private var revisionTitle: UILabel!
     @IBOutlet private var previousButton: UIButton!
     @IBOutlet private var nextButton: UIButton!
@@ -186,6 +188,48 @@ private extension RevisionDiffsBrowserViewController {
 
     private func triggerPreviewState() {
         contentPreviewState = contentPreviewState.toggle()
+
+        switch contentPreviewState {
+        case .html:
+            hideVisualPreview()
+        case .visual:
+            showVisualPreview()
+        }
+    }
+
+    private func showVisualPreview() {
+        visualPreviewViewController = RevisionPreviewViewController.loadFromStoryboard()
+
+        guard let vc = visualPreviewViewController else {
+            return
+        }
+
+        vc.view.alpha = 0
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        add(vc)
+        vc.revision = revisionState?.currentRevision()
+
+        NSLayoutConstraint.activate([
+            vc.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            vc.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            vc.view.topAnchor.constraint(equalTo: containerView.topAnchor),
+            vc.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            ])
+        UIView.animate(withDuration: 0.3) {
+            vc.view.alpha = 1.0
+            self.nextButton.alpha = 0
+            self.previousButton.alpha = 0
+        }
+    }
+
+    private func hideVisualPreview() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.visualPreviewViewController?.view.alpha = 0
+            self.nextButton.alpha = 1
+            self.previousButton.alpha = 1
+        }, completion: { _ in
+            self.visualPreviewViewController?.remove()
+        })
     }
 
     @objc private func moreWasPressed() {

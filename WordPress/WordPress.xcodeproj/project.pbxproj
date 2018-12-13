@@ -898,6 +898,7 @@
 		9A162F2321C26D7500FDC035 /* RevisionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */; };
 		9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */; };
 		9A162F2921C271D300FDC035 /* RevisionBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2821C271D300FDC035 /* RevisionBrowserState.swift */; };
+		9A162F2B21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2A21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift */; };
 		9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */; };
 		9A2B28E8219046ED00458F2A /* ShowRevisionsListManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */; };
 		9A2B28EE2191B50500458F2A /* RevisionsTableViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28ED2191B50500458F2A /* RevisionsTableViewFooter.swift */; };
@@ -2775,6 +2776,7 @@
 		9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionPreviewViewController.swift; sourceTree = "<group>"; };
 		9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChildViewController.swift"; sourceTree = "<group>"; };
 		9A162F2821C271D300FDC035 /* RevisionBrowserState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionBrowserState.swift; sourceTree = "<group>"; };
+		9A162F2A21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionPreviewTextViewManager.swift; sourceTree = "<group>"; };
 		9A1DA2FB21370DD00082569B /* WordPress 80.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 80.xcdatamodel"; sourceTree = "<group>"; };
 		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
 		9A2B28E7219046ED00458F2A /* ShowRevisionsListManger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRevisionsListManger.swift; sourceTree = "<group>"; };
@@ -6120,6 +6122,7 @@
 		9A162F2721C2715100FDC035 /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				9A162F2A21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift */,
 				9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */,
 			);
 			path = Preview;
@@ -9964,6 +9967,7 @@
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				7E4123C820F417EF00DF8486 /* FormattableActivity.swift in Sources */,
+				9A162F2B21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift in Sources */,
 				FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */,

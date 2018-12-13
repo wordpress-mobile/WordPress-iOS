@@ -128,6 +128,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="2wo-o9-BHQ"/>
                     <connections>
+                        <outlet property="containerView" destination="uhq-mq-TeO" id="Ehy-69-qmb"/>
                         <outlet property="nextButton" destination="Und-hy-I90" id="Q6I-kh-y5d"/>
                         <outlet property="previousButton" destination="rSD-aC-9V4" id="s8K-96-nXk"/>
                         <outlet property="revisionTitle" destination="1Hg-z8-YVh" id="cXY-5C-yT6"/>
