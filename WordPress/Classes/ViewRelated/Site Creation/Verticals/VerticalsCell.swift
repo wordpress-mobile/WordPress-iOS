@@ -1,12 +1,12 @@
 import UIKit
 import Gridicons
 
-final class VerticalsCell: UITableViewCell, ModelSettableCell {
+final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
     @IBOutlet weak var title: UILabel!
 
-    var model: SiteVertical? {
+    var vertical: SiteVertical? {
         didSet {
-            title.text = model?.title
+            title.text = vertical?.title
         }
     }
 

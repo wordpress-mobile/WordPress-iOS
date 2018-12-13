@@ -5,7 +5,7 @@ import WordPressKit
 final class VerticalsWizardContent: UIViewController {
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
-    private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
+    private var data: [SiteVertical]
     private let selection: (SiteVertical) -> Void
 
     private let throttle = Scheduler(seconds: 1)
@@ -30,6 +30,7 @@ final class VerticalsWizardContent: UIViewController {
         self.segment = segment
         self.service = service
         self.selection = selection
+        self.data = []
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
 
@@ -59,9 +60,11 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupTable() {
+        table.dataSource = self
+        table.delegate = self
         setupTableBackground()
         setupTableSeparator()
-        setupCell()
+        setupCells()
         setupHeader()
         setupConstraints()
         hideSeparators()
@@ -81,8 +84,8 @@ final class VerticalsWizardContent: UIViewController {
         table.tableFooterView = UIView(frame: .zero)
     }
 
-    private func setupCell() {
-        registerCell()
+    private func setupCells() {
+        registerCells()
         setupCellHeight()
     }
 
@@ -92,10 +95,14 @@ final class VerticalsWizardContent: UIViewController {
         table.separatorInset = StyleConstants.separatorInset
     }
 
-    private func registerCell() {
-        let cellName = VerticalsCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
+    private func registerCells() {
+        registerCell(identifier: VerticalsCell.cellReuseIdentifier())
+        registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
+    }
+
+    private func registerCell(identifier: String) {
+        let nib = UINib(nibName: identifier, bundle: nil)
+        table.register(nib, forCellReuseIdentifier: identifier)
     }
 
     private func setupHeader() {
@@ -160,13 +167,66 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        dataCoordinator = TableDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect)
-        table.dataSource = dataCoordinator
-        table.delegate = dataCoordinator
+        self.data = data
         table.reloadData()
     }
 
     private func didSelect(_ segment: SiteVertical) {
         selection(segment)
     }
+}
+
+extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let vertical = data[indexPath.row]
+        return configureCell(vertical: vertical, indexPath: indexPath)
+    }
+
+//    private func configureCell(for vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
+//        return vertical.isNew ? configureNewCell(for: vertical, indexPath: indexPath) : configureRegularCell(for: vertical, indexPath: indexPath)
+//    }
+
+//    private func configureRegularCell(for: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
+//        if let cell = table.dequeueReusableCell(withIdentifier: VerticalsCell.cellReuseIdentifier(), for: indexPath) as? VerticalsCell {
+//            let dataItem = data[indexPath.row]
+//            cell.model = dataItem
+//
+//            return cell
+//        }
+//
+//        return UITableViewCell()
+//    }
+
+//    private func configureNewCell(for: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
+//        if let cell = table.dequeueReusableCell(withIdentifier: NewVerticalCell.cellReuseIdentifier(), for: indexPath) as? NewVerticalCell {
+//            let dataItem = data[indexPath.row]
+//            cell.model = dataItem
+//
+//            return cell
+//        }
+//
+//        return UITableViewCell()
+//    }
+
+    private func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
+        let identifier = cellIdentifier(vertical: vertical)
+
+        if var cell = table.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SiteVerticalPresenter {
+            cell.vertical = vertical
+
+            return cell as! UITableViewCell
+        }
+
+        return UITableViewCell()
+    }
+
+    private func cellIdentifier(vertical: SiteVertical) -> String {
+        return vertical.isNew ? NewVerticalCell.cellReuseIdentifier() : VerticalsCell.cellReuseIdentifier()
+    }
+
+
 }

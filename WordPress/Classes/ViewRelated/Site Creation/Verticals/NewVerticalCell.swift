@@ -1,18 +1,25 @@
 import UIKit
 import Gridicons
 
-final class NewVerticalCell: UITableViewCell, ModelSettableCell {
+final class NewVerticalCell: UITableViewCell, SiteVerticalPresenter {
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var subtitle: UILabel!
 
-    var model: SiteVertical? {
+    private struct Strings {
+        static let newVerticalSubtitle = NSLocalizedString("Custom category", comment: "Placeholder for new site types when creating a new site")
+    }
+
+    var vertical: SiteVertical? {
         didSet {
-            title.text = model?.title
+            title.text = vertical?.title
+            subtitle.text = Strings.newVerticalSubtitle
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         styleTitle()
+        styleSubtitle()
         styleAccessoryView()
     }
 
@@ -21,8 +28,13 @@ final class NewVerticalCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleTitle() {
-        title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        WPStyleGuide.configureLabel(title, textStyle: .body, symbolicTraits: .traitItalic)
         title.textColor = WPStyleGuide.darkGrey()
+    }
+
+    private func styleSubtitle() {
+        subtitle.font = WPFontManager.systemRegularFont(ofSize: 15.0)
+        subtitle.textColor = WPStyleGuide.grey()
     }
 
     private func styleAccessoryView() {
