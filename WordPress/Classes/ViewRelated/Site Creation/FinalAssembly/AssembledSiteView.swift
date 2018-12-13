@@ -11,7 +11,10 @@ final class AssembledSiteView: UIView {
 
     // MARK: Properties
 
-    private struct Metrics {
+    private struct Parameters {
+        static let shadowOffset             = CGSize(width: 0, height: 5)
+        static let shadowOpacity            = Float(0.2)
+        static let shadowRadius             = CGFloat(8)
         static let textFieldCornerRadius    = CGFloat(8)
         static let textFieldEdgeInset       = CGFloat(8)
         static let textFieldHeight          = CGFloat(36)
@@ -47,7 +50,7 @@ final class AssembledSiteView: UIView {
             textField.textColor = WPStyleGuide.darkGrey()
             textField.text = domainName
 
-            textField.layer.cornerRadius = Metrics.textFieldCornerRadius
+            textField.layer.cornerRadius = Parameters.textFieldCornerRadius
 
             textField.sizeToFit()
 
@@ -84,16 +87,21 @@ final class AssembledSiteView: UIView {
         addSubviews([ textField, webView ])
 
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.textFieldEdgeInset),
-            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.textFieldEdgeInset),
-            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.textFieldEdgeInset),
-            textField.heightAnchor.constraint(equalToConstant: Metrics.textFieldHeight),
+            textField.topAnchor.constraint(equalTo: topAnchor, constant: Parameters.textFieldEdgeInset),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Parameters.textFieldEdgeInset),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Parameters.textFieldEdgeInset),
+            textField.heightAnchor.constraint(equalToConstant: Parameters.textFieldHeight),
             textField.centerXAnchor.constraint(equalTo: centerXAnchor),
-            webView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: Metrics.textFieldEdgeInset),
+            webView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: Parameters.textFieldEdgeInset),
             webView.leadingAnchor.constraint(equalTo: leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: trailingAnchor),
             webView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
+
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = Parameters.shadowOffset
+        layer.shadowOpacity = Parameters.shadowOpacity
+        layer.shadowRadius = Parameters.shadowRadius
     }
 
     private func loadSite(urlString: String) {
