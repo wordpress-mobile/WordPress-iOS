@@ -24,7 +24,7 @@ class AssembledSiteView: UIView {
     private let webView: WKWebView
 
     private var webViewHasLoadedContent: Bool = false
-    
+
     var urlString: String = "" {
         didSet {
             loadSite(urlString: urlString)
