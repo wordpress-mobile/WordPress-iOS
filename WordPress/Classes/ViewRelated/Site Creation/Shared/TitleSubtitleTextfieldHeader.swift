@@ -9,11 +9,35 @@ private final class SearchTextField: UITextField {
     // MARK: Properties
 
     private struct Constants {
-        static let iconDimension    = CGFloat(18)
-        static let iconInset        = CGFloat(19)
-        static let searchHeight     = CGFloat(44)
-        static let textInset        = CGFloat(56)
+        static let iconDimension            = CGFloat(18)
+        static let clearButtonDimension     = CGFloat(16)
+        static let leftIconInset            = CGFloat(19)
+        static let rightIconInset           = CGFloat(24)
+        static let searchHeight             = CGFloat(44)
+        static let textInset                = CGFloat(56)
     }
+
+    private lazy var clearButton: UIButton = {
+        let image = UIImage(named: "icon-clear-textfield")?.imageWithTintColor(WPStyleGuide.greyLighten20())
+        let button = UIButton(frame: .zero)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(image, for: .normal)
+        button.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(clear), for: .touchUpInside)
+
+
+        return button
+    }()
+
+    private lazy var loupe: UIImageView = {
+        let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
+        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
+        let imageView = UIImageView(image: loupeIcon)
+        imageView.contentMode = .scaleAspectFit
+
+        return imageView
+    }()
+
 
     // MARK: UIView
 
@@ -37,14 +61,36 @@ private final class SearchTextField: UITextField {
     }
 
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-        let iconY = (bounds.height - Constants.iconDimension) / 2
-        return CGRect(x: Constants.iconInset, y: iconY, width: Constants.iconDimension, height: Constants.iconDimension)
+        let iconDimension = leftIconDimension()
+        let iconInset = leftIconInset()
+        let iconY = (bounds.height - iconDimension) / 2
+        return CGRect(x: iconInset, y: iconY, width: iconDimension, height: iconDimension)
     }
 
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
-        let iconX = bounds.width - Constants.iconInset - Constants.iconDimension
-        let iconY = (bounds.height - Constants.iconDimension) / 2
-        return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: bounds.height)
+        let iconDimension = rightIconDimension()
+        let iconInset = rightIconInset()
+
+        let iconX = bounds.width - iconInset - Constants.iconDimension
+        let iconY = (bounds.height - iconDimension) / 2
+
+        return CGRect(x: iconX, y: iconY, width: iconDimension, height: iconDimension)
+    }
+
+    private func rightIconDimension() -> CGFloat {
+        return traitCollection.layoutDirection == .leftToRight ? Constants.clearButtonDimension : Constants.iconDimension
+    }
+
+    private func rightIconInset() -> CGFloat {
+        return traitCollection.layoutDirection == .leftToRight ? Constants.rightIconInset : Constants.leftIconInset
+    }
+
+    private func leftIconDimension() -> CGFloat {
+        return traitCollection.layoutDirection == .leftToRight ? Constants.iconDimension : Constants.clearButtonDimension
+    }
+
+    private func leftIconInset() -> CGFloat {
+        return traitCollection.layoutDirection == .leftToRight ? Constants.leftIconInset : Constants.rightIconInset
     }
 
     // MARK: Private behavior
@@ -57,24 +103,30 @@ private final class SearchTextField: UITextField {
         font = WPStyleGuide.fixedFont(for: .headline)
         textColor = WPStyleGuide.darkGrey()
 
-        let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
-        let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
-        let imageView = UIImageView(image: loupeIcon)
-
         if traitCollection.layoutDirection == .rightToLeft {
-            rightView = imageView
+            rightView = loupe
             rightViewMode = .always
+            leftView = clearButton
+            leftViewMode = .whileEditing
         } else {
-            leftView = imageView
+            leftView = loupe
             leftViewMode = .always
+            rightView = clearButton
+            rightViewMode = .whileEditing
         }
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Constants.searchHeight),
+            heightAnchor.constraint(equalToConstant: Constants.searchHeight)
         ])
 
         addTopBorder(withColor: WPStyleGuide.greyLighten20())
         addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+    }
+
+    @objc
+    func clear(sender: AnyObject) {
+        text = ""
+        sendActions(for: .editingChanged)
     }
 }
 
