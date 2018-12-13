@@ -72,6 +72,9 @@ private final class SearchTextField: UITextField {
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
         ])
+
+        addTopBorder(withColor: WPStyleGuide.greyLighten20())
+        addBottomBorder(withColor: WPStyleGuide.greyLighten20())
     }
 }
 
