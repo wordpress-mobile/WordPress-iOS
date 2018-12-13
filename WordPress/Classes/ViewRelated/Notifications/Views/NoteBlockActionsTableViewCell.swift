@@ -311,7 +311,7 @@ private extension NoteBlockActionsTableViewCell {
             return
         }
 
-        contentView.addSubview(overlayImageView)
+        button.addSubview(overlayImageView)
 
         let animation = button.isSelected ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
         animation { _ in
@@ -325,7 +325,7 @@ private extension NoteBlockActionsTableViewCell {
             return
         }
 
-        contentView.addSubview(overlayImageView)
+        button.addSubview(overlayImageView)
 
         let animation = button.isSelected ? overlayImageView.implodeAnimation : overlayImageView.explodeAnimation
         animation { _ in
@@ -340,7 +340,7 @@ private extension NoteBlockActionsTableViewCell {
         }
 
         let overlayImageView = UIImageView(image: targetImage)
-        overlayImageView.frame = contentView.convert(buttonImageView.bounds, from: buttonImageView)
+        overlayImageView.frame = button.convert(buttonImageView.bounds, from: buttonImageView)
 
         return overlayImageView
     }
