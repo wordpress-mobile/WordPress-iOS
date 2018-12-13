@@ -35,6 +35,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
     private var operationVC: RevisionOperationViewController?
     private var pageViewController: UIPageViewController?
     private var pageManager: RevisionDiffsPageManager?
+    private var contentPreviewState: ContentPreviewState = .html
 
     @IBOutlet private var revisionTitle: UILabel!
     @IBOutlet private var previousButton: UIButton!
@@ -48,6 +49,17 @@ class RevisionDiffsBrowserViewController: UIViewController {
             self?.dismiss(animated: true)
         }
         return doneItem
+    }()
+
+    private lazy var moreBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.ellipsis)
+        let button = UIButton(type: .system)
+        button.setImage(image, for: .normal)
+        button.frame = CGRect(origin: .zero, size: image.size)
+        button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        return UIBarButtonItem(customView: button)
     }()
 
     private lazy var loadBarButtonItem: UIBarButtonItem = {
@@ -92,6 +104,38 @@ class RevisionDiffsBrowserViewController: UIViewController {
         }
     }
 
+    private enum ShowRevisionSource: String {
+        case list
+        case chevron
+        case swipe
+    }
+
+    private enum ContentPreviewState {
+        case html
+        case visual
+
+        var title: String {
+            switch self {
+            case .html:
+                return NSLocalizedString("Switch to HTML Preview", comment: "Switches the Content to HTML Preview")
+            case .visual:
+                return NSLocalizedString("Switch to Visual Preview", comment: "Switches the Content to Rich Text Preview")
+            }
+        }
+
+        func toggle() -> ContentPreviewState {
+            switch self {
+            case .html:
+                return .visual
+            case .visual:
+                return .html
+            }
+        }
+    }
+}
+
+
+private extension RevisionDiffsBrowserViewController {
     private func showRevision() {
         guard let revisionState = revisionState else {
             return
@@ -120,7 +164,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
 
     private func setupNavbarItems() {
         navigationItem.leftBarButtonItems = [doneBarButtonItem]
-        navigationItem.rightBarButtonItems = [loadBarButtonItem]
+        navigationItem.rightBarButtonItems = [moreBarButtonItem, loadBarButtonItem]
         navigationItem.title = NSLocalizedString("Revision", comment: "Title of the screen that shows the revisions.")
     }
 
@@ -150,7 +194,7 @@ class RevisionDiffsBrowserViewController: UIViewController {
         guard let revisionState = revisionState,
             let pageManager = pageManager,
             !pageManager.viewControllers.isEmpty else {
-            return
+                return
         }
 
         pageViewController?.setViewControllers([pageManager.viewControllers[revisionState.currentIndex]],
@@ -167,17 +211,22 @@ class RevisionDiffsBrowserViewController: UIViewController {
             self.revisionState?.onRevisionSelected(revision)
         }
     }
-}
 
-
-private extension RevisionDiffsBrowserViewController {
-    enum ShowRevisionSource: String {
-        case list
-        case chevron
-        case swipe
+    private func triggerPreviewState() {
+        contentPreviewState = contentPreviewState.toggle()
     }
 
-    func trackRevisionsDetailViewed(with source: ShowRevisionSource) {
+    @objc private func moreWasPressed() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addDefaultActionWithTitle(contentPreviewState.toggle().title) { [unowned self] _ in
+            self.triggerPreviewState()
+        }
+        alert.addCancelActionWithTitle(NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\"."))
+        alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        present(alert, animated: true)
+    }
+
+    private func trackRevisionsDetailViewed(with source: ShowRevisionSource) {
         WPAnalytics.track(.postRevisionsDetailViewed,
                           withProperties: [WPAppAnalyticsKeySource: source.rawValue])
     }
