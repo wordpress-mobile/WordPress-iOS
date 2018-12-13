@@ -11,7 +11,7 @@ final class SiteAssemblyContentView: UIView {
     // MARK: Properties
 
     private struct Parameters {
-        static let animationDuration                            = TimeInterval(0.25)
+        static let animationDuration                            = TimeInterval(0.5)
         static let assembledSiteScaleFactorWidth                = CGFloat(0.79)
         static let assembledSiteScaleFactorHeight               = CGFloat(0.79)
         static let buttonContainerScaleFactor                   = CGFloat(2)
@@ -236,7 +236,7 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutInProgress() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseInOut, animations: { [statusStackView] in
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
 
             statusStackView.alpha = 1
         })
@@ -247,7 +247,7 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutSucceeded() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseInOut, animations: { [statusStackView] in
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
 
             statusStackView.alpha = 0
 
@@ -268,7 +268,7 @@ final class SiteAssemblyContentView: UIView {
 
                 UIView.animate(withDuration: Parameters.animationDuration,
                                delay: 0,
-                               options: .curveEaseInOut,
+                               options: .curveEaseOut,
                                animations: { [weak self] in
                                 guard let strongSelf = self else {
                                     return
