@@ -22,11 +22,18 @@ final class SiteCreationWizardLauncher {
         return SiteInformationStep(creator: self.creator)
     }()
 
+    private lazy var siteAssemblyStep: WizardStep = {
+        return SiteAssemblyStep(creator: self.creator, service: MockSiteAssemblyService())
+    }()
+
     private lazy var steps: [WizardStep] = {
-        return [self.segmentsStep,
-                self.verticalsStep,
-                self.siteInfoStep,
-                self.addressStep]
+        return [
+            self.segmentsStep,
+            self.verticalsStep,
+            self.siteInfoStep,
+            self.addressStep,
+            self.siteAssemblyStep
+        ]
     }()
 
     private lazy var wizard: SiteCreationWizard = {
