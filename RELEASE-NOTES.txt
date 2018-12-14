@@ -1,3 +1,4 @@
 * App Settings Privacy: Added explanation for the 'Remove Location from Media' feature.
 * History / Revisions: Added swipe action to the revisions browser
 * Added a notice and undo button when loading a revision from a post's history.
+* Update strings for cancelled/cancelling to canceled/canceling so as to provide base en_US for localization.
