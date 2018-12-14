@@ -49,7 +49,7 @@ extension GiphyMedia: WPMediaAsset {
     }
 
     func cancelImageRequest(_ requestID: WPMediaRequestID) {
-        // Can't be cancelled
+        // Can't be canceled
     }
 
     func videoAsset(completionHandler: @escaping WPMediaAssetBlock) -> WPMediaRequestID {
