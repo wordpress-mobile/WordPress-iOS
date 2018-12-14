@@ -1,5 +1,19 @@
 import UIKit
 
+// MARK: - EnhancedSiteCreationNavigationController
+
+private final class EnhancedSiteCreationNavigationController: UINavigationController {
+    override var shouldAutorotate: Bool {
+        return WPDeviceIdentification.isiPad() ? true : false
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return WPDeviceIdentification.isiPad() ? .all : .portrait
+    }
+}
+
+// MARK: - WizardNavigation
+
 final class WizardNavigation {
     private let steps: [WizardStep]
     private let pointer = WizardNavigationPointer()
@@ -9,7 +23,7 @@ final class WizardNavigation {
             return nil
         }
 
-        let returnValue = UINavigationController(rootViewController: root)
+        let returnValue = EnhancedSiteCreationNavigationController(rootViewController: root)
         returnValue.delegate = self.pointer
         return returnValue
     }()
