@@ -11,26 +11,80 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
         }
     }
 
+    private var titleHeightConstraint: NSLayoutConstraint!
+    private var titleTopConstraint: NSLayoutConstraint!
     private let textViewManager = RevisionPreviewTextViewManager()
+    private lazy var textView: TextView = {
+        let aztext = TextView(defaultFont: WPFontManager.notoRegularFont(ofSize: 16),
+                              defaultMissingImage: UIImage())
+        aztext.translatesAutoresizingMaskIntoConstraints = false
+        aztext.isEditable = false
+        aztext.delegate = self
+        return aztext
+    }()
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = WPFontManager.notoBoldFont(ofSize: 24.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textAlignment = .natural
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        addSubviews()
+        configureConstraints()
         setupAztec()
+    }
+
+    override func updateViewConstraints() {
+        refreshTitlePosition()
+        updateTitleHeight()
+        super.updateViewConstraints()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.updateTitleHeight()
+        })
     }
 }
 
 
 private extension RevisionPreviewViewController {
+    private func addSubviews() {
+        view.addSubview(textView)
+        view.addSubview(titleLabel)
+    }
+
+    private func configureConstraints() {
+        titleHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font?.lineHeight ?? 0)
+        titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8.0)
+        updateTitleHeight()
+
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8.0),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8.0),
+            titleTopConstraint,
+            titleHeightConstraint
+            ])
+
+        NSLayoutConstraint.activate([
+            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6.0),
+            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6.0),
+            textView.topAnchor.constraint(equalTo: view.topAnchor),
+            textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+    }
+
     private func setupAztec() {
-        let aztext = Aztec.TextView(defaultFont: WPFontManager.notoRegularFont(ofSize: 16),
-                                    defaultMissingImage: UIImage())
-        aztext.translatesAutoresizingMaskIntoConstraints = false
-        aztext.isEditable = false
-        view.addSubview(aztext)
-        view.pinSubviewToAllEdges(aztext)
-        aztext.load(WordPressPlugin())
-        aztext.textAttachmentDelegate = textViewManager
+        textView.load(WordPressPlugin())
+        textView.textAttachmentDelegate = textViewManager
 
         let providers: [TextViewAttachmentImageProvider] = [
             SpecialTagAttachmentRenderer(),
@@ -40,7 +94,7 @@ private extension RevisionPreviewViewController {
         ]
 
         providers.forEach {
-            aztext.registerAttachmentImageProvider($0)
+            textView.registerAttachmentImageProvider($0)
         }
     }
 
@@ -49,10 +103,60 @@ private extension RevisionPreviewViewController {
             return
         }
 
-        let title = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
-        let titleHTML = "<h2>\(title)</h2>"
+        titleLabel.text = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
 
         let html = revision.postContent ?? ""
-        aztext.setHTML(titleHTML + "\n" + html)
+        textView.setHTML(html)
+
+        refreshTitlePosition()
+        updateTitleHeight()
+    }
+
+    private func refreshTitlePosition() {
+        titleTopConstraint.constant = -(textView.contentOffset.y + textView.contentInset.top - 8.0)
+
+        var contentInset = textView.contentInset
+//        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
+        contentInset.top = titleHeightConstraint.constant + 8.0
+        textView.contentInset = contentInset
+    }
+
+    private func updateTitleHeight() {
+        let layoutMargins = view.layoutMargins
+        let insets = UIEdgeInsets.zero
+
+        var titleWidth = titleLabel.bounds.width
+        if titleWidth <= 0 {
+            // Use the title text field's width if available, otherwise calculate it.
+            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right)
+        }
+
+        let sizeThatShouldFitTheContent = titleLabel.sizeThatFits(CGSize(width: titleWidth, height: CGFloat.greatestFiniteMagnitude))
+        titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleLabel.font!.lineHeight + insets.top + insets.bottom)
+
+        var contentInset = textView.contentInset
+//        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
+        contentInset.top = titleHeightConstraint.constant + 8.0
+        textView.contentInset = contentInset
+        textView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
+
+        updateScrollInsets()
+    }
+
+    private func updateScrollInsets() {
+        var scrollInsets = textView.contentInset
+        var rightMargin = (view.frame.maxX - textView.frame.maxX)
+        if #available(iOS 11.0, *) {
+            rightMargin -= view.safeAreaInsets.right
+        }
+        scrollInsets.right = -rightMargin
+        textView.scrollIndicatorInsets = scrollInsets
+    }
+}
+
+
+extension RevisionPreviewViewController: UITextViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        refreshTitlePosition()
     }
 }
