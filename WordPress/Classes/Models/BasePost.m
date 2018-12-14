@@ -100,9 +100,14 @@
 - (BOOL)hasContent
 {
     BOOL titleIsEmpty = self.postTitle ? self.postTitle.isEmpty : YES;
-    BOOL contentIsEmpty = self.content ? self.content.isEmpty : YES;
+    BOOL contentIsEmpty = [self isContentEmpty];
     
     return !titleIsEmpty || !contentIsEmpty;
+}
+
+- (BOOL)isContentEmpty
+{
+    return  self.content ? self.content.isEmpty : YES;
 }
 
 @end
