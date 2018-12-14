@@ -1,7 +1,4 @@
-- Abbiamo aggiunto il supporto per Post Revision, che ti permette di visualizzare la cronologia delle modifiche apportate a un articolo. Puoi anche tornare indietro a una revisione specifica, se necessario!
-- Abbiamo aggiunto l'opzione di riscattare i domini da WordPress.com.
-- Abbiamo migliorato l'editor per renderlo compatibile con Gutenberg.
-- Abbiamo reintrodotto il supporto per i collegamenti a YouTube e Vimeo!
-- Abbiamo migliorato l'accuratezza del conteggio dei caratteri nella modifica degli articoli.
-- Ora è un po' più semplice gestire gli utenti del tuo sito (è usata la barra dei filtri invece di un menu a tendina)
-- Abbiamo corretto alcuni bug (un crash che si verifica quando l'app è offline e un bug che potrebbe causare la perdita di alcuni dati nell'editor), migliorato l'esperienza di lettura e ottimizzato l'interfaccia utente in alcuni punti.
+È stato risolto il fastidioso bug che impediva agli utenti con diritti di autore o collaboratore su siti ospitati personalmente di poter pubblicare articoli. Pubblicate altrove autori!
+Molte delle modifiche in questo aggiornamento sono piccole o dietro le quinte. Se non riesci a vederle, puoi sentirle:
+- Esiste un supporto migliore per i traduttori, specialmente quando provano a tradurre testi con elementi dinamici come indirizzi e-mail e numeri di telefono. Questo vuol dire essenzialmente che un maggior numero di persone la cui lingua predefinita è diversa dall'inglese visualizzeranno traduzioni migliori tramite l'app.
+- Stiamo continuando a ritoccare la UI per rendere l'app davvero superlativa per essere utilizzata su un iPad: ad esempio margini e allineamenti migliori, specialmente alternando paesaggio e immagine, che rendono l'intera esperienza più fluida.
