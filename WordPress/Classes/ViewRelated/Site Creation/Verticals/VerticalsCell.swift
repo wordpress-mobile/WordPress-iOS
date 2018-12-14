@@ -13,7 +13,6 @@ final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
     override func awakeFromNib() {
         super.awakeFromNib()
         styleTitle()
-        styleAccessoryView()
     }
 
     override func prepareForReuse() {
@@ -23,10 +22,5 @@ final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         title.textColor = WPStyleGuide.darkGrey()
-    }
-
-    private func styleAccessoryView() {
-        let accessoryImage = Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.greyLighten20())
-        accessoryView = UIImageView(image: accessoryImage)
     }
 }
