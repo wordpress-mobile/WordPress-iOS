@@ -1,4 +1,4 @@
 * App Settings Privacy: Added explanation for the 'Remove Location from Media' feature.
 * History / Revisions: Added swipe action to the revisions browser
 * Added a notice and undo button when loading a revision from a post's history.
-* Added the possibility to store and check if a reader site is a feed.
+* Feeds are filtered and removed from followed sites list in setting.
