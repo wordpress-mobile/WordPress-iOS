@@ -116,7 +116,6 @@ private extension RevisionPreviewViewController {
         titleTopConstraint.constant = -(textView.contentOffset.y + textView.contentInset.top - 8.0)
 
         var contentInset = textView.contentInset
-//        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
         contentInset.top = titleHeightConstraint.constant + 8.0
         textView.contentInset = contentInset
     }
@@ -135,7 +134,6 @@ private extension RevisionPreviewViewController {
         titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleLabel.font!.lineHeight + insets.top + insets.bottom)
 
         var contentInset = textView.contentInset
-//        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
         contentInset.top = titleHeightConstraint.constant + 8.0
         textView.contentInset = contentInset
         textView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
