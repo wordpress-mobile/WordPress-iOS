@@ -50,7 +50,7 @@ private extension RevisionPreviewViewController {
         }
 
         let title = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
-        let titleHTML = "<h1>\(title)</h1>"
+        let titleHTML = "<h2>\(title)</h2>"
 
         let html = revision.postContent ?? ""
         aztext.setHTML(titleHTML + "\n" + html)
