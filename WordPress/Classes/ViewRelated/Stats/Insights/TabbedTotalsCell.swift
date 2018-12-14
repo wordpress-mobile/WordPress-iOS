@@ -142,7 +142,11 @@ private extension TabbedTotalsCell {
     }
 
     func removeExistingRows() {
-        rowsStackView.arrangedSubviews.forEach {
+
+        // Skip the first subView, as that is the Labels view.
+        let subViews = rowsStackView.arrangedSubviews.dropFirst()
+
+        subViews.forEach {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
