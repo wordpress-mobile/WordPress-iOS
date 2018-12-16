@@ -19,7 +19,7 @@ class SiteCreationDomainSuggestionsTableViewController: DomainSuggestionsTableVi
     }
     override open var sectionDescription: String {
         return NSLocalizedString(
-            "Pick an available \"yourname.wordpress.com\" address to let people find you on the web.",
+            "Pick an available address to let people find you on the web.",
             comment: "Description of how to pick a domain name during the site creation process"
         )
     }
