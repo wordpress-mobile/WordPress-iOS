@@ -3,6 +3,9 @@ import Foundation
 class SiteCreationDomainSuggestionsTableViewController: DomainSuggestionsTableViewController {
 
     override open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
+        if SiteCreationFields.sharedInstance.type == SiteType.blog {
+            return .wordPressDotComAndDotBlogSubdomains
+        }
         return .onlyWordPressDotCom
     }
     override open var useFadedColorForParentDomains: Bool {
