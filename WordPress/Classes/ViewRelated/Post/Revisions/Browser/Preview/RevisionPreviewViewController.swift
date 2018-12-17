@@ -57,31 +57,6 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
 
 
 private extension RevisionPreviewViewController {
-    private func addSubviews() {
-        view.addSubview(textView)
-        view.addSubview(titleLabel)
-    }
-
-    private func configureConstraints() {
-        titleHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font?.lineHeight ?? 0)
-        titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8.0)
-        updateTitleHeight()
-
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8.0),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8.0),
-            titleTopConstraint,
-            titleHeightConstraint
-            ])
-
-        NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6.0),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6.0),
-            textView.topAnchor.constraint(equalTo: view.topAnchor),
-            textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-    }
-
     private func setupAztec() {
         textView.load(WordPressPlugin())
         textView.textAttachmentDelegate = textViewManager
@@ -111,6 +86,37 @@ private extension RevisionPreviewViewController {
         refreshTitlePosition()
         updateTitleHeight()
     }
+}
+
+
+// Aztec editor implementation for the title Label and text view.
+// Like with the post editor content and title are separate views.
+//
+private extension RevisionPreviewViewController {
+    private func addSubviews() {
+        view.addSubview(textView)
+        view.addSubview(titleLabel)
+    }
+
+    private func configureConstraints() {
+        titleHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font?.lineHeight ?? 0)
+        titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8.0)
+        updateTitleHeight()
+
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8.0),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8.0),
+            titleTopConstraint,
+            titleHeightConstraint
+            ])
+
+        NSLayoutConstraint.activate([
+            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6.0),
+            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6.0),
+            textView.topAnchor.constraint(equalTo: view.topAnchor),
+            textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+    }
 
     private func refreshTitlePosition() {
         titleTopConstraint.constant = -(textView.contentOffset.y + textView.contentInset.top - 8.0)
@@ -122,16 +128,15 @@ private extension RevisionPreviewViewController {
 
     private func updateTitleHeight() {
         let layoutMargins = view.layoutMargins
-        let insets = UIEdgeInsets.zero
 
         var titleWidth = titleLabel.bounds.width
         if titleWidth <= 0 {
             // Use the title text field's width if available, otherwise calculate it.
-            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right)
+            titleWidth = view.frame.width - (layoutMargins.left + layoutMargins.right)
         }
 
         let sizeThatShouldFitTheContent = titleLabel.sizeThatFits(CGSize(width: titleWidth, height: CGFloat.greatestFiniteMagnitude))
-        titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleLabel.font!.lineHeight + insets.top + insets.bottom)
+        titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleLabel.font!.lineHeight)
 
         var contentInset = textView.contentInset
         contentInset.top = titleHeightConstraint.constant + 8.0
