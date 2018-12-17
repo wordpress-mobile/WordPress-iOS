@@ -23,6 +23,7 @@ class UntouchableViewController: UIViewController {
     required init() {
         super.init(nibName: nil, bundle: nil)
     }
+
     override func loadView() {
         super.loadView()
         view = UntouchableView()
@@ -51,6 +52,17 @@ class UntouchableViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            guard let mainWindow = UIApplication.shared.delegate?.window,
+                let rootController = mainWindow?.rootViewController else {
+                    return .all
+            }
+
+            return rootController.topmostPresentedViewController.supportedInterfaceOrientations
+        }
     }
 
     enum Constants {

@@ -39,7 +39,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
         let progress = Progress.discreteProgress(totalUnitCount: 4)
         mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "progress")
         XCTAssertTrue(mediaProgressCoordinator.isRunning, "Coordinator should be running")
-        XCTAssertTrue(mediaProgressCoordinator.cancelledMediaIDs.isEmpty, "No cancelled ids")
+        XCTAssertTrue(mediaProgressCoordinator.cancelledMediaIDs.isEmpty, "No canceled ids")
         XCTAssertTrue(mediaProgressCoordinator.failedMediaIDs.isEmpty, "No failed ids")
         XCTAssertEqual(0, mediaProgressCoordinator.totalProgress, "Total progress should be 0")
 

@@ -120,7 +120,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         setupInlinePrompt()
 
-        // Manually deselect the selected row. 
+        // Manually deselect the selected row.
         if splitViewControllerIsHorizontallyCompact {
             // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
@@ -635,7 +635,7 @@ extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     @objc func deleteNoteWithID(_ noteObjectID: NSManagedObjectID) {
-        // Was the Deletion Cancelled?
+        // Was the Deletion Canceled?
         guard let request = deletionRequestForNoteWithID(noteObjectID) else {
             return
         }

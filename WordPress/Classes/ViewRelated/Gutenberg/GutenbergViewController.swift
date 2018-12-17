@@ -98,6 +98,10 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
+        guard gutenberg.isLoaded else {
+            return
+        }
+
         self.html = html
         gutenberg.updateHtml(html)
     }
@@ -280,6 +284,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .switchToAztec:
                 switchToAztec(self)
             }
+        }
+    }
+
+    func gutenbergDidLoad() {
+        if !post.hasContent() && isViewLoaded {
+            titleTextField.becomeFirstResponder()
         }
     }
 }

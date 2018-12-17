@@ -37,6 +37,8 @@ extension PostEditor where Self: UIViewController {
                         return
                     }
                     self?.post = clone
+
+                    WPAnalytics.track(.postRevisionsLoadUndone)
                 }
             }
             ActionDispatcher.dispatch(NoticeAction.post(notice))
