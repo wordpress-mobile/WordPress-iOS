@@ -282,6 +282,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             }
         }
     }
+
+    func gutenbergDidLoad() {
+        if !post.hasContent() && isViewLoaded {
+            titleTextField.becomeFirstResponder()
+        }
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
