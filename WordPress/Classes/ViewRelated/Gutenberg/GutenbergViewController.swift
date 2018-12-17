@@ -98,6 +98,10 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
+        guard gutenberg.isLoaded else {
+            return
+        }
+
         self.html = html
         gutenberg.updateHtml(html)
     }
