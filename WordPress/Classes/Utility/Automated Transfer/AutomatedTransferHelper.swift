@@ -34,7 +34,7 @@ class AutomatedTransferHelper {
 
         alertController.addCancelActionWithTitle(Constants.PromptMessages.alertCancel, handler: { _ in
             WPAnalytics.track(.automatedTransferDialogCancelled)
-            DDLogInfo("[AT] User cancelled.")
+            DDLogInfo("[AT] User canceled.")
         })
         alertController.addDefaultActionWithTitle(Constants.PromptMessages.alertInstall, handler: { _ in
             DDLogInfo("[AT] User confirmed, proceeding with install.")
