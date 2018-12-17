@@ -268,6 +268,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             editorContentWasUpdated()
         }
 
+        editorContentWasUpdated()
+
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
             switch reason {
