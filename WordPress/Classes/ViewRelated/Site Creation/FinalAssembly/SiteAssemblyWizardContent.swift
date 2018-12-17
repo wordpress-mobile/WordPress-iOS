@@ -61,13 +61,19 @@ final class SiteAssemblyWizardContent: UIViewController {
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
 
-        if let domainName = siteCreator.address?.domainName {
-            contentView.domainName = domainName
-        }
+        do {
+            let wizardOutput = try siteCreator.build()
 
-        let wizardOutput = siteCreator.build()
-        service.createSite(creatorOutput: wizardOutput) { [contentView] status in
-            contentView.status = status
+            contentView.domainName = wizardOutput.siteURLString
+            service.createSite(creatorOutput: wizardOutput) { [contentView] status in
+                contentView.status = status
+            }
+        } catch is SiteCreatorOutputError {
+            DDLogError("Unable to proceed in Site Creation flow due to an apparent validation error")
+            assertionFailure()
+        } catch {
+            DDLogError("Unable to proceed due to unexpected error")
+            assertionFailure()
         }
     }
 

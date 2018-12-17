@@ -39,6 +39,8 @@ final class AssembledSiteView: UIView {
     private let webView: WKWebView
 
     /// This interacts with our `WKNavigationDelegate` to influence the policy behavior before & after site loading.
+    /// After the site has been loaded, we want to disable user interaction with the rendered site.
+    ///
     private var webViewHasLoadedContent: Bool = false
 
     /// This informs constraints applied to the view. It _may_ be possible to transition this to intrinsicContentSize.
@@ -59,13 +61,6 @@ final class AssembledSiteView: UIView {
         let preferredHeight = screenBounds.height * Parameters.minimumHeightScaleFactor
 
         return CGSize(width: preferredWidth, height: preferredHeight)
-    }
-
-    /// The URL string for the assembled site - this will be replaced with domainName once the service has been integrated.
-    var urlString: String = "" {
-        didSet {
-            loadSite(urlString: urlString)
-        }
     }
 
     // MARK: AssembledSiteView
@@ -124,6 +119,21 @@ final class AssembledSiteView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Internal behavior
+
+    /// Triggers the new site to load for the first (!) time.
+    ///
+    func loadSite() {
+        // NB: Not all of the values from `MockSiteAddressService` are real sites, so we are use a placeholder for now.
+        // let urlString = "https://" + domainName
+        let urlString = "https://longreads.com"
+
+        let siteURL = URL(string: urlString)!
+        let siteRequest = URLRequest(url: siteURL)
+    
+        webView.load(siteRequest)
+    }
+
     // MARK: Private behavior
 
     private func configure() {
@@ -152,12 +162,6 @@ final class AssembledSiteView: UIView {
         layer.shadowOffset = Parameters.shadowOffset
         layer.shadowOpacity = Parameters.shadowOpacity
         layer.shadowRadius = Parameters.shadowRadius
-    }
-
-    private func loadSite(urlString: String) {
-        let siteURL = URL(string: urlString)!
-        let siteRequest = URLRequest(url: siteURL)
-        webView.load(siteRequest)
     }
 }
 

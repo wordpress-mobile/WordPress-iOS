@@ -172,8 +172,6 @@ final class SiteAssemblyContentView: UIView {
         case .failed:
             layoutFailed()
         case .succeeded:
-            // NB: Not all of the values from `MockSiteAddressService` are real sites, so we are using a temporary one.
-            assembledSiteView?.urlString = "https://longreads.com"
             layoutSucceeded()
         }
     }
@@ -286,6 +284,8 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutSucceeded() {
+        assembledSiteView?.loadSite()
+
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
             statusStackView.alpha = 0
             }, completion: { [weak self] completed in

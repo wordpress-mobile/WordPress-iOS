@@ -3,6 +3,35 @@ import XCTest
 
 class SiteAssemblyServiceTests: XCTestCase {
 
+    private var pendingSiteInput: SiteCreatorOutput?
+
+    override func setUp() {
+        super.setUp()
+
+        let defaultInput = SiteCreator()
+
+        defaultInput.segment = SiteSegment(identifier: Identifier(value: "12345"), // NB: complete type-switch via #10670
+            title: "A title",
+            subtitle: "A subtitle",
+            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
+            iconColor: .red)
+
+        defaultInput.vertical = SiteVertical(identifier: Identifier(value: "678910"), // NB: complete type-switch via #10670,
+            title: "A title",
+            isNew: true)
+
+        defaultInput.information = SiteInformation(title: "A title", tagLine: "A tagline")
+
+        let domainSuggestionPayload: [String: AnyObject] = [
+            "domain_name"       : "domainName.com" as AnyObject,
+            "product_id"        : 42 as AnyObject,
+            "supports_privacy"  : true as AnyObject,
+            ]
+        defaultInput.address = try! DomainSuggestion(json: domainSuggestionPayload)
+
+        pendingSiteInput = try! defaultInput.build()
+    }
+
     func testSiteAssemblyService_InitialStatus_IsIdle() {
         let service: SiteAssemblyService = MockSiteAssemblyService()
 
@@ -15,7 +44,8 @@ class SiteAssemblyServiceTests: XCTestCase {
     func testSiteAssemblyService_StatusInflight_IsInProgress() {
         let service: SiteAssemblyService = MockSiteAssemblyService()
 
-        let output = SiteCreatorOutput()
+        XCTAssertNotNil(pendingSiteInput)
+        let output = pendingSiteInput!
         service.createSite(creatorOutput: output, changeHandler: nil)
         let actualStatus = service.currentStatus
 
@@ -29,7 +59,8 @@ class SiteAssemblyServiceTests: XCTestCase {
 
         let service: SiteAssemblyService = MockSiteAssemblyService()
 
-        let output = SiteCreatorOutput()
+        XCTAssertNotNil(pendingSiteInput)
+        let output = pendingSiteInput!
         service.createSite(creatorOutput: output) { status in
             if status == .inProgress {
                 inProgressExpectation.fulfill()
