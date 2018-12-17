@@ -521,7 +521,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         if let coordinator = navigationController.topViewController?.transitionCoordinator {
             // If the user is popping back to the root view controller using the
             // interactive pop transition, we need to check whether the gesture
-            // gets cancelled so that we can undim the detail view if necessary.
+            // gets canceled so that we can undim the detail view if necessary.
             // (i.e. the user begins a back swipe but doesn't go through with it)
             coordinator.notifyWhenInteractionChanges({ [weak self] context in
                 if context.initiallyInteractive && context.isCancelled {
@@ -629,8 +629,8 @@ extension WPSplitViewController: UIGestureRecognizerDelegate {
                 navigationController.viewControllers.count > 1
         }
 
-        // If the gesture is in the primary view controller and there's more 
-        // than 2 view controllers in the primary navigation stack then allow 
+        // If the gesture is in the primary view controller and there's more
+        // than 2 view controllers in the primary navigation stack then allow
         // the back gesture.
         if let primaryNavigationController = viewControllers.first as? UINavigationController,
             gestureIsValidInNavigationController(primaryNavigationController) {
