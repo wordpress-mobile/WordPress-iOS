@@ -32,10 +32,14 @@ extension RevisionPreviewTextViewManager: TextViewAttachmentDelegate {
     }
 
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
-        guard let videoSrcURL = videoAttachment.url, videoSrcURL != URL(string: "placeholder://")!, videoAttachment.posterURL == nil else {
+        guard let videoSrcURL = videoAttachment.url,
+            let placeholderURL = URL(string: "placeholder://"),
+            videoSrcURL != placeholderURL,
+            videoAttachment.posterURL == nil else {
             onFailure()
             return
         }
+
         let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
         thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
             guard let image = UIImage(contentsOfFile: exportResult.url.path) else {
@@ -52,36 +56,20 @@ extension RevisionPreviewTextViewManager: TextViewAttachmentDelegate {
     }
 
     /* These 3 functions are mandatory implemented but not needed
-     * as the TextView is used to display the content with no action on it.
+     * as the TextView is used to display the content with no action on any attachment.
     */
-    func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
-
-    }
-
-    func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-
-    }
-
-    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
-
-    }
+    func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) { }
+    func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) { }
+    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) { }
 }
 
 
 private extension RevisionPreviewTextViewManager {
     private func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-        //use height zero to maintain the aspect ratio when fetching
         let size = CGSize(width: imageMaxDimension, height: 0)
-        let request: URLRequest
-        if url.isFileURL {
-            request = URLRequest(url: url)
-        }  else {
-            // the size that PhotonImageURLHelper expects is points size
-            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
-            request = URLRequest(url: requestURL)
-        }
+        let requestURL: URL = url.isFileURL ? url : PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+        let request = URLRequest(url: requestURL)
 
         let receipt = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
             guard let _ = self else {
@@ -101,22 +89,24 @@ private extension RevisionPreviewTextViewManager {
     }
 
     private func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
-        let url = URL(string: "documentUploading://")!
-        let icon: UIImage
-        switch attachment {
-        case let imageAttachment as ImageAttachment:
-            if imageAttachment.url == url {
-                icon = Gridicon.iconOfType(.pages, withSize: CGSize(width: 128, height: 128))
-            } else {
-                icon = Gridicon.iconOfType(.image, withSize: CGSize(width: 128, height: 128))
-            }
-        case _ as VideoAttachment:
-            icon = Gridicon.iconOfType(.video, withSize: CGSize(width: 128, height: 128))
-        default:
-            icon = Gridicon.iconOfType(.attachment, withSize: CGSize(width: 128, height: 128))
-        }
-
+        let size = CGSize(width: 128, height: 128)
+        let iconType = getIconType(for: attachment)
+        let icon = Gridicon.iconOfType(iconType, withSize: size)
         icon.addAccessibilityForAttachment(attachment)
         return icon
+    }
+
+    private func getIconType(for attachment: NSTextAttachment) -> GridiconType {
+        guard let url = URL(string: "documentUploading://") else {
+            preconditionFailure("Invalid static URL string: documentUploading://")
+        }
+        switch attachment {
+        case let imageAttachment as ImageAttachment:
+            return (imageAttachment.url == url) ? .pages : .image
+        case _ as VideoAttachment:
+            return .video
+        default:
+            return .attachment
+        }
     }
 }
