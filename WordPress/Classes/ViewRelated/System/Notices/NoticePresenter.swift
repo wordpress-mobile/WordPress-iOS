@@ -33,7 +33,6 @@ class NoticePresenter: NSObject {
         // however, since the alerts aren't permanently on screen, this isn't
         // often a problem.
         window.windowLevel = .alert
-        window.isHidden = false
 
         super.init()
 
@@ -107,6 +106,8 @@ class NoticePresenter: NSObject {
         if let feedbackType = notice.feedbackType {
             generator.notificationOccurred(feedbackType)
         }
+
+        window.isHidden = false
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
