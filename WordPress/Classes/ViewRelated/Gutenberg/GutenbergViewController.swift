@@ -269,8 +269,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
         if changed {
             self.html = html
-            editorContentWasUpdated()
         }
+
+        editorContentWasUpdated()
 
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
