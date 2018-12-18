@@ -23,9 +23,9 @@ class SiteAssemblyServiceTests: XCTestCase {
         defaultInput.information = SiteInformation(title: "A title", tagLine: "A tagline")
 
         let domainSuggestionPayload: [String: AnyObject] = [
-            "domain_name"       : "domainName.com" as AnyObject,
-            "product_id"        : 42 as AnyObject,
-            "supports_privacy"  : true as AnyObject,
+            "domain_name": "domainName.com" as AnyObject,
+            "product_id": 42 as AnyObject,
+            "supports_privacy": true as AnyObject,
             ]
         defaultInput.address = try! DomainSuggestion(json: domainSuggestionPayload)
 

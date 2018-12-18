@@ -130,7 +130,7 @@ final class AssembledSiteView: UIView {
 
         let siteURL = URL(string: urlString)!
         let siteRequest = URLRequest(url: siteURL)
-    
+
         webView.load(siteRequest)
     }
 
