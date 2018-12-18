@@ -45,8 +45,11 @@ extension RegisterDomainDetailsViewModel {
     }
 
     static func serverSideRule(with key: String, hasErrorMessage: Bool = true) -> ValidationRule {
-        let errorMessage: String = nil
-        if hasErrorMessage {
+        let errorMessage: String?
+
+        if !hasErrorMessage {
+            errorMessage = nil
+        } else {
             switch key {
             case Localized.ContactInformation.firstName:
                 errorMessage = Localized.validationErrorFirstName
@@ -66,8 +69,11 @@ extension RegisterDomainDetailsViewModel {
                 errorMessage = Localized.validationErrorState
             case Localized.Address.postalCode:
                 errorMessage = Localized.validationErrorPostalCode
+            default:
+                errorMessage = nil
             }
         }
+
         return ValidationRule(context: .serverSide,
                               validationBlock: nil, //validation is handled on serverside
                               errorMessage: errorMessage)
