@@ -55,7 +55,7 @@ namespace :dependencies do
 
   namespace :pod do
     task :check do
-      sh "bundle exec pod check --silent", verbose: false do |ok, res|
+      sh "bundle exec pod check &> /dev/null", verbose: false do |ok, res|
         next if ok && podfile_locked?
         dependency_failed("CocoaPods")
         Rake::Task["dependencies:pod:install"].invoke
