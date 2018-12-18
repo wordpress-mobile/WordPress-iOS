@@ -7,6 +7,7 @@ struct StatsTotalRowData {
     var socialIconURL: URL?
     var userIconURL: URL?
     var nameDetail: String?
+    var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     var showDisclosure: Bool
 
     init(name: String,
@@ -15,6 +16,7 @@ struct StatsTotalRowData {
          socialIconURL: URL? = nil,
          userIconURL: URL? = nil,
          nameDetail: String? = nil,
+         siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
          showDisclosure: Bool = false) {
         self.name = name
         self.data = data
@@ -22,6 +24,7 @@ struct StatsTotalRowData {
         self.icon = icon
         self.socialIconURL = socialIconURL
         self.userIconURL = userIconURL
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.showDisclosure = showDisclosure
     }
 }
@@ -39,6 +42,7 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var disclosureStackView: UIStackView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
 
+    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     var showSeparator = true {
@@ -50,6 +54,8 @@ class StatsTotalRow: UIView, NibLoadable {
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData) {
+
+        siteStatsInsightsDelegate = rowData.siteStatsInsightsDelegate
 
         // Configure icon
         imageStackView.isHidden = true
@@ -98,6 +104,7 @@ private extension StatsTotalRow {
         WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
             self.imageView.image = image
             self.imageStackView.isHidden = false
+            self.siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
         }, failure: { error in
             DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
             self.imageStackView.isHidden = true
