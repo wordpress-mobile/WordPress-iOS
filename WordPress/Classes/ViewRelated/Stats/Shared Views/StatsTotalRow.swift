@@ -61,18 +61,20 @@ class StatsTotalRow: UIView, NibLoadable {
         imageStackView.isHidden = true
 
         if let icon = rowData.icon {
-            self.imageWidthConstraint.constant = Constants.defaultImageSize
+            imageWidthConstraint.constant = Constants.defaultImageSize
             imageView.image = icon
             imageStackView.isHidden = false
         }
 
         if let iconURL = rowData.socialIconURL {
-            self.imageWidthConstraint.constant = Constants.socialImageSize
+            imageWidthConstraint.constant = Constants.socialImageSize
             downloadImageFrom(iconURL)
         }
 
         if let iconURL = rowData.userIconURL {
-            self.imageWidthConstraint.constant = Constants.userImageSize
+            imageWidthConstraint.constant = Constants.userImageSize
+            imageView.layer.cornerRadius = Constants.userImageSize * 0.5
+            imageView.clipsToBounds = true
             downloadImageFrom(iconURL)
         }
 
