@@ -23,7 +23,7 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var siteAssemblyStep: WizardStep = {
-        return SiteAssemblyStep(creator: self.creator, service: MockSiteAssemblyService())
+        return SiteAssemblyStep(creator: self.creator, service: MockSiteAssemblyService(shouldSucceed: false))
     }()
 
     private lazy var steps: [WizardStep] = {
