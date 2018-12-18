@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL showsEditingButtonOptions;
 
 /**
- Show the cancel button for cancelling adding new items around the view.
+ Show the cancel button for canceling adding new items around the view.
  */
 @property (nonatomic, assign) BOOL showsCancelButtonOption;
 
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)itemViewAddButtonPressed:(MenuItemView *)itemView;
 
 /**
- User interaction detected for cancelling adding a new item around this view.
+ User interaction detected for canceling adding a new item around this view.
  */
 - (void)itemViewCancelButtonPressed:(MenuItemView *)itemView;
 

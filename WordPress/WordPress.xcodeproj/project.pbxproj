@@ -423,6 +423,7 @@
 		6867C0633E597372235CB5E0 /* Pods_WordPressDraftActionExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		722F5726ACB4A276B0CF3C83 /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
+		730354BA21C867E500CD18C2 /* SiteCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730354B921C867E500CD18C2 /* SiteCreatorTests.swift */; };
 		7305138321C031FC006BD0A1 /* AssembledSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7305138221C031FC006BD0A1 /* AssembledSiteView.swift */; };
 		73178C2721BEE09300E37C9A /* SiteSegmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2121BEE09300E37C9A /* SiteSegmentTests.swift */; };
 		73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */; };
@@ -2271,6 +2272,7 @@
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WPCategoryTree.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPCategoryTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		712D0A17BC83B9730BD7CCC0 /* Pods-WordPressDraftActionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressDraftActionExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		730354B921C867E500CD18C2 /* SiteCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreatorTests.swift; sourceTree = "<group>"; };
 		7305138221C031FC006BD0A1 /* AssembledSiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssembledSiteView.swift; sourceTree = "<group>"; };
 		73178C2121BEE09300E37C9A /* SiteSegmentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentTests.swift; sourceTree = "<group>"; };
 		73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationDataCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -4199,7 +4201,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -4976,6 +4978,7 @@
 				73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */,
 				73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */,
 				73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */,
+				730354B921C867E500CD18C2 /* SiteCreatorTests.swift */,
 				73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */,
 				73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */,
 				73178C2121BEE09300E37C9A /* SiteSegmentTests.swift */,
@@ -8344,7 +8347,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -10382,6 +10385,7 @@
 				D800D87620999AE700E7C7E5 /* DiscoverMenuItemCreatorTests.swift in Sources */,
 				E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */,
 				E1B642131EFA5113001DC6D7 /* ModelTestHelper.swift in Sources */,
+				730354BA21C867E500CD18C2 /* SiteCreatorTests.swift in Sources */,
 				B566EC751B83867800278395 /* NSMutableAttributedStringTests.swift in Sources */,
 				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
