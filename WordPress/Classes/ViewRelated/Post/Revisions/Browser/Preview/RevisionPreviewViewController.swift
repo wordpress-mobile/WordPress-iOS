@@ -91,7 +91,7 @@ private extension RevisionPreviewViewController {
 
 
 // Aztec editor implementation for the title Label and text view.
-// Like with the post editor content and title are separate views.
+// Like the post editor, title and content are separate views.
 //
 private extension RevisionPreviewViewController {
     private func addSubviews() {
