@@ -101,7 +101,7 @@
                     <constraint firstItem="EG5-87-rU0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="WPB-BI-ATH"/>
                     <constraint firstItem="EG5-87-rU0" firstAttribute="top" secondItem="0D1-nR-ode" secondAttribute="bottom" id="e63-Mp-f0I"/>
                     <constraint firstItem="0D1-nR-ode" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="vik-MX-wvn"/>
-                    <constraint firstAttribute="bottom" secondItem="EG5-87-rU0" secondAttribute="bottom" id="wd4-zu-Vjw"/>
+                    <constraint firstAttribute="bottom" secondItem="EG5-87-rU0" secondAttribute="bottom" priority="999" id="wd4-zu-Vjw"/>
                     <constraint firstAttribute="trailing" secondItem="0D1-nR-ode" secondAttribute="trailing" id="xJo-JW-YjA"/>
                 </constraints>
             </tableViewCellContentView>
