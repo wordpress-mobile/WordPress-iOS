@@ -11,9 +11,10 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
         }
     }
 
-    private var titleHeightConstraint: NSLayoutConstraint!
-    private var titleTopConstraint: NSLayoutConstraint!
     private let textViewManager = RevisionPreviewTextViewManager()
+    private var titleInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    private var textViewInsets = UIEdgeInsets(top: 0.0, left: 6.0, bottom: 0.0, right: 6.0)
+
     private lazy var textView: TextView = {
         let aztext = TextView(defaultFont: WPFontManager.notoRegularFont(ofSize: 16),
                               defaultMissingImage: UIImage())
@@ -25,7 +26,7 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = WPFontManager.notoBoldFont(ofSize: 24.0)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.autoresizingMask = [.flexibleWidth]
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .natural
@@ -41,8 +42,8 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
     }
 
     override func updateViewConstraints() {
-        refreshTitlePosition()
         updateTitleHeight()
+        refreshTitlePosition()
         super.updateViewConstraints()
     }
 
@@ -83,8 +84,8 @@ private extension RevisionPreviewViewController {
         let html = revision.postContent ?? ""
         textView.setHTML(html)
 
-        refreshTitlePosition()
         updateTitleHeight()
+        refreshTitlePosition()
     }
 }
 
@@ -99,49 +100,28 @@ private extension RevisionPreviewViewController {
     }
 
     private func configureConstraints() {
-        titleHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: titleLabel.font?.lineHeight ?? 0)
-        titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8.0)
         updateTitleHeight()
 
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8.0),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8.0),
-            titleTopConstraint,
-            titleHeightConstraint
-            ])
-
-        NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6.0),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6.0),
+            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: textViewInsets.left),
+            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -textViewInsets.right),
             textView.topAnchor.constraint(equalTo: view.topAnchor),
             textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
     }
 
     private func refreshTitlePosition() {
-        titleTopConstraint.constant = -(textView.contentOffset.y + textView.contentInset.top - 8.0)
-
-        var contentInset = textView.contentInset
-        contentInset.top = titleHeightConstraint.constant + 8.0
-        textView.contentInset = contentInset
+        titleLabel.frame.origin.y = -(textView.contentOffset.y + textView.contentInset.top) + titleInsets.top
     }
 
     private func updateTitleHeight() {
-        let layoutMargins = view.layoutMargins
-
-        var titleWidth = titleLabel.bounds.width
-        if titleWidth <= 0 {
-            // Use the title text field's width if available, otherwise calculate it.
-            titleWidth = view.frame.width - (layoutMargins.left + layoutMargins.right)
-        }
-
-        let sizeThatShouldFitTheContent = titleLabel.sizeThatFits(CGSize(width: titleWidth, height: CGFloat.greatestFiniteMagnitude))
-        titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleLabel.font!.lineHeight)
+        let size = titleLabel.sizeThatFits(CGSize(width: view.frame.width - (titleInsets.left * 2.0), height: CGFloat.greatestFiniteMagnitude))
+        titleLabel.frame = CGRect(x: titleInsets.left, y: titleInsets.top, width: size.width, height: size.height)
 
         var contentInset = textView.contentInset
-        contentInset.top = titleHeightConstraint.constant + 8.0
+        contentInset.top = titleLabel.frame.maxY + titleInsets.bottom
         textView.contentInset = contentInset
-        textView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
+        textView.setContentOffset(CGPoint(x: 0, y: -textView.contentInset.top), animated: false)
 
         updateScrollInsets()
     }
