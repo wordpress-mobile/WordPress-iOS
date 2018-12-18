@@ -92,6 +92,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
     private struct Constants {
         static let spacing = CGFloat(10)
+        static let bottomMargin = CGFloat(16)
     }
 
     private lazy var titleSubtitle: TitleSubtitleHeader = {
@@ -138,7 +139,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -TitleSubtitleHeader.Margins.verticalMargin)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.bottomMargin)
             ])
 
         setStyles()
