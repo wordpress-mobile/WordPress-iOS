@@ -2,3 +2,4 @@
 * History / Revisions: Added swipe action to the revisions browser
 * Added a notice and undo button when loading a revision from a post's history.
 * Feeds are filtered and removed from followed sites list in setting.
+* Adds support for .blog subdomains on new sites.
