@@ -864,6 +864,16 @@ static NSInteger HideSearchMinSites = 3;
                                                                           [self showAddNewWordPressController];
                                                                       }];
         [addSiteAlertController addAction:addNewWordPressAction];
+
+        if ([Feature enabled: FeatureFlagEnhancedSiteCreation]) {
+            UIAlertAction *enhancedSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Enhanced site creation", @"Enhanced site creation")
+                                                                         style:UIAlertActionStyleDefault
+                                                                       handler:^(UIAlertAction *action) {
+                                                                           [self enhancedSiteCreation];
+                                                                       }];
+
+            [addSiteAlertController addAction:enhancedSiteAction];
+        }
     }
 
     UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add self-hosted site", @"Add self-hosted site button")
@@ -872,16 +882,6 @@ static NSInteger HideSearchMinSites = 3;
                                                               [self showLoginControllerForAddingSelfHostedSite];
                                                           }];
     [addSiteAlertController addAction:addSiteAction];
-
-    if ([Feature enabled: FeatureFlagEnhancedSiteCreation]) {
-        UIAlertAction *enhancedSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Enhanced site creation", @"Enhanced site creation")
-                                                                     style:UIAlertActionStyleDefault
-                                                                   handler:^(UIAlertAction *action) {
-                                                                       [self enhancedSiteCreation];
-                                                                   }];
-
-        [addSiteAlertController addAction:enhancedSiteAction];
-    }
 
     if ([Feature enabled:FeatureFlagBottomSheetDemo] == YES) {
         NSString *title = NSLocalizedString(@"Demo bottom sheet", @"Demo bottom sheet");
