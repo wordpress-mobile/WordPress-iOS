@@ -5,16 +5,23 @@ import WordPressAuthenticator
 
 // MARK: - SiteAssemblyWizardContent
 
+/// This view controller manages the final step in the enhanced site creation sequence - invoking the service &
+/// apprising the user of the outcome.
+///
 final class SiteAssemblyWizardContent: UIViewController {
 
     // MARK: Properties
 
+    /// The creator collects user input as they advance through the wizard flow.
     private let siteCreator: SiteCreator
 
+    /// The service with which the final assembly interacts to coordinate site creation.
     private let service: SiteAssemblyService
 
+    /// The content view serves as the root view of this view controller.
     private let contentView = SiteAssemblyContentView()
 
+    /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
     private let buttonViewController = NUXButtonViewController.instance()
 
     // MARK: SiteAssemblyWizardContent
@@ -54,13 +61,19 @@ final class SiteAssemblyWizardContent: UIViewController {
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
 
-        if let domainName = siteCreator.address?.domainName {
-            contentView.domainName = domainName
-        }
+        do {
+            let wizardOutput = try siteCreator.build()
 
-        let wizardOutput = siteCreator.build()
-        service.createSite(creatorOutput: wizardOutput) { [contentView] status in
-            contentView.status = status
+            contentView.domainName = wizardOutput.siteURLString
+            service.createSite(creatorOutput: wizardOutput) { [contentView] status in
+                contentView.status = status
+            }
+        } catch is SiteCreatorOutputError {
+            DDLogError("Unable to proceed in Site Creation flow due to an apparent validation error")
+            assertionFailure()
+        } catch {
+            DDLogError("Unable to proceed due to unexpected error")
+            assertionFailure()
         }
     }
 
