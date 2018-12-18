@@ -42,6 +42,8 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
 
     // MARK: Properties
 
+    private(set) var shouldMockSuccess: Bool
+
     private(set) var currentStatus: SiteAssemblyStatus = .idle {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -57,6 +59,11 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
 
     // MARK: SiteAssemblyService
 
+    init(shouldSucceed: Bool = true) {
+        self.shouldMockSuccess = shouldSucceed
+        super.init()
+    }
+
     func createSite(creatorOutput assemblyInput: SiteCreatorOutput, changeHandler: SiteAssemblyStatusChangedHandler?) {
         self.statusChangeHandler = changeHandler
         currentStatus = .inProgress
@@ -67,7 +74,14 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.currentStatus = .succeeded
+
+            let mockStatus: SiteAssemblyStatus
+            if strongSelf.shouldMockSuccess {
+                mockStatus = .succeeded
+            } else {
+                mockStatus = .failed
+            }
+            strongSelf.currentStatus = mockStatus
         }
     }
 }
