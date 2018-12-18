@@ -23,7 +23,12 @@ struct PlanDetailViewModel {
         case .loading, .error:
             return ImmuTable.Empty
         case .ready(let features):
-            let rows: [ImmuTableRow] = features.map({ feature in
+            let featureSlugs = plan.features.split(separator: ",") as NSArray
+            let planFeatures = features.filter { (feature) -> Bool in
+                return featureSlugs.contains(feature.slug)
+            }
+
+            let rows: [ImmuTableRow] = planFeatures.map({ feature in
                 let row = FeatureItemRow(title: feature.title, description: feature.summary, iconURL: nil)
                 return row
             })
