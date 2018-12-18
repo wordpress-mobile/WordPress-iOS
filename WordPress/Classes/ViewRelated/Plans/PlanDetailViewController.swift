@@ -55,7 +55,7 @@ class PlanDetailViewController: UIViewController {
     class func controllerWithPlan(_ plan: Plan, features: [PlanFeature]) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: NSStringFromClass(self)) as! PlanDetailViewController
-        controller.viewModel = PlanDetailViewModel(plan: plan, features: .loading)
+        controller.viewModel = PlanDetailViewModel(plan: plan, features: .ready(features))
         return controller
     }
 
@@ -70,18 +70,6 @@ class PlanDetailViewController: UIViewController {
         configureTableView()
         populateHeader()
         updateNoResults()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        registerForPurchaseNotifications()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        unregisterForPurchaseNotifications()
     }
 
     fileprivate func configureAppearance() {
