@@ -353,8 +353,7 @@ private extension SiteStatsInsightsViewModel {
         followers?.forEach { follower in
             rows.append(StatsTotalRowData.init(name: follower.label,
                                                data: follower.value,
-                                               userIconURL: follower.iconURL,
-                                               siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+                                               userIconURL: follower.iconURL))
         }
 
         return TabData.init(tabTitle: tabTitle,
