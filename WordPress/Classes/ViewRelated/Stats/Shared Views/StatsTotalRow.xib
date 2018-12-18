@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhI-k5-uUO" userLabel="Seperator Line">
-                    <rect key="frame" x="56" y="59.5" width="319" height="0.5"/>
+                    <rect key="frame" x="60" y="59.5" width="315" height="0.5"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="0.5" id="8Q0-VF-yTk"/>
@@ -27,17 +27,17 @@
                     <rect key="frame" x="16" y="11" width="343" height="38"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
-                            <rect key="frame" x="0.0" y="7" width="40" height="24"/>
+                            <rect key="frame" x="0.0" y="5" width="44" height="28"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
-                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="24" id="Ope-3W-fHa"/>
+                                        <constraint firstAttribute="width" constant="28" id="Ope-3W-fHa"/>
                                         <constraint firstAttribute="width" secondItem="NMN-Qx-YFo" secondAttribute="height" multiplier="1:1" id="gla-bY-oRI"/>
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
-                                    <rect key="frame" x="24" y="0.0" width="16" height="24"/>
+                                    <rect key="frame" x="28" y="0.0" width="16" height="28"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
@@ -46,7 +46,7 @@
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Wgr-ee-wqj" userLabel="Item Labels Stack View">
-                            <rect key="frame" x="40" y="0.0" width="114.5" height="38"/>
+                            <rect key="frame" x="44" y="0.0" width="114.5" height="38"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Item Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-XE-8Zu">
                                     <rect key="frame" x="0.0" y="0.0" width="114.5" height="20.5"/>
@@ -63,14 +63,14 @@
                             </subviews>
                         </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0i-Tj-jYT" userLabel="Spacer">
-                            <rect key="frame" x="154.5" y="0.0" width="12" height="38"/>
+                            <rect key="frame" x="158.5" y="0.0" width="12" height="38"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="12" id="Cth-OX-7WM"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
-                            <rect key="frame" x="166.5" y="9" width="158.5" height="20.5"/>
+                            <rect key="frame" x="170.5" y="9" width="154.5" height="20.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -99,7 +99,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="mSM-N7-rqk" secondAttribute="trailing" constant="16" id="18g-Bb-BOK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="mSM-N7-rqk" secondAttribute="trailing" constant="16" id="18g-Bb-BOK"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="mSM-N7-rqk" secondAttribute="bottom" priority="999" constant="11" id="3T2-gi-KTg"/>
                 <constraint firstItem="mSM-N7-rqk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="HSW-Wq-ZKH"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="OyG-1h-jIV"/>
