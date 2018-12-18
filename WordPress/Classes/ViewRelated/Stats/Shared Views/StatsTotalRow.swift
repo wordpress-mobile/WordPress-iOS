@@ -4,21 +4,24 @@ struct StatsTotalRowData {
     var name: String
     var data: String
     var icon: UIImage?
-    var iconURL: URL?
+    var socialIconURL: URL?
+    var userIconURL: URL?
     var nameDetail: String?
     var showDisclosure: Bool
 
     init(name: String,
          data: String,
          icon: UIImage? = nil,
-         iconURL: URL? = nil,
+         socialIconURL: URL? = nil,
+         userIconURL: URL? = nil,
          nameDetail: String? = nil,
          showDisclosure: Bool = false) {
         self.name = name
         self.data = data
         self.nameDetail = nameDetail
         self.icon = icon
-        self.iconURL = iconURL
+        self.socialIconURL = socialIconURL
+        self.userIconURL = userIconURL
         self.showDisclosure = showDisclosure
     }
 }
@@ -57,8 +60,13 @@ class StatsTotalRow: UIView, NibLoadable {
             imageStackView.isHidden = false
         }
 
-        if let iconURL = rowData.iconURL {
+        if let iconURL = rowData.socialIconURL {
             self.imageWidthConstraint.constant = Constants.socialImageSize
+            downloadImageFrom(iconURL)
+        }
+
+        if let iconURL = rowData.userIconURL {
+            self.imageWidthConstraint.constant = Constants.userImageSize
             downloadImageFrom(iconURL)
         }
 
@@ -99,6 +107,7 @@ private extension StatsTotalRow {
     struct Constants {
         static let defaultImageSize = CGFloat(24)
         static let socialImageSize = CGFloat(20)
+        static let userImageSize = CGFloat(28)
     }
 
 }

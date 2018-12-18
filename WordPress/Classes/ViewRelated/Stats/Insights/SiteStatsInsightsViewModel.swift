@@ -263,7 +263,7 @@ private extension SiteStatsInsightsViewModel {
         // send value.abbreviatedString() to the row.
 
         publicize?.forEach { item in
-            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, iconURL: item.iconURL))
+            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, socialIconURL: item.iconURL))
         }
 
         return dataRows
@@ -321,7 +321,8 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
-        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.wordPressDotCom), tabDataForFollowerType(.email)],
+        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.wordPressDotCom),
+                                               tabDataForFollowerType(.email)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: true)
     }
@@ -352,7 +353,7 @@ private extension SiteStatsInsightsViewModel {
         followers?.forEach { follower in
             rows.append(StatsTotalRowData.init(name: follower.label,
                                                data: follower.value,
-                                               iconURL: follower.iconURL))
+                                               userIconURL: follower.iconURL))
         }
 
         return TabData.init(tabTitle: tabTitle,
