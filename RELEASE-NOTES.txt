@@ -4,3 +4,4 @@
 * Update strings for cancelled/cancelling to canceled/canceling so as to provide base en_US for localization.
 * Feeds are filtered and removed from followed sites list in setting.
 * History / Revisions: Added last Analytics event for the undo action.
+* Adds support for .blog subdomains on new sites.

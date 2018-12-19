@@ -54,7 +54,7 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.16)
-  - Gutenberg (0.2.5):
+  - Gutenberg (0.2.6):
     - React/Core (= 0.57.5)
     - React/CxxBridge (= 0.57.5)
     - React/DevSupport (= 0.57.5)
@@ -187,7 +187,7 @@ PODS:
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressKit (1.5.1):
+  - WordPressKit (1.5.2-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -224,7 +224,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (= 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v0.2.5`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v0.2.6`)
   - HockeySDK (= 5.1.4)
   - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.7)
@@ -245,7 +245,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.3.1)
   - WordPressAuthenticator (~> 1.1.7-beta.1)
-  - WordPressKit (~> 1.5.1)
+  - WordPressKit (~> 1.5.2-beta.1)
   - WordPressShared (~> 1.6.0)
   - WordPressUI (~> 1.1)
   - WPMediaPicker (= 1.3.1)
@@ -303,7 +303,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v0.2.5
+    :tag: v0.2.6
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   RNSVG:
@@ -321,7 +321,7 @@ CHECKOUT OPTIONS:
     :tag: 0.2.3
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v0.2.5
+    :tag: v0.2.6
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: 8.0.8
@@ -348,7 +348,7 @@ SPEC CHECKSUMS:
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
-  Gutenberg: 311d2103e0b98739eee2fbb0a23648208dee6292
+  Gutenberg: eeb85858abf45acd58383305d93528b8aaa0d6c7
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -369,7 +369,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: c1bb641695107a6cfbb1c038b615afc33390f3b4
   WordPress-Editor-iOS: 657a67b1667be032a2248d994ef80b7de00123ad
   WordPressAuthenticator: ef9169f1d8c7ee06c731c39c6acc9c015228b0bf
-  WordPressKit: b0d9838a874a2ea126da17965d939f0422d94581
+  WordPressKit: 0c205c556e30a375f40d4c21be59c566da28d558
   WordPressShared: a2fc2db66c210a05d317ae9678b5823dd6a4d708
   WordPressUI: 3c69543f0170e011226e48910b8c3071e5d400af
   WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
@@ -377,6 +377,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 7b0237b51ceeaf47137e3579c78caccf5f7a061a
+PODFILE CHECKSUM: 95f785b55d89f766ca95361f4fac6a00e9faf327
 
 COCOAPODS: 1.5.3
