@@ -42,7 +42,6 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     private let maxNumberOfDataRows = 6
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var showTotalCount = false
-    private var defaultLabelsStackViewHeight = CGFloat(0)
 
     // MARK: - Configure
 
