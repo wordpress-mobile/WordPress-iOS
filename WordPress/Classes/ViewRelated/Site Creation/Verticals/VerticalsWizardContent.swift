@@ -214,4 +214,9 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
             cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
         }
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vertical = data[indexPath.row]
+        didSelect(vertical)
+    }
 }
