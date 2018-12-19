@@ -26,13 +26,11 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
+    @IBOutlet weak var labelsStackView: UIStackView!
     @IBOutlet weak var totalCountView: UIView!
-    @IBOutlet weak var subtitlesView: UIView!
-
     @IBOutlet weak var totalCountLabel: UILabel!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-    @IBOutlet weak var labelsStackViewHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var rowsStackView: UIStackView!
 
@@ -47,11 +45,6 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     private var defaultLabelsStackViewHeight = CGFloat(0)
 
     // MARK: - Configure
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        defaultLabelsStackViewHeight = labelsStackViewHeightConstraint.constant
-    }
 
     func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate, showTotalCount: Bool = false) {
         self.tabsData = tabsData
@@ -116,8 +109,7 @@ private extension TabbedTotalsCell {
 
         let noData = tabData.dataRows.count == 0
         totalCountView.isHidden = !showTotalCount || noData
-        subtitlesView.isHidden = noData
-        labelsStackViewHeightConstraint.constant = noData ? 0 : defaultLabelsStackViewHeight
+        labelsStackView.isHidden = noData
     }
 
     func addRows() {
