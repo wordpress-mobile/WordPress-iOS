@@ -26,13 +26,11 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
+    @IBOutlet weak var labelsStackView: UIStackView!
     @IBOutlet weak var totalCountView: UIView!
-    @IBOutlet weak var subtitlesView: UIView!
-
     @IBOutlet weak var totalCountLabel: UILabel!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-    @IBOutlet weak var labelsStackViewHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var rowsStackView: UIStackView!
 
@@ -44,14 +42,8 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     private let maxNumberOfDataRows = 6
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var showTotalCount = false
-    private var defaultLabelsStackViewHeight = CGFloat(0)
 
     // MARK: - Configure
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        defaultLabelsStackViewHeight = labelsStackViewHeightConstraint.constant
-    }
 
     func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate, showTotalCount: Bool = false) {
         self.tabsData = tabsData
@@ -76,6 +68,13 @@ private extension TabbedTotalsCell {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.items = tabsData.map { $0.tabTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        toggleFilterTabBar()
+    }
+
+    func toggleFilterTabBar() {
+        // If none of the tabs have data, hide the FilterTabBar.
+        let noTabsData = (tabsData.first { $0.dataRows.count > 0 }) == nil
+        filterTabBar.isHidden = noTabsData
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -109,8 +108,7 @@ private extension TabbedTotalsCell {
 
         let noData = tabData.dataRows.count == 0
         totalCountView.isHidden = !showTotalCount || noData
-        subtitlesView.isHidden = noData
-        labelsStackViewHeightConstraint.constant = labelStackViewHeight()
+        labelsStackView.isHidden = noData
     }
 
     func addRows() {
@@ -154,18 +152,6 @@ private extension TabbedTotalsCell {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-    }
-
-    func labelStackViewHeight() -> CGFloat {
-        if tabsData[filterTabBar.selectedIndex].dataRows.count == 0 {
-            return 0
-        }
-
-        if !showTotalCount {
-            return subtitlesView.frame.height
-        }
-
-        return defaultLabelsStackViewHeight
     }
 
 }
