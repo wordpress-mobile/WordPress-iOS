@@ -155,18 +155,11 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Lifecycle methods
-    override func loadView() {
-        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.editorContainerView.addSubview(gutenberg.rootView)
-        containerView.editorContainerView.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
-        containerView.editorContainerView.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
-        containerView.editorContainerView.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
-        containerView.editorContainerView.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
-        view = containerView
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupContainerView()
+        setupGutenbergView()
         registerEventListeners()
         createRevisionOfPost()
         configureNavigationBar()
@@ -240,6 +233,35 @@ class GutenbergViewController: UIViewController, PostEditor {
     func savePostEditsAndSwitchToAztec() {
         requestHTMLReason = .switchToAztec
         gutenberg.requestHTML()
+    }
+}
+
+// MARK: - Views setup
+
+extension GutenbergViewController {
+    private func setupGutenbergView() {
+        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.editorContainerView.addSubview(gutenberg.rootView)
+        containerView.editorContainerView.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
+        containerView.editorContainerView.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
+        containerView.editorContainerView.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
+        containerView.editorContainerView.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
+    }
+
+    private func setupContainerView() {
+        view.backgroundColor = .white
+        view.addSubview(containerView)
+
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        if WPDeviceIdentification.isiPad() {
+            containerView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor).isActive = true
+            containerView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor).isActive = true
+        } else {
+            containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+            containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        }
+        containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
