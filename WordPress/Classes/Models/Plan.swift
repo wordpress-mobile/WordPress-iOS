@@ -15,5 +15,6 @@ public class Plan: NSManagedObject {
     @NSManaged public var groups: String
     @NSManaged public var summary: String
     @NSManaged public var features: String
+    @NSManaged public var icon: String
 
 }
