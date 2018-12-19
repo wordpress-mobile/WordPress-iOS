@@ -100,6 +100,11 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func populateHeader() {
         let plan = viewModel.plan
+        if let iconURL = URL(string: plan.icon) {
+            planImageView.downloadResizedImage(from: iconURL, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: planImageView.bounds.size)
+        } else {
+            planImageView.image = UIImage(named: "plan-placeholder")
+        }
         planTitleLabel.text = plan.name
         planDescriptionLabel.text = plan.tagline
     }

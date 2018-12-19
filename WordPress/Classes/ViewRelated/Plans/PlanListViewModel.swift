@@ -45,6 +45,7 @@ enum PlanListViewModel {
                 return PlanListRow(
                     title: plan.name,
                     description: plan.tagline,
+                    icon: plan.icon,
                     action: action
                 )
             })
