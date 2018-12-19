@@ -5,12 +5,17 @@ import WordPressKit
 final class VerticalsWizardContent: UIViewController {
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
-    private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
+    private var data: [SiteVertical]
     private let selection: (SiteVertical) -> Void
 
     private let throttle = Scheduler(seconds: 1)
 
     @IBOutlet weak var table: UITableView!
+
+    private struct StyleConstants {
+        static let rowHeight: CGFloat = 44.0
+        static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
+    }
 
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
@@ -25,6 +30,7 @@ final class VerticalsWizardContent: UIViewController {
         self.segment = segment
         self.service = service
         self.selection = selection
+        self.data = []
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
 
@@ -54,8 +60,11 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupTable() {
+        table.dataSource = self
+        table.delegate = self
         setupTableBackground()
-        setupCell()
+        setupTableSeparator()
+        setupCells()
         setupHeader()
         setupConstraints()
         hideSeparators()
@@ -65,14 +74,33 @@ final class VerticalsWizardContent: UIViewController {
         table.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
     private func hideSeparators() {
         table.tableFooterView = UIView(frame: .zero)
     }
 
-    private func setupCell() {
-        let cellName = VerticalsCell.cellReuseIdentifier()
-        let nib = UINib(nibName: cellName, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: cellName)
+    private func setupCells() {
+        registerCells()
+        setupCellHeight()
+    }
+
+    private func setupCellHeight() {
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = StyleConstants.rowHeight
+        table.separatorInset = StyleConstants.separatorInset
+    }
+
+    private func registerCells() {
+        registerCell(identifier: VerticalsCell.cellReuseIdentifier())
+        registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
+    }
+
+    private func registerCell(identifier: String) {
+        let nib = UINib(nibName: identifier, bundle: nil)
+        table.register(nib, forCellReuseIdentifier: identifier)
     }
 
     private func setupHeader() {
@@ -137,13 +165,53 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        dataCoordinator = TableDataCoordinator(data: data, cellType: VerticalsCell.self, selection: didSelect)
-        table.dataSource = dataCoordinator
-        table.delegate = dataCoordinator
+        self.data = data
         table.reloadData()
     }
 
     private func didSelect(_ segment: SiteVertical) {
         selection(segment)
+    }
+}
+
+extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let vertical = data[indexPath.row]
+        let cell = configureCell(vertical: vertical, indexPath: indexPath)
+
+        addBorder(cell: cell, at: indexPath)
+
+        return cell
+    }
+
+    private func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
+        let identifier = cellIdentifier(vertical: vertical)
+
+        if var cell = table.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SiteVerticalPresenter {
+            cell.vertical = vertical
+
+            return cell as! UITableViewCell
+        }
+
+        return UITableViewCell()
+    }
+
+    private func cellIdentifier(vertical: SiteVertical) -> String {
+        return vertical.isNew ? NewVerticalCell.cellReuseIdentifier() : VerticalsCell.cellReuseIdentifier()
+    }
+
+    private func addBorder(cell: UITableViewCell, at: IndexPath) {
+        let row = at.row
+        if row == 0 {
+            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
+        }
+
+        if row == data.count - 1 {
+            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+        }
     }
 }
