@@ -24,6 +24,7 @@ enum InsightType: Int {
     @objc optional func showCreatePost()
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
+    @objc optional func tabbedTotalsCellUpdated()
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -66,6 +67,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
+        tableView.estimatedRowHeight = 500
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,7 +98,8 @@ private extension SiteStatsInsightsTableViewController {
                 LatestPostSummaryRow.self,
                 SimpleTotalsStatsRow.self,
                 SimpleTotalsStatsSubtitlesRow.self,
-                PostingActivityRow.self]
+                PostingActivityRow.self,
+                TabbedTotalsStatsRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -176,4 +179,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
+
+    func tabbedTotalsCellUpdated() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
 }

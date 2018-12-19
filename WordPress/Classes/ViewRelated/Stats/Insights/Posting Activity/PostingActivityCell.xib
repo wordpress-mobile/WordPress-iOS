@@ -66,6 +66,20 @@
                             <action selector="didTapViewMoreButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="U1p-3L-m3M"/>
                         </connections>
                     </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SrM-6z-hC1" userLabel="Top Seperator Line">
+                        <rect key="frame" x="0.0" y="0.0" width="342" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="WVU-Lm-2Tm"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5q-Qa-Pnh" userLabel="Bottom Seperator Line">
+                        <rect key="frame" x="0.0" y="239" width="342" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="Ebs-qL-BEp"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
@@ -77,6 +91,7 @@
                     <constraint firstItem="BVC-pc-qhM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="OWn-0r-61f"/>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="bottom" secondItem="A6f-g5-v7s" secondAttribute="bottom" id="Or8-T0-83W"/>
                     <constraint firstItem="A6f-g5-v7s" firstAttribute="top" secondItem="MNM-OS-iwT" secondAttribute="bottom" id="Sns-td-yrm"/>
+                    <constraint firstItem="K5q-Qa-Pnh" firstAttribute="top" secondItem="A6f-g5-v7s" secondAttribute="bottom" id="Zu2-Dr-SsY"/>
                     <constraint firstAttribute="trailing" secondItem="BVC-pc-qhM" secondAttribute="trailing" constant="20" id="bCQ-sr-6gB"/>
                     <constraint firstItem="A6f-g5-v7s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="c2q-6v-gHN"/>
                     <constraint firstItem="XhD-aG-GxJ" firstAttribute="trailing" secondItem="A6f-g5-v7s" secondAttribute="trailing" id="enE-lf-B7p"/>
@@ -85,10 +100,19 @@
                     <constraint firstItem="MNM-OS-iwT" firstAttribute="top" secondItem="BVC-pc-qhM" secondAttribute="bottom" constant="8" id="zfF-S9-Fqj"/>
                 </constraints>
             </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="K5q-Qa-Pnh" secondAttribute="trailing" id="4rc-fc-qPf"/>
+                <constraint firstItem="K5q-Qa-Pnh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8dI-CU-gI8"/>
+                <constraint firstItem="SrM-6z-hC1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="K9o-wM-Elv"/>
+                <constraint firstItem="SrM-6z-hC1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bIn-37-Etp"/>
+                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="SrM-6z-hC1" secondAttribute="trailing" id="yDa-SC-Kwi"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="bottomSeparatorLine" destination="K5q-Qa-Pnh" id="y35-PR-cqI"/>
                 <outlet property="legendView" destination="MNM-OS-iwT" id="3sj-wa-JnR"/>
                 <outlet property="monthsStackView" destination="BVC-pc-qhM" id="IlC-oK-tm8"/>
+                <outlet property="topSeparatorLine" destination="SrM-6z-hC1" id="AGS-zl-lmo"/>
                 <outlet property="viewMoreLabel" destination="D7G-gg-9QM" id="6DH-YF-5A5"/>
             </connections>
             <point key="canvasLocation" x="-502.39999999999998" y="63.868065967016499"/>
