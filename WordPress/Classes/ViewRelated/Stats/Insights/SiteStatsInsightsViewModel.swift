@@ -60,7 +60,8 @@ class SiteStatsInsightsViewModel: Observable {
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
+                tableRows.append(createCommentsRow())
             case .followers:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.followers))
                 tableRows.append(createFollowersRow())
@@ -147,6 +148,33 @@ private extension SiteStatsInsightsViewModel {
                 return NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
             case .email:
                 return NSLocalizedString("Email", comment: "Label for email followers")
+            }
+        }
+    }
+
+    struct Comments {
+        static let dataSubtitle = NSLocalizedString("Comments", comment: "Label for comment count, either by author or post.")
+    }
+
+    enum CommentType {
+        case author
+        case post
+
+        var title: String {
+            switch self {
+            case .author:
+                return NSLocalizedString("Authors", comment: "Label for comments by author")
+            case .post:
+                return NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
+            }
+        }
+
+        var itemSubtitle: String {
+            switch self {
+            case .author:
+                return NSLocalizedString("Author", comment: "Author label for list of commenters.")
+            case .post:
+                return NSLocalizedString("Title", comment: "Title label for list of posts.")
             }
         }
     }
@@ -318,6 +346,48 @@ private extension SiteStatsInsightsViewModel {
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    func createCommentsRow() -> TabbedTotalsStatsRow {
+        return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.author),
+                                               tabDataForCommentType(.post)],
+                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                    showTotalCount: false)
+    }
+
+    func tabDataForCommentType(_ commentType: CommentType) -> TabData {
+
+        var tabTitle: String
+        var itemSubtitle: String
+        var topComments: [StatsItem]?
+        var showDisclosure: Bool
+
+        switch commentType {
+        case .author:
+            tabTitle = CommentType.author.title
+            itemSubtitle = CommentType.author.itemSubtitle
+            topComments = store.getTopCommentsAuthors()
+            showDisclosure = false
+        case .post:
+            tabTitle = CommentType.post.title
+            itemSubtitle = CommentType.post.itemSubtitle
+            topComments = store.getTopCommentsPosts()
+            showDisclosure = true
+        }
+
+        var rows = [StatsTotalRowData]()
+
+        topComments?.forEach { commentData in
+            rows.append(StatsTotalRowData.init(name: commentData.label,
+                                               data: commentData.value,
+                                               userIconURL: commentData.iconURL,
+                                               showDisclosure: showDisclosure))
+        }
+
+        return TabData.init(tabTitle: tabTitle,
+                            itemSubtitle: itemSubtitle,
+                            dataSubtitle: Comments.dataSubtitle,
+                            dataRows: rows)
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
