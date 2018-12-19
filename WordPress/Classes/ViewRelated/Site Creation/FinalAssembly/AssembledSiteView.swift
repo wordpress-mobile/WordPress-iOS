@@ -11,6 +11,8 @@ final class AssembledSiteView: UIView {
 
     // MARK: Properties
 
+    /// A collection of parameters uses for animation & layout of the view.
+    ///
     private struct Parameters {
         static let iPadWidthPortrait        = CGFloat(512)
         static let iPadWidthLandscape       = CGFloat(704)
@@ -24,16 +26,24 @@ final class AssembledSiteView: UIView {
         static let textFieldHeight          = CGFloat(36)
     }
 
+    /// This value displays in the address bar.
     private let domainName: String
 
+    /// This subview fulfills the role of address bar.
     private let textField: UITextField
 
+    /// At the moment, we are loading the assembled site in a web view. This underscores that.
     private let activityIndicator: UIActivityIndicatorView
 
+    /// The web view that renders our newly assembled site
     private let webView: WKWebView
 
+    /// This interacts with our `WKNavigationDelegate` to influence the policy behavior before & after site loading.
+    /// After the site has been loaded, we want to disable user interaction with the rendered site.
+    ///
     private var webViewHasLoadedContent: Bool = false
 
+    /// This informs constraints applied to the view. It _may_ be possible to transition this to intrinsicContentSize.
     var preferredSize: CGSize {
         let screenBounds = UIScreen.main.bounds
 
@@ -53,14 +63,11 @@ final class AssembledSiteView: UIView {
         return CGSize(width: preferredWidth, height: preferredHeight)
     }
 
-    var urlString: String = "" {
-        didSet {
-            loadSite(urlString: urlString)
-        }
-    }
-
     // MARK: AssembledSiteView
 
+    /// The designated initializer.
+    ///
+    /// - Parameter domainName: the domain associated with the site pending assembly.
     init(domainName: String) {
         self.domainName = domainName
 
@@ -112,6 +119,21 @@ final class AssembledSiteView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Internal behavior
+
+    /// Triggers the new site to load for the first (!) time.
+    ///
+    func loadSite() {
+        // NB: Not all of the values from `MockSiteAddressService` are real sites, so we are use a placeholder for now.
+        // let urlString = "https://" + domainName
+        let urlString = "https://longreads.com"
+
+        let siteURL = URL(string: urlString)!
+        let siteRequest = URLRequest(url: siteURL)
+
+        webView.load(siteRequest)
+    }
+
     // MARK: Private behavior
 
     private func configure() {
@@ -140,12 +162,6 @@ final class AssembledSiteView: UIView {
         layer.shadowOffset = Parameters.shadowOffset
         layer.shadowOpacity = Parameters.shadowOpacity
         layer.shadowRadius = Parameters.shadowRadius
-    }
-
-    private func loadSite(urlString: String) {
-        let mockURL = URL(string: urlString)!
-        let mockRequest = URLRequest(url: mockURL)
-        webView.load(mockRequest)
     }
 }
 
