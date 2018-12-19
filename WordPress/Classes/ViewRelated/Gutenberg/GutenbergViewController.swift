@@ -16,32 +16,11 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - UI
 
-    private let titleTextField: UITextField = {
-        let textField = UITextField()
-        textField.borderStyle = .none
-        textField.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
-        textField.font = Fonts.title
-        textField.textColor = Colors.title
-        textField.backgroundColor = Colors.background
-        textField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
-        textField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
-        let leftView = UIView()
-        leftView.translatesAutoresizingMaskIntoConstraints = false
-        leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
-        leftView.widthAnchor.constraint(equalToConstant: Size.titleTextFieldLeftPadding).isActive = true
-        leftView.backgroundColor = Colors.background
-        textField.leftView = leftView
-        textField.leftViewMode = .always
-        return textField
-    }()
+    private var titleTextField: UITextField {
+        return containerView.titleTextField
+    }
 
-    private let separatorView: UIView = {
-        let view = UIView()
-        view.heightAnchor.constraint(equalToConstant: Size.titleTextFieldBottomSeparatorHeight).isActive = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Colors.separator
-        return view
-    }()
+    private var containerView = GutenbergContainerView.loadFromNib()
 
     // MARK: - Aztec
 
@@ -176,16 +155,18 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Lifecycle methods
     override func loadView() {
-        let stackView = UIStackView(arrangedSubviews: [titleTextField,
-                                                       separatorView,
-                                                       gutenberg.rootView])
-        stackView.axis = .vertical
-        stackView.backgroundColor = Colors.background
-        view = stackView
+        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.editorContainerView.addSubview(gutenberg.rootView)
+        containerView.editorContainerView.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
+        containerView.editorContainerView.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
+        containerView.editorContainerView.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
+        containerView.editorContainerView.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
+        view = containerView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerEventListeners()
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
@@ -199,6 +180,10 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Functions
+
+    private func registerEventListeners() {
+        titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
+    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -373,21 +358,5 @@ private extension GutenbergViewController {
 
     enum Analytics {
         static let editorSource = "gutenberg"
-    }
-
-    enum Colors {
-        static let title = UIColor.darkText
-        static let separator = WPStyleGuide.greyLighten30()
-        static let background = UIColor.white
-    }
-
-    enum Fonts {
-        static let title = WPFontManager.notoBoldFont(ofSize: 24.0)
-    }
-
-    enum Size {
-        static let titleTextFieldHeight: CGFloat = 50.0
-        static let titleTextFieldLeftPadding: CGFloat = 10.0
-        static let titleTextFieldBottomSeparatorHeight: CGFloat = 1.0
     }
 }
