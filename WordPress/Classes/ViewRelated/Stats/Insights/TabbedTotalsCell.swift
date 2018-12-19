@@ -76,6 +76,13 @@ private extension TabbedTotalsCell {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.items = tabsData.map { $0.tabTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        toggleFilterTabBar()
+    }
+
+    func toggleFilterTabBar() {
+        // If none of the tabs have data, hide the FilterTabBar.
+        let noTabsData = (tabsData.first { $0.dataRows.count > 0 }) == nil
+        filterTabBar.isHidden = noTabsData
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
