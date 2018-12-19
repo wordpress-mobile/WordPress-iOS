@@ -37,8 +37,9 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'cc56f1886a6e3f566f6af65b1a663007c2aa82c9'
-    pod 'WordPress-Editor-iOS', '1.2'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
+    pod 'WordPress-Editor-iOS', '1.3.1'
 end
 
 def wordpress_ui
@@ -51,7 +52,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 1.5.1'
+    pod 'WordPressKit', '~> 1.5.2-beta.1'
     ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'b2d5ec226b65634071948dc00290dd88d51f6434'
     ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
@@ -95,12 +96,12 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.2.6'
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     pod 'RNSVG', :git => 'https://github.com/react-native-community/react-native-svg.git', :tag => '8.0.8'
-    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git'
+    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git', :commit => '6e98ff2e09924dbba773e539be67396da5438eba'
 
     ## Third party libraries
     ## =====================
@@ -129,7 +130,8 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
-    pod 'WordPressAuthenticator', '~> 1.1.6'
+
+    pod 'WordPressAuthenticator', '~> 1.1.7-beta.1'
 
     aztec
     wordpress_ui
@@ -234,4 +236,15 @@ target 'WordPressComStatsiOS' do
 
         shared_test_pods
     end
+end
+
+## Screenshot Generation
+## ===================
+##
+target 'WordPressScreenshotGeneration' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    inherit! :search_paths
+
+    pod 'SimulatorStatusMagic'
 end

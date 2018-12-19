@@ -60,14 +60,16 @@ class SiteStatsInsightsViewModel: Observable {
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
+                tableRows.append(createTabbedTotalsStatsRow())
             case .followers:
                 DDLogDebug("Show \(insightType) here.")
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.todaysStats))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
             case .postingActivity:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.postingActivity))
+                tableRows.append(createPostingActivityRow())
             case .publicize:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.publicize))
                 tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: Publicize.itemSubtitle,
@@ -101,6 +103,8 @@ private extension SiteStatsInsightsViewModel {
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
+        static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
+        static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
     }
 
     struct AllTimeStats {
@@ -279,6 +283,49 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return dataRows
+    }
+
+    func createPostingActivityRow() -> PostingActivityRow {
+        var monthsData = [[PostingActivityDayData]]()
+
+        if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
+            monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
+        }
+
+        if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+            monthsData.append(store.getMonthlyPostingActivityFor(date: oneMonthAgo))
+        }
+
+        monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
+
+        return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    func createTabbedTotalsStatsRow() -> TabbedTotalsStatsRow {
+
+        // TODO: replace with real data
+
+        let row = StatsTotalRowData.init(name: "Testing",
+                                         data: Double(6666).abbreviatedString(),
+                                         icon: TodaysStats.visitorsIcon)
+
+        let tabOneData = TabData.init(tabTitle: "Tab One",
+                                      itemSubtitle: "Item One",
+                                      dataSubtitle: "Data One",
+                                      totalCount: "Total WordPress.com Followers: \(Double(369258).abbreviatedString())",
+                                      dataRows: [row, row])
+
+        let disclosureRow = StatsTotalRowData.init(name: "Testing",
+                                                   data: Double(99999).abbreviatedString(),
+                                                   showDisclosure: true)
+
+        let tabTwoData = TabData.init(tabTitle: "Tab Two",
+                                      itemSubtitle: "Item Two",
+                                      dataSubtitle: "Data Two",
+                                      totalCount: "Total Email Followers: \(Double(741852).abbreviatedString())",
+                                      dataRows: [disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow])
+
+        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData], siteStatsInsightsDelegate: siteStatsInsightsDelegate, showTotalCount: true)
     }
 
 }

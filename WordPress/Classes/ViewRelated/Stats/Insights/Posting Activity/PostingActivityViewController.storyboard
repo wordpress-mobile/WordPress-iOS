@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pOs-1s-W7x">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Posting Activity View Controller-->
+        <scene sceneID="h9e-I5-QEn">
+            <objects>
+                <viewController storyboardIdentifier="PostingActivityViewController" id="pOs-1s-W7x" customClass="PostingActivityViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TU7-9O-6YL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="W1p-n7-SZX">
+                                <rect key="frame" x="16" y="36" width="343" height="543"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="PDr-0I-bNR">
+                                    <size key="itemSize" width="118" height="135"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PostingActivityCollectionViewCell" id="mMp-tO-KZZ" customClass="PostingActivityCollectionViewCell" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="118" height="135"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="118" height="135"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                        <size key="customSize" width="118" height="135"/>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="pOs-1s-W7x" id="J5E-FX-QvY"/>
+                                    <outlet property="delegate" destination="pOs-1s-W7x" id="6jU-fH-Gmv"/>
+                                </connections>
+                            </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IqY-8C-H2V" userLabel="Seperator Line">
+                                <rect key="frame" x="0.0" y="578.5" width="375" height="0.5"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="jQb-jH-nih"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="46y-2b-bNc">
+                                <rect key="frame" x="0.0" y="579" width="375" height="88"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UYH-kF-no5" userLabel="Day Data View">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MMM DD, YYYY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jvw-o4-5Sa" userLabel="Date Label">
+                                                <rect key="frame" x="16" y="12" width="123.5" height="20"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9F-kE-Bc8" userLabel="Post Count Label">
+                                                <rect key="frame" x="338" y="12" width="21" height="20"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Jvw-o4-5Sa" secondAttribute="bottom" constant="12" id="4cC-c7-0Ro"/>
+                                            <constraint firstAttribute="bottom" secondItem="p9F-kE-Bc8" secondAttribute="bottom" constant="12" id="D9j-ok-kPm"/>
+                                            <constraint firstItem="Jvw-o4-5Sa" firstAttribute="leading" secondItem="UYH-kF-no5" secondAttribute="leading" constant="16" id="Fzk-HV-m5p"/>
+                                            <constraint firstAttribute="height" constant="44" id="MCl-xh-gB8"/>
+                                            <constraint firstItem="p9F-kE-Bc8" firstAttribute="top" secondItem="UYH-kF-no5" secondAttribute="top" constant="12" id="hHG-hS-Ljn"/>
+                                            <constraint firstItem="Jvw-o4-5Sa" firstAttribute="top" secondItem="UYH-kF-no5" secondAttribute="top" constant="12" id="oaD-EH-sm0"/>
+                                            <constraint firstAttribute="trailing" secondItem="p9F-kE-Bc8" secondAttribute="trailing" constant="16" id="r2q-VV-jVQ"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="leG-jd-QdI" userLabel="Legend View">
+                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="zh9-tn-C5v"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="46y-2b-bNc" firstAttribute="top" secondItem="IqY-8C-H2V" secondAttribute="bottom" id="E2v-4s-SmB"/>
+                            <constraint firstItem="3b1-gt-7OF" firstAttribute="bottom" secondItem="46y-2b-bNc" secondAttribute="bottom" id="HDf-Gh-w9A"/>
+                            <constraint firstItem="W1p-n7-SZX" firstAttribute="top" secondItem="3b1-gt-7OF" secondAttribute="top" constant="16" id="J8S-E0-KRE"/>
+                            <constraint firstItem="46y-2b-bNc" firstAttribute="leading" secondItem="3b1-gt-7OF" secondAttribute="leading" id="Vh5-fh-eh9"/>
+                            <constraint firstItem="IqY-8C-H2V" firstAttribute="leading" secondItem="TU7-9O-6YL" secondAttribute="leading" id="cIm-WK-538"/>
+                            <constraint firstItem="3b1-gt-7OF" firstAttribute="trailing" secondItem="W1p-n7-SZX" secondAttribute="trailing" constant="16" id="eyI-O3-zsN"/>
+                            <constraint firstItem="W1p-n7-SZX" firstAttribute="leading" secondItem="3b1-gt-7OF" secondAttribute="leading" constant="16" id="nLG-YT-lZf"/>
+                            <constraint firstItem="46y-2b-bNc" firstAttribute="top" secondItem="W1p-n7-SZX" secondAttribute="bottom" id="plO-k5-DQc"/>
+                            <constraint firstItem="46y-2b-bNc" firstAttribute="trailing" secondItem="3b1-gt-7OF" secondAttribute="trailing" id="qRI-Rh-eEd"/>
+                            <constraint firstAttribute="trailing" secondItem="IqY-8C-H2V" secondAttribute="trailing" id="zxv-H9-y8h"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3b1-gt-7OF"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="W1p-n7-SZX" id="fFv-yq-t9F"/>
+                        <outlet property="dateLabel" destination="Jvw-o4-5Sa" id="1w6-pk-59K"/>
+                        <outlet property="dayDataView" destination="UYH-kF-no5" id="Pqn-xk-E1p"/>
+                        <outlet property="legendView" destination="leG-jd-QdI" id="Ad0-B5-a5E"/>
+                        <outlet property="postCountLabel" destination="p9F-kE-Bc8" id="HaU-on-cjP"/>
+                        <outlet property="separatorLine" destination="IqY-8C-H2V" id="86D-AD-o2Y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9a4-cc-Uju" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-594.39999999999998" y="47.226386806596707"/>
+        </scene>
+    </scenes>
+</document>

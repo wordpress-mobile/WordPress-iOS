@@ -3,8 +3,6 @@ jobs:
   build_and_test:
     macos:
       xcode: "10.1.0"
-    environment:
-      DESTINATION: "platform=iOS Simulator,name=iPhone XS,OS=12.1"
     steps:
       - checkout
       - restore_cache:
@@ -33,11 +31,13 @@ jobs:
             - vendor/bundle
       - run:
           name: Build
-          command: xcodebuild build-for-testing -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty && exit ${PIPESTATUS[0]}
+          command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -sdk iphonesimulator build-for-testing | bundle exec xcpretty
       - run:
           name: Test
-          command: xcodebuild test-without-building -scheme "WordPress" -configuration "Debug" -destination "${DESTINATION}" -workspace "WordPress.xcworkspace" | bundle exec xcpretty && exit ${PIPESTATUS[0]}
-      
+          command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -destination 'platform=iOS Simulator,name=iPhone XS,OS=latest' test-without-building | bundle exec xcpretty -r junit
+      - store_test_results:
+          path: build/reports
+
   danger:
     macos:
       xcode: "10.1.0"
@@ -45,22 +45,32 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
             - wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
             - wordpress-ios-danger-
       - run:
-          name: Dependencies
-          command: rake dependencies
+          name: Dependencies for danger
+          command: rake dependencies:bundle:check dependencies:lint:check
       - save_cache:
-          key: wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
+          key: wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/
       - run:
           name: Danger
-          command: bundle exec danger --fail-on-errors=true
+          command: |
+            if [ -n "$DANGER_GITHUB_API_TOKEN" ]; then
+              bundle exec danger --fail-on-errors=true
+            else
+              echo "Not running danger because $DANGER_GITHUB_API_TOKEN is not found"
+            fi
 
 workflows:
   version: 2
-  build_and_test:
+  wordpress_ios:
     jobs:
-      - danger
+      - danger:
+          filters:
+            branches:
+              # Disable Danger on develop
+              ignore: develop
       - build_and_test

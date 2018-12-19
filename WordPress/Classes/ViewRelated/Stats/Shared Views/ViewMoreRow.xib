@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ViewMoreRow" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N97-9D-WNI" userLabel="View More View">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View more" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umw-QX-aI2" userLabel="View More Label">
+                            <rect key="frame" x="16" y="12" width="319" height="20"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="gbG-Q7-nUb" userLabel="Disclosure Image">
+                            <rect key="frame" x="351" y="15.5" width="8" height="13"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="13" id="f8S-GQ-rY1"/>
+                                <constraint firstAttribute="width" constant="8" id="mna-wA-98c"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Umw-QX-aI2" secondAttribute="bottom" constant="12" id="29t-dT-7i2"/>
+                        <constraint firstItem="gbG-Q7-nUb" firstAttribute="leading" secondItem="Umw-QX-aI2" secondAttribute="trailing" constant="16" id="2Lb-6u-lbm"/>
+                        <constraint firstAttribute="trailing" secondItem="gbG-Q7-nUb" secondAttribute="trailing" constant="16" id="2oK-CI-3Zd"/>
+                        <constraint firstItem="gbG-Q7-nUb" firstAttribute="centerY" secondItem="N97-9D-WNI" secondAttribute="centerY" id="DpW-YP-ewg"/>
+                        <constraint firstItem="Umw-QX-aI2" firstAttribute="top" secondItem="N97-9D-WNI" secondAttribute="top" constant="12" id="Ifk-YO-ipw"/>
+                        <constraint firstItem="Umw-QX-aI2" firstAttribute="leading" secondItem="N97-9D-WNI" secondAttribute="leading" constant="16" id="wMp-ZA-nkO"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3F-KZ-xRt" userLabel="View More Button">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <connections>
+                        <action selector="didTapViewMoreButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Ear-BS-0sc"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="N3F-KZ-xRt" firstAttribute="leading" secondItem="N97-9D-WNI" secondAttribute="leading" id="0nP-FU-mOy"/>
+                <constraint firstItem="N3F-KZ-xRt" firstAttribute="bottom" secondItem="N97-9D-WNI" secondAttribute="bottom" id="88f-KH-CsB"/>
+                <constraint firstItem="N97-9D-WNI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="I0v-mr-NEt"/>
+                <constraint firstItem="N3F-KZ-xRt" firstAttribute="top" secondItem="N97-9D-WNI" secondAttribute="top" id="KWw-dE-Mk6"/>
+                <constraint firstAttribute="trailing" secondItem="N97-9D-WNI" secondAttribute="trailing" id="nh9-Ht-PXr"/>
+                <constraint firstAttribute="bottom" secondItem="N97-9D-WNI" secondAttribute="bottom" id="qJi-MK-igX"/>
+                <constraint firstItem="N3F-KZ-xRt" firstAttribute="trailing" secondItem="N97-9D-WNI" secondAttribute="trailing" id="sWE-6t-U2J"/>
+                <constraint firstItem="N97-9D-WNI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="wVz-9r-Pr4"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="viewMoreLabel" destination="Umw-QX-aI2" id="ZdF-R6-GQb"/>
+            </connections>
+            <point key="canvasLocation" x="-476" y="-27.886056971514247"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="disclosure-chevron" width="8" height="13"/>
+    </resources>
+</document>

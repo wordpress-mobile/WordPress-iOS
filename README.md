@@ -70,7 +70,7 @@ In order to use these details, you'll need to create a credential file in your b
 
 ` cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials `
 
-Then edit the `~/.wpcom_app_credentials` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
+Then edit the `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
 
 Then you can compile and run the app on a device or an emulator and log in with a WordPress.com account.  Note that authenticating to WordPress.com via Google is not supported in development builds of the app, only in the official release.
 

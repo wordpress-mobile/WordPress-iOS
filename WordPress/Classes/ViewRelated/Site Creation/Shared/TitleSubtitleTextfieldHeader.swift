@@ -11,6 +11,7 @@ private final class SearchTextField: UITextField {
     private struct Constants {
         static let iconDimension    = CGFloat(18)
         static let iconInset        = CGFloat(19)
+        static let clearButtonInset = CGFloat(-9)
         static let searchHeight     = CGFloat(44)
         static let textInset        = CGFloat(56)
     }
@@ -47,6 +48,11 @@ private final class SearchTextField: UITextField {
         return CGRect(x: iconX, y: iconY, width: Constants.iconDimension, height: bounds.height)
     }
 
+    override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
+        let originalClearButtonRect = super.clearButtonRect(forBounds: bounds)
+        return originalClearButtonRect.offsetBy(dx: Constants.clearButtonInset, dy: 0)
+    }
+
     // MARK: Private behavior
 
     private func initialize() {
@@ -71,7 +77,10 @@ private final class SearchTextField: UITextField {
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
-        ])
+            ])
+
+        addTopBorder(withColor: WPStyleGuide.greyLighten20())
+        addBottomBorder(withColor: WPStyleGuide.greyLighten20())
     }
 }
 
@@ -83,6 +92,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
     private struct Constants {
         static let spacing = CGFloat(10)
+        static let bottomMargin = CGFloat(16)
     }
 
     private lazy var titleSubtitle: TitleSubtitleHeader = {
@@ -103,7 +113,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: returnValue.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: returnValue.trailingAnchor)
-        ])
+            ])
 
         return returnValue
     }()
@@ -129,8 +139,8 @@ final class TitleSubtitleTextfieldHeader: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -TitleSubtitleHeader.Margins.verticalMargin)
-        ])
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.bottomMargin)
+            ])
 
         setStyles()
     }

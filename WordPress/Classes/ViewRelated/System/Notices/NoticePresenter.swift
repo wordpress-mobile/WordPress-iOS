@@ -5,16 +5,34 @@ import WordPressFlux
 
 class NoticePresenter: NSObject {
     private let store: NoticeStore
-    private let presentingViewController: UIViewController
+    private let window: UntouchableWindow
+    private var view: UIView {
+        guard let view = window.rootViewController?.view else {
+            fatalError("Root view controller shouldn't be nil")
+        }
+        return view
+    }
     private var currentContainer: NoticeContainerView?
 
     let generator = UINotificationFeedbackGenerator()
 
     private var storeReceipt: Receipt?
 
-    private init(store: NoticeStore, presentingViewController: UIViewController) {
+    private init(store: NoticeStore) {
         self.store = store
-        self.presentingViewController = presentingViewController
+
+        let windowFrame: CGRect
+        if let mainWindow = UIApplication.shared.keyWindow {
+            windowFrame = mainWindow.offsetToAvoidStatusBar()
+        } else {
+            windowFrame = .zero
+        }
+        window = UntouchableWindow(frame: windowFrame)
+
+        // this window level may affect some UI elements like share sheets.
+        // however, since the alerts aren't permanently on screen, this isn't
+        // often a problem.
+        window.windowLevel = .alert
 
         super.init()
 
@@ -23,8 +41,8 @@ class NoticePresenter: NSObject {
         }
     }
 
-    @objc convenience init(presentingViewController: UIViewController) {
-        self.init(store: StoreContainer.shared.notice, presentingViewController: presentingViewController)
+    override convenience init() {
+        self.init(store: StoreContainer.shared.notice)
     }
 
     private func presentNextNoticeIfAvailable() {
@@ -59,10 +77,6 @@ class NoticePresenter: NSObject {
     }
 
     private func presentNoticeInForeground(_ notice: Notice) {
-        guard let view = presentingViewController.view else {
-            return
-        }
-
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
@@ -93,6 +107,8 @@ class NoticePresenter: NSObject {
             generator.notificationOccurred(feedbackType)
         }
 
+        window.isHidden = false
+
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
@@ -105,29 +121,29 @@ class NoticePresenter: NSObject {
 
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
         return { [weak self] in
-            guard let strongSelf = self,
-                let view = strongSelf.presentingViewController.view else {
+            guard let self = self else {
                 return
             }
 
             noticeContainer.noticeView.alpha = WPAlphaZero
-            noticeContainer.bottomConstraint?.constant = strongSelf.offscreenBottomOffset
+            noticeContainer.bottomConstraint?.constant = self.window.untouchableViewController.offsetOffscreen
 
-            view.layoutIfNeeded()
+            self.view.layoutIfNeeded()
         }
     }
 
     private func onscreenState(for noticeContainer: NoticeContainerView)  -> (() -> ()) {
         return { [weak self] in
-            guard let strongSelf = self,
-                let view = strongSelf.presentingViewController.view else {
-                    return
+            guard let self = self else {
+                return
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
-            noticeContainer.bottomConstraint?.constant = 0
+            noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
 
-            view.layoutIfNeeded()
+            self.window.isHidden = false
+
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -145,9 +161,10 @@ class NoticePresenter: NSObject {
         }
 
         currentContainer = nil
-        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: {
+        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
             container.removeFromSuperview()
-            self.dismiss()
+            self?.window.isHidden = true
+            self?.dismiss()
         })
     }
 
@@ -156,31 +173,13 @@ class NoticePresenter: NSObject {
     }
 
     private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
-        if let tabBarController = presentingViewController as? UITabBarController {
-            tabBarController.view.insertSubview(noticeContainer, belowSubview: tabBarController.tabBar)
-        } else {
-            presentingViewController.view.addSubview(noticeContainer)
-        }
+        view.addSubview(noticeContainer)
     }
 
     private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
-        let constraint: NSLayoutConstraint
-        if let tabBarController = presentingViewController as? UITabBarController {
-            constraint = container.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor)
-        } else {
-            // Force unwrapping, as the calling method has already guarded against a nil view
-            constraint = container.bottomAnchor.constraint(equalTo: presentingViewController.view!.bottomAnchor)
-        }
+        let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
-    }
-
-    private var offscreenBottomOffset: CGFloat {
-        if let tabBarController = presentingViewController as? UITabBarController {
-            return tabBarController.tabBar.bounds.height
-        } else {
-            return 0
-        }
     }
 
     typealias AnimationBlock = () -> Void
@@ -207,6 +206,21 @@ class NoticePresenter: NSObject {
         static let appearanceSpringDamping: CGFloat = 0.7
         static let appearanceSpringVelocity: CGFloat = 0.0
         static let dismissDelay: TimeInterval = 5.0
+    }
+}
+
+private extension UIWindow {
+    /// Returns a rectangle based on this window offset such that a new window created
+    /// with this frame will not overtake the status bar responsibilities
+    ///
+    /// - Returns: CGRect based on this window's frame
+    /// - Note: Turns out that a small alteration to the frame is enough to accomplish this.
+    func offsetToAvoidStatusBar() -> CGRect {
+        return self.frame.insetBy(dx: Offsets.minimalEdgeOffset, dy: Offsets.minimalEdgeOffset)
+    }
+
+    private enum Offsets {
+        static let minimalEdgeOffset: CGFloat = 1.0
     }
 }
 
