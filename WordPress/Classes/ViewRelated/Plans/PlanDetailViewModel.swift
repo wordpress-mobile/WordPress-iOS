@@ -23,9 +23,16 @@ struct PlanDetailViewModel {
         case .loading, .error:
             return ImmuTable.Empty
         case .ready(let features):
-            let featureSlugs = plan.features.split(separator: ",") as NSArray
-            let planFeatures = features.filter { (feature) -> Bool in
-                return featureSlugs.contains(feature.slug)
+            let featureSlugs = plan.features.split(separator: ",")
+            // Assume the order of the slugs is the order we want to display features.
+            var planFeatures = [PlanFeature]()
+            for slug in featureSlugs {
+                for feature in features {
+                    if feature.slug == slug {
+                        planFeatures.append(feature)
+                        break
+                    }
+                }
             }
 
             let rows: [ImmuTableRow] = planFeatures.map({ feature in
