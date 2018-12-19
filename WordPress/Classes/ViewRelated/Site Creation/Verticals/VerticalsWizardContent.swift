@@ -245,6 +245,9 @@ extension VerticalsWizardContent {
                         self?.view.layoutIfNeeded()
                         self?.table.contentInset = contentInsets
                         self?.table.scrollIndicatorInsets = contentInsets
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 0.0
+                        }
 
             },
                        completion: nil)
@@ -261,7 +264,23 @@ extension VerticalsWizardContent {
 
     @objc
     private func keyboardWillHide(_ notification: Foundation.Notification) {
-        bottomConstraint.constant = Constants.bottomMargin
+        guard let payload = KeyboardInfo(notification) else { return }
+        let animationDuration = payload.animationDuration
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = .zero
+                        self?.table.scrollIndicatorInsets = .zero
+                        self?.bottomConstraint.constant = Constants.bottomMargin
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 1.0
+                        }
+
+            },
+                       completion: nil)
     }
 }
 
