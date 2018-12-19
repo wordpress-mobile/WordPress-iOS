@@ -148,6 +148,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
+    private var isFirstGutenbergLayout = true
 
     // MARK: - Initializers
     required init(
@@ -288,10 +289,21 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidLoad() {
-        if !post.hasContent() && isViewLoaded {
+    func gutenbergDidLayout() {
+        defer {
+            isFirstGutenbergLayout = false
+        }
+        focusTitleIfNeeded()
+    }
+
+    private func focusTitleIfNeeded() {
+        if shouldFocusTitleAutomatically {
             titleTextField.becomeFirstResponder()
         }
+    }
+
+    private var shouldFocusTitleAutomatically: Bool {
+        return !post.hasContent() && !titleTextField.isFirstResponder && isFirstGutenbergLayout
     }
 }
 
