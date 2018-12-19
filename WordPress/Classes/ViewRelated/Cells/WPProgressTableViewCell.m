@@ -52,12 +52,12 @@ NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumb
     [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
 
     _progress = progress;
-    
+
     [_progress addObserver:self
                          forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
                             options:NSKeyValueObservingOptionInitial
                             context:ProgressObserverContext];
-    
+
     if (_progress.isCancellable){
         [self.progressView.stopButton addTarget:self action:@selector(stopPressed:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -74,7 +74,7 @@ NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumb
 
     _progressView.mayStop = _progress.isCancellable;
     if ([_progress isCancelled]) {
-        self.textLabel.text = NSLocalizedString(@"Cancelled", @"The action was cancelled");
+        self.textLabel.text = NSLocalizedString(@"Canceled", @"The action was canceled");
         self.detailTextLabel.text = @"";
     } else if ((_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0) || _progress.userInfo[@"mediaError"] ) {
         self.textLabel.text = NSLocalizedString(@"Failed", @"The action failed");

@@ -215,7 +215,7 @@ class MediaCoordinator: NSObject {
     }
 
     /// Deletes a single Media object. If the object is currently being uploaded,
-    /// the upload will be cancelled.
+    /// the upload will be canceled.
     ///
     /// - Parameter media: The media object to delete
     /// - Parameter onProgress: Optional progress block, called after each media item is deleted
@@ -228,7 +228,7 @@ class MediaCoordinator: NSObject {
     }
 
     /// Deletes media objects. If the objects are currently being uploaded,
-    /// the uploads will be cancelled.
+    /// the uploads will be canceled.
     ///
     /// - Parameter media: The media objects to delete
     /// - Parameter onProgress: Optional progress block, called after each media item is deleted

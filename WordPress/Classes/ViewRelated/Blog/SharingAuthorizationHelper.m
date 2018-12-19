@@ -86,8 +86,8 @@
 
 /**
  A helper method for presenting an instance of the `SharingAuthorizationWebViewController`
- 
- @param connectionURL: The URL to pass to the SharingAuthorizationWebViewController's constructor. 
+
+ @param connectionURL: The URL to pass to the SharingAuthorizationWebViewController's constructor.
  It should be the REST API URL to either connect or refresh a publicize service connection.
  */
 - (void)authorizeWithConnectionURL:(NSURL *)connectionURL
@@ -130,7 +130,7 @@
 
 /**
  Dismisses the modal view controller prompting the user the connection failed.
- 
+
  @param publicizer: The publicize service that failed to connect.
  @param error: An error with details regarding the connection failure.
  */
@@ -148,7 +148,7 @@
 }
 
 /**
- Dismisses the modal view controller prompting the user the connection was cancelled.
+ Dismisses the modal view controller prompting the user the connection was canceled.
 
  @param publicizer: The publicize service that failed to connect.
  */
@@ -161,7 +161,7 @@
         return;
     }
 
-    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize authorization is cancelled")];
+    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Connection canceled", @"Message to show when Publicize authorization is canceled")];
 }
 
 
@@ -170,7 +170,7 @@
 /**
  Fetches keyring connections for the specified service. Once keyring connections have been
  fetched `showAccountSelectorForKeyrings:` is called.
- 
+
  @param pubServ: The publicize service for the fetched keyring connections.
  */
 - (void)fetchKeyringConnectionsForService:(PublicizeService *)pubServ
@@ -219,9 +219,9 @@
 }
 
 /**
- Presents a modal `SharingAccountViewController` to let the user confirm the third party 
+ Presents a modal `SharingAccountViewController` to let the user confirm the third party
  account to use for the publicize connection.
- 
+
  @param keyringConnections: An array of `KeyringConnection` instances.
  */
 - (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections
@@ -242,7 +242,7 @@
 #pragma mark - SharingAccountSelection Methods
 
 /**
- Returns one or more existing `PublicizeConnections` derived from the specified 
+ Returns one or more existing `PublicizeConnections` derived from the specified
  keyringConnection.
 
  @param keyringConnections: An array of `KeyringConnection` instances.
@@ -259,7 +259,7 @@
 }
 
 /**
- Checks if the specified publicize connection is derived form the specified 
+ Checks if the specified publicize connection is derived form the specified
  keyring connection, and uses the supplied external ID. Returns true if there
  is a match.
 
@@ -280,14 +280,14 @@
 }
 
 /**
- Some KeyringConnections that have addtional external accounts. PublicizeConnections 
+ Some KeyringConnections that have addtional external accounts. PublicizeConnections
  derived from such a keyring connection can be connected to only one of the keyring
  connection's accounts at a time (either the main one or one of the additional ones).
- Before updating the external ID of such a PublicizeConnection, prompt the user and 
+ Before updating the external ID of such a PublicizeConnection, prompt the user and
  inform them the connection to their curret account will be replaced by their selection.
- 
+
  @param keyringConnection: The keyring connection in question
- @param externalID: The external ID on the keyring connection or one of its additional accounts. 
+ @param externalID: The external ID on the keyring connection or one of its additional accounts.
  @param currentPublicizeConnection: The existing publicize connection derived from the keyring connection.
  */
 - (void)confirmNewConnection:(KeyringConnection *)keyringConnection withExternalID:(NSString *)externalID disconnectsCurrentConnection:(PublicizeConnection *)currentPublicizeConnection
@@ -321,9 +321,9 @@
 }
 
 /**
- Updates an existing publicize connection to use the specified external ID. 
- 
- @param publicizeConnection: The publicize connection to be modified. 
+ Updates an existing publicize connection to use the specified external ID.
+
+ @param publicizeConnection: The publicize connection to be modified.
  @param keyringConnection: The keyring connection from which the publicize connection is derived
  @param externalID: The external id of the keyring connection or one of its additional external accounts.
  */
@@ -349,9 +349,9 @@
 /**
  Forges a publicize connection between the blog and publicize servcie with which
  the `SharingAuthorizationHelper` was initialized.
- 
+
  @param keyConn: The keyring connection from which to create a publicize connection
- @param externalUserID: The external ID of one of the keyring connection's additional external accounts. 
+ @param externalUserID: The external ID of one of the keyring connection's additional external accounts.
  Should be nil if not connecting to one of the additional external accounts.
  */
 - (void)connectToServiceWithKeyringConnection:(KeyringConnection *)keyConn andExternalUserID:(NSString *)externalUserID
@@ -378,7 +378,7 @@
 
 /**
  A convenience method for handling an error when making a publicize connection.
- 
+
  @param error: The error that occurred.
  */
 - (void)connectionFailedWithError:(NSError *)error
@@ -404,7 +404,7 @@
         [self.delegate sharingAuthorizationHelper:self connectionCancelledForService:self.publicizeService];
         return;
     }
-    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize connection is cancelled by the user.")];
+    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Connection canceled", @"Message to show when Publicize connection is canceled by the user.")];
 }
 
 - (void)sharingAccountViewController:(SharingAccountViewController *)controller

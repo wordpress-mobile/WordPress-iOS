@@ -166,7 +166,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)configureNoticePresenter
 {
-    self.noticePresenter = [[NoticePresenter alloc] initWithPresentingViewController:self.window.rootViewController];
+    self.noticePresenter = [[NoticePresenter alloc] init];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options

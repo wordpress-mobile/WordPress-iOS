@@ -8,6 +8,10 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var viewMoreLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
+    @IBOutlet weak var topSeparatorLine: UIView!
+    @IBOutlet weak var bottomSeparatorLine: UIView!
+
+    private typealias Style = WPStyleGuide.Stats
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - Init
@@ -34,7 +38,9 @@ private extension PostingActivityCell {
 
     func applyStyles() {
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more posting activity.")
-        viewMoreLabel.textColor = WPStyleGuide.Stats.actionTextColor
+        viewMoreLabel.textColor = Style.actionTextColor
+        Style.configureViewAsSeperator(topSeparatorLine)
+        Style.configureViewAsSeperator(bottomSeparatorLine)
     }
 
     func addLegend() {

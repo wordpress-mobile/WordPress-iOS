@@ -203,7 +203,6 @@ extension SiteInformationWizardContent: UITableViewDataSource {
     private enum TableStrings {
         static let site = NSLocalizedString("Site Title", comment: "Site info. Title")
         static let tagline = NSLocalizedString("Tagline", comment: "Site info. Tagline")
-        static let taglinePlaceholder = NSLocalizedString("Optional Tagline", comment: "Site info. Tagline placeholder")
         static let footer = NSLocalizedString("The tagline is a short line of text shown right below the title.", comment: "Site info. Table footer.")
     }
 
@@ -230,7 +229,7 @@ extension SiteInformationWizardContent: UITableViewDataSource {
 
         if Rows.tagline.matches(index.row) {
             cell.nameLabel.text = TableStrings.tagline
-            cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.taglinePlaceholder)
+            cell.valueTextField.attributedPlaceholder = attributedPlaceholder(text: TableStrings.tagline)
             cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
         }
 
