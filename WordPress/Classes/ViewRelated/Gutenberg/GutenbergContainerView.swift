@@ -14,18 +14,10 @@ class GutenbergContainerView: UIView, NibLoadable {
 
     func configureTitleTextField() {
         titleTextField.borderStyle = .none
-        titleTextField.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
         titleTextField.font = Fonts.title
         titleTextField.textColor = Colors.title
         titleTextField.backgroundColor = Colors.background
         titleTextField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
-        let leftView = UIView()
-        leftView.translatesAutoresizingMaskIntoConstraints = false
-        leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
-        leftView.widthAnchor.constraint(equalToConstant: Size.titleTextFieldLeftPadding).isActive = true
-        leftView.backgroundColor = Colors.background
-        titleTextField.leftView = leftView
-        titleTextField.leftViewMode = .always
     }
 
     func configureSeparatorView() {
@@ -43,11 +35,5 @@ private extension GutenbergContainerView {
 
     enum Fonts {
         static let title = WPFontManager.notoBoldFont(ofSize: 24.0)
-    }
-
-    enum Size {
-        static let titleTextFieldHeight: CGFloat = 50.0
-        static let titleTextFieldLeftPadding: CGFloat = 10.0
-        static let titleTextFieldBottomSeparatorHeight: CGFloat = 1.0
     }
 }
