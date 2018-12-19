@@ -375,19 +375,11 @@ private extension SiteStatsInsightsViewModel {
             showDisclosure = true
         }
 
-        var rows = [StatsTotalRowData]()
-
-        topComments?.forEach { commentData in
-            rows.append(StatsTotalRowData.init(name: commentData.label,
-                                               data: commentData.value,
-                                               userIconURL: commentData.iconURL,
-                                               showDisclosure: showDisclosure))
-        }
-
-        return TabData.init(tabTitle: tabTitle,
-                            itemSubtitle: itemSubtitle,
-                            dataSubtitle: Comments.dataSubtitle,
-                            dataRows: rows)
+        return tabDataFor(rowData: topComments,
+                          tabTitle: tabTitle,
+                          itemSubtitle: itemSubtitle,
+                          dataSubtitle: Comments.dataSubtitle,
+                          showDisclosure: showDisclosure)
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
@@ -418,17 +410,32 @@ private extension SiteStatsInsightsViewModel {
                                 tabTitle,
                                 totalFollowers)
 
+        return tabDataFor(rowData: followers,
+                          tabTitle: tabTitle,
+                          itemSubtitle: Followers.itemSubtitle,
+                          dataSubtitle: Followers.dataSubtitle,
+                          totalCount: totalCount)
+    }
+
+    func tabDataFor(rowData: [StatsItem]?,
+                    tabTitle: String,
+                    itemSubtitle: String,
+                    dataSubtitle: String,
+                    totalCount: String? = nil,
+                    showDisclosure: Bool = false) -> TabData {
+
         var rows = [StatsTotalRowData]()
 
-        followers?.forEach { follower in
-            rows.append(StatsTotalRowData.init(name: follower.label,
-                                               data: follower.value,
-                                               userIconURL: follower.iconURL))
+        rowData?.forEach { data in
+            rows.append(StatsTotalRowData.init(name: data.label,
+                                               data: data.value,
+                                               userIconURL: data.iconURL,
+                                               showDisclosure: showDisclosure))
         }
 
         return TabData.init(tabTitle: tabTitle,
-                            itemSubtitle: Followers.itemSubtitle,
-                            dataSubtitle: Followers.dataSubtitle,
+                            itemSubtitle: itemSubtitle,
+                            dataSubtitle: dataSubtitle,
                             totalCount: totalCount,
                             dataRows: rows)
     }
