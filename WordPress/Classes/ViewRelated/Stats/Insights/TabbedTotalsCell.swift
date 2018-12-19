@@ -110,7 +110,7 @@ private extension TabbedTotalsCell {
         let noData = tabData.dataRows.count == 0
         totalCountView.isHidden = !showTotalCount || noData
         subtitlesView.isHidden = noData
-        labelsStackViewHeightConstraint.constant = noData ? 0 : defaultLabelsStackViewHeight
+        labelsStackViewHeightConstraint.constant = labelStackViewHeight()
     }
 
     func addRows() {
@@ -154,6 +154,18 @@ private extension TabbedTotalsCell {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
+    }
+
+    func labelStackViewHeight() -> CGFloat {
+        if tabsData[filterTabBar.selectedIndex].dataRows.count == 0 {
+            return 0
+        }
+
+        if !showTotalCount {
+            return subtitlesView.frame.height
+        }
+
+        return defaultLabelsStackViewHeight
     }
 
 }
