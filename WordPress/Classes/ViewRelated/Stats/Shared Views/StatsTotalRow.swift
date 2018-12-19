@@ -37,6 +37,7 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var itemDetailLabel: UILabel!
     @IBOutlet weak var dataLabel: UILabel!
     @IBOutlet weak var disclosureStackView: UIStackView!
+    @IBOutlet weak var disclosureButton: UIButton!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
@@ -79,6 +80,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
         // Toggle optionals
         disclosureStackView.isHidden = !rowData.showDisclosure
+        disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         separatorLine.isHidden = !showSeparator
 
@@ -111,4 +113,11 @@ private extension StatsTotalRow {
         static let userImageSize = CGFloat(28)
     }
 
+    @IBAction func didTapDisclosureButton(_ sender: UIButton) {
+        let alertController =  UIAlertController(title: "More will be disclosed.",
+                                                 message: nil,
+                                                 preferredStyle: .alert)
+        alertController.addCancelActionWithTitle("OK")
+        alertController.presentFromRootViewController()
+    }
 }
