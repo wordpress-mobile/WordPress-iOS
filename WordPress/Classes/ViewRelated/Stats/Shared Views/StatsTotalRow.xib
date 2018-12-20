@@ -13,21 +13,21 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="StatsTotalRow" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhI-k5-uUO" userLabel="Seperator Line">
-                    <rect key="frame" x="60" y="59.5" width="315" height="0.5"/>
+                    <rect key="frame" x="60" y="77.5" width="315" height="0.5"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="0.5" id="8Q0-VF-yTk"/>
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mSM-N7-rqk" userLabel="Row Stack View">
-                    <rect key="frame" x="16" y="11" width="343" height="38"/>
+                    <rect key="frame" x="16" y="11" width="343" height="56"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
-                            <rect key="frame" x="0.0" y="5" width="44" height="28"/>
+                            <rect key="frame" x="0.0" y="14" width="44" height="28"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
                                     <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
@@ -46,16 +46,16 @@
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Wgr-ee-wqj" userLabel="Item Labels Stack View">
-                            <rect key="frame" x="44" y="0.0" width="114.5" height="38"/>
+                            <rect key="frame" x="44" y="0.0" width="114.5" height="56"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Item Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-XE-8Zu">
-                                    <rect key="frame" x="0.0" y="0.0" width="114.5" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="114.5" height="41"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Detail Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pDc-Hw-vuk" userLabel="Item Detail Label">
-                                    <rect key="frame" x="0.0" y="20.5" width="114.5" height="17.5"/>
+                                    <rect key="frame" x="0.0" y="41" width="114.5" height="15"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -63,20 +63,20 @@
                             </subviews>
                         </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0i-Tj-jYT" userLabel="Spacer">
-                            <rect key="frame" x="158.5" y="0.0" width="12" height="38"/>
+                            <rect key="frame" x="158.5" y="3" width="12" height="50"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="12" id="Cth-OX-7WM"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
-                            <rect key="frame" x="170.5" y="9" width="154.5" height="20.5"/>
+                            <rect key="frame" x="170.5" y="18" width="154.5" height="20.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                             <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCN-at-Jm0" userLabel="Disclosure Stack View">
-                            <rect key="frame" x="325" y="12.5" width="18" height="13"/>
+                            <rect key="frame" x="325" y="21.5" width="18" height="13"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKq-Lw-qOg" userLabel="Spacer">
                                     <rect key="frame" x="0.0" y="0.0" width="10" height="13"/>
@@ -96,8 +96,15 @@
                         </stackView>
                     </subviews>
                 </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFN-wo-toX" userLabel="Data Bar">
+                    <rect key="frame" x="60" y="58" width="216" height="5"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="5" id="mVy-72-ALV"/>
+                    </constraints>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zem-TV-rQb" userLabel="Disclosure Button">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="78"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
                         <action selector="didTapDisclosureButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="vR8-FG-YtC"/>
@@ -113,14 +120,19 @@
                 <constraint firstItem="mSM-N7-rqk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="HSW-Wq-ZKH"/>
                 <constraint firstItem="Zem-TV-rQb" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="M4f-48-yOu"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="OyG-1h-jIV"/>
+                <constraint firstItem="mSM-N7-rqk" firstAttribute="trailing" secondItem="MFN-wo-toX" secondAttribute="trailing" constant="83" id="VpS-hA-LzA"/>
+                <constraint firstItem="mSM-N7-rqk" firstAttribute="bottom" secondItem="MFN-wo-toX" secondAttribute="bottom" constant="4" id="ddh-3j-F4d"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="hUw-W8-K8p"/>
+                <constraint firstItem="MFN-wo-toX" firstAttribute="top" secondItem="CNg-XE-8Zu" secondAttribute="bottom" constant="6" id="qPT-lX-MkY"/>
                 <constraint firstItem="mSM-N7-rqk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="qih-kX-a7N"/>
                 <constraint firstItem="Zem-TV-rQb" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="rWM-pn-FHP"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rhI-k5-uUO" secondAttribute="bottom" id="rtJ-TR-3Y4"/>
+                <constraint firstItem="MFN-wo-toX" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="s3u-tF-zXv"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="dataBar" destination="MFN-wo-toX" id="OST-eq-svR"/>
                 <outlet property="dataLabel" destination="AaN-c7-zu2" id="9rP-Mj-snh"/>
                 <outlet property="disclosureButton" destination="Zem-TV-rQb" id="gbW-Cp-vcU"/>
                 <outlet property="disclosureStackView" destination="MCN-at-Jm0" id="UcQ-WC-xKS"/>
@@ -131,7 +143,7 @@
                 <outlet property="itemLabel" destination="CNg-XE-8Zu" id="Ayp-eR-mXV"/>
                 <outlet property="separatorLine" destination="rhI-k5-uUO" id="bld-3U-q5B"/>
             </connections>
-            <point key="canvasLocation" x="-511.19999999999999" y="-331.93403298350825"/>
+            <point key="canvasLocation" x="-511.19999999999999" y="-323.83808095952025"/>
         </view>
     </objects>
     <resources>

@@ -36,6 +36,7 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var itemDetailLabel: UILabel!
     @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var dataBar: UIView!
     @IBOutlet weak var disclosureStackView: UIStackView!
     @IBOutlet weak var disclosureButton: UIButton!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
@@ -96,6 +97,7 @@ private extension StatsTotalRow {
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
         Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsDataBar(dataBar)
     }
 
     func downloadImageFrom(_ iconURL: URL) {

@@ -35,6 +35,11 @@ extension WPStyleGuide {
             seperatorView.backgroundColor = seperatorColor
         }
 
+        static func configureViewAsDataBar(_ dataBar: UIView) {
+            dataBar.backgroundColor = seperatorColor
+            dataBar.layer.cornerRadius = dataBar.frame.height * 0.5
+        }
+
         static func configureLabelAsHeader(_ label: UILabel) {
             label.textColor = headerTextColor
             label.text = label.text?.localizedUppercase
