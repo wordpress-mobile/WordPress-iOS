@@ -7,7 +7,9 @@ protocol RevisionDiffsPageManagerDelegate: class {
     func pageDidFinishAnimating(completed: Bool)
 }
 
-
+// Delegate and data source of the page view controller used
+// by the RevisionDiffsBrowserViewController
+//
 class RevisionDiffsPageManager: NSObject {
     var viewControllers: [RevisionDiffViewController] = []
 
