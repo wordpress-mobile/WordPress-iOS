@@ -1,6 +1,7 @@
 import Gridicons
 
-
+// Revisions browser view controller
+//
 class RevisionDiffsBrowserViewController: UIViewController {
     var revisionState: RevisionBrowserState?
 

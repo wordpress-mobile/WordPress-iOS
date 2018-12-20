@@ -1,7 +1,8 @@
 import Aztec
 import WordPressEditor
 
-
+// View Controller for the Revision Visual preview
+//
 class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "Revisions"
 

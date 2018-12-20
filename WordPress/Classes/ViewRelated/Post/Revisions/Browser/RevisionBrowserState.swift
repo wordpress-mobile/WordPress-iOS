@@ -1,3 +1,6 @@
+// Controller in charge to retrieve the current browser state,
+// used by the RevisionDiffsBrowserViewController
+//
 class RevisionBrowserState {
     typealias RevisionSelectedBlock = (Revision) -> Void
 
