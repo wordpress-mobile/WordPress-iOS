@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-/// Contains the UI corresponsing to the list of verticals
+/// Contains the UI corresponding to the list of verticals
 final class VerticalsWizardContent: UIViewController {
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
@@ -23,8 +23,6 @@ final class VerticalsWizardContent: UIViewController {
 
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
-
-
 
     init(segment: SiteSegment?, service: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
@@ -188,6 +186,13 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vertical = data[indexPath.row]
+        didSelect(vertical)
+    }
+}
+
+private extension VerticalsWizardContent {
     private func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
         let identifier = cellIdentifier(vertical: vertical)
 
@@ -213,10 +218,5 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
         if row == data.count - 1 {
             cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
         }
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vertical = data[indexPath.row]
-        didSelect(vertical)
     }
 }
