@@ -86,7 +86,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>For your videos to have sound on them.</string>
+	<string>Enable microphone access to record sound in your videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To add photos or videos to your posts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

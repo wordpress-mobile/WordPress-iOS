@@ -2,4 +2,4 @@ NSLocationUsageDescription = "เวิร์ดเพรสต้องกา�
 NSLocationWhenInUseUsageDescription = "เวิร์ดเพรสต้องการเพิ่มที่อยู่ของคุณเพื่อเขียนบนเว็บไซต์ที่คุณเปิดใช้งาน geotagging";
 NSCameraUsageDescription = "To take photos or videos to use in your posts.";
 NSPhotoLibraryUsageDescription = "To add photos or videos to your posts.";
-NSMicrophoneUsageDescription = "For your videos to have sound on them.";
+NSMicrophoneUsageDescription = "Enable microphone access to record sound in your videos.";
