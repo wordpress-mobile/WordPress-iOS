@@ -207,7 +207,7 @@ public class MediaProgressCoordinator: NSObject {
         return !failedMediaIDs.isEmpty
     }
 
-    /// Returns a list of media IDs that were cancelled.
+    /// Returns a list of media IDs that were canceled.
     ///
     @objc
     var cancelledMediaIDs: [String] {

@@ -186,7 +186,7 @@ open class QuickStartTourGuide: NSObject {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when cancelling alert in quick start"))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button label when canceling alert in quick start"))
 
         let skipAction = alertController.addDefaultActionWithTitle(NSLocalizedString("Skip", comment: "Button label when skipping all quick start items")) { _ in
             let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []

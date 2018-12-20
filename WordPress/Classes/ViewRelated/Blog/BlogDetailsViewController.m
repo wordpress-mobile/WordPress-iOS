@@ -243,7 +243,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
-    
+
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
@@ -504,7 +504,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self.tableView reloadData];
 
-    if (![self splitViewControllerIsHorizontallyCompact]) {
+    BOOL isValidIndexPath = selectedIndexPath.section < self.tableView.numberOfSections &&
+                            selectedIndexPath.row < [self.tableView numberOfRowsInSection:selectedIndexPath.section];
+    if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
 
         [self.tableView selectRowAtIndexPath:selectedIndexPath
@@ -823,7 +825,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -838,7 +840,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     updateIconAlertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
     updateIconAlertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
     updateIconAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    
+
     [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
                                                  handler:^(UIAlertAction *action) {
                                                      [self updateSiteIcon];
@@ -860,13 +862,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
     self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
     self.imageCropViewController.shouldShowCancelButton = YES;
-   
+
     __weak __typeof(self) weakSelf = self;
     self.imageCropViewController.onCancel = ^(void) {
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
         weakSelf.headerView.updatingIcon = NO;
     };
-    
+
     self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
         [weakSelf uploadDroppedSiteIcon:image onCompletion:^{
@@ -884,7 +886,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.blog.objectID == nil) {
         return;
     }
-    
+
     __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
     NSProgress *mediaCreateProgress;
@@ -913,7 +915,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         } else if (media) {
             [weakSelf updateBlogIconWithMedia:media];
         } else {
-            // If no media and no error the picker was cancelled
+            // If no media and no error the picker was canceled
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
         weakSelf.siteIconPickerPresenter = nil;
@@ -1040,7 +1042,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     BOOL isNewSelection = (indexPath != tableView.indexPathForSelectedRow);
-    
+
     if (isNewSelection) {
         return indexPath;
     } else {
@@ -1055,7 +1057,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
-    
+
     // only preload on wifi
     if (isOnWifi) {
         [self preloadStats];
@@ -1068,7 +1070,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)preloadStats
 {
     NSString *oauthToken = self.blog.authToken;
-    
+
     if (oauthToken) {
         self.statsService = [[WPStatsService alloc] initWithSiteId:self.blog.dotComID siteTimeZone:[self.blogService timeZoneForBlog:self.blog] oauth2Token:oauthToken andCacheExpirationInterval:5 * 60];
         [self.statsService retrieveInsightsStatsWithAllTimeStatsCompletionHandler:nil insightsCompletionHandler:nil todaySummaryCompletionHandler:nil latestPostSummaryCompletionHandler:nil commentsAuthorCompletionHandler:nil commentsPostsCompletionHandler:nil tagsCategoriesCompletionHandler:nil followersDotComCompletionHandler:nil followersEmailCompletionHandler:nil publicizeCompletionHandler:nil streakCompletionHandler:nil progressBlock:nil andOverallCompletionHandler:nil];
@@ -1318,7 +1320,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (self.blog.jetpack) {
         targetURL = [targetURL appendingHideMasterbarParameters];
     }
-    
+
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];

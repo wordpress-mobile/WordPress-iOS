@@ -6,6 +6,7 @@ final class SiteVerticalTests: XCTestCase {
     private struct MockValues {
         static let identifier = Identifier(value: "101")
         static let title = "Landscaper"
+        static let isNew = true
     }
 
     private var subject: SiteVertical?
@@ -32,8 +33,12 @@ final class SiteVerticalTests: XCTestCase {
         XCTAssertEqual(subject?.title, MockValues.title)
     }
 
+    func testIsNewIsNotMutated() {
+        XCTAssertEqual(subject?.isNew, MockValues.isNew)
+    }
+
     func testSiteVerticalsWithSameIdAreEqual() {
-        let secondVertical = SiteVertical(identifier: MockValues.identifier, title: "Cascadia")
+        let secondVertical = SiteVertical(identifier: MockValues.identifier, title: "Cascadia", isNew: true)
 
         XCTAssertEqual(subject, secondVertical)
     }

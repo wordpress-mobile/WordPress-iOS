@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressFlux
 
 extension PostEditor where Self: UIViewController {
 
@@ -22,10 +22,29 @@ extension PostEditor where Self: UIViewController {
 
     func displayHistory() {
         let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
-            if let post = self?.post.update(from: revision) {
-                DispatchQueue.main.async {
-                    self?.post = post
+            guard let post = self?.post.update(from: revision) else {
+                return
+            }
+
+            // show the notice with undo button
+            let notice = Notice(title: "Revision loaded", message: nil, feedbackType: .success, notificationInfo: nil, actionTitle: "Undo", cancelTitle: nil) { (happened) in
+                guard happened else {
+                    return
                 }
+                DispatchQueue.main.async {
+                    guard let original = self?.post.original,
+                        let clone = self?.post.clone(from: original) else {
+                        return
+                    }
+                    self?.post = clone
+
+                    WPAnalytics.track(.postRevisionsLoadUndone)
+                }
+            }
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
+            DispatchQueue.main.async {
+                self?.post = post
             }
         }
         navigationController?.pushViewController(revisionsViewController, animated: true)
