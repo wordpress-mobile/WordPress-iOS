@@ -32,7 +32,9 @@ class RevisionDiffsBrowserViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.frame = CGRect(origin: .zero, size: image.size)
         button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
-        button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
+        button.on(.touchUpInside) { [weak self] _ in
+            self?.moreWasPressed()
+        }
         button.setContentHuggingPriority(.required, for: .horizontal)
         return UIBarButtonItem(customView: button)
     }()
@@ -210,12 +212,8 @@ private extension RevisionDiffsBrowserViewController {
         add(vc)
         vc.revision = revisionState?.currentRevision()
 
-        NSLayoutConstraint.activate([
-            vc.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            vc.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            vc.view.topAnchor.constraint(equalTo: containerView.topAnchor),
-            vc.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            ])
+        containerView.pinSubviewToAllEdges(vc.view)
+
         UIView.animate(withDuration: 0.3) {
             vc.view.alpha = 1.0
             self.nextButton.alpha = 0
@@ -233,7 +231,7 @@ private extension RevisionDiffsBrowserViewController {
         })
     }
 
-    @objc private func moreWasPressed() {
+    private func moreWasPressed() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addDefaultActionWithTitle(contentPreviewState.toggle().title) { [unowned self] _ in
             self.triggerPreviewState()
