@@ -169,8 +169,8 @@ final class VerticalsWizardContent: UIViewController {
         table.reloadData()
     }
 
-    private func didSelect(_ segment: SiteVertical) {
-        selection(segment)
+    private func didSelect(_ vertical: SiteVertical) {
+        selection(vertical)
     }
 }
 
