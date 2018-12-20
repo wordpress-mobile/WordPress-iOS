@@ -180,20 +180,34 @@ open class PlanService: LocalCoreDataService {
 }
 
 extension PlanService {
-    @objc public func plansWithPricesForBlog(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: WordPressComRestApi())
+    @objc public func plansWithPricesForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        guard let restAPI = blog.wordPressComRestApi(),
+            let siteID = blog.dotComID?.intValue else {
+                let description = NSLocalizedString("Unable to update plan prices. There is a problem with the supplied blog.",
+                                                    comment: "This is an error message that could be shown when updating Plans in the app.")
+                let error = NSError(domain: "PlanService", code: 0, userInfo: [NSLocalizedDescriptionKey: description])
+                failure(error)
+                return
+        }
+        let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: restAPI)
         remote_v1_3.getPlansForSite(
             siteID,
             success: { (plans) in
                 guard let planId = plans.activePlan.planID,
                     let planIdInt = Int(planId) else {
+                        // There won't necessarily be an active plan so this is not really a failure
+                        success()
                         return
                 }
                 PlanStorage.updateHasDomainCredit(planIdInt,
                                                   forSite: siteID,
                                                   hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
+                success()
         },
-            failure: { _ in })
+            failure: { error in
+                DDLogError("Failed checking prices for blog for site \(siteID): \(error.localizedDescription)")
+                failure(error)
+        })
     }
 }
 

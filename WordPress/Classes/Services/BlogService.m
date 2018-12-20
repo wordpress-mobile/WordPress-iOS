@@ -285,7 +285,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 
     dispatch_group_enter(syncGroup);
-    [planService plansWithPricesForBlog:[blog.dotComID integerValue] success:^{
+    [planService plansWithPricesForBlog:blog success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking domain credit for site %@: %@", blog.url, error);
