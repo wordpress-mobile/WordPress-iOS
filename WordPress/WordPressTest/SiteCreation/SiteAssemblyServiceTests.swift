@@ -66,7 +66,7 @@ class SiteAssemblyServiceTests: XCTestCase {
                 inProgressExpectation.fulfill()
             }
 
-            if .succeeded == status {
+            if status == .succeeded {
                 successExpectation.fulfill()
             }
         }
@@ -87,7 +87,7 @@ class SiteAssemblyServiceTests: XCTestCase {
                 inProgressExpectation.fulfill()
             }
 
-            if .failed == status {
+            if status == .failed {
                 failureExpectation.fulfill()
             }
         }

@@ -91,7 +91,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                     return
                 }
 
-                if .failed == status {
+                if status == .failed {
                     strongSelf.installErrorStateViewController()
                 }
 
