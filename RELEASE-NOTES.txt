@@ -5,3 +5,4 @@
 * Feeds are filtered and removed from followed sites list in setting.
 * History / Revisions: Added last Analytics event for the undo action.
 * Adds support for .blog subdomains on new sites.
+* Updates the Plans feature to be more descriptive.
