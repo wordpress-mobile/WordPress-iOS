@@ -95,7 +95,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         static let bottomMargin = CGFloat(16)
     }
 
-    private lazy var titleSubtitle: TitleSubtitleHeader = {
+    private(set) lazy var titleSubtitle: TitleSubtitleHeader = {
         let returnValue = TitleSubtitleHeader(frame: .zero)
         returnValue.translatesAutoresizingMaskIntoConstraints = false
 
