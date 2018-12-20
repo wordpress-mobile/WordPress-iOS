@@ -44,7 +44,7 @@ class MediaVideoExporter: MediaExporter {
             case .failedGeneratingVideoPreviewImage:
                 return NSLocalizedString("Video Preview Unavailable", comment: "Message shown if a video preview image is unavailable while the video is being uploaded.")
             case .videoExportSessionCancelled:
-                return NSLocalizedString("Video export cancelled.", comment: "Message shown if a video export is cancelled by the user.")
+                return NSLocalizedString("Video export canceled.", comment: "Message shown if a video export is canceled by the user.")
             default:
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }

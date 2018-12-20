@@ -940,7 +940,7 @@ fileprivate extension ShareModularViewController {
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
         static let publishingTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
         static let savingTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
-        static let cancellingTitle = NSLocalizedString("Cancelling...", comment: "A short message that informs the user the share extension is being cancelled.")
+        static let cancellingTitle = NSLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
         static let noSitesTitle = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
     }
 }

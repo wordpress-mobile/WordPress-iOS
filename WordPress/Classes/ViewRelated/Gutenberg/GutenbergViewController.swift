@@ -16,32 +16,11 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - UI
 
-    private let titleTextField: UITextField = {
-        let textField = UITextField()
-        textField.borderStyle = .none
-        textField.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
-        textField.font = Fonts.title
-        textField.textColor = Colors.title
-        textField.backgroundColor = Colors.background
-        textField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
-        textField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
-        let leftView = UIView()
-        leftView.translatesAutoresizingMaskIntoConstraints = false
-        leftView.heightAnchor.constraint(equalToConstant: Size.titleTextFieldHeight).isActive = true
-        leftView.widthAnchor.constraint(equalToConstant: Size.titleTextFieldLeftPadding).isActive = true
-        leftView.backgroundColor = Colors.background
-        textField.leftView = leftView
-        textField.leftViewMode = .always
-        return textField
-    }()
+    private var titleTextField: UITextField {
+        return containerView.titleTextField
+    }
 
-    private let separatorView: UIView = {
-        let view = UIView()
-        view.heightAnchor.constraint(equalToConstant: Size.titleTextFieldBottomSeparatorHeight).isActive = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Colors.separator
-        return view
-    }()
+    private var containerView = GutenbergContainerView.loadFromNib()
 
     // MARK: - Aztec
 
@@ -98,8 +77,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
+        guard gutenberg.isLoaded else {
+            return
+        }
+
         self.html = html
-        //TODO: Update Gutenberg UI
+        gutenberg.updateHtml(html)
     }
 
     func getHTML() -> String {
@@ -144,6 +127,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
+    private var isFirstGutenbergLayout = true
 
     // MARK: - Initializers
     required init(
@@ -171,17 +155,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Lifecycle methods
-    override func loadView() {
-        let stackView = UIStackView(arrangedSubviews: [titleTextField,
-                                                       separatorView,
-                                                       gutenberg.rootView])
-        stackView.axis = .vertical
-        stackView.backgroundColor = Colors.background
-        view = stackView
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupContainerView()
+        setupGutenbergView()
+        registerEventListeners()
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
@@ -195,6 +174,10 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Functions
+
+    private func registerEventListeners() {
+        titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
+    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -253,6 +236,35 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 }
 
+// MARK: - Views setup
+
+extension GutenbergViewController {
+    private func setupGutenbergView() {
+        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.editorContainerView.addSubview(gutenberg.rootView)
+        containerView.editorContainerView.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
+        containerView.editorContainerView.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
+        containerView.editorContainerView.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
+        containerView.editorContainerView.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
+    }
+
+    private func setupContainerView() {
+        view.backgroundColor = .white
+        view.addSubview(containerView)
+
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        if WPDeviceIdentification.isiPad() {
+            containerView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor).isActive = true
+            containerView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor).isActive = true
+        } else {
+            containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+            containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        }
+        containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+}
+
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
@@ -265,8 +277,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
         if changed {
             self.html = html
-            editorContentWasUpdated()
         }
+
+        editorContentWasUpdated()
 
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
@@ -281,6 +294,23 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 switchToAztec(self)
             }
         }
+    }
+
+    func gutenbergDidLayout() {
+        defer {
+            isFirstGutenbergLayout = false
+        }
+        focusTitleIfNeeded()
+    }
+
+    private func focusTitleIfNeeded() {
+        if shouldFocusTitleAutomatically {
+            titleTextField.becomeFirstResponder()
+        }
+    }
+
+    private var shouldFocusTitleAutomatically: Bool {
+        return !post.hasContent() && !titleTextField.isFirstResponder && isFirstGutenbergLayout
     }
 }
 
@@ -362,21 +392,5 @@ private extension GutenbergViewController {
 
     enum Analytics {
         static let editorSource = "gutenberg"
-    }
-
-    enum Colors {
-        static let title = UIColor.darkText
-        static let separator = WPStyleGuide.greyLighten30()
-        static let background = UIColor.white
-    }
-
-    enum Fonts {
-        static let title = WPFontManager.notoBoldFont(ofSize: 24.0)
-    }
-
-    enum Size {
-        static let titleTextFieldHeight: CGFloat = 50.0
-        static let titleTextFieldLeftPadding: CGFloat = 10.0
-        static let titleTextFieldBottomSeparatorHeight: CGFloat = 1.0
     }
 }

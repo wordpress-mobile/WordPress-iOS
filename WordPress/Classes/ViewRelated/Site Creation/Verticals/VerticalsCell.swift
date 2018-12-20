@@ -1,11 +1,12 @@
 import UIKit
+import Gridicons
 
-class VerticalsCell: UITableViewCell, ModelSettableCell {
+final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
     @IBOutlet weak var title: UILabel!
 
-    var model: SiteVertical? {
+    var vertical: SiteVertical? {
         didSet {
-            title.text = model?.title
+            title.text = vertical?.title
         }
     }
 
@@ -19,6 +20,7 @@ class VerticalsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleTitle() {
-
+        title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
+        title.textColor = WPStyleGuide.darkGrey()
     }
 }

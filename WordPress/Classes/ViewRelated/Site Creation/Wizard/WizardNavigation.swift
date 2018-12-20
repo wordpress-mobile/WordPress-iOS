@@ -1,5 +1,19 @@
 import UIKit
 
+// MARK: - EnhancedSiteCreationNavigationController
+
+private final class EnhancedSiteCreationNavigationController: UINavigationController {
+    override var shouldAutorotate: Bool {
+        return WPDeviceIdentification.isiPad() ? true : false
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return WPDeviceIdentification.isiPad() ? .all : .portrait
+    }
+}
+
+// MARK: - WizardNavigation
+
 final class WizardNavigation {
     private let steps: [WizardStep]
     private let pointer = WizardNavigationPointer()
@@ -9,7 +23,7 @@ final class WizardNavigation {
             return nil
         }
 
-        let returnValue = UINavigationController(rootViewController: root)
+        let returnValue = EnhancedSiteCreationNavigationController(rootViewController: root)
         returnValue.delegate = self.pointer
         return returnValue
     }()
@@ -40,11 +54,11 @@ final class WizardNavigation {
 
 extension WizardNavigation: WizardDelegate {
     func nextStep() {
-        guard let nextPointer = pointer.next(max: steps.count) else {
+        guard !steps.isEmpty, let nextIndex = pointer.next(maxIndex: steps.count - 1) else {
             return
         }
 
-        let nextStep = steps[nextPointer]
+        let nextStep = steps[nextIndex]
 
         navigationController?.pushViewController(nextStep.content, animated: true)
     }
@@ -53,7 +67,7 @@ extension WizardNavigation: WizardDelegate {
 final class WizardNavigationPointer: NSObject, UINavigationControllerDelegate {
     private var value: Int = 0
 
-    func next(max: Int) -> Int? {
+    func next(maxIndex max: Int) -> Int? {
         guard value < max else {
             return nil
         }

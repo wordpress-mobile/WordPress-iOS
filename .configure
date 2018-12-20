@@ -3,5 +3,8 @@
   "pinned_hash": "01b41938322bb0f47648511dc6290036dd73d081",
   "files_to_copy": [
 
+  ],
+  "file_dependencies": [
+    "iOS/WPiOS/"
   ]
 }

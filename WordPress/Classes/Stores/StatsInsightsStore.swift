@@ -9,6 +9,8 @@ enum InsightAction: Action {
     case receivedDotComFollowers(total: String?)
     case receivedEmailFollowers(total: String?)
     case receivedPublicize(items: [StatsItem]?)
+    case receivedTodaysStats(_ todaysStats: StatsSummary?)
+    case receivedPostingActivity(_ postingActivity: StatsStreak?)
     case refreshInsights()
 }
 
@@ -29,6 +31,10 @@ struct InsightStoreState {
     var fetchingEmailFollowers = false
     var publicizeItems: [StatsItem]?
     var fetchingPublicize = false
+    var todaysStats: StatsSummary?
+    var fetchingTodaysStats = false
+    var postingActivity: StatsStreak?
+    var fetchingPostingActivity = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -56,6 +62,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedEmailFollowers(total: total)
         case .receivedPublicize(let items):
             receivedPublicize(items: items)
+        case .receivedTodaysStats(let todaysStats):
+            receivedTodaysStats(todaysStats)
+        case .receivedPostingActivity(let postingActivity):
+            receivedPostingActivity(postingActivity)
         case .refreshInsights:
             refreshInsights()
         }
@@ -89,6 +99,8 @@ private extension StatsInsightsStore {
         state.fetchingDotComFollowers = true
         state.fetchingEmailFollowers = true
         state.fetchingPublicize = true
+        state.fetchingTodaysStats = true
+        state.fetchingPostingActivity = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -101,7 +113,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedMostPopularStats(mostPopularStats))
         }, todaySummaryCompletionHandler: { (todaySummary, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching today summary: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todaySummary))
         }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
             if error != nil {
                 DDLogInfo("Error fetching latest post summary: \(String(describing: error?.localizedDescription))")
@@ -129,7 +144,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedPublicize(items: publicize?.items as? [StatsItem]))
         }, streakCompletionHandler: { (statsStreak, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching stats streak: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(statsStreak))
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
         }, andOverallCompletionHandler: {
@@ -188,6 +206,20 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedTodaysStats(_ todaysStats: StatsSummary?) {
+        transaction { state in
+            state.todaysStats = todaysStats
+            state.fetchingTodaysStats = false
+        }
+    }
+
+    func receivedPostingActivity(_ postingActivity: StatsStreak?) {
+        transaction { state in
+            state.postingActivity = postingActivity
+            state.fetchingPostingActivity = false
+        }
+    }
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
@@ -211,17 +243,79 @@ extension StatsInsightsStore {
     }
 
     func getTotalDotComFollowers() -> String? {
+        // TODO: When the API is able to, return the actual value (not a String).
         return state.totalDotComFollowers == "0" ? "" : state.totalDotComFollowers
     }
 
     func getTotalEmailFollowers() -> String? {
+        // TODO: When the API is able to, return the actual value (not a String).
         return state.totalEmailFollowers == "0" ? "" : state.totalEmailFollowers
     }
 
     func getTotalPublicizeFollowers() -> String? {
-        // TODO: When the API is able to, return total of all state.publicizeItems formatted/localized.
+        // TODO: When the API is able to, return the actual value (not a String)
+        // total of all publicize items.
         // For now, we'll just show a bogus number.
-        return "666,6666,666"
+        return "666,666,666"
+    }
+
+    func getPublicize() -> [StatsItem]? {
+        return state.publicizeItems
+    }
+
+    func getTodaysStats() -> StatsSummary? {
+        return state.todaysStats
+    }
+
+    /// Summarizes the daily posting count for the month in the given date.
+    /// Returns an array containing every day of the month and associated post count.
+    ///
+    func getMonthlyPostingActivityFor(date: Date) -> [PostingActivityDayData] {
+
+        var monthData = [PostingActivityDayData]()
+        let dateComponents = Calendar.current.dateComponents([.year, .month], from: date.normalizedDate())
+
+        // Add every day in the month to the array, seeding with 0 counts.
+        guard let dayRange = Calendar.current.range(of: .day, in: .month, for: date) else {
+            return monthData
+        }
+
+        dayRange.forEach { day in
+            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: day)
+            guard let date = Calendar.current.date(from: components) else {
+                return
+            }
+
+            monthData.append(PostingActivityDayData(date: date, count: 0))
+        }
+
+        // If there is no posting activity at all, return.
+        guard let allPostingActivity = state.postingActivity?.items else {
+            return monthData
+        }
+
+        // If the posting occurred in the requested month, increment the count for that day.
+        allPostingActivity.forEach { postingActivity in
+            let postDate = postingActivity.date.normalizedDate()
+            if let dayIndex = monthData.index(where: { $0.date == postDate }) {
+                monthData[dayIndex].count += 1
+            }
+        }
+
+        return monthData
+    }
+
+    func getYearlyPostingActivityFrom(date: Date) -> [[PostingActivityDayData]] {
+        var monthsData = [[PostingActivityDayData]]()
+
+        // Get last 12 months, in ascending order.
+        for month in (0...11).reversed() {
+            if let monthDate = Calendar.current.date(byAdding: .month, value: -month, to: Date()) {
+                monthsData.append(getMonthlyPostingActivityFor(date: monthDate))
+            }
+        }
+
+        return monthsData
     }
 
     var isFetching: Bool {
@@ -230,6 +324,9 @@ extension StatsInsightsStore {
             state.fetchingMostPopularStats ||
             state.fetchingDotComFollowers ||
             state.fetchingEmailFollowers ||
-            state.fetchingPublicize
+            state.fetchingPublicize ||
+            state.fetchingTodaysStats ||
+            state.fetchingPostingActivity
     }
+
 }

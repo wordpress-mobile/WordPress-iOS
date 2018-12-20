@@ -668,7 +668,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     /// This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
-    /// either by uploading media or cancelling. Doing this in the UIDocumentPickerDelegate methods either did
+    /// either by uploading media or canceling. Doing this in the UIDocumentPickerDelegate methods either did
     /// nothing or the resetting wasn't permanent.
     ///
     fileprivate func resetNavigationColors() {
@@ -3289,14 +3289,14 @@ extension AztecPostViewController {
     }
 
     struct MediaUploadingCancelAlert {
-        static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is canceling an upload.")
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
     }
 
     struct MediaUnableToPlayVideoAlert {
-        static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is canceling an upload.")
         static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 

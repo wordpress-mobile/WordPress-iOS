@@ -56,7 +56,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)dealloc
 {
     [self stopWaitingForConnectionRestored];
-    
+
     _webView.delegate = nil;
     if (_webView.isLoading) {
         [_webView stopLoading];
@@ -89,7 +89,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     NSAssert(_backButton,              @"Missing Outlet!");
     NSAssert(_forwardButton,           @"Missing Outlet!");
     NSAssert(_toolbarBottomConstraint, @"Missing Outlet!");
-    
+
     // TitleView
     self.titleView                          = [NavigationTitleView new];
     self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
@@ -100,7 +100,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     } else {
         self.navigationItem.titleView = self.titleView;
     }
-    
+
     // Buttons
     if (!self.optionsButton) {
         self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareIOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
@@ -113,7 +113,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
-    
+
     self.backButton.image                   = [[Gridicon iconOfType:GridiconTypeChevronLeft] imageFlippedForRightToLeftLayoutDirection];
     self.forwardButton.image                = [[Gridicon iconOfType:GridiconTypeChevronRight] imageFlippedForRightToLeftLayoutDirection];
 
@@ -122,10 +122,10 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.backButton.tintColor               = [WPStyleGuide greyLighten10];
     self.forwardButton.tintColor            = [WPStyleGuide greyLighten10];
     self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
-    
+
     // WebView
     self.webView.scalesPageToFit            = YES;
-    
+
     // Share
     if (!self.secureInteraction) {
         self.navigationItem.rightBarButtonItem  = self.optionsButton;
@@ -147,18 +147,18 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (self.presentingViewController == nil || self.navigationController.viewControllers.count > 1) {
         return;
     }
-    
+
     UIImage *navBackgroundImage             = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarBackground]];
     UIImage *navShadowImage                 = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarShadow]];
-    
+
     UINavigationBar *navigationBar          = self.navigationController.navigationBar;
     navigationBar.shadowImage               = navShadowImage;
     navigationBar.barStyle                  = UIBarStyleDefault;
     [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
-    
+
     self.titleView.titleLabel.textColor     = [WPStyleGuide darkGrey];
     self.titleView.subtitleLabel.textColor  = [WPStyleGuide grey];
-    
+
     self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
     self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
 
@@ -209,7 +209,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if ([ReachabilityUtils alertIsShowing]) {
         [self dismissViewControllerAnimated:false completion:nil];
     }
-    
+
     if (self.authenticator == nil) {
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
         [self loadRequest:request];
@@ -229,7 +229,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (self.addsWPComReferrer) {
         [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
     }
-    
+
     if (self.addsHideMasterbarParameters &&
         ([mutableRequest.URL.host containsString:WPComDomain] || [mutableRequest.URL.host containsString:AutomatticDomain])) {
         mutableRequest.URL = [mutableRequest.URL appendingHideMasterbarParameters];
@@ -245,7 +245,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.forwardButton.enabled = self.webView.canGoForward;
     self.titleView.titleLabel.text = self.loading ? nil : [self documentTitle];
     self.titleView.subtitleLabel.text = self.webView.request.URL.host;
-    
+
     if ([self.webView.request.URL.absoluteString isEqualToString:@""]) {
         self.optionsButton.enabled = FALSE;
     } else {
@@ -262,7 +262,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (!self.webView.canGoBack && !self.webView.canGoForward) {
         return;
     }
-    
+
     if (self.toolbarBottomConstraint.constant == WPWebViewToolbarShownConstant) {
         return;
     }
@@ -307,7 +307,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 
     _url = theURL;
-    
+
     // Prevent double load in viewDidLoad Method
     if (self.isViewLoaded) {
         [self loadWebViewRequest];
@@ -335,9 +335,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     NSString *permaLink             = [self documentPermalink];
     NSMutableArray *activityItems   = [NSMutableArray array];
-    
+
     [activityItems addObject:[NSURL URLWithString:permaLink]];
-    
+
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         if (!completed) {
@@ -346,11 +346,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [WPActivityDefaults trackActivityType:activityType];
     };
 
-    if ([UIDevice isPad]) {        
+    if ([UIDevice isPad]) {
         activityViewController.modalPresentationStyle = UIModalPresentationPopover;
         activityViewController.popoverPresentationController.barButtonItem = self.optionsButton;
     }
-    
+
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
@@ -396,38 +396,38 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         self.loading = YES;
         [self refreshInterface];
     }
-    
+
     return YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView
 {
     DDLogInfo(@"%@ Started Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
-    
+
     // Bypass if we're not loading the "Main Document"
     if (!self.loading) {
         return;
     }
-    
+
     [self.progressView startedLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     DDLogInfo(@"%@ Error Loading [%@]", NSStringFromClass([self class]), error);
-    
+
     // Bypass if we're not loading the "Main Document"
     if (!self.loading) {
         return;
     }
-    
+
     // Refresh the Interface
     self.loading = NO;
-    
+
     [self.progressView finishedLoading];
     [self refreshInterface];
 
-    // Don't show Ajax Cancelled or Frame Load Interrupted errors
+    // Don't show Ajax Canceled or Frame Load Interrupted errors
     if (error.code == WPWebViewErrorAjaxCancelled || error.code == WPWebViewErrorFrameLoadInterrupted) {
         return;
     } else if ([error.domain isEqualToString:WPWebViewWebKitErrorDomain] && error.code == WPWebViewErrorPluginHandledLoad) {
@@ -450,14 +450,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
     DDLogInfo(@"%@ Finished Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
-    
+
     // Bypass if we're not loading the "Main Document"
     if (!self.loading) {
         return;
     }
-    
+
     self.loading = NO;
-    
+
     [self.progressView finishedLoading];
     [self refreshInterface];
     [self showBottomToolbarIfNeeded];

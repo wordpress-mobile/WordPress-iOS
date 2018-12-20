@@ -12,9 +12,9 @@
 - (BOOL)fixAuthTokenIssueAndDo:(WPAuthTokenissueSolverCompletionBlock)onComplete
 {
     NSParameterAssert(onComplete);
-    
+
     BOOL isFixingAuthTokenIssue = NO;
-    
+
     if ([self hasAuthTokenIssues]) {
         UIViewController *controller = [WordPressAuthenticationManager signinForWPComFixingAuthToken:^(BOOL cancelled) {
             if (cancelled) {
@@ -37,7 +37,7 @@
     } else {
         onComplete();
     }
-    
+
     return isFixingAuthTokenIssue;
 }
 
@@ -52,7 +52,7 @@
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
+
     NSInteger blogCount = [blogService blogCountSelfHosted];
     return blogCount == 0;
 }
@@ -68,23 +68,23 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *account = [accountService defaultWordPressComAccount];
-    
+
     BOOL hasAuthTokenIssues = account && ![account authToken];
-    
+
     return hasAuthTokenIssues;
 }
 
 #pragma mark - Alerts
 
 /**
- *  @brief      Shows the alert when the re-authentication is cancelled by the user.
+ *  @brief      Shows the alert when the re-authentication is canceled by the user.
  *
  *  @param      okBlock     The block that will be executed if the user confirms the operation.
  */
 - (void)showCancelReAuthenticationAlertAndOnOK:(WPAuthTokenissueSolverCompletionBlock)okBlock
 {
     NSParameterAssert(okBlock);
-    
+
     NSString *alertTitle = NSLocalizedString(@"Careful!",
                                              @"Title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
     NSString *alertMessage = NSLocalizedString(@"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).",
@@ -93,7 +93,7 @@
                                                     @"Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
     NSString *deleteButtonTitle = NSLocalizedString(@"Delete",
                                                     @"Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-    
+
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
                                                                              message:alertMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];
@@ -122,14 +122,14 @@
     UIWindow *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     alertWindow.rootViewController = [UIViewController new];
     [alertWindow makeKeyAndVisible];
-    
+
     NSString *alertTitle = NSLocalizedString(@"Oops!",
                                              @"Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
     NSString *alertMessage = NSLocalizedString(@"There was a problem connecting to WordPress.com. Please log in again.",
                                                @"Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
     NSString *okButtonTitle = NSLocalizedString(@"OK",
                                                 @"OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
-    
+
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
                                                                              message:alertMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];
@@ -139,7 +139,7 @@
                                                      handler:^(UIAlertAction *action){}];
     [alertController addAction:okAction];
     alertController.modalPresentationStyle = UIModalPresentationPopover;
-    
+
     [alertWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
 }
 

@@ -28,10 +28,10 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Jv5-Jv-7RH" secondAttribute="trailing" id="Lid-Mv-VpV"/>
-                <constraint firstItem="Jv5-Jv-7RH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="SoU-PK-Kee"/>
-                <constraint firstItem="Jv5-Jv-7RH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fne-pl-RTQ"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Jv5-Jv-7RH" secondAttribute="bottom" id="hQS-19-4Nf"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Jv5-Jv-7RH" secondAttribute="bottom" placeholder="YES" id="Anm-7T-nWt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Jv5-Jv-7RH" secondAttribute="trailing" placeholder="YES" id="Lid-Mv-VpV"/>
+                <constraint firstItem="Jv5-Jv-7RH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" placeholder="YES" id="SoU-PK-Kee"/>
+                <constraint firstItem="Jv5-Jv-7RH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" placeholder="YES" id="fne-pl-RTQ"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="138.40000000000001" y="119.1904047976012"/>
