@@ -52,11 +52,11 @@ class ErrorStateViewTests: XCTestCase {
 
         // Then
         let actualTitle = config.title
-        let expectedTitle = NSLocalizedString("There was a problem", comment: "")
+        let expectedTitle = NSLocalizedString("There was a problem", comment: "No comment (test)")
         XCTAssertEqual(expectedTitle, actualTitle)
 
         let actualSubtitle = config.subtitle
-        let expectedSubtitle = NSLocalizedString("Error communicating with the server, please try again", comment: "")
+        let expectedSubtitle = NSLocalizedString("Error communicating with the server, please try again", comment: "No comment (test)")
         XCTAssertEqual(expectedSubtitle, actualSubtitle)
 
         XCTAssertNil(config.retryActionHandler)
@@ -70,11 +70,11 @@ class ErrorStateViewTests: XCTestCase {
 
         // Then
         let actualTitle = config.title
-        let expectedTitle = NSLocalizedString("There was a problem", comment: "")
+        let expectedTitle = NSLocalizedString("There was a problem", comment: "No comment (test)")
         XCTAssertEqual(expectedTitle, actualTitle)
 
         let actualSubtitle = config.subtitle
-        let expectedSubtitle = NSLocalizedString("Error communicating with the server, please try again", comment: "")
+        let expectedSubtitle = NSLocalizedString("Error communicating with the server, please try again", comment: "No comment (test)")
         XCTAssertEqual(expectedSubtitle, actualSubtitle)
 
         XCTAssertNil(config.retryActionHandler)
@@ -88,7 +88,7 @@ class ErrorStateViewTests: XCTestCase {
 
         // Then
         let actualTitle = config.title
-        let expectedTitle = NSLocalizedString("No internet connection", comment: "")
+        let expectedTitle = NSLocalizedString("No internet connection", comment: "No comment (test)")
         XCTAssertEqual(expectedTitle, actualTitle)
 
         let actualSubtitle = config.subtitle
