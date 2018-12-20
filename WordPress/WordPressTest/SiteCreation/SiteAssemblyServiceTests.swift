@@ -53,7 +53,7 @@ class SiteAssemblyServiceTests: XCTestCase {
         XCTAssertEqual(actualStatus, expectedStatus)
     }
 
-    func testSiteAssemblyService_StatusPostRequest_IsSuccess() {
+    func testSiteAssemblyService_StatusPostRequest_WhenMockingHappyPath_IsSuccess_() {
         let inProgressExpectation = expectation(description: "Site assembly service invocation should first transition to in progress.")
         let successExpectation = expectation(description: "Site assembly service invocation should transition to success.")
 
@@ -66,11 +66,32 @@ class SiteAssemblyServiceTests: XCTestCase {
                 inProgressExpectation.fulfill()
             }
 
-            if .succeeded == status {
+            if status == .succeeded {
                 successExpectation.fulfill()
             }
         }
 
         wait(for: [inProgressExpectation, successExpectation], timeout: 10, enforceOrder: true)
+    }
+
+    func testSiteAssemblyService_StatusPostRequest__WhenMockingError_IsFailure() {
+        let inProgressExpectation = expectation(description: "Site assembly service invocation should first transition to in progress.")
+        let failureExpectation = expectation(description: "Site assembly service invocation should transition to failed.")
+
+        let service: SiteAssemblyService = MockSiteAssemblyService(shouldSucceed: false)
+
+        XCTAssertNotNil(pendingSiteInput)
+        let output = pendingSiteInput!
+        service.createSite(creatorOutput: output) { status in
+            if status == .inProgress {
+                inProgressExpectation.fulfill()
+            }
+
+            if status == .failed {
+                failureExpectation.fulfill()
+            }
+        }
+
+        wait(for: [inProgressExpectation, failureExpectation], timeout: 10, enforceOrder: true)
     }
 }

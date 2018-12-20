@@ -6,13 +6,11 @@ import WebKit
 
 /// This view is intended for use as a subview of `SiteAssemblyContentView`.
 /// It depicts an address bar and a picture of scrollable web content.
-///
 final class AssembledSiteView: UIView {
 
     // MARK: Properties
 
     /// A collection of parameters uses for animation & layout of the view.
-    ///
     private struct Parameters {
         static let iPadWidthPortrait        = CGFloat(512)
         static let iPadWidthLandscape       = CGFloat(704)
@@ -40,7 +38,6 @@ final class AssembledSiteView: UIView {
 
     /// This interacts with our `WKNavigationDelegate` to influence the policy behavior before & after site loading.
     /// After the site has been loaded, we want to disable user interaction with the rendered site.
-    ///
     private var webViewHasLoadedContent: Bool = false
 
     /// This informs constraints applied to the view. It _may_ be possible to transition this to intrinsicContentSize.
@@ -121,8 +118,7 @@ final class AssembledSiteView: UIView {
 
     // MARK: Internal behavior
 
-    /// Triggers the new site to load for the first (!) time.
-    ///
+    /// Triggers the new site to load for the first time.
     func loadSite() {
         // NB: Not all of the values from `MockSiteAddressService` are real sites, so we are use a placeholder for now.
         // let urlString = "https://" + domainName
