@@ -2,8 +2,9 @@ class RevisionBrowserState {
     typealias RevisionSelectedBlock = (Revision) -> Void
 
     let revisions: [Revision]
-    var currentIndex: Int
-    var onRevisionSelected: RevisionSelectedBlock
+
+    private (set) var currentIndex: Int
+    private (set) var onRevisionSelected: RevisionSelectedBlock
 
 
     init(revisions: [Revision], currentIndex: Int, onRevisionSelected: @escaping RevisionSelectedBlock) {
