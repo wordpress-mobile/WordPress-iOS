@@ -1064,6 +1064,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadPosts];
         [self preloadPages];
         [self preloadComments];
+        [self preloadMetadata];
     }
 }
 
@@ -1144,6 +1145,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [commentService syncCommentsForBlog:self.blog success:nil failure:nil];
     }
+}
+
+- (void)preloadMetadata
+{
+    __weak __typeof(self) weakSelf = self;
+    [self.blogService syncBlogAndAllMetadata:self.blog
+                           completionHandler:^{
+                               [weakSelf configureTableViewData];
+                               [weakSelf reloadTableViewPreservingSelection];
+                           }];
 }
 
 - (void)scrollToElement:(QuickStartTourElement) element

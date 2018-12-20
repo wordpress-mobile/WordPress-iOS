@@ -2,7 +2,6 @@
 import UIKit
 
 /// Site Creation, Last screen: Site Assembly.
-///
 final class SiteAssemblyStep: WizardStep {
 
     // MARK: Properties
@@ -21,6 +20,11 @@ final class SiteAssemblyStep: WizardStep {
 
     // MARK: SiteAssemblyStep
 
+    /// The designated initializer.
+    ///
+    /// - Parameters:
+    ///   - creator: the in-flight creation instance
+    ///   - service: the service to use for initiating site creation
     init(creator: SiteCreator, service: SiteAssemblyService) {
         self.creator = creator
         self.service = service

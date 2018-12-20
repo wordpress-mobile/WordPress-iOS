@@ -1,3 +1,5 @@
+// View Controller for the Revision HML preview
+//
 class RevisionDiffViewController: UIViewController, StoryboardLoadable {
     static var defaultStoryboardName: String = "Revisions"
 

@@ -5,13 +5,11 @@ import UIKit
 
 /// This view is intended for use as the root view of `SiteAssemblyWizardContent`.
 /// It manages the state transitions that occur as a site is assembled via remote service dialogue.
-///
 final class SiteAssemblyContentView: UIView {
 
     // MARK: Properties
 
     /// A collection of parameters uses for animation & layout of the view.
-    ///
     private struct Parameters {
         static let animationDuration                        = TimeInterval(0.5)
         static let buttonContainerScaleFactor               = CGFloat(2)
@@ -60,6 +58,13 @@ final class SiteAssemblyContentView: UIView {
         }
     }
 
+    /// The view apprising the user of an error encountering during the site assembly attempt.
+    var errorStateView: UIView? {
+        didSet {
+            installErrorStateView()
+        }
+    }
+
     /// The domain name is applied to the appearance of the created site.
     var domainName: String? {
         didSet {
@@ -77,7 +82,6 @@ final class SiteAssemblyContentView: UIView {
     // MARK: SiteAssemblyContentView
 
     /// The designated initializer.
-    ///
     init() {
         self.completionLabel = {
             let label = UILabel()
@@ -143,7 +147,6 @@ final class SiteAssemblyContentView: UIView {
     }
 
     /// This method is intended to be called by its owning view controller when constraints change.
-    ///
     func adjustConstraints() {
         guard let assembledSitePreferredSize = assembledSiteView?.preferredSize,
             let widthConstraint = assembledSiteWidthConstraint else {
@@ -268,19 +271,40 @@ final class SiteAssemblyContentView: UIView {
         ])
     }
 
+    private func installErrorStateView() {
+        guard let errorStateView = errorStateView else {
+            return
+        }
+
+        errorStateView.alpha = 0
+        addSubview(errorStateView)
+
+        NSLayoutConstraint.activate([
+            errorStateView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            errorStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            errorStateView.topAnchor.constraint(equalTo: topAnchor),
+            errorStateView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+    }
+
     private func layoutIdle() {
         completionLabel.alpha = 0
         statusStackView.alpha = 0
+        errorStateView?.alpha = 0
     }
 
     private func layoutInProgress() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
+            errorStateView?.alpha = 0
             statusStackView.alpha = 1
         })
     }
 
     private func layoutFailed() {
-        debugPrint(#function)
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
+            errorStateView?.alpha = 1
+            statusStackView.alpha = 0
+        })
     }
 
     private func layoutSucceeded() {
