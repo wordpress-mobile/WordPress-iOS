@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.4-whats-new"
+msgctxt "v11.4.1-whats-new"
 msgid ""
 "The annoying bug that kept users with author or contributor rights on self-hosted sites from being able to publish posts has been squashed. Publish away, authors!\n"
 "Most of what changes in this update is small or behind-the-scenes — even if you don’t see them, you’ll feel them:\n"
