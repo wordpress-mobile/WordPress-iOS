@@ -7,7 +7,6 @@ import WordPressAuthenticator
 
 /// This view controller manages the final step in the enhanced site creation sequence - invoking the service &
 /// apprising the user of the outcome.
-///
 final class SiteAssemblyWizardContent: UIViewController {
 
     // MARK: Properties
@@ -24,8 +23,16 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
     private let buttonViewController = NUXButtonViewController.instance()
 
+    /// This view controller manages the interaction with error states that can arise during site assembly.
+    private var errorStateViewController: ErrorStateViewController?
+
     // MARK: SiteAssemblyWizardContent
 
+    /// The designated initializer.
+    ///
+    /// - Parameters:
+    ///   - creator: the in-flight creation instance
+    ///   - service: the service to use for initiating site creation
     init(creator: SiteCreator, service: SiteAssemblyService) {
         self.siteCreator = creator
         self.service = service
@@ -61,28 +68,40 @@ final class SiteAssemblyWizardContent: UIViewController {
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
 
-        do {
-            let wizardOutput = try siteCreator.build()
-
-            contentView.domainName = wizardOutput.siteURLString
-            service.createSite(creatorOutput: wizardOutput) { [contentView] status in
-                contentView.status = status
-            }
-        } catch is SiteCreatorOutputError {
-            DDLogError("Unable to proceed in Site Creation flow due to an apparent validation error")
-            assertionFailure()
-        } catch {
-            DDLogError("Unable to proceed due to unexpected error")
-            assertionFailure()
-        }
+        attemptSiteCreation()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        contentView.adjustConstraints()
+
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+            self?.contentView.adjustConstraints()
+        })
     }
 
     // MARK: Private behavior
+
+    private func attemptSiteCreation() {
+        do {
+            let wizardOutput = try siteCreator.build()
+
+            contentView.domainName = wizardOutput.siteURLString
+            service.createSite(creatorOutput: wizardOutput) { [weak self] status in
+                guard let strongSelf = self else {
+                    return
+                }
+
+                if .failed == status {
+                    strongSelf.installErrorStateViewController()
+                }
+
+                strongSelf.contentView.status = status
+            }
+        } catch {
+            DDLogError("Unable to proceed in Site Creation flow due to an unexpected error")
+            assertionFailure(error.localizedDescription)
+        }
+    }
 
     private func installButtonViewController() {
         buttonViewController.delegate = self
@@ -97,12 +116,68 @@ final class SiteAssemblyWizardContent: UIViewController {
         addChild(buttonViewController)
         buttonViewController.didMove(toParent: self)
     }
+
+    private func installErrorStateViewController() {
+        var configuration = ErrorStateViewConfiguration.configuration(type: .siteLoading)
+
+        configuration.contactSupportActionHandler = { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.contactSupportTapped()
+        }
+
+        configuration.retryActionHandler = { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.retryTapped()
+        }
+
+        configuration.dismissalActionHandler = { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.dismissTapped()
+        }
+
+        let errorStateViewController = ErrorStateViewController(with: configuration)
+
+        contentView.errorStateView = errorStateViewController.view
+
+        errorStateViewController.willMove(toParent: self)
+        addChild(errorStateViewController)
+        errorStateViewController.didMove(toParent: self)
+
+        self.errorStateViewController = errorStateViewController
+    }
+}
+
+// MARK: ErrorStateViewController support
+
+private extension SiteAssemblyWizardContent {
+    func contactSupportTapped() {
+        // TODO : capture analytics event via #10335
+
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
+    }
+
+    func dismissTapped(viaDone: Bool = false) {
+        // TODO : using viaDone, capture analytics event via #10335
+        navigationController?.dismiss(animated: true)
+    }
+
+    func retryTapped(viaDone: Bool = false) {
+        // TODO : using viaDone, capture analytics event via #10335
+        attemptSiteCreation()
+    }
 }
 
 // MARK: - NUXButtonViewControllerDelegate
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        navigationController?.dismiss(animated: true)
+        dismissTapped(viaDone: true)
     }
 }
