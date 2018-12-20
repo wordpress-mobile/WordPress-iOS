@@ -1,7 +1,5 @@
-- Yazı sürümleri desteği ekledik, böylece bir yazıdaki değişim geçmişini görebileceksiniz. Eğer gerekirse, bir sürüme geri dönebilirsiniz de!
-- WordPress.com'dan alan adı kredisi kullanma yeteneği ekledik.
-- Gutenberg uyumluluğu için düzenleyicide iyileştirmeler yaptık.
-- YouTube ve Vimeo gömüleri için desteği geri getirdik!
-- Yazı düzenleme sırasında karakter sayımının hassasiyetini geliştirdik.
-- Artık sitenizdeki kullanıcıları yönetmek biraz daha kolay (Açılır menü yerine bir filtre çubuğu kullanılıyor)
-- Bazı hatalar giderildi (uygulama çevrimdışıyken çökme, okuyucu kararlılığında geliştirme, ve düzenleyicide veri kaybına sebep olan bir hatanın giderilmesi), ayrıca arayüzü bir kaç alanda cilaladık.
+Kendileri barındırılan sitelerde kullanıcıların yazıları yayınlayabilmeleri için kullanıcılara yazar veya katkıda bulunan haklarını saklayan can sıkıcı hata giderldi. Yayınlayın yazarlar!
+
+Bu güncellemedeki değişikliklerin çoğu, küçük veya sahne arkasındadır - onları görmüyorsanız bile, bunları hissedeceksiniz: 
+- Çevirmenler için, özellikle de e-posta adresleri ve telefon numaraları gibi öğeleri dinamik öğelerle çevirmeye çalıştıklarında daha iyi destek var. Sonuçta, bu, varsayılan dili İngilizce'den başka bir şey olan daha fazla kullanıcının uygulama genelinde daha iyi çevirileri göreceği anlamına gelir.
+- Bir uygulamayı iPad uygulamasında kullanmak için kullanıcı dostu bir arayüz geliştirmeye devam ediyoruz. Daha iyi marjlar ve hizalamalar gibi özellikler, özellikle de yataydan dikeye döndürüldükten sonra, uygulamanın daha sorunsuz kullanılmasını sağlıyor.

@@ -17,14 +17,16 @@ final class VerticalsWizardContent: UIViewController {
         static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
     }
 
+    private lazy var bottomConstraint: NSLayoutConstraint = {
+        return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
+    }()
+
     private lazy var headerData: SiteCreationHeaderData = {
         let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
         let subtitle = NSLocalizedString("We'll use your answer to add sections to your website.", comment: "Create site, step 2. Select focus of the business. Subtitle")
 
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
-
-
 
     init(segment: SiteSegment?, service: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
@@ -44,6 +46,16 @@ final class VerticalsWizardContent: UIViewController {
         applyTitle()
         setupBackground()
         setupTable()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToKeyboardNotifications()
     }
 
     override func viewDidLayoutSubviews() {
@@ -128,7 +140,7 @@ final class VerticalsWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
+            bottomConstraint,
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
@@ -137,6 +149,7 @@ final class VerticalsWizardContent: UIViewController {
     @objc
     private func textChanged(sender: UITextField) {
         guard let searchTerm = sender.text, searchTerm.isEmpty == false else {
+            clearContent()
             return
         }
 
@@ -160,6 +173,14 @@ final class VerticalsWizardContent: UIViewController {
         }
     }
 
+    private func clearContent() {
+        throttle.cancel()
+
+        table.dataSource = nil
+        table.delegate = nil
+        table.reloadData()
+    }
+
     private func handleError(_ error: Error) {
         debugPrint("=== handling error===")
     }
@@ -171,6 +192,95 @@ final class VerticalsWizardContent: UIViewController {
 
     private func didSelect(_ segment: SiteVertical) {
         selection(segment)
+    }
+}
+
+extension VerticalsWizardContent {
+    private struct Constants {
+        static let bottomMargin: CGFloat = 0.0
+        static let topMargin: CGFloat = 36.0
+    }
+
+    private func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    private func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else { return }
+        let keyboardScreenFrame = payload.frameEnd
+
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+
+        var constraintConstant = convertedKeyboardFrame.height
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
+
+        let animationDuration = payload.animationDuration
+
+        bottomConstraint.constant = constraintConstant
+        view.setNeedsUpdateConstraints()
+
+        let contentInsets = tableContentInsets(bottom: constraintConstant)
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = contentInsets
+                        self?.table.scrollIndicatorInsets = contentInsets
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 0.0
+                        }
+
+            },
+                       completion: nil)
+    }
+
+    private func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
+        guard let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: bottom, right: 0.0)
+        }
+
+        let textfieldFrame = header.textField.frame
+        return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
+    }
+
+    @objc
+    private func keyboardWillHide(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else { return }
+        let animationDuration = payload.animationDuration
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = .zero
+                        self?.table.scrollIndicatorInsets = .zero
+                        self?.bottomConstraint.constant = Constants.bottomMargin
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 1.0
+                        }
+
+            },
+                       completion: nil)
     }
 }
 
