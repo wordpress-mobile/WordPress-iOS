@@ -1467,7 +1467,7 @@ extension AztecPostViewController {
 
             updateFormatBar()
         }
-        else if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
+        if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
             switch mediaIdentifier {
             case .deviceLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedDevicePhotos)
