@@ -2,7 +2,6 @@ import UIKit
 import WordPressShared
 
 class FeatureItemCell: WPTableViewCell {
-    @IBOutlet weak var featureIconImageView: UIImageView!
     @IBOutlet weak var featureTitleLabel: UILabel!
     @IBOutlet weak var featureDescriptionLabel: UILabel!
     @IBOutlet weak var separator: UIView!
@@ -37,7 +36,6 @@ class FeatureItemCell: WPTableViewCell {
 
         featureTitleLabel.text = nil
         featureDescriptionLabel.text = nil
-        featureIconImageView.image = nil
     }
 
     override func layoutSubviews() {

@@ -275,15 +275,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         dispatch_group_leave(syncGroup);
     }];
 
-    PlanServiceWrapper *planWrapper = [[PlanServiceWrapper alloc] initWithBlog:blog];
+    PlanService *planService = [[PlanService alloc] initWithManagedObjectContext:self.managedObjectContext];
     dispatch_group_enter(syncGroup);
-    [planWrapper syncPlansWithCompletion:^(BOOL success, NSError *error) {
-
+    [planService getWpcomPlans:^{
         dispatch_group_leave(syncGroup);
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed updating plans: %@", error);
+        dispatch_group_leave(syncGroup);
+    }];
 
-        if (!success) {
-            DDLogError(@"Failed updating the plans for blog %@: %@", blog.url, error);
-        }
+    dispatch_group_enter(syncGroup);
+    [planService plansWithPricesForBlog:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed checking domain credit for site %@: %@", blog.url, error);
+        dispatch_group_leave(syncGroup);
     }];
 
     // When everything has left the syncGroup (all calls have ended with success
