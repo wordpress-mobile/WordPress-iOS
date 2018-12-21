@@ -1,7 +1,4 @@
-- Kami telah menambahkan dukungan untuk Revisi Pos, yang memungkinkan Anda melihat riwayat perubahan pada pos. Anda bahkan dapat kembali ke revisi tertentu, jika perlu!
-- Kami telah menambahkan kemampuan untuk menebus kredit domain dari WordPress.com.
-- Kami telah membuat penyempurnaan pada penyunting untuk kompatibilitas Gutenberg.
-- Kami telah menghadirkan kembali dukungan untuk penyematan YouTube dan Vimeo!
-- Kami telah menyempurnakan akurasi hitungan karakter saat menyunting pos
-- Kini lebih mudah untuk mengelola pengguna di situs Anda (menggunakan bilah penyaring, bukan buka-bawah)
-- Memperbaiki beberapa bug (crash saat aplikasi offline, menyempurnakan stabilitas pembaca, dan bug yang dapat menyebabkan kehilangan data pada penyunting), serta memoles UI di beberapa bagian
+Bug mengganggu yang membuat pengguna dengan hak penulis atau kontributor di situs self-hosted tidak dapat memublikasikan kiriman yang telah ditekan. Publikasikan!
+Kebanyakan perubahan di pembaruan ini sifatnya kecil atau di balik layar, sekalipun Anda tidak melihatnya, Anda akan merasakannya:
+- Terdapat dukungan yang lebih baik untuk penerjemah, terutama saat mereka mencoba menerjemahkan hal-hal dengan elemen yang berubah-ubah, seperti alamat email dan nomor telepon. Pada akhirnya, ini berarti akan semakin banyak orang dengan bahasa default selain bahasa Inggris melihat terjemahan yang lebih baik di aplikasi.
+- Kami terus menyempurnakan UI agar aplikasi ini bisa maksimal saat digunakan di iPad — hal-hal seperti batas tepi dan penyelarasan yang lebih baik, terutama setelah memutar dari tampilan landscape ke portrait, sehingga membuat seluruh pengalaman menggunakan aplikasi menjadi lebih lancar.
