@@ -45,6 +45,7 @@ class PostTagPickerViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = dataSource
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         reloadTableData()
 
         textView.autocorrectionType = .yes

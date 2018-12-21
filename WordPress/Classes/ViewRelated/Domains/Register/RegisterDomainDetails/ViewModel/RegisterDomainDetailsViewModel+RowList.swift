@@ -45,9 +45,38 @@ extension RegisterDomainDetailsViewModel {
     }
 
     static func serverSideRule(with key: String, hasErrorMessage: Bool = true) -> ValidationRule {
+        let errorMessage: String?
+
+        if !hasErrorMessage {
+            errorMessage = nil
+        } else {
+            switch key {
+            case Localized.ContactInformation.firstName:
+                errorMessage = Localized.validationErrorFirstName
+            case Localized.ContactInformation.lastName:
+                errorMessage = Localized.validationErrorLastName
+            case Localized.ContactInformation.email:
+                errorMessage = Localized.validationErrorEmail
+            case Localized.ContactInformation.country:
+                errorMessage = Localized.validationErrorCountry
+            case Localized.ContactInformation.phone:
+                errorMessage = Localized.validationErrorPhone
+            case Localized.Address.addressLine:
+                errorMessage = Localized.validationErrorAddress
+            case Localized.Address.city:
+                errorMessage = Localized.validationErrorCity
+            case Localized.Address.state:
+                errorMessage = Localized.validationErrorState
+            case Localized.Address.postalCode:
+                errorMessage = Localized.validationErrorPostalCode
+            default:
+                errorMessage = nil
+            }
+        }
+
         return ValidationRule(context: .serverSide,
                               validationBlock: nil, //validation is handled on serverside
-            errorMessage: hasErrorMessage ? String(format: Localized.validationError, key.lowercased()) : nil)
+                              errorMessage: errorMessage)
     }
 
     static var contactInformationRows: [RowType] {
@@ -129,7 +158,7 @@ extension RegisterDomainDetailsViewModel {
             value: nil,
             placeholder: Localized.Address.addressPlaceholder,
             editingStyle: .inline,
-            validationRules: optional ? [] : [nonEmptyRule, serverSideRule(with: key)]
+            validationRules: optional ? [] : [nonEmptyRule, serverSideRule(with: Localized.Address.addressLine)]
             ))
     }
 

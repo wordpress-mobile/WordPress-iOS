@@ -1,7 +1,7 @@
 import UIKit
 import WordPressKit
 
-/// Contains the UI corresponsing to the list of verticals
+/// Contains the UI corresponding to the list of verticals
 final class VerticalsWizardContent: UIViewController {
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
@@ -190,8 +190,8 @@ final class VerticalsWizardContent: UIViewController {
         table.reloadData()
     }
 
-    private func didSelect(_ segment: SiteVertical) {
-        selection(segment)
+    private func didSelect(_ vertical: SiteVertical) {
+        selection(vertical)
     }
 }
 
@@ -298,6 +298,13 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vertical = data[indexPath.row]
+        didSelect(vertical)
+    }
+}
+
+private extension VerticalsWizardContent {
     private func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
         let identifier = cellIdentifier(vertical: vertical)
 
