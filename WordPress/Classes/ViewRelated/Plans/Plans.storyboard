@@ -58,7 +58,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edq-hC-GnQ" userLabel="Plan Description Label">
-                                                    <rect key="frame" x="0.0" y="95" width="350" height="86"/>
+                                                    <rect key="frame" x="0.0" y="95" width="350" height="112"/>
                                                     <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -71,7 +71,7 @@
                                                 <constraint firstItem="f6b-b4-ZgP" firstAttribute="centerX" secondItem="sWC-Ef-Tro" secondAttribute="centerX" id="Rjy-0E-w7v"/>
                                                 <constraint firstAttribute="trailing" secondItem="isU-1g-ArF" secondAttribute="trailing" id="WAM-zu-L2r"/>
                                                 <constraint firstItem="isU-1g-ArF" firstAttribute="leading" secondItem="sWC-Ef-Tro" secondAttribute="leading" id="Ygm-aB-pot"/>
-                                                <constraint firstAttribute="bottom" secondItem="edq-hC-GnQ" secondAttribute="bottom" constant="26" id="ik8-8r-pog"/>
+                                                <constraint firstAttribute="bottom" secondItem="edq-hC-GnQ" secondAttribute="bottom" id="ik8-8r-pog"/>
                                                 <constraint firstItem="f6b-b4-ZgP" firstAttribute="top" secondItem="sWC-Ef-Tro" secondAttribute="top" id="oQX-9b-V4A"/>
                                                 <constraint firstItem="edq-hC-GnQ" firstAttribute="firstBaseline" secondItem="isU-1g-ArF" secondAttribute="firstBaseline" constant="20" id="r34-GW-NxA"/>
                                                 <constraint firstItem="edq-hC-GnQ" firstAttribute="leading" secondItem="sWC-Ef-Tro" secondAttribute="leading" id="sAa-9T-IyL"/>
