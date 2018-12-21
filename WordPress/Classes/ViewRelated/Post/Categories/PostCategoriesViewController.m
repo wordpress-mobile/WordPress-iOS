@@ -45,6 +45,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
     [super viewDidLoad];
 
     self.tableView.accessibilityIdentifier = @"CategoriesList";
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
 

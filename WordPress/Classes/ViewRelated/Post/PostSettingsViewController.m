@@ -152,6 +152,7 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewStickyPostCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
 
     // Compensate for the first section's height of 1.0f
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
