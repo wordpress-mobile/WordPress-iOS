@@ -18,6 +18,7 @@ class GutenbergContainerView: UIView, NibLoadable {
         titleTextField.textColor = Colors.title
         titleTextField.backgroundColor = Colors.background
         titleTextField.placeholder = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        titleTextField.autocapitalizationType = .sentences
     }
 
     func configureSeparatorView() {
