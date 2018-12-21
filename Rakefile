@@ -6,6 +6,8 @@ XCODE_CONFIGURATION="Debug"
 require 'fileutils'
 require 'tmpdir'
 require 'rake/clean'
+require 'yaml'
+require 'digest'
 PROJECT_DIR = File.expand_path(File.dirname(__FILE__))
 
 task default: %w[test]
@@ -53,8 +55,8 @@ namespace :dependencies do
 
   namespace :pod do
     task :check do
-      sh "bundle exec pod check --silent", verbose: false do |ok, res|
-        next if ok
+      sh "bundle exec pod check &> /dev/null", verbose: false do |ok, res|
+        next if ok && podfile_locked?
         dependency_failed("CocoaPods")
         Rake::Task["dependencies:pod:install"].invoke
       end
@@ -254,6 +256,13 @@ end
 def pod(args)
   args = %w[bundle exec pod] + args
   sh(*args)
+end
+
+def podfile_locked?
+  podfile_checksum = Digest::SHA1.file("Podfile")
+  lockfile_checksum = YAML.load(File.read("Podfile.lock"))["PODFILE CHECKSUM"]
+
+  podfile_checksum == lockfile_checksum
 end
 
 def swiftlint_path

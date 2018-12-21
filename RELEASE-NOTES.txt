@@ -1,10 +1,2 @@
-* App Settings Privacy: Added explanation for the 'Remove Location from Media' feature.
-* History / Revisions: Added swipe action to the revisions browser
-* Added a notice and undo button when loading a revision from a post's history.
-* Update strings for cancelled/cancelling to canceled/canceling so as to provide base en_US for localization.
-* Feeds are filtered and removed from followed sites list in setting.
-* History / Revisions: Added last Analytics event for the undo action.
-* Made some improvements to the post settings screen on iPad.
-* History / Revisions: Added switch between HTML and Visual Preview.
-* Adds support for .blog subdomains on new sites.
-* Updates the Plans feature to be more descriptive.
+* Updates the Plans to be more descriptive.
+
