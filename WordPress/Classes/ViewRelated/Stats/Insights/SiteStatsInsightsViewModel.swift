@@ -440,4 +440,23 @@ private extension SiteStatsInsightsViewModel {
                             dataRows: rows)
     }
 
+    func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
+
+        // Get value from maxValueRow
+        guard let maxValueRow = maxValueRow,
+            let maxValueString = maxValueRow.value,
+            let rowsMaxValue = Float(maxValueString) else {
+                return nil
+        }
+
+        // Get value from row
+        guard let rowValueString = row.value,
+            let rowValue = Float(rowValueString) else {
+                return nil
+        }
+
+        // Return percent
+        return rowValue/rowsMaxValue
+    }
+
 }
