@@ -60,10 +60,10 @@ class SiteStatsInsightsViewModel: Observable {
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
-                tableRows.append(createTabbedTotalsStatsRow())
-            case .followers:
                 DDLogDebug("Show \(insightType) here.")
+            case .followers:
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.followers))
+                tableRows.append(createFollowersRow())
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.todaysStats))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
@@ -105,6 +105,7 @@ private extension SiteStatsInsightsViewModel {
         static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
+        static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
     }
 
     struct AllTimeStats {
@@ -124,12 +125,30 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct FollowerTotals {
-        static let wordPressTitle = NSLocalizedString("WordPress.com", comment: "Follower Totals label for WordPress.com followers")
         static let wordPressIcon = Style.imageForGridiconType(.mySites)
-        static let emailTitle = NSLocalizedString("Email", comment: "Follower Totals label for email followers")
         static let emailIcon = Style.imageForGridiconType(.mail)
         static let socialTitle = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
         static let socialIcon = Style.imageForGridiconType(.share)
+    }
+
+    struct Followers {
+        static let totalFollowers = NSLocalizedString("Total %@ Followers: %@", comment: "Label displaying total number of followers for a type. The first %@ is the type (WordPress.com or Email), the second %@ is the total.")
+        static let itemSubtitle = NSLocalizedString("Follower", comment: "Followers label for list of followers.")
+        static let dataSubtitle = NSLocalizedString("Since", comment: "Followers label for time period in list of follower.")
+    }
+
+    enum FollowerType {
+        case wordPressDotCom
+        case email
+
+        var title: String {
+            switch self {
+            case .wordPressDotCom:
+                return NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
+            case .email:
+                return NSLocalizedString("Email", comment: "Label for email followers")
+            }
+        }
     }
 
     struct Publicize {
@@ -214,14 +233,14 @@ private extension SiteStatsInsightsViewModel {
 
         if let totalDotComFollowers = store.getTotalDotComFollowers(),
             !totalDotComFollowers.isEmpty {
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPressTitle,
+            dataRows.append(StatsTotalRowData.init(name: FollowerType.wordPressDotCom.title,
                                                    data: totalDotComFollowers,
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
         if let totalEmailFollowers = store.getTotalEmailFollowers(),
             !totalEmailFollowers.isEmpty {
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.emailTitle,
+            dataRows.append(StatsTotalRowData.init(name: FollowerType.email.title,
                                                    data: totalEmailFollowers,
                                                    icon: FollowerTotals.emailIcon))
         }
@@ -244,7 +263,7 @@ private extension SiteStatsInsightsViewModel {
         // send value.abbreviatedString() to the row.
 
         publicize?.forEach { item in
-            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, iconURL: item.iconURL))
+            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, socialIconURL: item.iconURL))
         }
 
         return dataRows
@@ -301,31 +320,47 @@ private extension SiteStatsInsightsViewModel {
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 
-    func createTabbedTotalsStatsRow() -> TabbedTotalsStatsRow {
+    func createFollowersRow() -> TabbedTotalsStatsRow {
+        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.wordPressDotCom),
+                                               tabDataForFollowerType(.email)],
+                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                    showTotalCount: true)
+    }
 
-        // TODO: replace with real data
+    func tabDataForFollowerType(_ followerType: FollowerType) -> TabData {
 
-        let row = StatsTotalRowData.init(name: "Testing",
-                                         data: Double(6666).abbreviatedString(),
-                                         icon: TodaysStats.visitorsIcon)
+        var tabTitle: String
+        var followers: [StatsItem]?
+        var totalFollowers: String
 
-        let tabOneData = TabData.init(tabTitle: "Tab One",
-                                      itemSubtitle: "Item One",
-                                      dataSubtitle: "Data One",
-                                      totalCount: "Total WordPress.com Followers: \(Double(369258).abbreviatedString())",
-                                      dataRows: [row, row])
+        switch followerType {
+        case .wordPressDotCom:
+            tabTitle = FollowerType.wordPressDotCom.title
+            followers = store.getTopDotComFollowers()
+            totalFollowers = store.getTotalDotComFollowers() ?? ""
+        case .email:
+            tabTitle = FollowerType.email.title
+            followers = store.getTopEmailFollowers()
+            totalFollowers = store.getTotalEmailFollowers() ?? ""
+        }
 
-        let disclosureRow = StatsTotalRowData.init(name: "Testing",
-                                                   data: Double(99999).abbreviatedString(),
-                                                   showDisclosure: true)
+        let totalCount = String(format: Followers.totalFollowers,
+                                tabTitle,
+                                totalFollowers)
 
-        let tabTwoData = TabData.init(tabTitle: "Tab Two",
-                                      itemSubtitle: "Item Two",
-                                      dataSubtitle: "Data Two",
-                                      totalCount: "Total Email Followers: \(Double(741852).abbreviatedString())",
-                                      dataRows: [disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow, disclosureRow])
+        var rows = [StatsTotalRowData]()
 
-        return TabbedTotalsStatsRow(tabsData: [tabOneData, tabTwoData], siteStatsInsightsDelegate: siteStatsInsightsDelegate, showTotalCount: true)
+        followers?.forEach { follower in
+            rows.append(StatsTotalRowData.init(name: follower.label,
+                                               data: follower.value,
+                                               userIconURL: follower.iconURL))
+        }
+
+        return TabData.init(tabTitle: tabTitle,
+                            itemSubtitle: Followers.itemSubtitle,
+                            dataSubtitle: Followers.dataSubtitle,
+                            totalCount: totalCount,
+                            dataRows: rows)
     }
 
 }

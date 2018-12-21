@@ -26,9 +26,8 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
+    @IBOutlet weak var labelsStackView: UIStackView!
     @IBOutlet weak var totalCountView: UIView!
-    @IBOutlet weak var subtitlesView: UIView!
-
     @IBOutlet weak var totalCountLabel: UILabel!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
@@ -69,6 +68,13 @@ private extension TabbedTotalsCell {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.items = tabsData.map { $0.tabTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+        toggleFilterTabBar()
+    }
+
+    func toggleFilterTabBar() {
+        // If none of the tabs have data, hide the FilterTabBar.
+        let noTabsData = (tabsData.first { $0.dataRows.count > 0 }) == nil
+        filterTabBar.isHidden = noTabsData
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -102,7 +108,7 @@ private extension TabbedTotalsCell {
 
         let noData = tabData.dataRows.count == 0
         totalCountView.isHidden = !showTotalCount || noData
-        subtitlesView.isHidden = noData
+        labelsStackView.isHidden = noData
     }
 
     func addRows() {
@@ -142,11 +148,7 @@ private extension TabbedTotalsCell {
     }
 
     func removeExistingRows() {
-
-        // Skip the first subView, as that is the Labels view.
-        let subViews = rowsStackView.arrangedSubviews.dropFirst()
-
-        subViews.forEach {
+        rowsStackView.arrangedSubviews.forEach {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
