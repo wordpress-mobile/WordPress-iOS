@@ -80,6 +80,7 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
         // Hides cell dividers.
         self.tableView.tableFooterView = [UIView new];
     }
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
 
     [self setupRefreshControl];
 

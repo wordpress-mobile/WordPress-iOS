@@ -2,8 +2,40 @@ import UIKit
 
 enum RegisterDomainDetails {
     enum Localized {
-        static let validationError = NSLocalizedString(
-            "Please enter a valid %@",
+        static let validationErrorFirstName = NSLocalizedString(
+            "Please enter a valid First Name",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorLastName = NSLocalizedString(
+            "Please enter a valid Last Name",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorEmail = NSLocalizedString(
+            "Please enter a valid Email",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorCountry = NSLocalizedString(
+            "Please enter a valid Country",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorPhone = NSLocalizedString(
+            "Please enter a valid phone number",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorAddress = NSLocalizedString(
+            "Please enter a valid address",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorCity = NSLocalizedString(
+            "Please enter a valid City",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorState = NSLocalizedString(
+            "Please enter a valid State",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let validationErrorPostalCode = NSLocalizedString(
+            "Please enter a valid Postal Code",
             comment: "Register Domain - Domain contact information validation error message for an input field"
         )
         static let prefillError = NSLocalizedString(
