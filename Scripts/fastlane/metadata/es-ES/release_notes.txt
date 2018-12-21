@@ -1,8 +1,4 @@
-- Hemos añadido compatibilidad con revisiones de entradas, que te permiten ver un historial de cambios en una entrada. ¡Puedes incluso retroceder a una revisión específica, si es necesario! 
-- Hemos añadido la posibilidad de canjear créditos de dominio de WordPress.com.
-- Hemos hecho mejoras en el editor para la compatibilidad con Gutenberg.
-- ¡Hemos añadido compatibilidad con incrustados de YouTube y Vimeo! 
-- Hemos mejorado la precisión del recuento de caracteres al editar entradas
-- Ahora es un poco más fácil administrar los usuarios de tu sitio (utiliza una barra de filtros en lugar de un menú desplegable)
-- Corregidos algunos errores (un fallo cuando la aplicación está desconectada, mejoró la estabilidad del lector y un error que podría causar alguna pérdida de datos en el editor), y se pulió la interfaz de usuario en unos pocos sitios
-
+Se ha eliminado el molesto error que impedía a los usuarios con derechos de autor o de colaborador en los sitios auto-alojados publicar entradas. ¡A publicar, autores! 
+La mayoría de los cambios en esta actualización son pequeños o se producen entre bastidores; incluso si no los ves, los sentirás:
+- Existe una mejor compatibilidad para los traductores, especialmente cuando intentan traducir cosas con elementos dinámicos, como direcciones de correo electrónico y números de teléfono. En última instancia, esto significa que más personas cuyo idioma predeterminado sea otro que el inglés verán mejores traducciones en toda la aplicación.
+- Seguimos puliendo la interfaz de usuario para hacer que la aplicación sea super fácil para usar en un iPad - cosas como mejores márgenes y alineaciones, especialmente después de rotar de horizontal a vertical, que hacen que toda la experiencia de usar la aplicación sea más fluida.
