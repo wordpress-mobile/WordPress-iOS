@@ -4,6 +4,11 @@ import WordPressComStatsiOS
 
 enum InsightAction: Action {
     case receivedLatestPostSummary(_ latestPostSummary: StatsLatestPostSummary?)
+    case receivedAllTimeStats(_ allTimeStats: StatsAllTime?)
+    case receivedMostPopularStats(_ mostPopularStats: StatsInsights?)
+    case receivedDotComFollowers(total: String?)
+    case receivedEmailFollowers(total: String?)
+    case receivedPublicize(items: [StatsItem]?)
     case refreshInsights()
 }
 
@@ -14,6 +19,16 @@ enum InsightQuery {
 struct InsightStoreState {
     var latestPostSummary: StatsLatestPostSummary?
     var fetchingLatestPostSummary = false
+    var allTimeStats: StatsAllTime?
+    var fetchingAllTimeStats = false
+    var mostPopularStats: StatsInsights?
+    var fetchingMostPopularStats = false
+    var totalDotComFollowers: String?
+    var fetchingDotComFollowers = false
+    var totalEmailFollowers: String?
+    var fetchingEmailFollowers = false
+    var publicizeItems: [StatsItem]?
+    var fetchingPublicize = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -31,6 +46,16 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         switch insightAction {
         case .receivedLatestPostSummary(let latestPostSummary):
             receivedLatestPostSummary(latestPostSummary)
+        case .receivedAllTimeStats(let allTimeStats):
+            receivedAllTimeStats(allTimeStats)
+        case .receivedMostPopularStats(let mostPopularStats):
+            receivedMostPopularStats(mostPopularStats)
+        case .receivedDotComFollowers(let total):
+            receivedDotComFollowers(total: total)
+        case .receivedEmailFollowers(let total):
+            receivedEmailFollowers(total: total)
+        case .receivedPublicize(let items):
+            receivedPublicize(items: items)
         case .refreshInsights:
             refreshInsights()
         }
@@ -59,11 +84,22 @@ private extension StatsInsightsStore {
     func fetchInsights() {
 
         state.fetchingLatestPostSummary = true
+        state.fetchingAllTimeStats = true
+        state.fetchingMostPopularStats = true
+        state.fetchingDotComFollowers = true
+        state.fetchingEmailFollowers = true
+        state.fetchingPublicize = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching all time stats: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimeStats))
         }, insightsCompletionHandler: { (mostPopularStats, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching most popular stats: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedMostPopularStats(mostPopularStats))
         }, todaySummaryCompletionHandler: { (todaySummary, error) in
 
         }, latestPostSummaryCompletionHandler: { (latestPostSummary, error) in
@@ -78,11 +114,20 @@ private extension StatsInsightsStore {
         }, tagsCategoriesCompletionHandler: { (tagsCategories, error) in
 
         }, followersDotComCompletionHandler: { (followersDotCom, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching dot com followers: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(total: followersDotCom?.totalCount))
         }, followersEmailCompletionHandler: { (followersEmail, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching email followers: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(total: followersEmail?.totalCount))
         }, publicizeCompletionHandler: { (publicize, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching publicize: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedPublicize(items: publicize?.items as? [StatsItem]))
         }, streakCompletionHandler: { (statsStreak, error) in
 
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
@@ -108,17 +153,48 @@ private extension StatsInsightsStore {
         }
     }
 
-    func shouldFetch() -> Bool {
-        return !isFetching()
+    func receivedAllTimeStats(_ allTimeStats: StatsAllTime?) {
+        transaction { state in
+            state.allTimeStats = allTimeStats
+            state.fetchingAllTimeStats = false
+        }
     }
 
-    func isFetching() -> Bool {
-        return state.fetchingLatestPostSummary
+    func receivedMostPopularStats(_ mostPopularStats: StatsInsights?) {
+        transaction { state in
+            state.mostPopularStats = mostPopularStats
+            state.fetchingMostPopularStats = false
+        }
+    }
+
+    func receivedDotComFollowers(total: String?) {
+        transaction { state in
+            state.totalDotComFollowers = total
+            state.fetchingDotComFollowers = false
+        }
+    }
+
+    func receivedEmailFollowers(total: String?) {
+        transaction { state in
+            state.totalEmailFollowers = total
+            state.fetchingEmailFollowers = false
+        }
+    }
+
+    func receivedPublicize(items: [StatsItem]?) {
+        transaction { state in
+            state.publicizeItems = items
+            state.fetchingPublicize = false
+        }
+    }
+
+    func shouldFetch() -> Bool {
+        return !isFetching
     }
 
 }
 
-// MARK: - Selectors
+// MARK: - Public Accessors
 
 extension StatsInsightsStore {
 
@@ -126,4 +202,34 @@ extension StatsInsightsStore {
         return state.latestPostSummary
     }
 
+    func getAllTimeStats() -> StatsAllTime? {
+        return state.allTimeStats
+    }
+
+    func getMostPopularStats() -> StatsInsights? {
+        return state.mostPopularStats
+    }
+
+    func getTotalDotComFollowers() -> String? {
+        return state.totalDotComFollowers == "0" ? "" : state.totalDotComFollowers
+    }
+
+    func getTotalEmailFollowers() -> String? {
+        return state.totalEmailFollowers == "0" ? "" : state.totalEmailFollowers
+    }
+
+    func getTotalPublicizeFollowers() -> String? {
+        // TODO: When the API is able to, return total of all state.publicizeItems formatted/localized.
+        // For now, we'll just show a bogus number.
+        return "666,6666,666"
+    }
+
+    var isFetching: Bool {
+        return state.fetchingLatestPostSummary ||
+            state.fetchingAllTimeStats ||
+            state.fetchingMostPopularStats ||
+            state.fetchingDotComFollowers ||
+            state.fetchingEmailFollowers ||
+            state.fetchingPublicize
+    }
 }

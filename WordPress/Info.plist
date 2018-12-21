@@ -86,7 +86,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>For your videos to have sound on them.</string>
+	<string>Enable microphone access to record sound in your videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To add photos or videos to your posts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -119,5 +119,16 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+    <key>NSUserActivityTypes</key>
+    <array>
+        <string>org.wordpress.me</string>
+        <string>org.wordpress.me.appsettings</string>
+        <string>org.wordpress.me.notificationsettings</string>
+        <string>org.wordpress.me.support</string>
+        <string>org.wordpress.mysites</string>
+        <string>org.wordpress.mysites.details</string>
+        <string>org.wordpress.notifications</string>
+        <string>org.wordpress.reader</string>
+    </array>
 </dict>
 </plist>

@@ -10,13 +10,13 @@ extension MediaAttachment {
 
     var uploadID: String? {
         get {
-            return extraAttributes[MediaAttachment.uploadKey]
+            return extraAttributes[MediaAttachment.uploadKey]?.toString()
         }
         set {
             if let nonNilValue = newValue {
-                extraAttributes[MediaAttachment.uploadKey] = "\(nonNilValue)"
+                extraAttributes[MediaAttachment.uploadKey] = .string(String(nonNilValue))
             } else {
-                extraAttributes.removeValue(forKey: MediaAttachment.uploadKey)
+                extraAttributes.remove(named: MediaAttachment.uploadKey)
             }
         }
     }

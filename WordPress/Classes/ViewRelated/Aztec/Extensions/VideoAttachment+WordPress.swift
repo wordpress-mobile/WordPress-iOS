@@ -9,13 +9,13 @@ extension VideoAttachment {
 
     @objc var videoPressID: String? {
         get {
-            return extraAttributes[VideoShortcodeProcessor.videoPressHTMLAttribute]
+            return extraAttributes[VideoShortcodeProcessor.videoPressHTMLAttribute]?.toString()
         }
         set {
             if let nonNilValue = newValue {
-                extraAttributes[VideoShortcodeProcessor.videoPressHTMLAttribute] = nonNilValue
+                extraAttributes[VideoShortcodeProcessor.videoPressHTMLAttribute] = .string(String(nonNilValue))
             } else {
-                extraAttributes.removeValue(forKey: VideoShortcodeProcessor.videoPressHTMLAttribute)
+                extraAttributes.remove(named: VideoShortcodeProcessor.videoPressHTMLAttribute)
             }
         }
     }

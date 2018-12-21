@@ -1,0 +1,4 @@
+De bug die ervoor zorgde dat gebruikers met auteurs- of bijdragersrechten geen berichten konden plaatsen op zelf-gehoste sites, is verwijderd. Tijd om te publiceren, auteurs!
+De meeste wijzigingen van deze update zijn klein of vinden achter de schermen plaats. Je ziet ze misschien niet, maar je merkt ze wel op:
+- Er is verbeterde ondersteuning voor vertalers, vooral als ze proberen om dingen met dynamische elementen te vertalen, zoals e-mailadressen en telefoonnummers. Dit zorgt er uiteindelijk voor dat meer mensen, die Engels niet als standaardtaal gebruiken, verbeterde vertalingen zullen zien in de app.
+- We blijven de UI bijwerken om de app gebruiksvriendelijker te maken voor iPads. Dingen als verbeterde marges en uitlijningen, vooral na een wijziging van de liggende stand naar de rechtopstaande stand, zorgen ervoor de gebruikservaring van de app toeneemt.
