@@ -5,11 +5,11 @@ import UIKit
 
 /// This view is intended for use as the root view of `SiteAssemblyWizardContent`.
 /// It manages the state transitions that occur as a site is assembled via remote service dialogue.
-///
 final class SiteAssemblyContentView: UIView {
 
     // MARK: Properties
 
+    /// A collection of parameters uses for animation & layout of the view.
     private struct Parameters {
         static let animationDuration                        = TimeInterval(0.5)
         static let buttonContainerScaleFactor               = CGFloat(2)
@@ -18,40 +18,61 @@ final class SiteAssemblyContentView: UIView {
         static let statusStackViewSpacing                   = CGFloat(16)
     }
 
+    /// This influences the top of the completion label as it animates into place.
     private var completionLabelTopConstraint: NSLayoutConstraint?
 
+    /// This advises the user that the site creation request completed successfully.
     private(set) var completionLabel: UILabel
 
+    /// This advises the user that the site creation request is underway.
     private let statusLabel: UILabel
 
+    /// The loading indicator provides an indeterminate view of progress as the site is being created.
     private let activityIndicator: UIActivityIndicatorView
 
+    /// The stack view manages the appearance of a status label and a loading indicator.
     private(set) var statusStackView: UIStackView
 
+    /// This influences the top of the assembled site, which varies by device & orientation.
     private var assembledSiteTopConstraint: NSLayoutConstraint?
 
+    /// This influences the height of the assembled site, which varies by device & orientation.
     private var assembledSiteHeightConstraint: NSLayoutConstraint?
 
+    /// This influences the width of the assembled site, which varies by device & orientation.
     private var assembledSiteWidthConstraint: NSLayoutConstraint?
 
+    /// This is a representation of the assembled site.
     private(set) var assembledSiteView: AssembledSiteView?
 
+    /// This constraint influences the presentation of the Done button as it animates into view.
     private var buttonContainerBottomConstraint: NSLayoutConstraint?
 
+    /// We adjust the button container view slightly to account for the Home indicator ("unsafe") region on the device.
     private var buttonContainerContainer: UIView?
 
+    /// The button container view is associated with the root view of a `NUXButtonViewController`
     var buttonContainerView: UIView? {
         didSet {
             installButtonContainerView()
         }
     }
 
+    /// The view apprising the user of an error encountering during the site assembly attempt.
+    var errorStateView: UIView? {
+        didSet {
+            installErrorStateView()
+        }
+    }
+
+    /// The domain name is applied to the appearance of the created site.
     var domainName: String? {
         didSet {
             installAssembledSiteView()
         }
     }
 
+    /// The status of site assembly. As the state advances, the view updates in concert.
     var status: SiteAssemblyStatus = .idle {
         didSet {
             setNeedsLayout()
@@ -60,6 +81,7 @@ final class SiteAssemblyContentView: UIView {
 
     // MARK: SiteAssemblyContentView
 
+    /// The designated initializer.
     init() {
         self.completionLabel = {
             let label = UILabel()
@@ -124,6 +146,7 @@ final class SiteAssemblyContentView: UIView {
         configure()
     }
 
+    /// This method is intended to be called by its owning view controller when constraints change.
     func adjustConstraints() {
         guard let assembledSitePreferredSize = assembledSiteView?.preferredSize,
             let widthConstraint = assembledSiteWidthConstraint else {
@@ -152,7 +175,6 @@ final class SiteAssemblyContentView: UIView {
         case .failed:
             layoutFailed()
         case .succeeded:
-            assembledSiteView?.urlString = "https://longreads.com"
             layoutSucceeded()
         }
     }
@@ -249,22 +271,45 @@ final class SiteAssemblyContentView: UIView {
         ])
     }
 
+    private func installErrorStateView() {
+        guard let errorStateView = errorStateView else {
+            return
+        }
+
+        errorStateView.alpha = 0
+        addSubview(errorStateView)
+
+        NSLayoutConstraint.activate([
+            errorStateView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            errorStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            errorStateView.topAnchor.constraint(equalTo: topAnchor),
+            errorStateView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+    }
+
     private func layoutIdle() {
         completionLabel.alpha = 0
         statusStackView.alpha = 0
+        errorStateView?.alpha = 0
     }
 
     private func layoutInProgress() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
+            errorStateView?.alpha = 0
             statusStackView.alpha = 1
         })
     }
 
     private func layoutFailed() {
-        debugPrint(#function)
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
+            errorStateView?.alpha = 1
+            statusStackView.alpha = 0
+        })
     }
 
     private func layoutSucceeded() {
+        assembledSiteView?.loadSite()
+
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
             statusStackView.alpha = 0
             }, completion: { [weak self] completed in

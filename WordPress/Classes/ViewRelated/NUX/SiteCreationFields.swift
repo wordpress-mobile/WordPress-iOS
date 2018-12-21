@@ -22,6 +22,7 @@ class SiteCreationFields {
     var tagline: String?
     var theme: Theme?
     var domain = ""
+    var type: SiteType?
 
     // MARK: - Instance Methods
 

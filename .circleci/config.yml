@@ -57,11 +57,20 @@ jobs:
             - vendor/
       - run:
           name: Danger
-          command: bundle exec danger --fail-on-errors=true
+          command: |
+            if [ -n "$DANGER_GITHUB_API_TOKEN" ]; then
+              bundle exec danger --fail-on-errors=true
+            else
+              echo "Not running danger because $DANGER_GITHUB_API_TOKEN is not found"
+            fi
 
 workflows:
   version: 2
   wordpress_ios:
     jobs:
-      - danger
+      - danger:
+          filters:
+            branches:
+              # Disable Danger on develop
+              ignore: develop
       - build_and_test
