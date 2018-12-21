@@ -3,6 +3,7 @@ import UIKit
 struct StatsTotalRowData {
     var name: String
     var data: String
+    var dataBarPercent: Float?
     var icon: UIImage?
     var socialIconURL: URL?
     var userIconURL: URL?
@@ -11,6 +12,7 @@ struct StatsTotalRowData {
 
     init(name: String,
          data: String,
+         dataBarPercent: Float? = nil,
          icon: UIImage? = nil,
          socialIconURL: URL? = nil,
          userIconURL: URL? = nil,
@@ -18,6 +20,7 @@ struct StatsTotalRowData {
          showDisclosure: Bool = false) {
         self.name = name
         self.data = data
+        self.dataBarPercent = dataBarPercent
         self.nameDetail = nameDetail
         self.icon = icon
         self.socialIconURL = socialIconURL
@@ -36,6 +39,7 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var itemDetailLabel: UILabel!
     @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var dataBarView: UIView!
     @IBOutlet weak var dataBar: UIView!
     @IBOutlet weak var disclosureStackView: UIStackView!
     @IBOutlet weak var disclosureButton: UIButton!
@@ -84,6 +88,7 @@ class StatsTotalRow: UIView, NibLoadable {
         disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         separatorLine.isHidden = !showSeparator
+        dataBarView.isHidden = (rowData.dataBarPercent == nil)
 
         applyStyles()
     }
@@ -122,4 +127,5 @@ private extension StatsTotalRow {
         alertController.addCancelActionWithTitle("OK")
         alertController.presentFromRootViewController()
     }
+
 }
