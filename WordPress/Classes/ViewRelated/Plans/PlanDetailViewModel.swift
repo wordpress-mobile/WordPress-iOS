@@ -25,14 +25,10 @@ struct PlanDetailViewModel {
         case .ready(let features):
             let featureSlugs = plan.features.split(separator: ",")
             // Assume the order of the slugs is the order we want to display features.
-            var planFeatures = [PlanFeature]()
-            for slug in featureSlugs {
-                for feature in features {
-                    if feature.slug == slug {
-                        planFeatures.append(feature)
-                        break
-                    }
-                }
+            let planFeatures = featureSlugs.compactMap { slug -> PlanFeature? in
+                return features.filter { feature -> Bool in
+                    return feature.slug == slug
+                }.first
             }
 
             let rows: [ImmuTableRow] = planFeatures.map({ feature in
