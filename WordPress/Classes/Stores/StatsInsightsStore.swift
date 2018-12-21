@@ -6,8 +6,8 @@ enum InsightAction: Action {
     case receivedLatestPostSummary(_ latestPostSummary: StatsLatestPostSummary?)
     case receivedAllTimeStats(_ allTimeStats: StatsAllTime?)
     case receivedMostPopularStats(_ mostPopularStats: StatsInsights?)
-    case receivedDotComFollowers(total: String?)
-    case receivedEmailFollowers(total: String?)
+    case receivedDotComFollowers(_ followerStats: StatsGroup?)
+    case receivedEmailFollowers(_ followerStats: StatsGroup?)
     case receivedPublicize(items: [StatsItem]?)
     case receivedTodaysStats(_ todaysStats: StatsSummary?)
     case receivedPostingActivity(_ postingActivity: StatsStreak?)
@@ -26,8 +26,10 @@ struct InsightStoreState {
     var mostPopularStats: StatsInsights?
     var fetchingMostPopularStats = false
     var totalDotComFollowers: String?
+    var topDotComFollowers: [StatsItem]?
     var fetchingDotComFollowers = false
     var totalEmailFollowers: String?
+    var topEmailFollowers: [StatsItem]?
     var fetchingEmailFollowers = false
     var publicizeItems: [StatsItem]?
     var fetchingPublicize = false
@@ -56,10 +58,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllTimeStats(allTimeStats)
         case .receivedMostPopularStats(let mostPopularStats):
             receivedMostPopularStats(mostPopularStats)
-        case .receivedDotComFollowers(let total):
-            receivedDotComFollowers(total: total)
-        case .receivedEmailFollowers(let total):
-            receivedEmailFollowers(total: total)
+        case .receivedDotComFollowers(let followerStats):
+            receivedDotComFollowers(followerStats)
+        case .receivedEmailFollowers(let followerStats):
+            receivedEmailFollowers(followerStats)
         case .receivedPublicize(let items):
             receivedPublicize(items: items)
         case .receivedTodaysStats(let todaysStats):
@@ -132,12 +134,12 @@ private extension StatsInsightsStore {
             if error != nil {
                 DDLogInfo("Error fetching dot com followers: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(total: followersDotCom?.totalCount))
+            self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(followersDotCom))
         }, followersEmailCompletionHandler: { (followersEmail, error) in
             if error != nil {
                 DDLogInfo("Error fetching email followers: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(total: followersEmail?.totalCount))
+            self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(followersEmail))
         }, publicizeCompletionHandler: { (publicize, error) in
             if error != nil {
                 DDLogInfo("Error fetching publicize: \(String(describing: error?.localizedDescription))")
@@ -185,16 +187,18 @@ private extension StatsInsightsStore {
         }
     }
 
-    func receivedDotComFollowers(total: String?) {
+    func receivedDotComFollowers(_ followerStats: StatsGroup?) {
         transaction { state in
-            state.totalDotComFollowers = total
+            state.topDotComFollowers = followerStats?.items as? [StatsItem]
+            state.totalDotComFollowers = followerStats?.totalCount
             state.fetchingDotComFollowers = false
         }
     }
 
-    func receivedEmailFollowers(total: String?) {
+    func receivedEmailFollowers(_ followerStats: StatsGroup?) {
         transaction { state in
-            state.totalEmailFollowers = total
+            state.topEmailFollowers = followerStats?.items as? [StatsItem]
+            state.totalEmailFollowers = followerStats?.totalCount
             state.fetchingEmailFollowers = false
         }
     }
@@ -242,9 +246,17 @@ extension StatsInsightsStore {
         return state.mostPopularStats
     }
 
+    func getTopDotComFollowers() -> [StatsItem]? {
+        return state.topDotComFollowers
+    }
+
     func getTotalDotComFollowers() -> String? {
         // TODO: When the API is able to, return the actual value (not a String).
         return state.totalDotComFollowers == "0" ? "" : state.totalDotComFollowers
+    }
+
+    func getTopEmailFollowers() -> [StatsItem]? {
+        return state.topEmailFollowers
     }
 
     func getTotalEmailFollowers() -> String? {

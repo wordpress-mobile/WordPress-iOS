@@ -40,6 +40,7 @@
                         <constraint firstAttribute="trailing" secondItem="gbG-Q7-nUb" secondAttribute="trailing" constant="16" id="2oK-CI-3Zd"/>
                         <constraint firstItem="gbG-Q7-nUb" firstAttribute="centerY" secondItem="N97-9D-WNI" secondAttribute="centerY" id="DpW-YP-ewg"/>
                         <constraint firstItem="Umw-QX-aI2" firstAttribute="top" secondItem="N97-9D-WNI" secondAttribute="top" constant="12" id="Ifk-YO-ipw"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="f3R-CD-B7v"/>
                         <constraint firstItem="Umw-QX-aI2" firstAttribute="leading" secondItem="N97-9D-WNI" secondAttribute="leading" constant="16" id="wMp-ZA-nkO"/>
                     </constraints>
                 </view>

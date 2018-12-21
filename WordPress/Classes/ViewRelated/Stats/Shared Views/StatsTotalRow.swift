@@ -4,21 +4,24 @@ struct StatsTotalRowData {
     var name: String
     var data: String
     var icon: UIImage?
-    var iconURL: URL?
+    var socialIconURL: URL?
+    var userIconURL: URL?
     var nameDetail: String?
     var showDisclosure: Bool
 
     init(name: String,
          data: String,
          icon: UIImage? = nil,
-         iconURL: URL? = nil,
+         socialIconURL: URL? = nil,
+         userIconURL: URL? = nil,
          nameDetail: String? = nil,
          showDisclosure: Bool = false) {
         self.name = name
         self.data = data
         self.nameDetail = nameDetail
         self.icon = icon
-        self.iconURL = iconURL
+        self.socialIconURL = socialIconURL
+        self.userIconURL = userIconURL
         self.showDisclosure = showDisclosure
     }
 }
@@ -49,16 +52,23 @@ class StatsTotalRow: UIView, NibLoadable {
     func configure(rowData: StatsTotalRowData) {
 
         // Configure icon
-        imageStackView.isHidden = true
+        let haveIcon = rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
+        imageStackView.isHidden = !haveIcon
 
         if let icon = rowData.icon {
-            self.imageWidthConstraint.constant = Constants.defaultImageSize
+            imageWidthConstraint.constant = Constants.defaultImageSize
             imageView.image = icon
-            imageStackView.isHidden = false
         }
 
-        if let iconURL = rowData.iconURL {
-            self.imageWidthConstraint.constant = Constants.socialImageSize
+        if let iconURL = rowData.socialIconURL {
+            imageWidthConstraint.constant = Constants.socialImageSize
+            downloadImageFrom(iconURL)
+        }
+
+        if let iconURL = rowData.userIconURL {
+            imageWidthConstraint.constant = Constants.userImageSize
+            imageView.layer.cornerRadius = Constants.userImageSize * 0.5
+            imageView.clipsToBounds = true
             downloadImageFrom(iconURL)
         }
 
@@ -89,7 +99,6 @@ private extension StatsTotalRow {
     func downloadImageFrom(_ iconURL: URL) {
         WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
             self.imageView.image = image
-            self.imageStackView.isHidden = false
         }, failure: { error in
             DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
             self.imageStackView.isHidden = true
@@ -99,6 +108,7 @@ private extension StatsTotalRow {
     struct Constants {
         static let defaultImageSize = CGFloat(24)
         static let socialImageSize = CGFloat(20)
+        static let userImageSize = CGFloat(28)
     }
 
 }

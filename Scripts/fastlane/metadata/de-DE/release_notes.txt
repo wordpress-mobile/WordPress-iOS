@@ -1,7 +1,4 @@
-- Wir haben Support für die Revision von Beiträgen hinzugefügt. So kannst du einen Verlauf von Änderungen an einem Beitrag ansehen. Falls nötig, kannst du auch zu einer bestimmten Revision zurückblättern.
-- Wir haben die Möglichkeit hinzugefügt, Domain-Guthaben von WordPress.com einzulösen.
-- Wir haben Verbesserungen am Editor für die Kompatibilität mit Gutenberg vorgenommen.
-- Wir haben den Support für YouTube- und Vimeo-Einbettungen wiederaufgenommen.
-- Wir haben die Genauigkeit der Wortzählfunktion beim Bearbeiten von Beiträgen verbessert
-- Jetzt ist es durch die Verwendung einer Filterleiste statt eines Aufklappmenüs ein bisschen einfacher, die Benutzer auf deiner Website zu verwalten
-- Einige Fehlerbehebungen (Absturz, wenn die App offline ist, Stabilitätsverbesserungen des Readers, Fehler im Editor, der zu Datenverlust führen könnte) und Verbesserungen der Benutzeroberfläche
+Der nervige Fehler, der Benutzer mit Autor- oder Mitarbeiterrechten auf selbst gehosteten Websites daran hinderte, Beiträge zu veröffentlichen, wurde behoben. Viel Spaß beim Veröffentlichen, liebe Autoren!
+Die meisten Änderungen in diesem Update sind klein oder geschehen hinter den Kulissen – auch wenn du sie nicht sehen kannst, wirst du sie bemerken:
+- Bessere Unterstützung für Übersetzer, insbesondere beim Übersetzen von Inhalten mit dynamischen Elementen wie E-Mail-Adressen und Telefonnummern. Letztendlich bedeutet das, dass mehr Personen, deren Standardsprache nicht Englisch ist, bessere Übersetzungen in der App bekommen.
+- Wir arbeiten weiterhin an der Benutzeroberfläche, um die App für iPads zu optimieren – bessere Ränder und Ausrichtung, insbesondere nach dem Drehen aus dem Querformat ins Hochformat, die das gesamte Nutzungserlebnis der App besser machen.

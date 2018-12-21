@@ -1,7 +1,4 @@
-- Adicionamos suporte a revisão de posts que permite que você veja o histórico de alterações de um post. Você pode até voltar para uma revisão específica se precisar.
-- Agora é possível resgatar crédito de domínios do WordPress.com.
-- Fizemos melhorias de compatibilidade com o editor para o Gutenberg.
-- Trouxemos de volta o suporte a incorporação de vídeos do YouTube e Vimeo.
-- Melhoramos a precisão do contador de caracteres ao editar posts.
-- Agora é mais fácil gerenciar os usuários de seu site (use um filtro ao invés de um menu).
-- Correção de erros e melhoria da interface em alguns lugares.
+O erro irritante que impedia que usuários com permissão de autor ou colaborador publicassem novos posts em sites auto-hospedados foi corrigido. Vocês já podem publicar!
+A maioria das alterações nessa nova versão são pequenas ou quase invisíveis. Você pode não vê-las, mas elas estão aqui:
+- Há um suporte melhor para tradutores, especialmente quando estão tentando traduzir elementos dinâmicos como endereços de e-mail ou telefones. Isso significa que todos aqueles que não usam o aplicativo em Inglês verão traduções melhores.
+- Continuamos a fazer melhorias na interface do aplicativo para deixá-lo sensacional em iPads. Alteramos algumas margens e alinhamentos, especialmente depois de rotacionar a tela de paisagem para retrato para deixar a experiência mais suave.
