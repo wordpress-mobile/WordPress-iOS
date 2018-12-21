@@ -2,11 +2,6 @@ import Foundation
 import CoreData
 
 public class Plan: NSManagedObject {
-
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Plan> {
-        return NSFetchRequest<Plan>(entityName: "Plan")
-    }
-
     @NSManaged public var order: Int16
     @NSManaged public var tagline: String
     @NSManaged public var shortname: String
@@ -16,5 +11,4 @@ public class Plan: NSManagedObject {
     @NSManaged public var summary: String
     @NSManaged public var features: String
     @NSManaged public var icon: String
-
 }
