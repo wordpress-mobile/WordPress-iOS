@@ -379,7 +379,8 @@ private extension SiteStatsInsightsViewModel {
                           tabTitle: tabTitle,
                           itemSubtitle: itemSubtitle,
                           dataSubtitle: Comments.dataSubtitle,
-                          showDisclosure: showDisclosure)
+                          showDisclosure: showDisclosure,
+                          showDataBar: true)
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
@@ -422,14 +423,18 @@ private extension SiteStatsInsightsViewModel {
                     itemSubtitle: String,
                     dataSubtitle: String,
                     totalCount: String? = nil,
-                    showDisclosure: Bool = false) -> TabData {
+                    showDisclosure: Bool = false,
+                    showDataBar: Bool = false) -> TabData {
 
         var rows = [StatsTotalRowData]()
 
-        rowData?.forEach { data in
-            rows.append(StatsTotalRowData.init(name: data.label,
-                                               data: data.value,
-                                               userIconURL: data.iconURL,
+        rowData?.forEach { row in
+            let dataBarPercent = showDataBar ? dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
+
+            rows.append(StatsTotalRowData.init(name: row.label,
+                                               data: row.value,
+                                               dataBarPercent: dataBarPercent,
+                                               userIconURL: row.iconURL,
                                                showDisclosure: showDisclosure))
         }
 
