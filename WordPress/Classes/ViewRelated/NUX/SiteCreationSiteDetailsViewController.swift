@@ -82,7 +82,7 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
     private func configureView() {
         setupHelpButtonIfNeeded()
 
-        navigationItem.title = NSLocalizedString("Create New Site cesar", comment: "Create New Site title.")
+        navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         nextButton.isEnabled = false
         siteTitleField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
