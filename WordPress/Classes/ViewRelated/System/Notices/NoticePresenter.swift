@@ -49,7 +49,8 @@ class NoticePresenter: NSObject {
 
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
-            guard let currentContainer = self?.currentContainer,
+            guard let self = self,
+                let currentContainer = self.currentContainer,
                 let userInfo = notification.userInfo,
                 let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
@@ -57,25 +58,21 @@ class NoticePresenter: NSObject {
             }
             let keyboardFrame = keyboardFrameValue.cgRectValue
             let keyboardHeight = keyboardFrame.size.height
+
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                guard let self = self else {
-                    return
-                }
                 currentContainer.bottomConstraint?.constant = -keyboardHeight
                 self.view.layoutIfNeeded()
             })
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
-            guard let currentContainer = self?.currentContainer,
+            guard let self = self,
+                let currentContainer = self.currentContainer,
                 let userInfo = notification.userInfo,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
                     return
             }
 
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                guard let self = self else {
-                    return
-                }
                 currentContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
                 self.view.layoutIfNeeded()
             })
