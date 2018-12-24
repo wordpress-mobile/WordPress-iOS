@@ -93,6 +93,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         didSet {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
             attachmentDelegate = AztecAttachmentDelegate(post: post)
+            mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             refreshInterface()
         }
     }
