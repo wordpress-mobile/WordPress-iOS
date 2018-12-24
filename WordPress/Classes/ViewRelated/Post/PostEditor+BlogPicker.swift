@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 extension PostEditor where Self: UIViewController {
 
