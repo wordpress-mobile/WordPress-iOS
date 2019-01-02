@@ -56,6 +56,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         removeExistingRows()
     }
 }
