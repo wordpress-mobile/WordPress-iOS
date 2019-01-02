@@ -1236,7 +1236,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPlans
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPlans withBlog:self.blog];
-    PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
+    PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     [self showDetailViewController:controller sender:self];
 
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];

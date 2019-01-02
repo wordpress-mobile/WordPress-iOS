@@ -116,6 +116,10 @@ private extension StatsTotalRow {
             imageWidthConstraint.constant = Constants.userImageSize
             imageView.layer.cornerRadius = Constants.userImageSize * 0.5
             imageView.clipsToBounds = true
+
+            // Use placeholder image until real image is loaded.
+            imageView.image = Style.gravatarPlaceholderImage()
+
             downloadImageFrom(iconURL)
         }
     }

@@ -19,8 +19,8 @@ class PlanDetailViewController: UIViewController {
     var viewModel: PlanDetailViewModel! {
         didSet {
             tableViewModel = viewModel.tableViewModel
-            title = viewModel.plan.title
-            accessibilityLabel = viewModel.plan.fullTitle
+            title = viewModel.plan.name
+            accessibilityLabel = viewModel.plan.name
             if isViewLoaded {
                 populateHeader()
                 updateNoResults()
@@ -33,8 +33,6 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var dropshadowImageView: UIImageView!
     @IBOutlet weak var planTitleLabel: UILabel!
     @IBOutlet weak var planDescriptionLabel: UILabel!
-    @IBOutlet weak var planPriceLabel: UILabel!
-    @IBOutlet weak var purchaseButton: UIButton?
     @IBOutlet weak var separator: UIView!
 
     fileprivate lazy var currentPlanLabel: UIView = {
@@ -54,12 +52,10 @@ class PlanDetailViewController: UIViewController {
         return wrapper
     }()
 
-    class func controllerWithPlan(_ plan: Plan, siteID: Int, activePlan: Plan?, price: String) -> PlanDetailViewController {
+    class func controllerWithPlan(_ plan: Plan, features: [PlanFeature]) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: NSStringFromClass(self)) as! PlanDetailViewController
-
-        controller.viewModel = PlanDetailViewModel(plan: plan, siteID: siteID, activePlan: activePlan, price: price, features: .loading)
-
+        controller.viewModel = PlanDetailViewModel(plan: plan, features: .ready(features))
         return controller
     }
 
@@ -76,25 +72,9 @@ class PlanDetailViewController: UIViewController {
         updateNoResults()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        registerForPurchaseNotifications()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        unregisterForPurchaseNotifications()
-    }
-
     fileprivate func configureAppearance() {
         planTitleLabel.textColor = WPStyleGuide.darkGrey()
         planDescriptionLabel.textColor = WPStyleGuide.grey()
-        planPriceLabel.textColor = WPStyleGuide.grey()
-
-        purchaseButton?.tintColor = WPStyleGuide.wordPressBlue()
-
         dropshadowImageView.backgroundColor = UIColor.white
         configurePlanImageDropshadow()
 
@@ -120,22 +100,13 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate func populateHeader() {
         let plan = viewModel.plan
-        let iconUrl = viewModel.isActivePlan ? plan.activeIconUrl : plan.iconUrl
-        planImageView.downloadResizedImage(from: iconUrl, pointSize: planImageView.bounds.size)
-        planTitleLabel.text = plan.fullTitle
-        planDescriptionLabel.text = plan.tagline
-        planPriceLabel.text = viewModel.priceText
-
-        if !viewModel.purchaseButtonVisible {
-            purchaseButton?.removeFromSuperview()
+        if let iconURL = URL(string: plan.icon) {
+            planImageView.downloadResizedImage(from: iconURL, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: planImageView.bounds.size)
         } else {
-            purchaseButton?.isSelected = viewModel.purchaseButtonSelected
+            planImageView.image = UIImage(named: "plan-placeholder")
         }
-
-        if viewModel.isActivePlan {
-            purchaseWrapperView.addSubview(currentPlanLabel)
-            purchaseWrapperView.pinSubviewToAllEdgeMargins(currentPlanLabel)
-        }
+        planTitleLabel.text = plan.name
+        planDescriptionLabel.text = plan.tagline
     }
 
     override func viewDidLayoutSubviews() {
@@ -154,77 +125,6 @@ class PlanDetailViewController: UIViewController {
         if size.height != headerView.frame.size.height {
             headerView.frame.size.height = size.height
             tableView.tableHeaderView = headerView
-        }
-    }
-
-    // MARK: - IBActions
-
-    @IBAction fileprivate func purchaseTapped() {
-        guard let identifier = viewModel.plan.productIdentifier else {
-            return
-        }
-        purchaseButton?.isSelected = true
-        let store = StoreKitStore()
-        store.getProductsWithIdentifiers(
-            Set([identifier]),
-            success: { [viewModel] products in
-                do {
-                    try StoreKitCoordinator.instance.purchaseProduct(products[0], forSite: (viewModel?.siteID)!)
-                } catch StoreCoordinatorError.paymentAlreadyInProgress {
-                    self.purchaseButton?.isSelected = false
-                } catch {}
-            },
-            failure: { error in
-                DDLogError("Error fetching Store products: \(error)")
-                self.purchaseButton?.isSelected = false
-        })
-    }
-
-    fileprivate func registerForPurchaseNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                                         selector: #selector(storeTransactionDidFinish(_:)),
-                                                         name: NSNotification.Name(rawValue: StoreKitCoordinator.TransactionDidFinishNotification),
-                                                         object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                                         selector: #selector(storeTransactionDidFail(_:)),
-                                                         name: NSNotification.Name(rawValue: StoreKitCoordinator.TransactionDidFailNotification),
-                                                         object: nil)
-    }
-
-    fileprivate func unregisterForPurchaseNotifications() {
-        NotificationCenter.default.removeObserver(self,
-                                                            name: NSNotification.Name(rawValue: StoreKitCoordinator.TransactionDidFinishNotification),
-                                                            object: nil)
-
-        NotificationCenter.default.removeObserver(self,
-                                                            name: NSNotification.Name(rawValue: StoreKitCoordinator.TransactionDidFailNotification),
-                                                            object: nil)
-    }
-
-    @objc fileprivate func storeTransactionDidFinish(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo,
-        let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String else { return }
-
-        if productID == viewModel.plan.productIdentifier {
-            purchaseButton?.isSelected = false
-
-            let postPurchaseViewController = PlanPostPurchaseViewController(plan: viewModel.plan)
-            present(postPurchaseViewController, animated: true)
-        }
-    }
-
-    @objc fileprivate func storeTransactionDidFail(_ notification: Foundation.Notification) {
-        purchaseButton?.isSelected = false
-
-        if let userInfo = notification.userInfo,
-            let productID = userInfo[StoreKitCoordinator.NotificationProductIdentifierKey] as? String,
-            let error = userInfo[NSUnderlyingErrorKey] as? NSError, productID == viewModel.plan.productIdentifier {
-            let alert = UIAlertController(title: NSLocalizedString("Purchase Failed", comment: "Title of alert displayed when an in-app purchase couldn't be completed."),
-                                          message: error.localizedDescription,
-                                          preferredStyle: .alert)
-            alert.addActionWithTitle(NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb."), style: .cancel, handler: nil)
-            alert.presentFromRootViewController()
         }
     }
 

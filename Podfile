@@ -52,7 +52,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 1.5.2'
+    pod 'WordPressKit', '~> 1.6.0-beta'
     ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'b2d5ec226b65634071948dc00290dd88d51f6434'
     ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
@@ -80,7 +80,7 @@ def shared_test_pods
 end
 
 def gutenberg_pod(name)
-    gutenberg_branch='master'
+    gutenberg_branch='develop'
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
@@ -100,6 +100,7 @@ target 'WordPress' do
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
+    gutenberg_pod 'react-native-safe-area'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
     pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git', :tag => 'v0.1.3'
 
