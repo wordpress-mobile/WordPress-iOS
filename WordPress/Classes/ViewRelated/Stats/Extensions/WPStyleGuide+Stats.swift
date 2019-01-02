@@ -107,6 +107,10 @@ extension WPStyleGuide {
             return Gridicon.iconOfType(iconType, withSize: gridiconSize).imageWithTintColor(tintColor.styleGuideColor)
         }
 
+        static func gravatarPlaceholderImage() -> UIImage? {
+            return UIImage(named: "gravatar")
+        }
+
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
             filterTabBar.tintColor = filterTintColor
             filterTabBar.deselectedTabColor = filterDeselectedColor
