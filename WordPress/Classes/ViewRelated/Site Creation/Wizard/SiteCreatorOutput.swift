@@ -12,7 +12,7 @@ struct SiteCreatorOutput {
     let segmentIdentifier: Int64
 
     /// Maps to `site_vertical`
-    let verticalIdentifier: Int64
+    let verticalIdentifier: String
 
     /// Maps to `site_tagline`
     let tagline: String
