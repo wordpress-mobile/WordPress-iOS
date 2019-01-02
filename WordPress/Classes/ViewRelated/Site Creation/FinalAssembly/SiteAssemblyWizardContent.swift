@@ -26,6 +26,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// This view controller manages the interaction with error states that can arise during site assembly.
     private var errorStateViewController: ErrorStateViewController?
 
+    /// Locally tracks the network connection status via `NetworkStatusDelegate`
+    private var isNetworkActive = ReachabilityUtils.isInternetReachable()
+
     // MARK: SiteAssemblyWizardContent
 
     /// The designated initializer.
@@ -68,7 +71,11 @@ final class SiteAssemblyWizardContent: UIViewController {
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
 
-        attemptSiteCreation()
+        observeNetworkStatus()
+
+        if service.currentStatus == .idle {
+            attemptSiteCreation()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -87,15 +94,21 @@ final class SiteAssemblyWizardContent: UIViewController {
 
             contentView.domainName = wizardOutput.siteURLString
             service.createSite(creatorOutput: wizardOutput) { [weak self] status in
-                guard let strongSelf = self else {
+                guard let self = self else {
                     return
                 }
 
                 if status == .failed {
-                    strongSelf.installErrorStateViewController()
+                    let errorType: ErrorStateViewType
+                    if self.isNetworkActive == false {
+                        errorType = .networkUnreachable
+                    } else {
+                        errorType = .siteLoading
+                    }
+                    self.installErrorStateViewController(with: errorType)
                 }
 
-                strongSelf.contentView.status = status
+                self.contentView.status = status
             }
         } catch {
             DDLogError("Unable to proceed in Site Creation flow due to an unexpected error")
@@ -117,28 +130,28 @@ final class SiteAssemblyWizardContent: UIViewController {
         buttonViewController.didMove(toParent: self)
     }
 
-    private func installErrorStateViewController() {
-        var configuration = ErrorStateViewConfiguration.configuration(type: .siteLoading)
+    private func installErrorStateViewController(with type: ErrorStateViewType) {
+        var configuration = ErrorStateViewConfiguration.configuration(type: type)
 
         configuration.contactSupportActionHandler = { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.contactSupportTapped()
+            self.contactSupportTapped()
         }
 
         configuration.retryActionHandler = { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.retryTapped()
+            self.retryTapped()
         }
 
         configuration.dismissalActionHandler = { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.dismissTapped()
+            self.dismissTapped()
         }
 
         let errorStateViewController = ErrorStateViewController(with: configuration)
@@ -171,6 +184,14 @@ private extension SiteAssemblyWizardContent {
     func retryTapped(viaDone: Bool = false) {
         // TODO : using viaDone, capture analytics event via #10335
         attemptSiteCreation()
+    }
+}
+
+// MARK: - NetworkStatusDelegate
+
+extension SiteAssemblyWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
     }
 }
 
