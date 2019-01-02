@@ -121,14 +121,15 @@ private extension StatsTotalRow {
     }
 
     func configureDataBarWithPercent(_ dataBarPercent: Float?) {
-        if let dataBarPercent = dataBarPercent {
-            dataBarView.isHidden = false
-            let barWidthOffset = dataBarPercent * dataBarMaxWidth
-            dataBarTrailingConstraint.constant = CGFloat(dataBarMaxWidth + (dataBarMaxWidth - barWidthOffset))
+
+        guard let dataBarPercent = dataBarPercent else {
+            dataBarView.isHidden = true
             return
         }
 
-        dataBarView.isHidden = true
+        dataBarView.isHidden = false
+        let barWidthOffset = dataBarPercent * dataBarMaxWidth
+        dataBarTrailingConstraint.constant = CGFloat(dataBarMaxWidth + (dataBarMaxWidth - barWidthOffset))
     }
 
     func downloadImageFrom(_ iconURL: URL) {
