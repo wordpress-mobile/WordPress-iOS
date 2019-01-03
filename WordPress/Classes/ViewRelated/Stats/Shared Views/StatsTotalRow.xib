@@ -66,10 +66,10 @@
                                     </subviews>
                                 </stackView>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Tf-rO-mQw">
-                                    <rect key="frame" x="0.0" y="0.0" width="114.5" height="15"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="114.5" height="13"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFN-wo-toX" userLabel="Data Bar">
-                                            <rect key="frame" x="0.0" y="6" width="271" height="5"/>
+                                            <rect key="frame" x="0.0" y="8" width="271" height="5"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="5" id="mVy-72-ALV"/>
@@ -79,8 +79,8 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="MFN-wo-toX" firstAttribute="leading" secondItem="9Tf-rO-mQw" secondAttribute="leading" id="P7j-uc-KcJ"/>
-                                        <constraint firstItem="MFN-wo-toX" firstAttribute="top" secondItem="9Tf-rO-mQw" secondAttribute="top" constant="6" id="VGY-tC-RcO"/>
-                                        <constraint firstAttribute="bottom" secondItem="MFN-wo-toX" secondAttribute="bottom" constant="4" id="c9g-1F-kl8"/>
+                                        <constraint firstItem="MFN-wo-toX" firstAttribute="top" secondItem="9Tf-rO-mQw" secondAttribute="top" constant="8" id="VGY-tC-RcO"/>
+                                        <constraint firstAttribute="bottom" secondItem="MFN-wo-toX" secondAttribute="bottom" id="c9g-1F-kl8"/>
                                     </constraints>
                                 </view>
                             </subviews>
