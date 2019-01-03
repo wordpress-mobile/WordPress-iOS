@@ -1,11 +1,9 @@
-* Made some improvements to the History/Revisions feature:
-    * You can now easily swipe between revisions.
-    * You can now easily switch between HTML and visual mode when viewing a revision.
-    * Added an alert with an undo button when you apply a revision.
-* Added a better description of the "Remove Location from Media" setting to help you understand what it means.
-* The feeds that we show you by default in Reader no longer show up as sites you have followed in settings.
-* Made some improvements to the post settings screen on iPad.
-* Added support for .blog subdomains for new sites.
-* Fixed a crash that could sometimes happen when deleting a site on iPad.
-* Fixed a crash on the "About" screen in App Settings.
-* Improved non-english strings for domain registration.
+* If you start a new site on the app, you can now register your very own .blog subdomain!
+* When you try to delete a site on an iPad, the app will no longer crash (it sometimes would).
+* Fixed a crash on the “About” screen in App Settings.
+* Refreshed the post settings screen so that it looks better on iPad
+
+With a fresh round of improvements to the History/Revisions feature, you can now…
+* Swipe between revisions in an instant.
+* Switch between HTML and Visual modes when viewing a revision.
+* Change your mind if you apply a revision with a new Undo button.
