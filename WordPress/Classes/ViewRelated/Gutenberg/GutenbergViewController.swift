@@ -12,6 +12,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case close
         case more
         case switchToAztec
+        case switchBlog
     }
 
     // MARK: - UI
@@ -218,6 +219,11 @@ class GutenbergViewController: UIViewController, PostEditor {
         mode.toggle()
     }
 
+    func requestHTML(for reason: RequestHTMLReason) {
+        requestHTMLReason = reason
+        gutenberg.requestHTML()
+    }
+
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -232,8 +238,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Switch to Aztec
 
     func savePostEditsAndSwitchToAztec() {
-        requestHTMLReason = .switchToAztec
-        gutenberg.requestHTML()
+        requestHTML(for: .switchToAztec)
     }
 }
 
@@ -293,6 +298,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             case .switchToAztec:
                 switchToAztec(self)
+            case .switchBlog:
+                blogPickerWasPressed()
             }
         }
     }
@@ -364,22 +371,19 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        requestHTMLReason = .close
-        gutenberg.requestHTML()
+        requestHTML(for: .close)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-        requestHTMLReason = .more
-        gutenberg.requestHTML()
+        requestHTML(for: .more)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, blogPickerWasPressed sender: UIButton) {
-        blogPickerWasPressed()
+        requestHTML(for: .switchBlog)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
-        requestHTMLReason = .publish
-        gutenberg.requestHTML()
+        requestHTML(for: .publish)
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
