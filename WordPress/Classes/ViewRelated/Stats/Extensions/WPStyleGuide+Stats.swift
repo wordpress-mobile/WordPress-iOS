@@ -112,13 +112,13 @@ extension WPStyleGuide {
         }
 
         static func configureFilterTabBar(_ filterTabBar: FilterTabBar, forTabbedCard: Bool = false) {
-            filterTabBar.tabSizingStyle = .equalWidths
             filterTabBar.dividerColor =  filterDividerColor
             filterTabBar.deselectedTabColor = filterDeselectedColor
             filterTabBar.tintColor = defaultFilterTintColor
 
             // For FilterTabBar on TabbedTotalsCell
             if forTabbedCard {
+                filterTabBar.tabSizingStyle = .equalWidths
                 filterTabBar.tintColor = tabbedCardFilterTintColor
                 filterTabBar.selectedTitleColor = defaultTextColor
             }

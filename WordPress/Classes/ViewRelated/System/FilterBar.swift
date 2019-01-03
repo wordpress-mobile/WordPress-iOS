@@ -124,6 +124,8 @@ class FilterTabBar: UIControl {
     enum TabSizingStyle {
         /// The tabs will fill the space available to the filter bar,
         /// with all tabs having equal widths. Tabs will not scroll.
+        /// Because of different language widths, ideally this should only be
+        /// used for 3 tabs or less.
         case equalWidths
         /// The tabs will have differing widths which fit their content size.
         /// If the tabs are too large to fit in the area available, the
