@@ -56,7 +56,10 @@ class SiteStatsInsightsViewModel: Observable {
                                                                dataSubtitle: MostPopularStats.dataSubtitle,
                                                                dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: TagsAndCategories.itemSubtitle,
+                                                               dataSubtitle: TagsAndCategories.dataSubtitle,
+                                                               dataRows: createTagsAndCategoriesRows()))
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
@@ -107,6 +110,7 @@ private extension SiteStatsInsightsViewModel {
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
+        static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
     }
 
     struct AllTimeStats {
@@ -193,6 +197,11 @@ private extension SiteStatsInsightsViewModel {
         static let likesIcon = Style.imageForGridiconType(.star)
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
         static let commentsIcon = Style.imageForGridiconType(.comment)
+    }
+
+    struct TagsAndCategories {
+        static let itemSubtitle = NSLocalizedString("Title", comment: "'Tags and Categories' label for the tag/category name.")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -346,6 +355,45 @@ private extension SiteStatsInsightsViewModel {
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+        let tagsAndCategories = store.getTopTagsAndCategories()
+        var dataRows = [StatsTotalRowData]()
+
+        tagsAndCategories?.forEach { item in
+
+            let disclosureURL: URL? = {
+                if let action = item.actions.first as? StatsItemAction {
+                    return action.url
+                }
+                return nil
+            }()
+
+            let icon: UIImage? = {
+                switch item.alternateIconValue {
+                case "category":
+                    return Style.imageForGridiconType(.folder)
+                case "tag":
+                    return Style.imageForGridiconType(.tag)
+                default:
+                    return nil
+                }
+            }()
+
+            // TODO: when the API returns the actual value,
+            // send item.value.abbreviatedString() to the row.
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value,
+                                             icon: icon,
+                                             showDisclosure: true,
+                                             disclosureURL: disclosureURL)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {
