@@ -389,7 +389,7 @@ private class TabBarButton: UIButton {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
         }
     }
 }
