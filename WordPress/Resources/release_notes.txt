@@ -1,7 +1,7 @@
 * If you start a new site on the app, you can now register your very own .blog subdomain!
 * When you try to delete a site on an iPad, the app will no longer crash (it sometimes would).
 * Fixed a crash on the “About” screen in App Settings.
-* Refreshed the post settings screen so that it looks better on iPad
+* Refreshed the post settings screen so that it looks better on iPad.
 
 With a fresh round of improvements to the History/Revisions feature, you can now…
 * Swipe between revisions in an instant.
