@@ -23,33 +23,33 @@
                         <constraint firstAttribute="height" constant="0.5" id="8Q0-VF-yTk"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C3Z-mt-zBe" userLabel="Content Stack View">
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="g8z-3Z-7pN" userLabel="Content Stack View">
                     <rect key="frame" x="16" y="11" width="343" height="55.5"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mSM-N7-rqk" userLabel="Row Stack View">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="55.5"/>
+                        <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
+                            <rect key="frame" x="-44" y="14" width="44" height="28"/>
                             <subviews>
-                                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cH2-js-8i2" userLabel="Image Stack View">
-                                    <rect key="frame" x="-44" y="14" width="44" height="28"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
-                                            <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="28" id="Ope-3W-fHa"/>
-                                                <constraint firstAttribute="width" secondItem="NMN-Qx-YFo" secondAttribute="height" multiplier="1:1" id="gla-bY-oRI"/>
-                                            </constraints>
-                                        </imageView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
-                                            <rect key="frame" x="28" y="0.0" width="16" height="28"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                </stackView>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Wgr-ee-wqj" userLabel="Item Labels Stack View">
-                                    <rect key="frame" x="0.0" y="8.5" width="114.5" height="38.5"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NMN-Qx-YFo">
+                                    <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="28" id="Ope-3W-fHa"/>
+                                        <constraint firstAttribute="width" secondItem="NMN-Qx-YFo" secondAttribute="height" multiplier="1:1" id="gla-bY-oRI"/>
+                                    </constraints>
+                                </imageView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PEe-XQ-xh2" userLabel="Spacer">
+                                    <rect key="frame" x="28" y="0.0" width="16" height="28"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="16" id="qRY-b9-qyj"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C3Z-mt-zBe" userLabel="Body Stack View">
+                            <rect key="frame" x="0.0" y="8.5" width="114.5" height="38.5"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Wgr-ee-wqj" userLabel="Labels Stack View">
+                                    <rect key="frame" x="0.0" y="0.0" width="114.5" height="38.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Item Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-XE-8Zu">
                                             <rect key="frame" x="0.0" y="0.0" width="114.5" height="20.5"/>
@@ -65,61 +65,61 @@
                                         </label>
                                     </subviews>
                                 </stackView>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0i-Tj-jYT" userLabel="Spacer">
-                                    <rect key="frame" x="114.5" y="3" width="12" height="50"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="12" id="Cth-OX-7WM"/>
-                                    </constraints>
-                                </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
-                                    <rect key="frame" x="126.5" y="17.5" width="216.5" height="20.5"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                    <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCN-at-Jm0" userLabel="Disclosure Stack View">
-                                    <rect key="frame" x="343" y="21.5" width="18" height="13"/>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Tf-rO-mQw">
+                                    <rect key="frame" x="0.0" y="0.0" width="114.5" height="15"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKq-Lw-qOg" userLabel="Spacer">
-                                            <rect key="frame" x="0.0" y="0.0" width="10" height="13"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFN-wo-toX" userLabel="Data Bar">
+                                            <rect key="frame" x="0.0" y="6" width="260" height="5"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="10" id="dhV-kW-aex"/>
+                                                <constraint firstAttribute="height" constant="5" id="mVy-72-ALV"/>
                                             </constraints>
                                         </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="lva-cI-tIa" userLabel="Disclosure Image">
-                                            <rect key="frame" x="10" y="0.0" width="8" height="13"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="8" id="9R3-gZ-9nk"/>
-                                                <constraint firstAttribute="height" constant="13" id="JzS-hQ-1qi"/>
-                                            </constraints>
-                                        </imageView>
                                     </subviews>
-                                </stackView>
-                            </subviews>
-                        </stackView>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Tf-rO-mQw">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="15"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFN-wo-toX" userLabel="Data Bar">
-                                    <rect key="frame" x="0.0" y="6" width="260" height="5"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="5" id="mVy-72-ALV"/>
+                                        <constraint firstItem="MFN-wo-toX" firstAttribute="leading" secondItem="9Tf-rO-mQw" secondAttribute="leading" id="P7j-uc-KcJ"/>
+                                        <constraint firstItem="MFN-wo-toX" firstAttribute="top" secondItem="9Tf-rO-mQw" secondAttribute="top" constant="6" id="VGY-tC-RcO"/>
+                                        <constraint firstAttribute="bottom" secondItem="MFN-wo-toX" secondAttribute="bottom" constant="4" id="c9g-1F-kl8"/>
                                     </constraints>
                                 </view>
                             </subviews>
+                        </stackView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0i-Tj-jYT" userLabel="Spacer">
+                            <rect key="frame" x="114.5" y="3" width="12" height="50"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="MFN-wo-toX" firstAttribute="top" secondItem="9Tf-rO-mQw" secondAttribute="top" constant="6" id="VGY-tC-RcO"/>
-                                <constraint firstAttribute="bottom" secondItem="MFN-wo-toX" secondAttribute="bottom" constant="4" id="c9g-1F-kl8"/>
+                                <constraint firstAttribute="width" constant="12" id="Cth-OX-7WM"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaN-c7-zu2">
+                            <rect key="frame" x="126.5" y="17.5" width="216.5" height="20.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCN-at-Jm0" userLabel="Disclosure Stack View">
+                            <rect key="frame" x="343" y="21.5" width="18" height="13"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKq-Lw-qOg" userLabel="Spacer">
+                                    <rect key="frame" x="0.0" y="0.0" width="10" height="13"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="10" id="dhV-kW-aex"/>
+                                    </constraints>
+                                </view>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="lva-cI-tIa" userLabel="Disclosure Image">
+                                    <rect key="frame" x="10" y="0.0" width="8" height="13"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="8" id="9R3-gZ-9nk"/>
+                                        <constraint firstAttribute="height" constant="13" id="JzS-hQ-1qi"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                        </stackView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="mSM-N7-rqk" firstAttribute="trailing" secondItem="MFN-wo-toX" secondAttribute="trailing" constant="83" id="Ekb-nY-NxU"/>
-                        <constraint firstItem="MFN-wo-toX" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="WpB-3O-xHg"/>
+                        <constraint firstAttribute="trailing" secondItem="MFN-wo-toX" secondAttribute="trailing" constant="83" id="6Ok-Cf-OmT"/>
                     </constraints>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zem-TV-rQb" userLabel="Disclosure Button">
@@ -132,15 +132,15 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="rhI-k5-uUO" firstAttribute="top" secondItem="g8z-3Z-7pN" secondAttribute="bottom" priority="999" constant="11" id="2gv-Ba-W0B"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Zem-TV-rQb" secondAttribute="bottom" id="61I-66-zBu"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Zem-TV-rQb" secondAttribute="trailing" id="Drz-3C-UZk"/>
-                <constraint firstItem="C3Z-mt-zBe" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="ENt-6w-Tsv"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="C3Z-mt-zBe" secondAttribute="trailing" constant="16" id="LD5-zE-Dv1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="g8z-3Z-7pN" secondAttribute="trailing" constant="16" id="H4O-Kf-0yx"/>
                 <constraint firstItem="Zem-TV-rQb" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="M4f-48-yOu"/>
-                <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="eeU-97-pEv"/>
+                <constraint firstItem="g8z-3Z-7pN" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="Y4w-Oh-8T7"/>
+                <constraint firstItem="rhI-k5-uUO" firstAttribute="leading" secondItem="Wgr-ee-wqj" secondAttribute="leading" id="ZXK-tl-IN2"/>
+                <constraint firstItem="g8z-3Z-7pN" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="dda-f6-qnu"/>
                 <constraint firstItem="rhI-k5-uUO" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="hUw-W8-K8p"/>
-                <constraint firstItem="C3Z-mt-zBe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="11" id="mcq-Hd-K6I"/>
-                <constraint firstItem="rhI-k5-uUO" firstAttribute="top" secondItem="C3Z-mt-zBe" secondAttribute="bottom" priority="999" constant="11" id="nVa-aP-DSu"/>
                 <constraint firstItem="Zem-TV-rQb" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="rWM-pn-FHP"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rhI-k5-uUO" secondAttribute="bottom" id="rtJ-TR-3Y4"/>
             </constraints>
@@ -148,7 +148,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="dataBar" destination="MFN-wo-toX" id="OST-eq-svR"/>
-                <outlet property="dataBarTrailingConstraint" destination="Ekb-nY-NxU" id="CFz-mx-xOK"/>
+                <outlet property="dataBarTrailingConstraint" destination="6Ok-Cf-OmT" id="eHI-pc-8NA"/>
                 <outlet property="dataBarView" destination="9Tf-rO-mQw" id="aOb-r8-pF1"/>
                 <outlet property="dataLabel" destination="AaN-c7-zu2" id="9rP-Mj-snh"/>
                 <outlet property="disclosureButton" destination="Zem-TV-rQb" id="gbW-Cp-vcU"/>
