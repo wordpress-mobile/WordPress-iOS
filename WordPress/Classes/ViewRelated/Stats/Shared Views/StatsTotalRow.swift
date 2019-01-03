@@ -9,6 +9,7 @@ struct StatsTotalRowData {
     var userIconURL: URL?
     var nameDetail: String?
     var showDisclosure: Bool
+    var disclosureURL: URL?
 
     init(name: String,
          data: String,
@@ -17,7 +18,8 @@ struct StatsTotalRowData {
          socialIconURL: URL? = nil,
          userIconURL: URL? = nil,
          nameDetail: String? = nil,
-         showDisclosure: Bool = false) {
+         showDisclosure: Bool = false,
+         disclosureURL: URL? = nil) {
         self.name = name
         self.data = data
         self.dataBarPercent = dataBarPercent
@@ -26,7 +28,12 @@ struct StatsTotalRowData {
         self.socialIconURL = socialIconURL
         self.userIconURL = userIconURL
         self.showDisclosure = showDisclosure
+        self.disclosureURL = disclosureURL
     }
+}
+
+@objc protocol StatsTotalRowDelegate {
+    @objc optional func displayWebViewWithURL(_ url: URL)
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -50,8 +57,11 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var disclosureStackView: UIStackView!
     @IBOutlet weak var disclosureButton: UIButton!
 
+    private var rowData: StatsTotalRowData?
     private var dataBarMaxWidth: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
+
+    var delegate: StatsTotalRowDelegate?
 
     var showSeparator = true {
         didSet {
@@ -66,10 +76,12 @@ class StatsTotalRow: UIView, NibLoadable {
         dataBarMaxWidth = Float(dataBarTrailingConstraint.constant)
     }
 
-    func configure(rowData: StatsTotalRowData) {
+    func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
+        self.rowData = rowData
+        self.delegate = delegate
 
-        configureIcon(rowData)
-        configureDataBarWithPercent(rowData.dataBarPercent)
+        configureIcon()
+        configureDataBarWithPercent()
 
         // Set values
         itemLabel.text = rowData.name
@@ -97,7 +109,11 @@ private extension StatsTotalRow {
         Style.configureViewAsDataBar(dataBar)
     }
 
-    func configureIcon(_ rowData: StatsTotalRowData) {
+    func configureIcon() {
+
+        guard let rowData = rowData else {
+            return
+        }
 
         let haveIcon = rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
         imageStackView.isHidden = !haveIcon
@@ -124,9 +140,9 @@ private extension StatsTotalRow {
         }
     }
 
-    func configureDataBarWithPercent(_ dataBarPercent: Float?) {
+    func configureDataBarWithPercent() {
 
-        guard let dataBarPercent = dataBarPercent else {
+        guard let dataBarPercent = rowData?.dataBarPercent else {
             dataBarView.isHidden = true
             return
         }
@@ -152,11 +168,18 @@ private extension StatsTotalRow {
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
-        let alertController =  UIAlertController(title: "More will be disclosed.",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+
+        guard let disclosureURL = rowData?.disclosureURL else {
+            let alertController =  UIAlertController(title: "More will be disclosed.",
+                                                     message: nil,
+                                                     preferredStyle: .alert)
+            alertController.addCancelActionWithTitle("OK")
+            alertController.presentFromRootViewController()
+
+            return
+        }
+
+        delegate?.displayWebViewWithURL?(disclosureURL)
     }
 
 }
