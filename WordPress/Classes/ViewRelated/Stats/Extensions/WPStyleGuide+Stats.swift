@@ -111,11 +111,17 @@ extension WPStyleGuide {
             return UIImage(named: "gravatar")
         }
 
-        static func configureFilterTabBar(_ filterTabBar: FilterTabBar) {
-            filterTabBar.tintColor = filterTintColor
-            filterTabBar.deselectedTabColor = filterDeselectedColor
-            filterTabBar.dividerColor = filterDividerColor
+        static func configureFilterTabBar(_ filterTabBar: FilterTabBar, forTabbedCard: Bool = false) {
             filterTabBar.tabSizingStyle = .equalWidths
+            filterTabBar.dividerColor =  filterDividerColor
+            filterTabBar.deselectedTabColor = filterDeselectedColor
+            filterTabBar.tintColor = defaultFilterTintColor
+
+            // For FilterTabBar on TabbedTotalsCell
+            if forTabbedCard {
+                filterTabBar.tintColor = tabbedCardFilterTintColor
+                filterTabBar.selectedTitleColor = defaultTextColor
+            }
         }
 
         // MARK: - Style Values
@@ -136,7 +142,8 @@ extension WPStyleGuide {
         static let cellBackgroundColor = UIColor.white
         static let seperatorColor = WPStyleGuide.greyLighten20()
 
-        static let filterTintColor = WPStyleGuide.wordPressBlue()
+        static let defaultFilterTintColor = WPStyleGuide.wordPressBlue()
+        static let tabbedCardFilterTintColor = WPStyleGuide.greyLighten20()
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()
         static let filterDividerColor = WPStyleGuide.greyLighten20()
 
