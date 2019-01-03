@@ -46,18 +46,34 @@ class FilterTabBar: UIControl {
 
     // MARK: - Appearance
 
-    /// Tint color will be applied to titles of selected tabs, and the floating
-    /// selection indicator.
+    /// Tint color will be applied to the floating selection indicator.
+    /// If selectedTitleColor is not provided, tint color will also be applied to
+    /// titles of selected tabs.
     ///
     override var tintColor: UIColor! {
         didSet {
             tabs.forEach({
                 $0.tintColor = tintColor
-                $0.setTitleColor(tintColor, for: .selected)
-                $0.setTitleColor(tintColor, for: .highlighted)
+                $0.setTitleColor(titleColorForSelected, for: .selected)
+                $0.setTitleColor(titleColorForSelected, for: .highlighted)
             })
             selectionIndicator.backgroundColor = tintColor
         }
+    }
+
+    /// Selected Title Color will be applied to titles of selected tabs.
+    ///
+    var selectedTitleColor: UIColor? {
+        didSet {
+            tabs.forEach({
+                $0.setTitleColor(selectedTitleColor, for: .selected)
+                $0.setTitleColor(selectedTitleColor, for: .highlighted)
+            })
+        }
+    }
+
+    private var titleColorForSelected: UIColor {
+        return selectedTitleColor ?? tintColor
     }
 
     var deselectedTabColor: UIColor = .lightGray {
@@ -198,7 +214,7 @@ class FilterTabBar: UIControl {
     private func makeTab(_ title: String) -> UIButton {
         let tab = TabBarButton(type: .custom)
         tab.setTitle(title, for: .normal)
-        tab.setTitleColor(tintColor, for: .selected)
+        tab.setTitleColor(titleColorForSelected, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
 
