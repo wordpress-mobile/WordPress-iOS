@@ -69,7 +69,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="114.5" height="15"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFN-wo-toX" userLabel="Data Bar">
-                                            <rect key="frame" x="0.0" y="6" width="260" height="5"/>
+                                            <rect key="frame" x="0.0" y="6" width="271" height="5"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="5" id="mVy-72-ALV"/>
@@ -119,7 +119,7 @@
                         </stackView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="MFN-wo-toX" secondAttribute="trailing" constant="83" id="6Ok-Cf-OmT"/>
+                        <constraint firstAttribute="trailing" secondItem="MFN-wo-toX" secondAttribute="trailing" constant="72" id="6Ok-Cf-OmT"/>
                     </constraints>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zem-TV-rQb" userLabel="Disclosure Button">
