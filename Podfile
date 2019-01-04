@@ -101,9 +101,9 @@ target 'WordPress' do
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     gutenberg_pod 'react-native-safe-area'
+    gutenberg_pod 'react-native-keyboard-aware-scroll-view'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
     pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git', :tag => 'v0.1.3'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :commit => '6ba99f4f419b306d2bfaac7f6d6ea22abfa40169'
 
     ## Third party libraries
     ## =====================
