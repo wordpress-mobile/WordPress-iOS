@@ -63,7 +63,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        dataBarMaxWidth = Float(dataBarTrailingConstraint.constant)
+        dataBarMaxWidth = Float(dataBar.frame.width)
     }
 
     func configure(rowData: StatsTotalRowData) {
@@ -132,8 +132,15 @@ private extension StatsTotalRow {
         }
 
         dataBarView.isHidden = false
-        let barWidthOffset = dataBarPercent * dataBarMaxWidth
-        dataBarTrailingConstraint.constant = CGFloat(dataBarMaxWidth + (dataBarMaxWidth - barWidthOffset))
+
+        // Since a trailing constraint controls the width of the bar:
+        // Calculate the bar width.
+        // Determine the distance from the bar to the max width.
+        // Add that to the trailing constraint to shorten the bar accordingly.
+
+        let barWidth = dataBarPercent * dataBarMaxWidth
+        let distanceFromMax = dataBarMaxWidth - barWidth
+        dataBarTrailingConstraint.constant += CGFloat(distanceFromMax)
     }
 
     func downloadImageFrom(_ iconURL: URL) {
