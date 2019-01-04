@@ -61,7 +61,7 @@ class StatsTotalRow: UIView, NibLoadable {
     private var dataBarMaxWidth: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
 
-    var delegate: StatsTotalRowDelegate?
+    private weak var delegate: StatsTotalRowDelegate?
 
     var showSeparator = true {
         didSet {
