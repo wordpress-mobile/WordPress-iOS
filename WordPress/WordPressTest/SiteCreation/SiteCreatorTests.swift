@@ -14,13 +14,13 @@ class SiteCreatorTests: XCTestCase {
 
         let defaultInput = SiteCreator()
 
-        defaultInput.segment = SiteSegment(identifier: Identifier(value: "12345"), // NB: complete type-switch via #10670
+        defaultInput.segment = SiteSegment(identifier: 12345,
             title: "A title",
             subtitle: "A subtitle",
             icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
             iconColor: .red)
 
-        defaultInput.vertical = SiteVertical(identifier: Identifier(value: "678910"), // NB: complete type-switch via #10670,
+        defaultInput.vertical = SiteVertical(identifier: Identifier(value: "678910"),
             title: "A title",
             isNew: true)
 

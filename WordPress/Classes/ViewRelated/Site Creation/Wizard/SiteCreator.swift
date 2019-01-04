@@ -30,13 +30,11 @@ final class SiteCreator {
     /// - Returns: an Encodable object
     func build() throws -> SiteCreatorOutput {
 
-        // NB: complete type-switch via #10670
-        guard let _ = segment?.identifier else {
+        guard let segmentIdentifier = segment?.identifier else {
             throw SiteCreatorOutputError.invalidSegmentIdentifier
         }
 
-        // NB: complete type-switch via #10670
-        guard let _ = vertical?.identifier else {
+        guard let verticalIdentifier = vertical?.identifier.description else {
             throw SiteCreatorOutputError.invalidVerticalIdentifier
         }
 
@@ -49,8 +47,8 @@ final class SiteCreator {
         }
 
         let output = SiteCreatorOutput(
-            segmentIdentifier: 0,                       // NB: complete type-switch via #10670
-            verticalIdentifier: 0,                      // NB: complete type-switch via #10670
+            segmentIdentifier: segmentIdentifier,
+            verticalIdentifier: verticalIdentifier,
             tagline: siteInformation.tagLine ?? "",     // Tagline input can be skipped
             isPublic: true,
             languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,

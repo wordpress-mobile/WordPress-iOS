@@ -1,7 +1,7 @@
 
 /// Models a Site Vertical
 struct SiteVertical {
-    let identifier: Identifier
+    let identifier: Identifier  // vertical IDs are a mix of parent & child taxonomy (String); see p9wMUP-bH-616-p2
     let title: String
     let isNew: Bool
 }
