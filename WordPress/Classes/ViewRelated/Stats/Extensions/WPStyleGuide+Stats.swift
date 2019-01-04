@@ -120,7 +120,7 @@ extension WPStyleGuide {
             if forTabbedCard {
                 filterTabBar.tabSizingStyle = .equalWidths
                 filterTabBar.tintColor = tabbedCardFilterTintColor
-                filterTabBar.selectedTitleColor = defaultTextColor
+                filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
             }
         }
 
@@ -144,6 +144,7 @@ extension WPStyleGuide {
 
         static let defaultFilterTintColor = WPStyleGuide.wordPressBlue()
         static let tabbedCardFilterTintColor = WPStyleGuide.greyLighten20()
+        static let tabbedCardFilterSelectedTitleColor = WPStyleGuide.darkGrey()
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()
         static let filterDividerColor = WPStyleGuide.greyLighten20()
 
