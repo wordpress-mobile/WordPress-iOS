@@ -1,7 +1,7 @@
 
 /// Models a type of site.
 struct SiteSegment {
-    let identifier: Int64
+    let identifier: Int64   // we use a numeric ID for segments; see p9wMUP-bH-612-p2 for discussion
     let title: String
     let subtitle: String
     let icon: URL
