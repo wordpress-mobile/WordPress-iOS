@@ -517,7 +517,7 @@ private extension SiteStatsInsightsViewModel {
         }
 
         // Return percent
-        return rowValue/rowsMaxValue
+        return rowValue / rowsMaxValue
     }
 
 }

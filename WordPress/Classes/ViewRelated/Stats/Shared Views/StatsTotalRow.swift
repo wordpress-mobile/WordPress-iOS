@@ -42,6 +42,8 @@ class StatsTotalRow: UIView, NibLoadable {
 
     @IBOutlet weak var separatorLine: UIView!
 
+    @IBOutlet weak var contentStackView: UIStackView!
+
     @IBOutlet weak var imageStackView: UIStackView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
@@ -58,10 +60,10 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var disclosureButton: UIButton!
 
     private var rowData: StatsTotalRowData?
-    private var dataBarMaxWidth: Float = 0.0
+    private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
 
-    var delegate: StatsTotalRowDelegate?
+    private weak var delegate: StatsTotalRowDelegate?
 
     var showSeparator = true {
         didSet {
@@ -73,7 +75,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        dataBarMaxWidth = Float(dataBarTrailingConstraint.constant)
+        dataBarMaxTrailing = Float(dataBarTrailingConstraint.constant)
     }
 
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
@@ -81,7 +83,6 @@ class StatsTotalRow: UIView, NibLoadable {
         self.delegate = delegate
 
         configureIcon()
-        configureDataBarWithPercent()
 
         // Set values
         itemLabel.text = rowData.name
@@ -92,9 +93,15 @@ class StatsTotalRow: UIView, NibLoadable {
         disclosureStackView.isHidden = !rowData.showDisclosure
         disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
+        dataBarView.isHidden = (rowData.dataBarPercent == nil)
         separatorLine.isHidden = !showSeparator
 
         applyStyles()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        configureDataBar()
     }
 
 }
@@ -140,7 +147,7 @@ private extension StatsTotalRow {
         }
     }
 
-    func configureDataBarWithPercent() {
+    func configureDataBar() {
 
         guard let dataBarPercent = rowData?.dataBarPercent else {
             dataBarView.isHidden = true
@@ -148,8 +155,17 @@ private extension StatsTotalRow {
         }
 
         dataBarView.isHidden = false
-        let barWidthOffset = dataBarPercent * dataBarMaxWidth
-        dataBarTrailingConstraint.constant = CGFloat(dataBarMaxWidth + (dataBarMaxWidth - barWidthOffset))
+
+        // Since a trailing constraint controls the width of the bar:
+        // Calculate the max bar width.
+        // Calculate the bar width.
+        // Determine the distance from the bar to the max width.
+        // Add that to the trailing constraint to shorten the bar accordingly.
+
+        let maxBarWidth = Float(contentStackView.frame.width) - dataBarMaxTrailing
+        let barWidth = maxBarWidth * dataBarPercent
+        let distanceFromMax = maxBarWidth - barWidth
+        dataBarTrailingConstraint.constant = CGFloat(dataBarMaxTrailing + distanceFromMax)
     }
 
     func downloadImageFrom(_ iconURL: URL) {
