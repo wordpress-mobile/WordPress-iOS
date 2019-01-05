@@ -91,7 +91,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        configureDataBarWithPercent()
+        configureDataBar()
     }
 
 }
@@ -133,7 +133,7 @@ private extension StatsTotalRow {
         }
     }
 
-    func configureDataBarWithPercent() {
+    func configureDataBar() {
 
         guard let dataBarPercent = dataBarPercent else {
             dataBarView.isHidden = true
