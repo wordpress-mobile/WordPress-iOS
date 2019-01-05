@@ -14,25 +14,9 @@ enum SiteCreationStatus: Int {
     case syncing
 }
 
-/// A struct for conveniently sharing params between the different site creation steps.
-/// Public to be used by other services that need to call specific methods in this class.
-///
-struct SiteCreationParams {
-    var siteUrl: String
-    var siteTitle: String
-    var siteTagline: String?
-    var siteTheme: Theme
-
-    init(siteUrl: String, siteTitle: String, siteTagline: String? = nil, siteTheme: Theme) {
-        self.siteUrl = siteUrl
-        self.siteTitle = siteTitle
-        self.siteTagline = siteTagline
-        self.siteTheme = siteTheme
-    }
-}
+private typealias SiteCreationSuccessBlock = () -> Void
 
 typealias SiteCreationStatusBlock = (_ status: SiteCreationStatus) -> Void
-typealias SiteCreationSuccessBlock = () -> Void
 typealias SiteCreationRequestSuccessBlock = (_ blog: Blog) -> Void
 typealias SiteCreationFailureBlock = (_ error: Error?) -> Void
 
@@ -47,6 +31,8 @@ private var syncBlock: (() -> Void)?
 /// The entry point is `createSite` and the service takes care of the rest.
 ///
 open class SiteCreationService: LocalCoreDataService {
+
+    // MARK: Internal behavior
 
     /// Starts the process of creating a new site.
     ///
@@ -184,173 +170,33 @@ open class SiteCreationService: LocalCoreDataService {
                                     failure: validateBlogFailureBlock)
     }
 
-    /// Validates that the site can be created and is not already taken.
+    /// Kick off the process starting from syncing account.
     ///
-    /// - Paramaters:
-    ///     - params: New Blog information
-    ///     - status: The status callback
-    ///     - success: A success calback
-    ///     - failure: A failure callback
-    ///
-    func validateWPComBlogWithParams(_ params: SiteCreationParams,
-                                     status: SiteCreationStatusBlock,
-                                     success: @escaping SiteCreationSuccessBlock,
-                                     failure: @escaping SiteCreationFailureBlock) {
-
-        status(.validating)
-        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
-        let languageId = currentLanguage.stringValue
-
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ??
-                  WordPressComRestApi(userAgent: WPUserAgent.wordPress())
-
-        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
-        remote.validateWPComBlog(withUrl: params.siteUrl,
-                                  andBlogTitle: params.siteTitle,
-                                  andLanguageId: languageId,
-                                  andClientID: ApiCredentials.client(),
-                                  andClientSecret: ApiCredentials.secret(),
-                                  success: { (responseDictionary) in
-                                    success()
-        },
-                                  failure: failure)
-    }
-
-    /// Creates a WPCom site
-    ///
-    /// - Paramaters:
-    ///     - params: New blog information
-    ///     - account: The WPAccount for the user
-    ///     - status: The status callback
-    ///     - success: A success calback
-    ///     - failure: A failure callback
-    ///
-    func createWPComBlogForParams(_ params: SiteCreationParams,
-                                  account: WPAccount,
-                                  status: SiteCreationStatusBlock,
-                                  success: @escaping (_ blog: Blog) -> Void,
-                                  failure: @escaping SiteCreationFailureBlock) {
-
-        status(.creatingSite)
-
-        guard let api = account.wordPressComRestApi else {
-            let error = SiteCreationError.missingRESTAPI
-            DDLogError("Error while creating site: Missing REST API.")
-            assertionFailure()
-            failure(error)
-            return
+    func retryFromAccountSync() {
+        if let syncBlock = syncBlock {
+            syncBlock()
         }
-
-        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
-        let languageId = currentLanguage.stringValue
-
-        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
-        remote.createWPComBlog(withUrl: params.siteUrl,
-                                andBlogTitle: params.siteTitle,
-                                andLanguageId: languageId,
-                                andBlogVisibility: .public,
-                                andClientID: ApiCredentials.client(),
-                                andClientSecret: ApiCredentials.secret(),
-                                success: {  (responseDictionary) in
-
-                                    // The site was created so bump the stat, even if there are problems later on.
-                                    WPAppAnalytics.track(.createdSite)
-                                    guard let blogOptions = responseDictionary?[BlogKeys.blogDetails] as? [String: AnyObject] else {
-                                        let error = SiteCreationError.invalidResponse
-                                        DDLogError("Error while creating site: The Blog response dictionary did not contain the expected results.")
-                                        assertionFailure()
-                                        failure(error)
-                                        return
-                                    }
-
-                                    guard let blog = self.createBlogFromBlogOptions(blogOptions, failure: failure) else {
-                                        // No need to call the failure block here. It will be called from
-                                        // `createBlogFromBlogOptions` if needed.
-                                        return
-                                    }
-
-                                    // Touch site so the app recognizes it as the last used.
-                                    if let siteUrl = blog.url {
-                                        RecentSitesService().touch(site: siteUrl)
-                                    }
-
-                                    success(blog)
-        },
-                                failure: failure)
     }
 
-    /// Syncs blog and account info.
+    /// Kick off the process starting from setting the tagline.
+    /// i.e. set tagline, set theme, synch account.
     ///
-    /// - Paramaters:
-    ///     - blog: The newly created blog entity
-    ///     - status: The status callback
-    ///     - success: A success calback
-    ///     - failure: A failure callback
-    ///
-    func updateAndSyncBlogAndAccountInfo(_ blog: Blog,
-                                         status: SiteCreationStatusBlock,
-                                         success: @escaping SiteCreationSuccessBlock,
-                                         failure: @escaping SiteCreationFailureBlock) {
-
-        status(.syncing)
-
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-
-        blogService.syncBlogAndAllMetadata(blog, completionHandler: {
-            // The final step
-            accountService.updateUserDetails(for: blog.account!, success: success, failure: failure)
-        })
-    }
-
-    /// Set the Site Tagline.
-    ///
-    /// - Paramaters:
-    ///     - blog:    The newly created blog entity
-    ///     - params:  Blog information
-    ///     - status:  The status callback
-    ///     - success: A success calback
-    ///     - failure: A failure callback
-    ///
-    func setWPComBlogTagline(blog: Blog,
-                             params: SiteCreationParams,
-                             status: SiteCreationStatusBlock,
-                             success: @escaping SiteCreationSuccessBlock,
-                             failure: @escaping SiteCreationFailureBlock) {
-
-        status(.settingTagline)
-
-        blog.settings?.tagline = params.siteTagline
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-        blogService.updateSettings(for: blog, success: success, failure: failure)
-    }
-
-    /// Set the Site Theme.
-    ///
-    /// - Paramaters:
-    ///     - blog:    The newly created blog entity
-    ///     - params:  Blog information
-    ///     - status:  The status callback
-    ///     - success: A success calback
-    ///     - failure: A failure callback
-    ///
-    func setWPComBlogTheme(blog: Blog,
-                           params: SiteCreationParams,
-                           status: SiteCreationStatusBlock,
-                           success: @escaping SiteCreationSuccessBlock,
-                           failure: @escaping SiteCreationFailureBlock) {
-
-        status(.settingTheme)
-
-        let themeService = ThemeService(managedObjectContext: managedObjectContext)
-
-        let themeServiceSuccessBlock = { (theme: Theme?) in
-            success()
+    func retryFromTagline() {
+        if let taglineBlock = taglineBlock {
+            taglineBlock()
         }
-
-        _ = themeService.activate(params.siteTheme, for: blog, success: themeServiceSuccessBlock, failure: failure)
     }
+
+    /// Kick off the process starting from setting the theme.
+    /// i.e. set theme, synch account.
+    ///
+    func retryFromTheme() {
+        if let themeBlock = themeBlock {
+            themeBlock()
+        }
+    }
+
+    // MARK: Private behavior
 
     /// Create a new blog entity from the supplied blog options. Calls the supplied
     /// failure block if the blog can not be created.
@@ -370,7 +216,7 @@ open class SiteCreationService: LocalCoreDataService {
         // to recover the next time it tries to sync blogs.
 
         guard let blogName = (blogOptions[BlogKeys.blogNameLowerCaseN] ??
-                             blogOptions[BlogKeys.blogNameUpperCaseN]) as? String,
+            blogOptions[BlogKeys.blogNameUpperCaseN]) as? String,
             let xmlrpc = blogOptions[BlogKeys.XMLRPC] as? String,
             let blogURL = blogOptions[BlogKeys.URL] as? String,
             let stringID = blogOptions[BlogKeys.blogID] as? String,
@@ -410,42 +256,176 @@ open class SiteCreationService: LocalCoreDataService {
         return blog
     }
 
-
-    /// Kick off the process starting from setting the tagline.
-    /// i.e. set tagline, set theme, synch account.
+    /// Creates a WPCom site
     ///
-    func retryFromTagline() {
-        if let taglineBlock = taglineBlock {
-            taglineBlock()
+    /// - Paramaters:
+    ///     - params: New blog information
+    ///     - account: The WPAccount for the user
+    ///     - status: The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    private func createWPComBlogForParams(_ params: SiteCreationParams,
+                                          account: WPAccount,
+                                          status: SiteCreationStatusBlock,
+                                          success: @escaping (_ blog: Blog) -> Void,
+                                          failure: @escaping SiteCreationFailureBlock) {
+
+        status(.creatingSite)
+
+        guard let api = account.wordPressComRestApi else {
+            let error = SiteCreationError.missingRESTAPI
+            DDLogError("Error while creating site: Missing REST API.")
+            assertionFailure()
+            failure(error)
+            return
         }
+
+        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
+        let languageId = currentLanguage.stringValue
+
+        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
+        remote.createWPComBlog(withUrl: params.siteUrl,
+                               andBlogTitle: params.siteTitle,
+                               andLanguageId: languageId,
+                               andBlogVisibility: .public,
+                               andClientID: ApiCredentials.client(),
+                               andClientSecret: ApiCredentials.secret(),
+                               success: {  (responseDictionary) in
+
+                                // The site was created so bump the stat, even if there are problems later on.
+                                WPAppAnalytics.track(.createdSite)
+                                guard let blogOptions = responseDictionary?[BlogKeys.blogDetails] as? [String: AnyObject] else {
+                                    let error = SiteCreationError.invalidResponse
+                                    DDLogError("Error while creating site: The Blog response dictionary did not contain the expected results.")
+                                    assertionFailure()
+                                    failure(error)
+                                    return
+                                }
+
+                                guard let blog = self.createBlogFromBlogOptions(blogOptions, failure: failure) else {
+                                    // No need to call the failure block here. It will be called from
+                                    // `createBlogFromBlogOptions` if needed.
+                                    return
+                                }
+
+                                // Touch site so the app recognizes it as the last used.
+                                if let siteUrl = blog.url {
+                                    RecentSitesService().touch(site: siteUrl)
+                                }
+
+                                success(blog)
+        },
+                               failure: failure)
     }
 
-    /// Kick off the process starting from setting the theme.
-    /// i.e. set theme, synch account.
+    /// Set the Site Tagline.
     ///
-    func retryFromTheme() {
-        if let themeBlock = themeBlock {
-            themeBlock()
-        }
+    /// - Paramaters:
+    ///     - blog:    The newly created blog entity
+    ///     - params:  Blog information
+    ///     - status:  The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    private func setWPComBlogTagline(blog: Blog,
+                                     params: SiteCreationParams,
+                                     status: SiteCreationStatusBlock,
+                                     success: @escaping SiteCreationSuccessBlock,
+                                     failure: @escaping SiteCreationFailureBlock) {
+
+        status(.settingTagline)
+
+        blog.settings?.tagline = params.siteTagline
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+        blogService.updateSettings(for: blog, success: success, failure: failure)
     }
 
-    /// Kick off the process starting from syncing account.
+    /// Set the Site Theme.
     ///
-    func retryFromAccountSync() {
-        if let syncBlock = syncBlock {
-            syncBlock()
+    /// - Paramaters:
+    ///     - blog:    The newly created blog entity
+    ///     - params:  Blog information
+    ///     - status:  The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    private func setWPComBlogTheme(blog: Blog,
+                                   params: SiteCreationParams,
+                                   status: SiteCreationStatusBlock,
+                                   success: @escaping SiteCreationSuccessBlock,
+                                   failure: @escaping SiteCreationFailureBlock) {
+
+        status(.settingTheme)
+
+        let themeService = ThemeService(managedObjectContext: managedObjectContext)
+
+        let themeServiceSuccessBlock = { (theme: Theme?) in
+            success()
         }
+
+        _ = themeService.activate(params.siteTheme, for: blog, success: themeServiceSuccessBlock, failure: failure)
     }
 
-    /// A convenience enum for creating meaningful NSError objects.
-    private enum SiteCreationError: Error {
-        case invalidResponse
-        case missingRESTAPI
-        case missingDefaultWPComAccount
-        case missingTheme
+    /// Syncs blog and account info.
+    ///
+    /// - Paramaters:
+    ///     - blog: The newly created blog entity
+    ///     - status: The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    private func updateAndSyncBlogAndAccountInfo(_ blog: Blog,
+                                                 status: SiteCreationStatusBlock,
+                                                 success: @escaping SiteCreationSuccessBlock,
+                                                 failure: @escaping SiteCreationFailureBlock) {
+
+        status(.syncing)
+
+        let accountService = AccountService(managedObjectContext: managedObjectContext)
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+
+        blogService.syncBlogAndAllMetadata(blog, completionHandler: {
+            // The final step
+            accountService.updateUserDetails(for: blog.account!, success: success, failure: failure)
+        })
+    }
+
+    /// Validates that the site can be created and is not already taken.
+    ///
+    /// - Paramaters:
+    ///     - params: New Blog information
+    ///     - status: The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    private func validateWPComBlogWithParams(_ params: SiteCreationParams,
+                                             status: SiteCreationStatusBlock,
+                                             success: @escaping SiteCreationSuccessBlock,
+                                             failure: @escaping SiteCreationFailureBlock) {
+
+        status(.validating)
+        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
+        let languageId = currentLanguage.stringValue
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ??
+                  WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+
+        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
+        remote.validateWPComBlog(withUrl: params.siteUrl,
+                                  andBlogTitle: params.siteTitle,
+                                  andLanguageId: languageId,
+                                  andClientID: ApiCredentials.client(),
+                                  andClientSecret: ApiCredentials.secret(),
+                                  success: { (responseDictionary) in
+                                    success()
+        },
+                                  failure: failure)
     }
 
     /// A convenience struct for Blog keys
+    ///
     private struct BlogKeys {
         static let blogDetails = "blog_details"
         static let blogNameLowerCaseN = "blogname"
@@ -455,4 +435,29 @@ open class SiteCreationService: LocalCoreDataService {
         static let URL = "url"
     }
 
+    /// A convenience enum for creating meaningful NSError objects.
+    ///
+    private enum SiteCreationError: Error {
+        case invalidResponse
+        case missingRESTAPI
+        case missingDefaultWPComAccount
+        case missingTheme
+    }
+
+    /// A struct for conveniently sharing params between the different site creation steps.
+    /// Public to be used by other services that need to call specific methods in this class.
+    ///
+    private struct SiteCreationParams {
+        var siteUrl: String
+        var siteTitle: String
+        var siteTagline: String?
+        var siteTheme: Theme
+
+        init(siteUrl: String, siteTitle: String, siteTagline: String? = nil, siteTheme: Theme) {
+            self.siteUrl = siteUrl
+            self.siteTitle = siteTitle
+            self.siteTagline = siteTagline
+            self.siteTheme = siteTheme
+        }
+    }
 }
