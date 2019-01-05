@@ -147,6 +147,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="contentStackView" destination="g8z-3Z-7pN" id="bci-zf-EDQ"/>
                 <outlet property="dataBar" destination="MFN-wo-toX" id="OST-eq-svR"/>
                 <outlet property="dataBarTrailingConstraint" destination="6Ok-Cf-OmT" id="eHI-pc-8NA"/>
                 <outlet property="dataBarView" destination="9Tf-rO-mQw" id="aOb-r8-pF1"/>
