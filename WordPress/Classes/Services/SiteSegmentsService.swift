@@ -19,18 +19,17 @@ final class MockSiteSegmentsService: SiteSegmentsService {
     }
 
     lazy var mockSiteTypes: [SiteSegment] = {
-        return [ shortSubtitle(id: "Site Id 1"),
-                 longSubtitle(id: "Site Id 2"),
-                 shortSubtitle(id: "Site Id 3"),
-                 shortSubtitle(id: "Site Id 4") ]
+        return [ shortSubtitle(identifier: 12345),
+                 longSubtitle(identifier: 678910),
+                 shortSubtitle(identifier: 1112),
+                 shortSubtitle(identifier: 007) ]
     }()
 
     var mockCount: Int {
         return mockSiteTypes.count
     }
 
-    private func shortSubtitle(id: String) -> SiteSegment {
-        let identifier = Identifier(value: id)
+    private func shortSubtitle(identifier: Int64) -> SiteSegment {
         return SiteSegment(identifier: identifier,
                            title: "Blogger",
                            subtitle: "Publish a collection of posts",
@@ -38,8 +37,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            iconColor: .red)
     }
 
-    private func longSubtitle(id: String) -> SiteSegment {
-        let identifier = Identifier(value: id)
+    private func longSubtitle(identifier: Int64) -> SiteSegment {
         return SiteSegment(identifier: identifier,
                            title: "Professional",
                            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",

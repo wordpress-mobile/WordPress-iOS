@@ -66,7 +66,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 private extension TabbedTotalsCell {
 
     func setupFilterBar() {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
+        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
         filterTabBar.items = tabsData.map { $0.tabTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         toggleFilterTabBar()

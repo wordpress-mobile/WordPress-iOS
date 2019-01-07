@@ -1,2 +1,3 @@
 * Updates the Plans to be more descriptive.
+* Fixes an issue where the wrong notification detail may be displayed when navigating between notifications.
 
