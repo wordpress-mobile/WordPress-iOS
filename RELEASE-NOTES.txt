@@ -1,2 +1,2 @@
-* Updates the Plans to be more descriptive.
+* Localises the button to edit a comment.
 
