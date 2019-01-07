@@ -1,2 +1,2 @@
 * Updates the Plans to be more descriptive.
-
+* It's now easier to tap the Done button on the screen that's displayed after publishing a post.
