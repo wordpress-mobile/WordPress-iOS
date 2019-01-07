@@ -35,7 +35,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separatorLine: UIView!
-    
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
 
