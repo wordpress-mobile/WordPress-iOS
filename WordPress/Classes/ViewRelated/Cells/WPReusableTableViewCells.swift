@@ -19,6 +19,26 @@ class WPReusableTableViewCell: WPTableViewCell {
         selectionStyle = .default
         accessibilityLabel = nil
     }
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commonInit()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+
+    fileprivate func commonInit() {
+        setupLabel(textLabel)
+        setupLabel(detailTextLabel)
+    }
+
+    private func setupLabel(_ label: UILabel?) {
+        label?.numberOfLines = 0
+        label?.adjustsFontForContentSizeCategory = true
+    }
 }
 
 class WPTableViewCellDefault: WPReusableTableViewCell {
@@ -44,17 +64,15 @@ class WPTableViewCellSubtitle: WPReusableTableViewCell {
 class WPTableViewCellValue1: WPReusableTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
-        commonInit()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        commonInit()
     }
 
-    private func commonInit() {
-        textLabel?.numberOfLines = 0
-        textLabel?.adjustsFontForContentSizeCategory = true
+    override func commonInit() {
+        super.commonInit()
+        detailTextLabel?.numberOfLines = 1
     }
 }
 
