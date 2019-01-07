@@ -1,2 +1,3 @@
 * Updates the Plans to be more descriptive.
+* On the login epilogue, don't show 'My Sites' if the account doesn't have any sites. 
 
