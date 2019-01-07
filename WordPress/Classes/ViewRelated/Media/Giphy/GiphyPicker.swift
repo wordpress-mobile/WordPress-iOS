@@ -54,6 +54,7 @@ final class GiphyPicker: NSObject {
         }
 
         observeDataSource()
+        trackAccess()
     }
 
     private func observeDataSource() {
@@ -136,5 +137,12 @@ extension GiphyPicker: WPMediaPickerViewControllerDelegate {
                 view.resignFirstResponder()
             }
         }
+    }
+}
+
+// MARK: - Tracks
+extension GiphyPicker {
+    fileprivate func trackAccess() {
+        WPAnalytics.track(.giphyAccessed)
     }
 }

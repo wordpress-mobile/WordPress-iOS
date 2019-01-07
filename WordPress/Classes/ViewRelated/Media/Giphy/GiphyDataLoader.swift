@@ -27,7 +27,7 @@ final class GiphyDataLoader {
         let isFirstPage = request?.pageable?.pageIndex == GiphyPageable.defaultPageIndex
         state = .loading
         DispatchQueue.main.async { [weak self] in
-            // TODO: Add Analytics
+            WPAnalytics.track(.giphySearched)
             self?.service.search(params: params) { resultsPage in
                 self?.state = .idle
                 self?.request = GiphySearchParams(text: self?.request?.text, pageable: resultsPage.nextPageable())
