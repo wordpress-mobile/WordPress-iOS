@@ -62,6 +62,7 @@ class PostPostViewController: UIViewController {
         let clearImage = UIImage(color: UIColor.clear, havingSize: CGSize(width: 1, height: 1))
         navBar.shadowImage = clearImage
         navBar.setBackgroundImage(clearImage, for: .default)
+        navBar.topItem?.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "Label on button to dismiss view presented after publishing a post")
 
         view.alpha = WPAlphaZero
 
