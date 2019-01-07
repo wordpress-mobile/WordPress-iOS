@@ -1,9 +1,10 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: 944d435bdd187878e636c599dc1a61bc4428a59a
-  tag: 0.1.2
+  revision: 8cfaeeb98c8ffb8f5f5778be27db1cb1270ca506
+  ref: 8cfaeeb98c8ffb8f5f5778be27db1cb1270ca506
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.1.2)
+    fastlane-plugin-wpmreleasetoolkit (0.1.4)
+      diffy
 
 GEM
   remote: https://rubygems.org/
@@ -85,6 +86,7 @@ GEM
       thor (~> 0.19)
     declarative (0.0.10)
     declarative-option (0.1.0)
+    diffy (3.3.0)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.5.0)
