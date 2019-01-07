@@ -23,7 +23,8 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var siteAssemblyStep: WizardStep = {
-        return SiteAssemblyStep(creator: self.creator, service: MockSiteAssemblyService())
+        let siteAssemblyService = EnhancedSiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService)
     }()
 
     private lazy var steps: [WizardStep] = {
