@@ -3,6 +3,7 @@ import UIKit
 struct StatsTotalRowData {
     var name: String
     var data: String
+    var dataBarPercent: Float?
     var icon: UIImage?
     var socialIconURL: URL?
     var userIconURL: URL?
@@ -11,6 +12,7 @@ struct StatsTotalRowData {
 
     init(name: String,
          data: String,
+         dataBarPercent: Float? = nil,
          icon: UIImage? = nil,
          socialIconURL: URL? = nil,
          userIconURL: URL? = nil,
@@ -18,6 +20,7 @@ struct StatsTotalRowData {
          showDisclosure: Bool = false) {
         self.name = name
         self.data = data
+        self.dataBarPercent = dataBarPercent
         self.nameDetail = nameDetail
         self.icon = icon
         self.socialIconURL = socialIconURL
@@ -30,16 +33,26 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separatorLine: UIView!
-    @IBOutlet weak var imageStackView: UIStackView!
+
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var itemLabel: UILabel!
-    @IBOutlet weak var itemDetailLabel: UILabel!
-    @IBOutlet weak var dataLabel: UILabel!
-    @IBOutlet weak var disclosureStackView: UIStackView!
-    @IBOutlet weak var disclosureButton: UIButton!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var itemLabel: UILabel!
+    @IBOutlet weak var itemDetailLabel: UILabel!
+
+    @IBOutlet weak var dataBarView: UIView!
+    @IBOutlet weak var dataBar: UIView!
+    @IBOutlet weak var dataBarWidthConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var rightStackView: UIStackView!
+    @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var disclosureImageView: UIImageView!
+    @IBOutlet weak var disclosureButton: UIButton!
+
+    private var dataBarPercent: Float?
+    private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
 
     var showSeparator = true {
@@ -52,9 +65,45 @@ class StatsTotalRow: UIView, NibLoadable {
 
     func configure(rowData: StatsTotalRowData) {
 
-        // Configure icon
+        configureIcon(rowData)
+        dataBarPercent = rowData.dataBarPercent
+
+        // Set values
+        itemLabel.text = rowData.name
+        itemDetailLabel.text = rowData.nameDetail
+        dataLabel.text = rowData.data
+
+        // Toggle optionals
+        disclosureImageView.isHidden = !rowData.showDisclosure
+        disclosureButton.isEnabled = rowData.showDisclosure
+        itemDetailLabel.isHidden = (rowData.nameDetail == nil)
+        dataBarView.isHidden = (rowData.dataBarPercent == nil)
+        separatorLine.isHidden = !showSeparator
+
+        applyStyles()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        configureDataBar()
+    }
+
+}
+
+private extension StatsTotalRow {
+
+    func applyStyles() {
+        Style.configureLabelAsCellRowTitle(itemLabel)
+        Style.configureLabelItemDetail(itemDetailLabel)
+        Style.configureLabelAsData(dataLabel)
+        Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsDataBar(dataBar)
+    }
+
+    func configureIcon(_ rowData: StatsTotalRowData) {
+
         let haveIcon = rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
-        imageStackView.isHidden = !haveIcon
+        imageView.isHidden = !haveIcon
 
         if let icon = rowData.icon {
             imageWidthConstraint.constant = Constants.defaultImageSize
@@ -76,30 +125,25 @@ class StatsTotalRow: UIView, NibLoadable {
 
             downloadImageFrom(iconURL)
         }
-
-        // Set other values
-        itemLabel.text = rowData.name
-        itemDetailLabel.text = rowData.nameDetail
-        dataLabel.text = rowData.data
-
-        // Toggle optionals
-        disclosureStackView.isHidden = !rowData.showDisclosure
-        disclosureButton.isEnabled = rowData.showDisclosure
-        itemDetailLabel.isHidden = (rowData.nameDetail == nil)
-        separatorLine.isHidden = !showSeparator
-
-        applyStyles()
     }
 
-}
+    func configureDataBar() {
 
-private extension StatsTotalRow {
+        guard let dataBarPercent = dataBarPercent else {
+            dataBarView.isHidden = true
+            return
+        }
 
-    func applyStyles() {
-        Style.configureLabelAsCellRowTitle(itemLabel)
-        Style.configureLabelItemDetail(itemDetailLabel)
-        Style.configureLabelAsData(dataLabel)
-        Style.configureViewAsSeperator(separatorLine)
+        dataBarView.isHidden = false
+
+        // Calculate the max bar width.
+        // Calculate the bar width.
+        // Determine the distance from the bar to the max width.
+        // Set that distance as the bar width.
+        let maxBarWidth = Float(contentView.frame.width - rightStackView.frame.width)
+        let barWidth = maxBarWidth * dataBarPercent
+        let distanceFromMax = maxBarWidth - barWidth
+        dataBarWidthConstraint.constant = CGFloat(distanceFromMax)
     }
 
     func downloadImageFrom(_ iconURL: URL) {
@@ -107,7 +151,7 @@ private extension StatsTotalRow {
             self.imageView.image = image
         }, failure: { error in
             DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
-            self.imageStackView.isHidden = true
+            self.imageView.isHidden = true
         })
     }
 
@@ -124,4 +168,5 @@ private extension StatsTotalRow {
         alertController.addCancelActionWithTitle("OK")
         alertController.presentFromRootViewController()
     }
+
 }
