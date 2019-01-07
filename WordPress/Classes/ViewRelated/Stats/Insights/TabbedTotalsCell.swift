@@ -127,7 +127,7 @@ private extension TabbedTotalsCell {
         for index in 0..<numberOfRowsToAdd {
             let dataRow = dataRows[index]
             let row = StatsTotalRow.loadFromNib()
-            row.configure(rowData: dataRow)
+            row.configure(rowData: dataRow, delegate: self)
 
             // Don't show the separator line on the last row.
             if index == (numberOfRowsToAdd - 1) {
@@ -153,6 +153,16 @@ private extension TabbedTotalsCell {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
+    }
+
+}
+
+// MARK: - StatsTotalRowDelegate
+
+extension TabbedTotalsCell: StatsTotalRowDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
     }
 
 }

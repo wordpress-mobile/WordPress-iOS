@@ -431,11 +431,19 @@ private extension SiteStatsInsightsViewModel {
         rowData?.forEach { row in
             let dataBarPercent = showDataBar ? dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
 
+            let disclosureURL: URL? = {
+                if showDisclosure, let action = row.actions.first as? StatsItemAction {
+                    return action.url
+                }
+                return nil
+            }()
+
             rows.append(StatsTotalRowData.init(name: row.label,
                                                data: row.value,
                                                dataBarPercent: dataBarPercent,
                                                userIconURL: row.iconURL,
-                                               showDisclosure: showDisclosure))
+                                               showDisclosure: showDisclosure,
+                                               disclosureURL: disclosureURL))
         }
 
         return TabData.init(tabTitle: tabTitle,
