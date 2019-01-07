@@ -33,23 +33,22 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separatorLine: UIView!
-
-    @IBOutlet weak var contentStackView: UIStackView!
-
-    @IBOutlet weak var imageStackView: UIStackView!
+    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var itemDetailLabel: UILabel!
-    @IBOutlet weak var dataLabel: UILabel!
 
     @IBOutlet weak var dataBarView: UIView!
     @IBOutlet weak var dataBar: UIView!
-    @IBOutlet weak var dataBarTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var dataBarWidthConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var disclosureStackView: UIStackView!
+    @IBOutlet weak var rightStackView: UIStackView!
+    @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var disclosureImageView: UIImageView!
     @IBOutlet weak var disclosureButton: UIButton!
 
     private var dataBarPercent: Float?
@@ -64,11 +63,6 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        dataBarMaxTrailing = Float(dataBarTrailingConstraint.constant)
-    }
-
     func configure(rowData: StatsTotalRowData) {
 
         configureIcon(rowData)
@@ -80,7 +74,7 @@ class StatsTotalRow: UIView, NibLoadable {
         dataLabel.text = rowData.data
 
         // Toggle optionals
-        disclosureStackView.isHidden = !rowData.showDisclosure
+        disclosureImageView.isHidden = !rowData.showDisclosure
         disclosureButton.isEnabled = rowData.showDisclosure
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         dataBarView.isHidden = (rowData.dataBarPercent == nil)
@@ -109,7 +103,7 @@ private extension StatsTotalRow {
     func configureIcon(_ rowData: StatsTotalRowData) {
 
         let haveIcon = rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
-        imageStackView.isHidden = !haveIcon
+        imageView.isHidden = !haveIcon
 
         if let icon = rowData.icon {
             imageWidthConstraint.constant = Constants.defaultImageSize
@@ -142,16 +136,14 @@ private extension StatsTotalRow {
 
         dataBarView.isHidden = false
 
-        // Since a trailing constraint controls the width of the bar:
         // Calculate the max bar width.
         // Calculate the bar width.
         // Determine the distance from the bar to the max width.
-        // Add that to the trailing constraint to shorten the bar accordingly.
-
-        let maxBarWidth = Float(contentStackView.frame.width) - dataBarMaxTrailing
+        // Set that distance as the bar width.
+        let maxBarWidth = Float(contentView.frame.width - rightStackView.frame.width)
         let barWidth = maxBarWidth * dataBarPercent
         let distanceFromMax = maxBarWidth - barWidth
-        dataBarTrailingConstraint.constant = CGFloat(dataBarMaxTrailing + distanceFromMax)
+        dataBarWidthConstraint.constant = CGFloat(distanceFromMax)
     }
 
     func downloadImageFrom(_ iconURL: URL) {
@@ -159,7 +151,7 @@ private extension StatsTotalRow {
             self.imageView.image = image
         }, failure: { error in
             DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
-            self.imageStackView.isHidden = true
+            self.imageView.isHidden = true
         })
     }
 
