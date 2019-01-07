@@ -160,7 +160,7 @@ extension WPStyleGuide {
 
         static func cellSizeForFrameWidth(_ width: CGFloat) -> CGSize {
             let cellWidth = cellWidthForFrameWidth(width)
-            return CGSize(width: cellWidth, height: cellHeight)
+            return CGSize(width: cellWidth.zeroIfNaN(), height: cellHeight.zeroIfNaN())
         }
 
         static func cellWidthForFrameWidth(_ width: CGFloat) -> CGFloat {
