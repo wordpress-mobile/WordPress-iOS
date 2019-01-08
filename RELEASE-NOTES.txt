@@ -1,5 +1,7 @@
 * Updates the Plans to be more descriptive.
+* On the login epilogue, don't show 'My Sites' if the account doesn't have any sites. 
 * Fixes an issue where the wrong notification detail may be displayed when navigating between notifications.
 * Fixes an issue where the Stats widget would always revert back to the primary site.
+* When creating a new site, on the site type selection page, the 'Start with' label now wraps.
 * Localises the button to edit a comment.
 * Localises the "Done" button on screen presented after publishing a Post.
