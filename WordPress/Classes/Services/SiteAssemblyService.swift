@@ -59,8 +59,8 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
 
     /// This method serves as the entry point for creating an enhanced site. It consists of a few steps:
     /// 1. The creation request is first validated.
-    /// 1. If a site passes validation, a new service invocation triggers creation.
-    /// 1. The details of the created Blog are persisted to the client.
+    /// 2. If a site passes validation, a new service invocation triggers creation.
+    /// 3. The details of the created Blog are persisted to the client.
     ///
     /// Previously the site's theme & tagline were set post-creation. This is now handled on the server via Headstart.
     ///
