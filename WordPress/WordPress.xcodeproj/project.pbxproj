@@ -428,7 +428,6 @@
 		73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */; };
 		73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */; };
 		73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */; };
-		73178C2B21BEE09300E37C9A /* SiteVerticalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */; };
 		73178C2C21BEE09300E37C9A /* SiteCreationHeaderDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */; };
 		73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3221BEE94700E37C9A /* SiteAssemblyServiceTests.swift */; };
 		73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */; };
@@ -1291,9 +1290,7 @@
 		D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */; };
 		D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */; };
 		D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */; };
-		D8A468DB2181BC8B0094B82F /* SiteVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468DA2181BC8A0094B82F /* SiteVertical.swift */; };
 		D8A468E02181C6450094B82F /* site-segment.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468DF2181C6450094B82F /* site-segment.json */; };
-		D8A468E22181C8290094B82F /* site-vertical.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468E12181C8290094B82F /* site-vertical.json */; };
 		D8A468E521828D940094B82F /* SiteVerticalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468E421828D940094B82F /* SiteVerticalsService.swift */; };
 		D8AEA54A21C21BEC00AB4DCB /* NewVerticalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AEA54821C21BEB00AB4DCB /* NewVerticalCell.swift */; };
 		D8AEA54B21C21BEC00AB4DCB /* NewVerticalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8AEA54921C21BEC00AB4DCB /* NewVerticalCell.xib */; };
@@ -2287,7 +2284,6 @@
 		73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationDataCoordinatorTests.swift; sourceTree = "<group>"; };
 		73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsStepTests.swift; sourceTree = "<group>"; };
 		73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsCellTests.swift; sourceTree = "<group>"; };
-		73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalTests.swift; sourceTree = "<group>"; };
 		73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderDataTests.swift; sourceTree = "<group>"; };
 		73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyService.swift; sourceTree = "<group>"; };
 		73178C3021BEE45300E37C9A /* SiteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssembly.swift; sourceTree = "<group>"; };
@@ -3237,9 +3233,7 @@
 		D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMediaGroup.swift; sourceTree = "<group>"; };
 		D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMedia.swift; sourceTree = "<group>"; };
 		D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPicker.swift; sourceTree = "<group>"; };
-		D8A468DA2181BC8A0094B82F /* SiteVertical.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVertical.swift; sourceTree = "<group>"; };
 		D8A468DF2181C6450094B82F /* site-segment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-segment.json"; sourceTree = "<group>"; };
-		D8A468E12181C8290094B82F /* site-vertical.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-vertical.json"; sourceTree = "<group>"; };
 		D8A468E421828D940094B82F /* SiteVerticalsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalsService.swift; sourceTree = "<group>"; };
 		D8AEA54821C21BEB00AB4DCB /* NewVerticalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewVerticalCell.swift; sourceTree = "<group>"; };
 		D8AEA54921C21BEC00AB4DCB /* NewVerticalCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewVerticalCell.xib; sourceTree = "<group>"; };
@@ -5007,7 +5001,6 @@
 				73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */,
 				73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */,
 				73178C2121BEE09300E37C9A /* SiteSegmentTests.swift */,
-				73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */,
 				73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */,
 			);
 			path = SiteCreation;
@@ -7399,7 +7392,6 @@
 			isa = PBXGroup;
 			children = (
 				D8A468DF2181C6450094B82F /* site-segment.json */,
-				D8A468E12181C8290094B82F /* site-vertical.json */,
 			);
 			name = "Site Creation";
 			sourceTree = "<group>";
@@ -7421,7 +7413,6 @@
 			isa = PBXGroup;
 			children = (
 				D8225407219AB0520014D0E2 /* SiteInformation.swift */,
-				D8A468DA2181BC8A0094B82F /* SiteVertical.swift */,
 				D8CB56222181A95D00554EAE /* SiteSegment.swift */,
 			);
 			name = "Site Creation";
@@ -8664,7 +8655,6 @@
 				D848CC0920FF2D4400A9038F /* notifications-icon-range.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
-				D8A468E22181C8290094B82F /* site-vertical.json in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
 				D848CC1120FF310400A9038F /* notifications-site-range.json in Resources */,
@@ -10029,7 +10019,6 @@
 				73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */,
 				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
-				D8A468DB2181BC8B0094B82F /* SiteVertical.swift in Sources */,
 				7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */,
 				B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */,
 				D86572172186C3600023A99C /* WizardDelegate.swift in Sources */,
@@ -10354,7 +10343,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73178C2B21BEE09300E37C9A /* SiteVerticalTests.swift in Sources */,
 				73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */,
 				73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */,
 				D81C2F6020F891C4002AE1F1 /* TrashCommentActionTests.swift in Sources */,

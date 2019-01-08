@@ -11,7 +11,8 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var verticalsStep: WizardStep = {
-        return VerticalsStep(creator: self.creator, service: MockSiteVerticalsService())
+        let verticalsService = SiteCreationVerticalsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return VerticalsStep(creator: self.creator, service: verticalsService)
     }()
 
     private lazy var addressStep: WizardStep = {

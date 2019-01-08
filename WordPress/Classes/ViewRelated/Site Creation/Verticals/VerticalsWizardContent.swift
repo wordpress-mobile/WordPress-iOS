@@ -159,16 +159,13 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func fetchVerticals(_ searchTerm: String) {
-        guard let segment = segment else {
-            return
-        }
-
-        service.verticals(for: Locale.current, type: segment) {  [weak self] results in
-            switch results {
-            case .error(let error):
-                self?.handleError(error)
+        let request = SiteVerticalsRequest(search: searchTerm)
+        service.retrieveVerticals(request: request) { [weak self] result in
+            switch result {
             case .success(let data):
                 self?.handleData(data)
+            case .failure(let error):
+                self?.handleError(error)
             }
         }
     }

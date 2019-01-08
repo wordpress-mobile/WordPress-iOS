@@ -20,7 +20,7 @@ class SiteCreatorTests: XCTestCase {
             icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
             iconColor: .red)
 
-        defaultInput.vertical = SiteVertical(identifier: Identifier(value: "678910"),
+        defaultInput.vertical = SiteVertical(identifier: "678910",
             title: "A title",
             isNew: true)
 
