@@ -142,7 +142,6 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (UIStackView *)newStackView
 {
     UIStackView *stackView = [UIStackView new];
-    stackView = [UIStackView new];
     stackView.translatesAutoresizingMaskIntoConstraints = NO;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.alignment = UIStackViewAlignmentCenter;
