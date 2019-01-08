@@ -65,8 +65,11 @@ final class SiteAssemblyContentView: UIView {
         }
     }
 
+    /// The full address of the created site.
+    var siteURLString: String?
+
     /// The domain name is applied to the appearance of the created site.
-    var domainName: String? {
+    var siteName: String? {
         didSet {
             installAssembledSiteView()
         }
@@ -207,11 +210,11 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func installAssembledSiteView() {
-        guard let domainName = domainName else {
+        guard let siteName = siteName, let siteURLString = siteURLString else {
             return
         }
 
-        let assembledSiteView = AssembledSiteView(domainName: domainName)
+        let assembledSiteView = AssembledSiteView(domainName: siteName, siteURLString: siteURLString)
         addSubview(assembledSiteView)
 
         if let buttonContainer = buttonContainerContainer {
@@ -313,30 +316,30 @@ final class SiteAssemblyContentView: UIView {
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
             statusStackView.alpha = 0
             }, completion: { [weak self] completed in
-                guard completed, let strongSelf = self else {
+                guard completed, let self = self else {
                     return
                 }
 
                 let completionLabelTopInsetFinal = Parameters.verticalSpacing
-                strongSelf.completionLabelTopConstraint?.constant = completionLabelTopInsetFinal
+                self.completionLabelTopConstraint?.constant = completionLabelTopInsetFinal
 
-                strongSelf.assembledSiteTopConstraint?.isActive = false
-                let transitionConstraint = strongSelf.assembledSiteView?.topAnchor.constraint(equalTo: strongSelf.completionLabel.bottomAnchor, constant: Parameters.verticalSpacing)
+                self.assembledSiteTopConstraint?.isActive = false
+                let transitionConstraint = self.assembledSiteView?.topAnchor.constraint(equalTo: self.completionLabel.bottomAnchor, constant: Parameters.verticalSpacing)
                 transitionConstraint?.isActive = true
-                strongSelf.assembledSiteTopConstraint = transitionConstraint
+                self.assembledSiteTopConstraint = transitionConstraint
 
-                strongSelf.buttonContainerBottomConstraint?.constant = 0
+                self.buttonContainerBottomConstraint?.constant = 0
 
                 UIView.animate(withDuration: Parameters.animationDuration,
                                delay: 0,
                                options: .curveEaseOut,
                                animations: { [weak self] in
-                                guard let strongSelf = self else {
+                                guard let self = self else {
                                     return
                                 }
 
-                                strongSelf.completionLabel.alpha = 1
-                                strongSelf.layoutIfNeeded()
+                                self.completionLabel.alpha = 1
+                                self.layoutIfNeeded()
                 })
         })
     }
