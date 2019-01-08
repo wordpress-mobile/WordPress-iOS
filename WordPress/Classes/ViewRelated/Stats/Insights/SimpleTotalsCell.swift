@@ -35,6 +35,7 @@ class SimpleTotalsCell: UITableViewCell, NibLoadable {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         removeExistingRows()
     }
 

@@ -50,3 +50,9 @@ extension CGSize {
         return clamp(min: CGFloat(minValue), max: CGFloat(maxValue))
     }
 }
+
+extension CGFloat {
+    func zeroIfNaN() -> CGFloat {
+        return self.isNaN ? 0.0 : self
+    }
+}

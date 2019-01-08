@@ -28,6 +28,11 @@ NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumb
     return self;
 }
 
+- (void)dealloc
+{
+    [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
