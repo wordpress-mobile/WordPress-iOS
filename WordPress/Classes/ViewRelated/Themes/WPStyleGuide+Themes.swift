@@ -108,7 +108,7 @@ extension WPStyleGuide {
         public static func cellSizeForFrameWidth(_ width: CGFloat) -> CGSize {
             let cellWidth = cellWidthForFrameWidth(width)
             let cellHeight = cellHeightForCellWidth(cellWidth)
-            return CGSize(width: cellWidth, height: cellHeight)
+            return CGSize(width: cellWidth.zeroIfNaN(), height: cellHeight.zeroIfNaN())
         }
         public static func imageWidthForFrameWidth(_ width: CGFloat) -> CGFloat {
             let cellWidth = cellWidthForFrameWidth(width)

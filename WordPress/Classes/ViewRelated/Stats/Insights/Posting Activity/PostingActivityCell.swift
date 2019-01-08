@@ -28,6 +28,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         removeExistingMonths()
     }
 }
