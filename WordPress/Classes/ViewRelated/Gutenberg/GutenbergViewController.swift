@@ -77,6 +77,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         //TODO
     }
 
+    func setTitle(_ title: String) {
+        guard gutenberg.isLoaded else {
+            return
+        }
+
+        gutenberg.setTitle(title)
+    }
+
     func setHTML(_ html: String) {
         guard gutenberg.isLoaded else {
             return
@@ -201,6 +209,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         let content = post.content ?? String()
 
         titleTextField.text = post.postTitle
+        setTitle(post.postTitle ?? "")
         setHTML(content)
     }
 
@@ -327,6 +336,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
+    }
+
+    func gutenbergInitialTitle() -> String? {
+        return post.postTitle ?? ""
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
