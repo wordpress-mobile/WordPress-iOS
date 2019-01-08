@@ -46,18 +46,34 @@ class FilterTabBar: UIControl {
 
     // MARK: - Appearance
 
-    /// Tint color will be applied to titles of selected tabs, and the floating
-    /// selection indicator.
+    /// Tint color will be applied to the floating selection indicator.
+    /// If selectedTitleColor is not provided, tint color will also be applied to
+    /// titles of selected tabs.
     ///
     override var tintColor: UIColor! {
         didSet {
             tabs.forEach({
                 $0.tintColor = tintColor
-                $0.setTitleColor(tintColor, for: .selected)
-                $0.setTitleColor(tintColor, for: .highlighted)
+                $0.setTitleColor(titleColorForSelected, for: .selected)
+                $0.setTitleColor(titleColorForSelected, for: .highlighted)
             })
             selectionIndicator.backgroundColor = tintColor
         }
+    }
+
+    /// Selected Title Color will be applied to titles of selected tabs.
+    ///
+    var selectedTitleColor: UIColor? {
+        didSet {
+            tabs.forEach({
+                $0.setTitleColor(selectedTitleColor, for: .selected)
+                $0.setTitleColor(selectedTitleColor, for: .highlighted)
+            })
+        }
+    }
+
+    private var titleColorForSelected: UIColor {
+        return selectedTitleColor ?? tintColor
     }
 
     var deselectedTabColor: UIColor = .lightGray {
@@ -108,6 +124,8 @@ class FilterTabBar: UIControl {
     enum TabSizingStyle {
         /// The tabs will fill the space available to the filter bar,
         /// with all tabs having equal widths. Tabs will not scroll.
+        /// Because of different language widths, ideally this should only be
+        /// used for 3 tabs or less.
         case equalWidths
         /// The tabs will have differing widths which fit their content size.
         /// If the tabs are too large to fit in the area available, the
@@ -198,7 +216,7 @@ class FilterTabBar: UIControl {
     private func makeTab(_ title: String) -> UIButton {
         let tab = TabBarButton(type: .custom)
         tab.setTitle(title, for: .normal)
-        tab.setTitleColor(tintColor, for: .selected)
+        tab.setTitleColor(titleColorForSelected, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
 
@@ -373,7 +391,7 @@ private class TabBarButton: UIButton {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
         }
     }
 }

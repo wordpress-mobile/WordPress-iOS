@@ -60,7 +60,8 @@ class SiteStatsInsightsViewModel: Observable {
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
+                tableRows.append(createCommentsRow())
             case .followers:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.followers))
                 tableRows.append(createFollowersRow())
@@ -147,6 +148,33 @@ private extension SiteStatsInsightsViewModel {
                 return NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
             case .email:
                 return NSLocalizedString("Email", comment: "Label for email followers")
+            }
+        }
+    }
+
+    struct Comments {
+        static let dataSubtitle = NSLocalizedString("Comments", comment: "Label for comment count, either by author or post.")
+    }
+
+    enum CommentType {
+        case author
+        case post
+
+        var title: String {
+            switch self {
+            case .author:
+                return NSLocalizedString("Authors", comment: "Label for comments by author")
+            case .post:
+                return NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
+            }
+        }
+
+        var itemSubtitle: String {
+            switch self {
+            case .author:
+                return NSLocalizedString("Author", comment: "Author label for list of commenters.")
+            case .post:
+                return NSLocalizedString("Title", comment: "Title label for list of posts.")
             }
         }
     }
@@ -320,6 +348,41 @@ private extension SiteStatsInsightsViewModel {
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 
+    func createCommentsRow() -> TabbedTotalsStatsRow {
+        return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.author),
+                                               tabDataForCommentType(.post)],
+                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                    showTotalCount: false)
+    }
+
+    func tabDataForCommentType(_ commentType: CommentType) -> TabData {
+
+        var tabTitle: String
+        var itemSubtitle: String
+        var topComments: [StatsItem]?
+        var showDisclosure: Bool
+
+        switch commentType {
+        case .author:
+            tabTitle = CommentType.author.title
+            itemSubtitle = CommentType.author.itemSubtitle
+            topComments = store.getTopCommentsAuthors()
+            showDisclosure = false
+        case .post:
+            tabTitle = CommentType.post.title
+            itemSubtitle = CommentType.post.itemSubtitle
+            topComments = store.getTopCommentsPosts()
+            showDisclosure = true
+        }
+
+        return tabDataFor(rowData: topComments,
+                          tabTitle: tabTitle,
+                          itemSubtitle: itemSubtitle,
+                          dataSubtitle: Comments.dataSubtitle,
+                          showDisclosure: showDisclosure,
+                          showDataBar: true)
+    }
+
     func createFollowersRow() -> TabbedTotalsStatsRow {
         return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.wordPressDotCom),
                                                tabDataForFollowerType(.email)],
@@ -348,19 +411,65 @@ private extension SiteStatsInsightsViewModel {
                                 tabTitle,
                                 totalFollowers)
 
+        return tabDataFor(rowData: followers,
+                          tabTitle: tabTitle,
+                          itemSubtitle: Followers.itemSubtitle,
+                          dataSubtitle: Followers.dataSubtitle,
+                          totalCount: totalCount)
+    }
+
+    func tabDataFor(rowData: [StatsItem]?,
+                    tabTitle: String,
+                    itemSubtitle: String,
+                    dataSubtitle: String,
+                    totalCount: String? = nil,
+                    showDisclosure: Bool = false,
+                    showDataBar: Bool = false) -> TabData {
+
         var rows = [StatsTotalRowData]()
 
-        followers?.forEach { follower in
-            rows.append(StatsTotalRowData.init(name: follower.label,
-                                               data: follower.value,
-                                               userIconURL: follower.iconURL))
+        rowData?.forEach { row in
+            let dataBarPercent = showDataBar ? dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
+
+            let disclosureURL: URL? = {
+                if showDisclosure, let action = row.actions.first as? StatsItemAction {
+                    return action.url
+                }
+                return nil
+            }()
+
+            rows.append(StatsTotalRowData.init(name: row.label,
+                                               data: row.value,
+                                               dataBarPercent: dataBarPercent,
+                                               userIconURL: row.iconURL,
+                                               showDisclosure: showDisclosure,
+                                               disclosureURL: disclosureURL))
         }
 
         return TabData.init(tabTitle: tabTitle,
-                            itemSubtitle: Followers.itemSubtitle,
-                            dataSubtitle: Followers.dataSubtitle,
+                            itemSubtitle: itemSubtitle,
+                            dataSubtitle: dataSubtitle,
                             totalCount: totalCount,
                             dataRows: rows)
+    }
+
+    func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
+
+        // Get value from maxValueRow
+        guard let maxValueRow = maxValueRow,
+            let maxValueString = maxValueRow.value,
+            let rowsMaxValue = Float(maxValueString) else {
+                return nil
+        }
+
+        // Get value from row
+        guard let rowValueString = row.value,
+            let rowValue = Float(rowValueString) else {
+                return nil
+        }
+
+        // Return percent
+        return rowValue / rowsMaxValue
     }
 
 }

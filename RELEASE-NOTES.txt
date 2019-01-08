@@ -1,2 +1,4 @@
+* Updates the Plans to be more descriptive.
+* Fixes an issue where the wrong notification detail may be displayed when navigating between notifications.
+* Localises the button to edit a comment.
 * Localises the "Done" button on screen presented after publishing a Post.
-
