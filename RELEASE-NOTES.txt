@@ -1,2 +1,2 @@
 * Updates the Plans to be more descriptive.
-
+* Add Change Password in Account Settings
