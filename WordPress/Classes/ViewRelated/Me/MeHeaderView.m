@@ -27,8 +27,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 - (instancetype)init
 {
-    CGRect frame = CGRectMake(0, 0, 0, MeHeaderViewHeight);
-    return [self initWithFrame:frame];
+    return [self initWithFrame:CGRectZero];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -54,11 +53,6 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 #pragma mark - Public Methods
-
-- (CGSize)intrinsicContentSize
-{
-    return CGSizeMake(UIViewNoIntrinsicMetric, MeHeaderViewHeight);
-}
 
 - (void)setDisplayName:(NSString *)displayName
 {
@@ -126,13 +120,16 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     [self.stackView addArrangedSubview:self.displayNameLabel];
     [self.stackView addArrangedSubview:self.usernameLabel];
 
-    [NSLayoutConstraint activateConstraints:@[
-                                              [self.gravatarImageView.heightAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
-                                              [self.gravatarImageView.widthAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
-                                              [spaceView.heightAnchor constraintEqualToConstant:MeHeaderViewVerticalSpacing],
-                                              [self.stackView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
-                                              [self.stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
-                                              ]];
+    NSArray *constraints = @[
+                             [self.gravatarImageView.heightAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
+                             [self.gravatarImageView.widthAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
+                             [spaceView.heightAnchor constraintEqualToConstant:MeHeaderViewVerticalSpacing],
+                             [self.stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MeHeaderViewVerticalSpacing],
+                             [self.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor constant:MeHeaderViewVerticalSpacing],
+                             [self.stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
+                             ];
+
+    [NSLayoutConstraint activateConstraints:constraints];
 
     [self.gravatarDropTarget pinSubviewToAllEdgeMargins:self.gravatarImageView];
     [self.gravatarImageView pinSubviewAtCenter:_activityIndicator];

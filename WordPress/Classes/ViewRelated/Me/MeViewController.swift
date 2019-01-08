@@ -101,6 +101,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map { headerViewForAccount($0) }
+        tableView.layoutHeaderView()
 
         // After we've reloaded the view model we should maintain the current
         // table row selection, or if the split view we're in is not compact
