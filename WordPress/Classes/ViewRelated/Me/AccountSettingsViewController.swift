@@ -102,7 +102,7 @@ private class AccountSettingsController: SettingsController {
         let password = EditableTextRow(
             title: Constants.title,
             value: "",
-            action: presenter.push(changePassword(settings, service: service))
+            action: presenter.push(changePassword(with: service))
         )
 
         return ImmuTable(sections: [
@@ -140,7 +140,7 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    func changePassword(_ settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
+    func changePassword(with service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             return ChangePasswordViewController() { [weak self] value in
                 DispatchQueue.main.async {
