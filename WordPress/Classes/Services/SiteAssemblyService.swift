@@ -107,8 +107,8 @@ final class EnhancedSiteCreationService: LocalCoreDataService, SiteAssemblyServi
             // Our result is of type SiteCreationResult, which can be either success or failure
             switch result {
             case .success(let response):
-                // A successful response includes a separate success field. In my testing, this has never been `false`.
-                // wpcom-json-api-new-site-endpoint.php#105 suggests it never will, but we will be cautious.
+                // A successful response includes a separate success field advising of the outcome of the call.
+                // In my testing, this has never been `false`, but we will be cautious.
                 guard response.success == true else {
                     DDLogError("The service response indicates that it failed.")
                     self.endFailedAssembly()
