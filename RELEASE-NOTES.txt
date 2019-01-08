@@ -5,3 +5,4 @@
 * When creating a new site, on the site type selection page, the 'Start with' label now wraps.
 * Localises the button to edit a comment.
 * Localises the "Done" button on screen presented after publishing a Post.
+* Fixes an issue where stale images may appear when navigating between notifications.
