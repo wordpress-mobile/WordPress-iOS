@@ -3143,6 +3143,7 @@
 		D811E0FE21E44B2700F5B61F /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D811E0FF21E44B2900F5B61F /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D811E10021E44B2B00F5B61F /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D811E10121E44E8C00F5B61F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
 		D813D67E21AA8BBF0055CCA1 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		D8160441209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSaveForLaterAction.swift; sourceTree = "<group>"; };
@@ -10762,6 +10763,7 @@
 				D811E0FE21E44B2700F5B61F /* ar */,
 				D811E0FF21E44B2900F5B61F /* bg */,
 				D811E10021E44B2B00F5B61F /* sk */,
+				D811E10121E44E8C00F5B61F /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
