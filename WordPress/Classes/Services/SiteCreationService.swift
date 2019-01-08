@@ -173,27 +173,21 @@ open class SiteCreationService: LocalCoreDataService {
     /// Kick off the process starting from syncing account.
     ///
     func retryFromAccountSync() {
-        if let syncBlock = syncBlock {
-            syncBlock()
-        }
+        syncBlock?()
     }
 
     /// Kick off the process starting from setting the tagline.
     /// i.e. set tagline, set theme, synch account.
     ///
     func retryFromTagline() {
-        if let taglineBlock = taglineBlock {
-            taglineBlock()
-        }
+        taglineBlock?()
     }
 
     /// Kick off the process starting from setting the theme.
     /// i.e. set theme, synch account.
     ///
     func retryFromTheme() {
-        if let themeBlock = themeBlock {
-            themeBlock()
-        }
+        themeBlock?()
     }
 
     // MARK: Private behavior
@@ -258,7 +252,7 @@ open class SiteCreationService: LocalCoreDataService {
 
     /// Creates a WPCom site
     ///
-    /// - Paramaters:
+    /// - Parameters:
     ///     - params: New blog information
     ///     - account: The WPAccount for the user
     ///     - status: The status callback
