@@ -269,7 +269,33 @@ private extension PeopleService {
                 createManagedPerson(remotePerson)
             }
         }
+
+        guard let firstPerson = remotePeople.first else {
+            return
+        }
+
+        let peopleType = type(of: firstPerson)
+        removeDeletedPeople(remotePeople, type: peopleType)
     }
+
+    /// Compares the array of People received from remote against People in Core Data
+    /// to find those that no longer exist and remove them from Core Data.
+    ///
+    func removeDeletedPeople<T: Person>(_ remotePeople: [T], type: T.Type) {
+
+        // Get all People for the type.
+        var allPeopleOfType = loadPeople(siteID, type: type)
+
+        // Remove People that were just loaded.
+        for remotePerson in remotePeople {
+            allPeopleOfType.removeAll(where: {$0.ID == remotePerson.ID })
+        }
+
+        // Remove remaining from Core Data.
+        let idSet = Set(allPeopleOfType.compactMap({ $0.ID }))
+        removeManagedPeopleWithIDs(idSet, type: type)
+    }
+
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
