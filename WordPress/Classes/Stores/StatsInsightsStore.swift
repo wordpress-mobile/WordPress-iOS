@@ -8,6 +8,8 @@ enum InsightAction: Action {
     case receivedMostPopularStats(_ mostPopularStats: StatsInsights?)
     case receivedDotComFollowers(_ followerStats: StatsGroup?)
     case receivedEmailFollowers(_ followerStats: StatsGroup?)
+    case receivedCommentsAuthors(_ commentsAuthors: StatsGroup?)
+    case receivedCommentsPosts(_ commentsPosts: StatsGroup?)
     case receivedPublicize(items: [StatsItem]?)
     case receivedTodaysStats(_ todaysStats: StatsSummary?)
     case receivedPostingActivity(_ postingActivity: StatsStreak?)
@@ -21,20 +23,33 @@ enum InsightQuery {
 struct InsightStoreState {
     var latestPostSummary: StatsLatestPostSummary?
     var fetchingLatestPostSummary = false
+
     var allTimeStats: StatsAllTime?
     var fetchingAllTimeStats = false
+
     var mostPopularStats: StatsInsights?
     var fetchingMostPopularStats = false
+
     var totalDotComFollowers: String?
     var topDotComFollowers: [StatsItem]?
     var fetchingDotComFollowers = false
+
     var totalEmailFollowers: String?
     var topEmailFollowers: [StatsItem]?
     var fetchingEmailFollowers = false
+
+    var topCommentsAuthors: [StatsItem]?
+    var fetchingCommentsAuthors = false
+
+    var topCommentsPosts: [StatsItem]?
+    var fetchingCommentsPosts = false
+
     var publicizeItems: [StatsItem]?
     var fetchingPublicize = false
+
     var todaysStats: StatsSummary?
     var fetchingTodaysStats = false
+
     var postingActivity: StatsStreak?
     var fetchingPostingActivity = false
 }
@@ -62,6 +77,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedDotComFollowers(followerStats)
         case .receivedEmailFollowers(let followerStats):
             receivedEmailFollowers(followerStats)
+        case .receivedCommentsAuthors(let commentsAuthors):
+            receivedCommentsAuthors(commentsAuthors)
+        case .receivedCommentsPosts(let commentsPosts):
+            receivedCommentsPosts(commentsPosts)
         case .receivedPublicize(let items):
             receivedPublicize(items: items)
         case .receivedTodaysStats(let todaysStats):
@@ -103,6 +122,8 @@ private extension StatsInsightsStore {
         state.fetchingPublicize = true
         state.fetchingTodaysStats = true
         state.fetchingPostingActivity = true
+        state.fetchingCommentsAuthors = true
+        state.fetchingCommentsPosts = true
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -125,9 +146,15 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedLatestPostSummary(latestPostSummary))
         }, commentsAuthorCompletionHandler: { (commentsAuthors, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching comments authors: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedCommentsAuthors(commentsAuthors))
         }, commentsPostsCompletionHandler: { (commentsPosts, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching comments posts: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedCommentsPosts(commentsPosts))
         }, tagsCategoriesCompletionHandler: { (tagsCategories, error) in
 
         }, followersDotComCompletionHandler: { (followersDotCom, error) in
@@ -203,6 +230,20 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedCommentsAuthors(_ commentsAuthors: StatsGroup?) {
+        transaction { state in
+            state.topCommentsAuthors = commentsAuthors?.items as? [StatsItem]
+            state.fetchingCommentsAuthors = false
+        }
+    }
+
+    func receivedCommentsPosts(_ commentsPosts: StatsGroup?) {
+        transaction { state in
+            state.topCommentsPosts = commentsPosts?.items as? [StatsItem]
+            state.fetchingCommentsPosts = false
+        }
+    }
+
     func receivedPublicize(items: [StatsItem]?) {
         transaction { state in
             state.publicizeItems = items
@@ -269,6 +310,14 @@ extension StatsInsightsStore {
         // total of all publicize items.
         // For now, we'll just show a bogus number.
         return "666,666,666"
+    }
+
+    func getTopCommentsAuthors() -> [StatsItem]? {
+        return state.topCommentsAuthors
+    }
+
+    func getTopCommentsPosts() -> [StatsItem]? {
+        return state.topCommentsPosts
     }
 
     func getPublicize() -> [StatsItem]? {
@@ -338,7 +387,9 @@ extension StatsInsightsStore {
             state.fetchingEmailFollowers ||
             state.fetchingPublicize ||
             state.fetchingTodaysStats ||
-            state.fetchingPostingActivity
+            state.fetchingPostingActivity ||
+            state.fetchingCommentsAuthors ||
+            state.fetchingCommentsPosts
     }
 
 }

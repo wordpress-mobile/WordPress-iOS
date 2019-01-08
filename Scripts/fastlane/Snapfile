@@ -1,6 +1,13 @@
 # Uncomment the lines below you want to change by removing the # in the beginning
 # Verify script has credentials
 
+fastlane_directory = File.expand_path File.dirname(__FILE__)
+# __FILE__ can return different results when this file is required or used directly
+# This allows it to work in all cases
+if File.basename(fastlane_directory) != "fastlane"
+  fastlane_directory = File.join fastlane_directory, "fastlane"
+end
+
 # A list of devices you want to take the screenshots from
 devices([
   "iPhone XS Max",
@@ -11,14 +18,18 @@ devices([
 languages("da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" "))
 
 # Where should the resulting screenshots be stored?
-output_directory "./screenshots"
+output_directory File.join fastlane_directory, "screenshots"
 
 scheme "WordPressScreenshotGeneration"
 
 # clear_previous_screenshots true # remove the '#'' to clear all previously generated screenshots before creating new ones
 
 # Where is your project (or workspace)? Provide the full path here
-workspace File.expand_path File.dirname(__FILE__) + "../../WordPress.xcworkspace"
+workspace File.join fastlane_directory, "../../WordPress.xcworkspace"
+
+# Since Fastlane searches recursively from the current directory for the helper (Scripts/ or fastlane/),
+# this check will always fail for us
+skip_helper_version_check true
 
 reinstall_app true
 erase_simulator true

@@ -89,6 +89,7 @@ class NotificationDetailsViewController: UIViewController {
                 return
             }
 
+            router = makeRouter()
             refreshInterface()
             markAsReadIfNeeded()
         }
@@ -99,7 +100,7 @@ class NotificationDetailsViewController: UIViewController {
     }()
 
     lazy var router: NotificationContentRouter = {
-        return NotificationContentRouter(activity: note, coordinator: coordinator)
+        return makeRouter()
     }()
 
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
@@ -173,6 +174,10 @@ class NotificationDetailsViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         refreshNavigationBar()
+    }
+
+    private func makeRouter() -> NotificationContentRouter {
+        return NotificationContentRouter(activity: note, coordinator: coordinator)
     }
 
     fileprivate func markAsReadIfNeeded() {
