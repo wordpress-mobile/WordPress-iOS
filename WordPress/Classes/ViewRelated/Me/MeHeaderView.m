@@ -19,6 +19,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) UIView *gravatarDropTarget;
+@property (nonatomic, strong) UIStackView *stackView;
 
 @end
 
@@ -35,19 +36,17 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     self = [super initWithFrame:frame];
     if (self) {
         _gravatarImageView = [self newImageViewForGravatar];
-        [self addSubview:_gravatarImageView];
-        
+        _displayNameLabel = [self newLabelForDisplayName];
+        _usernameLabel = [self newLabelForUsername];
+
+        _stackView = [self newStackView];
+        [self addSubview:_stackView];
+
         _gravatarDropTarget = [self newDropTargetForGravatar];
         [self addSubview:_gravatarDropTarget];
 
         _activityIndicator = [self newSpinner];
         [_gravatarImageView addSubview:_activityIndicator];
-        
-        _displayNameLabel = [self newLabelForDisplayName];
-        [self addSubview:_displayNameLabel];
-
-        _usernameLabel = [self newLabelForUsername];
-        [self addSubview:_usernameLabel];
 
         [self configureConstraints];
     }
@@ -121,52 +120,37 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_gravatarImageView, _displayNameLabel, _usernameLabel);
-    NSDictionary *metrics = @{@"gravatarSize": @(MeHeaderViewGravatarSize),
-                              @"labelHeight":@(MeHeaderViewLabelHeight),
-                              @"verticalSpacing":@(MeHeaderViewVerticalSpacing),
-                              @"verticalMargin":@(MeHeaderViewVerticalMargin)};
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalSpacing-[_displayNameLabel(labelHeight)][_usernameLabel(labelHeight)]-verticalMargin-|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_gravatarImageView(gravatarSize)]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
+    UIView *spaceView = [UIView new];
+    [self.stackView addArrangedSubview:self.gravatarImageView];
+    [self.stackView addArrangedSubview:spaceView];
+    [self.stackView addArrangedSubview:self.displayNameLabel];
+    [self.stackView addArrangedSubview:self.usernameLabel];
 
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.gravatarImageView
-                                                     attribute:NSLayoutAttributeCenterX
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeCenterX
-                                                    multiplier:1
-                                                      constant:0]];
-    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.gravatarImageView.heightAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
+                                              [self.gravatarImageView.widthAnchor constraintEqualToConstant:MeHeaderViewGravatarSize],
+                                              [spaceView.heightAnchor constraintEqualToConstant:MeHeaderViewVerticalSpacing],
+                                              [self.stackView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
+                                              [self.stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
+                                              ]];
+
     [self.gravatarDropTarget pinSubviewToAllEdgeMargins:self.gravatarImageView];
-
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.displayNameLabel
-                                                     attribute:NSLayoutAttributeCenterX
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeCenterX
-                                                    multiplier:1
-                                                      constant:0]];
-
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.usernameLabel
-                                                    attribute:NSLayoutAttributeCenterX
-                                                    relatedBy:NSLayoutRelationEqual
-                                                       toItem:self
-                                                    attribute:NSLayoutAttributeCenterX
-                                                   multiplier:1
-                                                      constant:0]];
-    
     [self.gravatarImageView pinSubviewAtCenter:_activityIndicator];
     
     [super setNeedsUpdateConstraints];
 }
 
 #pragma mark - Subview factories
+
+- (UIStackView *)newStackView
+{
+    UIStackView *stackView = [UIStackView new];
+    stackView = [UIStackView new];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    return stackView;
+}
 
 - (UILabel *)newLabelForDisplayName
 {
