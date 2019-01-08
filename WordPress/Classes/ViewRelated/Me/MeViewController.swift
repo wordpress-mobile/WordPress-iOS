@@ -58,6 +58,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.layoutHeaderView()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
