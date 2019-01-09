@@ -10,7 +10,7 @@ import Foundation
 /// - failed:       Returned if an assembly has failed to complete.
 /// - succeeded:    Returned when an assembly has proceeded to completion.
 ///
-enum SiteAssemblyStatus {
+enum SiteAssemblyStatus: Equatable {
     case idle
     case inProgress
     case failed
@@ -27,12 +27,15 @@ protocol SiteAssemblyService {
     /// Describes the current state of the service.
     var currentStatus: SiteAssemblyStatus { get }
 
+    /// Returns the created `Blog` if available; `nil` otherwise
+    var createdBlog: Blog? { get }
+
     /// This method serves as the primary means with which to initiate site assembly.
     ///
     /// - Parameters:
-    ///   - assemblyInput: the parameters that should be used to assemble the site
-    ///   - changeHandler: a closure to execute when the status of the site assembly changes, invoked on the main queue
-    func createSite(creatorOutput assemblyInput: SiteCreatorOutput, changeHandler: SiteAssemblyStatusChangedHandler?)
+    ///   - creationRequest:    the parameters that should be used to assemble the site
+    ///   - changeHandler:      a closure to execute when the status of the site assembly changes, invoked on the main queue
+    func createSite(creationRequest: SiteCreationRequest, changeHandler: SiteAssemblyStatusChangedHandler?)
 }
 
 // MARK: - MockSiteAssemblyService
@@ -47,15 +50,17 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
     private(set) var currentStatus: SiteAssemblyStatus = .idle {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                guard let strongSelf = self else {
+                guard let self = self else {
                     return
                 }
-                strongSelf.statusChangeHandler?(strongSelf.currentStatus)
+                self.statusChangeHandler?(self.currentStatus)
             }
         }
     }
 
     private(set) var statusChangeHandler: SiteAssemblyStatusChangedHandler?
+
+    let createdBlog: Blog? = nil
 
     // MARK: SiteAssemblyService
 
@@ -64,24 +69,24 @@ final class MockSiteAssemblyService: NSObject, SiteAssemblyService {
         super.init()
     }
 
-    func createSite(creatorOutput assemblyInput: SiteCreatorOutput, changeHandler: SiteAssemblyStatusChangedHandler?) {
+    func createSite(creationRequest: SiteCreationRequest, changeHandler: SiteAssemblyStatusChangedHandler?) {
         self.statusChangeHandler = changeHandler
         currentStatus = .inProgress
 
         let contrivedDelay = DispatchTimeInterval.seconds(3)
         let dispatchDelay = DispatchTime.now() + contrivedDelay
         DispatchQueue.main.asyncAfter(deadline: dispatchDelay) { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
 
             let mockStatus: SiteAssemblyStatus
-            if strongSelf.shouldMockSuccess {
+            if self.shouldMockSuccess {
                 mockStatus = .succeeded
             } else {
                 mockStatus = .failed
             }
-            strongSelf.currentStatus = mockStatus
+            self.currentStatus = mockStatus
         }
     }
 }

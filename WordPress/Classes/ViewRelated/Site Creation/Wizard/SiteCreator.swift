@@ -1,9 +1,9 @@
 
 import Foundation
 
-// MARK: - SiteCreatorOutputError
+// MARK: - SiteCreationRequestAssemblyError
 
-enum SiteCreatorOutputError: Error {
+enum SiteCreationRequestAssemblyError: Error {
     case invalidSegmentIdentifier
     case invalidVerticalIdentifier
     case invalidDomain
@@ -28,35 +28,40 @@ final class SiteCreator {
     /// Generates the final object that will be posted to the backend
     ///
     /// - Returns: an Encodable object
-    func build() throws -> SiteCreatorOutput {
+    ///
+    func build() throws -> SiteCreationRequest {
 
         guard let segmentIdentifier = segment?.identifier else {
-            throw SiteCreatorOutputError.invalidSegmentIdentifier
+            throw SiteCreationRequestAssemblyError.invalidSegmentIdentifier
         }
 
         guard let verticalIdentifier = vertical?.identifier.description else {
-            throw SiteCreatorOutputError.invalidVerticalIdentifier
+            throw SiteCreationRequestAssemblyError.invalidVerticalIdentifier
         }
 
-        guard let domainSuggestion = address else {
-            throw SiteCreatorOutputError.invalidDomain
+        // BEGIN : Temporary, introduced via 10711, to be replaced via 10669
+        let suffix = Int(Date().timeIntervalSinceReferenceDate)
+        let siteName = "10711site\(suffix)"
+//        guard let domainSuggestion = address else {
+        guard let _ = address else {
+            throw SiteCreationRequestAssemblyError.invalidDomain
         }
+//        let siteName = domainSuggestion.domainName
+        // END
 
         guard let siteInformation = information else {
-            throw SiteCreatorOutputError.invalidSiteInformation
+            throw SiteCreationRequestAssemblyError.invalidSiteInformation
         }
 
-        let output = SiteCreatorOutput(
+        let request = SiteCreationRequest(
             segmentIdentifier: segmentIdentifier,
             verticalIdentifier: verticalIdentifier,
-            tagline: siteInformation.tagLine ?? "",     // Tagline input can be skipped
-            isPublic: true,
-            languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
-            shouldValidate: true,
-            siteURLString: domainSuggestion.domainName,
-            title: siteInformation.title                // Title input can be skipped
+            title: siteInformation.title,
+            tagline: siteInformation.tagLine,
+            siteURLString: siteName,
+            isPublic: true
         )
 
-        return output
+        return request
     }
 }
