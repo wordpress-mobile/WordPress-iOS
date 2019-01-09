@@ -148,9 +148,9 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
         observeNetworkStatus()
+        resetManagedPeople()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -213,6 +213,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     @IBAction
     func refresh() {
+        resetManagedPeople()
         refreshPeople()
     }
 
@@ -337,6 +338,14 @@ private extension PeopleViewController {
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
+    }
+
+    func resetManagedPeople() {
+        guard let blog = blog, let service = PeopleService(blog: blog, context: context) else {
+            return
+        }
+
+        service.removeManagedPeople()
     }
 
     func loadMorePeopleIfNeeded() {
