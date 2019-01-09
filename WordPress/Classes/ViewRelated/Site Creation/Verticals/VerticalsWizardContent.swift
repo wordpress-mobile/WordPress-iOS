@@ -2,7 +2,16 @@ import UIKit
 import WordPressKit
 
 /// Contains the UI corresponding to the list of verticals
+///
 final class VerticalsWizardContent: UIViewController {
+
+    // MARK: Properties
+
+    private struct StyleConstants {
+        static let rowHeight: CGFloat = 44.0
+        static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
+    }
+
     private let segment: SiteSegment?
     private let service: SiteVerticalsService
     private var data: [SiteVertical]
@@ -11,11 +20,6 @@ final class VerticalsWizardContent: UIViewController {
     private let throttle = Scheduler(seconds: 1)
 
     @IBOutlet weak var table: UITableView!
-
-    private struct StyleConstants {
-        static let rowHeight: CGFloat = 44.0
-        static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
-    }
 
     private lazy var bottomConstraint: NSLayoutConstraint = {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
@@ -28,6 +32,8 @@ final class VerticalsWizardContent: UIViewController {
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
 
+    // MARK: VerticalsWizardContent
+
     init(segment: SiteSegment?, service: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
         self.service = service
@@ -35,6 +41,8 @@ final class VerticalsWizardContent: UIViewController {
         self.data = []
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
+
+    // MARK: UIViewController
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -63,40 +71,61 @@ final class VerticalsWizardContent: UIViewController {
         table.layoutHeaderView()
     }
 
+    // MARK: Private behavior
+
     private func applyTitle() {
         title = NSLocalizedString("1 of 3", comment: "Site creation. Step 2. Screen title")
     }
 
-    private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+    private func clearContent() {
+        throttle.cancel()
+
+        table.dataSource = nil
+        table.delegate = nil
+        table.reloadData()
     }
 
-    private func setupTable() {
-        table.dataSource = self
-        table.delegate = self
-        setupTableBackground()
-        setupTableSeparator()
-        setupCells()
-        setupHeader()
-        setupConstraints()
-        hideSeparators()
+    private func didSelect(_ vertical: SiteVertical) {
+        selection(vertical)
     }
 
-    private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+    private func fetchVerticals(_ searchTerm: String) {
+        let request = SiteVerticalsRequest(search: searchTerm)
+        service.retrieveVerticals(request: request) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.handleData(data)
+            case .failure(let error):
+                self?.handleError(error)
+            }
+        }
     }
 
-    private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
+    private func handleData(_ data: [SiteVertical]) {
+        self.data = data
+        table.reloadData()
+    }
+
+    private func handleError(_ error: Error) {
+        debugPrint("=== handling error===")
     }
 
     private func hideSeparators() {
         table.tableFooterView = UIView(frame: .zero)
     }
 
-    private func setupCells() {
-        registerCells()
-        setupCellHeight()
+    private func registerCell(identifier: String) {
+        let nib = UINib(nibName: identifier, bundle: nil)
+        table.register(nib, forCellReuseIdentifier: identifier)
+    }
+
+    private func registerCells() {
+        registerCell(identifier: VerticalsCell.cellReuseIdentifier())
+        registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func setupCellHeight() {
@@ -105,14 +134,20 @@ final class VerticalsWizardContent: UIViewController {
         table.separatorInset = StyleConstants.separatorInset
     }
 
-    private func registerCells() {
-        registerCell(identifier: VerticalsCell.cellReuseIdentifier())
-        registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
+    private func setupCells() {
+        registerCells()
+        setupCellHeight()
     }
 
-    private func registerCell(identifier: String) {
-        let nib = UINib(nibName: identifier, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: identifier)
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            bottomConstraint,
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
     }
 
     private func setupHeader() {
@@ -135,15 +170,23 @@ final class VerticalsWizardContent: UIViewController {
         ])
     }
 
-    private func setupConstraints() {
-        table.cellLayoutMarginsFollowReadableWidth = true
+    private func setupTable() {
+        table.dataSource = self
+        table.delegate = self
+        setupTableBackground()
+        setupTableSeparator()
+        setupCells()
+        setupHeader()
+        setupConstraints()
+        hideSeparators()
+    }
 
-        NSLayoutConstraint.activate([
-            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            bottomConstraint,
-            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
-            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
-        ])
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     @objc
@@ -157,65 +200,39 @@ final class VerticalsWizardContent: UIViewController {
             self?.fetchVerticals(searchTerm)
         }
     }
-
-    private func fetchVerticals(_ searchTerm: String) {
-        let request = SiteVerticalsRequest(search: searchTerm)
-        service.retrieveVerticals(request: request) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.handleData(data)
-            case .failure(let error):
-                self?.handleError(error)
-            }
-        }
-    }
-
-    private func clearContent() {
-        throttle.cancel()
-
-        table.dataSource = nil
-        table.delegate = nil
-        table.reloadData()
-    }
-
-    private func handleError(_ error: Error) {
-        debugPrint("=== handling error===")
-    }
-
-    private func handleData(_ data: [SiteVertical]) {
-        self.data = data
-        table.reloadData()
-    }
-
-    private func didSelect(_ vertical: SiteVertical) {
-        selection(vertical)
-    }
 }
 
-extension VerticalsWizardContent {
-    private struct Constants {
+// MARK: - Keyboard management
+
+private extension VerticalsWizardContent {
+    struct Constants {
         static let bottomMargin: CGFloat = 0.0
         static let topMargin: CGFloat = 36.0
     }
 
-    private func startListeningToKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
+    @objc
+    func keyboardWillHide(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else { return }
+        let animationDuration = payload.animationDuration
 
-    private func stopListeningToKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = .zero
+                        self?.table.scrollIndicatorInsets = .zero
+                        self?.bottomConstraint.constant = Constants.bottomMargin
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 1.0
+                        }
+
+            },
+                       completion: nil)
     }
 
     @objc
-    private func keyboardWillShow(_ notification: Foundation.Notification) {
+    func keyboardWillShow(_ notification: Foundation.Notification) {
         guard let payload = KeyboardInfo(notification) else { return }
         let keyboardScreenFrame = payload.frameEnd
 
@@ -250,7 +267,23 @@ extension VerticalsWizardContent {
                        completion: nil)
     }
 
-    private func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
+    func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
         guard let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
             return UIEdgeInsets(top: 0.0, left: 0.0, bottom: bottom, right: 0.0)
         }
@@ -258,34 +291,11 @@ extension VerticalsWizardContent {
         let textfieldFrame = header.textField.frame
         return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
     }
-
-    @objc
-    private func keyboardWillHide(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else { return }
-        let animationDuration = payload.animationDuration
-
-        UIView.animate(withDuration: animationDuration,
-                       delay: 0,
-                       options: .beginFromCurrentState,
-                       animations: { [weak self] in
-                        self?.view.layoutIfNeeded()
-                        self?.table.contentInset = .zero
-                        self?.table.scrollIndicatorInsets = .zero
-                        self?.bottomConstraint.constant = Constants.bottomMargin
-                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                            header.titleSubtitle.alpha = 1.0
-                        }
-
-            },
-                       completion: nil)
-    }
 }
 
-extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
-    }
+// MARK: - UITableViewDataSource & UITableViewDelegate
 
+extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let vertical = data[indexPath.row]
         let cell = configureCell(vertical: vertical, indexPath: indexPath)
@@ -299,10 +309,31 @@ extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
         let vertical = data[indexPath.row]
         didSelect(vertical)
     }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
+    }
 }
 
+// MARK: - Cell formatting
+
 private extension VerticalsWizardContent {
-    private func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
+    func addBorder(cell: UITableViewCell, at: IndexPath) {
+        let row = at.row
+        if row == 0 {
+            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
+        }
+
+        if row == data.count - 1 {
+            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
+        }
+    }
+
+    func cellIdentifier(vertical: SiteVertical) -> String {
+        return vertical.isNew ? NewVerticalCell.cellReuseIdentifier() : VerticalsCell.cellReuseIdentifier()
+    }
+
+    func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
         let identifier = cellIdentifier(vertical: vertical)
 
         if var cell = table.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SiteVerticalPresenter {
@@ -312,20 +343,5 @@ private extension VerticalsWizardContent {
         }
 
         return UITableViewCell()
-    }
-
-    private func cellIdentifier(vertical: SiteVertical) -> String {
-        return vertical.isNew ? NewVerticalCell.cellReuseIdentifier() : VerticalsCell.cellReuseIdentifier()
-    }
-
-    private func addBorder(cell: UITableViewCell, at: IndexPath) {
-        let row = at.row
-        if row == 0 {
-            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
-        }
-
-        if row == data.count - 1 {
-            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
-        }
     }
 }
