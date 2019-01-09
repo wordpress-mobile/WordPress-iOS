@@ -100,12 +100,11 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.numberOfLines = 1;
     label.backgroundColor = [UIColor whiteColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide allTAllShadeGrey];
     label.font = [WPStyleGuide subtitleFont];
-    label.adjustsFontSizeToFitWidth = NO;
+    label.adjustsFontForContentSizeCategory = YES;
 
     [self.labelsStackView addArrangedSubview:label];
     self.subtitleLabel = label;
@@ -117,12 +116,11 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.numberOfLines = 1;
     label.backgroundColor = [UIColor whiteColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide littleEddieGrey];
     label.font = [WPStyleGuide subtitleFont];
-    label.adjustsFontSizeToFitWidth = NO;
+    label.adjustsFontForContentSizeCategory = YES;
 
     [self.labelsStackView addArrangedSubview:label];
     self.titleLabel = label;
@@ -152,10 +150,8 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
 - (void)setupTapGesture
 {
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped:)];
-    tapGesture.numberOfTouchesRequired = 1;
-    tapGesture.numberOfTapsRequired = 1;
-
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(handleViewTapped:)];
     [self addGestureRecognizer:tapGesture];
     self.tapRecognizer = tapGesture;
 }
