@@ -20,13 +20,14 @@ final class VerticalsWizardContent: UIViewController {
 
     private let verticalsService: SiteVerticalsService
 
-    private var data: [SiteVertical]
-
     private let selection: (SiteVertical) -> Void
 
     private let throttle = Scheduler(seconds: 1)
 
-    @IBOutlet weak var table: UITableView!
+    @IBOutlet
+    private weak var table: UITableView!
+
+    private(set) var tableViewProvider: TableViewProvider?
 
     private lazy var bottomConstraint: NSLayoutConstraint = {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
@@ -43,7 +44,7 @@ final class VerticalsWizardContent: UIViewController {
         self.promptService = promptService
         self.verticalsService = verticalsService
         self.selection = selection
-        self.data = []
+
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
 
@@ -85,13 +86,11 @@ final class VerticalsWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
-        table.dataSource = nil
-        table.delegate = nil
-        table.reloadData()
-    }
-
-    private func didSelect(_ vertical: SiteVertical) {
-        selection(vertical)
+        guard let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider else {
+            setupTableDataProvider()
+            return
+        }
+        validDataProvider.data = []
     }
 
     private func fetchVerticals(_ searchTerm: String) {
@@ -107,8 +106,11 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        self.data = data
-        table.reloadData()
+        if let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider {
+            validDataProvider.data = data
+        } else {
+            setupTableDataProvider(data)
+        }
     }
 
     private func handleError(_ error: Error) {
@@ -176,15 +178,23 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupTable() {
-        table.dataSource = self
-        table.delegate = self
-
         setupTableBackground()
         setupTableSeparator()
         setupCells()
         setupHeader()
         setupConstraints()
         hideSeparators()
+
+        setupTableDataProvider()
+    }
+
+    private func setupTableDataProvider(_ data: [SiteVertical] = []) {
+        self.tableViewProvider = DefaultVerticalsTableViewProvider(tableView: table, data: data) { [weak self] selectedVertical in
+            guard let self = self, let vertical = selectedVertical else {
+                return
+            }
+            self.selection(vertical)
+        }
     }
 
     private func setupTableBackground() {
@@ -195,16 +205,23 @@ final class VerticalsWizardContent: UIViewController {
         table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
+    private func performSearchIfNeeded(query: String) {
+        guard !query.isEmpty else {
+            return
+        }
+
+        throttle.throttle { [weak self] in
+            self?.fetchVerticals(query)
+        }
+    }
+
     @objc
     private func textChanged(sender: UITextField) {
         guard let searchTerm = sender.text, searchTerm.isEmpty == false else {
             clearContent()
             return
         }
-
-        throttle.throttle { [weak self] in
-            self?.fetchVerticals(searchTerm)
-        }
+        performSearchIfNeeded(query: searchTerm)
     }
 }
 
@@ -296,58 +313,5 @@ private extension VerticalsWizardContent {
 
         let textfieldFrame = header.textField.frame
         return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
-    }
-}
-
-// MARK: - UITableViewDataSource & UITableViewDelegate
-
-extension VerticalsWizardContent: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let vertical = data[indexPath.row]
-        let cell = configureCell(vertical: vertical, indexPath: indexPath)
-
-        addBorder(cell: cell, at: indexPath)
-
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vertical = data[indexPath.row]
-        didSelect(vertical)
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
-    }
-}
-
-// MARK: - Cell formatting
-
-private extension VerticalsWizardContent {
-    func addBorder(cell: UITableViewCell, at: IndexPath) {
-        let row = at.row
-        if row == 0 {
-            cell.addTopBorder(withColor: WPStyleGuide.greyLighten20())
-        }
-
-        if row == data.count - 1 {
-            cell.addBottomBorder(withColor: WPStyleGuide.greyLighten20())
-        }
-    }
-
-    func cellIdentifier(vertical: SiteVertical) -> String {
-        return vertical.isNew ? NewVerticalCell.cellReuseIdentifier() : VerticalsCell.cellReuseIdentifier()
-    }
-
-    func configureCell(vertical: SiteVertical, indexPath: IndexPath) -> UITableViewCell {
-        let identifier = cellIdentifier(vertical: vertical)
-
-        if var cell = table.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SiteVerticalPresenter {
-            cell.vertical = vertical
-
-            return cell as! UITableViewCell
-        }
-
-        return UITableViewCell()
     }
 }

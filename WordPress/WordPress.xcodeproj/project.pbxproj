@@ -498,6 +498,7 @@
 		73B05D2621374B960073ECAA /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		73B05D2921374F1E0073ECAA /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		73B44F5121E65CFA008C4C08 /* SiteVerticalsPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */; };
+		73B44F5321E670F6008C4C08 /* VerticalsTableViewProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5221E670F6008C4C08 /* VerticalsTableViewProviders.swift */; };
 		73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */; };
 		73BFDA8A211D054800907245 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BFDA89211D054800907245 /* Notifiable.swift */; };
 		73C31907212F214200769485 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6B42CBE1D9DA6270043E228 /* Noticons.ttf */; };
@@ -2343,6 +2344,7 @@
 		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationContentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVerticalsPromptService.swift; sourceTree = "<group>"; };
+		73B44F5221E670F6008C4C08 /* VerticalsTableViewProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalsTableViewProviders.swift; sourceTree = "<group>"; };
 		73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateViewTests.swift; sourceTree = "<group>"; };
 		73BFDA89211D054800907245 /* Notifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
 		73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyStep.swift; sourceTree = "<group>"; };
@@ -7301,6 +7303,7 @@
 				D8380CA22192E77F00250609 /* VerticalsCell.swift */,
 				D8380CA32192E77F00250609 /* VerticalsCell.xib */,
 				D818FFD321915586000E5FEE /* VerticalsStep.swift */,
+				73B44F5221E670F6008C4C08 /* VerticalsTableViewProviders.swift */,
 				D818FFD52191566B000E5FEE /* VerticalsWizardContent.swift */,
 				D818FFD62191566B000E5FEE /* VerticalsWizardContent.xib */,
 			);
@@ -9598,6 +9601,7 @@
 				E6F2788121BC1A4A008B4DB5 /* PlanGroup.swift in Sources */,
 				08216FCE1CDBF96000304BA7 /* MenuItemPostsViewController.m in Sources */,
 				4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */,
+				73B44F5321E670F6008C4C08 /* VerticalsTableViewProviders.swift in Sources */,
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
 				D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */,
 				598DD1711B97985700146967 /* ThemeBrowserCell.swift in Sources */,
