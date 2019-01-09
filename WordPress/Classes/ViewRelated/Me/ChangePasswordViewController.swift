@@ -19,7 +19,7 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        mode = .password
+        mode = .newPassword
         navigationItem.title = Constants.title
         navigationItem.rightBarButtonItem = saveBarButtonItem
 
@@ -55,11 +55,19 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         return true
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let isValidPassword = currentValue.isValidPassword()
+        if isValidPassword {
+            save()
+        }
+        return isValidPassword
+    }
+
 
     // MARK: - Constants
 
     private enum Constants {
-        static let title = NSLocalizedString("Change password", comment: "Main title")
+        static let title = NSLocalizedString("Change Password", comment: "Main title")
         static let description = NSLocalizedString("Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & ).", comment: "Help text that describes how the password should be. It appears while editing the password")
         static let actionButtonTitle = NSLocalizedString("Save", comment: "Settings Text save button title")
     }
