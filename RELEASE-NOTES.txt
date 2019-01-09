@@ -4,3 +4,4 @@
 * Fixes an issue where the Stats widget would always revert back to the primary site.
 * When creating a new site, on the site type selection page, the 'Start with' label now wraps.
 * Improvements to localisations.
+* Add Change Password in Account Settings
