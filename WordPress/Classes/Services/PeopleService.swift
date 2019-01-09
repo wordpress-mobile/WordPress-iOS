@@ -214,9 +214,10 @@ struct PeopleService {
     ///
     func removeManagedPeople() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
-        request.predicate = NSPredicate(format: "siteID = %@", NSNumber(value: siteID as Int))
-        let objects = (try? context.fetch(request) as! [NSManagedObject]) ?? []
-        objects.forEach({ context.delete($0) })
+        request.predicate = NSPredicate(format: "siteID = %@", NSNumber(value: siteID))
+        if let objects = (try? context.fetch(request)) as? [NSManagedObject] {
+            objects.forEach { context.delete($0) }
+        }
     }
 
     /// Validates Invitation Recipients.
