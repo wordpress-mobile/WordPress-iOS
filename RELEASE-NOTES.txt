@@ -6,3 +6,5 @@
 * Localises the button to edit a comment.
 * Localises the "Done" button on screen presented after publishing a Post.
 * Fixes issue where deleted users where still appearing in the site's People lists.
+* Improvements to localisations.
+* Fixes an issue where stale images may appear when navigating between notifications.

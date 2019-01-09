@@ -1076,10 +1076,14 @@ private extension NotificationDetailsViewController {
     }
 
     func displayReplyError(with block: FormattableCommentContent, content: String) {
-        let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
-                                            comment: "Reply Failure Message")
+        var message     = String(format: NSLocalizedString("There has been an unexpected error while sending your reply: \n\"%@\"",
+                                            comment: "Reply Failure Message"), String(content.prefix(140)))
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
         let retryTitle  = NSLocalizedString("Try Again", comment: "Retries sending a reply")
+
+        if content.count >= 140 {
+            message.insert("…", at: message.index(message.endIndex, offsetBy: -1))
+        }
 
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(cancelTitle)
