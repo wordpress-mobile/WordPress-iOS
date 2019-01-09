@@ -138,9 +138,14 @@ open class AboutViewController: UITableViewController {
 
     // MARK: - Private Helpers
     fileprivate func displayWebView(_ urlString: String) {
-        guard let url = URL(string: urlString) else {
+        displayWebView(URL(string: urlString))
+    }
+
+    private func displayWebView(_ url: URL?) {
+        guard let url = url else {
             return
         }
+
         let webViewController = WebViewControllerFactory.controller(url: url)
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
@@ -205,7 +210,7 @@ open class AboutViewController: UITableViewController {
 
                 Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
                     details: nil,
-                    handler: { self.displayWebView(WPAutomatticTermsOfServiceURL) }),
+                    handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.prependLocaleAsSubdomain()) }),
 
                 Row(title: NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
                     details: nil,
