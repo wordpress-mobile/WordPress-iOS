@@ -162,11 +162,6 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
 #pragma mark - Public Methods
 
-- (CGSize)intrinsicContentSize
-{
-    return CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
-}
-
 - (void)setShowsDisclosureIndicator:(BOOL)showsDisclosure
 {
     _showsDisclosureIndicator = showsDisclosure;

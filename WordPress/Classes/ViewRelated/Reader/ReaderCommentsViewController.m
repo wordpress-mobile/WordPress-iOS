@@ -20,7 +20,6 @@
 // crash in certain circumstances when the tableView lays out its visible cells,
 // and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
 static CGFloat const EstimatedCommentRowHeight = 300.0;
-static CGFloat const PostHeaderHeight = 54.0;
 static NSInteger const MaxCommentDepth = 4.0;
 static CGFloat const CommentIndentationWidth = 40.0;
 
@@ -262,7 +261,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     __typeof(self) __weak weakSelf = self;
     
     // Wrapper view
-    UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
+    UIView *headerWrapper = [UIView new];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
     headerWrapper.preservesSuperviewLayoutMargins = YES;
     headerWrapper.backgroundColor = [UIColor whiteColor];
@@ -408,19 +407,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         @"suggestionsview"  : self.suggestionsTableView,
         @"replyTextView"    : self.replyTextView
     };
-    
-    NSDictionary *metrics = @{
-        @"headerHeight"     : @(PostHeaderHeight)
-    };
-    
+
     // PostHeader Constraints
     [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
     [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader][tableView][replyTextView]"
                                                                       options:0
-                                                                      metrics:metrics
+                                                                      metrics:nil
                                                                         views:views]];
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
