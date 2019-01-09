@@ -220,7 +220,7 @@ private class AccountSettingsController: SettingsController {
     // MARK: - Constants
 
     enum Constants {
-        static let title = NSLocalizedString("Change password", comment: "Account Settings Change password label")
+        static let title = NSLocalizedString("Change Password", comment: "Account Settings Change password label")
         static let changingPassword = NSLocalizedString("Changing password", comment: "Loader title displayed by the loading view while the password is changing")
         static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
