@@ -69,7 +69,8 @@ class SiteAssemblyViewTests: XCTestCase {
         let contentView = SiteAssemblyContentView()
 
         // When
-        contentView.domainName = "wordpress.com"
+        contentView.siteURLString = "https://wordpress.com"
+        contentView.siteName = "wordpress.com"
 
         // Then
         XCTAssertNotNil(contentView.assembledSiteView)
