@@ -110,9 +110,9 @@ private class AccountSettingsController: SettingsController {
                 rows: [
                     username,
                     email,
+                    password,
                     primarySite,
-                    webAddress,
-                    password
+                    webAddress
                 ])
             ])
     }
