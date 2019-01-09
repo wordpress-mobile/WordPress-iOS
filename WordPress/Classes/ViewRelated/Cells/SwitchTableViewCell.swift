@@ -25,8 +25,6 @@ open class SwitchTableViewCell: WPTableViewCell {
         }
     }
 
-
-
     // MARK: - Initializers
     public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -64,17 +62,28 @@ open class SwitchTableViewCell: WPTableViewCell {
     fileprivate func setupSubviews() {
         selectionStyle = .none
 
-        contentView.addGestureRecognizer(tapGestureRecognizer)
-        tapGestureRecognizer.addTarget(self, action: #selector(SwitchTableViewCell.rowWasPressed(_:)))
-
-        flipSwitch = UISwitch()
-        flipSwitch.addTarget(self, action: #selector(SwitchTableViewCell.switchDidChange(_:)), for: .valueChanged)
-        accessoryView = flipSwitch
+        setupContentView()
+        setupSwitch()
+        setupTextLabel()
 
         WPStyleGuide.configureTableViewCell(self)
     }
 
+    private func setupContentView() {
+        contentView.addGestureRecognizer(tapGestureRecognizer)
+        tapGestureRecognizer.addTarget(self, action: #selector(SwitchTableViewCell.rowWasPressed(_:)))
+    }
 
+    private func setupSwitch() {
+        flipSwitch = UISwitch()
+        flipSwitch.addTarget(self, action: #selector(SwitchTableViewCell.switchDidChange(_:)), for: .valueChanged)
+        accessoryView = flipSwitch
+    }
+
+    private func setupTextLabel() {
+        textLabel?.numberOfLines = 0
+        textLabel?.adjustsFontForContentSizeCategory = true
+    }
 
     // MARK: - Private Properties
     fileprivate let tapGestureRecognizer = UITapGestureRecognizer()

@@ -56,6 +56,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         removeExistingRows()
     }
 }
@@ -65,7 +66,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 private extension TabbedTotalsCell {
 
     func setupFilterBar() {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
+        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
         filterTabBar.items = tabsData.map { $0.tabTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         toggleFilterTabBar()
@@ -126,7 +127,7 @@ private extension TabbedTotalsCell {
         for index in 0..<numberOfRowsToAdd {
             let dataRow = dataRows[index]
             let row = StatsTotalRow.loadFromNib()
-            row.configure(rowData: dataRow)
+            row.configure(rowData: dataRow, delegate: self)
 
             // Don't show the separator line on the last row.
             if index == (numberOfRowsToAdd - 1) {
@@ -152,6 +153,16 @@ private extension TabbedTotalsCell {
             rowsStackView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
+    }
+
+}
+
+// MARK: - StatsTotalRowDelegate
+
+extension TabbedTotalsCell: StatsTotalRowDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
     }
 
 }

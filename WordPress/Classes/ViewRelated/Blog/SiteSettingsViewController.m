@@ -728,7 +728,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionMedia:
             return MediaQuotaCell.height;
         default:
-            return WPTableViewDefaultRowHeight;
+            return UITableViewAutomaticDimension;
     }
 }
 

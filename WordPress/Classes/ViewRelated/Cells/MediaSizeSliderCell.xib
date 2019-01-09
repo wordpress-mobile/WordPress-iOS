@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,17 +19,17 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VNV-La-F2d">
-                        <rect key="frame" x="16" y="8" width="288" height="91"/>
+                        <rect key="frame" x="16" y="11" width="288" height="85.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZE-tn-T3b">
-                                <rect key="frame" x="0.0" y="0.0" width="288" height="41"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZE-tn-T3b">
+                                <rect key="frame" x="0.0" y="0.0" width="288" height="0.0"/>
                                 <accessibility key="accessibilityConfiguration" identifier=""/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="joS-zC-6YB">
-                                <rect key="frame" x="-2" y="41" width="292" height="31"/>
+                                <rect key="frame" x="-2" y="0.0" width="292" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="tTE-DQ-2mh"/>
                                 </constraints>
@@ -33,22 +37,23 @@
                                     <action selector="sliderChanged:" destination="7mS-Jn-IfN" eventType="valueChanged" id="1ET-wg-Itm"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Original" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsz-Em-99p">
-                                <rect key="frame" x="0.0" y="71" width="288" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Original" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsz-Em-99p">
+                                <rect key="frame" x="0.0" y="30" width="288" height="55.5"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="joS-zC-6YB" secondAttribute="bottom" constant="20" symbolic="YES" id="WHG-uU-blp"/>
+                            <constraint firstItem="hsz-Em-99p" firstAttribute="top" secondItem="joS-zC-6YB" secondAttribute="bottom" id="TM9-SU-MCj"/>
                         </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="hsz-Em-99p" secondAttribute="bottom" constant="11" id="5yz-t3-STF"/>
                     <constraint firstItem="VNV-La-F2d" firstAttribute="trailing" secondItem="twB-EW-2j3" secondAttribute="trailingMargin" id="BsB-4s-JSW"/>
                     <constraint firstItem="VNV-La-F2d" firstAttribute="leading" secondItem="twB-EW-2j3" secondAttribute="leadingMargin" id="Nr5-S4-die"/>
                     <constraint firstItem="VNV-La-F2d" firstAttribute="top" secondItem="twB-EW-2j3" secondAttribute="topMargin" id="n5i-7d-bnn"/>

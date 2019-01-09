@@ -1,9 +1,9 @@
 
 import Foundation
 
-// MARK: - SiteCreatorOutputError
+// MARK: - SiteCreationRequestAssemblyError
 
-enum SiteCreatorOutputError: Error {
+enum SiteCreationRequestAssemblyError: Error {
     case invalidSegmentIdentifier
     case invalidVerticalIdentifier
     case invalidDomain
@@ -28,37 +28,40 @@ final class SiteCreator {
     /// Generates the final object that will be posted to the backend
     ///
     /// - Returns: an Encodable object
-    func build() throws -> SiteCreatorOutput {
+    ///
+    func build() throws -> SiteCreationRequest {
 
-        // NB: complete type-switch via #10670
-        guard let _ = segment?.identifier else {
-            throw SiteCreatorOutputError.invalidSegmentIdentifier
+        guard let segmentIdentifier = segment?.identifier else {
+            throw SiteCreationRequestAssemblyError.invalidSegmentIdentifier
         }
 
-        // NB: complete type-switch via #10670
-        guard let _ = vertical?.identifier else {
-            throw SiteCreatorOutputError.invalidVerticalIdentifier
+        guard let verticalIdentifier = vertical?.identifier.description else {
+            throw SiteCreationRequestAssemblyError.invalidVerticalIdentifier
         }
 
-        guard let domainSuggestion = address else {
-            throw SiteCreatorOutputError.invalidDomain
+        // BEGIN : Temporary, introduced via 10711, to be replaced via 10669
+        let suffix = Int(Date().timeIntervalSinceReferenceDate)
+        let siteName = "10711site\(suffix)"
+//        guard let domainSuggestion = address else {
+        guard let _ = address else {
+            throw SiteCreationRequestAssemblyError.invalidDomain
         }
+//        let siteName = domainSuggestion.domainName
+        // END
 
         guard let siteInformation = information else {
-            throw SiteCreatorOutputError.invalidSiteInformation
+            throw SiteCreationRequestAssemblyError.invalidSiteInformation
         }
 
-        let output = SiteCreatorOutput(
-            segmentIdentifier: 0,                       // NB: complete type-switch via #10670
-            verticalIdentifier: 0,                      // NB: complete type-switch via #10670
-            tagline: siteInformation.tagLine ?? "",     // Tagline input can be skipped
-            isPublic: true,
-            languageIdentifier: WordPressComLanguageDatabase().deviceLanguageIdNumber().stringValue,
-            shouldValidate: true,
-            siteURLString: domainSuggestion.domainName,
-            title: siteInformation.title                // Title input can be skipped
+        let request = SiteCreationRequest(
+            segmentIdentifier: segmentIdentifier,
+            verticalIdentifier: verticalIdentifier,
+            title: siteInformation.title,
+            tagline: siteInformation.tagLine,
+            siteURLString: siteName,
+            isPublic: true
         )
 
-        return output
+        return request
     }
 }

@@ -7,6 +7,34 @@ platform :ios do
 # Screenshot Lanes
 ########################################################################
   #####################################################################################
+  # screenshots
+  # -----------------------------------------------------------------------------------
+  # This lane generates the localised screenshots.
+  # It is the same as running bundle exec fastlane snapshot, but ensures that the app
+  # is only built once.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane screenshots 
+  #
+  # Example:
+  # bundle exec fastlane screenshots
+  #####################################################################################
+  desc "Generate localised screenshots"
+  lane :screenshots do
+    fastlane_directory = File.expand_path File.dirname(__FILE__)
+    scan(
+      workspace: File.join(fastlane_directory, "../../WordPress.xcworkspace"),
+      scheme: "WordPressScreenshotGeneration",
+      build_for_testing: true,
+      derived_data_path: File.join(fastlane_directory, "DerivedData"),
+    )
+    capture_ios_screenshots(
+      test_without_building: true,
+      derived_data_path: File.join(fastlane_directory, "DerivedData"),
+    )
+  end
+
+  #####################################################################################
   # create_promo_screenshots
   # -----------------------------------------------------------------------------------
   # This lane generates the promo screenshots. 
@@ -124,6 +152,7 @@ platform :ios do
     gp_downloadmetadata(project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/", 
       target_files: files, 
       locales: metadata_locales,
+      source_locale: "en-US",
       download_path: "./fastlane/appstoreres/metadata")
   end 
 

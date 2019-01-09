@@ -30,9 +30,17 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     }
 
     // MARK: - View Methods
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        blockImageView.image = nil
+        imageURL = nil
     }
 
     // MARK: - Helpers

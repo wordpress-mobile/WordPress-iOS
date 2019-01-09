@@ -2,12 +2,14 @@ import UIKit
 import WordPressShared
 
 final class PlanListViewController: UITableViewController, ImmuTablePresenter {
+
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
+
     fileprivate var viewModel: PlanListViewModel = .loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
+            handler.viewModel = viewModel.tableViewModelWithPresenter(self)
             updateNoResults()
         }
     }
@@ -15,26 +17,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var noResultsViewController: NoResultsViewController?
 
     @objc static let restorationIdentifier = "PlanList"
-    /// Reference to the blog object if initialized with a blog. Used for state restoration only.
-    fileprivate var restorationBlogURL: URL? = nil
 
-    @objc convenience init?(blog: Blog) {
-        precondition(blog.dotComID != nil)
-        guard let service = PlanService(blog: blog, store: StoreKitStore()),
-            let siteID = blog.dotComID?.intValue
-        else {
-            return nil
-        }
-
-        self.init(siteID: siteID, service: service)
-        restorationBlogURL = blog.objectID.uriRepresentation()
-    }
-
-    @objc let siteID: Int
-    let service: PlanService<StoreKitStore>
-    init(siteID: Int, service: PlanService<StoreKitStore>) {
-        self.siteID = siteID
-        self.service = service
+    override init(style: UITableView.Style) {
         super.init(style: .grouped)
         title = NSLocalizedString("Plans", comment: "Title for the plan selector")
         // Need to use `super` to work around a Swift compiler bug
@@ -51,22 +35,27 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
+        handler.viewModel = viewModel.tableViewModelWithPresenter(self)
         updateNoResults()
+        updateViewModel()
+        syncPlans()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    func syncPlans() {
+        let plansService = PlanService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        plansService.getWpcomPlans({ [weak self] in
+            self?.updateViewModel()
 
-        service.plansWithPricesForBlog(siteID,
-            success: { result in
-                self.viewModel = .ready(result)
-            },
-            failure: { error in
-                self.viewModel = .error(String(describing: error))
-            }
-        )
+        }, failure: { [weak self] error in
+            self?.viewModel = .error(String(describing: error))
+        })
     }
+
+    func updateViewModel() {
+        let service = PlanService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        viewModel = .ready(service.allPlans(), service.allPlanFeatures())
+    }
+
 
     // MARK: - ImmuTablePresenter
 
@@ -126,9 +115,6 @@ extension PlanListViewController: NoResultsViewControllerDelegate {
 // MARK: - UIViewControllerRestoration
 
 extension PlanListViewController: UIViewControllerRestoration {
-    enum EncodingKey {
-        static let blogURL = "blogURL"
-    }
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String],
                                coder: NSCoder) -> UIViewController? {
@@ -137,23 +123,7 @@ extension PlanListViewController: UIViewControllerRestoration {
             return nil
         }
 
-        guard let blogURL = coder.decodeObject(forKey: EncodingKey.blogURL) as? URL else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        guard let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: blogURL),
-            let object = try? context.existingObject(with: objectID),
-            let blog = object as? Blog else {
-                return nil
-        }
-        return PlanListViewController(blog: blog)
+        return PlanListViewController(style: .grouped)
     }
 
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        if let blogURL = restorationBlogURL {
-            coder.encode(blogURL, forKey: EncodingKey.blogURL)
-        }
-    }
 }

@@ -18,9 +18,7 @@ We use a few tools to help with development. To install or update the required d
 #### CocoaPods
 
 WordPress for iOS uses [CocoaPods](http://cocoapods.org/) to manage third party libraries.  
-Trying to build the project by itself (WordPress.xcproj) after launching will result in an error, as the resources managed by CocoaPods are not included. To install and configure the third party libraries just run the following in the command line:
-
-`pod install`
+Third party libraries and resources managed by CocoaPods will be installed by the `rake dependencies` command above.
 
 #### SwiftLint
 

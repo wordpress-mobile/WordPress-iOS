@@ -268,7 +268,10 @@ private extension NoResultsViewController {
         }
 
         if let accessorySubview = accessorySubview {
-            accessoryView.subviews.forEach { $0.removeFromSuperview() }
+            accessoryView.subviews.forEach { view in
+                stopAnimatingViewIfNeeded(view)
+                view.removeFromSuperview()
+            }
             accessoryView.addSubview(accessorySubview)
         }
 
@@ -475,10 +478,14 @@ private extension NoResultsViewController {
         animatedBox.animate(afterDelay: 0.1)
     }
 
-    func stopAnimatingIfNeeded() {
-        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+    func stopAnimatingViewIfNeeded(_ view: UIView?) {
+        guard let animatedBox = view as? WPAnimatedBox else {
             return
         }
         animatedBox.suspendAnimation()
+    }
+
+    func stopAnimatingIfNeeded() {
+        stopAnimatingViewIfNeeded(accessorySubview)
     }
 }
