@@ -254,7 +254,7 @@ DEPENDENCIES:
   - WordPressKit (~> 1.7.0-beta)
   - WordPressShared (~> 1.6.0)
   - WordPressUI (~> 1.1)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `585017b08a559cd31257202d2109fcfc20fecfa2`)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `e546205cd2a992838837b0a4de502507b89b6e63`)
   - wpxmlrpc (= 0.8.3)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.2.0)
@@ -323,7 +323,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
     :tag: v0.1.3
   WPMediaPicker:
-    :commit: 585017b08a559cd31257202d2109fcfc20fecfa2
+    :commit: e546205cd2a992838837b0a4de502507b89b6e63
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
@@ -348,7 +348,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
     :tag: v0.1.3
   WPMediaPicker:
-    :commit: 585017b08a559cd31257202d2109fcfc20fecfa2
+    :commit: e546205cd2a992838837b0a4de502507b89b6e63
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
@@ -401,6 +401,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 465b286e1d71f4eceaddb76225f43dd7665dfffd
+PODFILE CHECKSUM: e58285fa830b3f9ff727953d823471d1f8da20a7
 
 COCOAPODS: 1.5.3
