@@ -13,8 +13,15 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private let segment: SiteSegment?
-    private let service: SiteVerticalsService
+
+    private let promptService: SiteVerticalsPromptService
+
+    private let prompt: SiteVerticalsPrompt = DefaultSiteVerticalsPrompt()
+
+    private let verticalsService: SiteVerticalsService
+
     private var data: [SiteVertical]
+
     private let selection: (SiteVertical) -> Void
 
     private let throttle = Scheduler(seconds: 1)
@@ -26,17 +33,15 @@ final class VerticalsWizardContent: UIViewController {
     }()
 
     private lazy var headerData: SiteCreationHeaderData = {
-        let title = NSLocalizedString("What's the focus of your business?", comment: "Create site, step 2. Select focus of the business. Title")
-        let subtitle = NSLocalizedString("We'll use your answer to add sections to your website.", comment: "Create site, step 2. Select focus of the business. Subtitle")
-
-        return SiteCreationHeaderData(title: title, subtitle: subtitle)
+        return SiteCreationHeaderData(title: prompt.title, subtitle: prompt.subtitle)
     }()
 
     // MARK: VerticalsWizardContent
 
-    init(segment: SiteSegment?, service: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
+    init(segment: SiteSegment?, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
-        self.service = service
+        self.promptService = promptService
+        self.verticalsService = verticalsService
         self.selection = selection
         self.data = []
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
@@ -91,7 +96,7 @@ final class VerticalsWizardContent: UIViewController {
 
     private func fetchVerticals(_ searchTerm: String) {
         let request = SiteVerticalsRequest(search: searchTerm)
-        service.retrieveVerticals(request: request) { [weak self] result in
+        verticalsService.retrieveVerticals(request: request) { [weak self] result in
             switch result {
             case .success(let data):
                 self?.handleData(data)
@@ -157,7 +162,7 @@ final class VerticalsWizardContent: UIViewController {
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
-        let placeholderText = NSLocalizedString("e.g. Landscaping, Consulting... etc.", comment: "Site creation. Select focus of your business, search field placeholder")
+        let placeholderText = prompt.hint
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
@@ -173,6 +178,7 @@ final class VerticalsWizardContent: UIViewController {
     private func setupTable() {
         table.dataSource = self
         table.delegate = self
+
         setupTableBackground()
         setupTableSeparator()
         setupCells()
