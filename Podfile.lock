@@ -254,7 +254,7 @@ DEPENDENCIES:
   - WordPressKit (~> 1.7.0-beta)
   - WordPressShared (~> 1.6.0)
   - WordPressUI (~> 1.1)
-  - WPMediaPicker (= 1.3.1)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `585017b08a559cd31257202d2109fcfc20fecfa2`)
   - wpxmlrpc (= 0.8.3)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.2.0)
@@ -297,7 +297,6 @@ SPEC REPOS:
     - WordPressKit
     - WordPressShared
     - WordPressUI
-    - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
 
@@ -323,6 +322,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
     :tag: v0.1.3
+  WPMediaPicker:
+    :commit: 585017b08a559cd31257202d2109fcfc20fecfa2
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -345,6 +347,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: https://github.com/wordpress-mobile/react-native-aztec.git
     :tag: v0.1.3
+  WPMediaPicker:
+    :commit: 585017b08a559cd31257202d2109fcfc20fecfa2
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -391,11 +396,11 @@ SPEC CHECKSUMS:
   WordPressKit: 22fb9ae63faa1ab4c7b3b5eda842aff8c9dc859d
   WordPressShared: a2fc2db66c210a05d317ae9678b5823dd6a4d708
   WordPressUI: 3c69543f0170e011226e48910b8c3071e5d400af
-  WPMediaPicker: ea92f84950843c7baf6a7325caed72ad7852418d
+  WPMediaPicker: dd85427b142fc928e14aa5e7d0db2a1fa249aba2
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: be30819f48c9520dabcf963a3477de306a4961ee
+PODFILE CHECKSUM: 465b286e1d71f4eceaddb76225f43dd7665dfffd
 
 COCOAPODS: 1.5.3
