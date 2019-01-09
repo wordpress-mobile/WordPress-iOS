@@ -16,17 +16,24 @@ final class VerticalsWizardContent: UIViewController {
 
     private let promptService: SiteVerticalsPromptService
 
-    private let prompt: SiteVerticalsPrompt = DefaultSiteVerticalsPrompt()
-
     private let verticalsService: SiteVerticalsService
 
     private let selection: (SiteVertical) -> Void
 
-    private let throttle = Scheduler(seconds: 1)
+    private let prompt: SiteVerticalsPrompt = DefaultSiteVerticalsPrompt()
+
+    private let throttle = Scheduler(seconds: 0.5)
+
+    /// We track the last searched value so that we can retry
+    private var lastSearchQuery: String? = nil
+
+    /// Locally tracks the network connection status via `NetworkStatusDelegate`
+    private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
     @IBOutlet
     private weak var table: UITableView!
 
+    /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
     private lazy var bottomConstraint: NSLayoutConstraint = {
@@ -64,6 +71,8 @@ final class VerticalsWizardContent: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        observeNetworkStatus()
         startListeningToKeyboardNotifications()
     }
 
@@ -113,8 +122,8 @@ final class VerticalsWizardContent: UIViewController {
         }
     }
 
-    private func handleError(_ error: Error) {
-        debugPrint("=== handling error===")
+    private func handleError(_ error: Error? = nil) {
+        setupEmptyTableProvider()
     }
 
     private func hideSeparators() {
@@ -129,6 +138,8 @@ final class VerticalsWizardContent: UIViewController {
     private func registerCells() {
         registerCell(identifier: VerticalsCell.cellReuseIdentifier())
         registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
+
+        table.register(VerticalErrorRetryTableViewCell.self, forCellReuseIdentifier: VerticalErrorRetryTableViewCell.cellReuseIdentifier())
     }
 
     private func setupBackground() {
@@ -188,6 +199,22 @@ final class VerticalsWizardContent: UIViewController {
         setupTableDataProvider()
     }
 
+    private func setupEmptyTableProvider() {
+        let message: EmptyVerticalsMessage
+        if isNetworkActive {
+            message = EmptyVerticalsMessages.networkError
+        } else {
+            message = EmptyVerticalsMessages.noConnection
+        }
+
+        let retryHandler: SiteVerticalSelectionHandler = { [weak self] _ in
+            let retryQuery = self?.lastSearchQuery ?? ""
+            self?.performSearchIfNeeded(query: retryQuery)
+        }
+
+        tableViewProvider = EmptyVerticalsTableViewProvider(tableView: table, message: message, selectionHandler: retryHandler)
+    }
+
     private func setupTableDataProvider(_ data: [SiteVertical] = []) {
         self.tableViewProvider = DefaultVerticalsTableViewProvider(tableView: table, data: data) { [weak self] selectedVertical in
             guard let self = self, let vertical = selectedVertical else {
@@ -210,6 +237,13 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
 
+        lastSearchQuery = query
+
+        guard isNetworkActive == true else {
+            setupEmptyTableProvider()
+            return
+        }
+
         throttle.throttle { [weak self] in
             self?.fetchVerticals(query)
         }
@@ -222,6 +256,14 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
         performSearchIfNeeded(query: searchTerm)
+    }
+}
+
+// MARK: - NetworkStatusDelegate
+
+extension VerticalsWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
     }
 }
 

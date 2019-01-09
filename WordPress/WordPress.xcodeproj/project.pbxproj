@@ -499,6 +499,7 @@
 		73B05D2921374F1E0073ECAA /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		73B44F5121E65CFA008C4C08 /* SiteVerticalsPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */; };
 		73B44F5321E670F6008C4C08 /* VerticalsTableViewProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5221E670F6008C4C08 /* VerticalsTableViewProviders.swift */; };
+		73B44F5521E67D60008C4C08 /* VerticalErrorRetryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5421E67D60008C4C08 /* VerticalErrorRetryTableViewCell.swift */; };
 		73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */; };
 		73BFDA8A211D054800907245 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BFDA89211D054800907245 /* Notifiable.swift */; };
 		73C31907212F214200769485 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6B42CBE1D9DA6270043E228 /* Noticons.ttf */; };
@@ -2345,6 +2346,7 @@
 		73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationContentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVerticalsPromptService.swift; sourceTree = "<group>"; };
 		73B44F5221E670F6008C4C08 /* VerticalsTableViewProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalsTableViewProviders.swift; sourceTree = "<group>"; };
+		73B44F5421E67D60008C4C08 /* VerticalErrorRetryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalErrorRetryTableViewCell.swift; sourceTree = "<group>"; };
 		73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateViewTests.swift; sourceTree = "<group>"; };
 		73BFDA89211D054800907245 /* Notifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
 		73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyStep.swift; sourceTree = "<group>"; };
@@ -7300,6 +7302,7 @@
 				D8AEA54821C21BEB00AB4DCB /* NewVerticalCell.swift */,
 				D8AEA54921C21BEC00AB4DCB /* NewVerticalCell.xib */,
 				D8AEA54C21C2216300AB4DCB /* SiteVerticalPresenter.swift */,
+				73B44F5421E67D60008C4C08 /* VerticalErrorRetryTableViewCell.swift */,
 				D8380CA22192E77F00250609 /* VerticalsCell.swift */,
 				D8380CA32192E77F00250609 /* VerticalsCell.xib */,
 				D818FFD321915586000E5FEE /* VerticalsStep.swift */,
@@ -9536,6 +9539,7 @@
 				FF7E510A1FBDE0C500AD2918 /* MediaAttachment+WordPress.swift in Sources */,
 				402B2A7920ACD7690027C1DC /* ActivityStore.swift in Sources */,
 				E62AFB6A1DC8E593007484FC /* NSAttributedString+WPRichText.swift in Sources */,
+				73B44F5521E67D60008C4C08 /* VerticalErrorRetryTableViewCell.swift in Sources */,
 				98812966219CE42A0075FF33 /* StatsTotalRow.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
