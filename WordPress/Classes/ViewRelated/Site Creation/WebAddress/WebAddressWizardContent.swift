@@ -6,7 +6,7 @@ final class WebAddressWizardContent: UIViewController {
 
     // MARK: Properties
 
-    private struct Parameters {
+    private struct Metrics {
         static let maxLabelWidth        = CGFloat(290)
         static let noResultsTopInset    = CGFloat(64)
     }
@@ -57,7 +57,7 @@ final class WebAddressWizardContent: UIViewController {
 
             label.translatesAutoresizingMaskIntoConstraints = false
             label.numberOfLines = 0
-            label.preferredMaxLayoutWidth = Parameters.maxLabelWidth
+            label.preferredMaxLayoutWidth = Metrics.maxLabelWidth
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
             label.textAlignment = .center
@@ -218,7 +218,7 @@ final class WebAddressWizardContent: UIViewController {
             header.topAnchor.constraint(equalTo: table.topAnchor),
             noResultsLabel.widthAnchor.constraint(equalTo: header.textField.widthAnchor),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noResultsLabel.topAnchor.constraint(equalTo: header.textField.bottomAnchor, constant: Parameters.noResultsTopInset)
+            noResultsLabel.topAnchor.constraint(equalTo: header.textField.bottomAnchor, constant: Metrics.noResultsTopInset)
         ])
 
         table.tableHeaderView?.layoutIfNeeded()
