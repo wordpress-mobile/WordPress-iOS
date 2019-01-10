@@ -48,7 +48,6 @@ jobs:
             - wordpress-ios-danger-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
             - wordpress-ios-danger-v2-{{ checksum "Rakefile" }}
             - wordpress-ios-danger-v2-
-      - run: 
       - run:
           name: Dependencies for danger
           command: rake dependencies:bundle:check
