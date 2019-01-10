@@ -35,6 +35,13 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: Properties
 
+    /**
+     Corresponds to:
+
+     Error Domain=WordPressKit.WordPressComRestApiError Code=7 "No available domains for that search." UserInfo={NSLocalizedDescription=No available domains for that search., WordPressComRestApiErrorCodeKey=empty_results, WordPressComRestApiErrorMessageKey=No available domains for that search.}
+     */
+    private static let emptyResultsErrorCode = 7
+
     /// The existing service for retrieving DomainSuggestions
     private let domainsService: DomainsService
 
@@ -64,6 +71,11 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
                                                 completion(Result.success(domainSuggestions))
         },
                                             failure: { error in
+                                                if (error as NSError).code == DomainsServiceAdapter.emptyResultsErrorCode {
+                                                    completion(Result.success([]))
+                                                    return
+                                                }
+
                                                 completion(Result.error(error))
         })
     }
