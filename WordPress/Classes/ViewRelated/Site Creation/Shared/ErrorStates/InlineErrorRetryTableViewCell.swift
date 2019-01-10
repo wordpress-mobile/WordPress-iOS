@@ -4,10 +4,11 @@ import UIKit
 import Gridicons
 import WordPressShared
 
-// MARK: - VerticalErrorRetryTableViewCellAccessoryView
+// MARK: - InlineErrorRetryTableViewCellAccessoryView
 
-/// The accessory view comprises a retry Gridicon
-private class VerticalErrorRetryTableViewCellAccessoryView: UIStackView {
+/// The accessory view comprises a retry Gridicon & advisory text
+///
+private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
 
     // MARK: Properties
 
@@ -24,7 +25,7 @@ private class VerticalErrorRetryTableViewCellAccessoryView: UIStackView {
     /// One of the arranged subviews : user-facing text
     private let retryLabel: UILabel
 
-    // MARK: VerticalErrorRetryTableViewCellAccessoryView
+    // MARK: InlineErrorRetryTableViewCellAccessoryView
 
     init() {
         self.retryImageView = {
@@ -82,12 +83,11 @@ private class VerticalErrorRetryTableViewCellAccessoryView: UIStackView {
     }
 }
 
-// MARK: - VerticalErrorRetryTableViewCell
+// MARK: - InlineErrorRetryTableViewCell
 
-/// Responsible for apprising the user of an error that occurred, accompanied by a visual affordance to retry the
-/// preceding action.
+/// Responsible for apprising the user of an error that occurred, accompanied by a visual affordance to retry the preceding action.
 ///
-final class VerticalErrorRetryTableViewCell: UITableViewCell, ReusableCell {
+final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
 
     // MARK: Properties
 
@@ -98,12 +98,12 @@ final class VerticalErrorRetryTableViewCell: UITableViewCell, ReusableCell {
     }
 
     /// A subview akin to an accessory view
-    private let retryAccessoryView = VerticalErrorRetryTableViewCellAccessoryView()
+    private let retryAccessoryView = InlineErrorRetryTableViewCellAccessoryView()
 
     // MARK: UITableViewCell
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .default, reuseIdentifier: VerticalErrorRetryTableViewCell.cellReuseIdentifier())
+        super.init(style: .default, reuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
         initialize()
     }
 
@@ -113,7 +113,7 @@ final class VerticalErrorRetryTableViewCell: UITableViewCell, ReusableCell {
 
     // MARK: Internal behavior
 
-    func setMessage(_ message: EmptyVerticalsMessage) {
+    func setMessage(_ message: InlineErrorMessage) {
         textLabel?.text = message
     }
 

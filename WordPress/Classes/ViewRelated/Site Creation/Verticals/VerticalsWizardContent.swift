@@ -61,6 +61,11 @@ final class VerticalsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -81,11 +86,6 @@ final class VerticalsWizardContent: UIViewController {
         stopListeningToKeyboardNotifications()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        table.layoutHeaderView()
-    }
-
     // MARK: Private behavior
 
     private func applyTitle() {
@@ -95,7 +95,7 @@ final class VerticalsWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
-        guard let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider else {
+        guard let validDataProvider = tableViewProvider as? VerticalsTableViewProvider else {
             setupTableDataProvider()
             return
         }
@@ -115,7 +115,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        if let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider {
+        if let validDataProvider = tableViewProvider as? VerticalsTableViewProvider {
             validDataProvider.data = data
         } else {
             setupTableDataProvider(data)
@@ -130,6 +130,23 @@ final class VerticalsWizardContent: UIViewController {
         table.tableFooterView = UIView(frame: .zero)
     }
 
+    private func performSearchIfNeeded(query: String) {
+        guard !query.isEmpty else {
+            return
+        }
+
+        lastSearchQuery = query
+
+        guard isNetworkActive == true else {
+            setupEmptyTableProvider()
+            return
+        }
+
+        throttle.throttle { [weak self] in
+            self?.fetchVerticals(query)
+        }
+    }
+
     private func registerCell(identifier: String) {
         let nib = UINib(nibName: identifier, bundle: nil)
         table.register(nib, forCellReuseIdentifier: identifier)
@@ -139,7 +156,7 @@ final class VerticalsWizardContent: UIViewController {
         registerCell(identifier: VerticalsCell.cellReuseIdentifier())
         registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
 
-        table.register(VerticalErrorRetryTableViewCell.self, forCellReuseIdentifier: VerticalErrorRetryTableViewCell.cellReuseIdentifier())
+        table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
     }
 
     private func setupBackground() {
@@ -166,6 +183,22 @@ final class VerticalsWizardContent: UIViewController {
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
+    }
+
+    private func setupEmptyTableProvider() {
+        let message: InlineErrorMessage
+        if isNetworkActive {
+            message = InlineErrorMessages.networkError
+        } else {
+            message = InlineErrorMessages.noConnection
+        }
+
+        let handler: CellSelectionHandler = { [weak self] _ in
+            let retryQuery = self?.lastSearchQuery ?? ""
+            self?.performSearchIfNeeded(query: retryQuery)
+        }
+
+        tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
     }
 
     private func setupHeader() {
@@ -199,54 +232,25 @@ final class VerticalsWizardContent: UIViewController {
         setupTableDataProvider()
     }
 
-    private func setupEmptyTableProvider() {
-        let message: EmptyVerticalsMessage
-        if isNetworkActive {
-            message = EmptyVerticalsMessages.networkError
-        } else {
-            message = EmptyVerticalsMessages.noConnection
-        }
-
-        let retryHandler: SiteVerticalSelectionHandler = { [weak self] _ in
-            let retryQuery = self?.lastSearchQuery ?? ""
-            self?.performSearchIfNeeded(query: retryQuery)
-        }
-
-        tableViewProvider = EmptyVerticalsTableViewProvider(tableView: table, message: message, selectionHandler: retryHandler)
-    }
-
-    private func setupTableDataProvider(_ data: [SiteVertical] = []) {
-        self.tableViewProvider = DefaultVerticalsTableViewProvider(tableView: table, data: data) { [weak self] selectedVertical in
-            guard let self = self, let vertical = selectedVertical else {
-                return
-            }
-            self.selection(vertical)
-        }
-    }
-
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
-    private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
+    private func setupTableDataProvider(_ data: [SiteVertical] = []) {
+        let handler: CellSelectionHandler = { [weak self] selectedIndexPath in
+            guard let self = self, let provider = self.tableViewProvider as? VerticalsTableViewProvider else {
+                return
+            }
+
+            let vertical = provider.data[selectedIndexPath.row]
+            self.selection(vertical)
+        }
+
+        self.tableViewProvider = VerticalsTableViewProvider(tableView: table, data: data, selectionHandler: handler)
     }
 
-    private func performSearchIfNeeded(query: String) {
-        guard !query.isEmpty else {
-            return
-        }
-
-        lastSearchQuery = query
-
-        guard isNetworkActive == true else {
-            setupEmptyTableProvider()
-            return
-        }
-
-        throttle.throttle { [weak self] in
-            self?.fetchVerticals(query)
-        }
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     @objc
