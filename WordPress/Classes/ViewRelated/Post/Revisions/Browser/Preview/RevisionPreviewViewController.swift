@@ -12,6 +12,7 @@ class RevisionPreviewViewController: UIViewController, StoryboardLoadable {
         }
     }
 
+    private let mainContext = ContextManager.sharedInstance().mainContext
     private let textViewManager = RevisionPreviewTextViewManager()
     private var titleInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
     private var textViewInsets = UIEdgeInsets(top: 0.0, left: 6.0, bottom: 0.0, right: 6.0)
@@ -79,6 +80,9 @@ private extension RevisionPreviewViewController {
         guard let revision = revision else {
             return
         }
+
+        let predicate = NSPredicate(format: "(blogID == %@)", revision.siteId)
+        textViewManager.blog = mainContext.firstObject(ofType: Blog.self, matching: predicate)
 
         titleLabel.text = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
 

@@ -3,6 +3,8 @@ import Gridicons
 
 
 class RevisionPreviewTextViewManager: NSObject {
+    var blog: Blog?
+
     private var activeMediaRequests = [ImageDownloader.Task]()
 }
 
@@ -66,10 +68,33 @@ extension RevisionPreviewTextViewManager: TextViewAttachmentDelegate {
 
 private extension RevisionPreviewTextViewManager {
     private func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
+        guard let blog = blog else {
+            return
+        }
+
+        var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
-        let size = CGSize(width: imageMaxDimension, height: 0)
-        let requestURL: URL = url.isFileURL ? url : PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-        let request = URLRequest(url: requestURL)
+        //use height zero to maintain the aspect ratio when fetching
+        var size = CGSize(width: imageMaxDimension, height: 0)
+        let request: URLRequest
+
+        if url.isFileURL {
+            request = URLRequest(url: url)
+        } else if blog.isPrivate() {
+            // private wpcom image needs special handling.
+            // the size that WPImageHelper expects is pixel size
+            size.width = size.width * UIScreen.main.scale
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+        } else if !blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored() {
+            size.width = size.width * UIScreen.main.scale
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
+        } else {
+            // the size that PhotonImageURLHelper expects is points size
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
+        }
 
         let receipt = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
             guard let _ = self else {
@@ -82,9 +107,11 @@ private extension RevisionPreviewTextViewManager {
                     failure()
                     return
                 }
+
                 success(image)
             }
         }
+
         activeMediaRequests.append(receipt)
     }
 
