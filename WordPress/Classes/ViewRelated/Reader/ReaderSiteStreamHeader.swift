@@ -114,6 +114,16 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         followButton.isHidden = !enable
     }
 
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        applyStyles()
+    }
 
     // MARK: - Actions
 
