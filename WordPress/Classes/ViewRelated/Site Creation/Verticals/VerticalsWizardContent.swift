@@ -7,21 +7,28 @@ final class VerticalsWizardContent: UIViewController {
 
     // MARK: Properties
 
-    private struct StyleConstants {
+    /// A collection of parameters uses for view layout
+    private struct Metrics {
         static let rowHeight: CGFloat = 44.0
         static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
     }
 
+    /// The segment selected by the user in a preceding step
     private let segment: SiteSegment?
 
+    /// The service which retrieves localized prompt verbiage specific to the chosen segment
     private let promptService: SiteVerticalsPromptService
 
+    /// The service which conducts searches for know verticals
     private let verticalsService: SiteVerticalsService
 
+    /// The action to perform once a Vertical is selected by the user
     private let selection: (SiteVertical) -> Void
 
-    private let prompt: SiteVerticalsPrompt = DefaultSiteVerticalsPrompt()
+    /// The localized prompt retrieved by remote service; `nil` otherwise
+    private var prompt: SiteVerticalsPrompt?
 
+    /// The throttle meters requests to the remote verticals service
     private let throttle = Scheduler(seconds: 0.5)
 
     /// We track the last searched value so that we can retry
@@ -30,22 +37,27 @@ final class VerticalsWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    @IBOutlet
-    private weak var table: UITableView!
+    /// The table view renders our server content
+    @IBOutlet private weak var table: UITableView!
 
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
+    /// We manipulate the bottom constraint in response to the keyboard.
     private lazy var bottomConstraint: NSLayoutConstraint = {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
     }()
 
-    private lazy var headerData: SiteCreationHeaderData = {
-        return SiteCreationHeaderData(title: prompt.title, subtitle: prompt.subtitle)
-    }()
-
     // MARK: VerticalsWizardContent
 
+    /// The designated initializer.
+    ///
+    /// - Parameters:
+    ///   - segment:            the segment selected by the user in a preceding step
+    ///   - promptService:      the service which retrieves localized prompt verbiage specific to the chosen segment
+    ///   - verticalsService:   the service which conducts searches for know verticals
+    ///   - selection:          the action to perform once a Vertical is selected by the user
+    ///
     init(segment: SiteSegment?, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
         self.promptService = promptService
@@ -77,13 +89,17 @@ final class VerticalsWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        fetchPromptIfNeeded()
+
         observeNetworkStatus()
         startListeningToKeyboardNotifications()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         stopListeningToKeyboardNotifications()
+        prompt = nil
     }
 
     // MARK: Private behavior
@@ -100,6 +116,36 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
+    }
+
+    private func fetchPromptIfNeeded() {
+        // No need to obtain more than one prompt
+        guard prompt == nil else {
+            return
+        }
+
+        // This should never apply, but we have a Segment?
+        guard let promptRequest = segment?.identifier else {
+            let defaultPrompt = DefaultSiteVerticalsPrompt()
+            setupTableHeaderWithPrompt(defaultPrompt)
+
+            return
+        }
+
+        promptService.retrieveVerticalsPrompt(request: promptRequest) { [weak self] serverPrompt in
+            guard let self = self else {
+                return
+            }
+
+            let prompt: SiteVerticalsPrompt
+            if let serverPrompt = serverPrompt {
+                prompt = serverPrompt
+            } else {
+                prompt = DefaultSiteVerticalsPrompt()
+            }
+
+            self.setupTableHeaderWithPrompt(prompt)
+        }
     }
 
     private func fetchVerticals(_ searchTerm: String) {
@@ -165,8 +211,8 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupCellHeight() {
         table.rowHeight = UITableView.automaticDimension
-        table.estimatedRowHeight = StyleConstants.rowHeight
-        table.separatorInset = StyleConstants.separatorInset
+        table.estimatedRowHeight = Metrics.rowHeight
+        table.separatorInset = Metrics.separatorInset
     }
 
     private func setupCells() {
@@ -201,10 +247,28 @@ final class VerticalsWizardContent: UIViewController {
         tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
     }
 
-    private func setupHeader() {
+    private func setupTable() {
+        setupTableBackground()
+        setupTableSeparator()
+        setupCells()
+        setupConstraints()
+        hideSeparators()
+
+        setupTableDataProvider()
+    }
+
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableHeaderWithPrompt(_ prompt: SiteVerticalsPrompt) {
+        self.prompt = prompt
+
+        table.tableHeaderView = nil
+
         let header = TitleSubtitleTextfieldHeader(frame: .zero)
-        header.setTitle(headerData.title)
-        header.setSubtitle(headerData.subtitle)
+        header.setTitle(prompt.title)
+        header.setSubtitle(prompt.subtitle)
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
@@ -219,21 +283,6 @@ final class VerticalsWizardContent: UIViewController {
             header.widthAnchor.constraint(equalTo: table.widthAnchor),
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
         ])
-    }
-
-    private func setupTable() {
-        setupTableBackground()
-        setupTableSeparator()
-        setupCells()
-        setupHeader()
-        setupConstraints()
-        hideSeparators()
-
-        setupTableDataProvider()
-    }
-
-    private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func setupTableDataProvider(_ data: [SiteVertical] = []) {

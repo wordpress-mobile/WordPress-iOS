@@ -18,12 +18,14 @@ public protocol SiteVerticalsPrompt {
     var hint: String { get }
 }
 
-public typealias SiteVerticalsPromptServiceCompletion = ((SiteVerticalsPrompt) -> ())
+public typealias SiteVerticalsPromptRequest = Int64
+
+public typealias SiteVerticalsPromptServiceCompletion = ((SiteVerticalsPrompt?) -> ())
 
 /// Abstracts retrieval of site verticals.
 ///
 public protocol SiteVerticalsPromptService {
-    func retrievePrompt(segmentIdentifier: Int64, completion: @escaping SiteVerticalsPromptServiceCompletion)
+    func retrieveVerticalsPrompt(request: SiteVerticalsPromptRequest, completion: @escaping SiteVerticalsPromptServiceCompletion)
 }
 
 // MARK: - Mock service & result
@@ -45,7 +47,7 @@ typealias MockSiteVerticalsPrompt = DefaultSiteVerticalsPrompt
 /// Mock implementation of the prompt service
 ///
 final class MockSiteVerticalsPromptService: SiteVerticalsPromptService {
-    func retrievePrompt(segmentIdentifier: Int64, completion: @escaping SiteVerticalsPromptServiceCompletion) {
+    func retrieveVerticalsPrompt(request: SiteVerticalsPromptRequest, completion: @escaping SiteVerticalsPromptServiceCompletion) {
         completion(MockSiteVerticalsPrompt())
     }
 }

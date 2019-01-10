@@ -116,7 +116,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: returnValue.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: returnValue.trailingAnchor)
-            ])
+        ])
 
         return returnValue
     }()
