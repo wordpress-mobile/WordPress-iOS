@@ -40,7 +40,7 @@ jobs:
 
   danger:
     docker:
-      - image: jamestreanor/swiftlint-ruby-test:0.0.2
+      - image: jamestreanor/swiftlint-ruby-test:0.0.3
     steps:
       - checkout
       - restore_cache:
