@@ -17,10 +17,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - UI
 
-    private var titleTextField: UITextField {
-        return containerView.titleTextField
-    }
-
     private var containerView = GutenbergContainerView.loadFromNib()
 
     // MARK: - Aztec
