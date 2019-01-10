@@ -11,6 +11,9 @@ final class WebAddressWizardContent: UIViewController {
         static let noResultsTopInset    = CGFloat(64)
     }
 
+    /// The creator collects user input as they advance through the wizard flow.
+    private let siteCreator: SiteCreator
+
     private let service: SiteAddressService
 
     private let selection: (DomainSuggestion) -> Void
@@ -44,7 +47,8 @@ final class WebAddressWizardContent: UIViewController {
 
     // MARK: WebAddressWizardContent
 
-    init(service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
+    init(creator: SiteCreator, service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
+        self.siteCreator = creator
         self.service = service
         self.selection = selection
 
@@ -108,7 +112,14 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        service.addresses(for: searchTerm) { [weak self] results in
+        let suggestionType: DomainsServiceRemote.DomainSuggestionType
+        if let segmentID = siteCreator.segment?.identifier, segmentID == SiteSegment.blogSegmentIdentifier {
+            suggestionType = .wordPressDotComAndDotBlogSubdomains
+        } else {
+            suggestionType = .onlyWordPressDotCom
+        }
+
+        service.addresses(for: searchTerm, domainSuggestionType: suggestionType) { [weak self] results in
             switch results {
             case .error(let error):
                 self?.handleError(error)
