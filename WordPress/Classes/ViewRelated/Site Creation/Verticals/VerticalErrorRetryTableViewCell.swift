@@ -92,7 +92,7 @@ final class VerticalErrorRetryTableViewCell: UITableViewCell, ReusableCell {
     // MARK: Properties
 
     /// A collection of parameters uses for view layout
-    private struct Parameters {
+    private struct Metrics {
         static let height           = CGFloat(44)
         static let trailingInset    = CGFloat(16)
     }
