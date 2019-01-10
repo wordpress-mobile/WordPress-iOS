@@ -13,7 +13,7 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
     // MARK: Properties
 
     /// A collection of parameters uses for view layout
-    private struct Parameters {
+    private struct Metrics {
         static let minimumHeight    = CGFloat(28)
         static let retryDimension   = CGFloat(16)
         static let padding          = CGFloat(4)
@@ -71,14 +71,14 @@ private class InlineErrorRetryTableViewCellAccessoryView: UIStackView {
 
         axis = .horizontal
         alignment = .center
-        spacing = Parameters.padding
+        spacing = Metrics.padding
 
         addArrangedSubviews([retryImageView, retryLabel])
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(greaterThanOrEqualToConstant: Parameters.minimumHeight),
-            retryImageView.widthAnchor.constraint(equalToConstant: Parameters.retryDimension),
-            retryImageView.heightAnchor.constraint(equalToConstant: Parameters.retryDimension),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: Metrics.minimumHeight),
+            retryImageView.widthAnchor.constraint(equalToConstant: Metrics.retryDimension),
+            retryImageView.heightAnchor.constraint(equalToConstant: Metrics.retryDimension),
         ])
     }
 }
