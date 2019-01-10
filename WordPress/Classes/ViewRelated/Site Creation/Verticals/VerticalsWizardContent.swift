@@ -188,7 +188,7 @@ final class VerticalsWizardContent: UIViewController {
     private func setupEmptyTableProvider() {
         let message: InlineErrorMessage
         if isNetworkActive {
-            message = InlineErrorMessages.networkError
+            message = InlineErrorMessages.serverError
         } else {
             message = InlineErrorMessages.noConnection
         }
