@@ -499,6 +499,7 @@
 		73B05D2921374F1E0073ECAA /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		73B2DCD921E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B2DCD721E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift */; };
 		73B2DCDA21E6F1380098B5B5 /* InlineErrorTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B2DCD821E6F1380098B5B5 /* InlineErrorTableViewProvider.swift */; };
+		73B2DCDD21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B2DCDC21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift */; };
 		73B44F5121E65CFA008C4C08 /* SiteVerticalsPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */; };
 		73B44F5321E670F6008C4C08 /* VerticalsTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5221E670F6008C4C08 /* VerticalsTableViewProvider.swift */; };
 		73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */; };
@@ -2347,6 +2348,7 @@
 		73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationContentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B2DCD721E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineErrorRetryTableViewCell.swift; sourceTree = "<group>"; };
 		73B2DCD821E6F1380098B5B5 /* InlineErrorTableViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineErrorTableViewProvider.swift; sourceTree = "<group>"; };
+		73B2DCDC21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddressTableViewProvider.swift; sourceTree = "<group>"; };
 		73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVerticalsPromptService.swift; sourceTree = "<group>"; };
 		73B44F5221E670F6008C4C08 /* VerticalsTableViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalsTableViewProvider.swift; sourceTree = "<group>"; };
 		73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateViewTests.swift; sourceTree = "<group>"; };
@@ -7333,6 +7335,7 @@
 				D82253E3219956540014D0E2 /* AddressCell.swift */,
 				D82253E4219956540014D0E2 /* AddressCell.xib */,
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
+				73B2DCDC21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift */,
 				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
 				D82253DE2199418B0014D0E2 /* WebAddressWizardContent.xib */,
 			);
@@ -9224,6 +9227,7 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				E1E89C6C1FD80E74006E7A33 /* Plugin.swift in Sources */,
+				73B2DCDD21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift in Sources */,
 				7E4123BD20F4097B00DF8486 /* FormattableMediaContent.swift in Sources */,
 				E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */,
 				D87A329620ABD60700F4726F /* ReaderTableContent.swift in Sources */,
