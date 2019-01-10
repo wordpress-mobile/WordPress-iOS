@@ -83,6 +83,11 @@ import WordPressShared
         }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        adjustTitleOnlyLabelHeight()
+    }
+
     /// Public method to get controller instance and set view values.
     ///
     /// - Parameters:
@@ -386,6 +391,18 @@ private extension NoResultsViewController {
         titleLabelTrailingConstraint = titleOnlyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
         titleLabelCenterXConstraint = titleOnlyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         titleLabelMaxWidthConstraint = titleOnlyLabel.widthAnchor.constraint(lessThanOrEqualToConstant: TitleLabelConstraints.maxWidth)
+    }
+
+    func adjustTitleOnlyLabelHeight() {
+
+        guard let titleOnlyLabel = titleOnlyLabel else {
+            return
+        }
+
+        var titleOnlyLabelFrame = titleOnlyLabel.frame
+        titleOnlyLabel.sizeToFit()
+        titleOnlyLabelFrame.size.height = titleOnlyLabel.frame.height
+        titleOnlyLabel.frame = titleOnlyLabelFrame
     }
 
     struct TitleLabelConstraints {
