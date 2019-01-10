@@ -92,7 +92,7 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
     // MARK: Properties
 
     /// A collection of parameters uses for view layout
-    private struct Parameters {
+    private struct Metrics {
         static let height           = CGFloat(44)
         static let trailingInset    = CGFloat(16)
     }
@@ -134,9 +134,9 @@ final class InlineErrorRetryTableViewCell: UITableViewCell, ReusableCell {
         addSubview(retryAccessoryView)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Parameters.height),
+            heightAnchor.constraint(equalToConstant: Metrics.height),
             retryAccessoryView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            retryAccessoryView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Parameters.trailingInset)
+            retryAccessoryView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.trailingInset)
         ])
     }
 }
