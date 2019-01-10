@@ -192,7 +192,7 @@ final class WebAddressWizardContent: UIViewController {
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
-        let placeholderText = NSLocalizedString("Search domains.", comment: "Site creation. Seelect a domain, search field placeholder")
+        let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         header.textField.attributedPlaceholder = attributedPlaceholder
