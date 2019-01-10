@@ -22,12 +22,12 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         super.viewDidLoad()
 
         if #available(iOS 11.0, *) {
-            let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-            textField.text = username
-            textField.textContentType = .username
-            textField.isAccessibilityElement = false
-            textField.isEnabled = false
-            view.addSubview(textField)
+            let hiddenTextField = UITextField(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+            hiddenTextField.text = username
+            hiddenTextField.textContentType = .username
+            hiddenTextField.isAccessibilityElement = false
+            hiddenTextField.isEnabled = false
+            view.addSubview(hiddenTextField)
         }
 
         mode = .newPassword
