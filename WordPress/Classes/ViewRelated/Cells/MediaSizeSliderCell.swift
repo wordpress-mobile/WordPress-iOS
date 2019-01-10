@@ -18,8 +18,6 @@ protocol MediaSizeModel {
 
 class MediaSizeSliderCell: WPTableViewCell {
 
-    @objc static let height: Float = 108.0
-
     // MARK: - Public interface
     @objc var value: Int {
         get {

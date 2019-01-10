@@ -53,7 +53,7 @@ end
 
 def wordpress_kit
     pod 'WordPressKit', '~> 1.7.0-beta'
-    ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'b2d5ec226b65634071948dc00290dd88d51f6434'
+    ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '93976df'
     ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
 
@@ -129,7 +129,7 @@ target 'WordPress' do
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
-    ##pod 'WPMediaPicker', '1.3.1'
+    ##pod 'WPMediaPicker', '1.3.2'
     ## while PR is in review:
      pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => 'fix/10073-crash_on_performBatchUpdates'
 

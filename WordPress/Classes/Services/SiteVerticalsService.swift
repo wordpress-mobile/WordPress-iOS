@@ -1,22 +1,64 @@
 
-typealias SiteVerticalsServiceCompletion = (Result<[SiteVertical]>) -> Void
+// MARK: - SiteVerticalsService
 
-/// Abstracts obtention of site verticals
+/// Abstracts retrieval of site verticals.
+///
 protocol SiteVerticalsService {
-    func verticals(for: Locale, type: SiteSegment, completion: @escaping SiteVerticalsServiceCompletion)
+    func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion)
 }
 
-/// Mock implementation of the SiteVerticalsService
-final class MockSiteVerticalsService: SiteVerticalsService {
-    func verticals(for: Locale = .current, type: SiteSegment, completion: @escaping SiteVerticalsServiceCompletion) {
-        let result = Result.success(mockVerticals())
+// MARK: - MockSiteVerticalsService
 
+/// Mock implementation of the SiteVerticalsService
+///
+final class MockSiteVerticalsService: SiteVerticalsService {
+    func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
+        let result = SiteVerticalsResult.success(mockVerticals())
         completion(result)
     }
 
     private func mockVerticals() -> [SiteVertical] {
-        return [ SiteVertical(identifier: Identifier(value: "SV 1"), title: "Vertical 1", isNew: false),
-                 SiteVertical(identifier: Identifier(value: "SV 2"), title: "Vertical 2", isNew: false),
-                 SiteVertical(identifier: Identifier(value: "SV 3"), title: "Landscap", isNew: true) ]
+        return [ SiteVertical(identifier: "SV 1", title: "Vertical 1", isNew: false),
+                 SiteVertical(identifier: "SV 2", title: "Vertical 2", isNew: false),
+                 SiteVertical(identifier: "SV 3", title: "Landscap", isNew: true) ]
+    }
+}
+
+// MARK: - SiteCreationVerticalsService
+
+/// Retrieves candidate Site Verticals used to create a new site.
+///
+final class SiteCreationVerticalsService: LocalCoreDataService, SiteVerticalsService {
+
+    // MARK: Properties
+
+    /// A service for interacting with WordPress accounts.
+    private let accountService: AccountService
+
+    /// A facade for WPCOM services.
+    private let remoteService: WordPressComServiceRemote
+
+    // MARK: LocalCoreDataService
+
+    override init(managedObjectContext context: NSManagedObjectContext) {
+        self.accountService = AccountService(managedObjectContext: context)
+
+        let api: WordPressComRestApi
+        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+            api = wpcomApi
+        } else {
+            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+        }
+        self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
+
+        super.init(managedObjectContext: context)
+    }
+
+    // MARK: SiteVerticalsService
+
+    func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
+        remoteService.retrieveVerticals(request: request) { result in
+            completion(result)
+        }
     }
 }

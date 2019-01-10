@@ -740,11 +740,25 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        NSUInteger lastIndex = content.length == 0 ? 0 : content.length - 1;
+        NSUInteger composedCharacterIndex = NSMaxRange([content rangeOfComposedCharacterSequenceAtIndex:MIN(lastIndex, 140)]);
+        // 140 is a somewhat arbitraily chosen number (old tweet length) — should be enough to let people know what
+        // comment failed to show, but not too long to display.
+
+        NSString *replyExcerpt = [content substringToIndex:composedCharacterIndex];
+
+        NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"There has been an unexpected error while sending your reply: \n\"%@\"", nil), replyExcerpt];
+        if (composedCharacterIndex < lastIndex) {
+            NSMutableString *mutString = alertMessage.mutableCopy;
+            [mutString insertString:@"…" atIndex:(alertMessage.length - 2)];
+
+            alertMessage = mutString.copy;
+        }
+
         DDLogError(@"Error sending reply: %@", error);
 
         [generator notificationOccurred:UINotificationFeedbackTypeError];
 
-        NSString *alertMessage = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
         NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
         NSString *alertTryAgain = NSLocalizedString(@"Try Again", @"A button label. Tapping the re-tries an action that previously failed.");
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
