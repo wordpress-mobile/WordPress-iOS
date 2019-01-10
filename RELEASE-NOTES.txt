@@ -6,5 +6,8 @@
 * It's now easier to tap the Done button on the screen that's displayed after publishing a post.
 * Fixes an issue where the Stats widget would always revert back to the primary site.
 * When creating a new site, on the site type selection page, the 'Start with' label now wraps.
+* Localises the button to edit a comment.
+* Localises the "Done" button on screen presented after publishing a Post.
+* Fixes issue where deleted users where still appearing in the site's People lists.
 * Improvements to localisations.
 * Fixes an issue where stale images may appear when navigating between notifications.
