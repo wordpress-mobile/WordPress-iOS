@@ -1,25 +1,42 @@
 import UIKit
 
+/// Contains the UI corresponding to the list of Domain suggestions.
+///
 final class WebAddressWizardContent: UIViewController {
+
+    // MARK: Properties
+
     private let service: SiteAddressService
-    private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
+
     private let selection: (DomainSuggestion) -> Void
 
-    @IBOutlet weak var table: UITableView!
+    @IBOutlet
+    private weak var table: UITableView!
 
-    private let throttle = Scheduler(seconds: 1)
+    private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
+
+    private let throttle = Scheduler(seconds: 0.5)
 
     private lazy var headerData: SiteCreationHeaderData = {
-        let title = NSLocalizedString("Choose a domain name for your site", comment: "Create site, step 4. Select domain name. Title")
-        let subtitle = NSLocalizedString("This is where people will find you on the internet", comment: "Create site, step 4. Select domain name. Subtitle")
+        let title = NSLocalizedString("Choose a domain name for your site",
+                                      comment: "Create site, step 4. Select domain name. Title")
+
+        let subtitle = NSLocalizedString("This is where people will find you on the internet",
+                                         comment: "Create site, step 4. Select domain name. Subtitle")
+
         return SiteCreationHeaderData(title: title, subtitle: subtitle)
     }()
+
+    // MARK: WebAddressWizardContent
 
     init(service: SiteAddressService, selection: @escaping (DomainSuggestion) -> Void) {
         self.service = service
         self.selection = selection
+
         super.init(nibName: String(describing: type(of: self)), bundle: nil)
     }
+
+    // MARK: UIViewController
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,27 +50,44 @@ final class WebAddressWizardContent: UIViewController {
         setupTable()
     }
 
+    // MARK: Private behavior
+
     private func applyTitle() {
         title = NSLocalizedString("3 of 3", comment: "Site creation. Step 3. Screen title")
     }
 
-    private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+    private func didSelect(_ segment: DomainSuggestion) {
+        selection(segment)
     }
 
-    private func setupTable() {
-        setupTableBackground()
-        setupCell()
-        setupHeader()
-        hideSeparators()
+    private func fetchAddresses(_ searchTerm: String) {
+        service.addresses(for: Locale.current) { [weak self] results in
+            switch results {
+            case .error(let error):
+                self?.handleError(error)
+            case .success(let data):
+                self?.handleData(data)
+            }
+        }
     }
 
-    private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+    private func handleData(_ data: [DomainSuggestion]) {
+        dataCoordinator = TableDataCoordinator(data: data, cellType: AddressCell.self, selection: didSelect)
+        table.dataSource = dataCoordinator
+        table.delegate = dataCoordinator
+        table.reloadData()
+    }
+
+    private func handleError(_ error: Error) {
+        debugPrint("=== handling error===")
     }
 
     private func hideSeparators() {
         table.tableFooterView = UIView(frame: .zero)
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     private func setupCell() {
@@ -80,10 +114,21 @@ final class WebAddressWizardContent: UIViewController {
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
             header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor, multiplier: 1.0),
             header.topAnchor.constraint(equalTo: table.topAnchor)
-        ])
+            ])
 
         table.tableHeaderView?.layoutIfNeeded()
         table.tableHeaderView = table.tableHeaderView
+    }
+
+    private func setupTable() {
+        setupTableBackground()
+        setupCell()
+        setupHeader()
+        hideSeparators()
+    }
+
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     @objc
@@ -95,31 +140,5 @@ final class WebAddressWizardContent: UIViewController {
         throttle.throttle { [weak self] in
             self?.fetchAddresses(searchTerm)
         }
-    }
-
-    private func fetchAddresses(_ searchTerm: String) {
-        service.addresses(for: Locale.current) { [weak self] results in
-            switch results {
-            case .error(let error):
-                self?.handleError(error)
-            case .success(let data):
-                self?.handleData(data)
-            }
-        }
-    }
-
-    private func handleError(_ error: Error) {
-        debugPrint("=== handling error===")
-    }
-
-    private func handleData(_ data: [DomainSuggestion]) {
-        dataCoordinator = TableDataCoordinator(data: data, cellType: AddressCell.self, selection: didSelect)
-        table.dataSource = dataCoordinator
-        table.delegate = dataCoordinator
-        table.reloadData()
-    }
-
-    private func didSelect(_ segment: DomainSuggestion) {
-        selection(segment)
     }
 }
