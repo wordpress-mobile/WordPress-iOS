@@ -108,7 +108,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        service.addresses(for: Locale.current) { [weak self] results in
+        service.addresses(for: searchTerm) { [weak self] results in
             switch results {
             case .error(let error):
                 self?.handleError(error)
