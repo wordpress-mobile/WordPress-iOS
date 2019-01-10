@@ -19,6 +19,15 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if #available(iOS 11.0, *) {
+            let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+//            textField.text = "danielebogo"
+            textField.textContentType = .username
+            textField.isAccessibilityElement = false
+            textField.isEnabled = false
+            view.addSubview(textField)
+        }
+
         mode = .newPassword
         navigationItem.title = Constants.title
         navigationItem.rightBarButtonItem = saveBarButtonItem
