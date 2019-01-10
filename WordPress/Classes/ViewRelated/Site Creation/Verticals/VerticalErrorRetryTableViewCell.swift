@@ -134,9 +134,9 @@ final class VerticalErrorRetryTableViewCell: UITableViewCell, ReusableCell {
         addSubview(retryAccessoryView)
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: Parameters.height),
+            heightAnchor.constraint(equalToConstant: Metrics.height),
             retryAccessoryView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            retryAccessoryView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Parameters.trailingInset)
+            retryAccessoryView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.trailingInset)
         ])
     }
 }
