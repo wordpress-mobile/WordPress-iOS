@@ -3,6 +3,7 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
 
     private var onSaveActionPress: ChangePasswordSaveAction?
     private var currentValue: String = ""
+    private var username: String = ""
     private lazy var saveBarButtonItem: UIBarButtonItem = {
         let saveItem = UIBarButtonItem(title: Constants.actionButtonTitle, style: .plain, target: nil, action: nil)
         saveItem.on() { [weak self] _ in
@@ -11,9 +12,10 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         return saveItem
     }()
 
-    convenience init(onSaveActionPress: @escaping ChangePasswordSaveAction) {
+    convenience init(username: String, onSaveActionPress: @escaping ChangePasswordSaveAction) {
         self.init(text: "", placeholder: "\(Constants.title)...", hint: Constants.description)
         self.onSaveActionPress = onSaveActionPress
+        self.username = username
     }
 
     override func viewDidLoad() {
@@ -21,7 +23,7 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
 
         if #available(iOS 11.0, *) {
             let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-//            textField.text = "danielebogo"
+            textField.text = username
             textField.textContentType = .username
             textField.isAccessibilityElement = false
             textField.isEnabled = false
