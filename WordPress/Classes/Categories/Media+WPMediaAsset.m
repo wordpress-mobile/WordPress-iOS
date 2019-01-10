@@ -87,7 +87,7 @@
 
 - (NSError *)errorWithMessage:(NSString *)errorMessage {
     return [NSError errorWithDomain:WPMediaPickerErrorDomain
-                               code:WPMediaErrorCodeVideoURLNotAvailable
+                               code:WPMediaPickerErrorCodeVideoURLNotAvailable
                            userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
 }
 
