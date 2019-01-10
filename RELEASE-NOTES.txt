@@ -10,5 +10,6 @@
 * Improvements to localisations.
 * Localises the name of the Share Extension.
 * Fixes an issue where stale images may appear when navigating between notifications.
-* Fixes an issue where Visual mode for revisions doesn't show images on private site
+* Add Change Password in Account Settings
 * Fixes a crash caused by image uploading error handling.
+* Fixes an issue where Visual mode for revisions doesn't show images on private site
