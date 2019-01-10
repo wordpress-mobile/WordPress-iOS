@@ -227,7 +227,7 @@ private extension SignupEpilogueViewController {
 
         let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
 
-        accountSettingService.updatePassword(newPassword) { success in
+        accountSettingService.updatePassword(newPassword) { (success, _) in
             if success {
                 WordPressAuthenticator.track(.signupEpiloguePasswordUpdateSucceeded, properties: self.tracksProperties())
             } else {

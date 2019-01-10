@@ -7,7 +7,8 @@ typedef NS_ENUM(NSInteger, SettingsTextModes) {
     SettingsTextModesLowerCaseText,
     SettingsTextModesURL,
     SettingsTextModesEmail,
-    SettingsTextModesPassword
+    SettingsTextModesPassword,
+    SettingsTextModesNewPassword
 };
 
 typedef void (^SettingsTextAction)(void);
