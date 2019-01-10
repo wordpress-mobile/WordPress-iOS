@@ -62,7 +62,6 @@ struct PeopleService {
         remote.getFollowers(siteID, offset: offset, count: count, success: { followers, hasMore in
             self.mergePeople(followers)
             success(followers.count, hasMore)
-
         }, failure: { error in
             DDLogError(String(describing: error))
             failure?(error)
@@ -209,6 +208,16 @@ struct PeopleService {
 
         // Pre-emptively nuke the entity
         context.delete(managedPerson)
+    }
+
+    /// Nukes all users from Core Data.
+    ///
+    func removeManagedPeople() {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+        request.predicate = NSPredicate(format: "siteID = %@", NSNumber(value: siteID))
+        if let objects = (try? context.fetch(request)) as? [NSManagedObject] {
+            objects.forEach { context.delete($0) }
+        }
     }
 
     /// Validates Invitation Recipients.
