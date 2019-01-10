@@ -641,8 +641,20 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     };
     
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        
-        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
+        NSUInteger lastIndex = content.length == 0 ? 0 : content.length - 1;
+        NSUInteger composedCharacterIndex = NSMaxRange([content rangeOfComposedCharacterSequenceAtIndex:MIN(lastIndex, 140)]);
+        // 140 is a somewhat arbitraily chosen number (old tweet length) — should be enough to let people know what
+        // comment failed to show, but not too long to display.
+
+        NSString *replyExcerpt = [content substringToIndex:composedCharacterIndex];
+
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"There has been an unexpected error while sending your reply: \n\"%@\"", nil), replyExcerpt];
+        if (composedCharacterIndex < lastIndex) {
+            NSMutableString *mutString = message.mutableCopy;
+            [mutString insertString:@"…" atIndex:(message.length - 2)];
+
+            message = mutString.copy;
+        }
         
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                                  message:message
