@@ -53,7 +53,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
                 return
             }
             XCTAssertTrue(error.domain == WPMediaPickerErrorDomain, "Should return a WPMediaPickerError")
-            XCTAssertTrue(error.code == WPMediaPickerErrorCode.errorCodeVideoURLNotAvailable.rawValue, "Should return a errorCodeVideoURLNotAvailable")
+            XCTAssertTrue(error.code == WPMediaPickerErrorCode.videoURLNotAvailable.rawValue, "Should return a videoURLNotAvailable")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
