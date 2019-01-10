@@ -39,20 +39,20 @@ jobs:
           path: build/reports
 
   danger:
-    macos:
-      xcode: "10.1.0"
+    docker:
+      - image: jamestreanor/swiftlint-ruby-test:0.0.3
     steps:
       - checkout
       - restore_cache:
           keys:
-            - wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-danger-
+            - wordpress-ios-danger-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+            - wordpress-ios-danger-v2-{{ checksum "Rakefile" }}
+            - wordpress-ios-danger-v2-
       - run:
           name: Dependencies for danger
-          command: rake dependencies:bundle:check dependencies:lint:check
+          command: rake dependencies:bundle:check
       - save_cache:
-          key: wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+          key: wordpress-ios-danger-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/
       - run:
