@@ -154,7 +154,6 @@ private class AccountSettingsController: SettingsController {
                             let errorMessage = error?.localizedDescription ?? Constants.changePasswordGenericError
                             SVProgressHUD.showError(withStatus: errorMessage)
                         }
-                        SVProgressHUD.dismiss(withDelay: TimeInterval(2))
                     })
                 }
             }
