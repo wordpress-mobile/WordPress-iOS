@@ -81,8 +81,8 @@ private extension RevisionPreviewViewController {
             return
         }
 
-        let predicate = NSPredicate(format: "(blogID == %@)", revision.siteId)
-        textViewManager.blog = mainContext.firstObject(ofType: Blog.self, matching: predicate)
+        let predicate = NSPredicate(format: "(blog.blogID == %@ AND postID == %@)", revision.siteId, revision.postId)
+        textViewManager.post = mainContext.firstObject(ofType: AbstractPost.self, matching: predicate)
 
         titleLabel.text = revision.postTitle ?? NSLocalizedString("Untitled", comment: "Label for an untitled post in the revision browser")
 
