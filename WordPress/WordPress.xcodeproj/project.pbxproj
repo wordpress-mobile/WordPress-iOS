@@ -428,7 +428,6 @@
 		73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */; };
 		73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */; };
 		73178C2A21BEE09300E37C9A /* SiteSegmentsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */; };
-		73178C2B21BEE09300E37C9A /* SiteVerticalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */; };
 		73178C2C21BEE09300E37C9A /* SiteCreationHeaderDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */; };
 		73178C3321BEE94700E37C9A /* SiteAssemblyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3221BEE94700E37C9A /* SiteAssemblyServiceTests.swift */; };
 		73178C3521BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */; };
@@ -498,6 +497,11 @@
 		73ACDF9D2118AF7D00233AD4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		73B05D2621374B960073ECAA /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		73B05D2921374F1E0073ECAA /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
+		73B2DCD921E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B2DCD721E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift */; };
+		73B2DCDA21E6F1380098B5B5 /* InlineErrorTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B2DCD821E6F1380098B5B5 /* InlineErrorTableViewProvider.swift */; };
+		73B2DCDD21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B2DCDC21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift */; };
+		73B44F5121E65CFA008C4C08 /* SiteVerticalsPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */; };
+		73B44F5321E670F6008C4C08 /* VerticalsTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B44F5221E670F6008C4C08 /* VerticalsTableViewProvider.swift */; };
 		73B6693A21CAD960008456C3 /* ErrorStateViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */; };
 		73BFDA8A211D054800907245 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BFDA89211D054800907245 /* Notifiable.swift */; };
 		73C31907212F214200769485 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6B42CBE1D9DA6270043E228 /* Noticons.ttf */; };
@@ -1293,9 +1297,7 @@
 		D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */; };
 		D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */; };
 		D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */; };
-		D8A468DB2181BC8B0094B82F /* SiteVertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468DA2181BC8A0094B82F /* SiteVertical.swift */; };
 		D8A468E02181C6450094B82F /* site-segment.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468DF2181C6450094B82F /* site-segment.json */; };
-		D8A468E22181C8290094B82F /* site-vertical.json in Resources */ = {isa = PBXBuildFile; fileRef = D8A468E12181C8290094B82F /* site-vertical.json */; };
 		D8A468E521828D940094B82F /* SiteVerticalsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A468E421828D940094B82F /* SiteVerticalsService.swift */; };
 		D8AEA54A21C21BEC00AB4DCB /* NewVerticalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AEA54821C21BEB00AB4DCB /* NewVerticalCell.swift */; };
 		D8AEA54B21C21BEC00AB4DCB /* NewVerticalCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8AEA54921C21BEC00AB4DCB /* NewVerticalCell.xib */; };
@@ -2289,7 +2291,6 @@
 		73178C2221BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationDataCoordinatorTests.swift; sourceTree = "<group>"; };
 		73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsStepTests.swift; sourceTree = "<group>"; };
 		73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteSegmentsCellTests.swift; sourceTree = "<group>"; };
-		73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalTests.swift; sourceTree = "<group>"; };
 		73178C2621BEE09300E37C9A /* SiteCreationHeaderDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationHeaderDataTests.swift; sourceTree = "<group>"; };
 		73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyService.swift; sourceTree = "<group>"; };
 		73178C3021BEE45300E37C9A /* SiteAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssembly.swift; sourceTree = "<group>"; };
@@ -2347,6 +2348,11 @@
 		73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSupportService.swift; sourceTree = "<group>"; };
 		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationContentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		73B2DCD721E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineErrorRetryTableViewCell.swift; sourceTree = "<group>"; };
+		73B2DCD821E6F1380098B5B5 /* InlineErrorTableViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineErrorTableViewProvider.swift; sourceTree = "<group>"; };
+		73B2DCDC21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAddressTableViewProvider.swift; sourceTree = "<group>"; };
+		73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteVerticalsPromptService.swift; sourceTree = "<group>"; };
+		73B44F5221E670F6008C4C08 /* VerticalsTableViewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalsTableViewProvider.swift; sourceTree = "<group>"; };
 		73B6693921CAD960008456C3 /* ErrorStateViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStateViewTests.swift; sourceTree = "<group>"; };
 		73BFDA89211D054800907245 /* Notifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifiable.swift; sourceTree = "<group>"; };
 		73C8F05F21BEED9100DDDF7E /* SiteAssemblyStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyStep.swift; sourceTree = "<group>"; };
@@ -3275,9 +3281,7 @@
 		D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMediaGroup.swift; sourceTree = "<group>"; };
 		D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMedia.swift; sourceTree = "<group>"; };
 		D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPicker.swift; sourceTree = "<group>"; };
-		D8A468DA2181BC8A0094B82F /* SiteVertical.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVertical.swift; sourceTree = "<group>"; };
 		D8A468DF2181C6450094B82F /* site-segment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-segment.json"; sourceTree = "<group>"; };
-		D8A468E12181C8290094B82F /* site-vertical.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "site-vertical.json"; sourceTree = "<group>"; };
 		D8A468E421828D940094B82F /* SiteVerticalsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalsService.swift; sourceTree = "<group>"; };
 		D8AEA54821C21BEB00AB4DCB /* NewVerticalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewVerticalCell.swift; sourceTree = "<group>"; };
 		D8AEA54921C21BEC00AB4DCB /* NewVerticalCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewVerticalCell.xib; sourceTree = "<group>"; };
@@ -5046,7 +5050,6 @@
 				73178C2421BEE09300E37C9A /* SiteSegmentsCellTests.swift */,
 				73178C2321BEE09300E37C9A /* SiteSegmentsStepTests.swift */,
 				73178C2121BEE09300E37C9A /* SiteSegmentTests.swift */,
-				73178C2521BEE09300E37C9A /* SiteVerticalTests.swift */,
 				73178C3421BEE9AC00E37C9A /* TitleSubtitleHeaderTests.swift */,
 			);
 			path = SiteCreation;
@@ -5070,6 +5073,8 @@
 				731E88C721C9A10A0055C014 /* ErrorStateView.swift */,
 				731E88C621C9A10A0055C014 /* ErrorStateViewConfiguration.swift */,
 				731E88C821C9A10A0055C014 /* ErrorStateViewController.swift */,
+				73B2DCD721E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift */,
+				73B2DCD821E6F1380098B5B5 /* InlineErrorTableViewProvider.swift */,
 			);
 			path = ErrorStates;
 			sourceTree = "<group>";
@@ -6062,6 +6067,7 @@
 				984B020D200D59B900179E75 /* SiteCreationService.swift */,
 				FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */,
 				D8CB561F2181A8CE00554EAE /* SiteSegmentsService.swift */,
+				73B44F5021E65CFA008C4C08 /* SiteVerticalsPromptService.swift */,
 				D8A468E421828D940094B82F /* SiteVerticalsService.swift */,
 				319D6E7C19E447C80013871C /* SuggestionService.h */,
 				319D6E7D19E447C80013871C /* SuggestionService.m */,
@@ -7341,12 +7347,13 @@
 			children = (
 				D8AEA54821C21BEB00AB4DCB /* NewVerticalCell.swift */,
 				D8AEA54921C21BEC00AB4DCB /* NewVerticalCell.xib */,
+				D8AEA54C21C2216300AB4DCB /* SiteVerticalPresenter.swift */,
 				D8380CA22192E77F00250609 /* VerticalsCell.swift */,
 				D8380CA32192E77F00250609 /* VerticalsCell.xib */,
 				D818FFD321915586000E5FEE /* VerticalsStep.swift */,
+				73B44F5221E670F6008C4C08 /* VerticalsTableViewProvider.swift */,
 				D818FFD52191566B000E5FEE /* VerticalsWizardContent.swift */,
 				D818FFD62191566B000E5FEE /* VerticalsWizardContent.xib */,
-				D8AEA54C21C2216300AB4DCB /* SiteVerticalPresenter.swift */,
 			);
 			path = Verticals;
 			sourceTree = "<group>";
@@ -7368,6 +7375,7 @@
 				D82253E3219956540014D0E2 /* AddressCell.swift */,
 				D82253E4219956540014D0E2 /* AddressCell.xib */,
 				D853723921952DAF0076F461 /* WebAddressStep.swift */,
+				73B2DCDC21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift */,
 				D82253DD2199418B0014D0E2 /* WebAddressWizardContent.swift */,
 				D82253DE2199418B0014D0E2 /* WebAddressWizardContent.xib */,
 			);
@@ -7439,7 +7447,6 @@
 			isa = PBXGroup;
 			children = (
 				D8A468DF2181C6450094B82F /* site-segment.json */,
-				D8A468E12181C8290094B82F /* site-vertical.json */,
 			);
 			name = "Site Creation";
 			sourceTree = "<group>";
@@ -7461,7 +7468,6 @@
 			isa = PBXGroup;
 			children = (
 				D8225407219AB0520014D0E2 /* SiteInformation.swift */,
-				D8A468DA2181BC8A0094B82F /* SiteVertical.swift */,
 				D8CB56222181A95D00554EAE /* SiteSegment.swift */,
 			);
 			name = "Site Creation";
@@ -8705,7 +8711,6 @@
 				D848CC0920FF2D4400A9038F /* notifications-icon-range.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
-				D8A468E22181C8290094B82F /* site-vertical.json in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
 				D848CC1120FF310400A9038F /* notifications-site-range.json in Resources */,
@@ -9263,6 +9268,7 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				E1E89C6C1FD80E74006E7A33 /* Plugin.swift in Sources */,
+				73B2DCDD21E6F55D0098B5B5 /* WebAddressTableViewProvider.swift in Sources */,
 				7E4123BD20F4097B00DF8486 /* FormattableMediaContent.swift in Sources */,
 				E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */,
 				D87A329620ABD60700F4726F /* ReaderTableContent.swift in Sources */,
@@ -9286,6 +9292,7 @@
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
+				73B2DCD921E6F1380098B5B5 /* InlineErrorRetryTableViewCell.swift in Sources */,
 				9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */,
 				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
@@ -9486,6 +9493,7 @@
 				D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
+				73B2DCDA21E6F1380098B5B5 /* InlineErrorTableViewProvider.swift in Sources */,
 				91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */,
 				F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */,
 				591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */,
@@ -9647,6 +9655,7 @@
 				E6F2788121BC1A4A008B4DB5 /* PlanGroup.swift in Sources */,
 				08216FCE1CDBF96000304BA7 /* MenuItemPostsViewController.m in Sources */,
 				4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */,
+				73B44F5321E670F6008C4C08 /* VerticalsTableViewProvider.swift in Sources */,
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
 				D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */,
 				598DD1711B97985700146967 /* ThemeBrowserCell.swift in Sources */,
@@ -9758,6 +9767,7 @@
 				9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */,
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
+				73B44F5121E65CFA008C4C08 /* SiteVerticalsPromptService.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
@@ -10071,7 +10081,6 @@
 				73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */,
 				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
-				D8A468DB2181BC8B0094B82F /* SiteVertical.swift in Sources */,
 				7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */,
 				B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */,
 				D86572172186C3600023A99C /* WizardDelegate.swift in Sources */,
@@ -10396,7 +10405,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73178C2B21BEE09300E37C9A /* SiteVerticalTests.swift in Sources */,
 				73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */,
 				73178C2821BEE09300E37C9A /* SiteCreationDataCoordinatorTests.swift in Sources */,
 				D81C2F6020F891C4002AE1F1 /* TrashCommentActionTests.swift in Sources */,
