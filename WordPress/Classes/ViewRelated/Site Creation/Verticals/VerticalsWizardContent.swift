@@ -7,6 +7,15 @@ final class VerticalsWizardContent: UIViewController {
 
     // MARK: Properties
 
+    private static let defaultPrompt = SiteVerticalsPrompt(
+        title: NSLocalizedString("What's the focus of your business?",
+                                 comment: "Create site, step 2. Select focus of the business. Title"),
+        subtitle: NSLocalizedString("We'll use your answer to add sections to your website.",
+                                    comment: "Create site, step 2. Select focus of the business. Subtitle"),
+        hint: NSLocalizedString("e.g. Landscaping, Consulting... etc.",
+                                comment: "Site creation. Select focus of your business, search field placeholder")
+    )
+
     /// A collection of parameters uses for view layout
     private struct Metrics {
         static let rowHeight: CGFloat = 44.0
@@ -126,7 +135,7 @@ final class VerticalsWizardContent: UIViewController {
 
         // This should never apply, but we have a Segment?
         guard let promptRequest = segment?.identifier else {
-            let defaultPrompt = DefaultSiteVerticalsPrompt()
+            let defaultPrompt = VerticalsWizardContent.defaultPrompt
             setupTableHeaderWithPrompt(defaultPrompt)
 
             return
@@ -141,7 +150,7 @@ final class VerticalsWizardContent: UIViewController {
             if let serverPrompt = serverPrompt {
                 prompt = serverPrompt
             } else {
-                prompt = DefaultSiteVerticalsPrompt()
+                prompt = VerticalsWizardContent.defaultPrompt
             }
 
             self.setupTableHeaderWithPrompt(prompt)
