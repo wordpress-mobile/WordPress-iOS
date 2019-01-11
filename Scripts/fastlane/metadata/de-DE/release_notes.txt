@@ -1,4 +1,0 @@
-Der nervige Fehler, der Benutzer mit Autor- oder Mitarbeiterrechten auf selbst gehosteten Websites daran hinderte, Beiträge zu veröffentlichen, wurde behoben. Viel Spaß beim Veröffentlichen, liebe Autoren!
-Die meisten Änderungen in diesem Update sind klein oder geschehen hinter den Kulissen – auch wenn du sie nicht sehen kannst, wirst du sie bemerken:
-- Bessere Unterstützung für Übersetzer, insbesondere beim Übersetzen von Inhalten mit dynamischen Elementen wie E-Mail-Adressen und Telefonnummern. Letztendlich bedeutet das, dass mehr Personen, deren Standardsprache nicht Englisch ist, bessere Übersetzungen in der App bekommen.
-- Wir arbeiten weiterhin an der Benutzeroberfläche, um die App für iPads zu optimieren – bessere Ränder und Ausrichtung, insbesondere nach dem Drehen aus dem Querformat ins Hochformat, die das gesamte Nutzungserlebnis der App besser machen.
