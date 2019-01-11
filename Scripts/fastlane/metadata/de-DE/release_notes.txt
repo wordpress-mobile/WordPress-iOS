@@ -1,0 +1,9 @@
+* Wenn du eine neue Website in der App beginnst, kannst du jetzt deine eigene .blog-Subdomain registrieren!
+* Wenn du versuchst, eine Website auf einem iPad zu löschen, stürzt die App nicht mehr ab (das kam hin und wieder vor).
+* Ein Fehler auf dem „Informationen“-Bildschirm in den App-Einstellungen wurde behoben, der zum Absturz führte.
+* Bildschirm zu Beitragseinstellungen wurde aktualisiert, um die Darstellung auf iPads zu verbessern.
+
+Nachdem eine Reihe von Verbesserungen an der Verlaufs-/Revisionsfunktion vorgenommen wurde, kannst du jetzt …
+* direkt zwischen Revisionen wechseln,
+* in der Revisionsansicht zwischen HTML- und visuellem Modus wechseln,
+* über den neuen „Rückgängig“-Button Revisionen ganz leicht wieder aufheben.
