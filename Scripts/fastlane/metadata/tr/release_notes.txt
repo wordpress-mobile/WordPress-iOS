@@ -1,5 +1,9 @@
-Kendileri barındırılan sitelerde kullanıcıların yazıları yayınlayabilmeleri için kullanıcılara yazar veya katkıda bulunan haklarını saklayan can sıkıcı hata giderldi. Yayınlayın yazarlar!
+* Uygulamada yeni bir site başlatırsanız kendi .blog alt alan adınızı kaydedebilirsiniz!
+* Bir siteyi iPad’de silmeyi denediğinizde uygulama artık kilitlenmiyor (daha önce kilitlenebiliyordu).
+* Uygulama Ayarları’nda bulunan “Hakkında” ekranındaki bir kilitlenme sorunu giderildi.
+* Gönderi ayarları ekranı iPad’de daha iyi görünecek şekilde yenilendi.
 
-Bu güncellemedeki değişikliklerin çoğu, küçük veya sahne arkasındadır - onları görmüyorsanız bile, bunları hissedeceksiniz: 
-- Çevirmenler için, özellikle de e-posta adresleri ve telefon numaraları gibi öğeleri dinamik öğelerle çevirmeye çalıştıklarında daha iyi destek var. Sonuçta, bu, varsayılan dili İngilizce'den başka bir şey olan daha fazla kullanıcının uygulama genelinde daha iyi çevirileri göreceği anlamına gelir.
-- Bir uygulamayı iPad uygulamasında kullanmak için kullanıcı dostu bir arayüz geliştirmeye devam ediyoruz. Daha iyi marjlar ve hizalamalar gibi özellikler, özellikle de yataydan dikeye döndürüldükten sonra, uygulamanın daha sorunsuz kullanılmasını sağlıyor.
+Geçmiş/Revizyonlar özelliğinde yapılan bir dizi yeni iyileştirme sayesinde artık…
+* Revizyonlar arasında hızla geçiş yapabilirsiniz.
+* Bir revizyonu görüntülerken HTML ile Görsel modlar arasında geçiş yapabilirsiniz.
+* Bir revizyonu uyguladıktan sonra fikrinizi değiştirdiğinizde yeni Geri Al düğmesini kullanabilirsiniz.
