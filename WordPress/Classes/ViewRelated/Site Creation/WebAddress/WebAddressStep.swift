@@ -5,7 +5,7 @@ final class WebAddressStep: WizardStep {
     private let service: SiteAddressService
 
     private(set) lazy var content: UIViewController = {
-        return WebAddressWizardContent(service: self.service, selection: didSelect)
+        return WebAddressWizardContent(creator: creator, service: self.service, selection: didSelect)
     }()
 
     var delegate: WizardDelegate?

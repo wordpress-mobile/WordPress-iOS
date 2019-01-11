@@ -1,4 +1,9 @@
-Bug mengganggu yang membuat pengguna dengan hak penulis atau kontributor di situs self-hosted tidak dapat memublikasikan kiriman yang telah ditekan. Publikasikan!
-Kebanyakan perubahan di pembaruan ini sifatnya kecil atau di balik layar, sekalipun Anda tidak melihatnya, Anda akan merasakannya:
-- Terdapat dukungan yang lebih baik untuk penerjemah, terutama saat mereka mencoba menerjemahkan hal-hal dengan elemen yang berubah-ubah, seperti alamat email dan nomor telepon. Pada akhirnya, ini berarti akan semakin banyak orang dengan bahasa default selain bahasa Inggris melihat terjemahan yang lebih baik di aplikasi.
-- Kami terus menyempurnakan UI agar aplikasi ini bisa maksimal saat digunakan di iPad — hal-hal seperti batas tepi dan penyelarasan yang lebih baik, terutama setelah memutar dari tampilan landscape ke portrait, sehingga membuat seluruh pengalaman menggunakan aplikasi menjadi lebih lancar.
+* Jika memulai situs baru di aplikasi, kini Anda dapat mendaftarkan subdomain .blog Anda sendiri!
+* Saat Anda mencoba menghapus situs di iPad, aplikasi tidak akan macet lagi (tadinya terkadang macet).
+* Memperbaiki macet di layar “Tentang” di Pengaturan Aplikasi.
+* Menyegarkan layar pengaturan pos agar terlihat lebih baik di iPad.
+
+Dengan serangkaian peningkatan baru untuk fitur Riwayat/Revisi, kini Anda dapat…
+* Menggeser di antara revisi dalam sekejap.
+* Beralih di antara mode HTML dan Visual saat melihat revisi.
+* Berubah pikiran jika Anda menerapkan suatu revisi dengan tombol Urung baru.

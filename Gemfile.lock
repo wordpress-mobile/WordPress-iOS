@@ -81,10 +81,6 @@ GEM
       no_proxy_fix
       octokit (~> 4.7)
       terminal-table (~> 1)
-    danger-swiftlint (0.17.4)
-      danger
-      rake (> 10)
-      thor (~> 0.19)
     declarative (0.0.10)
     declarative-option (0.1.0)
     diffy (3.3.0)
@@ -217,7 +213,6 @@ GEM
     terminal-notifier (1.8.0)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
-    thor (0.20.0)
     thread_safe (0.3.6)
     tty-cursor (0.6.0)
     tty-screen (0.6.5)
@@ -250,7 +245,6 @@ DEPENDENCIES
   cocoapods-check!
   cocoapods-repo-update (~> 0.0.3)!
   danger!
-  danger-swiftlint!
   dotenv!
   fastlane (= 2.103.1)!
   fastlane-plugin-wpmreleasetoolkit!
