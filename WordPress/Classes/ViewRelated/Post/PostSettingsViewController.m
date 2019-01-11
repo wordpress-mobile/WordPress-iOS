@@ -1236,7 +1236,9 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showEditShareMessageController
 {
-    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.post.publicizeMessage
+    NSString *text = !self.post.publicizeMessage ? self.post.titleForDisplay : self.post.publicizeMessage;
+
+    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:text
                                                                                     placeholder:nil
                                                                                            hint:NSLocalizedString(@"Customize the message you want to share.", @"Hint displayed when the user is customizing the share message.")
                                                                                      isPassword:NO];
