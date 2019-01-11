@@ -40,19 +40,19 @@ jobs:
 
   danger:
     docker:
-      - image: dantoml/danger:latest
+      - image: circleci/ruby:2.3
     steps:
       - checkout
       - restore_cache:
           keys:
-            - wordpress-ios-danger-gems-v1-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-danger-gems-v1-{{ checksum "Rakefile" }}
-            - wordpress-ios-danger-gems-v1-
+            - wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+            - wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}
+            - wordpress-ios-danger-gems-v2-
       - run:
           name: Bundle install
           command: bundle install --path=vendor/bundle
       - save_cache:
-          key: wordpress-ios-danger-gems-v1-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+          key: wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/
       - run:

@@ -1,4 +1,9 @@
-Le bug désagréable qui empêchait les utilisateurs possédant des droits d'auteur ou de contributeur sur les sites auto-hébergés de publier des articles a été résolu. Vous êtes auteurs, vous pouvez de nouveau publier !
-La plupart des modifications apportées par cette mise à jour sont minimes ou invisibles. Mais même si vous ne les voyez pas, vous pouvez constater la différence :
-- Optimisation de l'assistance aux traducteurs, notamment lorsqu'ils essaient de traduire des sections contenant des éléments dynamiques comme des adresses e-mail et des numéros de téléphone. Cela signifie également que davantage d'utilisateurs dont la langue par défaut n'est pas l'anglais profiteront d'une application mieux traduite.
-- Nous continuons d'épurer l'interface utilisateur pour créer une application optimisée pour les iPad, comme l'amélioration des marges et des alignements, notamment après le passage du mode paysage au mode portrait, pour proposer une expérience d'utilisation transparente de l'application.
+* Si vous créer un nouveau site depuis l’application, vous pouvez désormais enregistrer votre propre domaine .blog !
+* L’application ne plante plus quand vous essayez de supprimer un site depuis un iPad, comme cela arrivait parfois.
+* Correction d’un plantage sur l’écran « A propos » des réglages de l’application.
+* L’écran de réglage de publication a été amélioré pour le rendre plus agréable sur iPad.
+
+Grâce à une série d’améliorations de la fonctionnalité Historique/Révisions, vous pouvez maintenant :
+* Glisser d’une révision à l’autre d’un geste du pouce.
+* Passer du mode HTML au mode Visuel quand vous parcourez une révision.
+* Changer d’avis après avoir appliqué une révision, grâce au nouveau bouton Annuler.

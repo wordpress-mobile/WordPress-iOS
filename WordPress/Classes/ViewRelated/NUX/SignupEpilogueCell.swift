@@ -43,6 +43,14 @@ class SignupEpilogueCell: UITableViewCell {
         } else {
             accessoryType = .none
         }
+
+        if #available(iOS 12.0, *) {
+            if cellType == .password {
+                cellField.textContentType = .newPassword
+            } else {
+                cellField.textContentType = nil
+            }
+        }
     }
 
 }

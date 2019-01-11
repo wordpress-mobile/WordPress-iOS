@@ -1,4 +1,9 @@
-De bug die ervoor zorgde dat gebruikers met auteurs- of bijdragersrechten geen berichten konden plaatsen op zelf-gehoste sites, is verwijderd. Tijd om te publiceren, auteurs!
-De meeste wijzigingen van deze update zijn klein of vinden achter de schermen plaats. Je ziet ze misschien niet, maar je merkt ze wel op:
-- Er is verbeterde ondersteuning voor vertalers, vooral als ze proberen om dingen met dynamische elementen te vertalen, zoals e-mailadressen en telefoonnummers. Dit zorgt er uiteindelijk voor dat meer mensen, die Engels niet als standaardtaal gebruiken, verbeterde vertalingen zullen zien in de app.
-- We blijven de UI bijwerken om de app gebruiksvriendelijker te maken voor iPads. Dingen als verbeterde marges en uitlijningen, vooral na een wijziging van de liggende stand naar de rechtopstaande stand, zorgen ervoor de gebruikservaring van de app toeneemt.
+* Als je een nieuwe site start op de app, kun je nu je eigen .blog-subdomein registreren!
+* Als je een site probeert te verwijderen op een iPad, zal de app niet langer crashen (wat soms gebeurde).
+* Een crash op het scherm 'Over' in App-instellingen verholpen.
+* Het berichtinstellingenscherm is vernieuwd zodat het er beter uitziet op een iPad.
+
+Er zijn verbeteringen aangebracht aan de hulpmiddelen Geschiedenis/Revisie, zodat je nu...
+* In een oogwenk van revisie kunt wisselen.
+* Tussen de HTML-modus en visuele modus kunt schakelen wanneer je een revisie bekijkt.
+* Van gedachten kunt veranderen bij het toepassen van een revisie, door de knop 'Ongedaan maken' te gebruiken.
