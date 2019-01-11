@@ -18,7 +18,8 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var addressStep: WizardStep = {
-        return WebAddressStep(creator: self.creator, service: MockSiteAddressService())
+        let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return WebAddressStep(creator: self.creator, service: addressService)
     }()
 
     private lazy var siteInfoStep: WizardStep = {

@@ -39,15 +39,10 @@ final class SiteCreator {
             throw SiteCreationRequestAssemblyError.invalidVerticalIdentifier
         }
 
-        // BEGIN : Temporary, introduced via 10711, to be replaced via 10669
-        let suffix = Int(Date().timeIntervalSinceReferenceDate)
-        let siteName = "10711site\(suffix)"
-//        guard let domainSuggestion = address else {
-        guard let _ = address else {
+        guard let domainSuggestion = address else {
             throw SiteCreationRequestAssemblyError.invalidDomain
         }
-//        let siteName = domainSuggestion.domainName
-        // END
+        let siteName = domainSuggestion.domainName
 
         guard let siteInformation = information else {
             throw SiteCreationRequestAssemblyError.invalidSiteInformation
