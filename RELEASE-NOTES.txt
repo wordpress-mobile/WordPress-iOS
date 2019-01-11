@@ -12,4 +12,6 @@
 * Fixes an issue where stale images may appear when navigating between notifications.
 * Add Change Password in Account Settings
 * Fixes a crash caused by image uploading error handling.
+* Increase mininum height on multi-line text field so it appears multi-line when blank. Affects Post excerpt, People invitation message, About Me.
 * More helpful error messages are now displayed if there's a problem setting a password when signing up for a new account.
+
