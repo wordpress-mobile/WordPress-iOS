@@ -8,8 +8,8 @@ struct InlineErrorMessages {
     static let noConnection: InlineErrorMessage = NSLocalizedString("No connection",
                                                                        comment: "Displayed during Site Creation, when searching for Verticals and the network is unavailable.")
 
-    static let networkError: InlineErrorMessage = NSLocalizedString("There was a problem",
-                                                                       comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
+    static let serverError: InlineErrorMessage = NSLocalizedString("There was a problem",
+                                                                   comment: "Displayed during Site Creation, when searching for Verticals and the server returns an error.")
 }
 
 /// This table view provider fulfills the data source & delegate responsibilities for inline error cases.

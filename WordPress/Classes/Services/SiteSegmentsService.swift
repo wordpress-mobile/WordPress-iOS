@@ -19,10 +19,10 @@ final class MockSiteSegmentsService: SiteSegmentsService {
     }
 
     lazy var mockSiteTypes: [SiteSegment] = {
-        return [ shortSubtitle(identifier: 101),
-                 longSubtitle(identifier: 678910),
-                 shortSubtitle(identifier: 1112),
-                 shortSubtitle(identifier: 007) ]
+        return [ shortSubtitle(identifier: 1),
+                 longSubtitle(identifier: 2),
+                 shortSubtitle(identifier: 3),
+                 shortSubtitle(identifier: 4) ]
     }()
 
     var mockCount: Int {

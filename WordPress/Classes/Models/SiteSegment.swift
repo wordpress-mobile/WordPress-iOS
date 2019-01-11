@@ -9,7 +9,7 @@ struct SiteSegment {
 }
 
 extension SiteSegment {
-    static let blogSegmentIdentifier = Int64(101)
+    static let blogSegmentIdentifier = Int64(1)
 }
 
 extension SiteSegment: Equatable {
