@@ -7,21 +7,37 @@ final class VerticalsWizardContent: UIViewController {
 
     // MARK: Properties
 
-    private struct StyleConstants {
+    private static let defaultPrompt = SiteVerticalsPrompt(
+        title: NSLocalizedString("What's the focus of your business?",
+                                 comment: "Create site, step 2. Select focus of the business. Title"),
+        subtitle: NSLocalizedString("We'll use your answer to add sections to your website.",
+                                    comment: "Create site, step 2. Select focus of the business. Subtitle"),
+        hint: NSLocalizedString("e.g. Landscaping, Consulting... etc.",
+                                comment: "Site creation. Select focus of your business, search field placeholder")
+    )
+
+    /// A collection of parameters uses for view layout
+    private struct Metrics {
         static let rowHeight: CGFloat = 44.0
         static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
     }
 
+    /// The segment selected by the user in a preceding step
     private let segment: SiteSegment?
 
+    /// The service which retrieves localized prompt verbiage specific to the chosen segment
     private let promptService: SiteVerticalsPromptService
 
+    /// The service which conducts searches for know verticals
     private let verticalsService: SiteVerticalsService
 
+    /// The action to perform once a Vertical is selected by the user
     private let selection: (SiteVertical) -> Void
 
-    private let prompt: SiteVerticalsPrompt = DefaultSiteVerticalsPrompt()
+    /// The localized prompt retrieved by remote service; `nil` otherwise
+    private var prompt: SiteVerticalsPrompt?
 
+    /// The throttle meters requests to the remote verticals service
     private let throttle = Scheduler(seconds: 0.5)
 
     /// We track the last searched value so that we can retry
@@ -30,22 +46,27 @@ final class VerticalsWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    @IBOutlet
-    private weak var table: UITableView!
+    /// The table view renders our server content
+    @IBOutlet private weak var table: UITableView!
 
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
+    /// We manipulate the bottom constraint in response to the keyboard.
     private lazy var bottomConstraint: NSLayoutConstraint = {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
     }()
 
-    private lazy var headerData: SiteCreationHeaderData = {
-        return SiteCreationHeaderData(title: prompt.title, subtitle: prompt.subtitle)
-    }()
-
     // MARK: VerticalsWizardContent
 
+    /// The designated initializer.
+    ///
+    /// - Parameters:
+    ///   - segment:            the segment selected by the user in a preceding step
+    ///   - promptService:      the service which retrieves localized prompt verbiage specific to the chosen segment
+    ///   - verticalsService:   the service which conducts searches for know verticals
+    ///   - selection:          the action to perform once a Vertical is selected by the user
+    ///
     init(segment: SiteSegment?, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
         self.segment = segment
         self.promptService = promptService
@@ -61,6 +82,11 @@ final class VerticalsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -72,18 +98,17 @@ final class VerticalsWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        fetchPromptIfNeeded()
+
         observeNetworkStatus()
         startListeningToKeyboardNotifications()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopListeningToKeyboardNotifications()
-    }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        table.layoutHeaderView()
+        stopListeningToKeyboardNotifications()
+        prompt = nil
     }
 
     // MARK: Private behavior
@@ -95,11 +120,41 @@ final class VerticalsWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
-        guard let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider else {
+        guard let validDataProvider = tableViewProvider as? VerticalsTableViewProvider else {
             setupTableDataProvider()
             return
         }
         validDataProvider.data = []
+    }
+
+    private func fetchPromptIfNeeded() {
+        // No need to obtain more than one prompt
+        guard prompt == nil else {
+            return
+        }
+
+        // This should never apply, but we have a Segment?
+        guard let promptRequest = segment?.identifier else {
+            let defaultPrompt = VerticalsWizardContent.defaultPrompt
+            setupTableHeaderWithPrompt(defaultPrompt)
+
+            return
+        }
+
+        promptService.retrieveVerticalsPrompt(request: promptRequest) { [weak self] serverPrompt in
+            guard let self = self else {
+                return
+            }
+
+            let prompt: SiteVerticalsPrompt
+            if let serverPrompt = serverPrompt {
+                prompt = serverPrompt
+            } else {
+                prompt = VerticalsWizardContent.defaultPrompt
+            }
+
+            self.setupTableHeaderWithPrompt(prompt)
+        }
     }
 
     private func fetchVerticals(_ searchTerm: String) {
@@ -115,7 +170,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        if let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider {
+        if let validDataProvider = tableViewProvider as? VerticalsTableViewProvider {
             validDataProvider.data = data
         } else {
             setupTableDataProvider(data)
@@ -130,6 +185,23 @@ final class VerticalsWizardContent: UIViewController {
         table.tableFooterView = UIView(frame: .zero)
     }
 
+    private func performSearchIfNeeded(query: String) {
+        guard !query.isEmpty else {
+            return
+        }
+
+        lastSearchQuery = query
+
+        guard isNetworkActive == true else {
+            setupEmptyTableProvider()
+            return
+        }
+
+        throttle.throttle { [weak self] in
+            self?.fetchVerticals(query)
+        }
+    }
+
     private func registerCell(identifier: String) {
         let nib = UINib(nibName: identifier, bundle: nil)
         table.register(nib, forCellReuseIdentifier: identifier)
@@ -139,7 +211,7 @@ final class VerticalsWizardContent: UIViewController {
         registerCell(identifier: VerticalsCell.cellReuseIdentifier())
         registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
 
-        table.register(VerticalErrorRetryTableViewCell.self, forCellReuseIdentifier: VerticalErrorRetryTableViewCell.cellReuseIdentifier())
+        table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
     }
 
     private func setupBackground() {
@@ -148,8 +220,8 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupCellHeight() {
         table.rowHeight = UITableView.automaticDimension
-        table.estimatedRowHeight = StyleConstants.rowHeight
-        table.separatorInset = StyleConstants.separatorInset
+        table.estimatedRowHeight = Metrics.rowHeight
+        table.separatorInset = Metrics.separatorInset
     }
 
     private func setupCells() {
@@ -168,10 +240,44 @@ final class VerticalsWizardContent: UIViewController {
         ])
     }
 
-    private func setupHeader() {
+    private func setupEmptyTableProvider() {
+        let message: InlineErrorMessage
+        if isNetworkActive {
+            message = InlineErrorMessages.serverError
+        } else {
+            message = InlineErrorMessages.noConnection
+        }
+
+        let handler: CellSelectionHandler = { [weak self] _ in
+            let retryQuery = self?.lastSearchQuery ?? ""
+            self?.performSearchIfNeeded(query: retryQuery)
+        }
+
+        tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
+    }
+
+    private func setupTable() {
+        setupTableBackground()
+        setupTableSeparator()
+        setupCells()
+        setupConstraints()
+        hideSeparators()
+
+        setupTableDataProvider()
+    }
+
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableHeaderWithPrompt(_ prompt: SiteVerticalsPrompt) {
+        self.prompt = prompt
+
+        table.tableHeaderView = nil
+
         let header = TitleSubtitleTextfieldHeader(frame: .zero)
-        header.setTitle(headerData.title)
-        header.setSubtitle(headerData.subtitle)
+        header.setTitle(prompt.title)
+        header.setSubtitle(prompt.subtitle)
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
@@ -188,65 +294,21 @@ final class VerticalsWizardContent: UIViewController {
         ])
     }
 
-    private func setupTable() {
-        setupTableBackground()
-        setupTableSeparator()
-        setupCells()
-        setupHeader()
-        setupConstraints()
-        hideSeparators()
-
-        setupTableDataProvider()
-    }
-
-    private func setupEmptyTableProvider() {
-        let message: EmptyVerticalsMessage
-        if isNetworkActive {
-            message = EmptyVerticalsMessages.networkError
-        } else {
-            message = EmptyVerticalsMessages.noConnection
-        }
-
-        let retryHandler: SiteVerticalSelectionHandler = { [weak self] _ in
-            let retryQuery = self?.lastSearchQuery ?? ""
-            self?.performSearchIfNeeded(query: retryQuery)
-        }
-
-        tableViewProvider = EmptyVerticalsTableViewProvider(tableView: table, message: message, selectionHandler: retryHandler)
-    }
-
     private func setupTableDataProvider(_ data: [SiteVertical] = []) {
-        self.tableViewProvider = DefaultVerticalsTableViewProvider(tableView: table, data: data) { [weak self] selectedVertical in
-            guard let self = self, let vertical = selectedVertical else {
+        let handler: CellSelectionHandler = { [weak self] selectedIndexPath in
+            guard let self = self, let provider = self.tableViewProvider as? VerticalsTableViewProvider else {
                 return
             }
+
+            let vertical = provider.data[selectedIndexPath.row]
             self.selection(vertical)
         }
-    }
 
-    private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
+        self.tableViewProvider = VerticalsTableViewProvider(tableView: table, data: data, selectionHandler: handler)
     }
 
     private func setupTableSeparator() {
         table.separatorColor = WPStyleGuide.greyLighten20()
-    }
-
-    private func performSearchIfNeeded(query: String) {
-        guard !query.isEmpty else {
-            return
-        }
-
-        lastSearchQuery = query
-
-        guard isNetworkActive == true else {
-            setupEmptyTableProvider()
-            return
-        }
-
-        throttle.throttle { [weak self] in
-            self?.fetchVerticals(query)
-        }
     }
 
     @objc

@@ -3,49 +3,58 @@ import Foundation
 
 // MARK: - SiteVerticalsPromptService
 
-/// The prompt provides valuable context to the user for searching site verticals.
-/// It is influenced by the segment chosen in the preceding step.
+/// Abstracts retrieval of prompt values for Site Creation : Verticals search & selection.
 ///
-public protocol SiteVerticalsPrompt {
-
-    /// The primary text presented to the user.
-    var title: String { get }
-
-    /// Additional explanatory text.
-    var subtitle: String { get }
-
-    /// A hint to intended to guide the user's search.
-    var hint: String { get }
+protocol SiteVerticalsPromptService {
+    func retrieveVerticalsPrompt(request: SiteVerticalsPromptRequest, completion: @escaping SiteVerticalsPromptServiceCompletion)
 }
 
-public typealias SiteVerticalsPromptServiceCompletion = ((SiteVerticalsPrompt) -> ())
-
-/// Abstracts retrieval of site verticals.
-///
-public protocol SiteVerticalsPromptService {
-    func retrievePrompt(segmentIdentifier: Int64, completion: @escaping SiteVerticalsPromptServiceCompletion)
-}
-
-// MARK: - Mock service & result
-
-final class DefaultSiteVerticalsPrompt: SiteVerticalsPrompt {
-
-    let title = NSLocalizedString("What's the focus of your business?",
-                                  comment: "Create site, step 2. Select focus of the business. Title")
-
-    let subtitle = NSLocalizedString("We'll use your answer to add sections to your website.",
-                                     comment: "Create site, step 2. Select focus of the business. Subtitle")
-
-    let hint = NSLocalizedString("e.g. Landscaping, Consulting... etc.",
-                                 comment: "Site creation. Select focus of your business, search field placeholder")
-}
-
-typealias MockSiteVerticalsPrompt = DefaultSiteVerticalsPrompt
+// MARK: - MockSiteVerticalsPromptService
 
 /// Mock implementation of the prompt service
 ///
 final class MockSiteVerticalsPromptService: SiteVerticalsPromptService {
-    func retrievePrompt(segmentIdentifier: Int64, completion: @escaping SiteVerticalsPromptServiceCompletion) {
-        completion(MockSiteVerticalsPrompt())
+    func retrieveVerticalsPrompt(request: SiteVerticalsPromptRequest, completion: @escaping
+        SiteVerticalsPromptServiceCompletion) {
+
+        let mockPrompt = SiteVerticalsPrompt(title: "Faux title", subtitle: "Faux subtitle", hint: "Faux placeholder")
+        completion(mockPrompt)
+    }
+}
+
+// MARK: - SiteCreationVerticalsPromptService
+
+/// Retrieves localized user-facing prompts for searching Verticals during Site Creation.
+///
+final class SiteCreationVerticalsPromptService: LocalCoreDataService, SiteVerticalsPromptService {
+
+    // MARK: Properties
+
+    /// A service for interacting with WordPress accounts.
+    private let accountService: AccountService
+
+    /// A facade for WPCOM services.
+    private let remoteService: WordPressComServiceRemote
+
+    // MARK: LocalCoreDataService
+
+    override init(managedObjectContext context: NSManagedObjectContext) {
+        self.accountService = AccountService(managedObjectContext: context)
+
+        let api: WordPressComRestApi
+        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+            api = wpcomApi
+        } else {
+            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+        }
+        self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
+
+        super.init(managedObjectContext: context)
+    }
+
+    // MARK: SiteVerticalsPromptService
+
+    func retrieveVerticalsPrompt(request: SiteVerticalsPromptRequest, completion: @escaping SiteVerticalsPromptServiceCompletion) {
+        remoteService.retrieveVerticalsPrompt(request: request, completion: completion)
     }
 }

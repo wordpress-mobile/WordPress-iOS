@@ -21,7 +21,7 @@ privacy_url({
   'default' => 'https://automattic.com/privacy/',
 })
 
-copyright('2018 Automattic Inc.')
+copyright('2019 Automattic Inc.')
 
 skip_binary_upload true
 overwrite_screenshots true

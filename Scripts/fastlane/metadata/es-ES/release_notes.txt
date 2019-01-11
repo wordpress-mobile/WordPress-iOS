@@ -1,4 +1,9 @@
-Se ha eliminado el molesto error que impedía a los usuarios con derechos de autor o de colaborador en los sitios auto-alojados publicar entradas. ¡A publicar, autores! 
-La mayoría de los cambios en esta actualización son pequeños o se producen entre bastidores; incluso si no los ves, los sentirás:
-- Existe una mejor compatibilidad para los traductores, especialmente cuando intentan traducir cosas con elementos dinámicos, como direcciones de correo electrónico y números de teléfono. En última instancia, esto significa que más personas cuyo idioma predeterminado sea otro que el inglés verán mejores traducciones en toda la aplicación.
-- Seguimos puliendo la interfaz de usuario para hacer que la aplicación sea super fácil para usar en un iPad - cosas como mejores márgenes y alineaciones, especialmente después de rotar de horizontal a vertical, que hacen que toda la experiencia de usar la aplicación sea más fluida.
+* Si empiezas un nuevo sitio en la aplicación, ahora puedes registrar tu propio subdominio .blog!
+* Cuando intentas eliminar un sitio en un iPad, la aplicación ya no se bloquea (a veces lo hace).
+* Se ha corregido un error en la pantalla "Acerca de" de los ajustes de la aplicación.
+* Actualizada la pantalla de ajustes de publicación para que se vea mejor en iPad.
+
+Con una nueva ronda de mejoras en la característica de Historial/Revisiones, ahora puedes....
+* Moverte de una revisión a otra en un instante.
+* Cambiar entre los modos HTML y visual al ver una revisión.
+* Cambiar de opinión si aplicas una revisión con un nuevo botón de deshacer. 
