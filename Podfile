@@ -80,7 +80,7 @@ def shared_test_pods
 end
 
 def gutenberg_pod(name)
-    gutenberg_branch='develop'
+    gutenberg_branch='master'
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
@@ -96,7 +96,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '704d003adc1f1b76ee0978aa54e05a36fb16371d'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.3.3'
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
