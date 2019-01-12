@@ -3,6 +3,7 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
 
     private var onSaveActionPress: ChangePasswordSaveAction?
     private var currentValue: String = ""
+    private var username: String = ""
     private lazy var saveBarButtonItem: UIBarButtonItem = {
         let saveItem = UIBarButtonItem(title: Constants.actionButtonTitle, style: .plain, target: nil, action: nil)
         saveItem.on() { [weak self] _ in
@@ -11,13 +12,23 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
         return saveItem
     }()
 
-    convenience init(onSaveActionPress: @escaping ChangePasswordSaveAction) {
+    convenience init(username: String, onSaveActionPress: @escaping ChangePasswordSaveAction) {
         self.init(text: "", placeholder: "\(Constants.title)...", hint: Constants.description)
         self.onSaveActionPress = onSaveActionPress
+        self.username = username
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if #available(iOS 11.0, *) {
+            let hiddenTextField = UITextField(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+            hiddenTextField.text = username
+            hiddenTextField.textContentType = .username
+            hiddenTextField.isAccessibilityElement = false
+            hiddenTextField.isEnabled = false
+            view.addSubview(hiddenTextField)
+        }
 
         mode = .newPassword
         navigationItem.title = Constants.title
