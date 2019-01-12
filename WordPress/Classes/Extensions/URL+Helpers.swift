@@ -164,3 +164,19 @@ extension NSURL {
         return url.appendingHideMasterbarParameters() as NSURL?
     }
 }
+
+extension URL {
+    func prependLocaleAsSubdomain() -> URL {
+        guard let localeLanguageCode = Locale.current.languageCode,
+            let host = self.host else {
+            return self
+        }
+
+        var components = URLComponents()
+        components.scheme = self.scheme
+        components.host = "\(localeLanguageCode).".appending(host)
+        components.path = self.path
+
+        return components.url ?? self
+    }
+}

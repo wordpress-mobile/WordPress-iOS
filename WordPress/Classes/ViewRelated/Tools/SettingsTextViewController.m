@@ -360,6 +360,11 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         autocapitalizationType = UITextAutocapitalizationTypeNone;
     } else if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
+    } else if (newMode == SettingsTextModesNewPassword) {
+        requiresSecureTextEntry = YES;
+        if (@available(iOS 12.0, *)) {
+            self.textField.textContentType = UITextContentTypeNewPassword;
+        }
     } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
         autocapitalizationType = UITextAutocapitalizationTypeNone;

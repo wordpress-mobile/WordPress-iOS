@@ -1,4 +1,9 @@
-È stato risolto il fastidioso bug che impediva agli utenti con diritti di autore o collaboratore su siti ospitati personalmente di poter pubblicare articoli. Pubblicate altrove autori!
-Molte delle modifiche in questo aggiornamento sono piccole o dietro le quinte. Se non riesci a vederle, puoi sentirle:
-- Esiste un supporto migliore per i traduttori, specialmente quando provano a tradurre testi con elementi dinamici come indirizzi e-mail e numeri di telefono. Questo vuol dire essenzialmente che un maggior numero di persone la cui lingua predefinita è diversa dall'inglese visualizzeranno traduzioni migliori tramite l'app.
-- Stiamo continuando a ritoccare la UI per rendere l'app davvero superlativa per essere utilizzata su un iPad: ad esempio margini e allineamenti migliori, specialmente alternando paesaggio e immagine, che rendono l'intera esperienza più fluida.
+*Se stai iniziando un nuovo sito tramite l'app, puoi registrare ora il tuo subdominio .blog!
+*Quando provi a eliminare un sito su un iPad, l'app non si arresterà più (a volte potrebbe capitare).
+*Risolto un arresto nella schermata "Informazioni su" nelle Impostazioni app.
+*Aggiornate le impostazioni dell'articolo in modo che appaia migliore sull'iPad.
+
+Con un nuovo ciclo di miglioramenti alla funzione Cronologia/Revisioni, ora puoi…
+*Scorrere tra le revisioni in un secondo.
+*Passare dalla modalità HTML a quella visuale quando stai guardando una revisione.
+*Cambiare idea se applichi una revisione con un nuovo pulsante Annulla.

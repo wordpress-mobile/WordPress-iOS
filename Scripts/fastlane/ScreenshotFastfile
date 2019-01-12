@@ -152,6 +152,7 @@ platform :ios do
     gp_downloadmetadata(project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/", 
       target_files: files, 
       locales: metadata_locales,
+      source_locale: "en-US",
       download_path: "./fastlane/appstoreres/metadata")
   end 
 

@@ -63,6 +63,9 @@ private final class SearchTextField: UITextField {
         font = WPStyleGuide.fixedFont(for: .headline)
         textColor = WPStyleGuide.darkGrey()
 
+        autocapitalizationType = .none
+        autocorrectionType = .no
+
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
         let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
         let imageView = UIImageView(image: loupeIcon)
@@ -113,7 +116,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: returnValue.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: returnValue.trailingAnchor)
-            ])
+        ])
 
         return returnValue
     }()
