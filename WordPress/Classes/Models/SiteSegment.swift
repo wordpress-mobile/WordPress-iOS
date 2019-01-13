@@ -8,6 +8,10 @@ struct SiteSegment {
     let iconColor: UIColor?
 }
 
+extension SiteSegment {
+    static let blogSegmentIdentifier = Int64(1)
+}
+
 extension SiteSegment: Equatable {
     static func ==(lhs: SiteSegment, rhs: SiteSegment) -> Bool {
         return lhs.identifier == rhs.identifier

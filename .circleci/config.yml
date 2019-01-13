@@ -39,20 +39,20 @@ jobs:
           path: build/reports
 
   danger:
-    macos:
-      xcode: "10.1.0"
+    docker:
+      - image: circleci/ruby:2.3
     steps:
       - checkout
       - restore_cache:
           keys:
-            - wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-danger-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-danger-
+            - wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+            - wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}
+            - wordpress-ios-danger-gems-v2-
       - run:
-          name: Dependencies for danger
-          command: rake dependencies:bundle:check dependencies:lint:check
+          name: Bundle install
+          command: bundle install --path=vendor/bundle
       - save_cache:
-          key: wordpress-ios-danger-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
+          key: wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/
       - run:

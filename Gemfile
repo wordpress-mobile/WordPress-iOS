@@ -5,7 +5,6 @@ source 'https://rubygems.org' do
   gem 'cocoapods-check'
   gem 'xcpretty-travis-formatter'
   gem 'danger'
-  gem 'danger-swiftlint'
   gem 'octokit', "~> 4.0"
   gem 'fastlane', "2.103.1"
   gem 'dotenv'

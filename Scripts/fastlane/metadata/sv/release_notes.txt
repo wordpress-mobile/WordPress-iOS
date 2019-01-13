@@ -1,4 +1,9 @@
-Det irriterande felet som gjorde så att användarrollerna författare eller medarbetare inte kunde publicera inlägg på egna webbplatser är fixat. Publicera mera, kära författare!
-De flesta ändringarna i denna uppdatering är små eller ligger i bakgrunden – även om de inte syns kommer du att märka av dem:
-- Förbättrat stöd för översättare, i synnerhet när de försöker översätta strängar som innehåller dynamiska element, såsom e-postadresser eller telefonnummer. På sikt innebär detta att många av dem som använder ett annat språk än engelska kommer att så något bättre översättningar i hela appen.
-- Vi fortsätter att fila på användargränssnittet för att appen ska bli helt fantastisk på iPad – det rör sig om sånt som anpassning av marginaler och  textjustering, i synnerhet efter att man roterat surfplattan från horisontellt till vertikalt läge, något som gör att hela användarupplevelsen i appen blir smidigare.
+* Om du skapar en ny webbplats med hjälp av appen kan du nu registrera din alldeles egna subdomän under .blog!
+* Om du försöker att ta bort en webbplats med en iPad kommer appen inte längre att krascha, vilket den ibland gjorde tidigare.
+* Rättat ett problem med kraschar på skärmbilden ”Om” under appens inställningar.
+* Snyggat till skärmen med inställningar för inlägg så att den ser bättre ut på iPad
+
+Med de senaste förbättringarna i funktionen för historik och versionshantering kan du nu:
+* Bläddra mellan versioner på ett ögonblick.
+* Växla mellan HTML och visuellt läge när du visar en version.
+* Klicka på en ny ångra-knapp om du skulle ändra dig efter att du aktiverat en tidigare version.
