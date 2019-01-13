@@ -135,7 +135,7 @@ target 'WordPress' do
 
     #pod 'WordPressAuthenticator', '~> 1.1.7'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => 'c7669e06cab248b9c0f61983289d26be2512930f'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => 'c2bd805de40a00730bc522db8a965b4d4669374e'
 
     aztec
     wordpress_ui
