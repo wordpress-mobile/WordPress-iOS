@@ -1240,7 +1240,7 @@ FeaturedImageViewControllerDelegate>
 
     SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:text
                                                                                     placeholder:nil
-                                                                                           hint:NSLocalizedString(@"Customize the message you want to share.", @"Hint displayed when the user is customizing the share message.")
+                                                                                           hint:NSLocalizedString(@"Customize the message you want to share.\rIf empty, the Post Title will be used as the default message.", @"Hint displayed when the user is customizing the share message.")
                                                                                      isPassword:NO];
     vc.title = NSLocalizedString(@"Customize the message", @"Title for the edition of the share message.");
     vc.onValueChanged = ^(NSString *value) {
