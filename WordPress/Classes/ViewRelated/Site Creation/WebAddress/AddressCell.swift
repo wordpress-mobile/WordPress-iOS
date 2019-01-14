@@ -15,11 +15,6 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         }
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        styleTitle()
-    }
-
     override func prepareForReuse() {
         title.attributedText = nil
     }
@@ -40,9 +35,5 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
         return completeDomainName
-    }
-
-    private func styleTitle() {
-
     }
 }
