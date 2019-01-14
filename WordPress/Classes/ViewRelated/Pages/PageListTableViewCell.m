@@ -106,7 +106,6 @@ static CGFloat const FeaturedImageSize = 40.0;
 {
     [WPStyleGuide configureTableViewCell:self];
     
-    self.titleLabel.font = [WPFontManager notoRegularFontOfSize:17.0];
     self.titleLabel.textColor = [WPStyleGuide darkGrey];
     self.timestampLabel.textColor = [WPStyleGuide grey];
     self.badgesLabel.textColor = [UIColor UIColorFromHex:0xd89511];
@@ -121,8 +120,7 @@ static CGFloat const FeaturedImageSize = 40.0;
 - (void)configureTitle
 {
     AbstractPost *post = [self.post hasRevision] ? [self.post revision] : self.post;
-    NSString *str = [post titleForDisplay] ?: [NSString string];
-    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide pageCellTitleAttributes]];
+    self.titleLabel.text = [post titleForDisplay] ?: [NSString string];
 }
 
 - (void)configureForStatus
