@@ -194,7 +194,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
     self.postContentView.layer.borderWidth = 1.0;
-    
+
     self.stickyLabel.text = NSLocalizedString(@"Sticky", @"Label text that defines a post marked as sticky");
 }
 

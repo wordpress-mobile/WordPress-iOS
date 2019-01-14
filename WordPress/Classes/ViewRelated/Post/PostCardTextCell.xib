@@ -58,7 +58,7 @@
                                         </constraints>
                                         <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                     </stackView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="doZ-n4-W7C" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="doZ-n4-W7C" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="41" width="314" height="196"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="196" id="a2g-RS-Lb9"/>
