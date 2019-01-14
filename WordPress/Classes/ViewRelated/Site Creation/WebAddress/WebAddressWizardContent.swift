@@ -227,6 +227,7 @@ final class WebAddressWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
+        setupTableSeparator()
         setupCells()
         setupHeaderAndNoResultsMessage()
         hideSeparators()
@@ -234,6 +235,10 @@ final class WebAddressWizardContent: UIViewController {
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     private func setupTableDataProvider(_ data: [DomainSuggestion] = []) {
