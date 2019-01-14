@@ -381,8 +381,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).postCardRestoreCellIdentifier
-        } else if post.featuredImageURLForDisplay() != nil {
-            identifier = type(of: self).postCardImageCellIdentifier
         } else {
             identifier = type(of: self).postCardTextCellIdentifier
         }

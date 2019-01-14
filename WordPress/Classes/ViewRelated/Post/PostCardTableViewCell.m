@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIImageView *dateImageView;
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UILabel *stickyLabel;
-@property (nonatomic, strong) IBOutlet UIView *statusView;
+@property (nonatomic, strong) IBOutlet UIStackView *statusView;
 @property (nonatomic, strong) IBOutlet UIImageView *statusImageView;
 @property (nonatomic, strong) IBOutlet UILabel *statusLabel;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
@@ -312,9 +312,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     NSURL *url = [post featuredImageURLForDisplay];
     if (url == nil) {
         // no feature image available.
+        self.postCardImageView.hidden = YES;
         return;
     }
 
+    self.postCardImageView.hidden = NO;
     CGFloat desiredWidth = [UIApplication  sharedApplication].keyWindow.frame.size.width;
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
