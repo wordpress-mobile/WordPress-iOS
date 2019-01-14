@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @interface PostCardTableViewCell()
 
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
-@property (nonatomic, strong) IBOutlet UIView *headerView;
+@property (nonatomic, strong) IBOutlet UIStackView *headerView;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;

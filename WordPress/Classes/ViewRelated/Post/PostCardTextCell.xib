@@ -233,6 +233,7 @@
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="C0x-Md-rXI"/>
                 <outlet property="dateMetaStackView" destination="E8x-c5-pNS" id="4k6-8X-nx0"/>
                 <outlet property="dateView" destination="Z3W-ou-g2J" id="mdO-EH-ptZ"/>
+                <outlet property="headerView" destination="4cK-OS-AGY" id="dFS-Q5-Fgk"/>
                 <outlet property="metaButtonLeft" destination="uDE-AO-Rii" id="NHd-hW-Cag"/>
                 <outlet property="metaButtonRight" destination="Ovg-ci-Pfb" id="dCB-Tf-ED7"/>
                 <outlet property="postCardImageView" destination="doZ-n4-W7C" id="1G4-Yl-jya"/>
