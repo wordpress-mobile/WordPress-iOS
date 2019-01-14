@@ -363,6 +363,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     } else if (newMode == SettingsTextModesNewPassword) {
         requiresSecureTextEntry = YES;
         if (@available(iOS 12.0, *)) {
+            NSString *passwordDescriptor = @"required: lower; required: upper; required: digit; required: [&)*]]; minlength: 6; maxlength: 24;";
+            self.textField.passwordRules = [UITextInputPasswordRules passwordRulesWithDescriptor:passwordDescriptor];
             self.textField.textContentType = UITextContentTypeNewPassword;
         }
     } else if (newMode == SettingsTextModesEmail) {

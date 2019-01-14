@@ -102,7 +102,7 @@ private class AccountSettingsController: SettingsController {
         let password = EditableTextRow(
             title: Constants.title,
             value: "",
-            action: presenter.push(changePassword(with: service))
+            action: presenter.push(changePassword(with: settings, service: service))
         )
 
         return ImmuTable(sections: [
@@ -140,9 +140,9 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
-    func changePassword(with service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
+    func changePassword(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
-            return ChangePasswordViewController() { [weak self] value in
+            return ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
                 DispatchQueue.main.async {
                     SVProgressHUD.show(withStatus: Constants.changingPassword)
                     service.updatePassword(value, finished: { (success, error) in
