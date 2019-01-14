@@ -22,8 +22,8 @@ final class VerticalsWizardContent: UIViewController {
         static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
     }
 
-    /// The segment selected by the user in a preceding step
-    private let segment: SiteSegment?
+    /// The creator collects user input as they advance through the wizard flow.
+    private let siteCreator: SiteCreator
 
     /// The service which retrieves localized prompt verbiage specific to the chosen segment
     private let promptService: SiteVerticalsPromptService
@@ -62,13 +62,13 @@ final class VerticalsWizardContent: UIViewController {
     /// The designated initializer.
     ///
     /// - Parameters:
-    ///   - segment:            the segment selected by the user in a preceding step
+    ///   - creator:            accumulates user input as a user navigates through the site creation flow
     ///   - promptService:      the service which retrieves localized prompt verbiage specific to the chosen segment
     ///   - verticalsService:   the service which conducts searches for know verticals
     ///   - selection:          the action to perform once a Vertical is selected by the user
     ///
-    init(segment: SiteSegment?, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
-        self.segment = segment
+    init(creator: SiteCreator, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
+        self.siteCreator = creator
         self.promptService = promptService
         self.verticalsService = verticalsService
         self.selection = selection
@@ -134,7 +134,7 @@ final class VerticalsWizardContent: UIViewController {
         }
 
         // This should never apply, but we have a Segment?
-        guard let promptRequest = segment?.identifier else {
+        guard let promptRequest = siteCreator.segment?.identifier else {
             let defaultPrompt = VerticalsWizardContent.defaultPrompt
             setupTableHeaderWithPrompt(defaultPrompt)
 
