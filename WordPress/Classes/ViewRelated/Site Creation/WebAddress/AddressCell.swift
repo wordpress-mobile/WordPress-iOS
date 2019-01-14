@@ -4,6 +4,11 @@ import WordPressKit
 final class AddressCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var title: UILabel!
 
+    private struct TextStyleAttributes {
+        static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: WPStyleGuide.grey()]
+        static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: WPStyleGuide.darkGrey()]
+    }
+
     var model: DomainSuggestion? {
         didSet {
             title.attributedText = processName(model?.domainName)
@@ -24,25 +29,17 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
             return nil
         }
 
-        let components = name.components(separatedBy: ".")
-
-        guard let customName = components.first else {
+        guard let customName = name.components(separatedBy: ".").first else {
             return nil
         }
 
-        let regularAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                                   .foregroundColor: WPStyleGuide.grey()]
-        let fullString = NSMutableAttributedString(string: name, attributes: regularAttributes)
+        let completeDomainName = NSMutableAttributedString(string: name, attributes: TextStyleAttributes.defaults)
 
-        let rangeOfDomain = NSRange(location: 0, length: customName.count)
+        let rangeOfCustomName = NSRange(location: 0, length: customName.count)
 
+        completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
-        let customNameAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                                   .foregroundColor: WPStyleGuide.darkGrey()]
-
-        fullString.setAttributes(customNameAttributes, range: rangeOfDomain)
-
-        return fullString
+        return completeDomainName
     }
 
     private func styleTitle() {
