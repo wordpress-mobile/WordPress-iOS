@@ -40,11 +40,12 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIView *statusView;
 @property (nonatomic, strong) IBOutlet UIImageView *statusImageView;
 @property (nonatomic, strong) IBOutlet UILabel *statusLabel;
-@property (nonatomic, strong) IBOutlet UIView *metaView;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
+@property (weak, nonatomic) IBOutlet UIStackView *dateMetaStackView;
+
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
@@ -218,6 +219,29 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.postContentView.layer.borderWidth = 1.0;
     
     self.stickyLabel.text = NSLocalizedString(@"Sticky", @"Label text that defines a post marked as sticky");
+}
+
+- (BOOL)shouldAlignVertically
+{
+    if (@available(iOS 11.0, *)) {
+        UIContentSizeCategory currentCategory = self.traitCollection.preferredContentSizeCategory;
+        NSComparisonResult result = UIContentSizeCategoryCompareToCategory(currentCategory, UIContentSizeCategoryExtraExtraLarge);
+        // True if it's bigger than XXL
+        return result == NSOrderedDescending;
+    } else {
+        return NO;
+    }
+}
+
+- (void)arrangeStackViews
+{
+    if ([self shouldAlignVertically]) {
+        self.dateMetaStackView.axis = UILayoutConstraintAxisVertical;
+        self.dateMetaStackView.alignment = UIStackViewAlignmentLeading;
+    } else {
+        self.dateMetaStackView.axis = UILayoutConstraintAxisHorizontal;
+        self.dateMetaStackView.alignment = UIStackViewAlignmentFill;
+    }
 }
 
 #pragma mark - ConfigurablePostView
@@ -745,6 +769,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
         [self applyStyles];
+        [self arrangeStackViews];
     }
 }
 
