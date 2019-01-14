@@ -4,18 +4,20 @@
 
 
 static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
+static CGFloat const FeaturedImageSize = 40.0;
 
 @interface PageListTableViewCell()
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *privateBadgeLabel;
-@property (strong, nonatomic) IBOutlet UILabel *localChangesLabel;
-@property (strong, nonatomic) IBOutlet UIView *privateBadge;
-@property (strong, nonatomic) IBOutlet UIView *localChangesBadge;
+@property (nonatomic, strong) IBOutlet UILabel *timestampLabel;
+@property (nonatomic, strong) IBOutlet UILabel *badgesLabel;
+@property (strong, nonatomic) IBOutlet CachedAnimatedImageView *featuredImageView;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *localChangesLeading;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomPadding;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingContentConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *labelsContainerTrailing;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *leadingContentConstraint;
+
+@property (nonatomic, strong) ImageLoader *featuredImageLoader;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -36,6 +38,31 @@ static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
     [super prepareForReuse];
     
     [self applyStyles];
+    
+    if (self.featuredImageLoader) {
+        [self.featuredImageLoader prepareForReuse];
+    }
+    [self setNeedsDisplay];
+}
+
+- (ImageLoader *)featuredImageLoader
+{
+    if (_featuredImageLoader == nil) {
+        _featuredImageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView
+                                                          gifStrategy:GIFStrategyLargeGIFs];
+    }
+    return _featuredImageLoader;
+}
+
+- (NSDateFormatter *)dateFormatter
+{
+    if (_dateFormatter == nil) {
+        _dateFormatter = [NSDateFormatter new];
+        _dateFormatter.doesRelativeDateFormatting = YES;
+        _dateFormatter.dateStyle = NSDateFormatterNoStyle;
+        _dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    }
+    return _dateFormatter;
 }
 
 - (CGFloat)indentationWidth
@@ -69,6 +96,8 @@ static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
     [self configureTitle];
     [self configureForStatus];
     [self configureBadges];
+    [self configureTimeStamp];
+    [self configureFeaturedImage];
 }
 
 #pragma mark - Configuration
@@ -77,17 +106,16 @@ static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
 {
     [WPStyleGuide configureTableViewCell:self];
     
+    self.titleLabel.font = [WPFontManager notoRegularFontOfSize:17.0];
     self.titleLabel.textColor = [WPStyleGuide darkGrey];
+    self.timestampLabel.textColor = [WPStyleGuide grey];
+    self.badgesLabel.textColor = [UIColor UIColorFromHex:0xd89511];
     self.menuButton.tintColor = [WPStyleGuide greyLighten10];
-
-    self.privateBadgeLabel.text = NSLocalizedString(@"Private", @"Title of the Private Badge");
-    self.localChangesLabel.text = NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge");
-
-    self.privateBadge.layer.cornerRadius = PageListTableViewCellTagLabelRadius;
-    self.localChangesBadge.layer.cornerRadius = self.privateBadge.layer.cornerRadius;
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
+    
+    self.featuredImageView.layer.cornerRadius = PageListTableViewCellTagLabelRadius;
 }
 
 - (void)configureTitle
@@ -114,14 +142,41 @@ static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
 {
     Page *page = (Page *)self.post;
 
-    if (page.hasPendingReviewState) {
-       self.privateBadgeLabel.text = NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge");
+    NSString *badgesString = @"";
+    BOOL displayFirstBadge = page.hasPrivateState || page.hasPendingReviewState;
+    
+    if (displayFirstBadge) {
+        badgesString = page.hasPendingReviewState ? NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge") : NSLocalizedString(@"Private", @"Title of the Private Badge");
     }
+    
+    if (page.hasLocalChanges) {
+        if (displayFirstBadge) {
+            badgesString = [badgesString stringByAppendingString:@" · "];
+        }
+        badgesString = [badgesString stringByAppendingString:NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge")];
+    }
+    
+    self.badgesLabel.text = badgesString;
+}
 
-    self.bottomPadding.active = !page.canDisplayTags;
-    self.privateBadge.hidden = !(page.hasPrivateState || page.hasPendingReviewState);
-    self.localChangesBadge.hidden = !page.hasLocalChanges;
-    self.localChangesLeading.active = !self.privateBadge.isHidden;
+- (void)configureTimeStamp
+{
+    self.timestampLabel.text = [self.post isScheduled] ? [self.dateFormatter stringFromDate:self.post.dateCreated] : [self.post.dateCreated mediumString];
+}
+
+- (void)configureFeaturedImage
+{
+    Page *page = (Page *)self.post;
+    
+    BOOL hideFeaturedImage = page.featuredImageURLForDisplay == nil;
+    self.featuredImageView.hidden = hideFeaturedImage;
+    self.labelsContainerTrailing.active = !hideFeaturedImage;
+    
+    if (!hideFeaturedImage) {
+        [self.featuredImageLoader loadImageWithURL:page.featuredImageURLForDisplay
+                                          fromPost:self.post
+                                  andPreferredSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)];
+    }
 }
 
 @end
