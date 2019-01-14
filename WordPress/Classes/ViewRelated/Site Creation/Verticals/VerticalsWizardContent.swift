@@ -339,7 +339,9 @@ private extension VerticalsWizardContent {
 
     @objc
     func keyboardWillHide(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else { return }
+        guard WPDeviceIdentification.isiPhone(), let payload = KeyboardInfo(notification) else {
+            return
+        }
         let animationDuration = payload.animationDuration
 
         UIView.animate(withDuration: animationDuration,
@@ -360,7 +362,9 @@ private extension VerticalsWizardContent {
 
     @objc
     func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else { return }
+        guard WPDeviceIdentification.isiPhone(), let payload = KeyboardInfo(notification) else {
+            return
+        }
         let keyboardScreenFrame = payload.frameEnd
 
         let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
