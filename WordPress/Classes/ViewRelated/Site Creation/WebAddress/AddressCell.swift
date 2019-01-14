@@ -15,6 +15,15 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        styleCheckmark()
+    }
+
+    private func styleCheckmark() {
+        tintColor = WPStyleGuide.mediumBlue()
+    }
+
     override func prepareForReuse() {
         title.attributedText = nil
     }
