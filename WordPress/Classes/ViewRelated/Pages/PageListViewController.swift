@@ -351,8 +351,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let page = pageAtIndexPath(indexPath)
-        return page.canDisplayTags ? Constant.Size.pageCellWithTagEstimatedRowHeight : Constant.Size.pageCellEstimatedRowHeight
+        return Constant.Size.pageCellWithTagEstimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
