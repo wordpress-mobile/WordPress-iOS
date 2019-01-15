@@ -3,7 +3,7 @@ import Foundation
 
 
 /// Abstracts the service to obtain site types
-typealias SiteSegmentsServiceCompletion = (Result<[SiteSegment]>) -> Void
+typealias SiteSegmentsServiceCompletion = (SiteSegmentsResult) -> Void
 
 protocol SiteSegmentsService {
     func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion)
@@ -54,7 +54,7 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
 /// Mock implementation of the SeiteSegmentsService
 final class MockSiteSegmentsService: SiteSegmentsService {
     func siteSegments(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
-        let result = Result.success(mockSiteTypes)
+        let result = SiteSegmentsResult.success(mockSiteTypes)
 
         completion(result)
     }

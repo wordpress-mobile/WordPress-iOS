@@ -9,9 +9,13 @@ import WordPressKit
 /// - serviceFailure:           the service returned an unexpected error.
 ///
 enum SiteSegmentsError: Error {
-    case requestEncodingFailure
     case responseDecodingFailure
     case serviceFailure
+}
+
+enum SiteSegmentsResult {
+    case success([SiteSegment])
+    case failure(SiteSegmentsError)
 }
 
 /// Advises the caller of results related to requests for site verticals.
@@ -46,12 +50,12 @@ extension WordPressComServiceRemote {
                     completion(.success(response))
                 } catch {
                     DDLogError("Failed to decode \([SiteVertical].self) : \(error.localizedDescription)")
-                    //completion(.failure(SiteVerticalsError.responseDecodingFailure))
+                    completion(.failure(SiteSegmentsError.responseDecodingFailure))
                 }
             },
             failure: { error, httpResponse in
                 DDLogError("\(error) | \(String(describing: httpResponse))")
-                //completion(.failure(SiteVerticalsError.serviceFailure))
+                completion(.failure(SiteSegmentsError.serviceFailure))
         })
     }
 

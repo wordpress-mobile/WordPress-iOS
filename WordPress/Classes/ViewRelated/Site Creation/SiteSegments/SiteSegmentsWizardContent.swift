@@ -140,7 +140,7 @@ final class SiteSegmentsWizardContent: UIViewController {
     private func fetchSegments() {
         service.siteSegments(for: Locale.current) { [weak self] results in
             switch results {
-            case .error(let error):
+            case .failure(let error):
                 self?.handleError(error)
             case .success(let data):
                 self?.handleData(data)
@@ -148,7 +148,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         }
     }
 
-    private func handleError(_ error: Error) {
+    private func handleError(_ error: SiteSegmentsError) {
         debugPrint("=== handling error===")
     }
 
