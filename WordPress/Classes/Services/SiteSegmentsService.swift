@@ -9,8 +9,49 @@ protocol SiteSegmentsService {
     func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion)
 }
 
+// MARK: - SiteSegmentsService
+final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsService {
 
-/// Mock implementation so that we can start developing
+    // MARK: Properties
+
+    /// A service for interacting with WordPress accounts.
+    private let accountService: AccountService
+
+    /// A facade for WPCOM services.
+    private let remoteService: WordPressComServiceRemote
+
+    // MARK: LocalCoreDataService
+
+    override init(managedObjectContext context: NSManagedObjectContext) {
+        self.accountService = AccountService(managedObjectContext: context)
+
+        let api: WordPressComRestApi
+        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
+            api = wpcomApi
+        } else {
+            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+        }
+        self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
+
+        super.init(managedObjectContext: context)
+    }
+
+    // MARK: SiteSegmentsService
+    func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion) {
+        remoteService.retrieveSegments(completion: completion)
+    }
+
+//    func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
+//        remoteService.retrieveVerticals(request: request) { result in
+//            completion(result)
+//        }
+//    }
+}
+
+
+// MARK: - Mock
+
+/// Mock implementation of the SeiteSegmentsService
 final class MockSiteSegmentsService: SiteSegmentsService {
     func siteSegments(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
         let result = Result.success(mockSiteTypes)
