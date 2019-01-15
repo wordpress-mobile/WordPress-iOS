@@ -527,7 +527,6 @@ private extension String {
 
     /// Strips commas from formatting stat Strings and returns the Float value.
     ///
-
     func statFloatValue() -> Float? {
         return Float(replacingOccurrences(of: ",", with: "", options: NSString.CompareOptions.literal, range: nil))
     }
@@ -535,9 +534,8 @@ private extension String {
     /// If the String can be converted to a Float, return the abbreviated format for it.
     /// Otherwise return the original String.
     ///
-
     func displayString() -> String {
-            if let floatValue = self.statFloatValue() {
+            if let floatValue = statFloatValue() {
                 return floatValue.abbreviatedString()
             }
 
