@@ -14,7 +14,8 @@ class SiteAssemblyServiceTests: XCTestCase {
             title: "A title",
             subtitle: "A subtitle",
             icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-            iconColor: .red)
+            iconColor: .red,
+            mobile: true)
 
         siteCreator.vertical = SiteVertical(identifier: "678910",
             title: "A title",

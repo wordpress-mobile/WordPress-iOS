@@ -49,7 +49,7 @@ final class SiteSegmentTests: XCTestCase {
     }
 
     func testSiteTypesWithSameIdAreEqual() {
-        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon, iconColor: .white)
+        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon, iconColor: .white, mobile: true)
 
         XCTAssertEqual(subject, secondSiteType)
     }
