@@ -1,4 +1,5 @@
-/// Site Creation. Second screen: Site Verticals
+
+/// Site Creation. Third screen: Domains
 final class WebAddressStep: WizardStep {
     private let creator: SiteCreator
     private let service: SiteAddressService
@@ -16,7 +17,6 @@ final class WebAddressStep: WizardStep {
 
     private func didSelect(_ address: DomainSuggestion) {
         creator.address = address
-//        // Will have to transit to the success step
-//        delegate?.wizard(self, willNavigateTo: FinalStep.identifier)
+        delegate?.nextStep()
     }
 }

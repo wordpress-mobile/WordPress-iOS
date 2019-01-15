@@ -1,5 +1,6 @@
 import UIKit
 import XCTest
+import SimulatorStatusMagic
 
 class WordPressScreenshotGeneration: XCTestCase {
     let imagesWaitTime: UInt32 = 10
@@ -8,6 +9,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         super.setUp()
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        SDStatusBarManager.sharedInstance()?.enableOverrides()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
@@ -28,6 +30,8 @@ class WordPressScreenshotGeneration: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        SDStatusBarManager.sharedInstance()?.disableOverrides()
+
         super.tearDown()
     }
 
@@ -44,12 +48,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         loginButton.tap()
         app.buttons["Self Hosted Login Button"].tap()
 
-        // Use the same login here that you did when you created an App
-        // in the WordPress.com Application Manager. If you're not sure how to do that,
-        // you can read more here: https://github.com/wordpress-mobile/WordPress-iOS#setup-credentials
-        let username: String = <# Your Wordpress.com Email #>
-        let password: String = <# Your Wordpress.com Password #>
-
         // We have to login by site address, due to security issues with the
         // shared testing account which prevent us from signing in by email address.
         let selfHostedUsernameField = app.textFields["usernameField"]
@@ -63,9 +61,9 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         waitForElementToExist(element: passwordField)
         usernameField.tap()
-        usernameField.typeText(username)
+        usernameField.typeText(ScreenshotCredentials.username)
         passwordField.tap()
-        passwordField.typeText(password)
+        passwordField.typeText(ScreenshotCredentials.password)
 
         app.buttons["submitButton"].tap()
 

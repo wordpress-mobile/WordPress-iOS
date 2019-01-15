@@ -1,7 +1,10 @@
 {
   "branch": "master",
-  "pinned_hash": "791049e91ebdeab631dee9a7befd59d9ffe7ea05",
+  "pinned_hash": "3f2bc7f9f915f7f01f92490d2a2deef527267e27",
   "files_to_copy": [
 
+  ],
+  "file_dependencies": [
+    "iOS/WPiOS/"
   ]
 }

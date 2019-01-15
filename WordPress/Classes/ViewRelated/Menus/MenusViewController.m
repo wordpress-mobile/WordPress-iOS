@@ -413,7 +413,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
             [self.blog.managedObjectContext.undoManager beginUndoGrouping];
 
-            NSString *title = NSLocalizedString(@"Discard", @"Menus button title for cancelling/discarding changes made.");
+            NSString *title = NSLocalizedString(@"Discard", @"Menus button title for canceling/discarding changes made.");
             UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(discardChangesBarButtonItemPressed:)];
             [self.navigationItem setLeftBarButtonItem:button animated:YES];
             [self.navigationItem setHidesBackButton:YES animated:YES];

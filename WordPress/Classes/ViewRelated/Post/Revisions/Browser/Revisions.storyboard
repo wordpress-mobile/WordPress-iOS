@@ -14,7 +14,7 @@
         <scene sceneID="o5X-4p-fHI">
             <objects>
                 <navigationController id="9BX-ta-eQr" customClass="RevisionsNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XL2-Md-hno">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="XL2-Md-hno">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -31,17 +31,17 @@
             <objects>
                 <viewController id="aEY-1G-H9o" customClass="RevisionDiffsBrowserViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cG0-G3-XU5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rsS-xc-ge8">
-                                <rect key="frame" x="0.0" y="612" width="375" height="55"/>
+                                <rect key="frame" x="0.0" y="547" width="375" height="56"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2sd-Cz-oer">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="47"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Revision Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Hg-z8-YVh">
-                                                <rect key="frame" x="117.5" y="7" width="140" height="18"/>
+                                                <rect key="frame" x="117.5" y="8" width="140" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="LKL-8N-EMV"/>
                                                 </constraints>
@@ -50,7 +50,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T2k-GK-3TX">
-                                                <rect key="frame" x="107.5" y="29" width="160" height="18"/>
+                                                <rect key="frame" x="107.5" y="30" width="160" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="160" id="ENz-lo-ACI"/>
                                                     <constraint firstAttribute="height" constant="18" id="Mzl-br-Npx"/>
@@ -65,7 +65,6 @@
                                                     <constraint firstAttribute="height" constant="50" id="kHo-9b-a0K"/>
                                                     <constraint firstAttribute="width" constant="50" id="xyN-oS-DyY"/>
                                                 </constraints>
-                                                <state key="normal" title="&lt;"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Und-hy-I90">
                                                 <rect key="frame" x="330" y="0.0" width="50" height="50"/>
@@ -73,8 +72,14 @@
                                                     <constraint firstAttribute="height" constant="50" id="MHQ-95-69R"/>
                                                     <constraint firstAttribute="width" constant="50" id="gYY-PG-gPN"/>
                                                 </constraints>
-                                                <state key="normal" title="&gt;"/>
                                             </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7EM-Lu-3t1" userLabel="Stroke">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                                <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="irb-X1-ceq"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -84,9 +89,12 @@
                                             <constraint firstItem="T2k-GK-3TX" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="7Cm-Jp-MCY"/>
                                             <constraint firstAttribute="trailing" secondItem="Und-hy-I90" secondAttribute="trailing" constant="-5" id="9ir-ww-2ld"/>
                                             <constraint firstItem="1Hg-z8-YVh" firstAttribute="centerX" secondItem="2sd-Cz-oer" secondAttribute="centerX" id="BXl-ng-Iq7"/>
+                                            <constraint firstAttribute="trailing" secondItem="7EM-Lu-3t1" secondAttribute="trailing" id="C5H-cg-l5R"/>
                                             <constraint firstItem="T2k-GK-3TX" firstAttribute="top" secondItem="1Hg-z8-YVh" secondAttribute="bottom" constant="4" id="H2J-G4-f1h"/>
                                             <constraint firstAttribute="bottom" secondItem="T2k-GK-3TX" secondAttribute="bottom" id="ZFA-eY-Y7g"/>
-                                            <constraint firstItem="1Hg-z8-YVh" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" constant="7" id="m4x-Gg-2Ya"/>
+                                            <constraint firstItem="7EM-Lu-3t1" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" id="Zc3-Ep-T1y"/>
+                                            <constraint firstItem="1Hg-z8-YVh" firstAttribute="top" secondItem="2sd-Cz-oer" secondAttribute="top" constant="8" id="m4x-Gg-2Ya"/>
+                                            <constraint firstItem="7EM-Lu-3t1" firstAttribute="leading" secondItem="2sd-Cz-oer" secondAttribute="leading" id="mKE-IF-AzL"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -99,19 +107,20 @@
                                 </constraints>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uhq-mq-TeO">
-                                <rect key="frame" x="0.0" y="64" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
-                                    <segue destination="zhH-St-dBr" kind="embed" id="NWf-65-zXh"/>
+                                    <segue destination="1re-Hq-Vps" kind="embed" id="UdL-Ti-ban"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.84313725490000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rsS-xc-ge8" firstAttribute="trailing" secondItem="lB6-fr-eSA" secondAttribute="trailing" id="5ac-K6-cHa"/>
                             <constraint firstItem="rsS-xc-ge8" firstAttribute="bottom" secondItem="cG0-G3-XU5" secondAttribute="bottom" id="5dU-hU-vJF"/>
                             <constraint firstItem="rsS-xc-ge8" firstAttribute="leading" secondItem="lB6-fr-eSA" secondAttribute="leading" id="BPA-G1-UR0"/>
                             <constraint firstItem="uhq-mq-TeO" firstAttribute="trailing" secondItem="lB6-fr-eSA" secondAttribute="trailing" id="N9d-9c-2sc"/>
-                            <constraint firstItem="2sd-Cz-oer" firstAttribute="top" secondItem="uhq-mq-TeO" secondAttribute="bottom" constant="1" id="THE-MA-LZh"/>
+                            <constraint firstItem="2sd-Cz-oer" firstAttribute="top" secondItem="uhq-mq-TeO" secondAttribute="bottom" id="THE-MA-LZh"/>
                             <constraint firstItem="uhq-mq-TeO" firstAttribute="top" secondItem="lB6-fr-eSA" secondAttribute="top" id="fNe-Eg-VBR"/>
                             <constraint firstItem="uhq-mq-TeO" firstAttribute="leading" secondItem="lB6-fr-eSA" secondAttribute="leading" id="kqQ-bM-OaU"/>
                         </constraints>
@@ -119,6 +128,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="2wo-o9-BHQ"/>
                     <connections>
+                        <outlet property="containerView" destination="uhq-mq-TeO" id="Ehy-69-qmb"/>
                         <outlet property="nextButton" destination="Und-hy-I90" id="Q6I-kh-y5d"/>
                         <outlet property="previousButton" destination="rSD-aC-9V4" id="s8K-96-nXk"/>
                         <outlet property="revisionTitle" destination="1Hg-z8-YVh" id="cXY-5C-yT6"/>
@@ -131,13 +141,13 @@
         <!--Revision Diff View Controller-->
         <scene sceneID="hhd-wv-eJw">
             <objects>
-                <viewController id="zhH-St-dBr" customClass="RevisionDiffViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RevisionDiffViewController" id="zhH-St-dBr" customClass="RevisionDiffViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lxH-jU-9dc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mb8-Xb-lI6">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Uaa-Yz-aE2">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1426.5"/>
@@ -150,7 +160,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYn-QL-8hI">
                                                 <rect key="frame" x="8" y="38.5" width="359" height="1380"/>
-                                                <mutableString key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae vestibulum risus. Ut at mattis quam. Aliquam efficitur fringilla nisl, sit amet vulputate augue. Aenean ut magna tempus, imperdiet arcu tristique, elementum eros. Praesent eget gravida nibh. Phasellus augue nibh, pretium eu elit ut, faucibus egestas libero. Aenean ut elit eu orci aliquam egestas nec a tortor. Ut ut placerat lacus. Mauris egestas nisl id nisi malesuada auctor et et neque. Curabitur imperdiet magna enim, vel aliquet ligula feugiat nec. Sed posuere orci sit amet urna gravida, eget interdum magna luctus. Phasellus quis nisl id ex porta bibendum. Curabitur et maximus neque, quis luctus velit. Curabitur fringilla maximus urna et malesuada. Praesent congue eleifend augue rhoncus dictum.
+                                                <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae vestibulum risus. Ut at mattis quam. Aliquam efficitur fringilla nisl, sit amet vulputate augue. Aenean ut magna tempus, imperdiet arcu tristique, elementum eros. Praesent eget gravida nibh. Phasellus augue nibh, pretium eu elit ut, faucibus egestas libero. Aenean ut elit eu orci aliquam egestas nec a tortor. Ut ut placerat lacus. Mauris egestas nisl id nisi malesuada auctor et et neque. Curabitur imperdiet magna enim, vel aliquet ligula feugiat nec. Sed posuere orci sit amet urna gravida, eget interdum magna luctus. Phasellus quis nisl id ex porta bibendum. Curabitur et maximus neque, quis luctus velit. Curabitur fringilla maximus urna et malesuada. Praesent congue eleifend augue rhoncus dictum.
 
 Sed id metus quis mi vehicula tristique congue et enim. Aenean blandit tristique tellus, eu tempor odio ultrices condimentum. Duis maximus, neque et eleifend auctor, lacus ex maximus mauris, sit amet hendrerit ante nisi vel mauris. Fusce id velit ut turpis suscipit pellentesque. Vestibulum eget mauris non leo accumsan molestie. Integer id lectus id tortor consectetur bibendum. Maecenas sit amet lorem et quam egestas convallis.
 
@@ -158,7 +168,7 @@ Aenean eu pharetra velit. Vestibulum vulputate arcu ac laoreet dignissim. Nam su
 
 Sed nisi sem, aliquet nec arcu eu, aliquet lacinia eros. Ut felis metus, ornare in placerat in, posuere non justo. Etiam egestas posuere eros sed egestas. Curabitur posuere purus nec nibh finibus, vel elementum augue iaculis. Sed sodales vestibulum rutrum. Nam pretium finibus nisi ac euismod. Fusce tortor mi, varius ut ligula et, lobortis aliquet arcu.
 
-Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed eget suscipit felis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis felis arcu, volutpat vitae leo ornare, interdum lacinia risus. Integer non dui consectetur, vestibulum turpis nec, sollicitudin velit. In hac habitasse platea dictumst. Fusce consectetur scelerisque odio, vel placerat eros imperdiet eu. Suspendisse sit amet accumsan arcu.</mutableString>
+Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed eget suscipit felis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis felis arcu, volutpat vitae leo ornare, interdum lacinia risus. Integer non dui consectetur, vestibulum turpis nec, sollicitudin velit. In hac habitasse platea dictumst. Fusce consectetur scelerisque odio, vel placerat eros imperdiet eu. Suspendisse sit amet accumsan arcu.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
@@ -194,7 +204,7 @@ Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ndw-Da-gts" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="426" y="-170"/>
+            <point key="canvasLocation" x="1097" y="-116"/>
         </scene>
         <!--Revision Operation View Controller-->
         <scene sceneID="8bZ-0Y-ew9">
@@ -209,7 +219,30 @@ Nulla sodales mauris ullamcorper massa tincidunt, eu pretium erat fringilla. Sed
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jks-0l-3eh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="214" y="227"/>
+            <point key="canvasLocation" x="-360" y="334"/>
+        </scene>
+        <!--Revision Preview View Controller-->
+        <scene sceneID="Un9-in-nSa">
+            <objects>
+                <viewController storyboardIdentifier="RevisionPreviewViewController" id="V7o-xA-JuH" customClass="RevisionPreviewViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tXX-ja-77L">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="50Q-hA-GN1"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N2k-Uw-Byt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1097" y="-785"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="0li-tA-7zC">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="1re-Hq-Vps" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Hc-q6-2O6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="359" y="-170"/>
         </scene>
     </scenes>
 </document>

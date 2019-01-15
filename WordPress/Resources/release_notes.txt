@@ -1,4 +1,9 @@
-The annoying bug that kept users with author or contributor rights on self-hosted sites from being able to publish posts has been squashed. Publish away, authors!
-Most of what changes in this update is small or behind-the-scenes — even if you don’t see them, you’ll feel them:
- - There’s better support for translators, especially when they’re trying to translate things with dynamic elements, like email addresses and phone numbers. Ultimately, this means more people whose default language is something other than English will see better translations across the app.
- - We’re continuing to polish the UI to make the app super-duper to use on an iPad — things like better margins and alignments, especially after rotating from landscape to portrait, that make the whole experience of using the app smoother.
+* If you start a new site on the app, you can now register your very own .blog subdomain!
+* When you try to delete a site on an iPad, the app will no longer crash (it sometimes would).
+* Fixed a crash on the “About” screen in App Settings.
+* Refreshed the post settings screen so that it looks better on iPad.
+
+With a fresh round of improvements to the History/Revisions feature, you can now…
+* Swipe between revisions in an instant.
+* Switch between HTML and Visual modes when viewing a revision.
+* Change your mind if you apply a revision with a new Undo button.
