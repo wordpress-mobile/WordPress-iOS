@@ -40,12 +40,6 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
     func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion) {
         remoteService.retrieveSegments(completion: completion)
     }
-
-//    func retrieveVerticals(request: SiteVerticalsRequest, completion: @escaping SiteVerticalsServiceCompletion) {
-//        remoteService.retrieveVerticals(request: request) { result in
-//            completion(result)
-//        }
-//    }
 }
 
 
@@ -75,7 +69,8 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Blogger",
                            subtitle: "Publish a collection of posts",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: .red)
+                           iconColor: .red,
+                           mobile: true)
     }
 
     private func longSubtitle(identifier: Int64) -> SiteSegment {
@@ -83,6 +78,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Professional",
                            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: .blue)
+                           iconColor: .blue,
+                           mobile: true)
     }
 }

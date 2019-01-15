@@ -18,17 +18,6 @@ enum SiteSegmentsResult {
     case failure(SiteSegmentsError)
 }
 
-/// Advises the caller of results related to requests for site verticals.
-///
-/// - success: the site verticals request succeeded with the accompanying result.
-/// - failure: the site verticals request failed due to the accompanying error.
-///
-//enum SiteSegmentsResult {
-//    case success([SiteSegment])
-//    case failure(SiteSegmentsError)
-//}
-//typealias SiteSegmentsServiceCompletion = ((SiteVerticalsResult) -> ())
-
 extension WordPressComServiceRemote {
     func retrieveSegments(completion: @escaping SiteSegmentsServiceCompletion) {
         let endpoint = "segments"
@@ -47,7 +36,8 @@ extension WordPressComServiceRemote {
                 do {
                     print("response Object ", responseObject)
                     let response = try self.decodeResponse(responseObject: responseObject)
-                    completion(.success(response))
+                    let validContent = self.validSegments(response)
+                    completion(.success(validContent))
                 } catch {
                     DDLogError("Failed to decode \([SiteVertical].self) : \(error.localizedDescription)")
                     completion(.failure(SiteSegmentsError.responseDecodingFailure))
@@ -65,5 +55,11 @@ extension WordPressComServiceRemote {
         let response = try decoder.decode([SiteSegment].self, from: data)
 
         return response
+    }
+
+    private func validSegments(_ allSegments: [SiteSegment]) -> [SiteSegment] {
+        return allSegments.filter {
+            return $0.mobile == true
+        }
     }
 }

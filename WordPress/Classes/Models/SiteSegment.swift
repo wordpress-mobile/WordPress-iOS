@@ -6,6 +6,7 @@ struct SiteSegment {
     let subtitle: String
     let icon: URL?
     let iconColor: UIColor?
+    let mobile: Bool
 }
 
 extension SiteSegment {
@@ -25,6 +26,7 @@ extension SiteSegment: Decodable {
         case segmentTypeSubtitle = "segment_type_subtitle"
         case iconURL = "icon_URL"
         case iconColor = "icon_color"
+        case mobile = "mobile"
     }
 
     init(from decoder: Decoder) throws {
@@ -48,6 +50,8 @@ extension SiteSegment: Decodable {
         } else {
             iconColor = nil
         }
+
+        mobile = try values.decode(Bool.self, forKey: .mobile)
 
     }
 }
