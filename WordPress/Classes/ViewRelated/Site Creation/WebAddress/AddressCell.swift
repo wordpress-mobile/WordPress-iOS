@@ -24,6 +24,10 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         tintColor = WPStyleGuide.mediumBlue()
     }
 
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        accessoryType = selected ?  .checkmark : .none
+    }
+
     override func prepareForReuse() {
         title.attributedText = nil
     }
