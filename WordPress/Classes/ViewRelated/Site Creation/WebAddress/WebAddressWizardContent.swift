@@ -225,7 +225,7 @@ final class WebAddressWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor),
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
             header.topAnchor.constraint(equalTo: table.topAnchor),
             noResultsLabel.widthAnchor.constraint(equalTo: header.textField.widthAnchor),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -240,6 +240,7 @@ final class WebAddressWizardContent: UIViewController {
         setupTableBackground()
         setupTableSeparator()
         setupCells()
+        setupConstraints()
         setupHeaderAndNoResultsMessage()
         hideSeparators()
     }
@@ -250,6 +251,17 @@ final class WebAddressWizardContent: UIViewController {
 
     private func setupTableSeparator() {
         table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            bottomConstraint,
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+            ])
     }
 
     private func setupTableDataProvider(_ data: [DomainSuggestion] = []) {
