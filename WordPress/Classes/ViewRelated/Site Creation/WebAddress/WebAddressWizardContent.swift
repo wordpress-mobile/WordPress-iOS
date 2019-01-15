@@ -24,6 +24,11 @@ final class WebAddressWizardContent: UIViewController {
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
+    /// We manipulate the bottom constraint in response to the keyboard.
+    private lazy var bottomConstraint: NSLayoutConstraint = {
+        return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
+    }()
+
     private let throttle = Scheduler(seconds: 0.5)
 
     /// We track the last searched value so that we can retry
@@ -93,6 +98,12 @@ final class WebAddressWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         observeNetworkStatus()
+        startListeningToKeyboardNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopListeningToKeyboardNotifications()
     }
 
     // MARK: Private behavior
@@ -269,5 +280,100 @@ final class WebAddressWizardContent: UIViewController {
 extension WebAddressWizardContent: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         isNetworkActive = active
+    }
+}
+
+// MARK: - Keyboard management
+
+private extension WebAddressWizardContent {
+    struct Constants {
+        static let bottomMargin: CGFloat = 0.0
+        static let topMargin: CGFloat = 36.0
+    }
+
+    @objc
+    func keyboardWillHide(_ notification: Foundation.Notification) {
+        guard WPDeviceIdentification.isiPhone(), let payload = KeyboardInfo(notification) else {
+            return
+        }
+        let animationDuration = payload.animationDuration
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = .zero
+                        self?.table.scrollIndicatorInsets = .zero
+                        self?.bottomConstraint.constant = Constants.bottomMargin
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 1.0
+                        }
+
+            },
+                       completion: nil)
+    }
+
+    @objc
+    func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard WPDeviceIdentification.isiPhone(), let payload = KeyboardInfo(notification) else {
+            return
+        }
+        let keyboardScreenFrame = payload.frameEnd
+
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+
+        var constraintConstant = convertedKeyboardFrame.height
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
+
+        let animationDuration = payload.animationDuration
+
+        bottomConstraint.constant = constraintConstant
+        view.setNeedsUpdateConstraints()
+
+        let contentInsets = tableContentInsets(bottom: constraintConstant)
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+                        self?.table.contentInset = contentInsets
+                        self?.table.scrollIndicatorInsets = contentInsets
+                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                            header.titleSubtitle.alpha = 0.0
+                        }
+
+            },
+                       completion: nil)
+    }
+
+    func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
+        guard let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: bottom, right: 0.0)
+        }
+
+        let textfieldFrame = header.textField.frame
+        return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
     }
 }
