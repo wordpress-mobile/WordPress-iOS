@@ -408,26 +408,9 @@ extension VerticalsWizardContent: UITextFieldDelegate {
 
 private extension VerticalsWizardContent {
     struct Constants {
-        static let headerAnimationDuration  = Double(0.25)  // matches current keyboard transition duration
         static let bottomMargin             = CGFloat(0)
+        static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
         static let topMargin                = CGFloat(36)
-    }
-
-    @objc
-    func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else {
-            return
-        }
-
-        let keyboardScreenFrame = payload.frameEnd
-        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
-
-        var adjustedKeyboardHeight = convertedKeyboardFrame.height
-        if #available(iOS 11.0, *) {
-            let bottomInset = view.safeAreaInsets.bottom
-            adjustedKeyboardHeight -= bottomInset
-        }
-        bottomConstraintConstant = adjustedKeyboardHeight
     }
 
     func adjustTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
@@ -457,9 +440,26 @@ private extension VerticalsWizardContent {
             if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 0.0
             }
-        }, completion: { [weak self] _ in
-            self?.tableViewHasBeenAdjusted = true
+            }, completion: { [weak self] _ in
+                self?.tableViewHasBeenAdjusted = true
         })
+    }
+
+    @objc
+    func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else {
+            return
+        }
+
+        let keyboardScreenFrame = payload.frameEnd
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+
+        var adjustedKeyboardHeight = convertedKeyboardFrame.height
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            adjustedKeyboardHeight -= bottomInset
+        }
+        bottomConstraintConstant = adjustedKeyboardHeight
     }
 
     func resetTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
@@ -479,8 +479,8 @@ private extension VerticalsWizardContent {
             if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 1.0
             }
-        }, completion: { [weak self] _ in
-            self?.tableViewHasBeenAdjusted = false
+            }, completion: { [weak self] _ in
+                self?.tableViewHasBeenAdjusted = false
         })
     }
 
