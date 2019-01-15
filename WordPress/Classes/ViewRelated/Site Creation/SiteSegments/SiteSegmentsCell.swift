@@ -26,7 +26,9 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     func set(segment: SiteSegment) {
         title.text = segment.title
         subtitle.text = segment.subtitle
-        icon.setImageWith(segment.icon)
+        if let segmentIcon = segment.icon {
+            icon.setImageWith(segmentIcon)
+        }
     }
 
     override func awakeFromNib() {

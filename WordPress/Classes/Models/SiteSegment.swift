@@ -4,7 +4,7 @@ struct SiteSegment {
     let identifier: Int64   // we use a numeric ID for segments; see p9wMUP-bH-612-p2 for discussion
     let title: String
     let subtitle: String
-    let icon: URL
+    let icon: URL?
     let iconColor: UIColor?
 }
 
@@ -20,7 +20,7 @@ extension SiteSegment: Equatable {
 
 extension SiteSegment: Decodable {
     enum CodingKeys: String, CodingKey {
-        case segmentId = "segment_id"
+        case segmentId = "id"
         case segmentTypeTitle = "segment_type_title"
         case segmentTypeSubtitle = "segment_type_subtitle"
         case iconURL = "icon_URL"
@@ -32,7 +32,11 @@ extension SiteSegment: Decodable {
         identifier = try values.decode(Int64.self, forKey: .segmentId)
         title = try values.decode(String.self, forKey: .segmentTypeTitle)
         subtitle = try values.decode(String.self, forKey: .segmentTypeSubtitle)
-        icon = try values.decode(String.self, forKey: .iconURL).asURL()
+        if let iconString = try values.decodeIfPresent(String.self, forKey: .iconURL) {
+            icon = URL(string: iconString)
+        } else {
+            icon = nil
+        }
         iconColor = try values.decode(String.self, forKey: .iconColor).asColor()
     }
 }

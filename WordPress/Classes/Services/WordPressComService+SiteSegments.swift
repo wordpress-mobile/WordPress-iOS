@@ -27,8 +27,7 @@ enum SiteSegmentsError: Error {
 
 extension WordPressComServiceRemote {
     func retrieveSegments(completion: @escaping SiteSegmentsServiceCompletion) {
-        print("===== firing request to service in Wordpresscomserviceremote")
-        let endpoint = "verticals"
+        let endpoint = "segments"
         let remotePath = path(forEndpoint: endpoint, withVersion: ._2_0)
 
         wordPressComRestApi.GET(
@@ -42,11 +41,9 @@ extension WordPressComServiceRemote {
                 }
 
                 do {
+                    print("response Object ", responseObject)
                     let response = try self.decodeResponse(responseObject: responseObject)
-                    print("==== success =====")
-                    print(response)
-                    print("///// success ===== ")
-                    //completion(.success(response))
+                    completion(.success(response))
                 } catch {
                     DDLogError("Failed to decode \([SiteVertical].self) : \(error.localizedDescription)")
                     //completion(.failure(SiteVerticalsError.responseDecodingFailure))
