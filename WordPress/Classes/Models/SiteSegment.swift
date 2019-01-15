@@ -37,7 +37,18 @@ extension SiteSegment: Decodable {
         } else {
             icon = nil
         }
-        iconColor = try values.decode(String.self, forKey: .iconColor).asColor()
+
+        if let iconColorString = try values.decodeIfPresent(String.self, forKey: .iconColor) {
+            var cleanIconColorString = iconColorString
+            if iconColorString.hasPrefix("#") {
+                cleanIconColorString = String(iconColorString.dropFirst(1))
+            }
+
+            iconColor = cleanIconColorString.asColor()
+        } else {
+            iconColor = nil
+        }
+
     }
 }
 
