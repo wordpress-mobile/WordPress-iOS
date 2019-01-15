@@ -57,9 +57,10 @@ class SiteStatsInsightsViewModel: Observable {
                                                                dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: TagsAndCategories.itemSubtitle,
-                                                               dataSubtitle: TagsAndCategories.dataSubtitle,
-                                                               dataRows: createTagsAndCategoriesRows()))
+                tableRows.append(TopTotalsStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
+                                                   dataSubtitle: TagsAndCategories.dataSubtitle,
+                                                   dataRows: createTagsAndCategoriesRows(),
+                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
@@ -364,7 +365,8 @@ private extension SiteStatsInsightsViewModel {
         tagsAndCategories?.forEach { item in
 
             let disclosureURL: URL? = {
-                if let action = item.actions.first as? StatsItemAction {
+                if let actions = item.actions,
+                    let action = actions.first as? StatsItemAction {
                     return action.url
                 }
                 return nil
