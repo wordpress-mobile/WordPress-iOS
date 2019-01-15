@@ -1,5 +1,10 @@
 import UIKit
 
+/// This cell type simply displays all data rows provided for a Stat type.
+/// The cell and rows have no functionality; the cell is simply a list, with optional subtitles.
+/// Ex: Insights All Time Stats, Insights Follower Totals.
+///
+
 class SimpleTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
