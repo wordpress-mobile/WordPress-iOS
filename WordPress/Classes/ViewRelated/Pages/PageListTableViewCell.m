@@ -38,10 +38,7 @@ static CGFloat const FeaturedImageSize = 40.0;
     [super prepareForReuse];
     
     [self applyStyles];
-    
-    if (self.featuredImageLoader) {
-        [self.featuredImageLoader prepareForReuse];
-    }
+    [self.featuredImageLoader prepareForReuse];
     [self setNeedsDisplay];
 }
 
@@ -141,14 +138,15 @@ static CGFloat const FeaturedImageSize = 40.0;
     Page *page = (Page *)self.post;
 
     NSString *badgesString = @"";
-    BOOL displayFirstBadge = page.hasPrivateState || page.hasPendingReviewState;
     
-    if (displayFirstBadge) {
-        badgesString = page.hasPendingReviewState ? NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge") : NSLocalizedString(@"Private", @"Title of the Private Badge");
+    if (page.hasPrivateState) {
+        badgesString = NSLocalizedString(@"Private", @"Title of the Private Badge");
+    } else if (page.hasPendingReviewState) {
+        badgesString = NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge");
     }
     
     if (page.hasLocalChanges) {
-        if (displayFirstBadge) {
+        if (badgesString.length > 0) {
             badgesString = [badgesString stringByAppendingString:@" · "];
         }
         badgesString = [badgesString stringByAppendingString:NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge")];
