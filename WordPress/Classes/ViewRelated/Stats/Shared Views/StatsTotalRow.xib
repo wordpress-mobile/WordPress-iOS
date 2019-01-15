@@ -144,7 +144,9 @@
                 <outlet property="imageWidthConstraint" destination="Sez-wA-eee" id="PXQ-kQ-vRU"/>
                 <outlet property="itemDetailLabel" destination="AYo-jW-XP6" id="KlK-Zw-PCH"/>
                 <outlet property="itemLabel" destination="fV5-rf-zLD" id="1qJ-jn-9lN"/>
+                <outlet property="leftStackView" destination="RuI-Jr-EKZ" id="bqd-Bf-oah"/>
                 <outlet property="rightStackView" destination="BAZ-QX-R74" id="ySh-GA-gtj"/>
+                <outlet property="rightStackViewLeadingConstraint" destination="yu1-Q1-32P" id="8zQ-XB-8QQ"/>
                 <outlet property="separatorLine" destination="8Dx-gl-EZn" id="k6W-UH-tYm"/>
             </connections>
             <point key="canvasLocation" x="-560" y="-333"/>
