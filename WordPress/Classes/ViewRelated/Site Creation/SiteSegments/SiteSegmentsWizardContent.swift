@@ -138,7 +138,8 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func fetchSegments() {
-        service.siteSegments(for: Locale.current) { [weak self] results in
+        let request = SiteSegmentsRequest(locale: Locale.current.description)
+        service.siteSegments(request: request) { [weak self] results in
             switch results {
             case .failure(let error):
                 self?.handleError(error)

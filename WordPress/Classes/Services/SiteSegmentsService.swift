@@ -6,7 +6,7 @@ import Foundation
 typealias SiteSegmentsServiceCompletion = (SiteSegmentsResult) -> Void
 
 protocol SiteSegmentsService {
-    func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion)
+    func siteSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion)
 }
 
 // MARK: - SiteSegmentsService
@@ -37,8 +37,10 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
     }
 
     // MARK: SiteSegmentsService
-    func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion) {
-        remoteService.retrieveSegments(completion: completion)
+    func siteSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion) {
+        remoteService.retrieveSegments(request: request) { result in
+                completion(result)
+        }
     }
 }
 
@@ -47,7 +49,7 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
 
 /// Mock implementation of the SeiteSegmentsService
 final class MockSiteSegmentsService: SiteSegmentsService {
-    func siteSegments(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
+    func siteSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion) {
         let result = SiteSegmentsResult.success(mockSiteTypes)
 
         completion(result)

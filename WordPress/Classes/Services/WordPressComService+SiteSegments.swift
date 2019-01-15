@@ -9,6 +9,7 @@ import WordPressKit
 /// - serviceFailure:           the service returned an unexpected error.
 ///
 enum SiteSegmentsError: Error {
+    case requestEncodingFailure
     case responseDecodingFailure
     case serviceFailure
 }
@@ -18,14 +19,28 @@ enum SiteSegmentsResult {
     case failure(SiteSegmentsError)
 }
 
+struct SiteSegmentsRequest: Encodable {
+    let locale: String
+}
+
 extension WordPressComServiceRemote {
-    func retrieveSegments(completion: @escaping SiteSegmentsServiceCompletion) {
+    func retrieveSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion) {
         let endpoint = "segments"
         let remotePath = path(forEndpoint: endpoint, withVersion: ._2_0)
 
+        let requestParameters: [String: AnyObject]
+        do {
+            requestParameters = try encodeRequestParameters(request: request)
+        } catch {
+            DDLogError("Failed to encode \(SiteSegmentsRequest.self) : \(error)")
+
+            completion(.failure(SiteSegmentsError.requestEncodingFailure))
+            return
+        }
+
         wordPressComRestApi.GET(
             remotePath,
-            parameters: nil,
+            parameters: requestParameters,
             success: { [weak self] responseObject, httpResponse in
                 DDLogInfo("\(responseObject) | \(String(describing: httpResponse))")
 
@@ -47,6 +62,25 @@ extension WordPressComServiceRemote {
                 DDLogError("\(error) | \(String(describing: httpResponse))")
                 completion(.failure(SiteSegmentsError.serviceFailure))
         })
+    }
+}
+
+private extension WordPressComServiceRemote {
+    private func encodeRequestParameters(request: SiteSegmentsRequest) throws -> [String: AnyObject] {
+
+        let encoder = JSONEncoder()
+
+        let jsonData = try encoder.encode(request)
+        let serializedJSON = try JSONSerialization.jsonObject(with: jsonData, options: [])
+
+        let requestParameters: [String: AnyObject]
+        if let jsonDictionary = serializedJSON as? [String: AnyObject] {
+            requestParameters = jsonDictionary
+        } else {
+            requestParameters = [:]
+        }
+
+        return requestParameters
     }
 
     private func decodeResponse(responseObject: AnyObject) throws -> [SiteSegment] {
