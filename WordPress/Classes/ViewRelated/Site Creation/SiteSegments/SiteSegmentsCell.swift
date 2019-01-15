@@ -58,7 +58,6 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleAccessoryView() {
-        let accessoryImage = Gridicon.iconOfType(.chevronRight).imageWithTintColor(WPStyleGuide.greyLighten20())
-        accessoryView = UIImageView(image: accessoryImage)
+        accessoryType = .disclosureIndicator
     }
 }

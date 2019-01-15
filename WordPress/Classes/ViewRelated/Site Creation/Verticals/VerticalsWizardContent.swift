@@ -7,21 +7,40 @@ final class VerticalsWizardContent: UIViewController {
 
     // MARK: Properties
 
-    private struct StyleConstants {
+    private static let defaultPrompt = SiteVerticalsPrompt(
+        title: NSLocalizedString("What's the focus of your business?",
+                                 comment: "Create site, step 2. Select focus of the business. Title"),
+        subtitle: NSLocalizedString("We'll use your answer to add sections to your website.",
+                                    comment: "Create site, step 2. Select focus of the business. Subtitle"),
+        hint: NSLocalizedString("e.g. Landscaping, Consulting... etc.",
+                                comment: "Site creation. Select focus of your business, search field placeholder")
+    )
+
+    /// A collection of parameters uses for view layout
+    private struct Metrics {
         static let rowHeight: CGFloat = 44.0
         static let separatorInset = UIEdgeInsets(top: 0, left: 16.0, bottom: 0, right: 0)
     }
 
-    private let segment: SiteSegment?
+    /// The creator collects user input as they advance through the wizard flow.
+    private let siteCreator: SiteCreator
 
+    /// The service which retrieves localized prompt verbiage specific to the chosen segment
     private let promptService: SiteVerticalsPromptService
 
+    /// The service which conducts searches for know verticals
     private let verticalsService: SiteVerticalsService
 
+    /// The action to perform once a Vertical is selected by the user
     private let selection: (SiteVertical) -> Void
 
-    private let prompt: SiteVerticalsPrompt = DefaultSiteVerticalsPrompt()
+    /// The localized prompt retrieved by remote service; `nil` otherwise
+    private var prompt: SiteVerticalsPrompt?
 
+    /// We track the last prompt segment so that we can retry somewhat intelligently
+    private var lastSegmentIdentifer: Int64? = nil
+
+    /// The throttle meters requests to the remote verticals service
     private let throttle = Scheduler(seconds: 0.5)
 
     /// We track the last searched value so that we can retry
@@ -30,24 +49,35 @@ final class VerticalsWizardContent: UIViewController {
     /// Locally tracks the network connection status via `NetworkStatusDelegate`
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
-    @IBOutlet
-    private weak var table: UITableView!
+    /// The table view renders our server content
+    @IBOutlet private weak var table: UITableView!
 
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
+    /// We manipulate the bottom constraint in response to the keyboard.
     private lazy var bottomConstraint: NSLayoutConstraint = {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
     }()
 
-    private lazy var headerData: SiteCreationHeaderData = {
-        return SiteCreationHeaderData(title: prompt.title, subtitle: prompt.subtitle)
-    }()
+    /// The value of the bottom constraint constant is set in response to the keyboard appearance
+    private var bottomConstraintConstant = CGFloat(0)
+
+    /// To avoid wasted animations, we track whether or not we have already adjusted the table view
+    private var tableViewHasBeenAdjusted = false
 
     // MARK: VerticalsWizardContent
 
-    init(segment: SiteSegment?, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
-        self.segment = segment
+    /// The designated initializer.
+    ///
+    /// - Parameters:
+    ///   - creator:            accumulates user input as a user navigates through the site creation flow
+    ///   - promptService:      the service which retrieves localized prompt verbiage specific to the chosen segment
+    ///   - verticalsService:   the service which conducts searches for know verticals
+    ///   - selection:          the action to perform once a Vertical is selected by the user
+    ///
+    init(creator: SiteCreator, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
+        self.siteCreator = creator
         self.promptService = promptService
         self.verticalsService = verticalsService
         self.selection = selection
@@ -61,6 +91,23 @@ final class VerticalsWizardContent: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        restoreSearchIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        stopListeningToKeyboardNotifications()
+        clearContent()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        table.layoutHeaderView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -72,18 +119,15 @@ final class VerticalsWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        fetchPromptIfNeeded()
         observeNetworkStatus()
         startListeningToKeyboardNotifications()
+        prepareViewIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopListeningToKeyboardNotifications()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        table.layoutHeaderView()
+        resignTextFieldResponderIfNeeded()
     }
 
     // MARK: Private behavior
@@ -95,11 +139,48 @@ final class VerticalsWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
-        guard let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider else {
+        guard let validDataProvider = tableViewProvider as? VerticalsTableViewProvider else {
             setupTableDataProvider()
             return
         }
         validDataProvider.data = []
+        resetTableOffsetIfNeeded()
+    }
+
+    private func fetchPromptIfNeeded() {
+        // This should never apply, but we have a Segment?
+        guard let promptRequest = siteCreator.segment?.identifier else {
+            let defaultPrompt = VerticalsWizardContent.defaultPrompt
+            setupTableHeaderWithPrompt(defaultPrompt)
+
+            return
+        }
+
+        // We have already obtained this prompt
+        if prompt != nil, let lastRequestPromptIdentifier = lastSegmentIdentifer, lastRequestPromptIdentifier == promptRequest {
+            return
+        }
+
+        // We are essentially resetting our search for a new segment ID
+        table.tableHeaderView = nil
+        prompt = nil
+        lastSearchQuery = nil
+        lastSegmentIdentifer = promptRequest
+
+        promptService.retrieveVerticalsPrompt(request: promptRequest) { [weak self] serverPrompt in
+            guard let self = self else {
+                return
+            }
+
+            let prompt: SiteVerticalsPrompt
+            if let serverPrompt = serverPrompt {
+                prompt = serverPrompt
+            } else {
+                prompt = VerticalsWizardContent.defaultPrompt
+            }
+
+            self.setupTableHeaderWithPrompt(prompt)
+        }
     }
 
     private func fetchVerticals(_ searchTerm: String) {
@@ -115,7 +196,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [SiteVertical]) {
-        if let validDataProvider = tableViewProvider as? DefaultVerticalsTableViewProvider {
+        if let validDataProvider = tableViewProvider as? VerticalsTableViewProvider {
             validDataProvider.data = data
         } else {
             setupTableDataProvider(data)
@@ -128,108 +209,6 @@ final class VerticalsWizardContent: UIViewController {
 
     private func hideSeparators() {
         table.tableFooterView = UIView(frame: .zero)
-    }
-
-    private func registerCell(identifier: String) {
-        let nib = UINib(nibName: identifier, bundle: nil)
-        table.register(nib, forCellReuseIdentifier: identifier)
-    }
-
-    private func registerCells() {
-        registerCell(identifier: VerticalsCell.cellReuseIdentifier())
-        registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
-
-        table.register(VerticalErrorRetryTableViewCell.self, forCellReuseIdentifier: VerticalErrorRetryTableViewCell.cellReuseIdentifier())
-    }
-
-    private func setupBackground() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
-    }
-
-    private func setupCellHeight() {
-        table.rowHeight = UITableView.automaticDimension
-        table.estimatedRowHeight = StyleConstants.rowHeight
-        table.separatorInset = StyleConstants.separatorInset
-    }
-
-    private func setupCells() {
-        registerCells()
-        setupCellHeight()
-    }
-
-    private func setupConstraints() {
-        table.cellLayoutMarginsFollowReadableWidth = true
-
-        NSLayoutConstraint.activate([
-            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            bottomConstraint,
-            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
-            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
-        ])
-    }
-
-    private func setupHeader() {
-        let header = TitleSubtitleTextfieldHeader(frame: .zero)
-        header.setTitle(headerData.title)
-        header.setSubtitle(headerData.subtitle)
-
-        header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-
-        let placeholderText = prompt.hint
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
-        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        header.textField.attributedPlaceholder = attributedPlaceholder
-
-        table.tableHeaderView = header
-
-        NSLayoutConstraint.activate([
-            header.widthAnchor.constraint(equalTo: table.widthAnchor),
-            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-        ])
-    }
-
-    private func setupTable() {
-        setupTableBackground()
-        setupTableSeparator()
-        setupCells()
-        setupHeader()
-        setupConstraints()
-        hideSeparators()
-
-        setupTableDataProvider()
-    }
-
-    private func setupEmptyTableProvider() {
-        let message: EmptyVerticalsMessage
-        if isNetworkActive {
-            message = EmptyVerticalsMessages.networkError
-        } else {
-            message = EmptyVerticalsMessages.noConnection
-        }
-
-        let retryHandler: SiteVerticalSelectionHandler = { [weak self] _ in
-            let retryQuery = self?.lastSearchQuery ?? ""
-            self?.performSearchIfNeeded(query: retryQuery)
-        }
-
-        tableViewProvider = EmptyVerticalsTableViewProvider(tableView: table, message: message, selectionHandler: retryHandler)
-    }
-
-    private func setupTableDataProvider(_ data: [SiteVertical] = []) {
-        self.tableViewProvider = DefaultVerticalsTableViewProvider(tableView: table, data: data) { [weak self] selectedVertical in
-            guard let self = self, let vertical = selectedVertical else {
-                return
-            }
-            self.selection(vertical)
-        }
-    }
-
-    private func setupTableBackground() {
-        table.backgroundColor = WPStyleGuide.greyLighten30()
-    }
-
-    private func setupTableSeparator() {
-        table.separatorColor = WPStyleGuide.greyLighten20()
     }
 
     private func performSearchIfNeeded(query: String) {
@@ -249,13 +228,162 @@ final class VerticalsWizardContent: UIViewController {
         }
     }
 
+    private func registerCell(identifier: String) {
+        let nib = UINib(nibName: identifier, bundle: nil)
+        table.register(nib, forCellReuseIdentifier: identifier)
+    }
+
+    private func registerCells() {
+        registerCell(identifier: VerticalsCell.cellReuseIdentifier())
+        registerCell(identifier: NewVerticalCell.cellReuseIdentifier())
+
+        table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
+    }
+
+    private func resignTextFieldResponderIfNeeded() {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        let textField = header.textField
+        textField.resignFirstResponder()
+    }
+
+    private func restoreSearchIfNeeded() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader, let currentSegmentID = siteCreator.segment?.identifier, let lastSegmentID = lastSegmentIdentifer, currentSegmentID == lastSegmentID else {
+
+            return
+        }
+
+        let textField = header.textField
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            return
+        }
+
+        adjustTableOffsetIfNeeded()
+        performSearchIfNeeded(query: inputText)
+    }
+
+    private func prepareViewIfNeeded() {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader, let currentSegmentID = siteCreator.segment?.identifier, let lastSegmentID = lastSegmentIdentifer, currentSegmentID == lastSegmentID else {
+
+            return
+        }
+
+        let textField = header.textField
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            return
+        }
+        textField.becomeFirstResponder()
+    }
+
+    private func setupBackground() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupCellHeight() {
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = Metrics.rowHeight
+        table.separatorInset = Metrics.separatorInset
+    }
+
+    private func setupCells() {
+        registerCells()
+        setupCellHeight()
+    }
+
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            bottomConstraint,
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
+    }
+
+    private func setupEmptyTableProvider() {
+        let message: InlineErrorMessage
+        if isNetworkActive {
+            message = InlineErrorMessages.serverError
+        } else {
+            message = InlineErrorMessages.noConnection
+        }
+
+        let handler: CellSelectionHandler = { [weak self] _ in
+            let retryQuery = self?.lastSearchQuery ?? ""
+            self?.performSearchIfNeeded(query: retryQuery)
+        }
+
+        tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
+    }
+
+    private func setupTable() {
+        setupTableBackground()
+        setupTableSeparator()
+        setupCells()
+        setupConstraints()
+        hideSeparators()
+
+        setupTableDataProvider()
+    }
+
+    private func setupTableBackground() {
+        table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableHeaderWithPrompt(_ prompt: SiteVerticalsPrompt) {
+        self.prompt = prompt
+
+        table.tableHeaderView = nil
+
+        let header = TitleSubtitleTextfieldHeader(frame: .zero)
+        header.setTitle(prompt.title)
+        header.setSubtitle(prompt.subtitle)
+
+        header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        header.textField.delegate = self
+
+        let placeholderText = prompt.hint
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+        header.textField.attributedPlaceholder = attributedPlaceholder
+
+        table.tableHeaderView = header
+
+        NSLayoutConstraint.activate([
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+        ])
+    }
+
+    private func setupTableDataProvider(_ data: [SiteVertical] = []) {
+        let handler: CellSelectionHandler = { [weak self] selectedIndexPath in
+            guard let self = self, let provider = self.tableViewProvider as? VerticalsTableViewProvider else {
+                return
+            }
+
+            let vertical = provider.data[selectedIndexPath.row]
+            self.selection(vertical)
+        }
+
+        self.tableViewProvider = VerticalsTableViewProvider(tableView: table, data: data, selectionHandler: handler)
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
     @objc
     private func textChanged(sender: UITextField) {
         guard let searchTerm = sender.text, searchTerm.isEmpty == false else {
             clearContent()
             return
         }
+
         performSearchIfNeeded(query: searchTerm)
+        adjustTableOffsetIfNeeded()
     }
 }
 
@@ -267,69 +395,93 @@ extension VerticalsWizardContent: NetworkStatusDelegate {
     }
 }
 
-// MARK: - Keyboard management
+// MARK: - UITextFieldDelegate
+
+extension VerticalsWizardContent: UITextFieldDelegate {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        resetTableOffsetIfNeeded()
+        return true
+    }
+}
+
+// MARK: - Table management
 
 private extension VerticalsWizardContent {
     struct Constants {
-        static let bottomMargin: CGFloat = 0.0
-        static let topMargin: CGFloat = 36.0
+        static let bottomMargin             = CGFloat(0)
+        static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
+        static let topMargin                = CGFloat(36)
     }
 
-    @objc
-    func keyboardWillHide(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else { return }
-        let animationDuration = payload.animationDuration
+    func adjustTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
+        guard WPDeviceIdentification.isiPhone(), bottomConstraintConstant > 0, tableViewHasBeenAdjusted == false else {
+            return
+        }
 
-        UIView.animate(withDuration: animationDuration,
-                       delay: 0,
-                       options: .beginFromCurrentState,
-                       animations: { [weak self] in
-                        self?.view.layoutIfNeeded()
-                        self?.table.contentInset = .zero
-                        self?.table.scrollIndicatorInsets = .zero
-                        self?.bottomConstraint.constant = Constants.bottomMargin
-                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                            header.titleSubtitle.alpha = 1.0
-                        }
+        bottomConstraint.constant = bottomConstraintConstant
+        view.setNeedsUpdateConstraints()
 
-            },
-                       completion: nil)
+        let targetInsets: UIEdgeInsets
+        if let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+            let textfieldFrame = header.textField.frame
+            targetInsets = UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottomConstraintConstant, right: 0.0)
+        } else {
+            targetInsets = .zero
+        }
+
+        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.view.layoutIfNeeded()
+            self.table.contentInset = targetInsets
+            self.table.scrollIndicatorInsets = targetInsets
+            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                header.titleSubtitle.alpha = 0.0
+            }
+            }, completion: { [weak self] _ in
+                self?.tableViewHasBeenAdjusted = true
+        })
     }
 
     @objc
     func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else { return }
-        let keyboardScreenFrame = payload.frameEnd
-
-        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
-
-        var constraintConstant = convertedKeyboardFrame.height
-
-        if #available(iOS 11.0, *) {
-            let bottomInset = view.safeAreaInsets.bottom
-            constraintConstant -= bottomInset
+        guard let payload = KeyboardInfo(notification) else {
+            return
         }
 
-        let animationDuration = payload.animationDuration
+        let keyboardScreenFrame = payload.frameEnd
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
 
-        bottomConstraint.constant = constraintConstant
-        view.setNeedsUpdateConstraints()
+        var adjustedKeyboardHeight = convertedKeyboardFrame.height
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            adjustedKeyboardHeight -= bottomInset
+        }
+        bottomConstraintConstant = adjustedKeyboardHeight
+    }
 
-        let contentInsets = tableContentInsets(bottom: constraintConstant)
+    func resetTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
+        guard WPDeviceIdentification.isiPhone(), tableViewHasBeenAdjusted == true else {
+            return
+        }
 
-        UIView.animate(withDuration: animationDuration,
-                       delay: 0,
-                       options: .beginFromCurrentState,
-                       animations: { [weak self] in
-                        self?.view.layoutIfNeeded()
-                        self?.table.contentInset = contentInsets
-                        self?.table.scrollIndicatorInsets = contentInsets
-                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                            header.titleSubtitle.alpha = 0.0
-                        }
+        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-            },
-                       completion: nil)
+            self.view.layoutIfNeeded()
+            self.table.contentInset = .zero
+            self.table.scrollIndicatorInsets = .zero
+            self.bottomConstraint.constant = Constants.bottomMargin
+            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                header.titleSubtitle.alpha = 1.0
+            }
+            }, completion: { [weak self] _ in
+                self?.tableViewHasBeenAdjusted = false
+        })
     }
 
     func startListeningToKeyboardNotifications() {
@@ -337,23 +489,9 @@ private extension VerticalsWizardContent {
                                                selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
     }
 
     func stopListeningToKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
-        guard let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: bottom, right: 0.0)
-        }
-
-        let textfieldFrame = header.textField.frame
-        return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
     }
 }

@@ -6,7 +6,7 @@ final class VerticalsStep: WizardStep {
     private let verticalsService: SiteVerticalsService
 
     private(set) lazy var content: UIViewController = {
-        return VerticalsWizardContent(segment: self.creator.segment, promptService: promptService, verticalsService: self.verticalsService, selection: self.didSelect)
+        return VerticalsWizardContent(creator: self.creator, promptService: promptService, verticalsService: self.verticalsService, selection: self.didSelect)
     }()
 
     var delegate: WizardDelegate?

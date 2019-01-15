@@ -75,14 +75,11 @@ class PostPostViewController: UIViewController {
         configureForPost()
 
         if revealPost {
+            WPAnalytics.track(.postEpilogueDisplayed)
+
             view.alpha = WPAlphaFull
             animatePostPost()
         }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        WPAnalytics.track(.postEpilogueDisplayed)
     }
 
     private func setupActionButtons() {
