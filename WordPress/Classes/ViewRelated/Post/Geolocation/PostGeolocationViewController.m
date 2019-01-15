@@ -51,8 +51,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
-    self.navigationItem.leftBarButtonItems = @[self.doneButton];
-    self.navigationItem.rightBarButtonItems = @[self.removeButton];
+    self.navigationItem.leftBarButtonItems = @[self.removeButton];
+    self.navigationItem.rightBarButtonItems = @[self.doneButton];
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.searchBarTop];
