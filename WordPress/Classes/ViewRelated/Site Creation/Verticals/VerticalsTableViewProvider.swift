@@ -61,7 +61,6 @@ final class VerticalsTableViewProvider: NSObject, TableViewProvider {
     // MARK: UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         selectionHandler?(indexPath)
     }
 
