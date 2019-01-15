@@ -50,7 +50,18 @@ class LoginEpilogueTableViewController: UITableViewController {
 extension LoginEpilogueTableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return blogDataSource.numberOfSections(in: tableView) + 1
+
+        // If a section is empty, don't show it.
+        let numberOfSections = blogDataSource.numberOfSections(in: tableView)
+        var adjustedNumberOfSections = numberOfSections
+
+        for section in 0..<numberOfSections {
+            if blogDataSource.tableView(tableView, numberOfRowsInSection: section) == 0 {
+                adjustedNumberOfSections -= 1
+            }
+        }
+
+        return adjustedNumberOfSections + 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

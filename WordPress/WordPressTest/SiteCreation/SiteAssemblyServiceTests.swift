@@ -3,33 +3,33 @@ import XCTest
 
 class SiteAssemblyServiceTests: XCTestCase {
 
-    private var pendingSiteInput: SiteCreatorOutput?
+    private var creationRequest: SiteCreationRequest?
 
     override func setUp() {
         super.setUp()
 
-        let defaultInput = SiteCreator()
+        let siteCreator = SiteCreator()
 
-        defaultInput.segment = SiteSegment(identifier: 12345,
+        siteCreator.segment = SiteSegment(identifier: 12345,
             title: "A title",
             subtitle: "A subtitle",
             icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
             iconColor: .red)
 
-        defaultInput.vertical = SiteVertical(identifier: Identifier(value: "678910"),
+        siteCreator.vertical = SiteVertical(identifier: "678910",
             title: "A title",
             isNew: true)
 
-        defaultInput.information = SiteInformation(title: "A title", tagLine: "A tagline")
+        siteCreator.information = SiteInformation(title: "A title", tagLine: "A tagline")
 
         let domainSuggestionPayload: [String: AnyObject] = [
             "domain_name": "domainName.com" as AnyObject,
             "product_id": 42 as AnyObject,
             "supports_privacy": true as AnyObject,
             ]
-        defaultInput.address = try! DomainSuggestion(json: domainSuggestionPayload)
+        siteCreator.address = try! DomainSuggestion(json: domainSuggestionPayload)
 
-        pendingSiteInput = try! defaultInput.build()
+        creationRequest = try! siteCreator.build()
     }
 
     func testSiteAssemblyService_InitialStatus_IsIdle() {
@@ -44,9 +44,8 @@ class SiteAssemblyServiceTests: XCTestCase {
     func testSiteAssemblyService_StatusInflight_IsInProgress() {
         let service: SiteAssemblyService = MockSiteAssemblyService()
 
-        XCTAssertNotNil(pendingSiteInput)
-        let output = pendingSiteInput!
-        service.createSite(creatorOutput: output, changeHandler: nil)
+        XCTAssertNotNil(creationRequest)
+        service.createSite(creationRequest: creationRequest!, changeHandler: nil)
         let actualStatus = service.currentStatus
 
         let expectedStatus: SiteAssemblyStatus = .inProgress
@@ -59,15 +58,15 @@ class SiteAssemblyServiceTests: XCTestCase {
 
         let service: SiteAssemblyService = MockSiteAssemblyService()
 
-        XCTAssertNotNil(pendingSiteInput)
-        let output = pendingSiteInput!
-        service.createSite(creatorOutput: output) { status in
-            if status == .inProgress {
+        XCTAssertNotNil(creationRequest)
+        service.createSite(creationRequest: creationRequest!) { status in
+            switch status {
+            case .inProgress:
                 inProgressExpectation.fulfill()
-            }
-
-            if status == .succeeded {
+            case .succeeded:
                 successExpectation.fulfill()
+            default:
+                break
             }
         }
 
@@ -80,9 +79,8 @@ class SiteAssemblyServiceTests: XCTestCase {
 
         let service: SiteAssemblyService = MockSiteAssemblyService(shouldSucceed: false)
 
-        XCTAssertNotNil(pendingSiteInput)
-        let output = pendingSiteInput!
-        service.createSite(creatorOutput: output) { status in
+        XCTAssertNotNil(creationRequest)
+        service.createSite(creationRequest: creationRequest!) { status in
             if status == .inProgress {
                 inProgressExpectation.fulfill()
             }

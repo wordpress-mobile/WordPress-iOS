@@ -197,7 +197,8 @@
         }];
     } else {
         [self.currentDataSource loadDataWithOptions:options success:successBlock failure:^(NSError *error) {
-            if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
+            if ([error.domain isEqualToString:WPMediaPickerErrorDomain] &&
+                (error.code == WPMediaPickerErrorCodePermissionDenied || error.code == WPMediaPickerErrorCodeRestricted)) {
                 if (self.currentDataSource == self.deviceLibraryDataSource) {                
                     self.currentDataSource = self.mediaLibraryDataSource;
                     [self loadDataWithOptions:options success:successBlock failure:failureBlock];

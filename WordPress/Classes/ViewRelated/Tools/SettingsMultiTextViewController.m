@@ -3,7 +3,7 @@
 #import <WordPressShared/WPTableViewCell.h>
 
 static CGVector const SettingsTextPadding = {11.0f, 3.0f};
-static CGFloat const SettingsMinHeight = 41.0f;
+static CGFloat const SettingsMinHeight = 82.0f;
 
 @interface SettingsMultiTextViewController() <UITextViewDelegate>
 

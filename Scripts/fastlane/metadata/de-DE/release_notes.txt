@@ -1,4 +1,9 @@
-Der nervige Fehler, der Benutzer mit Autor- oder Mitarbeiterrechten auf selbst gehosteten Websites daran hinderte, Beiträge zu veröffentlichen, wurde behoben. Viel Spaß beim Veröffentlichen, liebe Autoren!
-Die meisten Änderungen in diesem Update sind klein oder geschehen hinter den Kulissen – auch wenn du sie nicht sehen kannst, wirst du sie bemerken:
-- Bessere Unterstützung für Übersetzer, insbesondere beim Übersetzen von Inhalten mit dynamischen Elementen wie E-Mail-Adressen und Telefonnummern. Letztendlich bedeutet das, dass mehr Personen, deren Standardsprache nicht Englisch ist, bessere Übersetzungen in der App bekommen.
-- Wir arbeiten weiterhin an der Benutzeroberfläche, um die App für iPads zu optimieren – bessere Ränder und Ausrichtung, insbesondere nach dem Drehen aus dem Querformat ins Hochformat, die das gesamte Nutzungserlebnis der App besser machen.
+* Wenn du eine neue Website in der App beginnst, kannst du jetzt deine eigene .blog-Subdomain registrieren!
+* Wenn du versuchst, eine Website auf einem iPad zu löschen, stürzt die App nicht mehr ab (das kam hin und wieder vor).
+* Ein Fehler auf dem „Informationen“-Bildschirm in den App-Einstellungen wurde behoben, der zum Absturz führte.
+* Bildschirm zu Beitragseinstellungen wurde aktualisiert, um die Darstellung auf iPads zu verbessern.
+
+Nachdem eine Reihe von Verbesserungen an der Verlaufs-/Revisionsfunktion vorgenommen wurde, kannst du jetzt …
+* direkt zwischen Revisionen wechseln,
+* in der Revisionsansicht zwischen HTML- und visuellem Modus wechseln,
+* über den neuen „Rückgängig“-Button Revisionen ganz leicht wieder aufheben.

@@ -362,10 +362,20 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
         NSString *oauth2Token       = defaultAccount.authToken;
         
+        // For the Today Extension, if the user has set a non-primary site, use that.
+        NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+        NSNumber *todayExtensionSiteID = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
+        NSString *todayExtensionBlogName = [sharedDefaults objectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
+        
+        if (todayExtensionSiteID == NULL) {
+            todayExtensionSiteID = siteId;
+            todayExtensionBlogName = blogName;
+        }
+
         dispatch_async(dispatch_get_main_queue(), ^{
             TodayExtensionService *service = [TodayExtensionService new];
-            [service configureTodayWidgetWithSiteID:siteId
-                                           blogName:blogName
+            [service configureTodayWidgetWithSiteID:todayExtensionSiteID
+                                           blogName:todayExtensionBlogName
                                        siteTimeZone:timeZone
                                      andOAuth2Token:oauth2Token];
 
