@@ -376,18 +376,19 @@ private extension SiteStatsInsightsViewModel {
                 switch item.alternateIconValue {
                 case "category":
                     return Style.imageForGridiconType(.folder)
-                case "tag":
+               default:
                     return Style.imageForGridiconType(.tag)
-                default:
-                    return nil
                 }
             }()
+
+            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
 
             // TODO: when the API returns the actual value,
             // send item.value.abbreviatedString() to the row.
 
             let row = StatsTotalRowData.init(name: item.label,
                                              data: item.value,
+                                             dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
                                              disclosureURL: disclosureURL)
