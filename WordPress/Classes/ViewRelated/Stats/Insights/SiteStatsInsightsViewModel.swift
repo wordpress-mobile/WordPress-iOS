@@ -383,17 +383,8 @@ private extension SiteStatsInsightsViewModel {
 
             let dataBarPercent = dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
 
-            let itemValue: String = {
-                if let floatValue = item.value.statFloatValue() {
-                    return floatValue.abbreviatedString()
-                }
-
-                return item.value
-
-            }()
-
             let row = StatsTotalRowData.init(name: item.label,
-                                             data: itemValue,
+                                             data: item.value.displayString(),
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
@@ -531,17 +522,30 @@ private extension SiteStatsInsightsViewModel {
 
 }
 
+/// These methods format stat Strings for display and usage.
+/// Once the backend is updated to provide number values, this extension
+/// and all it's usage should no longer be necessary.
+///
 
 private extension String {
 
-    /// This method strips commas from formatting stat Strings and returns the Float value.
-    /// This is to facilitate using and displaying the values as numbers.
-    /// NOTE: Once the backend is updated to provide number values, this method
-    /// and all it's usage should no longer be necessary.
+    /// Strips commas from formatting stat Strings and returns the Float value.
     ///
 
     func statFloatValue() -> Float? {
         return Float(replacingOccurrences(of: ",", with: "", options: NSString.CompareOptions.literal, range: nil))
+    }
+
+    /// If the String can be converted to a Float, return the abbreviated format for it.
+    /// Otherwise return the original String.
+    ///
+
+    func displayString() -> String {
+            if let floatValue = self.statFloatValue() {
+                return floatValue.abbreviatedString()
+            }
+
+            return self
     }
 
 }
