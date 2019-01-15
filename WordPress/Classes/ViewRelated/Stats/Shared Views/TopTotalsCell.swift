@@ -10,13 +10,20 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var subtitleStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
+    // If the subtitles are not shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
+    // If the subtitles are shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
+
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private var dataRows = [StatsTotalRowData]()
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
@@ -28,8 +35,10 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
+        self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
 
+        setSubtitleVisibility()
         addRows(dataRows, toStackView: rowsStackView, rowDelegate: self)
         applyStyles()
     }
@@ -49,6 +58,15 @@ private extension TopTotalsCell {
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
         Style.configureViewAsSeperator(topSeparatorLine)
         Style.configureViewAsSeperator(bottomSeparatorLine)
+    }
+
+    /// Hide the subtitles if there is no data.
+    ///
+    func setSubtitleVisibility() {
+        let showSubtitles = dataRows.count > 0
+        subtitleStackView.isHidden = !showSubtitles
+        rowsStackViewTopConstraint.isActive = !showSubtitles
+        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
     }
 
 }
