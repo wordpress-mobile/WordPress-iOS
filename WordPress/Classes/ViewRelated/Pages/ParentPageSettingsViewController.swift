@@ -21,7 +21,7 @@ private struct Row: ImmuTableRow {
     var titleFont: UIFont {
         switch type {
         case .topLevel: return UIFont.systemFont(ofSize: 16.0)
-        case .child: return WPFontManager.notoRegularFont(ofSize: 17)
+        case .child: return WPFontManager.notoRegularFont(ofSize: 17.0)
         }
     }
 
