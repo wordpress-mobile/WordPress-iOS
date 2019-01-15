@@ -383,11 +383,17 @@ private extension SiteStatsInsightsViewModel {
 
             let dataBarPercent = dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
 
-            // TODO: when the API returns the actual value,
-            // send item.value.abbreviatedString() to the row.
+            let itemValue: String = {
+                if let floatValue = item.value.statFloatValue() {
+                    return floatValue.abbreviatedString()
+                }
+
+                return item.value
+
+            }()
 
             let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value,
+                                             data: itemValue,
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
@@ -509,18 +515,33 @@ private extension SiteStatsInsightsViewModel {
         // Get value from maxValueRow
         guard let maxValueRow = maxValueRow,
             let maxValueString = maxValueRow.value,
-            let rowsMaxValue = Float(maxValueString) else {
+            let rowsMaxValue = maxValueString.statFloatValue() else {
                 return nil
         }
 
         // Get value from row
         guard let rowValueString = row.value,
-            let rowValue = Float(rowValueString) else {
+            let rowValue = rowValueString.statFloatValue() else {
                 return nil
         }
 
         // Return percent
         return rowValue / rowsMaxValue
+    }
+
+}
+
+
+private extension String {
+
+    /// This method strips commas from formatting stat Strings and returns the Float value.
+    /// This is to facilitate using and displaying the values as numbers.
+    /// NOTE: Once the backend is updated to provide number values, this method
+    /// and all it's usage should no longer be necessary.
+    ///
+
+    func statFloatValue() -> Float? {
+        return Float(replacingOccurrences(of: ",", with: "", options: NSString.CompareOptions.literal, range: nil))
     }
 
 }
