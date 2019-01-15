@@ -105,7 +105,7 @@ static CGFloat const FeaturedImageSize = 40.0;
     
     self.titleLabel.textColor = [WPStyleGuide darkGrey];
     self.timestampLabel.textColor = [WPStyleGuide grey];
-    self.badgesLabel.textColor = [UIColor UIColorFromHex:0xd89511];
+    self.badgesLabel.textColor = [WPStyleGuide darkYellow];
     self.menuButton.tintColor = [WPStyleGuide greyLighten10];
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
