@@ -266,27 +266,24 @@ private extension SiteStatsInsightsViewModel {
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: when the API returns the actual value for followers,
-        // send value.abbreviatedString() to the row.
-
         if let totalDotComFollowers = store.getTotalDotComFollowers(),
             !totalDotComFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.wordPressDotCom.title,
-                                                   data: totalDotComFollowers,
+                                                   data: totalDotComFollowers.displayString(),
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
         if let totalEmailFollowers = store.getTotalEmailFollowers(),
             !totalEmailFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.email.title,
-                                                   data: totalEmailFollowers,
+                                                   data: totalEmailFollowers.displayString(),
                                                    icon: FollowerTotals.emailIcon))
         }
 
         if let totalPublicizeFollowers = store.getTotalPublicizeFollowers(),
             !totalPublicizeFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
-                                                   data: totalPublicizeFollowers,
+                                                   data: totalPublicizeFollowers.displayString(),
                                                    icon: FollowerTotals.socialIcon))
         }
 
@@ -297,11 +294,10 @@ private extension SiteStatsInsightsViewModel {
         let publicize = store.getPublicize()
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: when the API returns the actual value for followers,
-        // send value.abbreviatedString() to the row.
-
         publicize?.forEach { item in
-            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, socialIconURL: item.iconURL))
+            dataRows.append(StatsTotalRowData.init(name: item.label,
+                                                   data: item.value.displayString(),
+                                                   socialIconURL: item.iconURL))
         }
 
         return dataRows
@@ -457,7 +453,7 @@ private extension SiteStatsInsightsViewModel {
 
         let totalCount = String(format: Followers.totalFollowers,
                                 tabTitle,
-                                totalFollowers)
+                                totalFollowers.displayString())
 
         return tabDataFor(rowData: followers,
                           tabTitle: tabTitle,
@@ -487,7 +483,7 @@ private extension SiteStatsInsightsViewModel {
             }()
 
             rows.append(StatsTotalRowData.init(name: row.label,
-                                               data: row.value,
+                                               data: row.value.displayString(),
                                                dataBarPercent: dataBarPercent,
                                                userIconURL: row.iconURL,
                                                showDisclosure: showDisclosure,
