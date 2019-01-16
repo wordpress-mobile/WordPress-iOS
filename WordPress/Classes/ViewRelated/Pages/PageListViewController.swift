@@ -174,6 +174,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         // Noop
     }
 
+    override func configureFooterView() {
+        super.configureFooterView()
+        tableView.tableFooterView = UIView(frame: .zero)
+    }
+
 
     // MARK: - Sync Methods
 
@@ -346,13 +351,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageSectionHeaderHeight
     }
 
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
-    }
-
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let page = pageAtIndexPath(indexPath)
-        return page.canDisplayTags ? Constant.Size.pageCellWithTagEstimatedRowHeight : Constant.Size.pageCellEstimatedRowHeight
+        return Constant.Size.pageCellWithTagEstimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
@@ -369,10 +369,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         return headerView
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
-        return UIView(frame: CGRect.zero)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
