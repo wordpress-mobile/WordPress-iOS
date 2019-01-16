@@ -7,6 +7,8 @@ final class SiteSegmentsWizardContent: UIViewController {
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
     private let selection: (SiteSegment) -> Void
 
+    private var isNetworkActive = ReachabilityUtils.isInternetReachable()
+
     @IBOutlet weak var table: UITableView!
 
     private struct StyleConstants {
@@ -38,6 +40,11 @@ final class SiteSegmentsWizardContent: UIViewController {
         setupBackground()
         setupTable()
         initCancelButton()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        observeNetworkStatus()
     }
 
     private func applyTitle() {
@@ -98,7 +105,6 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        print("==== table width ===", table.frame.width )
         let initialHeaderFrame = CGRect(x: 0, y: 0, width: Int(table.frame.width), height: 0)
         let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
@@ -138,6 +144,11 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func fetchSegments() {
+        guard isNetworkActive == true else {
+            setupEmptyTableProvider()
+            return
+        }
+
         let request = SiteSegmentsRequest(locale: Locale.current.description)
         service.siteSegments(request: request) { [weak self] results in
             switch results {
@@ -150,7 +161,27 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleError(_ error: SiteSegmentsError) {
-        debugPrint("=== handling error===")
+        setupEmptyTableProvider()
+    }
+
+    private func setupEmptyTableProvider() {
+        let message: InlineErrorMessage
+        if isNetworkActive {
+            message = InlineErrorMessages.serverError
+        } else {
+            message = InlineErrorMessages.noConnection
+        }
+
+        let handler: CellSelectionHandler = { [weak self] _ in
+            self?.fetchSegments()
+        }
+
+        dataCoordinator = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
+
+        table.dataSource = dataCoordinator
+        table.delegate = dataCoordinator
+
+        table.reloadData()
     }
 
     private func handleData(_ data: [SiteSegment]) {
@@ -162,5 +193,11 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func didSelect(_ segment: SiteSegment) {
         selection(segment)
+    }
+}
+
+extension SiteSegmentsWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
     }
 }
