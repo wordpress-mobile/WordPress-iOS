@@ -52,9 +52,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 1.7.0-beta'
-    ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '28ca4a9'
-    ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
+    ##pod 'WordPressKit', '~> 1.7.0-beta'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '6c92a6aa4515da61bdaf065de4ad2dc4aff46ed9'
+    ##pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -68,7 +68,7 @@ end
 def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
-    pod 'wpxmlrpc', '0.8.3'
+    pod 'wpxmlrpc', '0.8.4'
 
 	wordpress_kit
 end
