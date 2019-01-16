@@ -414,10 +414,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         cell.accessoryType = .none
 
         let page = pageAtIndexPath(indexPath)
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
             cell.indentationWidth = _tableViewHandler.isSearching ? 0.0 : Constant.Size.pageListTableViewCellLeading
-            cell.indentationLevel = page.status != .publish ? 0 : page.hierarchyIndex
+            cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
