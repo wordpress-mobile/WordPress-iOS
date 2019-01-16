@@ -104,8 +104,12 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="averageLabel" destination="6Zk-9C-qVy" id="Osb-V2-fRu"/>
                 <outlet property="averagesStackView" destination="rvA-Nx-Yxf" id="bdC-m3-Dsm"/>
                 <outlet property="bodyStackView" destination="Xpn-ys-ZoG" id="DGe-kb-G3a"/>
+                <outlet property="bottomSeparatorLine" destination="gbf-DK-8pr" id="zJi-cO-boM"/>
+                <outlet property="topSeparatorLine" destination="tHQ-Vj-3Jm" id="YhX-QM-c9n"/>
+                <outlet property="totalLabel" destination="XMQ-Kx-SxE" id="rSo-Fy-xrY"/>
                 <outlet property="totalPostsStackView" destination="QXc-Lr-rop" id="Oci-mO-CPW"/>
                 <outlet property="totalsStackView" destination="vy1-CT-CQG" id="Ves-Va-0Ve"/>
             </connections>
