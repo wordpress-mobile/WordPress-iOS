@@ -1,9 +1,18 @@
-* If you start a new site on the app, you can now register your very own .blog subdomain!
-* When you try to delete a site on an iPad, the app will no longer crash (it sometimes would).
-* Fixed a crash on the “About” screen in App Settings.
-* Refreshed the post settings screen so that it looks better on iPad.
-
-With a fresh round of improvements to the History/Revisions feature, you can now…
-* Swipe between revisions in an instant.
-* Switch between HTML and Visual modes when viewing a revision.
-* Change your mind if you apply a revision with a new Undo button.
+* Updates the Plans to be more descriptive.
+* On the login epilogue, don't show 'My Sites' if the account doesn't have any sites. 
+* Fixes an issue where the wrong notification detail may be displayed when navigating between notifications.
+* Localises the button to edit a comment.
+* Localises the "Done" button on screen presented after publishing a Post.
+* It's now easier to tap the Done button on the screen that's displayed after publishing a post.
+* Fixes an issue where the Stats widget would always revert back to the primary site.
+* When creating a new site, on the site type selection page, the 'Start with' label now wraps.
+* Fixes issue where deleted users where still appearing in the site's People lists.
+* Improvements to localisations.
+* Localises the name of the Share Extension.
+* Fixes an issue where stale images may appear when navigating between notifications.
+* Adds Change Password in Account Settings
+* Fixes a crash caused by image uploading error handling.
+* When a search has no results, the message displayed is no longer truncated on smaller devices.
+* Increase mininum height on multi-line text field so it appears multi-line when blank. Affects Post excerpt, People invitation message, About Me.
+* More helpful error messages are now displayed if there's a problem setting a password when signing up for a new account.
+* Fixes an issue where Visual mode for revisions doesn't show images on private site
