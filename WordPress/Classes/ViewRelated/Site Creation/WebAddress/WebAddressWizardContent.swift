@@ -29,9 +29,6 @@ final class WebAddressWizardContent: UIViewController {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
     }()
 
-    /// We track the last prompt segment so that we can retry somewhat intelligently
-    private var lastSegmentIdentifer: Int64? = nil
-
     /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
 
@@ -225,8 +222,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func restoreSearchIfNeeded() {
-        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader, let currentSegmentID = siteCreator.segment?.identifier, let lastSegmentID = lastSegmentIdentifer, currentSegmentID == lastSegmentID else {
-
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
             return
         }
 
@@ -240,7 +236,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func prepareViewIfNeeded() {
-        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader, let currentSegmentID = siteCreator.segment?.identifier, let lastSegmentID = lastSegmentIdentifer, currentSegmentID == lastSegmentID else {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
 
             return
         }
