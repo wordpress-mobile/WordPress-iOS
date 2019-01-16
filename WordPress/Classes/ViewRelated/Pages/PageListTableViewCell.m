@@ -4,7 +4,7 @@
 
 
 static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
-static CGFloat const FeaturedImageSize = 40.0;
+static CGFloat const FeaturedImageSize = 120.0;
 
 @interface PageListTableViewCell()
 
