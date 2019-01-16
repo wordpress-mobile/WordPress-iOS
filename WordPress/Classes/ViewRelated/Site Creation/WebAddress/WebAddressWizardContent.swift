@@ -29,6 +29,10 @@ final class WebAddressWizardContent: UIViewController {
         return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
     }()
 
+    /// We track the last prompt segment so that we can retry somewhat intelligently
+    private var lastSegmentIdentifer: Int64? = nil
+
+    /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
 
     /// We track the last searched value so that we can retry
@@ -49,6 +53,12 @@ final class WebAddressWizardContent: UIViewController {
 
     /// This message advises the user that
     private let noResultsLabel: UILabel
+
+    /// The value of the bottom constraint constant is set in response to the keyboard appearance
+    private var bottomConstraintConstant = CGFloat(0)
+
+    /// To avoid wasted animations, we track whether or not we have already adjusted the table view
+    private var tableViewHasBeenAdjusted = false
 
     // MARK: WebAddressWizardContent
 
@@ -99,11 +109,24 @@ final class WebAddressWizardContent: UIViewController {
         super.viewWillAppear(animated)
         observeNetworkStatus()
         startListeningToKeyboardNotifications()
+        prepareViewIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        resignTextFieldResponderIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        restoreSearchIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
         stopListeningToKeyboardNotifications()
+        clearContent()
     }
 
     // MARK: Private behavior
@@ -120,6 +143,7 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
+        resetTableOffsetIfNeeded()
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -191,6 +215,43 @@ final class WebAddressWizardContent: UIViewController {
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
     }
 
+    private func resignTextFieldResponderIfNeeded() {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        let textField = header.textField
+        textField.resignFirstResponder()
+    }
+
+    private func restoreSearchIfNeeded() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader, let currentSegmentID = siteCreator.segment?.identifier, let lastSegmentID = lastSegmentIdentifer, currentSegmentID == lastSegmentID else {
+
+            return
+        }
+
+        let textField = header.textField
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            return
+        }
+
+        adjustTableOffsetIfNeeded()
+        performSearchIfNeeded(query: inputText)
+    }
+
+    private func prepareViewIfNeeded() {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader, let currentSegmentID = siteCreator.segment?.identifier, let lastSegmentID = lastSegmentIdentifer, currentSegmentID == lastSegmentID else {
+
+            return
+        }
+
+        let textField = header.textField
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            return
+        }
+        textField.becomeFirstResponder()
+    }
+
     private func setupEmptyTableProvider() {
         let message: InlineErrorMessage
         if isNetworkActive {
@@ -213,6 +274,7 @@ final class WebAddressWizardContent: UIViewController {
         header.setSubtitle(headerData.subtitle)
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        header.textField.delegate = self
 
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
@@ -283,7 +345,9 @@ final class WebAddressWizardContent: UIViewController {
             clearContent()
             return
         }
+
         performSearchIfNeeded(query: searchTerm)
+        adjustTableOffsetIfNeeded()
     }
 }
 
@@ -295,73 +359,95 @@ extension WebAddressWizardContent: NetworkStatusDelegate {
     }
 }
 
+// MARK: - UITextFieldDelegate
+
+extension WebAddressWizardContent: UITextFieldDelegate {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        resetTableOffsetIfNeeded()
+        return true
+    }
+}
+
+
 // MARK: - Keyboard management
 
 private extension WebAddressWizardContent {
     struct Constants {
-        static let bottomMargin: CGFloat = 0.0
-        static let topMargin: CGFloat = 36.0
+        static let bottomMargin             = CGFloat(0)
+        static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
+        static let topMargin                = CGFloat(36)
     }
 
-    @objc
-    func keyboardWillHide(_ notification: Foundation.Notification) {
-        guard WPDeviceIdentification.isiPhone(), let payload = KeyboardInfo(notification) else {
+    func adjustTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
+        guard WPDeviceIdentification.isiPhone(), bottomConstraintConstant > 0, tableViewHasBeenAdjusted == false else {
             return
         }
-        let animationDuration = payload.animationDuration
 
-        UIView.animate(withDuration: animationDuration,
-                       delay: 0,
-                       options: .beginFromCurrentState,
-                       animations: { [weak self] in
-                        self?.view.layoutIfNeeded()
-                        self?.table.contentInset = .zero
-                        self?.table.scrollIndicatorInsets = .zero
-                        self?.bottomConstraint.constant = Constants.bottomMargin
-                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                            header.titleSubtitle.alpha = 1.0
-                        }
+        bottomConstraint.constant = bottomConstraintConstant
+        view.setNeedsUpdateConstraints()
 
-            },
-                       completion: nil)
+        let targetInsets: UIEdgeInsets
+        if let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+            let textfieldFrame = header.textField.frame
+            targetInsets = UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottomConstraintConstant, right: 0.0)
+        } else {
+            targetInsets = .zero
+        }
+
+        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.view.layoutIfNeeded()
+            self.table.contentInset = targetInsets
+            self.table.scrollIndicatorInsets = targetInsets
+            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                header.titleSubtitle.alpha = 0.0
+            }
+            }, completion: { [weak self] _ in
+                self?.tableViewHasBeenAdjusted = true
+        })
     }
 
     @objc
     func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard WPDeviceIdentification.isiPhone(), let payload = KeyboardInfo(notification) else {
+        guard let payload = KeyboardInfo(notification) else {
             return
         }
-        let keyboardScreenFrame = payload.frameEnd
 
+        let keyboardScreenFrame = payload.frameEnd
         let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
 
-        var constraintConstant = convertedKeyboardFrame.height
-
+        var adjustedKeyboardHeight = convertedKeyboardFrame.height
         if #available(iOS 11.0, *) {
             let bottomInset = view.safeAreaInsets.bottom
-            constraintConstant -= bottomInset
+            adjustedKeyboardHeight -= bottomInset
+        }
+        bottomConstraintConstant = adjustedKeyboardHeight
+    }
+
+    func resetTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
+        guard WPDeviceIdentification.isiPhone(), tableViewHasBeenAdjusted == true else {
+            return
         }
 
-        let animationDuration = payload.animationDuration
+        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-        bottomConstraint.constant = constraintConstant
-        view.setNeedsUpdateConstraints()
-
-        let contentInsets = tableContentInsets(bottom: constraintConstant)
-
-        UIView.animate(withDuration: animationDuration,
-                       delay: 0,
-                       options: .beginFromCurrentState,
-                       animations: { [weak self] in
-                        self?.view.layoutIfNeeded()
-                        self?.table.contentInset = contentInsets
-                        self?.table.scrollIndicatorInsets = contentInsets
-                        if let header = self?.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                            header.titleSubtitle.alpha = 0.0
-                        }
-
-            },
-                       completion: nil)
+            self.view.layoutIfNeeded()
+            self.noResultsLabel.isHidden = true
+            self.table.contentInset = .zero
+            self.table.scrollIndicatorInsets = .zero
+            self.bottomConstraint.constant = Constants.bottomMargin
+            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+                header.titleSubtitle.alpha = 1.0
+            }
+            }, completion: { [weak self] _ in
+                self?.tableViewHasBeenAdjusted = false
+        })
     }
 
     func startListeningToKeyboardNotifications() {
@@ -369,23 +455,9 @@ private extension WebAddressWizardContent {
                                                selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
     }
 
     func stopListeningToKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-
-    func tableContentInsets(bottom: CGFloat) -> UIEdgeInsets {
-        guard let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-            return UIEdgeInsets(top: 0.0, left: 0.0, bottom: bottom, right: 0.0)
-        }
-
-        let textfieldFrame = header.textField.frame
-        return UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottom, right: 0.0)
     }
 }
