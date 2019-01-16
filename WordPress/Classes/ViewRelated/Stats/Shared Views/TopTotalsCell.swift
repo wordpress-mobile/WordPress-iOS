@@ -15,14 +15,12 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
-    // If the subtitles are not shown, this is active.
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the subtitles are shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
 
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -65,8 +63,7 @@ private extension TopTotalsCell {
     func setSubtitleVisibility() {
         let showSubtitles = dataRows.count > 0
         subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.isActive = !showSubtitles
-        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + subtitlesBottomMargin : 0
     }
 
 }
