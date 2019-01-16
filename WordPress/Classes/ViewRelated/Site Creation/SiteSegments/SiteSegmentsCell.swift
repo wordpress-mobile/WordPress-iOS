@@ -14,7 +14,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             if let modelIcon = model?.icon {
                 icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
                     let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
-                    if let tintColor = self?.model?.iconColor {
+                    if let tintColor = self?.model?.iconColor?.asColor() {
                         self?.icon.tintColor = tintColor
                     }
                     self?.icon.image = tintedImage
@@ -61,5 +61,11 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
 
     private func styleAccessoryView() {
         accessoryType = .disclosureIndicator
+    }
+}
+
+private extension String {
+    func asColor() -> UIColor? {
+        return UIColor(hexString: self)
     }
 }
