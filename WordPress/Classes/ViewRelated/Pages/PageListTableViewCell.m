@@ -164,14 +164,16 @@ static CGFloat const FeaturedImageSize = 40.0;
 {
     Page *page = (Page *)self.post;
     
-    BOOL hideFeaturedImage = page.featuredImageURLForDisplay == nil;
+    BOOL hideFeaturedImage = page.featuredImage == nil;
     self.featuredImageView.hidden = hideFeaturedImage;
     self.labelsContainerTrailing.active = !hideFeaturedImage;
     
     if (!hideFeaturedImage) {
-        [self.featuredImageLoader loadImageWithURL:page.featuredImageURLForDisplay
-                                          fromPost:self.post
-                                  andPreferredSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)];
+        [self.featuredImageLoader loadImageFromMedia:page.featuredImage
+                                       preferredSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
+                                         placeholder:nil
+                                             success:nil
+                                               error:nil];
     }
 }
 
