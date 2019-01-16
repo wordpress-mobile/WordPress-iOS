@@ -1,3 +1,3 @@
 import { danger } from "danger"
 
-warn("Warn every time");
+warn("Warn every time!");
