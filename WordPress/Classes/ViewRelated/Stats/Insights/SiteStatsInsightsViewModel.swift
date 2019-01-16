@@ -62,7 +62,8 @@ class SiteStatsInsightsViewModel: Observable {
                                                    dataRows: createTagsAndCategoriesRows(),
                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.annualSiteStats))
+                tableRows.append(createAnnualSiteStatsRow())
             case .comments:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
                 tableRows.append(createCommentsRow())
@@ -112,6 +113,7 @@ private extension SiteStatsInsightsViewModel {
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
+        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
     }
 
     struct AllTimeStats {
@@ -203,6 +205,14 @@ private extension SiteStatsInsightsViewModel {
     struct TagsAndCategories {
         static let itemSubtitle = NSLocalizedString("Title", comment: "'Tags and Categories' label for the tag/category name.")
         static let dataSubtitle = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
+    }
+
+    struct AnnualSiteStats {
+        static let totalPosts = NSLocalizedString("Total Posts", comment: "'Annual Site Stats' label for the total number of posts.")
+        static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
+        static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
+        static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
+        static let perPost = NSLocalizedString("%@ Per Post", comment: "'Annual Site Stats' label for averages per post. %@ will be Comments, Likes, or Words.")
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -390,6 +400,31 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return dataRows
+    }
+
+    func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
+
+        // TODO: use real data when backend provides it.
+
+        // Total Posts row
+        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts, data: "100")
+
+        // Totals rows
+        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments, data: "100")
+        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes, data: "100")
+        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words, data: "100")
+        let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
+
+        // Averages rows
+        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments), data: "100")
+        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes), data: "100")
+        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words), data: "100")
+        let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
+
+        return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
+                                  totalsDataRows: totalsDataRows,
+                                  averagesDataRows: averageDataRows)
+
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {
