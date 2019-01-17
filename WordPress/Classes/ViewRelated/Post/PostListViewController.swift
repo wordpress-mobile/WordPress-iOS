@@ -31,10 +31,8 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
-    static fileprivate let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
     static fileprivate let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
     static fileprivate let postCardTextCellNibName = "PostCardTextCell"
-    static fileprivate let postCardImageCellNibName = "PostCardImageCell"
     static fileprivate let postCardRestoreCellNibName = "RestorePostTableViewCell"
     static fileprivate let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
     static fileprivate let statsStoryboardName = "SiteStats"
@@ -151,9 +149,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         // Register the cells
         let postCardTextCellNib = UINib(nibName: type(of: self).postCardTextCellNibName, bundle: bundle)
         tableView.register(postCardTextCellNib, forCellReuseIdentifier: type(of: self).postCardTextCellIdentifier)
-
-        let postCardImageCellNib = UINib(nibName: type(of: self).postCardImageCellNibName, bundle: bundle)
-        tableView.register(postCardImageCellNib, forCellReuseIdentifier: type(of: self).postCardImageCellIdentifier)
 
         let postCardRestoreCellNib = UINib(nibName: type(of: self).postCardRestoreCellNibName, bundle: bundle)
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
@@ -381,8 +376,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).postCardRestoreCellIdentifier
-        } else if post.featuredImageURLForDisplay() != nil {
-            identifier = type(of: self).postCardImageCellIdentifier
         } else {
             identifier = type(of: self).postCardTextCellIdentifier
         }
