@@ -295,8 +295,10 @@ private extension SiteStatsInsightsViewModel {
         var dataRows = [StatsTotalRowData]()
 
         publicize?.forEach { item in
+            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: publicize?.first)
             dataRows.append(StatsTotalRowData.init(name: item.label,
                                                    data: item.value.displayString(),
+                                                   dataBarPercent: dataBarPercent,
                                                    socialIconURL: item.iconURL))
         }
 
