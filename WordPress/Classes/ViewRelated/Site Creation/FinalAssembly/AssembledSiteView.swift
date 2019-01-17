@@ -25,7 +25,10 @@ final class AssembledSiteView: UIView {
     }
 
     /// This value displays in the address bar.
-    private let domainName: String
+    private let siteName: String
+
+    /// This value is what the web view loads.
+    private let siteURLString: String
 
     /// This subview fulfills the role of address bar.
     private let textField: UITextField
@@ -39,6 +42,9 @@ final class AssembledSiteView: UIView {
     /// This interacts with our `WKNavigationDelegate` to influence the policy behavior before & after site loading.
     /// After the site has been loaded, we want to disable user interaction with the rendered site.
     private var webViewHasLoadedContent: Bool = false
+
+    /// Haptic feedback generator
+    private let generator = UINotificationFeedbackGenerator()
 
     /// This informs constraints applied to the view. It _may_ be possible to transition this to intrinsicContentSize.
     var preferredSize: CGSize {
@@ -65,8 +71,9 @@ final class AssembledSiteView: UIView {
     /// The designated initializer.
     ///
     /// - Parameter domainName: the domain associated with the site pending assembly.
-    init(domainName: String) {
-        self.domainName = domainName
+    init(domainName: String, siteURLString: String) {
+        self.siteName = domainName
+        self.siteURLString = siteURLString
 
         textField = {
             let textField = UITextField(frame: .zero)
@@ -120,11 +127,9 @@ final class AssembledSiteView: UIView {
 
     /// Triggers the new site to load for the first time.
     func loadSite() {
-        // NB: Not all of the values from `MockSiteAddressService` are real sites, so we are use a placeholder for now.
-        // let urlString = "https://" + domainName
-        let urlString = "https://longreads.com"
+        generator.prepare()
 
-        let siteURL = URL(string: urlString)!
+        let siteURL = URL(string: siteURLString)!
         let siteRequest = URLRequest(url: siteURL)
 
         webView.load(siteRequest)
@@ -176,6 +181,7 @@ extension AssembledSiteView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
+        generator.notificationOccurred(.success)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

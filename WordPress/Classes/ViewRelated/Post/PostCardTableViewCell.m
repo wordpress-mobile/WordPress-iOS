@@ -12,6 +12,8 @@
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 static const CGFloat ActionbarButtonImageSize = 18.0;
+static const CGFloat HeaderLabelsSpaceSmallFonts = -1.f;
+static const CGFloat HeaderLabelsSpaceBigFonts = -8.f;
 
 typedef NS_ENUM(NSUInteger, ActionBarMode) {
     ActionBarModePublish = 1,
@@ -26,7 +28,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @interface PostCardTableViewCell()
 
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
-@property (nonatomic, strong) IBOutlet UIView *headerView;
+@property (nonatomic, strong) IBOutlet UIStackView *headerView;
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
@@ -37,37 +39,24 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIImageView *dateImageView;
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UILabel *stickyLabel;
-@property (nonatomic, strong) IBOutlet UIView *statusView;
+@property (nonatomic, strong) IBOutlet UIStackView *statusView;
 @property (nonatomic, strong) IBOutlet UIImageView *statusImageView;
 @property (nonatomic, strong) IBOutlet UILabel *statusLabel;
-@property (nonatomic, strong) IBOutlet UIView *metaView;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewTopConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLeftConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *dateViewLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusHeightConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusViewLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet UIStackView *dateMetaStackView;
+@property (weak, nonatomic) IBOutlet UIStackView *headerLabelsStackView;
+
+
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostCardStatusViewModel *viewModel;
 @property (nonatomic, strong) ImageLoader *imageLoader;
-@property (nonatomic) CGFloat headerViewHeight;
-@property (nonatomic) CGFloat headerViewLowerMargin;
-@property (nonatomic) CGFloat titleViewLowerMargin;
-@property (nonatomic) CGFloat snippetViewLowerMargin;
-@property (nonatomic) CGFloat dateViewLowerMargin;
-@property (nonatomic) CGFloat statusViewHeight;
-@property (nonatomic) CGFloat statusViewLowerMargin;
+
 @property (nonatomic) BOOL didPreserveStartingConstraintConstants;
 @property (nonatomic) ActionBarMode currentActionBarMode;
 
@@ -187,14 +176,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)preserveStartingConstraintConstants
 {
-    self.headerViewHeight = self.headerViewHeightConstraint.constant;
-    self.headerViewLowerMargin = self.headerViewLowerConstraint.constant;
-    self.titleViewLowerMargin = self.titleLowerConstraint.constant;
-    self.snippetViewLowerMargin = self.snippetLowerConstraint.constant;
-    self.dateViewLowerMargin = self.dateViewLowerConstraint.constant;
-    self.statusViewHeight = self.statusHeightConstraint.constant;
-    self.statusViewLowerMargin = self.statusViewLowerConstraint.constant;
-
     self.didPreserveStartingConstraintConstants = YES;
 }
 
@@ -216,8 +197,33 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
     self.postContentView.layer.borderWidth = 1.0;
-    
+
     self.stickyLabel.text = NSLocalizedString(@"Sticky", @"Label text that defines a post marked as sticky");
+}
+
+- (BOOL)shouldAlignVertically
+{
+    if (@available(iOS 11.0, *)) {
+        UIContentSizeCategory currentCategory = self.traitCollection.preferredContentSizeCategory;
+        NSComparisonResult result = UIContentSizeCategoryCompareToCategory(currentCategory, UIContentSizeCategoryExtraExtraLarge);
+        // True if it's bigger than XXL
+        return result == NSOrderedDescending;
+    } else {
+        return NO;
+    }
+}
+
+- (void)arrangeStackViews
+{
+    if ([self shouldAlignVertically]) {
+        self.dateMetaStackView.axis = UILayoutConstraintAxisVertical;
+        self.dateMetaStackView.alignment = UIStackViewAlignmentLeading;
+        self.headerLabelsStackView.spacing = HeaderLabelsSpaceBigFonts;
+    } else {
+        self.dateMetaStackView.axis = UILayoutConstraintAxisHorizontal;
+        self.dateMetaStackView.alignment = UIStackViewAlignmentFill;
+        self.headerLabelsStackView.spacing = HeaderLabelsSpaceSmallFonts;
+    }
 }
 
 #pragma mark - ConfigurablePostView
@@ -260,17 +266,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)configureHeader
 {
     if (![self.post isMultiAuthorBlog]) {
-        self.headerViewHeightConstraint.constant = 0;
-        // Move the next element up to where the header was.
-        self.headerViewLowerConstraint.constant = self.headerViewTopConstraint.constant;
-        // If not visible, just return and don't bother setting the text or loading the avatar.
         self.headerView.hidden = YES;
         return;
     }
 
     self.headerView.hidden = NO;
-    self.headerViewHeightConstraint.constant = self.headerViewHeight;
-    self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
     self.authorBlogLabel.text = [self.post blogNameForDisplay];
     self.authorNameLabel.text = [self.post authorNameForDisplay];
 
@@ -288,9 +288,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     NSURL *url = [post featuredImageURLForDisplay];
     if (url == nil) {
         // no feature image available.
+        self.postCardImageView.hidden = YES;
         return;
     }
 
+    self.postCardImageView.hidden = NO;
     CGFloat desiredWidth = [UIApplication  sharedApplication].keyWindow.frame.size.width;
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
@@ -304,7 +306,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     NSString *str = [post titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str.stringByStrippingHTML attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
 }
 
 - (void)configureSnippet
@@ -313,7 +314,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     NSString *str = [post contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str.stringByStrippingHTML attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
 }
 
 - (void)configureDate
@@ -326,13 +326,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)configureStatusView
 {
     self.statusView.hidden = self.viewModel.shouldHideStatusView;
-    if (self.statusView.hidden) {
-        self.dateViewLowerConstraint.constant = 0.0;
-        self.statusHeightConstraint.constant = 0.0;
-    } else {
-        self.dateViewLowerConstraint.constant = self.dateViewLowerMargin;
-        self.statusHeightConstraint.constant = self.statusViewHeight;
-    }
 
     self.statusLabel.text = self.viewModel.status;
     self.statusImageView.image = self.viewModel.statusImage;
@@ -745,6 +738,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
         [self applyStyles];
+        [self arrangeStackViews];
     }
 }
 

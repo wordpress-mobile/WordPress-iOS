@@ -1,6 +1,8 @@
 import UIKit
 import Gridicons
 
+/// This cell describes a user-specified vertical; that is to say, a search term without a server match.
+///
 final class NewVerticalCell: UITableViewCell, SiteVerticalPresenter {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!

@@ -18,9 +18,5 @@ has_modified_model = git.modified_files.include? "WordPress/Classes/WordPress.xc
 
 warn("Core Data: Do not edit an existing model in a release branch unless it hasn't been released to testers yet. Instead create a new model version and merge back to develop soon.") if has_modified_model
 
-# SwiftLint, requires https://github.com/ashfurrow/danger-swiftlint
-swiftlint.verbose = true
-swiftlint.lint_files
-
 # Podfile: no references to commit hashes
 warn("Podfile: reference to a commit hash") if `grep -e "^[^#]*:commit" Podfile`.length > 1

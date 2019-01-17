@@ -17,6 +17,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// The service with which the final assembly interacts to coordinate site creation.
     private let service: SiteAssemblyService
 
+    /// The new `Blog`, if successfully created; `nil` otherwise.
+    private var createdBlog: Blog?
+
     /// The content view serves as the root view of this view controller.
     private let contentView = SiteAssemblyContentView()
 
@@ -90,10 +93,9 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     private func attemptSiteCreation() {
         do {
-            let wizardOutput = try siteCreator.build()
+            let creationRequest = try siteCreator.build()
 
-            contentView.domainName = wizardOutput.siteURLString
-            service.createSite(creatorOutput: wizardOutput) { [weak self] status in
+            service.createSite(creationRequest: creationRequest) { [weak self] status in
                 guard let self = self else {
                     return
                 }
@@ -106,6 +108,11 @@ final class SiteAssemblyWizardContent: UIViewController {
                         errorType = .siteLoading
                     }
                     self.installErrorStateViewController(with: errorType)
+                } else if status == .succeeded {
+                    let blog = self.service.createdBlog
+                    self.contentView.siteURLString = blog?.url as String?
+                    self.contentView.siteName = blog?.displayURL as String?
+                    self.createdBlog = blog
                 }
 
                 self.contentView.status = status
@@ -176,9 +183,9 @@ private extension SiteAssemblyWizardContent {
         supportVC.showFromTabBar()
     }
 
-    func dismissTapped(viaDone: Bool = false) {
+    func dismissTapped(viaDone: Bool = false, completion: (() -> Void)? = nil) {
         // TODO : using viaDone, capture analytics event via #10335
-        navigationController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true, completion: completion)
     }
 
     func retryTapped(viaDone: Bool = false) {
@@ -199,6 +206,11 @@ extension SiteAssemblyWizardContent: NetworkStatusDelegate {
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        dismissTapped(viaDone: true)
+        dismissTapped(viaDone: true) { [createdBlog] in
+            guard let blog = createdBlog else {
+                return
+            }
+            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+        }
     }
 }

@@ -1186,6 +1186,12 @@ private extension AztecPostViewController {
         }
 
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self] _ in
+            if self.post.isDraft(), self.post.hasLocalChanges() {
+                guard let context = self.post.managedObjectContext else {
+                    return
+                }
+                ContextManager.sharedInstance().save(context)
+            }
             self.displayPreview()
         }
 

@@ -1,6 +1,8 @@
 import UIKit
 import Gridicons
 
+/// This cell describes a server-vended `SiteVertical`.
+///
 final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
     @IBOutlet weak var title: UILabel!
 
