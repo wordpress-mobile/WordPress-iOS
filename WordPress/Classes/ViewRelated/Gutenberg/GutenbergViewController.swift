@@ -34,7 +34,15 @@ class GutenbergViewController: UIViewController, PostEditor {
         }
     }
 
-    var postTitle: String
+    var postTitle: String {
+        set {
+            post.postTitle = newValue
+        }
+        
+        get {
+            return post.postTitle ?? ""
+        }
+    }
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -134,7 +142,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         switchToAztec: @escaping (EditorViewController) -> ()) {
 
         self.post = post
-        self.postTitle = post.postTitle ?? ""
 
         self.switchToAztec = switchToAztec
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
