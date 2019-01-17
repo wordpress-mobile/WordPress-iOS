@@ -34,8 +34,8 @@
                                                     <constraint firstAttribute="width" constant="32" id="nUp-FQ-yAE"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="OYh-1c-2HT">
-                                                <rect key="frame" x="58" y="0.0" width="240" height="32"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OYh-1c-2HT">
+                                                <rect key="frame" x="58" y="0.5" width="240" height="31.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Blog name" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glg-dS-0y2">
                                                         <rect key="frame" x="0.0" y="0.0" width="240" height="17"/>
@@ -45,7 +45,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-Qn-Vgl">
-                                                        <rect key="frame" x="0.0" y="18" width="240" height="14"/>
+                                                        <rect key="frame" x="0.0" y="17" width="240" height="14.5"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -197,7 +197,8 @@
                                                 <rect key="frame" x="0.0" y="4" width="314" height="37"/>
                                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="37" id="tqV-2T-l9Q"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="aHT-bj-XlU"/>
+                                                    <constraint firstAttribute="height" constant="37" placeholder="YES" id="tqV-2T-l9Q"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -241,6 +242,7 @@
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="C0x-Md-rXI"/>
                 <outlet property="dateMetaStackView" destination="E8x-c5-pNS" id="4k6-8X-nx0"/>
                 <outlet property="dateView" destination="Z3W-ou-g2J" id="mdO-EH-ptZ"/>
+                <outlet property="headerLabelsStackView" destination="OYh-1c-2HT" id="fAi-lz-per"/>
                 <outlet property="headerView" destination="4cK-OS-AGY" id="dFS-Q5-Fgk"/>
                 <outlet property="metaButtonLeft" destination="uDE-AO-Rii" id="NHd-hW-Cag"/>
                 <outlet property="metaButtonRight" destination="Ovg-ci-Pfb" id="dCB-Tf-ED7"/>

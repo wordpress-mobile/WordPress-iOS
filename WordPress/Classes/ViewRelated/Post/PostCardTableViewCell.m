@@ -12,6 +12,8 @@
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 static const CGFloat ActionbarButtonImageSize = 18.0;
+static const CGFloat HeaderLabelsSpaceSmallFonts = -1.f;
+static const CGFloat HeaderLabelsSpaceBigFonts = -8.f;
 
 typedef NS_ENUM(NSUInteger, ActionBarMode) {
     ActionBarModePublish = 1,
@@ -45,6 +47,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
 @property (weak, nonatomic) IBOutlet UIStackView *dateMetaStackView;
+@property (weak, nonatomic) IBOutlet UIStackView *headerLabelsStackView;
 
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
@@ -215,9 +218,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     if ([self shouldAlignVertically]) {
         self.dateMetaStackView.axis = UILayoutConstraintAxisVertical;
         self.dateMetaStackView.alignment = UIStackViewAlignmentLeading;
+        self.headerLabelsStackView.spacing = HeaderLabelsSpaceBigFonts;
     } else {
         self.dateMetaStackView.axis = UILayoutConstraintAxisHorizontal;
         self.dateMetaStackView.alignment = UIStackViewAlignmentFill;
+        self.headerLabelsStackView.spacing = HeaderLabelsSpaceSmallFonts;
     }
 }
 
