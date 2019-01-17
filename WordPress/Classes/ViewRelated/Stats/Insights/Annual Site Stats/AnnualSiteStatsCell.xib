@@ -22,17 +22,20 @@
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="g1s-fl-o9Q" userLabel="Content Stack View">
                         <rect key="frame" x="0.0" y="0.0" width="563" height="224.5"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QXc-Lr-rop" userLabel="Total Posts Stack View">
-                                <rect key="frame" x="0.0" y="0.0" width="563" height="50"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QXc-Lr-rop" userLabel="Total Posts Stack View">
+                                <rect key="frame" x="0.0" y="0.0" width="563" height="49.5"/>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Xpn-ys-ZoG" userLabel="Body Stack View">
-                                <rect key="frame" x="0.0" y="50" width="563" height="174.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Xpn-ys-ZoG" userLabel="Data Stack View">
+                                <rect key="frame" x="0.0" y="49.5" width="563" height="175"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DI6-aC-1m8" userLabel="Total Label View">
                                         <rect key="frame" x="0.0" y="0.0" width="563" height="32"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMQ-Kx-SxE" userLabel="Total Label">
                                                 <rect key="frame" x="16" y="0.0" width="531" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="3oe-QK-VGY"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -40,20 +43,22 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="XMQ-Kx-SxE" firstAttribute="top" secondItem="DI6-aC-1m8" secondAttribute="top" id="IRr-i2-UNn"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="TuG-Ia-WeQ"/>
                                             <constraint firstAttribute="bottom" secondItem="XMQ-Kx-SxE" secondAttribute="bottom" id="fMF-Cp-78h"/>
                                             <constraint firstItem="XMQ-Kx-SxE" firstAttribute="leading" secondItem="DI6-aC-1m8" secondAttribute="leading" constant="16" id="mIw-Cd-HCV"/>
                                             <constraint firstAttribute="trailing" secondItem="XMQ-Kx-SxE" secondAttribute="trailing" constant="16" id="saL-7O-Arf"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vy1-CT-CQG" userLabel="Totals Stack View">
-                                        <rect key="frame" x="0.0" y="32" width="563" height="50"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vy1-CT-CQG" userLabel="Totals Stack View">
+                                        <rect key="frame" x="0.0" y="32" width="563" height="75"/>
                                     </stackView>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MhP-mp-xQA" userLabel="Average Label View">
-                                        <rect key="frame" x="0.0" y="82" width="563" height="42.5"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MhP-mp-xQA" userLabel="Average Label View">
+                                        <rect key="frame" x="0.0" y="107" width="563" height="32"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Zk-9C-qVy" userLabel="Average Label">
-                                                <rect key="frame" x="16" y="0.0" width="531" height="42.5"/>
+                                                <rect key="frame" x="16" y="0.0" width="531" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="HM0-ZW-L4h"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -63,16 +68,21 @@
                                             <constraint firstItem="6Zk-9C-qVy" firstAttribute="top" secondItem="MhP-mp-xQA" secondAttribute="top" id="HUc-TP-En5"/>
                                             <constraint firstItem="6Zk-9C-qVy" firstAttribute="leading" secondItem="MhP-mp-xQA" secondAttribute="leading" constant="16" id="mFi-wu-HBW"/>
                                             <constraint firstAttribute="bottom" secondItem="6Zk-9C-qVy" secondAttribute="bottom" id="rUA-af-tQO"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="ukJ-F8-vAd"/>
                                             <constraint firstAttribute="trailing" secondItem="6Zk-9C-qVy" secondAttribute="trailing" constant="16" id="vsy-6Y-2dc"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rvA-Nx-Yxf" userLabel="Averages Stack View">
-                                        <rect key="frame" x="0.0" y="124.5" width="563" height="50"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rvA-Nx-Yxf" userLabel="Averages Stack View">
+                                        <rect key="frame" x="0.0" y="139" width="563" height="36"/>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="vy1-CT-CQG" secondAttribute="bottom" constant="68" placeholder="YES" id="2uK-jg-Nda"/>
+                                </constraints>
                             </stackView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="QXc-Lr-rop" secondAttribute="bottom" constant="175" placeholder="YES" id="qIv-Iw-95u"/>
+                        </constraints>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHQ-Vj-3Jm" userLabel="Top Seperator Line">
                         <rect key="frame" x="0.0" y="0.0" width="563" height="0.5"/>
@@ -106,8 +116,8 @@
             <connections>
                 <outlet property="averageLabel" destination="6Zk-9C-qVy" id="Osb-V2-fRu"/>
                 <outlet property="averagesStackView" destination="rvA-Nx-Yxf" id="bdC-m3-Dsm"/>
-                <outlet property="bodyStackView" destination="Xpn-ys-ZoG" id="DGe-kb-G3a"/>
                 <outlet property="bottomSeparatorLine" destination="gbf-DK-8pr" id="zJi-cO-boM"/>
+                <outlet property="dataStackView" destination="Xpn-ys-ZoG" id="2bZ-Vl-X2G"/>
                 <outlet property="topSeparatorLine" destination="tHQ-Vj-3Jm" id="YhX-QM-c9n"/>
                 <outlet property="totalLabel" destination="XMQ-Kx-SxE" id="rSo-Fy-xrY"/>
                 <outlet property="totalPostsStackView" destination="QXc-Lr-rop" id="Oci-mO-CPW"/>

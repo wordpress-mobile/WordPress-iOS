@@ -15,7 +15,7 @@ class AnnualSiteStatsCell: UITableViewCell, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var totalPostsStackView: UIStackView!
-    @IBOutlet weak var bodyStackView: UIStackView!
+    @IBOutlet weak var dataStackView: UIStackView!
     @IBOutlet weak var totalsStackView: UIStackView!
     @IBOutlet weak var averagesStackView: UIStackView!
 
@@ -70,12 +70,12 @@ private extension AnnualSiteStatsCell {
         guard let totalPostsRow = totalPostsRow,
             let totalsDataRows = totalsDataRows,
             let averagesDataRows = averagesDataRows else {
-                bodyStackView.isHidden = true
+                dataStackView.isHidden = true
                 addRows([], toStackView: totalPostsStackView, limitRowsDisplayed: false)
                 return
         }
 
-        bodyStackView.isHidden = false
+        dataStackView.isHidden = false
         addRows([totalPostsRow], toStackView: totalPostsStackView, limitRowsDisplayed: false)
         addRows(totalsDataRows, toStackView: totalsStackView, limitRowsDisplayed: false)
         addRows(averagesDataRows, toStackView: averagesStackView, limitRowsDisplayed: false)
