@@ -9,7 +9,7 @@ extension UITableViewCell {
 
         let numberOfDataRows = dataRows.count
 
-        if numberOfDataRows == 0 {
+        guard numberOfDataRows > 0 else {
             let row = StatsNoDataRow.loadFromNib()
             rowsStackView.addArrangedSubview(row)
             return
