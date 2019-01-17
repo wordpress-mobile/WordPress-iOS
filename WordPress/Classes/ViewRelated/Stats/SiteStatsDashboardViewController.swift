@@ -8,12 +8,12 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
 
-    var insightsTableViewController: SiteStatsInsightsTableViewController?
+    private var currentTableDisplayed: UITableView?
+    private var insightsTableViewController: SiteStatsInsightsTableViewController?
 
     // TODO: replace UITableViewController with real controller names that
-    // corresponds to Stats.
-
-    var statsTableViewController: UITableViewController?
+    // corresponds to DWMY Stats.
+    private var statsTableViewController: UITableViewController?
 
     // MARK: - View
 
@@ -70,6 +70,7 @@ private extension SiteStatsDashboardViewController {
         set {
             filterTabBar?.setSelectedIndex(newValue.rawValue)
             setContainerViewVisibility()
+            setupTableHeaderView()
             saveSelectedPeriodToUserDefaults()
         }
     }
@@ -77,19 +78,9 @@ private extension SiteStatsDashboardViewController {
     func setContainerViewVisibility() {
         statsContainerView.isHidden = currentSelectedPeriod == .insights
         insightsContainerView.isHidden = !statsContainerView.isHidden
-    }
-
-    func shouldShowProgressView(viewController: UIViewController) -> Bool {
-
-        var shouldShow = false
-
-        if viewController == insightsTableViewController {
-            shouldShow = !insightsContainerView.isHidden
-        } else if viewController == statsTableViewController {
-            shouldShow = !statsContainerView.isHidden
-        }
-
-        return shouldShow
+        currentTableDisplayed = statsContainerView.isHidden ?
+                                insightsTableViewController?.tableView :
+                                statsTableViewController?.tableView
     }
 
 }
@@ -102,6 +93,23 @@ private extension SiteStatsDashboardViewController {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
         filterTabBar.items = StatsPeriodType.allPeriods.map { $0.filterTitle }
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func setupTableHeaderView() {
+
+        guard let currentTableDisplayed = currentTableDisplayed else {
+            return
+        }
+
+        filterTabBar.translatesAutoresizingMaskIntoConstraints = false
+
+        currentTableDisplayed.tableHeaderView = filterTabBar
+
+        NSLayoutConstraint.activate([
+            filterTabBar.centerXAnchor.constraint(equalTo: currentTableDisplayed.centerXAnchor),
+            filterTabBar.topAnchor.constraint(equalTo: currentTableDisplayed.topAnchor),
+            filterTabBar.widthAnchor.constraint(equalTo: currentTableDisplayed.widthAnchor),
+            ])
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -121,6 +129,14 @@ private extension SiteStatsDashboardViewController {
     }
 
     func getSelectedPeriodFromUserDefaults() {
+
+        // TODO: remove this when DWMY is added.
+        // Since the filterTabBar is added to tableHeaderView, if DWMY is selected
+        // the filterTabBar disappears and you're stuck on an empty view.
+        if statsTableViewController == nil {
+            currentSelectedPeriod = .insights
+        }
+
         currentSelectedPeriod = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
     }
 }
