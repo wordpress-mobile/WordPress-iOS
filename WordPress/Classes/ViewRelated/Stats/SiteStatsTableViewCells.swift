@@ -154,9 +154,9 @@ struct AnnualSiteStatsRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let totalPostsRowData: StatsTotalRowData
-    let totalsDataRows: [StatsTotalRowData]
-    let averagesDataRows: [StatsTotalRowData]
+    let totalPostsRowData: StatsTotalRowData?
+    let totalsDataRows: [StatsTotalRowData]?
+    let averagesDataRows: [StatsTotalRowData]?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {

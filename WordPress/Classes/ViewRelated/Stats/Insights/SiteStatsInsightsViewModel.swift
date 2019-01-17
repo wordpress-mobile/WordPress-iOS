@@ -405,20 +405,31 @@ private extension SiteStatsInsightsViewModel {
     func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
 
         // TODO: use real data when backend provides it.
+        let fakeValue = Float(987654321).abbreviatedString()
+
+        // Once we can get totalPosts from the store, enable this test (with the correct method)
+        // to add an empty row if there are no posts.
+        //        guard let totalPosts = store.getTotalPosts() else {
+        //            return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
+        //        }
+
 
         // Total Posts row
-        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts, data: "100")
+        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts, data: fakeValue)
 
         // Totals rows
-        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments, data: "100")
-        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes, data: "100")
-        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words, data: "100")
+        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments, data: fakeValue)
+        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes, data: fakeValue)
+        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words, data: fakeValue)
         let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
 
         // Averages rows
-        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments), data: "100")
-        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes), data: "100")
-        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words), data: "100")
+        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments),
+                                                   data: fakeValue)
+        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes),
+                                                data: fakeValue)
+        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words),
+                                                data: fakeValue)
         let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
 
         return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,

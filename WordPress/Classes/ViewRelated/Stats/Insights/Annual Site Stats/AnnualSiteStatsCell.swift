@@ -29,13 +29,13 @@ class AnnualSiteStatsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(totalPostsRowData: StatsTotalRowData,
-                   totalsDataRows: [StatsTotalRowData],
-                   averagesDataRows: [StatsTotalRowData]) {
-        addRows([totalPostsRowData], toStackView: totalPostsStackView, limitRowsDisplayed: false)
-        addRows(totalsDataRows, toStackView: totalsStackView, limitRowsDisplayed: false)
-        addRows(averagesDataRows, toStackView: averagesStackView, limitRowsDisplayed: false)
+    func configure(totalPostsRowData: StatsTotalRowData?,
+                   totalsDataRows: [StatsTotalRowData]?,
+                   averagesDataRows: [StatsTotalRowData]?) {
 
+        addRowsToStackView(totalPostsRow: totalPostsRowData,
+                           totalsDataRows: totalsDataRows,
+                           averagesDataRows: averagesDataRows)
         applyStyles()
     }
 
@@ -57,6 +57,28 @@ private extension AnnualSiteStatsCell {
         Style.configureLabelAsSubtitle(averageLabel)
         Style.configureViewAsSeperator(topSeparatorLine)
         Style.configureViewAsSeperator(bottomSeparatorLine)
+    }
+
+    func addRowsToStackView(totalPostsRow: StatsTotalRowData?,
+                            totalsDataRows: [StatsTotalRowData]?,
+                            averagesDataRows: [StatsTotalRowData]?) {
+
+        // addRows will add a StatsNoDataRow if an empty array is provided.
+        // Since this cell has three row sections, we don't want StatsNoDataRow to appear three times.
+        // So if there is no data, call addRows just once with an empty array.
+
+        guard let totalPostsRow = totalPostsRow,
+            let totalsDataRows = totalsDataRows,
+            let averagesDataRows = averagesDataRows else {
+                bodyStackView.isHidden = true
+                addRows([], toStackView: totalPostsStackView, limitRowsDisplayed: false)
+                return
+        }
+
+        bodyStackView.isHidden = false
+        addRows([totalPostsRow], toStackView: totalPostsStackView, limitRowsDisplayed: false)
+        addRows(totalsDataRows, toStackView: totalsStackView, limitRowsDisplayed: false)
+        addRows(averagesDataRows, toStackView: averagesStackView, limitRowsDisplayed: false)
     }
 
 }
