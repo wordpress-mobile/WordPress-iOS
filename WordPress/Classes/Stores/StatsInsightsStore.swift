@@ -13,6 +13,7 @@ enum InsightAction: Action {
     case receivedPublicize(items: [StatsItem]?)
     case receivedTodaysStats(_ todaysStats: StatsSummary?)
     case receivedPostingActivity(_ postingActivity: StatsStreak?)
+    case receivedTagsAndCategories(_ tagsAndCategories: StatsGroup?)
     case refreshInsights()
 }
 
@@ -52,6 +53,9 @@ struct InsightStoreState {
 
     var postingActivity: StatsStreak?
     var fetchingPostingActivity = false
+
+    var topTagsAndCategories: [StatsItem]?
+    var fetchingTagsAndCategories = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -87,6 +91,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedTodaysStats(todaysStats)
         case .receivedPostingActivity(let postingActivity):
             receivedPostingActivity(postingActivity)
+        case .receivedTagsAndCategories(let tagsAndCategories):
+            receivedTagsAndCategories(tagsAndCategories)
         case .refreshInsights:
             refreshInsights()
         }
@@ -114,16 +120,7 @@ private extension StatsInsightsStore {
 
     func fetchInsights() {
 
-        state.fetchingLatestPostSummary = true
-        state.fetchingAllTimeStats = true
-        state.fetchingMostPopularStats = true
-        state.fetchingDotComFollowers = true
-        state.fetchingEmailFollowers = true
-        state.fetchingPublicize = true
-        state.fetchingTodaysStats = true
-        state.fetchingPostingActivity = true
-        state.fetchingCommentsAuthors = true
-        state.fetchingCommentsPosts = true
+        setAllAsFetching()
 
         SiteStatsInformation.statsService()?.retrieveInsightsStats(allTimeStatsCompletionHandler: { (allTimeStats, error) in
             if error != nil {
@@ -156,7 +153,10 @@ private extension StatsInsightsStore {
             }
             self.actionDispatcher.dispatch(InsightAction.receivedCommentsPosts(commentsPosts))
         }, tagsCategoriesCompletionHandler: { (tagsCategories, error) in
-
+            if error != nil {
+                DDLogInfo("Error fetching tags and categories: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsCategories))
         }, followersDotComCompletionHandler: { (followersDotCom, error) in
             if error != nil {
                 DDLogInfo("Error fetching dot com followers: \(String(describing: error?.localizedDescription))")
@@ -265,6 +265,13 @@ private extension StatsInsightsStore {
         }
     }
 
+    func receivedTagsAndCategories(_ tagsAndCategories: StatsGroup?) {
+        transaction { state in
+            state.topTagsAndCategories = tagsAndCategories?.items as? [StatsItem]
+            state.fetchingTagsAndCategories = false
+        }
+    }
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
@@ -328,6 +335,10 @@ extension StatsInsightsStore {
         return state.todaysStats
     }
 
+    func getTopTagsAndCategories() -> [StatsItem]? {
+        return state.topTagsAndCategories
+    }
+
     /// Summarizes the daily posting count for the month in the given date.
     /// Returns an array containing every day of the month and associated post count.
     ///
@@ -389,7 +400,21 @@ extension StatsInsightsStore {
             state.fetchingTodaysStats ||
             state.fetchingPostingActivity ||
             state.fetchingCommentsAuthors ||
-            state.fetchingCommentsPosts
+            state.fetchingCommentsPosts ||
+            state.fetchingTagsAndCategories
     }
 
+    func setAllAsFetching() {
+        state.fetchingLatestPostSummary = true
+        state.fetchingAllTimeStats = true
+        state.fetchingMostPopularStats = true
+        state.fetchingDotComFollowers = true
+        state.fetchingEmailFollowers = true
+        state.fetchingPublicize = true
+        state.fetchingTodaysStats = true
+        state.fetchingPostingActivity = true
+        state.fetchingCommentsAuthors = true
+        state.fetchingCommentsPosts = true
+        state.fetchingTagsAndCategories = true
+    }
 }
