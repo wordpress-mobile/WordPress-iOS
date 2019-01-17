@@ -38,7 +38,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         set {
             post.postTitle = newValue
         }
-        
+
         get {
             return post.postTitle ?? ""
         }
