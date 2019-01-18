@@ -1,6 +1,6 @@
 # WordPress for iOS #
 
-[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=57a120bbe0f5520100e11c19&branch=develop&build=latest)](https://dashboard.buddybuild.com/apps/57a120bbe0f5520100e11c19/build/latest)
+[![CircleCI](https://circleci.com/gh/wordpress-mobile/WordPress-iOS.svg?style=svg)](https://circleci.com/gh/wordpress-mobile/WordPress-iOS)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 ## Build Instructions
