@@ -558,7 +558,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
         [rows addObject:row];
 
-        if ([feature enabled:FeatureFlagQuickStartV2]) {
+        if ([Feature enabled:FeatureFlagQuickStartV2]) {
             BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
                                                              identifier:BlogDetailsPlanCellIdentifier
                                                                   image:[Gridicon iconOfType:GridiconTypeListCheckmark]

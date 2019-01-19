@@ -45,10 +45,6 @@ extension BlogDetailsViewController {
     }
 
     @objc func shouldShowQuickStartChecklist() -> Bool {
-        guard Feature.enabled(.quickStart) else {
-            return false
-        }
-
         return QuickStartTourGuide.shouldShowChecklist(for: blog)
     }
 
