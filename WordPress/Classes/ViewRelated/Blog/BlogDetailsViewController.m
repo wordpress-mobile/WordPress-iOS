@@ -547,7 +547,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     if ([self shouldShowQuickStartChecklist]) {
-        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                            callback:^{
@@ -557,6 +557,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
         [rows addObject:row];
+
+        if ([feature enabled:FeatureFlagQuickStartV2]) {
+            BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
+                                                             identifier:BlogDetailsPlanCellIdentifier
+                                                                  image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                               callback:^{
+                                                                   [weakSelf showQuickStart];
+                                                               }];
+            row2.quickStartIdentifier = QuickStartTourElementChecklist;
+
+            row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
+            [rows addObject:row2];
+        }
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")

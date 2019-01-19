@@ -13,6 +13,7 @@ enum FeatureFlag: Int {
     case statsRefresh
     case bottomSheetDemo
     case gutenberg
+    case quickStartV2
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -39,6 +40,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
+        case .quickStartV2:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
