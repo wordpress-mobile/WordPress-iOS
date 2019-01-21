@@ -56,7 +56,11 @@ class SiteStatsInsightsViewModel: Observable {
                                                                dataSubtitle: MostPopularStats.dataSubtitle,
                                                                dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
+                tableRows.append(TopTotalsStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
+                                                   dataSubtitle: TagsAndCategories.dataSubtitle,
+                                                   dataRows: createTagsAndCategoriesRows(),
+                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
                 DDLogDebug("Show \(insightType) here.")
             case .comments:
@@ -107,6 +111,7 @@ private extension SiteStatsInsightsViewModel {
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
+        static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
     }
 
     struct AllTimeStats {
@@ -195,6 +200,11 @@ private extension SiteStatsInsightsViewModel {
         static let commentsIcon = Style.imageForGridiconType(.comment)
     }
 
+    struct TagsAndCategories {
+        static let itemSubtitle = NSLocalizedString("Title", comment: "'Tags and Categories' label for the tag/category name.")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
+    }
+
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
@@ -256,27 +266,24 @@ private extension SiteStatsInsightsViewModel {
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: when the API returns the actual value for followers,
-        // send value.abbreviatedString() to the row.
-
         if let totalDotComFollowers = store.getTotalDotComFollowers(),
             !totalDotComFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.wordPressDotCom.title,
-                                                   data: totalDotComFollowers,
+                                                   data: totalDotComFollowers.displayString(),
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
         if let totalEmailFollowers = store.getTotalEmailFollowers(),
             !totalEmailFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.email.title,
-                                                   data: totalEmailFollowers,
+                                                   data: totalEmailFollowers.displayString(),
                                                    icon: FollowerTotals.emailIcon))
         }
 
         if let totalPublicizeFollowers = store.getTotalPublicizeFollowers(),
             !totalPublicizeFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
-                                                   data: totalPublicizeFollowers,
+                                                   data: totalPublicizeFollowers.displayString(),
                                                    icon: FollowerTotals.socialIcon))
         }
 
@@ -287,11 +294,10 @@ private extension SiteStatsInsightsViewModel {
         let publicize = store.getPublicize()
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: when the API returns the actual value for followers,
-        // send value.abbreviatedString() to the row.
-
         publicize?.forEach { item in
-            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, socialIconURL: item.iconURL))
+            dataRows.append(StatsTotalRowData.init(name: item.label,
+                                                   data: item.value.displayString(),
+                                                   socialIconURL: item.iconURL))
         }
 
         return dataRows
@@ -346,6 +352,44 @@ private extension SiteStatsInsightsViewModel {
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+        let tagsAndCategories = store.getTopTagsAndCategories()
+        var dataRows = [StatsTotalRowData]()
+
+        tagsAndCategories?.forEach { item in
+
+            let disclosureURL: URL? = {
+                if let actions = item.actions,
+                    let action = actions.first as? StatsItemAction {
+                    return action.url
+                }
+                return nil
+            }()
+
+            let icon: UIImage? = {
+                switch item.alternateIconValue {
+                case "category":
+                    return Style.imageForGridiconType(.folder)
+               default:
+                    return Style.imageForGridiconType(.tag)
+                }
+            }()
+
+            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
+                                             dataBarPercent: dataBarPercent,
+                                             icon: icon,
+                                             showDisclosure: true,
+                                             disclosureURL: disclosureURL)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {
@@ -409,7 +453,7 @@ private extension SiteStatsInsightsViewModel {
 
         let totalCount = String(format: Followers.totalFollowers,
                                 tabTitle,
-                                totalFollowers)
+                                totalFollowers.displayString())
 
         return tabDataFor(rowData: followers,
                           tabTitle: tabTitle,
@@ -439,7 +483,7 @@ private extension SiteStatsInsightsViewModel {
             }()
 
             rows.append(StatsTotalRowData.init(name: row.label,
-                                               data: row.value,
+                                               data: row.value.displayString(),
                                                dataBarPercent: dataBarPercent,
                                                userIconURL: row.iconURL,
                                                showDisclosure: showDisclosure,
@@ -458,18 +502,44 @@ private extension SiteStatsInsightsViewModel {
         // Get value from maxValueRow
         guard let maxValueRow = maxValueRow,
             let maxValueString = maxValueRow.value,
-            let rowsMaxValue = Float(maxValueString) else {
+            let rowsMaxValue = maxValueString.statFloatValue() else {
                 return nil
         }
 
         // Get value from row
         guard let rowValueString = row.value,
-            let rowValue = Float(rowValueString) else {
+            let rowValue = rowValueString.statFloatValue() else {
                 return nil
         }
 
         // Return percent
         return rowValue / rowsMaxValue
+    }
+
+}
+
+/// These methods format stat Strings for display and usage.
+/// Once the backend is updated to provide number values, this extension
+/// and all it's usage should no longer be necessary.
+///
+
+private extension String {
+
+    /// Strips commas from formatting stat Strings and returns the Float value.
+    ///
+    func statFloatValue() -> Float? {
+        return Float(replacingOccurrences(of: ",", with: "", options: NSString.CompareOptions.literal, range: nil))
+    }
+
+    /// If the String can be converted to a Float, return the abbreviated format for it.
+    /// Otherwise return the original String.
+    ///
+    func displayString() -> String {
+            if let floatValue = statFloatValue() {
+                return floatValue.abbreviatedString()
+            }
+
+            return self
     }
 
 }

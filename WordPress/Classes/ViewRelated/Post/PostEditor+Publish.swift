@@ -5,12 +5,12 @@ extension PostEditor where Self: UIViewController {
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
     var debouncerCallback: (() -> Void) {
         return { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 assertionFailure("self was nil while trying to save a post using Debouncer")
                 return
             }
-            if strongSelf.post.hasLocalChanges() {
-                guard let context = strongSelf.post.managedObjectContext else {
+            if self.post.hasLocalChanges() {
+                guard let context = self.post.managedObjectContext else {
                     return
                 }
                 ContextManager.sharedInstance().save(context)
