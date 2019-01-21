@@ -526,6 +526,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
+    if ([self shouldShowQuickStartChecklist] && [Feature enabled:FeatureFlagQuickStartV2]) {
+        [marr addObject:[self quickStartSectionViewModel]];
+    }
     [marr addObject:[self generalSectionViewModel]];
     [marr addObject:[self publishTypeSectionViewModel]];
     if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
@@ -541,13 +544,44 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
+- (BlogDetailsSection *)quickStartSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+                                                     identifier:BlogDetailsPlanCellIdentifier
+                                                          image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                       callback:^{
+                                                           [weakSelf showQuickStart];
+                                                       }];
+    row.quickStartIdentifier = QuickStartTourElementChecklist;
+
+    row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
+    [rows addObject:row];
+
+    BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
+                                                      identifier:BlogDetailsPlanCellIdentifier
+                                                           image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                        callback:^{
+                                                            [weakSelf showQuickStart];
+                                                        }];
+    row2.quickStartIdentifier = QuickStartTourElementChecklist;
+
+    row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
+    [rows addObject:row2];
+
+    NSString *sectionTitle = NSLocalizedString(@"Quick Start", @"Table view title for the quick start section.");
+    return [[BlogDetailsSection alloc] initWithTitle:sectionTitle andRows:rows];
+}
+
 - (BlogDetailsSection *)generalSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([self shouldShowQuickStartChecklist]) {
-        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+    if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                            callback:^{
@@ -557,19 +591,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
         [rows addObject:row];
-
-        if ([Feature enabled:FeatureFlagQuickStartV2]) {
-            BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
-                                                             identifier:BlogDetailsPlanCellIdentifier
-                                                                  image:[Gridicon iconOfType:GridiconTypeListCheckmark]
-                                                               callback:^{
-                                                                   [weakSelf showQuickStart];
-                                                               }];
-            row2.quickStartIdentifier = QuickStartTourElementChecklist;
-
-            row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
-            [rows addObject:row2];
-        }
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
@@ -1303,6 +1324,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (void)showQuickStart
+{
+    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
+    [self.navigationController showDetailViewController:checklist sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
+}
+
+- (void)showQuickStartCustomize
+{
+    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
+    [self.navigationController showDetailViewController:checklist sender:self];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
+}
+
+- (void)showQuickStartGrow
 {
     QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
     [self.navigationController showDetailViewController:checklist sender:self];
