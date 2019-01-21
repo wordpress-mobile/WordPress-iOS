@@ -3,6 +3,8 @@ import CoreServices
 import WPMediaPicker
 import Gutenberg
 
+public typealias GutenbergMediaPickerHelperCallback = (WPMediaAsset?) -> Void
+
 class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate struct Constants {
@@ -36,7 +38,7 @@ class GutenbergMediaPickerHelper: NSObject {
         return options
     }()
 
-    var didPickMediaCallback: MediaPickerDidPickMediaCallback?
+    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
 
     init(context: UIViewController, post: AbstractPost) {
         self.context = context
@@ -45,7 +47,7 @@ class GutenbergMediaPickerHelper: NSObject {
 
     func presentMediaPickerFullScreen(animated: Bool,
                                       dataSourceType: MediaPickerDataSourceType = .device,
-                                      callback: @escaping MediaPickerDidPickMediaCallback) {
+                                      callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         didPickMediaCallback = callback
 
@@ -77,23 +79,18 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         }
 
         for asset in assets {
-            switch asset {
-            case let media as Media:
-                invokeMediaPickerCallback(url: media.remoteURL)
-            default:
-                continue
-            }
+            invokeMediaPickerCallback(asset: asset)
         }
         picker.dismiss(animated: true, completion: nil)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        invokeMediaPickerCallback(url: nil)
+        invokeMediaPickerCallback(asset: nil)
         picker.dismiss(animated: true, completion: nil)
     }
 
-    fileprivate func invokeMediaPickerCallback(url: String?) {
-        didPickMediaCallback?(url)
+    fileprivate func invokeMediaPickerCallback(asset: WPMediaAsset?) {
+        didPickMediaCallback?(asset)
         didPickMediaCallback = nil
     }
 }

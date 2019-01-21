@@ -107,6 +107,10 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergMediaPickerHelper(context: self, post: post)
     }()
 
+    lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
+        return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+    }()
+
     var hasFailedMedia: Bool {
         return false
     }
@@ -274,10 +278,29 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
+
     func gutenbergDidRequestMediaPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
-                                                       callback: callback)
+                                                       callback: {(asset) in
+                                                        guard let media = asset as? Media else {
+                                                            callback(nil)
+                                                            return
+                                                        }
+                                                        self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
+        })
+    }
+
+    func gutenbergDidRequestMediaFromDevicePicker(with callback: @escaping MediaPickerDidPickMediaToUploadCallback) {
+        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       dataSourceType: .device,
+                                                       callback: {(asset) in
+                                                        guard let phAsset = asset as? PHAsset else {
+                                                            callback(nil, nil)
+                                                            return
+                                                        }
+                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
+        })
     }
 
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
