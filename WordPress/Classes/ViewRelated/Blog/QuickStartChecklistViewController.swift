@@ -115,10 +115,12 @@ class QuickStartChecklistViewController: UITableViewController {
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     private var blog: Blog
+    private var tours: [QuickStartTour]
     private var completedTours = Set<String>()
 
-    init(blog: Blog) {
+    init(blog: Blog, tours: [QuickStartTour]) {
         self.blog = blog
+        self.tours = tours
 
         super.init()
         loadCompletedTours()

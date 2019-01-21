@@ -1323,30 +1323,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showQuickStart
-{
-    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
-    [self.navigationController showDetailViewController:checklist sender:self];
-
-    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
-}
-
-- (void)showQuickStartCustomize
-{
-    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
-    [self.navigationController showDetailViewController:checklist sender:self];
-
-    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
-}
-
-- (void)showQuickStartGrow
-{
-    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
-    [self.navigationController showDetailViewController:checklist sender:self];
-
-    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
-}
-
 - (void)showActivity
 {
     ActivityListViewController *controller = [[ActivityListViewController alloc] initWithBlog:self.blog];
