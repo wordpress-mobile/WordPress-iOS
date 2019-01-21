@@ -9,7 +9,7 @@ open class PlanService: LocalCoreDataService {
                           failure: @escaping (Error?) -> Void) {
 
         let accountService = AccountService(managedObjectContext: managedObjectContext)
-        var remote: PlanServiceRemote
+        let remote: PlanServiceRemote
         if let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
             remote = PlanServiceRemote(wordPressComRestApi: api)
         } else {
