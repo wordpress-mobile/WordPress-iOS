@@ -334,12 +334,6 @@ CHECKOUT OPTIONS:
   Gutenberg:
     :commit: 625bce184de38f81af9f43be8a314f10e4dca35a
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  react-native-keyboard-aware-scroll-view:
-    :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
-    :tag: gb-v0.8.2
-  react-native-safe-area:
-    :git: https://github.com/miyabi/react-native-safe-area.git
-    :tag: v0.5.0
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
