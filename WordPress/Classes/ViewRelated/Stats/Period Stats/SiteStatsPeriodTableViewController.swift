@@ -1,48 +1,68 @@
 import UIKit
+import WordPressFlux
 
 class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
 
+    private let store = StoreContainer.shared.statsPeriod
+    private var changeReceipt: Receipt?
+
+    private var viewModel: SiteStatsPeriodViewModel?
+
+    private lazy var tableHandler: ImmuTableViewHandler = {
+        return ImmuTableViewHandler(takeOver: self)
+    }()
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.backgroundColor = WPStyleGuide.greyLighten30()
-        setupSimpleTotalsCell()
-        // refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+
+        WPStyleGuide.Stats.configureTable(tableView)
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        initViewModel()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+}
+
+// MARK: - Private Extension
+
+private extension SiteStatsPeriodTableViewController {
+
+    func initViewModel() {
+        viewModel = SiteStatsPeriodViewModel(store: store)
+        refreshTableView()
+
+//        changeReceipt = viewModel?.onChange { [weak self] in
+//            guard let store = self?.store,
+//                !store.isFetching else {
+//                    return
+//            }
+//
+//            self?.refreshTableView()
+//        }
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    func tableRowTypes() -> [ImmuTableRow.Type] {
+        return [CellHeaderRow.self, TopTotalsStatsRow.self]
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    // MARK: - Table Refreshing
+
+    func refreshTableView() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.viewModel = viewModel.tableViewModel()
+        refreshControl?.endRefreshing()
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SimpleTotalsCell.defaultReuseID, for: indexPath) as! SimpleTotalsCell
-
-        cell.configure(dataRows: [])
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    func setupSimpleTotalsCell() {
-        let nib = UINib(nibName: SimpleTotalsCell.defaultNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: SimpleTotalsCell.defaultReuseID)
+    @objc func refreshData() {
+        refreshControl?.beginRefreshing()
+        viewModel?.refreshPeriodData()
     }
 
 }
