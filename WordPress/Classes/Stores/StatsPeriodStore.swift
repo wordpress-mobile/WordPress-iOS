@@ -3,7 +3,7 @@ import WordPressFlux
 import WordPressComStatsiOS
 
 enum PeriodAction: Action {
-
+    case refreshPeriodData()
 }
 
 enum PeriodQuery {
@@ -75,8 +75,12 @@ private extension StatsPeriodStore {
 
 extension StatsPeriodStore {
 
+    func getPostsAndPages() -> [StatsItem]? {
+        return [StatsItem]()
+    }
+
     var isFetching: Bool {
-        return true
+        return false
     }
 
 }
