@@ -167,7 +167,7 @@ PODS:
     - React/RCTBlob
   - RNSVG (8.0.9):
     - React
-  - RNTAztecView (0.1.5):
+  - RNTAztecView (0.3.3):
     - React
     - WordPress-Aztec-iOS
   - SimulatorStatusMagic (2.3.2)
@@ -244,7 +244,7 @@ DEPENDENCIES:
   - react-native-keyboard-aware-scroll-view (from `https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git`, tag `gb-v0.8.2`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `8.0.9-gb.0`)
-  - RNTAztecView (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/RNTAztecView.podspec.json`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, branch `issue/rnaztecview-podspec`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
@@ -320,7 +320,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/RNTAztecView.podspec.json
+    :branch: issue/rnaztecview-podspec
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -344,8 +345,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: 46ca3f35d62919febcf7feecc6fbae23095d28bc
-    :git: https://github.com/wordpress-mobile/gutenberg-mobile.git
+    :commit: 4e5e39570ad6237fe0c22a2aac0e88a1fd75b9d2
+    :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -384,7 +385,7 @@ SPEC CHECKSUMS:
   react-native-keyboard-aware-scroll-view: 26f978f88bbc46507a7609c608358ccef4bd9503
   react-native-safe-area: 7dc92953fce43bf36ab5ecae2fb4ffa2bda9a203
   RNSVG: 6d5813dd9c6a8e041e142abf1372faf012ce5759
-  RNTAztecView: 0fb1947d32de7dc4beb021cd1d7883940eb27d2c
+  RNTAztecView: 7897dffc4fbc4a6d9f4321f1835c0e6a1f4d0f64
   SimulatorStatusMagic: 0c0e711acef6e70dd8a0710962347635a9cdef24
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -400,6 +401,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 370830544cff3b5b7e33a896591d1b7dcbf5aae2
+PODFILE CHECKSUM: 5a59cf99e7520be4bcc71fef3ec1d23f79bfe291
 
 COCOAPODS: 1.5.3
