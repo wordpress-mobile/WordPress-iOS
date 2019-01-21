@@ -62,7 +62,8 @@ class SiteStatsInsightsViewModel: Observable {
                                                    dataRows: createTagsAndCategoriesRows(),
                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.annualSiteStats))
+                tableRows.append(createAnnualSiteStatsRow())
             case .comments:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
                 tableRows.append(createCommentsRow())
@@ -112,6 +113,7 @@ private extension SiteStatsInsightsViewModel {
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
+        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
     }
 
     struct AllTimeStats {
@@ -205,6 +207,14 @@ private extension SiteStatsInsightsViewModel {
         static let dataSubtitle = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
     }
 
+    struct AnnualSiteStats {
+        static let totalPosts = NSLocalizedString("Total Posts", comment: "'Annual Site Stats' label for the total number of posts.")
+        static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
+        static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
+        static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
+        static let perPost = NSLocalizedString("%@ Per Post", comment: "'Annual Site Stats' label for averages per post. %@ will be Comments, Likes, or Words.")
+    }
+
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
@@ -295,8 +305,10 @@ private extension SiteStatsInsightsViewModel {
         var dataRows = [StatsTotalRowData]()
 
         publicize?.forEach { item in
+            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: publicize?.first)
             dataRows.append(StatsTotalRowData.init(name: item.label,
                                                    data: item.value.displayString(),
+                                                   dataBarPercent: dataBarPercent,
                                                    socialIconURL: item.iconURL))
         }
 
@@ -390,6 +402,42 @@ private extension SiteStatsInsightsViewModel {
         }
 
         return dataRows
+    }
+
+    func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
+
+        // TODO: use real data when backend provides it.
+        let fakeValue = Float(987654321).abbreviatedString()
+
+        // Once we can get totalPosts from the store, enable this test (with the correct method)
+        // to add an empty row if there are no posts.
+        //        guard let totalPosts = store.getTotalPosts() else {
+        //            return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
+        //        }
+
+
+        // Total Posts row
+        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts, data: fakeValue)
+
+        // Totals rows
+        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments, data: fakeValue)
+        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes, data: fakeValue)
+        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words, data: fakeValue)
+        let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
+
+        // Averages rows
+        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments),
+                                                   data: fakeValue)
+        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes),
+                                                data: fakeValue)
+        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words),
+                                                data: fakeValue)
+        let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
+
+        return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
+                                  totalsDataRows: totalsDataRows,
+                                  averagesDataRows: averageDataRows)
+
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {

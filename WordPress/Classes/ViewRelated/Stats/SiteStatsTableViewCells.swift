@@ -146,6 +146,29 @@ struct TopTotalsStatsRow: ImmuTableRow {
     }
 }
 
+struct AnnualSiteStatsRow: ImmuTableRow {
+
+    typealias CellType = AnnualSiteStatsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let totalPostsRowData: StatsTotalRowData?
+    let totalsDataRows: [StatsTotalRowData]?
+    let averagesDataRows: [StatsTotalRowData]?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(totalPostsRowData: totalPostsRowData, totalsDataRows: totalsDataRows, averagesDataRows: averagesDataRows)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
