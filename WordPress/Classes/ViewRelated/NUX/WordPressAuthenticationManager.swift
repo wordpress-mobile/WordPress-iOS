@@ -115,7 +115,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     }
 
     /// Returns true if a default WordPress.com account exists in the app./
-    var defaultWordPressComAccountExists: Bool {
+    var allowWPComLogin: Bool {
         let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
         return accountService.defaultWordPressComAccount() != nil
     }
