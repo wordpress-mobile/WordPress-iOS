@@ -11,7 +11,8 @@ enum PeriodQuery {
 }
 
 struct PeriodStoreState {
-
+    var pagesAndPosts: [StatsItem]?
+    var fetchingPagesAndPosts = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -27,8 +28,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        default:
-            break
+        case .refreshPeriodData:
+            refreshPeriodData()
         }
     }
 
@@ -54,6 +55,8 @@ private extension StatsPeriodStore {
 
     func fetchPeriodData() {
 
+        // TODO: get some data
+
     }
 
     func refreshPeriodData() {
@@ -76,11 +79,11 @@ private extension StatsPeriodStore {
 extension StatsPeriodStore {
 
     func getPostsAndPages() -> [StatsItem]? {
-        return [StatsItem]()
+        return state.pagesAndPosts
     }
 
     var isFetching: Bool {
-        return false
+        return state.fetchingPagesAndPosts
     }
 
 }
