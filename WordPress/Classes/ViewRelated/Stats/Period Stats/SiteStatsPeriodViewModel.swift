@@ -70,13 +70,24 @@ private extension SiteStatsPeriodViewModel {
     // Create Period Rows
 
     func createPostsAndPagesRows() -> [StatsTotalRowData] {
-        let postsAndPages = store.getPostsAndPages()
+
         var dataRows = [StatsTotalRowData]()
 
+        // TODO: replace with real Pages and Posts data from the Store
+        // let postsAndPages = store.getPostsAndPages()
 
+        let icon = Style.imageForGridiconType(.folder)
+
+        for count in 1...10 {
+            let row = StatsTotalRowData.init(name: "Row \(count)" ,
+                                             data: "666",
+                                             icon: icon,
+                                             showDisclosure: true)
+
+            dataRows.append(row)
+        }
 
         return dataRows
     }
-
 
 }

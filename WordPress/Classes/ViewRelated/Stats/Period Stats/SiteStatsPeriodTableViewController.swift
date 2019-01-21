@@ -31,6 +31,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
 
 private extension SiteStatsPeriodTableViewController {
 
+    // MARK: - View Model
+
     func initViewModel() {
         viewModel = SiteStatsPeriodViewModel(store: store)
         refreshTableView()
