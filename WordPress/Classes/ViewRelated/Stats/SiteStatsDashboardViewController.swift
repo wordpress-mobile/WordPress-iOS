@@ -44,10 +44,10 @@ private extension SiteStatsDashboardViewController {
 
     enum StatsPeriodType: Int {
         case insights = 0
-        case days = 1
-        case weeks = 2
-        case months = 3
-        case years = 4
+        case days
+        case weeks
+        case months
+        case years
 
         static let allPeriods = [StatsPeriodType.insights, .days, .weeks, .months, .years]
 
@@ -93,8 +93,7 @@ private extension SiteStatsDashboardViewController {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
-
-        // TODO: reload view based on selected tab
+        periodTableViewController?.periodDisplayed = PeriodDisplayed.init(rawValue: currentSelectedPeriod.rawValue)
     }
 
 }

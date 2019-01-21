@@ -1,9 +1,25 @@
 import UIKit
 import WordPressFlux
 
+enum PeriodDisplayed: Int {
+    case days = 1
+    case weeks
+    case months
+    case years
+}
+
 class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
+
+    var periodDisplayed: PeriodDisplayed? = .days {
+        didSet {
+            guard periodDisplayed != nil else {
+                return
+            }
+            refreshData()
+        }
+    }
 
     private let store = StoreContainer.shared.statsPeriod
     private var changeReceipt: Receipt?
@@ -35,7 +51,11 @@ private extension SiteStatsPeriodTableViewController {
 
     func initViewModel() {
         viewModel = SiteStatsPeriodViewModel(store: store)
+
+        // TODO: remove this when code below is utilized.
         refreshTableView()
+
+        // TODO: uncomment this when the Store actually does something.
 
 //        changeReceipt = viewModel?.onChange { [weak self] in
 //            guard let store = self?.store,
@@ -64,6 +84,8 @@ private extension SiteStatsPeriodTableViewController {
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
+
+        // TODO: use PeriodDisplayed when fetching data
         viewModel?.refreshPeriodData()
     }
 
