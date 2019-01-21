@@ -8,12 +8,8 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
 
-    var insightsTableViewController: SiteStatsInsightsTableViewController?
-
-    // TODO: replace UITableViewController with real controller names that
-    // corresponds to Stats.
-
-    var statsTableViewController: UITableViewController?
+    private var insightsTableViewController: SiteStatsInsightsTableViewController?
+    private var periodTableViewController: SiteStatsPeriodTableViewController?
 
     // MARK: - View
 
@@ -26,6 +22,10 @@ class SiteStatsDashboardViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
             insightsTableViewController = insightsTableVC
+        }
+
+        if let periodTableVC = segue.destination as? SiteStatsPeriodTableViewController {
+            periodTableViewController = periodTableVC
         }
     }
 
@@ -77,19 +77,6 @@ private extension SiteStatsDashboardViewController {
     func setContainerViewVisibility() {
         statsContainerView.isHidden = currentSelectedPeriod == .insights
         insightsContainerView.isHidden = !statsContainerView.isHidden
-    }
-
-    func shouldShowProgressView(viewController: UIViewController) -> Bool {
-
-        var shouldShow = false
-
-        if viewController == insightsTableViewController {
-            shouldShow = !insightsContainerView.isHidden
-        } else if viewController == statsTableViewController {
-            shouldShow = !statsContainerView.isHidden
-        }
-
-        return shouldShow
     }
 
 }
