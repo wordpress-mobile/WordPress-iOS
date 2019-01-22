@@ -305,7 +305,7 @@ private extension SiteStatsInsightsViewModel {
         var dataRows = [StatsTotalRowData]()
 
         publicize?.forEach { item in
-            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: publicize?.first)
+            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: publicize?.first)
             dataRows.append(StatsTotalRowData.init(name: item.label,
                                                    data: item.value.displayString(),
                                                    dataBarPercent: dataBarPercent,
@@ -389,7 +389,7 @@ private extension SiteStatsInsightsViewModel {
                 }
             }()
 
-            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
+            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
 
             let row = StatsTotalRowData.init(name: item.label,
                                              data: item.value.displayString(),
@@ -521,7 +521,7 @@ private extension SiteStatsInsightsViewModel {
         var rows = [StatsTotalRowData]()
 
         rowData?.forEach { row in
-            let dataBarPercent = showDataBar ? dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
+            let dataBarPercent = showDataBar ? StatsDataHelper.dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
 
             let disclosureURL: URL? = {
                 if showDisclosure, let action = row.actions.first as? StatsItemAction {
@@ -543,51 +543,6 @@ private extension SiteStatsInsightsViewModel {
                             dataSubtitle: dataSubtitle,
                             totalCount: totalCount,
                             dataRows: rows)
-    }
-
-    func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
-
-        // Get value from maxValueRow
-        guard let maxValueRow = maxValueRow,
-            let maxValueString = maxValueRow.value,
-            let rowsMaxValue = maxValueString.statFloatValue() else {
-                return nil
-        }
-
-        // Get value from row
-        guard let rowValueString = row.value,
-            let rowValue = rowValueString.statFloatValue() else {
-                return nil
-        }
-
-        // Return percent
-        return rowValue / rowsMaxValue
-    }
-
-}
-
-/// These methods format stat Strings for display and usage.
-/// Once the backend is updated to provide number values, this extension
-/// and all it's usage should no longer be necessary.
-///
-
-private extension String {
-
-    /// Strips commas from formatting stat Strings and returns the Float value.
-    ///
-    func statFloatValue() -> Float? {
-        return Float(replacingOccurrences(of: ",", with: "", options: NSString.CompareOptions.literal, range: nil))
-    }
-
-    /// If the String can be converted to a Float, return the abbreviated format for it.
-    /// Otherwise return the original String.
-    ///
-    func displayString() -> String {
-            if let floatValue = statFloatValue() {
-                return floatValue.abbreviatedString()
-            }
-
-            return self
     }
 
 }
