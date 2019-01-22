@@ -235,19 +235,19 @@ open class QuickStartTourGuide: NSObject {
 
     static let customizeListTours: [QuickStartTour] = [
         QuickStartCreateTour(),
-        // upload site icon
+        QuickStartSiteIconTour(),
         QuickStartThemeTour(),
         QuickStartCustomizeTour(),
-        // create new page
+        QuickStartNewPageTour(),
         QuickStartViewTour()
     ]
 
     static let growListTours: [QuickStartTour] = [
-        // enable post sharing
+        QuickStartPostSharingTour(),
         QuickStartPublishTour(),
         QuickStartFollowTour(),
-        // check your stats
-        // explore plans
+        QuickStartCheckStatsTour(),
+        QuickStartExplorePlansTour()
     ]
 }
 

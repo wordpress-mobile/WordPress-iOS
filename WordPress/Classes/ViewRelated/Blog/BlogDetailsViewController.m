@@ -333,7 +333,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showQuickStart];
+            [self showQuickStartV1];
             break;
         case BlogDetailsSubsectionStats:
             self.restorableSelectedIndexPath = indexPath;
@@ -553,7 +553,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      identifier:BlogDetailsPlanCellIdentifier
                                                           image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                        callback:^{
-                                                           [weakSelf showQuickStart];
+                                                           [weakSelf showQuickStartCustomize];
                                                        }];
     row.quickStartIdentifier = QuickStartTourElementChecklist;
 
@@ -564,7 +564,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                       identifier:BlogDetailsPlanCellIdentifier
                                                            image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                         callback:^{
-                                                            [weakSelf showQuickStart];
+                                                            [weakSelf showQuickStartGrow];
                                                         }];
     row2.quickStartIdentifier = QuickStartTourElementChecklist;
 
@@ -585,7 +585,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                            callback:^{
-                                                               [weakSelf showQuickStart];
+                                                               [weakSelf showQuickStartV1];
                                                            }];
         row.quickStartIdentifier = QuickStartTourElementChecklist;
 
@@ -1463,7 +1463,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
             if (generalSectionCountBefore != generalSectionCountAfter) {
                 // quick start was just enabled
-                [self showQuickStart];
+                if ([Feature enabled:FeatureFlagQuickStartV2]) {
+                    [self showQuickStartCustomize];
+                } else {
+                    [self showQuickStartV1];
+                }
             }
         }
         [self reloadTableViewPreservingSelection];
