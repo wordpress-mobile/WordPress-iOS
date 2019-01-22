@@ -96,7 +96,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
         guard size.height > 0, size.width > 0 else {
             return CGSize(width: 1.0, height: 1.0)
         }
-        return imageView.intrinsicContentSize
+        return size
     }
 
     func clean() {
