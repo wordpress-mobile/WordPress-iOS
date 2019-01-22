@@ -56,9 +56,14 @@ class SiteStatsInsightsViewModel: Observable {
                                                                dataSubtitle: MostPopularStats.dataSubtitle,
                                                                dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
+                tableRows.append(TopTotalsStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
+                                                   dataSubtitle: TagsAndCategories.dataSubtitle,
+                                                   dataRows: createTagsAndCategoriesRows(),
+                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
-                DDLogDebug("Show \(insightType) here.")
+                tableRows.append(CellHeaderRow(title: InsightsHeaders.annualSiteStats))
+                tableRows.append(createAnnualSiteStatsRow())
             case .comments:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
                 tableRows.append(createCommentsRow())
@@ -107,6 +112,8 @@ private extension SiteStatsInsightsViewModel {
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
+        static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
+        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
     }
 
     struct AllTimeStats {
@@ -195,6 +202,19 @@ private extension SiteStatsInsightsViewModel {
         static let commentsIcon = Style.imageForGridiconType(.comment)
     }
 
+    struct TagsAndCategories {
+        static let itemSubtitle = NSLocalizedString("Title", comment: "'Tags and Categories' label for the tag/category name.")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
+    }
+
+    struct AnnualSiteStats {
+        static let totalPosts = NSLocalizedString("Total Posts", comment: "'Annual Site Stats' label for the total number of posts.")
+        static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
+        static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
+        static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
+        static let perPost = NSLocalizedString("%@ Per Post", comment: "'Annual Site Stats' label for averages per post. %@ will be Comments, Likes, or Words.")
+    }
+
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
         let allTimeStats = store.getAllTimeStats()
         var dataRows = [StatsTotalRowData]()
@@ -256,27 +276,24 @@ private extension SiteStatsInsightsViewModel {
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: when the API returns the actual value for followers,
-        // send value.abbreviatedString() to the row.
-
         if let totalDotComFollowers = store.getTotalDotComFollowers(),
             !totalDotComFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.wordPressDotCom.title,
-                                                   data: totalDotComFollowers,
+                                                   data: totalDotComFollowers.displayString(),
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
         if let totalEmailFollowers = store.getTotalEmailFollowers(),
             !totalEmailFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.email.title,
-                                                   data: totalEmailFollowers,
+                                                   data: totalEmailFollowers.displayString(),
                                                    icon: FollowerTotals.emailIcon))
         }
 
         if let totalPublicizeFollowers = store.getTotalPublicizeFollowers(),
             !totalPublicizeFollowers.isEmpty {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
-                                                   data: totalPublicizeFollowers,
+                                                   data: totalPublicizeFollowers.displayString(),
                                                    icon: FollowerTotals.socialIcon))
         }
 
@@ -287,11 +304,12 @@ private extension SiteStatsInsightsViewModel {
         let publicize = store.getPublicize()
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: when the API returns the actual value for followers,
-        // send value.abbreviatedString() to the row.
-
         publicize?.forEach { item in
-            dataRows.append(StatsTotalRowData.init(name: item.label, data: item.value, socialIconURL: item.iconURL))
+            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: publicize?.first)
+            dataRows.append(StatsTotalRowData.init(name: item.label,
+                                                   data: item.value.displayString(),
+                                                   dataBarPercent: dataBarPercent,
+                                                   socialIconURL: item.iconURL))
         }
 
         return dataRows
@@ -346,6 +364,80 @@ private extension SiteStatsInsightsViewModel {
         monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+        let tagsAndCategories = store.getTopTagsAndCategories()
+        var dataRows = [StatsTotalRowData]()
+
+        tagsAndCategories?.forEach { item in
+
+            let disclosureURL: URL? = {
+                if let actions = item.actions,
+                    let action = actions.first as? StatsItemAction {
+                    return action.url
+                }
+                return nil
+            }()
+
+            let icon: UIImage? = {
+                switch item.alternateIconValue {
+                case "category":
+                    return Style.imageForGridiconType(.folder)
+               default:
+                    return Style.imageForGridiconType(.tag)
+                }
+            }()
+
+            let dataBarPercent = dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
+                                             dataBarPercent: dataBarPercent,
+                                             icon: icon,
+                                             showDisclosure: true,
+                                             disclosureURL: disclosureURL)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
+    }
+
+    func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
+
+        // TODO: use real data when backend provides it.
+        let fakeValue = Float(987654321).abbreviatedString()
+
+        // Once we can get totalPosts from the store, enable this test (with the correct method)
+        // to add an empty row if there are no posts.
+        //        guard let totalPosts = store.getTotalPosts() else {
+        //            return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
+        //        }
+
+
+        // Total Posts row
+        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts, data: fakeValue)
+
+        // Totals rows
+        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments, data: fakeValue)
+        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes, data: fakeValue)
+        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words, data: fakeValue)
+        let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
+
+        // Averages rows
+        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments),
+                                                   data: fakeValue)
+        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes),
+                                                data: fakeValue)
+        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words),
+                                                data: fakeValue)
+        let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
+
+        return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
+                                  totalsDataRows: totalsDataRows,
+                                  averagesDataRows: averageDataRows)
+
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {
@@ -409,7 +501,7 @@ private extension SiteStatsInsightsViewModel {
 
         let totalCount = String(format: Followers.totalFollowers,
                                 tabTitle,
-                                totalFollowers)
+                                totalFollowers.displayString())
 
         return tabDataFor(rowData: followers,
                           tabTitle: tabTitle,
@@ -439,7 +531,7 @@ private extension SiteStatsInsightsViewModel {
             }()
 
             rows.append(StatsTotalRowData.init(name: row.label,
-                                               data: row.value,
+                                               data: row.value.displayString(),
                                                dataBarPercent: dataBarPercent,
                                                userIconURL: row.iconURL,
                                                showDisclosure: showDisclosure,
@@ -458,18 +550,44 @@ private extension SiteStatsInsightsViewModel {
         // Get value from maxValueRow
         guard let maxValueRow = maxValueRow,
             let maxValueString = maxValueRow.value,
-            let rowsMaxValue = Float(maxValueString) else {
+            let rowsMaxValue = maxValueString.statFloatValue() else {
                 return nil
         }
 
         // Get value from row
         guard let rowValueString = row.value,
-            let rowValue = Float(rowValueString) else {
+            let rowValue = rowValueString.statFloatValue() else {
                 return nil
         }
 
         // Return percent
         return rowValue / rowsMaxValue
+    }
+
+}
+
+/// These methods format stat Strings for display and usage.
+/// Once the backend is updated to provide number values, this extension
+/// and all it's usage should no longer be necessary.
+///
+
+private extension String {
+
+    /// Strips commas from formatting stat Strings and returns the Float value.
+    ///
+    func statFloatValue() -> Float? {
+        return Float(replacingOccurrences(of: ",", with: "", options: NSString.CompareOptions.literal, range: nil))
+    }
+
+    /// If the String can be converted to a Float, return the abbreviated format for it.
+    /// Otherwise return the original String.
+    ///
+    func displayString() -> String {
+            if let floatValue = statFloatValue() {
+                return floatValue.abbreviatedString()
+            }
+
+            return self
     }
 
 }

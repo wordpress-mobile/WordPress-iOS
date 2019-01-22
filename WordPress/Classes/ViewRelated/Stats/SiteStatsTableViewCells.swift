@@ -119,6 +119,56 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }
 }
 
+struct TopTotalsStatsRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
+struct AnnualSiteStatsRow: ImmuTableRow {
+
+    typealias CellType = AnnualSiteStatsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let totalPostsRowData: StatsTotalRowData?
+    let totalsDataRows: [StatsTotalRowData]?
+    let averagesDataRows: [StatsTotalRowData]?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(totalPostsRowData: totalPostsRowData, totalsDataRows: totalsDataRows, averagesDataRows: averagesDataRows)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
