@@ -2,6 +2,18 @@ import UIKit
 import Alamofire
 import Gridicons
 
+private extension String {
+    func hexAsColor() -> UIColor? {
+        return UIColor(hexString: self)
+    }
+}
+
+private extension SiteSegment {
+    var iconTintColor: UIColor? {
+        return self.iconColor?.hexAsColor()
+    }
+}
+
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var title: UILabel!
@@ -14,7 +26,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             if let modelIcon = model?.icon {
                 icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
                     let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
-                    if let tintColor = self?.model?.iconColor?.asColor() {
+                    if let tintColor = self?.model?.iconTintColor {
                         self?.icon.tintColor = tintColor
                     }
                     self?.icon.image = tintedImage
@@ -61,11 +73,5 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
 
     private func styleAccessoryView() {
         accessoryType = .disclosureIndicator
-    }
-}
-
-private extension String {
-    func asColor() -> UIColor? {
-        return UIColor(hexString: self)
     }
 }
