@@ -96,7 +96,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '9b51e40c1850ad66a9665361a1e71c863b3f00ec'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'b179fe9ed60c57156059b866dc235d8da9d1954f'
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'

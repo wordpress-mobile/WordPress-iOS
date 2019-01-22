@@ -31,7 +31,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromSiteMediaLibrary(media: Media, callback: @escaping MediaPickerDidPickMediaCallback) {
-        callback(media.remoteURL)
+        callback(media.mediaID?.intValue, media.remoteURL)
     }
 
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaToUploadCallback) {
@@ -42,16 +42,16 @@ class GutenbergMediaInserterHelper: NSObject {
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
             guard let thumbImage = image else {
-                callback(nil, media.uploadID)
+                callback(media.uploadID, nil)
                 return
             }
             let filePath = NSTemporaryDirectory() + UUID().uuidString + ".jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
                 try thumbImage.writeJPEGToURL(url)
-                callback(url.absoluteString, media.uploadID)
+                callback(media.uploadID, url.absoluteString)
             } catch {
-                callback(nil, media.uploadID)
+                callback(media.uploadID, nil)
                 return
             }
         }
@@ -90,18 +90,18 @@ class GutenbergMediaInserterHelper: NSObject {
         case .processing:
             DDLogInfo("Creating media")
         case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .uploading, progress: 0.1, url: url)
+            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .uploading, progress: 0.1, url: url, serverID: nil)
         case .uploading:
-            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .uploading, progress: 0.1, url: nil)
+            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .uploading, progress: 0.1, url: nil, serverID: nil)
         case .ended:
-            guard let urlString = media.remoteURL, let url = URL(string: urlString) else {
+            guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.intValue else {
                 break
             }
-            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .succeeded, progress: 1, url: url)
+            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
         case .failed:
-            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .failed, progress: 0, url: nil)
+            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .failed, progress: 0, url: nil, serverID: nil)
         case .progress(let value):
-            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .uploading, progress: Float(value), url: nil)
+            gutenberg.mediaUploadUpdate(id: media.uploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
         }
     }
 }

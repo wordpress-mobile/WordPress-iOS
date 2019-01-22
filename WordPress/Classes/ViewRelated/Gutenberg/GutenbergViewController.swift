@@ -284,7 +284,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        dataSourceType: .mediaLibrary,
                                                        callback: {(asset) in
                                                         guard let media = asset as? Media else {
-                                                            callback(nil)
+                                                            callback(nil, nil)
                                                             return
                                                         }
                                                         self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
