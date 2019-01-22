@@ -77,19 +77,27 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func postsAndPagesDataRows() -> [StatsTotalRowData] {
-
+        let postsAndPages = store.getTopPostsAndPages()
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: replace with real Pages and Posts data from the Store
-        // let postsAndPages = store.getPostsAndPages()
+        postsAndPages?.forEach { item in
 
-        let icon = Style.imageForGridiconType(.folder)
+            let disclosureURL: URL? = {
+                if let actions = item.actions,
+                    let action = actions.first as? StatsItemAction {
+                    return action.url
+                }
+                return nil
+            }()
 
-        for count in 1...10 {
-            let row = StatsTotalRowData.init(name: "Row \(count)" ,
-                                             data: "666",
+            // TODO: use Page or Post icon
+            let icon = Style.imageForGridiconType(.folder)
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
                                              icon: icon,
-                                             showDisclosure: true)
+                                             showDisclosure: true,
+                                             disclosureURL: disclosureURL)
 
             dataRows.append(row)
         }
