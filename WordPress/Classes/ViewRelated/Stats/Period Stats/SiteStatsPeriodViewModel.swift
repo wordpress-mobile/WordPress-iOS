@@ -93,8 +93,11 @@ private extension SiteStatsPeriodViewModel {
             // TODO: use Page or Post icon
             let icon = Style.imageForGridiconType(.folder)
 
+            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
+
             let row = StatsTotalRowData.init(name: item.label,
                                              data: item.value.displayString(),
+                                             dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
                                              disclosureURL: disclosureURL)
