@@ -4,11 +4,25 @@ import WordPressComStatsiOS
 
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
-    case refreshPeriodData()
+    case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
-    case periods
+    case periods(date: Date, period: StatsPeriodUnit)
+
+    var date: Date {
+        switch self {
+        case .periods(let date, _):
+            return date
+        }
+    }
+
+    var period: StatsPeriodUnit {
+        switch self {
+        case .periods( _, let period):
+            return period
+        }
+    }
 }
 
 struct PeriodStoreState {
@@ -31,8 +45,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
-        case .refreshPeriodData:
-            refreshPeriodData()
+        case .refreshPeriodData(let date, let period):
+            refreshPeriodData(date: date, period: period)
         }
     }
 
@@ -55,16 +69,30 @@ private extension StatsPeriodStore {
             return
         }
 
-        fetchPeriodData()
+        runPeriodsQuery()
+
     }
 
-    func fetchPeriodData() {
+    func runPeriodsQuery() {
+        let periodsQuery = activeQueries
+            .filter {
+                if case .periods = $0 {
+                    return true
+                } else {
+                    return false
+                }
+            }.first
+
+        if let periodsQuery = periodsQuery {
+            fetchPeriodData(date: periodsQuery.date, period: periodsQuery.period)
+        }
+    }
+
+    func fetchPeriodData(date: Date, period: StatsPeriodUnit) {
 
         setAllAsFetching()
 
-        // TODO: use correct date & unit
-
-        SiteStatsInformation.statsService()?.retrieveAllStats(for: Date(), unit: StatsPeriodUnit.day, withVisitsCompletionHandler: { (visits, error) in
+        SiteStatsInformation.statsService()?.retrieveAllStats(for: date, unit: period, withVisitsCompletionHandler: { (visits, error) in
             if error != nil {
                 DDLogInfo("Error fetching visits: \(String(describing: error?.localizedDescription))")
             }
@@ -117,13 +145,13 @@ private extension StatsPeriodStore {
 
     }
 
-    func refreshPeriodData() {
+    func refreshPeriodData(date: Date, period: StatsPeriodUnit) {
         guard shouldFetch() else {
             DDLogInfo("Stats Period refresh triggered while one was in progress.")
             return
         }
 
-        fetchPeriodData()
+        fetchPeriodData(date: date, period: period)
     }
 
     // MARK: - Receive data methods

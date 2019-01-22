@@ -17,9 +17,11 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Constructor
 
-    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
+    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
+         selectedDate: Date,
+         selectedPeriod: StatsPeriodUnit) {
         self.store = store
-        periodReceipt = store.query(.periods)
+        periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -42,8 +44,8 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodData() {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodData())
+    func refreshPeriodData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodData(date: date, period: period))
     }
 }
 

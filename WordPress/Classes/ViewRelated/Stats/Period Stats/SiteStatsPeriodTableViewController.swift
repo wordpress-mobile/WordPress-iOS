@@ -5,12 +5,10 @@ class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var selectedPeriod: StatsPeriodUnit? = .day {
+    var selectedDate: Date = Date()
+    var selectedPeriod: StatsPeriodUnit = .day {
         didSet {
             DDLogInfo("selectedPeriod selected: \(String(describing: selectedPeriod))")
-            guard selectedPeriod != nil else {
-                return
-            }
             refreshData()
         }
     }
@@ -44,7 +42,7 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - View Model
 
     func initViewModel() {
-        viewModel = SiteStatsPeriodViewModel(store: store)
+        viewModel = SiteStatsPeriodViewModel(store: store, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
@@ -73,7 +71,7 @@ private extension SiteStatsPeriodTableViewController {
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
-        viewModel?.refreshPeriodData()
+        viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
 }
