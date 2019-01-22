@@ -53,19 +53,14 @@ private extension SiteStatsPeriodTableViewController {
     func initViewModel() {
         viewModel = SiteStatsPeriodViewModel(store: store)
 
-        // TODO: remove this when code below is utilized.
-        refreshTableView()
+        changeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.store,
+                !store.isFetching else {
+                    return
+            }
 
-        // TODO: uncomment this when the Store actually does something.
-
-//        changeReceipt = viewModel?.onChange { [weak self] in
-//            guard let store = self?.store,
-//                !store.isFetching else {
-//                    return
-//            }
-//
-//            self?.refreshTableView()
-//        }
+            self?.refreshTableView()
+        }
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -80,13 +75,11 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-//        refreshControl?.endRefreshing()
+        refreshControl?.endRefreshing()
     }
 
     @objc func refreshData() {
-//        refreshControl?.beginRefreshing()
-
-        // TODO: use PeriodDisplayed when fetching data
+        refreshControl?.beginRefreshing()
         viewModel?.refreshPeriodData()
     }
 
