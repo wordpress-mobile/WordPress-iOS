@@ -3,6 +3,7 @@ import WordPressFlux
 import WordPressComStatsiOS
 
 enum PeriodAction: Action {
+    case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case refreshPeriodData()
 }
 
@@ -11,8 +12,8 @@ enum PeriodQuery {
 }
 
 struct PeriodStoreState {
-    var pagesAndPosts: [StatsItem]?
-    var fetchingPagesAndPosts = false
+    var topPostsAndPages: [StatsItem]?
+    var fetchingPostsAndPages = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -28,6 +29,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
+        case .receivedPostsAndPages(let postsAndPages):
+            receivedPostsAndPages(postsAndPages)
         case .refreshPeriodData:
             refreshPeriodData()
         }
@@ -44,6 +47,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
 private extension StatsPeriodStore {
 
+    // MARK: - Get Data
+
     func processQueries() {
 
         guard !activeQueries.isEmpty && shouldFetch() else {
@@ -55,7 +60,60 @@ private extension StatsPeriodStore {
 
     func fetchPeriodData() {
 
-        // TODO: get some data
+        setAllAsFetching()
+
+        // TODO: use correct date & unit
+
+        SiteStatsInformation.statsService()?.retrieveAllStats(for: Date(), unit: StatsPeriodUnit.day, withVisitsCompletionHandler: { (visits, error) in
+            if error != nil {
+                DDLogInfo("Error fetching visits: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, eventsCompletionHandler: { (events, error) in
+            if error != nil {
+                DDLogInfo("Error fetching events: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, postsCompletionHandler: { (postsAndPages, error) in
+            if error != nil {
+                DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
+        }, referrersCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching referrers: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, clicksCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching clicks: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, countryCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, videosCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, authorsCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, searchTermsCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching search terms: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
+
+        }, andOverallCompletionHandler: {
+
+        })
 
     }
 
@@ -68,22 +126,36 @@ private extension StatsPeriodStore {
         fetchPeriodData()
     }
 
+    // MARK: - Receive data methods
+
+    func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
+        transaction { state in
+            state.topPostsAndPages = postsAndPages?.items as? [StatsItem]
+            state.fetchingPostsAndPages = false
+        }
+    }
+
+    // MARK: - Helpers
+
     func shouldFetch() -> Bool {
         return !isFetching
     }
 
+    func setAllAsFetching() {
+        state.fetchingPostsAndPages = true
+    }
 }
 
 // MARK: - Public Accessors
 
 extension StatsPeriodStore {
 
-    func getPostsAndPages() -> [StatsItem]? {
-        return state.pagesAndPosts
+    func getTopPostsAndPages() -> [StatsItem]? {
+        return state.topPostsAndPages
     }
 
     var isFetching: Bool {
-        return state.fetchingPagesAndPosts
+        return state.fetchingPostsAndPages
     }
 
 }
