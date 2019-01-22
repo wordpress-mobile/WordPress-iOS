@@ -149,15 +149,14 @@ final class SiteSegmentsWizardContent: UIViewController {
             return
         }
 
-        let request = SiteSegmentsRequest(locale: Locale.current.description)
-        service.siteSegments(request: request) { [weak self] results in
+        service.siteSegments(completion: { [weak self] results in
             switch results {
             case .failure(let error):
                 self?.handleError(error)
             case .success(let data):
                 self?.handleData(data)
             }
-        }
+        })
     }
 
     private func handleError(_ error: SiteSegmentsError) {

@@ -53,7 +53,7 @@ end
 
 def wordpress_kit
     ##pod 'WordPressKit', '~> 1.7.0-beta'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '78c570030c7fae12e9242d1fc316d198215a3b7d'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'facf46086685c701a9083cdd3a5639fd42925de8'
     ##pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -62,7 +62,7 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
-    pod 'UIDeviceIdentifier', '~> 0.4'
+    pod 'UIDeviceIdentifier', '~> 1.1.4'
 end
 
 def shared_with_networking_pods
@@ -118,7 +118,7 @@ target 'WordPress' do
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'MGSwipeTableCell', '1.6.7'
-    pod 'lottie-ios', '2.5.0'
+    pod 'lottie-ios', '2.5.2'
     pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
@@ -126,16 +126,16 @@ target 'WordPress' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3-beta.1'
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.1.8-beta.1'
+    #pod 'WordPressAuthenticator', '~> 1.1.8-beta.1'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '82900447393674532003833cc1f3a4ad1c53997f'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '8ee46debb41f9e2a761966034a23bc5a057b153a'
 
     aztec
     wordpress_ui

@@ -7,7 +7,7 @@ import WordPressKit
 typealias SiteSegmentsServiceCompletion = (SiteSegmentsResult) -> Void
 
 protocol SiteSegmentsService {
-    func siteSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion)
+    func siteSegments(completion: @escaping SiteSegmentsServiceCompletion)
 }
 
 // MARK: - SiteSegmentsService
@@ -38,10 +38,10 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
     }
 
     // MARK: SiteSegmentsService
-    func siteSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion) {
-        remoteService.retrieveSegments(request: request) { result in
+    func siteSegments(completion: @escaping SiteSegmentsServiceCompletion) {
+        remoteService.retrieveSegments(completion: { result in
                 completion(result)
-        }
+        })
     }
 }
 
@@ -50,7 +50,7 @@ final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsServi
 
 /// Mock implementation of the SeiteSegmentsService
 final class MockSiteSegmentsService: SiteSegmentsService {
-    func siteSegments(request: SiteSegmentsRequest, completion: @escaping SiteSegmentsServiceCompletion) {
+    func siteSegments(completion: @escaping SiteSegmentsServiceCompletion) {
         let result = SiteSegmentsResult.success(mockSiteTypes)
 
         completion(result)
@@ -72,7 +72,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Blogger",
                            subtitle: "Publish a collection of posts",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: "RED",
+                           iconColor: "#FF0000",
                            mobile: true)
     }
 
@@ -81,7 +81,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Professional",
                            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: "BLUE",
+                           iconColor: "#0000FF",
                            mobile: true)
     }
 }
