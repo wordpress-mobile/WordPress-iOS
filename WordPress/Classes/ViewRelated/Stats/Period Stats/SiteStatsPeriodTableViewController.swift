@@ -14,6 +14,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
 
     var periodDisplayed: PeriodDisplayed? = .days {
         didSet {
+            DDLogInfo("Stats Period selected: \(String(describing: periodDisplayed))")
             guard periodDisplayed != nil else {
                 return
             }
@@ -79,11 +80,11 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-        refreshControl?.endRefreshing()
+//        refreshControl?.endRefreshing()
     }
 
     @objc func refreshData() {
-        refreshControl?.beginRefreshing()
+//        refreshControl?.beginRefreshing()
 
         // TODO: use PeriodDisplayed when fetching data
         viewModel?.refreshPeriodData()
