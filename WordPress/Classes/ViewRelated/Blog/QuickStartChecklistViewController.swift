@@ -4,6 +4,12 @@ class QuickStartChecklistViewController: UITableViewController {
             self.tableView?.dataSource = dataSource
         }
     }
+    private var dataManager: QuickStartChecklistManager? {
+        didSet {
+            tableView?.dataSource = dataManager
+            tableView?.delegate = dataManager
+        }
+    }
     private var blog: Blog?
     private var list: [QuickStartTour] = []
     private var observer: NSObjectProtocol?
@@ -24,25 +30,44 @@ class QuickStartChecklistViewController: UITableViewController {
         super.viewDidLoad()
 
         let tableView = UITableView(frame: .zero)
-        if #available(iOS 11, *) {
-            tableView.estimatedRowHeight = UITableView.automaticDimension
+
+        let quickStartV2Enabled = Feature.enabled(.quickStartV2)
+
+        if quickStartV2Enabled {
+            tableView.rowHeight = UITableView.automaticDimension
+            tableView.estimatedRowHeight = 90.0
+            tableView.tableFooterView = UIView(frame: .zero)
         } else {
-            tableView.estimatedRowHeight = WPTableViewDefaultRowHeight
+            if #available(iOS 11, *) {
+                tableView.estimatedRowHeight = UITableView.automaticDimension
+            } else {
+                tableView.estimatedRowHeight = WPTableViewDefaultRowHeight
+            }
+
+            let congratulationsNib = UINib(nibName: "QuickStartCongratulationsCell", bundle: Bundle(for: QuickStartCongratulationsCell.self))
+            tableView.register(congratulationsNib, forCellReuseIdentifier: QuickStartCongratulationsCell.reuseIdentifier)
+            let skipAllNib = UINib(nibName: "QuickStartSkipAllCell", bundle: Bundle(for: QuickStartSkipAllCell.self))
+            tableView.register(skipAllNib, forCellReuseIdentifier: QuickStartSkipAllCell.reuseIdentifier)
         }
 
         self.tableView = tableView
 
-        let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
+        let nibName = quickStartV2Enabled ? "QuickStartChecklistCellV2" : "QuickStartChecklistCell"
+        let cellNib = UINib(nibName: nibName, bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
-        let congratulationsNib = UINib(nibName: "QuickStartCongratulationsCell", bundle: Bundle(for: QuickStartCongratulationsCell.self))
-        tableView.register(congratulationsNib, forCellReuseIdentifier: QuickStartCongratulationsCell.reuseIdentifier)
-        let skipAllNib = UINib(nibName: "QuickStartSkipAllCell", bundle: Bundle(for: QuickStartSkipAllCell.self))
-        tableView.register(skipAllNib, forCellReuseIdentifier: QuickStartSkipAllCell.reuseIdentifier)
 
         guard let blog = blog else {
             return
         }
-        dataSource = QuickStartChecklistDataSource(blog: blog, tours: list)
+        if quickStartV2Enabled {
+            dataManager = QuickStartChecklistManager(blog: blog, tours: list) { [weak self] analyticsKey in
+                DispatchQueue.main.async {
+                    self?.popViewController(analyticsKey: analyticsKey)
+                }
+            }
+        } else {
+            dataSource = QuickStartChecklistDataSource(blog: blog, tours: list)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -86,14 +111,10 @@ class QuickStartChecklistViewController: UITableViewController {
             Sections(rawValue: indexPath.section) == .checklistItems,
             let blog = blog,
             let tour = dataSource?.tour(at: indexPath) else {
-            return
+                return
         }
-
         tourGuide.start(tour: tour, for: blog)
-
-        self.navigationController?.popViewController(animated: true)
-
-        WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
+        popViewController(analyticsKey: tour.analyticsKey)
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -113,8 +134,17 @@ class QuickStartChecklistViewController: UITableViewController {
     }
 
     private func reload() {
-        dataSource?.loadCompletedTours()
+        if Feature.enabled(.quickStartV2) {
+            dataManager?.reloadData()
+        } else {
+            dataSource?.loadCompletedTours()
+        }
         tableView.reloadData()
+    }
+
+    private func popViewController(analyticsKey: String) {
+        WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
+        navigationController?.popViewController(animated: true)
     }
 }
 
