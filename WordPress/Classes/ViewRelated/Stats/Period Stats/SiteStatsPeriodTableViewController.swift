@@ -1,21 +1,14 @@
 import UIKit
 import WordPressFlux
 
-enum PeriodDisplayed: Int {
-    case days = 1
-    case weeks
-    case months
-    case years
-}
-
 class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var periodDisplayed: PeriodDisplayed? = .days {
+    var selectedPeriod: StatsPeriodUnit? = .day {
         didSet {
-            DDLogInfo("Stats Period selected: \(String(describing: periodDisplayed))")
-            guard periodDisplayed != nil else {
+            DDLogInfo("selectedPeriod selected: \(String(describing: selectedPeriod))")
+            guard selectedPeriod != nil else {
                 return
             }
             refreshData()

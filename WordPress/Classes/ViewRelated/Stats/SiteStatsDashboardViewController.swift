@@ -93,7 +93,8 @@ private extension SiteStatsDashboardViewController {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
-        periodTableViewController?.periodDisplayed = PeriodDisplayed.init(rawValue: currentSelectedPeriod.rawValue)
+
+        periodTableViewController?.selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1)
     }
 
 }
