@@ -32,12 +32,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        // Posts and Pages
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
-        tableRows.append(TopTotalsStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
-                                           dataSubtitle: PostsAndPages.dataSubtitle,
-                                           dataRows: createPostsAndPagesRows(),
-                                           siteStatsInsightsDelegate: nil))
+        tableRows.append(contentsOf: postsAndPagesTableRows())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -69,7 +64,19 @@ private extension SiteStatsPeriodViewModel {
 
     // Create Period Rows
 
-    func createPostsAndPagesRows() -> [StatsTotalRowData] {
+    func postsAndPagesTableRows() -> [ImmuTableRow] {
+
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
+        tableRows.append(TopTotalsStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
+                                           dataSubtitle: PostsAndPages.dataSubtitle,
+                                           dataRows: postsAndPagesDataRows(),
+                                           siteStatsInsightsDelegate: nil))
+
+        return tableRows
+    }
+
+    func postsAndPagesDataRows() -> [StatsTotalRowData] {
 
         var dataRows = [StatsTotalRowData]()
 
