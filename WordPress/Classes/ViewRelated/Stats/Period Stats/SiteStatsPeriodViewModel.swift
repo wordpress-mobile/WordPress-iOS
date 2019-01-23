@@ -87,14 +87,6 @@ private extension SiteStatsPeriodViewModel {
 
         postsAndPages?.forEach { item in
 
-            let disclosureURL: URL? = {
-                if let actions = item.actions,
-                    let action = actions.first as? StatsItemAction {
-                    return action.url
-                }
-                return nil
-            }()
-
             // TODO: use Page or Post icon
             let icon = Style.imageForGridiconType(.folder)
 
@@ -104,8 +96,7 @@ private extension SiteStatsPeriodViewModel {
                                              data: item.value.displayString(),
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
-                                             showDisclosure: true,
-                                             disclosureURL: disclosureURL)
+                                             showDisclosure: true)
 
             dataRows.append(row)
         }
