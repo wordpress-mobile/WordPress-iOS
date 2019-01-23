@@ -14,7 +14,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
     var selectedDate: Date = Date()
     var selectedPeriod: StatsPeriodUnit = .day {
         didSet {
-            DDLogInfo("selectedPeriod selected: \(String(describing: selectedPeriod))")
+            DDLogInfo("selectedPeriod: \(String(describing: selectedPeriod.rawValue))")
             refreshData()
         }
     }
