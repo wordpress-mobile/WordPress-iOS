@@ -7,7 +7,7 @@ class QuickStartChecklistManager: NSObject {
     private var completedTours: [QuickStartTour] = []
     private var completedToursKeys = Set<String>()
     private var didSelectTour: QuickStartChecklistDidSelectTour
-    private var completedSectionExpanded: Bool = false
+    private var completedSectionCollapse: Bool = false
 
     init(blog: Blog, tours: [QuickStartTour], didSelectTour: @escaping QuickStartChecklistDidSelectTour) {
         self.blog = blog
@@ -17,16 +17,13 @@ class QuickStartChecklistManager: NSObject {
         reloadData()
     }
 
-
-    // MARK: - Public functions
-
     func reloadData() {
         let completed = (blog.completedQuickStartTours ?? []).map { $0.tourID }
         let skipped = (blog.skippedQuickStartTours ?? []).map { $0.tourID }
 
         completedToursKeys = Set(completed).union(Set(skipped))
-        todoTours = tours.filter(!isCompleted) + tours.filter(!isCompleted) + tours.filter(!isCompleted) + tours.filter(!isCompleted)
-        completedTours = tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted)
+        todoTours = tours.filter(!isCompleted)
+        completedTours = tours.filter(isCompleted)
     }
 
     func tour(at indexPath: IndexPath) -> QuickStartTour {
@@ -77,7 +74,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         if section == Sections.todo.rawValue,
             !todoTours.isEmpty,
             !completedTours.isEmpty {
-            return UIView()
+            return view(from: QuickStartChecklistFooter.self)
         }
         return UIView()
     }
@@ -94,9 +91,14 @@ extension QuickStartChecklistManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == Sections.completed.rawValue,
             !completedTours.isEmpty {
-            let view = UIView()
-            view.backgroundColor = .red
-            return view
+            let headerView = view(from: QuickStartChecklistHeader.self)
+            headerView?.collapse = completedSectionCollapse
+            headerView?.count = completedTours.count
+            headerView?.collapseListener = { [weak self] collapse in
+                self?.completedSectionCollapse = collapse
+                self?.tableView(tableView, reloadCompletedSection: collapse)
+            }
+            return headerView
         }
         return nil
     }
@@ -125,12 +127,33 @@ private extension QuickStartChecklistManager {
         case .todo:
             return todoTours
         case .completed:
-            return completedSectionExpanded ? completedTours : []
+            return completedSectionCollapse ? completedTours : []
         }
     }
 
     func isCompleted(tour: QuickStartTour) -> Bool {
         return completedToursKeys.contains(tour.key)
+    }
+
+    func view<T>(from type: T.Type) -> T? {
+        let nibName = String(describing: T.self)
+        guard let view = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? T else {
+            return nil
+        }
+        return view
+    }
+
+    func tableView(_ tableView: UITableView, reloadCompletedSection collapsing: Bool) {
+        var indexPaths: [IndexPath] = []
+        for (i, _) in completedTours.enumerated() {
+            indexPaths.append(IndexPath(row: i, section: Sections.completed.rawValue))
+        }
+
+        if collapsing {
+            tableView.insertRows(at: indexPaths, with: .fade)
+        } else {
+            tableView.deleteRows(at: indexPaths, with: .fade)
+        }
     }
 }
 
