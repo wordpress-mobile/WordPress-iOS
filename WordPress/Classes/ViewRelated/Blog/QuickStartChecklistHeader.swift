@@ -6,6 +6,10 @@ class QuickStartChecklistHeader: UIView {
     var collapse: Bool = false {
         didSet {
             collapseListener?(collapse)
+            /* The animation will always take the shortest way.
+            *  Therefore CGFloat.pi and -CGFloat.pi animates in same position.
+            *  As we need anti-clockwise rotation we forcefully made it a shortest way by using 0.999
+            */
             let rotate = (collapse ? 180.0 : 0.999) * CGFloat.pi
             let alpha = collapse ? 0.0 : 1.0
             animator.animateWithDuration(0.3, animations: { [weak self] in
@@ -16,7 +20,7 @@ class QuickStartChecklistHeader: UIView {
     }
     var count: Int = 0 {
         didSet {
-            titleLabel.text = String(format: "Complete (%i)", count)
+            titleLabel.text = String(format: Constant.title, count)
         }
     }
 
@@ -39,4 +43,8 @@ class QuickStartChecklistHeader: UIView {
     @IBAction func headerDidTouch(_ sender: UIButton) {
         collapse.toggle()
     }
+}
+
+private enum Constant {
+    static let title = NSLocalizedString("Complete (%i)", comment: "The table view header title that displays the number of completed tasks")
 }
