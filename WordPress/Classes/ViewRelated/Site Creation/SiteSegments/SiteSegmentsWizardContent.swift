@@ -9,6 +9,8 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
+    private var errorStateViewController: ErrorStateViewController?
+
     @IBOutlet weak var table: UITableView!
 
     private struct StyleConstants {
@@ -140,7 +142,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func fetchSegments() {
         guard isNetworkActive == true else {
-            setupEmptyTableProvider()
+            setupErrorView()
             return
         }
 
@@ -155,27 +157,56 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func handleError(_ error: SiteSegmentsError) {
-        setupEmptyTableProvider()
+        setupErrorView()
     }
 
-    private func setupEmptyTableProvider() {
-        let message: InlineErrorMessage
-        if isNetworkActive {
-            message = InlineErrorMessages.serverError
+    private func setupErrorView() {
+        let errorType: ErrorStateViewType
+        if self.isNetworkActive == false {
+            errorType = .networkUnreachable
         } else {
-            message = InlineErrorMessages.noConnection
+            errorType = .siteLoading
+        }
+        self.installErrorStateViewController(with: errorType)
+    }
+
+    private func installErrorStateViewController(with type: ErrorStateViewType) {
+        var configuration = ErrorStateViewConfiguration.configuration(type: type)
+
+        configuration.contactSupportActionHandler = nil
+        configuration.dismissalActionHandler = nil
+        configuration.retryActionHandler = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.retryTapped()
         }
 
-        let handler: CellSelectionHandler = { [weak self] _ in
-            self?.fetchSegments()
-        }
+        table.alpha = 0
 
-        dataCoordinator = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
+        let errorVC = ErrorStateViewController(with: configuration)
 
-        table.dataSource = dataCoordinator
-        table.delegate = dataCoordinator
+        addChild(errorVC)
+        errorVC.view.frame = view.frame
+        view.addSubview(errorVC.view)
+        NSLayoutConstraint.activate([
+            errorVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorVC.view.topAnchor.constraint(equalTo: view.topAnchor),
+            errorVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        errorVC.didMove(toParent: self)
 
-        table.reloadData()
+
+        errorStateViewController = errorVC
+    }
+
+    private func clearErrorStateViewController() {
+        errorStateViewController?.willMove(toParent: nil)
+        errorStateViewController?.view.removeFromSuperview()
+        errorStateViewController?.removeFromParent()
+
+        table.alpha = 1.0
     }
 
     private func handleData(_ data: [SiteSegment]) {
@@ -193,5 +224,13 @@ final class SiteSegmentsWizardContent: UIViewController {
 extension SiteSegmentsWizardContent: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         isNetworkActive = active
+    }
+}
+
+private extension SiteSegmentsWizardContent {
+    func retryTapped(viaDone: Bool = false) {
+        // TODO : using viaDone, capture analytics event via #10335
+        clearErrorStateViewController()
+        fetchSegments()
     }
 }
