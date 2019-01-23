@@ -1,12 +1,10 @@
-/// Terrible name. Puts together the Site creation wizard, assembling steps.
+/// Puts together the Site creation wizard, assembling steps.
 final class SiteCreationWizardLauncher {
     private lazy var creator: SiteCreator = {
         return SiteCreator()
     }()
 
     private lazy var segmentsStep: WizardStep = {
-        // It seems like we might need to pass the builder to all the steps. I am not too fond of inheritance in general, but this might make a good case for a base Step.
-        // Actually, the address site looks exactly like this, so a generics-based approach might actually work better. I'll reconsider this setup after implementing the address step
         let segmentsService = SiteCreationSegmentsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         return SiteSegmentsStep(creator: self.creator, service: segmentsService)
     }()
