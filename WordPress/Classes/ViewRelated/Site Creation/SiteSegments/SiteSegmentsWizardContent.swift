@@ -176,10 +176,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         configuration.contactSupportActionHandler = nil
         configuration.dismissalActionHandler = nil
         configuration.retryActionHandler = { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.retryTapped()
+            self?.retryTapped()
         }
 
         table.alpha = 0
@@ -205,6 +202,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         errorStateViewController?.willMove(toParent: nil)
         errorStateViewController?.view.removeFromSuperview()
         errorStateViewController?.removeFromParent()
+        errorStateViewController = nil
 
         table.alpha = 1.0
     }
