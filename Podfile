@@ -62,13 +62,11 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
-    pod 'UIDeviceIdentifier', '~> 0.4'
 end
 
 def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
-    pod 'wpxmlrpc', '0.8.3'
 
 	wordpress_kit
 end
@@ -119,7 +117,6 @@ target 'WordPress' do
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'MGSwipeTableCell', '1.6.7'
-    pod 'lottie-ios', '2.5.0'
     pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
@@ -127,20 +124,20 @@ target 'WordPress' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.4'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3-beta.1'
     pod 'Gridicons', '0.17'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.1.8-beta.1'
+    pod 'WordPressAuthenticator', '~> 1.1.8-beta.2'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '82900447393674532003833cc1f3a4ad1c53997f'
 
+
     aztec
     wordpress_ui
-
     target 'WordPressTest' do
         inherit! :search_paths
 
