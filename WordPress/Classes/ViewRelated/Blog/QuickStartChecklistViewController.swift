@@ -11,17 +11,17 @@ class QuickStartChecklistViewController: UITableViewController {
         }
     }
     private var blog: Blog?
-    private var list: [QuickStartTour] = []
+    private var configuration: QuickStartChecklistConfiguration?
     private var observer: NSObjectProtocol?
 
     @objc convenience init(blog: Blog) {
-        self.init(blog: blog, list: QuickStartTourGuide.checklistTours)
+        self.init(blog: blog, configuration: QuickStartChecklistConfiguration(list: QuickStartTourGuide.checklistTours))
     }
 
-    convenience init(blog: Blog, list: [QuickStartTour]) {
+    convenience init(blog: Blog, configuration: QuickStartChecklistConfiguration) {
         self.init()
         self.blog = blog
-        self.list = list
+        self.configuration = configuration
 
         startObservingForQuickStart()
     }
@@ -56,26 +56,35 @@ class QuickStartChecklistViewController: UITableViewController {
         let cellNib = UINib(nibName: nibName, bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
-        guard let blog = blog else {
+        guard let blog = blog, let configuration = configuration else {
             return
         }
+
+        navigationItem.title = configuration.title
+
         if quickStartV2Enabled {
-            dataManager = QuickStartChecklistManager(blog: blog, tours: list) { [weak self] analyticsKey in
+            dataManager = QuickStartChecklistManager(blog: blog, tours: configuration.list, didSelectTour: { [weak self] analyticsKey in
                 DispatchQueue.main.async {
                     self?.popViewController(analyticsKey: analyticsKey)
                 }
-            }
+            }, didTapHeader: { collapse in
+                // display/hide congratulation screen
+            })
         } else {
-            dataSource = QuickStartChecklistDataSource(blog: blog, tours: list)
+            dataSource = QuickStartChecklistDataSource(blog: blog, tours: configuration.list)
         }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if dataSource?.shouldShowCongratulations() ?? false {
-            if let blog = blog {
-                QuickStartTourGuide.find()?.complete(tour: QuickStartCongratulationsTour(), for: blog)
+        if Feature.enabled(.quickStartV2) {
+            // should display bg and trigger qs notification
+        } else {
+            if dataSource?.shouldShowCongratulations() ?? false {
+                if let blog = blog {
+                    QuickStartTourGuide.find()?.complete(tour: QuickStartCongratulationsTour(), for: blog)
+                }
             }
         }
 
@@ -241,4 +250,22 @@ private enum Sections: Int {
     case congratulations = 0
     case checklistItems = 1
     case skipAll = 2
+}
+
+struct TasksCompleteScreenConfiguration {
+    var title: String
+    var subtitle: String
+    var imageName: String
+}
+
+struct QuickStartChecklistConfiguration {
+    var title: String?
+    var list: [QuickStartTour]
+    var tasksCompleteScreen: TasksCompleteScreenConfiguration?
+
+    init(title: String? = nil, list: [QuickStartTour], tasksCompleteScreen: TasksCompleteScreenConfiguration? = nil) {
+        self.title = title
+        self.list = list
+        self.tasksCompleteScreen = tasksCompleteScreen
+    }
 }

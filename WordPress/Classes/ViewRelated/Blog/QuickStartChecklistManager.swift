@@ -1,5 +1,6 @@
 class QuickStartChecklistManager: NSObject {
     typealias QuickStartChecklistDidSelectTour = (String) -> Void
+    typealias QuickStartChecklistDidTapHeader = (Bool) -> Void
 
     private var blog: Blog
     private var tours: [QuickStartTour]
@@ -7,12 +8,17 @@ class QuickStartChecklistManager: NSObject {
     private var completedTours: [QuickStartTour] = []
     private var completedToursKeys = Set<String>()
     private var didSelectTour: QuickStartChecklistDidSelectTour
+    private var didTapHeader: QuickStartChecklistDidTapHeader
     private var completedSectionCollapse: Bool = false
 
-    init(blog: Blog, tours: [QuickStartTour], didSelectTour: @escaping QuickStartChecklistDidSelectTour) {
+    init(blog: Blog,
+         tours: [QuickStartTour],
+         didSelectTour: @escaping QuickStartChecklistDidSelectTour,
+         didTapHeader: @escaping QuickStartChecklistDidTapHeader) {
         self.blog = blog
         self.tours = tours
         self.didSelectTour = didSelectTour
+        self.didTapHeader = didTapHeader
         super.init()
         reloadData()
     }
@@ -28,6 +34,10 @@ class QuickStartChecklistManager: NSObject {
 
     func tour(at indexPath: IndexPath) -> QuickStartTour {
         return tours(at: indexPath.section)[indexPath.row]
+    }
+
+    func shouldShowCompleteTasksScreen() -> Bool {
+        return todoTours.isEmpty
     }
 }
 
@@ -154,6 +164,8 @@ private extension QuickStartChecklistManager {
         } else {
             tableView.deleteRows(at: indexPaths, with: .fade)
         }
+
+        didTapHeader(collapsing)
     }
 }
 
