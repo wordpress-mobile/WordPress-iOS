@@ -100,7 +100,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.1.3)
+  - Nimble (7.3.2)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
   - OCMock (3.4.3)
@@ -230,7 +230,7 @@ DEPENDENCIES:
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.7)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.1.1)
+  - Nimble (~> 7.3.1)
   - NSObject-SafeExpectations (= 0.0.3)
   - "NSURL+IDN (= 0.3)"
   - OCMock (~> 3.4)
@@ -363,7 +363,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
+  Nimble: 5e94a8cacb355943c6c87198035dc4adbb0f10e4
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -389,6 +389,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 27de549ff6002ce7ae854164a9893f2a46c12cdc
+PODFILE CHECKSUM: 84158d4eafd42750c19b1c30a6ec06f792695f0c
 
 COCOAPODS: 1.5.3

@@ -142,7 +142,7 @@ target 'WordPress' do
         inherit! :search_paths
 
         shared_test_pods
-        pod 'Nimble', '~> 7.1.1'
+        pod 'Nimble', '~> 7.3.1'
     end
 
 
