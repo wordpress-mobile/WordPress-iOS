@@ -10,6 +10,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
+    private let periodDelegate: SiteStatsPeriodDelegate
     private let store: StatsPeriodStore
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
@@ -19,7 +20,9 @@ class SiteStatsPeriodViewModel: Observable {
 
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
-         selectedPeriod: StatsPeriodUnit) {
+         selectedPeriod: StatsPeriodUnit,
+         periodDelegate: SiteStatsPeriodDelegate) {
+        self.periodDelegate = periodDelegate
         self.store = store
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
 
@@ -53,7 +56,7 @@ class SiteStatsPeriodViewModel: Observable {
 
 private extension SiteStatsPeriodViewModel {
 
-    // Period Stats strings
+    // MARK: - Period Stats strings
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
@@ -64,16 +67,16 @@ private extension SiteStatsPeriodViewModel {
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
     }
 
-    // Create Period Rows
+    // MARK: - Create Table Rows
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
 
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
-        tableRows.append(TopTotalsStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
                                            dataSubtitle: PostsAndPages.dataSubtitle,
                                            dataRows: postsAndPagesDataRows(),
-                                           siteStatsInsightsDelegate: nil))
+                                           siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
     }

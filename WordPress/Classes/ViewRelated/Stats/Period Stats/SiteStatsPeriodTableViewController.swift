@@ -48,7 +48,10 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - View Model
 
     func initViewModel() {
-        viewModel = SiteStatsPeriodViewModel(store: store, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
+        viewModel = SiteStatsPeriodViewModel(store: store,
+                                             selectedDate: selectedDate,
+                                             selectedPeriod: selectedPeriod,
+                                             periodDelegate: self)
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
@@ -61,7 +64,7 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self, TopTotalsStatsRow.self]
+        return [CellHeaderRow.self, TopTotalsPeriodStatsRow.self]
     }
 
     // MARK: - Table Refreshing
