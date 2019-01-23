@@ -1,6 +1,12 @@
 import UIKit
 import WordPressFlux
 
+
+@objc protocol SiteStatsPeriodDelegate {
+    @objc optional func displayWebViewWithURL(_ url: URL)
+}
+
+
 class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
@@ -72,6 +78,19 @@ private extension SiteStatsPeriodTableViewController {
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
         viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
+    }
+
+}
+
+
+// MARK: - SiteStatsPeriodDelegate Methods
+
+extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
     }
 
 }
