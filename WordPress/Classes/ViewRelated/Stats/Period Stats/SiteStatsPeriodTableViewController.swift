@@ -44,7 +44,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         super.viewDidLoad()
 
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
     }
 
@@ -93,13 +93,19 @@ private extension SiteStatsPeriodTableViewController {
         refreshControl?.endRefreshing()
     }
 
-    @objc func refreshData() {
+    @objc func userInitiatedRefresh() {
+        refreshControl?.beginRefreshing()
+        refreshData()
+    }
+
+    func refreshData() {
+
         guard let selectedDate = selectedDate,
             let selectedPeriod = selectedPeriod else {
+                refreshControl?.endRefreshing()
                 return
         }
 
-        refreshControl?.beginRefreshing()
         viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
