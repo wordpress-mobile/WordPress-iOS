@@ -950,6 +950,8 @@
 		9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
 		9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */; };
 		9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */; };
+		9A4E216421F87E3900EFF212 /* QuickStartChecklistFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E216321F87E3900EFF212 /* QuickStartChecklistFooter.xib */; };
+		9A4E216621F87E4D00EFF212 /* QuickStartChecklistFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E216521F87E4D00EFF212 /* QuickStartChecklistFooter.swift */; };
 		9A4E61F621A2C37B0017A925 /* WPStyleSuide+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */; };
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
@@ -2859,6 +2861,8 @@
 		9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistManager.swift; sourceTree = "<group>"; };
 		9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
+		9A4E216321F87E3900EFF212 /* QuickStartChecklistFooter.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistFooter.xib; sourceTree = "<group>"; };
+		9A4E216521F87E4D00EFF212 /* QuickStartChecklistFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistFooter.swift; sourceTree = "<group>"; };
 		9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleSuide+Revisions.swift"; sourceTree = "<group>"; };
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
@@ -6306,6 +6310,8 @@
 				43290D09215E8B1200F6B398 /* QuickStartSpotlightView.swift */,
 				9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */,
 				9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */,
+				9A4E216521F87E4D00EFF212 /* QuickStartChecklistFooter.swift */,
+				9A4E216321F87E3900EFF212 /* QuickStartChecklistFooter.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -8467,6 +8473,7 @@
 				43DDFE9021785EAC008BE72F /* QuickStartCongratulationsCell.xib in Resources */,
 				98A25BD3203CB278006A5807 /* SignupEpilogueCell.xib in Resources */,
 				9859DF8A20210B2100FB848E /* SiteCreationInstructionTableViewCell.xib in Resources */,
+				9A4E216421F87E3900EFF212 /* QuickStartChecklistFooter.xib in Resources */,
 				B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */,
 				B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				5D6C4AF61B603CA3005E3C43 /* WPTableViewActivityCell.xib in Resources */,
@@ -10048,6 +10055,7 @@
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
 				98921EF921372E30004949AA /* LocalNewsService.swift in Sources */,
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
+				9A4E216621F87E4D00EFF212 /* QuickStartChecklistFooter.swift in Sources */,
 				B54C02241F38F50100574572 /* String+RegEx.swift in Sources */,
 				FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
