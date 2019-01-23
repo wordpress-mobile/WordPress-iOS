@@ -2,11 +2,12 @@ class QuickStartChecklistManager: NSObject {
     typealias QuickStartChecklistDidSelectTour = (String) -> Void
 
     private var blog: Blog
+    private var tours: [QuickStartTour]
     private var todoTours: [QuickStartTour] = []
     private var completedTours: [QuickStartTour] = []
-    private var tours: [QuickStartTour]
     private var completedToursKeys = Set<String>()
     private var didSelectTour: QuickStartChecklistDidSelectTour
+    private var completedSectionExpanded: Bool = false
 
     init(blog: Blog, tours: [QuickStartTour], didSelectTour: @escaping QuickStartChecklistDidSelectTour) {
         self.blog = blog
@@ -24,8 +25,8 @@ class QuickStartChecklistManager: NSObject {
         let skipped = (blog.skippedQuickStartTours ?? []).map { $0.tourID }
 
         completedToursKeys = Set(completed).union(Set(skipped))
-        todoTours = tours.filter(!isCompleted)
-        completedTours = tours.filter(isCompleted)
+        todoTours = tours.filter(!isCompleted) + tours.filter(!isCompleted) + tours.filter(!isCompleted) + tours.filter(!isCompleted)
+        completedTours = tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted) + tours.filter(isCompleted)
     }
 
     func tour(at indexPath: IndexPath) -> QuickStartTour {
@@ -35,7 +36,7 @@ class QuickStartChecklistManager: NSObject {
 
 extension QuickStartChecklistManager: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return Sections.allCases.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +72,42 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         tourGuide.start(tour: tour, for: blog)
         didSelectTour(tour.analyticsKey)
     }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == Sections.todo.rawValue,
+            !todoTours.isEmpty,
+            !completedTours.isEmpty {
+            return UIView()
+        }
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == Sections.todo.rawValue,
+            !todoTours.isEmpty,
+            !completedTours.isEmpty {
+            return Sections.footerHeight
+        }
+        return 0.0
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == Sections.completed.rawValue,
+            !completedTours.isEmpty {
+            let view = UIView()
+            view.backgroundColor = .red
+            return view
+        }
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == Sections.completed.rawValue,
+            !completedTours.isEmpty {
+            return Sections.headerHeight
+        }
+        return 0.0
+    }
 }
 
 private extension QuickStartChecklistManager {
@@ -80,7 +117,16 @@ private extension QuickStartChecklistManager {
     }
 
     func tours(at section: Int) -> [QuickStartTour] {
-        return section == Sections.todo.rawValue ? todoTours : completedTours
+        guard let section = Sections(rawValue: section) else {
+            return []
+        }
+
+        switch section {
+        case .todo:
+            return todoTours
+        case .completed:
+            return completedSectionExpanded ? completedTours : []
+        }
     }
 
     func isCompleted(tour: QuickStartTour) -> Bool {
@@ -88,7 +134,10 @@ private extension QuickStartChecklistManager {
     }
 }
 
-private enum Sections: Int {
+private enum Sections: Int, CaseIterable {
+    static let footerHeight = CGFloat(20.0)
+    static let headerHeight = CGFloat(44.0)
+
     case todo
     case completed
 }
