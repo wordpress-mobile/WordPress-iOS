@@ -14,6 +14,17 @@ jobs:
           name: Bundle install
           command: bundle install --path=vendor/bundle
       - run:
+          name: Check Podfile matches Podfile.lock
+          command: |
+            function helpful_error () {
+              echo "Podfile and Podfile.lock do not match. Please run 'bundle exec pod install' and try again."
+            }
+            trap helpful_error ERR
+
+            # This verifies that the PODFILE CHECKSUM in Podfile.lock matches Podfile
+            PODFILE_SHA1=$(ruby -e "require 'yaml';puts YAML.load_file('Podfile.lock')['PODFILE CHECKSUM']")
+            echo "$PODFILE_SHA1 *Podfile" | shasum -c
+      - run:
           name: CocoaPods Check
           command: (bundle exec pod check && touch .skip_pod_install) || echo "Pods will be updated"
       - run:
