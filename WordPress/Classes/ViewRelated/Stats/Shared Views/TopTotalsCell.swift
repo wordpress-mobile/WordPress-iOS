@@ -40,7 +40,9 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         setSubtitleVisibility()
-        addRows(dataRows, toStackView: rowsStackView, rowDelegate: self)
+
+        let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
+        addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
         applyStyles()
     }
 
