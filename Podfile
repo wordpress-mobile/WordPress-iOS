@@ -116,7 +116,7 @@ target 'WordPress' do
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
-    pod 'MGSwipeTableCell', '1.6.7'
+    pod 'MGSwipeTableCell', '1.6.8'
     pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
