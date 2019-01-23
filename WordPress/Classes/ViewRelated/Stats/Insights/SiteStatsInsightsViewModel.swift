@@ -57,7 +57,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                                dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
-                tableRows.append(TopTotalsStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
+                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
                                                    dataSubtitle: TagsAndCategories.dataSubtitle,
                                                    dataRows: createTagsAndCategoriesRows(),
                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate))
