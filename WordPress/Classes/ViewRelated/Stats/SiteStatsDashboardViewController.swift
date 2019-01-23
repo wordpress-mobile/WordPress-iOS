@@ -70,6 +70,7 @@ private extension SiteStatsDashboardViewController {
         set {
             filterTabBar?.setSelectedIndex(newValue.rawValue)
             setContainerViewVisibility()
+            updatePeriodView()
             saveSelectedPeriodToUserDefaults()
         }
     }
@@ -93,13 +94,6 @@ private extension SiteStatsDashboardViewController {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
-
-        if currentSelectedPeriod != .insights {
-            // TODO: when implemented, pass user selected date to VC.
-            periodTableViewController?.selectedDate = Date()
-            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-            periodTableViewController?.selectedPeriod = selectedPeriod
-        }
     }
 
 }
@@ -114,5 +108,17 @@ private extension SiteStatsDashboardViewController {
 
     func getSelectedPeriodFromUserDefaults() {
         currentSelectedPeriod = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
+    }
+
+    func updatePeriodView() {
+
+        guard currentSelectedPeriod != .insights else {
+            return
+        }
+
+        // TODO: when implemented, pass user selected date to VC.
+        periodTableViewController?.selectedDate = Date()
+        let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+        periodTableViewController?.selectedPeriod = selectedPeriod
     }
 }

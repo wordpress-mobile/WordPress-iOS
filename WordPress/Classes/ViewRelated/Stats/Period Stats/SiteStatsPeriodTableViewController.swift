@@ -11,11 +11,21 @@ class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var selectedDate: Date = Date()
-    var selectedPeriod: StatsPeriodUnit = .day {
+    var selectedDate: Date?
+    var selectedPeriod: StatsPeriodUnit? {
         didSet {
-            DDLogInfo("selectedPeriod: \(String(describing: selectedPeriod.rawValue))")
-            refreshData()
+
+            guard selectedPeriod != nil else {
+                return
+            }
+
+            // If this is the first time setting the Period, need to initialize the view model.
+            // Otherwise, just refresh the data.
+            if oldValue == nil {
+                initViewModel()
+            } else {
+                refreshData()
+            }
         }
     }
 
@@ -36,7 +46,6 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        initViewModel()
     }
 
 }
@@ -48,6 +57,12 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - View Model
 
     func initViewModel() {
+
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+
         viewModel = SiteStatsPeriodViewModel(store: store,
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
@@ -79,12 +94,16 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     @objc func refreshData() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+
         refreshControl?.beginRefreshing()
         viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
 }
-
 
 // MARK: - SiteStatsPeriodDelegate Methods
 
