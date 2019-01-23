@@ -875,6 +875,9 @@
 		9848DF8121B8BB5700B99DA4 /* PostingActivityLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9848DF8021B8BB5600B99DA4 /* PostingActivityLegend.swift */; };
 		9848DF8321B8BB6900B99DA4 /* PostingActivityLegend.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9848DF8221B8BB6900B99DA4 /* PostingActivityLegend.xib */; };
 		984B020E200D59B900179E75 /* SiteCreationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B020D200D59B900179E75 /* SiteCreationService.swift */; };
+		984B138E21F65F870004B6A2 /* SiteStatsPeriodTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B138D21F65F860004B6A2 /* SiteStatsPeriodTableViewController.swift */; };
+		984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B139121F66AC50004B6A2 /* SiteStatsPeriodViewModel.swift */; };
+		984B139421F66B2D0004B6A2 /* StatsPeriodStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */; };
 		984B4EF320742FCC00F87888 /* ZendeskUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984B4EF220742FCC00F87888 /* ZendeskUtils.swift */; };
 		984F86FB21DEDB070070E0E3 /* TopTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */; };
 		98563DDD21BF30C40006F5E9 /* TabbedTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98563DDB21BF30C40006F5E9 /* TabbedTotalsCell.swift */; };
@@ -2782,6 +2785,9 @@
 		9848DF8021B8BB5600B99DA4 /* PostingActivityLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityLegend.swift; sourceTree = "<group>"; };
 		9848DF8221B8BB6900B99DA4 /* PostingActivityLegend.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostingActivityLegend.xib; sourceTree = "<group>"; };
 		984B020D200D59B900179E75 /* SiteCreationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationService.swift; sourceTree = "<group>"; };
+		984B138D21F65F860004B6A2 /* SiteStatsPeriodTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsPeriodTableViewController.swift; sourceTree = "<group>"; };
+		984B139121F66AC50004B6A2 /* SiteStatsPeriodViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsPeriodViewModel.swift; sourceTree = "<group>"; };
+		984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsPeriodStore.swift; sourceTree = "<group>"; };
 		984B4EF220742FCC00F87888 /* ZendeskUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZendeskUtils.swift; sourceTree = "<group>"; };
 		984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopTotalsCell.swift; sourceTree = "<group>"; };
 		98563DDB21BF30C40006F5E9 /* TabbedTotalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedTotalsCell.swift; sourceTree = "<group>"; };
@@ -4509,6 +4515,7 @@
 				98747670219638990080967F /* Extensions */,
 				98747674219644E40080967F /* Helpers */,
 				98747671219638BF0080967F /* Insights */,
+				984B138C21F65F680004B6A2 /* Period Stats */,
 				98F89D47219E008600190EE6 /* Shared Views */,
 				7470840D1E269669002CA726 /* JetpackLoginViewController.swift */,
 				7470840E1E269669002CA726 /* JetpackLoginViewController.xib */,
@@ -6119,6 +6126,15 @@
 				4308ACFC210107F90059EA64 /* SiteCreationDomainSuggestionsTableViewController.swift */,
 			);
 			name = "Site Creation";
+			sourceTree = "<group>";
+		};
+		984B138C21F65F680004B6A2 /* Period Stats */ = {
+			isa = PBXGroup;
+			children = (
+				984B138D21F65F860004B6A2 /* SiteStatsPeriodTableViewController.swift */,
+				984B139121F66AC50004B6A2 /* SiteStatsPeriodViewModel.swift */,
+			);
+			path = "Period Stats";
 			sourceTree = "<group>";
 		};
 		984B4EF120742FB900F87888 /* Zendesk */ = {
@@ -7785,6 +7801,7 @@
 				E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */,
 				40ADB15420686870009A9161 /* PluginStore+Persistence.swift */,
 				98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */,
+				984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */,
 				E1CB6DA2200F376400945457 /* TimeZoneStore.swift */,
 			);
 			path = Stores;
@@ -9400,6 +9417,7 @@
 				E1222B631F877FD700D23173 /* WebProgressView.swift in Sources */,
 				E185042F1EE6ABD9005C234C /* Restorer.swift in Sources */,
 				D800D86A20997E0C00E7C7E5 /* LikedMenuItemCreator.swift in Sources */,
+				984B138E21F65F870004B6A2 /* SiteStatsPeriodTableViewController.swift in Sources */,
 				98AD07651FFFF96B00485ACA /* SiteCreationSiteDetailsViewController.swift in Sources */,
 				5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */,
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
@@ -9658,6 +9676,7 @@
 				439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */,
 				D818FFDE219177DA000E5FEE /* SiteSegmentsDelegate.swift in Sources */,
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
+				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
 				98A437AE20069098004A8A57 /* DomainSuggestionsTableViewController.swift in Sources */,
 				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
@@ -10000,6 +10019,7 @@
 				08216FD11CDBF96000304BA7 /* MenuItemSourceResultsViewController.m in Sources */,
 				4349B0AC218A45270034118A /* RevisionsTableViewController.swift in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
+				984B139421F66B2D0004B6A2 /* StatsPeriodStore.swift in Sources */,
 				735752C7218A7C7700E75EF6 /* LocationResultsTableViewController.swift in Sources */,
 				E13A8C9B1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift in Sources */,
 				D8CB56232181A95D00554EAE /* SiteSegment.swift in Sources */,

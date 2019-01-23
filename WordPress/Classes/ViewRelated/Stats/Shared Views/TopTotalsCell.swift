@@ -30,7 +30,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     func configure(itemSubtitle: String,
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate) {
+                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
