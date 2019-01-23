@@ -44,6 +44,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchSegments()
         observeNetworkStatus()
     }
 
@@ -53,12 +54,6 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func setupBackground() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        fetchSegments()
     }
 
     override func viewDidLayoutSubviews() {
