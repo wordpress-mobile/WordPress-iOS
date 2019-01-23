@@ -87,8 +87,8 @@ private extension SiteStatsPeriodViewModel {
 
         postsAndPages?.forEach { item in
 
-            // TODO: use Page or Post icon
-            let icon = Style.imageForGridiconType(.folder)
+            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
+            let icon = Style.imageForGridiconType(.posts)
 
             let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
 
