@@ -24,6 +24,9 @@ final class WebAddressWizardContent: UIViewController {
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
+    /// Manages header visibility, keyboard management, and table view offset
+    private(set) var tableViewOffsetCoordinator: TableViewOffsetCoordinator?
+
     /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
 
@@ -45,12 +48,6 @@ final class WebAddressWizardContent: UIViewController {
 
     /// This message advises the user that
     private let noResultsLabel: UILabel
-
-    /// The value of the bottom constraint constant is set in response to the keyboard appearance
-    private var keyboardContentOffset = CGFloat(0)
-
-    /// To avoid wasted animations, we track whether or not we have already adjusted the table view
-    private var tableViewHasBeenAdjusted = false
 
     // MARK: WebAddressWizardContent
 
@@ -92,6 +89,8 @@ final class WebAddressWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
+
         applyTitle()
         setupBackground()
         setupTable()
@@ -100,7 +99,7 @@ final class WebAddressWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         observeNetworkStatus()
-        startListeningToKeyboardNotifications()
+        tableViewOffsetCoordinator?.startListeningToKeyboardNotifications()
         prepareViewIfNeeded()
     }
 
@@ -117,7 +116,7 @@ final class WebAddressWizardContent: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        stopListeningToKeyboardNotifications()
+        tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
     }
 
@@ -135,7 +134,7 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
-        resetTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -226,7 +225,7 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
 
-        adjustTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
         performSearchIfNeeded(query: inputText)
     }
 
@@ -338,7 +337,7 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         performSearchIfNeeded(query: searchTerm)
-        adjustTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }
 
@@ -354,97 +353,7 @@ extension WebAddressWizardContent: NetworkStatusDelegate {
 
 extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        resetTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
         return true
-    }
-}
-
-// MARK: - Keyboard management
-
-private extension WebAddressWizardContent {
-    struct Constants {
-        static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
-        static let topMargin                = CGFloat(36)
-    }
-
-    func adjustTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
-        guard keyboardContentOffset > 0, tableViewHasBeenAdjusted == false else {
-            return
-        }
-
-        let topInset: CGFloat
-        if WPDeviceIdentification.isiPhone(), let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-            let textfieldFrame = header.textField.frame
-            topInset = textfieldFrame.origin.y - Constants.topMargin
-        } else {
-            topInset = 0
-        }
-
-        let bottomInset: CGFloat
-        if WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait {
-            bottomInset = 0
-        } else {
-            bottomInset = keyboardContentOffset
-        }
-
-        let targetInsets = UIEdgeInsets(top: -topInset, left: 0, bottom: bottomInset, right: 0)
-
-        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.table.contentInset = targetInsets
-            self.table.scrollIndicatorInsets = targetInsets
-            if WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                header.titleSubtitle.alpha = 0.0
-            }
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = true
-        })
-    }
-
-    @objc
-    func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else {
-            return
-        }
-
-        let keyboardScreenFrame = payload.frameEnd
-        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
-
-        let adjustedKeyboardHeight = convertedKeyboardFrame.height
-        keyboardContentOffset = adjustedKeyboardHeight
-    }
-
-    func resetTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
-        guard WPDeviceIdentification.isiPhone(), tableViewHasBeenAdjusted == true else {
-            return
-        }
-
-        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.table.contentInset = .zero
-            self.table.scrollIndicatorInsets = .zero
-            if WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                header.titleSubtitle.alpha = 1.0
-            }
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = false
-        })
-    }
-
-    func startListeningToKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-    }
-
-    func stopListeningToKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
 }
