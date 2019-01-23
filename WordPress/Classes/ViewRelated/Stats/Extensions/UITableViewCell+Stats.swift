@@ -19,6 +19,7 @@ extension UITableViewCell {
 
         guard numberOfDataRows > 0 else {
             let row = StatsNoDataRow.loadFromNib()
+            row.configure(forType: statType)
             rowsStackView.addArrangedSubview(row)
             return
         }
