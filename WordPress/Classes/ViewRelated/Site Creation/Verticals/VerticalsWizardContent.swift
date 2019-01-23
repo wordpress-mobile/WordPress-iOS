@@ -55,13 +55,8 @@ final class VerticalsWizardContent: UIViewController {
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
-    /// We manipulate the bottom constraint in response to the keyboard.
-    private lazy var bottomConstraint: NSLayoutConstraint = {
-        return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
-    }()
-
     /// The value of the bottom constraint constant is set in response to the keyboard appearance
-    private var bottomConstraintConstant = CGFloat(0)
+    private var keyboardContentOffset = CGFloat(0)
 
     /// To avoid wasted animations, we track whether or not we have already adjusted the table view
     private var tableViewHasBeenAdjusted = false
@@ -297,7 +292,7 @@ final class VerticalsWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            bottomConstraint,
+            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
@@ -408,40 +403,44 @@ extension VerticalsWizardContent: UITextFieldDelegate {
 
 private extension VerticalsWizardContent {
     struct Constants {
-        static let bottomMargin             = CGFloat(0)
         static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
         static let topMargin                = CGFloat(36)
     }
 
     func adjustTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
-        guard WPDeviceIdentification.isiPhone(), bottomConstraintConstant > 0, tableViewHasBeenAdjusted == false else {
+        guard keyboardContentOffset > 0, tableViewHasBeenAdjusted == false else {
             return
         }
 
-        bottomConstraint.constant = bottomConstraintConstant
-        view.setNeedsUpdateConstraints()
-
-        let targetInsets: UIEdgeInsets
-        if let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+        let topInset: CGFloat
+        if WPDeviceIdentification.isiPhone(), let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
             let textfieldFrame = header.textField.frame
-            targetInsets = UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottomConstraintConstant, right: 0.0)
+            topInset = textfieldFrame.origin.y - Constants.topMargin
         } else {
-            targetInsets = .zero
+            topInset = 0
         }
+
+        let bottomInset: CGFloat
+        if WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait {
+            bottomInset = 0
+        } else {
+            bottomInset = keyboardContentOffset
+        }
+
+        let targetInsets = UIEdgeInsets(top: -topInset, left: 0, bottom: bottomInset, right: 0)
 
         UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
             guard let self = self else {
                 return
             }
 
-            self.view.layoutIfNeeded()
             self.table.contentInset = targetInsets
             self.table.scrollIndicatorInsets = targetInsets
-            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+            if WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 0.0
             }
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = true
+        }, completion: { [weak self] _ in
+            self?.tableViewHasBeenAdjusted = true
         })
     }
 
@@ -454,12 +453,8 @@ private extension VerticalsWizardContent {
         let keyboardScreenFrame = payload.frameEnd
         let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
 
-        var adjustedKeyboardHeight = convertedKeyboardFrame.height
-        if #available(iOS 11.0, *) {
-            let bottomInset = view.safeAreaInsets.bottom
-            adjustedKeyboardHeight -= bottomInset
-        }
-        bottomConstraintConstant = adjustedKeyboardHeight
+        let adjustedKeyboardHeight = convertedKeyboardFrame.height
+        keyboardContentOffset = adjustedKeyboardHeight
     }
 
     func resetTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
@@ -472,15 +467,13 @@ private extension VerticalsWizardContent {
                 return
             }
 
-            self.view.layoutIfNeeded()
             self.table.contentInset = .zero
             self.table.scrollIndicatorInsets = .zero
-            self.bottomConstraint.constant = Constants.bottomMargin
-            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
+            if WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 1.0
             }
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = false
+        }, completion: { [weak self] _ in
+            self?.tableViewHasBeenAdjusted = false
         })
     }
 
