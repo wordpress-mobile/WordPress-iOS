@@ -53,7 +53,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.2.0)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
-  - Gridicons (0.17)
+  - Gridicons (0.18)
   - Gutenberg (0.3.3):
     - React/Core (= 0.57.5)
     - React/CxxBridge (= 0.57.5)
@@ -225,7 +225,6 @@ DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
-  - Gridicons (= 0.17)
   - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `2bade57ef289ec1ddd1604a5f354381a2a3c78fa`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
@@ -357,7 +356,7 @@ SPEC CHECKSUMS:
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
-  Gridicons: 574d8bd9bad4027cbb5e4e3cde995570fc325345
+  Gridicons: 04261236382e9c62c62c9a104f2f532c1bdf6a78
   Gutenberg: b2a732298f29b9e6b1aa8d49d1aab4a93a861f75
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
@@ -389,6 +388,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 88c79f4ef8ce8f025972bea075167b685fe14ac3
+PODFILE CHECKSUM: 72b2bae0a372a7784cab43d837e3f80af4bd90f9
 
 COCOAPODS: 1.5.3
