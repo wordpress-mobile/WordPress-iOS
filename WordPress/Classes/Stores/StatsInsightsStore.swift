@@ -276,6 +276,20 @@ private extension StatsInsightsStore {
         return !isFetching
     }
 
+    func setAllAsFetching() {
+        state.fetchingLatestPostSummary = true
+        state.fetchingAllTimeStats = true
+        state.fetchingMostPopularStats = true
+        state.fetchingDotComFollowers = true
+        state.fetchingEmailFollowers = true
+        state.fetchingPublicize = true
+        state.fetchingTodaysStats = true
+        state.fetchingPostingActivity = true
+        state.fetchingCommentsAuthors = true
+        state.fetchingCommentsPosts = true
+        state.fetchingTagsAndCategories = true
+    }
+
 }
 
 // MARK: - Public Accessors
@@ -404,17 +418,4 @@ extension StatsInsightsStore {
             state.fetchingTagsAndCategories
     }
 
-    func setAllAsFetching() {
-        state.fetchingLatestPostSummary = true
-        state.fetchingAllTimeStats = true
-        state.fetchingMostPopularStats = true
-        state.fetchingDotComFollowers = true
-        state.fetchingEmailFollowers = true
-        state.fetchingPublicize = true
-        state.fetchingTodaysStats = true
-        state.fetchingPostingActivity = true
-        state.fetchingCommentsAuthors = true
-        state.fetchingCommentsPosts = true
-        state.fetchingTagsAndCategories = true
-    }
 }

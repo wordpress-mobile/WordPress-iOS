@@ -130,7 +130,7 @@ struct TopTotalsStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
