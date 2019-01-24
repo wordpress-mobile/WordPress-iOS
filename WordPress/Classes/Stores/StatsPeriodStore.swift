@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
+    case receivedSearchTerms(_ searchTerms: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
@@ -28,6 +29,9 @@ enum PeriodQuery {
 struct PeriodStoreState {
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
+
+    var topSearchTerms: [StatsItem]?
+    var fetchingSearchTerms = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -45,6 +49,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
+        case .receivedSearchTerms(let searchTerms):
+            receivedSearchTerms(searchTerms)
         case .refreshPeriodData(let date, let period):
             refreshPeriodData(date: date, period: period)
         }
@@ -132,11 +138,11 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
             }
 
-        }, searchTermsCompletionHandler: { (group, error) in
+        }, searchTermsCompletionHandler: { (searchTerms, error) in
             if error != nil {
                 DDLogInfo("Error fetching search terms: \(String(describing: error?.localizedDescription))")
             }
-
+            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
         }, andOverallCompletionHandler: {
@@ -163,6 +169,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedSearchTerms(_ searchTerms: StatsGroup?) {
+        transaction { state in
+            state.topSearchTerms = searchTerms?.items as? [StatsItem]
+            state.fetchingSearchTerms = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetch() -> Bool {
@@ -171,6 +184,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
+        state.fetchingSearchTerms = true
     }
 }
 
@@ -182,8 +196,13 @@ extension StatsPeriodStore {
         return state.topPostsAndPages
     }
 
+    func getTopSearchTerms() -> [StatsItem]? {
+        return state.topSearchTerms
+    }
+
     var isFetching: Bool {
-        return state.fetchingPostsAndPages
+        return state.fetchingPostsAndPages ||
+        state.fetchingSearchTerms
     }
 
 }
