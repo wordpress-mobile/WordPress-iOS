@@ -38,6 +38,7 @@ class SiteStatsPeriodViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: videosTableRows())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -60,11 +61,17 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
     }
 
     struct PostsAndPages {
         static let itemSubtitle = NSLocalizedString("Title", comment: "Posts and Pages label for post/page title")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
+    }
+
+    struct Videos {
+        static let itemSubtitle = NSLocalizedString("Title", comment: "Videos label for post/page title")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Videos label for number of views")
     }
 
     // MARK: - Create Table Rows
@@ -96,6 +103,34 @@ private extension SiteStatsPeriodViewModel {
                                              data: item.value.displayString(),
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
+                                             showDisclosure: true)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
+    }
+
+    func videosTableRows() -> [ImmuTableRow] {
+
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.videos))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Videos.itemSubtitle,
+                                                 dataSubtitle: Videos.dataSubtitle,
+                                                 dataRows: videosDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func videosDataRows() -> [StatsTotalRowData] {
+        let videos = store.getTopVideos()
+        var dataRows = [StatsTotalRowData]()
+
+        videos?.forEach { item in
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
+                                             icon: Style.imageForGridiconType(.video),
                                              showDisclosure: true)
 
             dataRows.append(row)

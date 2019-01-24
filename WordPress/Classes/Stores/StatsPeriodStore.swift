@@ -170,6 +170,7 @@ private extension StatsPeriodStore {
     }
 
     func receivedVideos(_ videos: StatsGroup?) {
+        print("🔴 receivedVideos: ", videos?.items)
         transaction { state in
             state.topVideos = videos?.items as? [StatsItem]
             state.fetchingVideos = false
@@ -197,7 +198,7 @@ extension StatsPeriodStore {
     }
 
     func getTopVideos() -> [StatsItem]? {
-        return state.topPostsAndPages
+        return state.topVideos
     }
 
     var isFetching: Bool {
