@@ -52,8 +52,9 @@ class QuickStartChecklistViewController: UITableViewController {
         let quickStartV2Enabled = Feature.enabled(.quickStartV2)
 
         if quickStartV2Enabled {
-            tableView.rowHeight = UITableView.automaticDimension
-            tableView.estimatedRowHeight = 90.0
+            if #available(iOS 10, *) {
+                tableView.estimatedRowHeight = 90.0
+            }
             tableView.tableFooterView = UIView(frame: .zero)
         } else {
             if #available(iOS 11, *) {
