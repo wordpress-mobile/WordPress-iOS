@@ -34,7 +34,7 @@ class GutenbergMediaInserterHelper: NSObject {
         callback(media.mediaID?.intValue, media.remoteURL)
     }
 
-    func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaToUploadCallback) {
+    func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
         let media = insert(exportableAsset: asset, source: .deviceLibrary)
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
