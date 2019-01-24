@@ -38,6 +38,7 @@ class SiteStatsPeriodViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: searchTermsTableRows())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -60,6 +61,7 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
     }
 
     struct PostsAndPages {
@@ -67,10 +69,14 @@ private extension SiteStatsPeriodViewModel {
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
     }
 
+    struct SearchTerms {
+        static let itemSubtitle = NSLocalizedString("Search Term", comment: "Search Terms label for search term")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Search Terms label for number of views")
+    }
+
     // MARK: - Create Table Rows
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
-
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
@@ -98,6 +104,29 @@ private extension SiteStatsPeriodViewModel {
                                              icon: icon,
                                              showDisclosure: true)
 
+            dataRows.append(row)
+        }
+
+        return dataRows
+    }
+
+    func searchTermsTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.searchTerms))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: SearchTerms.itemSubtitle,
+                                                 dataSubtitle: SearchTerms.dataSubtitle,
+                                                 dataRows: searchTermsDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func searchTermsDataRows() -> [StatsTotalRowData] {
+        let searchTerms = store.getTopSearchTerms()
+        var dataRows = [StatsTotalRowData]()
+
+        searchTerms?.forEach { item in
+            let row = StatsTotalRowData.init(name: item.label, data: item.value.displayString())
             dataRows.append(row)
         }
 
