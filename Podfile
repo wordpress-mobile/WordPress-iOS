@@ -79,8 +79,8 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
-def gutenberg_pod(name)
-    gutenberg_branch='develop'
+def gutenberg_pod(name, branch=nil)
+    gutenberg_branch=branch || 'master'
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
@@ -96,14 +96,15 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '625bce184de38f81af9f43be8a314f10e4dca35a'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '2bade57ef289ec1ddd1604a5f354381a2a3c78fa'
+    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '2bade57ef289ec1ddd1604a5f354381a2a3c78fa'
+
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     gutenberg_pod 'react-native-safe-area'
-    gutenberg_pod 'react-native-keyboard-aware-scroll-view'
+    gutenberg_pod 'react-native-keyboard-aware-scroll-view', 'develop'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git', :commit => '6cf210c4fcc4bd2c80efce7719bef13836d36085'
 
     ## Third party libraries
     ## =====================
