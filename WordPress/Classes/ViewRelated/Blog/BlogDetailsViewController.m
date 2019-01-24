@@ -333,7 +333,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showQuickStart];
+            [self showQuickStartV1];
             break;
         case BlogDetailsSubsectionStats:
             self.restorableSelectedIndexPath = indexPath;
@@ -526,6 +526,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
+    if ([self shouldShowQuickStartChecklist] && [Feature enabled:FeatureFlagQuickStartV2]) {
+        [marr addObject:[self quickStartSectionViewModel]];
+    }
     [marr addObject:[self generalSectionViewModel]];
     [marr addObject:[self publishTypeSectionViewModel]];
     if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
@@ -541,17 +544,48 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
+- (BlogDetailsSection *)quickStartSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
+                                                     identifier:BlogDetailsPlanCellIdentifier
+                                                          image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                       callback:^{
+                                                           [weakSelf showQuickStartCustomize];
+                                                       }];
+    row.quickStartIdentifier = QuickStartTourElementChecklist;
+
+    row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
+    [rows addObject:row];
+
+    BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
+                                                      identifier:BlogDetailsPlanCellIdentifier
+                                                           image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                        callback:^{
+                                                            [weakSelf showQuickStartGrow];
+                                                        }];
+    row2.quickStartIdentifier = QuickStartTourElementChecklist;
+
+    row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
+    [rows addObject:row2];
+
+    NSString *sectionTitle = NSLocalizedString(@"Quick Start", @"Table view title for the quick start section.");
+    return [[BlogDetailsSection alloc] initWithTitle:sectionTitle andRows:rows];
+}
+
 - (BlogDetailsSection *)generalSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([self shouldShowQuickStartChecklist]) {
+    if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                            callback:^{
-                                                               [weakSelf showQuickStart];
+                                                               [weakSelf showQuickStartV1];
                                                            }];
         row.quickStartIdentifier = QuickStartTourElementChecklist;
 
@@ -1289,14 +1323,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
 }
 
-- (void)showQuickStart
-{
-    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
-    [self.navigationController showDetailViewController:checklist sender:self];
-
-    [[QuickStartTourGuide find] visited:QuickStartTourElementChecklist];
-}
-
 - (void)showActivity
 {
     ActivityListViewController *controller = [[ActivityListViewController alloc] initWithBlog:self.blog];
@@ -1437,7 +1463,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
             if (generalSectionCountBefore != generalSectionCountAfter) {
                 // quick start was just enabled
-                [self showQuickStart];
+                if ([Feature enabled:FeatureFlagQuickStartV2]) {
+                    [self showQuickStartCustomize];
+                } else {
+                    [self showQuickStartV1];
+                }
             }
         }
         [self reloadTableViewPreservingSelection];
