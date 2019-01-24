@@ -30,7 +30,7 @@ class GutenbergMediaPickerHelper: NSObject {
     fileprivate lazy var mediaPickerOptions: WPMediaPickerOptions = {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
-        options.filter = [.all]
+        options.filter = [.image]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
