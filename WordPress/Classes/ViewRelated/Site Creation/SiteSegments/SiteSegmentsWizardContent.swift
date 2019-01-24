@@ -165,7 +165,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         if self.isNetworkActive == false {
             errorType = .networkUnreachable
         } else {
-            errorType = .siteLoading
+            errorType = .general
         }
         self.installErrorStateViewController(with: errorType)
     }
