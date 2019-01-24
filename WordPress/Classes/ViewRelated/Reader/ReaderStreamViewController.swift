@@ -123,6 +123,8 @@ import WordPressFlux
         }
     }
 
+    /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
+    let sharingController = PostSharingController()
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
@@ -469,6 +471,7 @@ import WordPressFlux
         managedObjectContext().reset()
 
         configureTitleForTopic()
+        configureShareButtonIfNeeded()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()

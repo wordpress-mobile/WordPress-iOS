@@ -482,6 +482,7 @@
 		736584EB2137533A0029C9A4 /* NotificationContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736584E82137533A0029C9A4 /* NotificationContentView.swift */; };
 		736584EC2137533A0029C9A4 /* Tracks+ContentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736584EA2137533A0029C9A4 /* Tracks+ContentExtension.swift */; };
 		73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73713582208EA4B900CCDFC8 /* Blog+Files.swift */; };
+		7371E6D221FA730700596C0A /* ReaderStreamViewController+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7371E6D121FA730700596C0A /* ReaderStreamViewController+Sharing.swift */; };
 		73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */; };
 		73856E5B21E1602400773CD9 /* SiteCreationRequest+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73856E5A21E1602400773CD9 /* SiteCreationRequest+Validation.swift */; };
 		738B9A4E21B85CF20005062B /* SiteCreationWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A4021B85CF20005062B /* SiteCreationWizard.swift */; };
@@ -2342,6 +2343,7 @@
 		736584E82137533A0029C9A4 /* NotificationContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationContentView.swift; sourceTree = "<group>"; };
 		736584EA2137533A0029C9A4 /* Tracks+ContentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ContentExtension.swift"; sourceTree = "<group>"; };
 		73713582208EA4B900CCDFC8 /* Blog+Files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Files.swift"; sourceTree = "<group>"; };
+		7371E6D121FA730700596C0A /* ReaderStreamViewController+Sharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderStreamViewController+Sharing.swift"; sourceTree = "<group>"; };
 		73768B6A212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UNNotificationContent+RemoteNotification.swift"; sourceTree = "<group>"; };
 		73856E5A21E1602400773CD9 /* SiteCreationRequest+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteCreationRequest+Validation.swift"; sourceTree = "<group>"; };
 		738B9A4021B85CF20005062B /* SiteCreationWizard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationWizard.swift; sourceTree = "<group>"; };
@@ -4760,6 +4762,7 @@
 				17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */,
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
+				7371E6D121FA730700596C0A /* ReaderStreamViewController+Sharing.swift */,
 				D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */,
 				D87A329520ABD60700F4726F /* ReaderTableContent.swift */,
 				5D42A401175E76A1005CFF05 /* WPImageViewController.h */,
@@ -9626,6 +9629,7 @@
 				E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */,
 				17B7C8A020EC1D6A0042E260 /* Route.swift in Sources */,
 				436D56252117312700CEAA33 /* RegisterDomainDetailsViewController+Cells.swift in Sources */,
+				7371E6D221FA730700596C0A /* ReaderStreamViewController+Sharing.swift in Sources */,
 				17A28DC3205001A900EA6D9E /* FilterBar.swift in Sources */,
 				D858F30320E201F4007E8A1C /* EditComment.swift in Sources */,
 				9A4E61F621A2C37B0017A925 /* WPStyleSuide+Revisions.swift in Sources */,
