@@ -39,7 +39,8 @@ class GutenbergMediaInserterHelper: NSObject {
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
         options.version = .current
-        let mediaUploadID = media.uploadID.hashValue
+        options.resizeMode = .fast
+        let mediaUploadID = media.gutenbergUploadID
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
             guard let thumbImage = image else {
@@ -87,14 +88,16 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     private func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
-        let mediaUploadID = media.uploadID.hashValue
+        let mediaUploadID = media.gutenbergUploadID
         switch state {
         case .processing:
-            DDLogInfo("Creating media")
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
         case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.1, url: url, serverID: nil)
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: url, serverID: nil)
+            break;
         case .uploading:
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.1, url: nil, serverID: nil)
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
+            break
         case .ended:
             guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.intValue else {
                 break
@@ -105,5 +108,11 @@ class GutenbergMediaInserterHelper: NSObject {
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
         }
+    }
+}
+
+extension Media {
+    var gutenbergUploadID: Int {
+        return objectID.uriRepresentation().absoluteString.hash
     }
 }
