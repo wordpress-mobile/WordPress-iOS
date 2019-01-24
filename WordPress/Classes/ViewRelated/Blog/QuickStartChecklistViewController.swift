@@ -1,3 +1,21 @@
+struct TasksCompleteScreenConfiguration {
+    var title: String
+    var subtitle: String
+    var imageName: String
+}
+
+struct QuickStartChecklistConfiguration {
+    var title: String?
+    var list: [QuickStartTour]
+    var tasksCompleteScreen: TasksCompleteScreenConfiguration?
+
+    init(title: String? = nil, list: [QuickStartTour], tasksCompleteScreen: TasksCompleteScreenConfiguration? = nil) {
+        self.title = title
+        self.list = list
+        self.tasksCompleteScreen = tasksCompleteScreen
+    }
+}
+
 class QuickStartChecklistViewController: UITableViewController {
     private var dataSource: QuickStartChecklistDataSource? {
         didSet {
@@ -44,17 +62,14 @@ class QuickStartChecklistViewController: UITableViewController {
                 tableView.estimatedRowHeight = WPTableViewDefaultRowHeight
             }
 
-            let congratulationsNib = UINib(nibName: "QuickStartCongratulationsCell", bundle: Bundle(for: QuickStartCongratulationsCell.self))
-            tableView.register(congratulationsNib, forCellReuseIdentifier: QuickStartCongratulationsCell.reuseIdentifier)
-            let skipAllNib = UINib(nibName: "QuickStartSkipAllCell", bundle: Bundle(for: QuickStartSkipAllCell.self))
-            tableView.register(skipAllNib, forCellReuseIdentifier: QuickStartSkipAllCell.reuseIdentifier)
+            register(QuickStartCongratulationsCell.self, tableView: tableView, reuseIdentifier: QuickStartCongratulationsCell.reuseIdentifier)
+            register(QuickStartSkipAllCell.self, tableView: tableView, reuseIdentifier: QuickStartSkipAllCell.reuseIdentifier)
         }
 
-        self.tableView = tableView
-
         let nibName = quickStartV2Enabled ? "QuickStartChecklistCellV2" : "QuickStartChecklistCell"
-        let cellNib = UINib(nibName: nibName, bundle: Bundle(for: QuickStartChecklistCell.self))
-        tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
+        register(QuickStartChecklistCell.self, tableView: tableView, nibName: nibName, reuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
+
+        self.tableView = tableView
 
         guard let blog = blog, let configuration = configuration else {
             return
@@ -155,6 +170,11 @@ class QuickStartChecklistViewController: UITableViewController {
         WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
         navigationController?.popViewController(animated: true)
     }
+
+    private func register<T: AnyObject>(_ item: T.Type, tableView: UITableView, nibName: String? = nil, reuseIdentifier: String) {
+        let congratulationsNib = UINib(nibName: nibName ?? String(describing: T.self), bundle: Bundle(for: T.self))
+        tableView.register(congratulationsNib, forCellReuseIdentifier: reuseIdentifier)
+    }
 }
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
@@ -250,22 +270,4 @@ private enum Sections: Int {
     case congratulations = 0
     case checklistItems = 1
     case skipAll = 2
-}
-
-struct TasksCompleteScreenConfiguration {
-    var title: String
-    var subtitle: String
-    var imageName: String
-}
-
-struct QuickStartChecklistConfiguration {
-    var title: String?
-    var list: [QuickStartTour]
-    var tasksCompleteScreen: TasksCompleteScreenConfiguration?
-
-    init(title: String? = nil, list: [QuickStartTour], tasksCompleteScreen: TasksCompleteScreenConfiguration? = nil) {
-        self.title = title
-        self.list = list
-        self.tasksCompleteScreen = tasksCompleteScreen
-    }
 }
