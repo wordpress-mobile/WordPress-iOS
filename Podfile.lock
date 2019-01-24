@@ -288,6 +288,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
     - WPMediaPicker
@@ -388,6 +389,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: f644e7e3a31f7f2e60ed84269d614817c3e6e47f
+PODFILE CHECKSUM: a994f93505593026a108ac3ddfc7e48fd8fe71ca
 
 COCOAPODS: 1.5.3
