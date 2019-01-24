@@ -171,7 +171,7 @@ private extension StatsPeriodStore {
 
     func receivedSearchTerms(_ searchTerms: StatsGroup?) {
         transaction { state in
-            state.topSearchTerms = searchTerms?.items as? [StatsItem]
+            state.topSearchTerms = reorderSearchTerms(searchTerms)
             state.fetchingSearchTerms = false
         }
     }
@@ -186,6 +186,43 @@ private extension StatsPeriodStore {
         state.fetchingPostsAndPages = true
         state.fetchingSearchTerms = true
     }
+
+    /// This method modifies the 'Unknown search terms' row and changes its location in the array.
+    /// - Find the 'Unknown search terms' row
+    /// - Change the label
+    /// - Remove the row from the array
+    /// - Insert the row at the beginning of the array
+    /// NOTE: When the backend is updated, maybe it will return the unknown row at the top
+    /// of the array, making this unnecessary.
+    ///
+    func reorderSearchTerms(_ searchTerms: StatsGroup?) -> [StatsItem]? {
+
+        guard var searchTerms = searchTerms?.items as? [StatsItem] else {
+            return nil
+        }
+
+        // Find the row in the array
+
+        // This labelToFind matches that in WPStatsServiceRemote:operationForSearchTermsForDate
+        let labelToFind = NSLocalizedString("Unknown Search Terms", comment: "")
+        let unknownSearchTerms = searchTerms.filter({ return $0.label == labelToFind })
+
+        guard let unknownSearchTermRow = unknownSearchTerms.first else {
+            return searchTerms
+        }
+
+        // Capitalize only the firt letter of the label
+        unknownSearchTermRow.label = NSLocalizedString("Unknown search terms", comment: "")
+
+        // Remove the row from the array
+        searchTerms = searchTerms.filter { $0 != unknownSearchTermRow }
+
+        // And add it back at the top
+        searchTerms.insert(unknownSearchTermRow, at: 0)
+
+        return searchTerms
+    }
+
 }
 
 // MARK: - Public Accessors
