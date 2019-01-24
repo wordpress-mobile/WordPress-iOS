@@ -14,8 +14,12 @@ module Fastlane
           Action.sh("git add #{file}")
         end
 
-        Action.sh("git commit -m \"Update metadata strings\"")
-        Action.sh("git push")
+        repo_status = Actions.sh("git status --porcelain")
+        repo_clean = repo_status.empty?
+        if (!repo_clean) then
+          Action.sh("git commit -m \"Update metadata strings\"")
+          Action.sh("git push")
+        end
       end
 
       #####################################################
