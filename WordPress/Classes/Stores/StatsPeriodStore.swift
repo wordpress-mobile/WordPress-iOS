@@ -76,7 +76,6 @@ private extension StatsPeriodStore {
         }
 
         runPeriodsQuery()
-
     }
 
     func runPeriodsQuery() {
