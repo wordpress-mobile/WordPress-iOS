@@ -232,6 +232,23 @@ open class QuickStartTourGuide: NSObject {
         QuickStartPublishTour(),
         QuickStartFollowTour()
     ]
+
+    static let customizeListTours: [QuickStartTour] = [
+        QuickStartCreateTour(),
+        QuickStartSiteIconTour(),
+        QuickStartThemeTour(),
+        QuickStartCustomizeTour(),
+        QuickStartNewPageTour(),
+        QuickStartViewTour()
+    ]
+
+    static let growListTours: [QuickStartTour] = [
+        QuickStartPostSharingTour(),
+        QuickStartPublishTour(),
+        QuickStartFollowTour(),
+        QuickStartCheckStatsTour(),
+        QuickStartExplorePlansTour()
+    ]
 }
 
 private extension QuickStartTourGuide {

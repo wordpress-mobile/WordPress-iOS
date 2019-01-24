@@ -8,12 +8,8 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
 
-    var insightsTableViewController: SiteStatsInsightsTableViewController?
-
-    // TODO: replace UITableViewController with real controller names that
-    // corresponds to Stats.
-
-    var statsTableViewController: UITableViewController?
+    private var insightsTableViewController: SiteStatsInsightsTableViewController?
+    private var periodTableViewController: SiteStatsPeriodTableViewController?
 
     // MARK: - View
 
@@ -26,6 +22,10 @@ class SiteStatsDashboardViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
             insightsTableViewController = insightsTableVC
+        }
+
+        if let periodTableVC = segue.destination as? SiteStatsPeriodTableViewController {
+            periodTableViewController = periodTableVC
         }
     }
 
@@ -44,10 +44,10 @@ private extension SiteStatsDashboardViewController {
 
     enum StatsPeriodType: Int {
         case insights = 0
-        case days = 1
-        case weeks = 2
-        case months = 3
-        case years = 4
+        case days
+        case weeks
+        case months
+        case years
 
         static let allPeriods = [StatsPeriodType.insights, .days, .weeks, .months, .years]
 
@@ -79,19 +79,6 @@ private extension SiteStatsDashboardViewController {
         insightsContainerView.isHidden = !statsContainerView.isHidden
     }
 
-    func shouldShowProgressView(viewController: UIViewController) -> Bool {
-
-        var shouldShow = false
-
-        if viewController == insightsTableViewController {
-            shouldShow = !insightsContainerView.isHidden
-        } else if viewController == statsTableViewController {
-            shouldShow = !statsContainerView.isHidden
-        }
-
-        return shouldShow
-    }
-
 }
 
 // MARK: - FilterTabBar Support
@@ -106,8 +93,7 @@ private extension SiteStatsDashboardViewController {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         currentSelectedPeriod = StatsPeriodType(rawValue: filterBar.selectedIndex) ?? StatsPeriodType.insights
-
-        // TODO: reload view based on selected tab
+        periodTableViewController?.periodDisplayed = PeriodDisplayed.init(rawValue: currentSelectedPeriod.rawValue)
     }
 
 }
