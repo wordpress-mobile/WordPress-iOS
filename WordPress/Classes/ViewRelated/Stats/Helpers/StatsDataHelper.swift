@@ -3,7 +3,7 @@ import Foundation
 
 /// Helper class for getting/modifying Stats data for display purposes.
 ///
-class StatsDataHelper: NSObject {
+class StatsDataHelper {
 
     class func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
 
