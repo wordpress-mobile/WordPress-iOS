@@ -43,14 +43,14 @@ class GutenbergMediaInserterHelper: NSObject {
         let mediaUploadID = media.gutenbergUploadID
         // Getting a quick thumbnail of the asset to display while the image is being exported and uploaded.
         PHImageManager.default().requestImage(for: asset, targetSize: asset.pixelSize(), contentMode: .default, options: options) { (image, info) in
-            guard let thumbImage = image else {
+            guard let thumbImage = image, let resizedImage = thumbImage.resizedImage(asset.pixelSize(), interpolationQuality: CGInterpolationQuality.low) else {
                 callback(mediaUploadID, nil)
                 return
             }
             let filePath = NSTemporaryDirectory() + UUID().uuidString + ".jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
-                try thumbImage.writeJPEGToURL(url)
+                try resizedImage.writeJPEGToURL(url)
                 callback(mediaUploadID, url.absoluteString)
             } catch {
                 callback(mediaUploadID, nil)
