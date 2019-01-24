@@ -68,6 +68,24 @@ class GutenbergMediaPickerHelper: NSObject {
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
     }
+
+    private lazy var cameraPicker: WPMediaPickerViewController = {
+        let cameraPicker = WPMediaPickerViewController()
+        cameraPicker.options = mediaPickerOptions
+        cameraPicker.mediaPickerDelegate = self
+        cameraPicker.dataSource = devicePhotoLibraryDataSource
+        return cameraPicker
+    }()
+
+    func presentCameraCaptureFullScreen(animated: Bool,
+                                        callback: @escaping GutenbergMediaPickerHelperCallback) {
+
+        didPickMediaCallback = callback
+
+        cameraPicker.modalPresentationStyle = .currentContext
+        cameraPicker.viewControllerToUseToPresent = context
+        cameraPicker.showCapture()
+    }
 }
 
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {

@@ -303,6 +303,17 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestMediaFromCameraPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
+                                                         callback: {(asset) in
+                                                            guard let phAsset = asset as? PHAsset else {
+                                                                callback(nil, nil)
+                                                                return
+                                                            }
+                                                            self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
+        })
+    }
+
     func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
         if changed {
             self.html = html
