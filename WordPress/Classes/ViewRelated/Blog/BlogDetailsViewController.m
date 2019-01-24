@@ -56,6 +56,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic, copy) void (^callback)(void);
 @property (nonatomic) QuickStartTourElement quickStartIdentifier;
+@property (nonatomic) QuickStartTitleState quickStartTitleState;
 
 @end
 
@@ -248,6 +249,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
+    UINib *qsTitleCellNib = [UINib nibWithNibName:@"QuickStartListTitleCell" bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
+    [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
 
     self.clearsSelectionOnViewWillAppear = NO;
 
@@ -551,23 +554,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-                                                     identifier:BlogDetailsPlanCellIdentifier
-                                                          image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                     identifier:[QuickStartListTitleCell reuseIdentifier]
+                                                          image:[Gridicon iconOfType:GridiconTypeCustomize]
                                                        callback:^{
                                                            [weakSelf showQuickStartCustomize];
                                                        }];
     row.quickStartIdentifier = QuickStartTourElementChecklist;
+    row.quickStartTitleState = QuickStartTitleStateCustomizeIncomplete;
 
     row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
     [rows addObject:row];
 
     BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
-                                                      identifier:BlogDetailsPlanCellIdentifier
-                                                           image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                      identifier:[QuickStartListTitleCell reuseIdentifier]
+                                                           image:[Gridicon iconOfType:GridiconTypeMultipleUsers]
                                                         callback:^{
                                                             [weakSelf showQuickStartGrow];
                                                         }];
     row2.quickStartIdentifier = QuickStartTourElementChecklist;
+    row2.quickStartTitleState = QuickStartTitleStateGrowIncomplete;
 
     row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
     [rows addObject:row2];
@@ -1020,6 +1025,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     cell.imageView.image = row.image;
     if (row.accessoryView) {
         cell.accessoryView = row.accessoryView;
+    }
+    if ([cell isKindOfClass:[QuickStartListTitleCell class]]) {
+        ((QuickStartListTitleCell *) cell).state = row.quickStartTitleState;
     }
 }
 
