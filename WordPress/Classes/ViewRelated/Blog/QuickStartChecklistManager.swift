@@ -84,9 +84,9 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         if section == Sections.todo.rawValue,
             !todoTours.isEmpty,
             !completedTours.isEmpty {
-            return view(from: QuickStartChecklistFooter.self)
+            return UIView()
         }
-        return UIView()
+        return nil
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

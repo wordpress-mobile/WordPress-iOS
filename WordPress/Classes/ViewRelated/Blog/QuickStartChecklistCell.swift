@@ -1,9 +1,10 @@
 import Gridicons
 
 class QuickStartChecklistCell: UITableViewCell {
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var descriptionLabel: UILabel!
-    @IBOutlet var iconView: UIImageView?
+    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var descriptionLabel: UILabel!
+    @IBOutlet private var iconView: UIImageView?
+    @IBOutlet private var bottomStrokeLeading: NSLayoutConstraint?
 
     public var completed = false {
         didSet {
@@ -48,9 +49,7 @@ class QuickStartChecklistCell: UITableViewCell {
 
     public var lastRow: Bool = false {
         didSet {
-            if lastRow, Feature.enabled(.quickStartV2) {
-                separatorInset = .zero
-            }
+            bottomStrokeLeading?.isActive = !lastRow && Feature.enabled(.quickStartV2)
         }
     }
 

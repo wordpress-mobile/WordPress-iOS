@@ -36,18 +36,30 @@
                         <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9O-Tl-jRn">
+                        <rect key="frame" x="64" y="71" width="311" height="0.5"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.33000000000000002" id="I9A-zJ-Npt"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leading" priority="750" id="3eA-72-02A"/>
+                    <constraint firstAttribute="bottom" secondItem="q9O-Tl-jRn" secondAttribute="bottom" id="6zL-eP-5kL"/>
                     <constraint firstItem="KNn-zz-lLY" firstAttribute="top" secondItem="Yc4-11-laP" secondAttribute="bottom" constant="2" id="GKD-om-l0b"/>
+                    <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="KNn-zz-lLY" secondAttribute="leading" id="IP9-A7-b0C"/>
                     <constraint firstItem="KNn-zz-lLY" firstAttribute="leading" secondItem="Yc4-11-laP" secondAttribute="leading" id="WKU-rc-bUU"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Yc4-11-laP" secondAttribute="trailing" constant="6" id="ZAh-HX-yVH"/>
                     <constraint firstItem="Yc4-11-laP" firstAttribute="top" secondItem="fK0-aP-tbW" secondAttribute="topMargin" constant="5" id="dCt-t5-oGk"/>
                     <constraint firstItem="Yc4-11-laP" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leadingMargin" constant="48" id="eWp-sF-urj"/>
+                    <constraint firstAttribute="trailing" secondItem="q9O-Tl-jRn" secondAttribute="trailing" id="iWA-GZ-njV"/>
                     <constraint firstAttribute="trailingMargin" secondItem="KNn-zz-lLY" secondAttribute="trailing" constant="6" id="imd-Jt-Xqm"/>
                     <constraint firstAttribute="bottomMargin" secondItem="KNn-zz-lLY" secondAttribute="bottom" constant="5" id="oba-ae-wVR"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="bottomStrokeLeading" destination="IP9-A7-b0C" id="NTx-c6-R5k"/>
                 <outlet property="descriptionLabel" destination="KNn-zz-lLY" id="wd6-dY-ajZ"/>
                 <outlet property="titleLabel" destination="Yc4-11-laP" id="fxd-Fh-PS5"/>
             </connections>
