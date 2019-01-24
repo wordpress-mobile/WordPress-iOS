@@ -93,11 +93,9 @@ class GutenbergMediaInserterHelper: NSObject {
         case .processing:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
         case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: url, serverID: nil)
-            break;
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: url, serverID: nil)            
         case .uploading:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
-            break
         case .ended:
             guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.intValue else {
                 break
