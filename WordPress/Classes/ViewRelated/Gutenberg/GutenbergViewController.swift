@@ -314,7 +314,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
-    func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
+    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
         if changed {
             self.html = html
         }
@@ -359,8 +359,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
+    }
+
+    func gutenbergInitialTitle() -> String? {
+        return post.postTitle ?? ""
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
