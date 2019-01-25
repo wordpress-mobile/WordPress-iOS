@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
+    case receivedPublished(_ published: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
@@ -28,6 +29,9 @@ enum PeriodQuery {
 struct PeriodStoreState {
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
+
+    var topPublished: [StatsItem]?
+    var fetchingPublished = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -45,6 +49,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
+        case .receivedPublished(let published):
+            receivedPublished(published)
         case .refreshPeriodData(let date, let period):
             refreshPeriodData(date: date, period: period)
         }
@@ -96,11 +102,11 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching visits: \(String(describing: error?.localizedDescription))")
             }
 
-        }, eventsCompletionHandler: { (events, error) in
+        }, eventsCompletionHandler: { (published, error) in
             if error != nil {
                 DDLogInfo("Error fetching events: \(String(describing: error?.localizedDescription))")
             }
-
+            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
         }, postsCompletionHandler: { (postsAndPages, error) in
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -162,6 +168,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedPublished(_ published: StatsGroup?) {
+        transaction { state in
+            state.topPublished = published?.items as? [StatsItem]
+            state.fetchingPublished = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetch() -> Bool {
@@ -170,6 +183,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
+        state.fetchingPublished = true
     }
 }
 
@@ -181,8 +195,13 @@ extension StatsPeriodStore {
         return state.topPostsAndPages
     }
 
+    func getTopPublished() -> [StatsItem]? {
+        return state.topPublished
+    }
+
     var isFetching: Bool {
-        return state.fetchingPostsAndPages
+        return state.fetchingPostsAndPages ||
+            state.fetchingPublished
     }
 
 }
