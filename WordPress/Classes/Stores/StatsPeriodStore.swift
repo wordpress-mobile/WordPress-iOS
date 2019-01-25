@@ -203,7 +203,7 @@ private extension StatsPeriodStore {
         // Find the row in the array
 
         // This labelToFind matches that in WPStatsServiceRemote:operationForSearchTermsForDate
-        let labelToFind = NSLocalizedString("Unknown Search Terms", comment: "")
+        let labelToFind = NSLocalizedString("Unknown Search Terms", comment: "N/A. Not visible to users.")
         let unknownSearchTerms = searchTerms.filter({ return $0.label == labelToFind })
 
         guard let unknownSearchTermRow = unknownSearchTerms.first else {
@@ -211,7 +211,7 @@ private extension StatsPeriodStore {
         }
 
         // Capitalize only the firt letter of the label
-        unknownSearchTermRow.label = NSLocalizedString("Unknown search terms", comment: "")
+        unknownSearchTermRow.label = NSLocalizedString("Unknown search terms", comment: "Search Terms label for 'unknown search terms'.")
 
         // Remove the row from the array
         searchTerms = searchTerms.filter { $0 != unknownSearchTermRow }
