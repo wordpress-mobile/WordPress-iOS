@@ -2,3 +2,4 @@
 * Added clarification text about empty messages to footer of "Customize your message" screen.
 * Adds support for iOS's password autofill when entering a username during login
 * Fixes an issue where there'd be big spaces on top of (or below) some images.
+* Adds support for sharing a blog via Reader.
