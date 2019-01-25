@@ -13,6 +13,14 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get }
 }
 
+extension QuickStartTour {
+    var waypoints: [WayPoint] {
+        get {
+            return []
+        }
+    }
+}
+
 private struct Strings {
     static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
     static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
@@ -169,6 +177,56 @@ struct QuickStartFollowTour: QuickStartTour {
 
         tabBar.resetReaderTab()
     }
+}
+
+struct QuickStartSiteIconTour: QuickStartTour {
+    let key = "quick-start-site-icon-tour"
+    let analyticsKey = "site_icon"
+    let title = NSLocalizedString("Upload a site icon", comment: "Title of a Quick Start Tour")
+    let description = NSLocalizedString("Your visitors will see your icon in their browser. Add a custom icon for a polished, pro look.", comment: "Description of a Quick Start Tour")
+    let icon = Gridicon.iconOfType(.globe)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+}
+
+struct QuickStartNewPageTour: QuickStartTour {
+    let key = "quick-start-new-page-tour"
+    let analyticsKey = "new_page"
+    let title = NSLocalizedString("Create a new page", comment: "Title of a Quick Start Tour")
+    let description = NSLocalizedString("Add a page for key content — an “About” page is a great start.", comment: "Description of a Quick Start Tour")
+    let icon = Gridicon.iconOfType(.pages)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+}
+
+struct QuickStartPostSharingTour: QuickStartTour {
+    let key = "quick-start-post-sharing-tour"
+    let analyticsKey = "post_sharing"
+    let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
+    let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
+    let icon = Gridicon.iconOfType(.share)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+}
+
+struct QuickStartCheckStatsTour: QuickStartTour {
+    let key = "quick-start-check-stats-tour"
+    let analyticsKey = "check_stats"
+    let title = NSLocalizedString("Check your site stats", comment: "Title of a Quick Start Tour")
+    let description = NSLocalizedString("Keep up to date on your site’s performance.", comment: "Description of a Quick Start Tour")
+    let icon = Gridicon.iconOfType(.statsAlt)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+}
+
+struct QuickStartExplorePlansTour: QuickStartTour {
+    let key = "quick-start-explore-plans-tour"
+    let analyticsKey = "explore_plans"
+    let title = NSLocalizedString("Explore plans", comment: "Title of a Quick Start Tour")
+    let description = NSLocalizedString("Learn about the marketing and SEO tools in our paid plans.", comment: "Description of a Quick Start Tour")
+    let icon = Gridicon.iconOfType(.plans)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
 }
 
 private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
