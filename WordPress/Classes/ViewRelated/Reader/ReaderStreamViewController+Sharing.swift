@@ -42,6 +42,8 @@ extension ReaderStreamViewController {
             return
         }
 
+        WPAppAnalytics.track(.readerSiteShared, withBlogID: sitePendingPost.siteID)
+
         /**
             It may seem curious that we are employing a PostSharingController to share a site (Blog).
             In this case, the Post is a `SharePost`, which can be serialized for use with `UIActivityViewController`.
