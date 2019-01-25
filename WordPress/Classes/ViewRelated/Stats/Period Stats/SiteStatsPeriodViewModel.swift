@@ -38,6 +38,7 @@ class SiteStatsPeriodViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: publishedTableRows())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -60,6 +61,7 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
     }
 
     struct PostsAndPages {
@@ -97,6 +99,34 @@ private extension SiteStatsPeriodViewModel {
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
+    }
+
+    func publishedTableRows() -> [ImmuTableRow] {
+
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.published))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: "Item",
+                                                 dataSubtitle: "Data",
+                                                 dataRows: publishedDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func publishedDataRows() -> [StatsTotalRowData] {
+        let published = store.getTopPublished()
+        var dataRows = [StatsTotalRowData]()
+
+        published?.forEach { item in
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: "",
+                                             showDisclosure: true,
+                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item))
 
             dataRows.append(row)
         }
