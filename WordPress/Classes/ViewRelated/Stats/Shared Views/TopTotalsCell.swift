@@ -28,11 +28,11 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(itemSubtitle: String,
-                   dataSubtitle: String,
+    func configure(itemSubtitle: String? = nil,
+                   dataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate?) {
+                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
