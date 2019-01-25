@@ -49,7 +49,7 @@ extension BlogDetailsViewController {
     }
 
     @objc func showQuickStartV1() {
-        showQuickStart(configuration: QuickStartChecklistConfiguration(list: QuickStartTourGuide.checklistTours))
+        showQuickStart()
     }
 
     @objc func showQuickStartCustomize() {
@@ -70,8 +70,15 @@ extension BlogDetailsViewController {
                                                                        tasksCompleteScreen: tasksCompleteScreen))
     }
 
-    private func showQuickStart(configuration: QuickStartChecklistConfiguration) {
-        let checklist = QuickStartChecklistViewController(blog: blog, configuration: configuration)
+    private func showQuickStart(configuration: QuickStartChecklistConfiguration? = nil) {
+        let checklist: UIViewController
+
+        if let configuration = configuration, Feature.enabled(.quickStartV2) {
+            checklist = QuickStartChecklistViewController(blog: blog, configuration: configuration)
+        } else {
+            checklist = QuickStartChecklistViewControllerV1(blog: blog)
+        }
+
         navigationController?.showDetailViewController(checklist, sender: self)
 
         QuickStartTourGuide.find()?.visited(.checklist)
