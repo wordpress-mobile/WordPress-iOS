@@ -92,6 +92,7 @@ class StatsTotalRow: UIView, NibLoadable {
         itemDetailLabel.isHidden = (rowData.nameDetail == nil)
         dataBarView.isHidden = (rowData.dataBarPercent == nil)
         separatorLine.isHidden = !showSeparator
+        dataLabel.isHidden = rowData.data.isEmpty
 
         applyStyles()
     }
