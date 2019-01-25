@@ -22,6 +22,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
     private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
+    private var subtitlesProvided = true
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private typealias Style = WPStyleGuide.Stats
@@ -35,6 +36,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
+        subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
@@ -63,10 +65,10 @@ private extension TopTotalsCell {
         Style.configureViewAsSeperator(bottomSeparatorLine)
     }
 
-    /// Hide the subtitles if there is no data.
+    /// Hide the subtitles if there is no data or Subtitles.
     ///
     func setSubtitleVisibility() {
-        let showSubtitles = dataRows.count > 0
+        let showSubtitles = dataRows.count > 0 && subtitlesProvided
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + subtitlesBottomMargin : 0
     }
