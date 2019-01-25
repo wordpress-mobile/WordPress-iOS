@@ -71,14 +71,14 @@ private extension AnnualSiteStatsCell {
             let totalsDataRows = totalsDataRows,
             let averagesDataRows = averagesDataRows else {
                 dataStackView.isHidden = true
-                addRows([], toStackView: totalPostsStackView, limitRowsDisplayed: false)
+                addRows([], toStackView: totalPostsStackView, forType: .insights, limitRowsDisplayed: false)
                 return
         }
 
         dataStackView.isHidden = false
-        addRows([totalPostsRow], toStackView: totalPostsStackView, limitRowsDisplayed: false)
-        addRows(totalsDataRows, toStackView: totalsStackView, limitRowsDisplayed: false)
-        addRows(averagesDataRows, toStackView: averagesStackView, limitRowsDisplayed: false)
+        addRows([totalPostsRow], toStackView: totalPostsStackView, forType: .insights, limitRowsDisplayed: false)
+        addRows(totalsDataRows, toStackView: totalsStackView, forType: .insights, limitRowsDisplayed: false)
+        addRows(averagesDataRows, toStackView: averagesStackView, forType: .insights, limitRowsDisplayed: false)
     }
 
 }

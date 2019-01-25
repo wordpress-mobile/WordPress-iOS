@@ -5,12 +5,15 @@ class StatsNoDataRow: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var noDataLabel: UILabel!
-    private let dataLabel = NSLocalizedString("No data yet", comment: "Text displayed when a stats section has no data.")
+    private let insightsNoDataLabel = NSLocalizedString("No data yet",
+                                                        comment: "Text displayed when an Insights stat section has no data.")
+    private let periodNoDataLabel = NSLocalizedString("No data for this period",
+                                                      comment: "Text displayed when Period stat section has no data.")
 
     // MARK: - Configure
 
-    override func awakeFromNib() {
-        noDataLabel.text = dataLabel
+    func configure(forType statType: StatType) {
+        noDataLabel.text = statType == .insights ? insightsNoDataLabel : periodNoDataLabel
         WPStyleGuide.Stats.configureLabelAsNoData(noDataLabel)
     }
 
