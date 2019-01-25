@@ -111,6 +111,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching posts and pages.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
         }, referrersCompletionHandler: { (group, error) in
             if error != nil {
@@ -131,6 +132,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching videos.")
             self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
         }, authorsCompletionHandler: { (group, error) in
             if error != nil {
@@ -169,7 +171,6 @@ private extension StatsPeriodStore {
     }
 
     func receivedVideos(_ videos: StatsGroup?) {
-        print("🔴 receivedVideos: ", videos?.items)
         transaction { state in
             state.topVideos = videos?.items as? [StatsItem]
             state.fetchingVideos = false
