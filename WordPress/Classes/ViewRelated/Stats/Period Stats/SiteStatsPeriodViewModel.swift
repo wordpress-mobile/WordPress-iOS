@@ -77,7 +77,6 @@ private extension SiteStatsPeriodViewModel {
     // MARK: - Create Table Rows
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
-
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
@@ -112,7 +111,6 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func videosTableRows() -> [ImmuTableRow] {
-
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.videos))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Videos.itemSubtitle,
@@ -130,6 +128,7 @@ private extension SiteStatsPeriodViewModel {
         videos?.forEach { item in
             let row = StatsTotalRowData.init(name: item.label,
                                              data: item.value.displayString(),
+                                             mediaID: item.itemID,
                                              icon: Style.imageForGridiconType(.video),
                                              showDisclosure: true)
 
