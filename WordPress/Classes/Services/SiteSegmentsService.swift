@@ -1,5 +1,6 @@
 
 import Foundation
+import WordPressKit
 
 
 /// Abstracts the service to obtain site types
@@ -34,7 +35,8 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Blogger",
                            subtitle: "Publish a collection of posts",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: .red)
+                           iconColor: "FFFFFF",
+                           mobile: true)
     }
 
     private func longSubtitle(identifier: Int64) -> SiteSegment {
@@ -42,6 +44,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Professional",
                            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: .blue)
+                           iconColor: "FFFFFF",
+                           mobile: true)
     }
 }
