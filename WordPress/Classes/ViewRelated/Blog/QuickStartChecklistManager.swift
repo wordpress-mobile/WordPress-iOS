@@ -25,9 +25,7 @@ class QuickStartChecklistManager: NSObject {
 
     func reloadData() {
         let completed = (blog.completedQuickStartTours ?? []).map { $0.tourID }
-        let skipped = (blog.skippedQuickStartTours ?? []).map { $0.tourID }
-
-        completedToursKeys = Set(completed).union(Set(skipped))
+        completedToursKeys = Set(completed)
         todoTours = tours.filter(!isCompleted)
         completedTours = tours.filter(isCompleted)
     }
@@ -101,7 +99,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == Sections.completed.rawValue,
             !completedTours.isEmpty {
-            let headerView = view(from: QuickStartChecklistHeader.self)
+            let headerView = Bundle.main.loadNibNamed("QuickStartChecklistHeader", owner: nil, options: nil)?.first as? QuickStartChecklistHeader
             headerView?.collapse = completedSectionCollapse
             headerView?.count = completedTours.count
             headerView?.collapseListener = { [weak self] collapse in
@@ -145,18 +143,10 @@ private extension QuickStartChecklistManager {
         return completedToursKeys.contains(tour.key)
     }
 
-    func view<T>(from type: T.Type) -> T? {
-        let nibName = String(describing: T.self)
-        guard let view = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? T else {
-            return nil
-        }
-        return view
-    }
-
     func tableView(_ tableView: UITableView, reloadCompletedSection collapsing: Bool) {
         var indexPaths: [IndexPath] = []
-        for (i, _) in completedTours.enumerated() {
-            indexPaths.append(IndexPath(row: i, section: Sections.completed.rawValue))
+        for (index, _) in completedTours.enumerated() {
+            indexPaths.append(IndexPath(row: index, section: Sections.completed.rawValue))
         }
 
         if collapsing {
