@@ -1,9 +1,20 @@
-* Als je een nieuwe site start op de app, kun je nu je eigen .blog-subdomein registreren!
-* Als je een site probeert te verwijderen op een iPad, zal de app niet langer crashen (wat soms gebeurde).
-* Een crash op het scherm 'Over' in App-instellingen verholpen.
-* Het berichtinstellingenscherm is vernieuwd zodat het er beter uitziet op een iPad.
+Aan deze release hebben we de mogelijkheid toegevoegd om je wachtwoord vanuit de app te wijzigen. We hebben bovendien de UI in de hele app verbeterd en een groot aantal bugs verwijderd! We hebben ook het verbruik van de CPU en het energieverbruik van de app verminderd, als brave burgers van je device.
 
-Er zijn verbeteringen aangebracht aan de hulpmiddelen Geschiedenis/Revisie, zodat je nu...
-* In een oogwenk van revisie kunt wisselen.
-* Tussen de HTML-modus en visuele modus kunt schakelen wanneer je een revisie bekijkt.
-* Van gedachten kunt veranderen bij het toepassen van een revisie, door de knop 'Ongedaan maken' te gebruiken.
+Een opknapbeurt heeft niemand ooit kwaad gedaan.
+Het is eenvoudiger om instellingen aan te passen wanneer je een site aanmaakt. Je kunt opnieuw beginnen vanuit het scherm met onderwerpen en de visuele uitstraling is consistenter. We hebben de minimumhoogte en ruimte tussen verschillende elementen verhoogd in sommige velden en schermen, zodat het schrijven eenvoudiger wordt. En als je inlogt op een account zonder sites, zie je geen onnodige vermeldingen van schermen van je sites (of gewoon geen vermelding).
+
+Puntjes op de i.
+Wanneer je reageert in de Reader worden berichttitels op de juiste manier weergegeven. Van sites die met een groter lettertype worden weergegeven, wordt de URL nu goed weergegeven en lange labels in de app-instellingen worden niet afgebroken. De lettergrootte in de hele app is verbeterd. En soms opende je een berichtrevisie in de editor en verborg het toetsenbord de melding, maar dat probleem is nu verholpen.
+
+Zinloze foutmeldingen zijn zinloos.
+Als zich een probleem voordoet bij het instellen van een wachtwoord wanneer je een nieuw account aanmaakt, dan krijg je een zinvolle foutmelding. Hetzelfde geldt wanneer een opmerking die je schrijft niet goed wordt geplaatst. Bovendien hebben zoekopdrachten zonder resultaat nu volledige foutmeldingen.
+
+Meer lokalisatie zorgt voor een betere app in elke taal.
+De Servicevoorwaarden zijn goed gelokaliseerd, omdat iedereen moet weten waarmee ze akkoord gaan. Knoppen voor het delen van content met WordPress vanuit een andere app zijn goed vertaald, waaronder de knop om een reactie vanuit je meldingen te bewerken. De knop 'Klaar' na het publiceren van een bericht is nu ook vertaald (en makkelijker in te drukken!).
+
+In tegenstelling tot echte insecten, hebben technische 'bugs' geen enkele functie.
+Je kunt nu een gebruiker verwijderen en ze komen vervolgens niet meer terug in de lijst te staan. De widget Statistieken probeert niet meer steeds de primaire site op te halen en de verkeerde afbeeldingen worden niet meer in de lijst met meldingen weergegeven. Als je site privé is, werkt de visuele modus voor revisie op de juiste manier voor berichten die afbeeldingen bevatten.
+
+Niemand houdt van crashes.
+Afbeeldingen die niet goed geüpload werden, media die op de achtergrond werden geladen en navigeren terwijl een laadbalk werd weergegeven in de tabelweergave, leidt niet meer tot crashes. Hoera.
+
