@@ -304,7 +304,7 @@
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
 		4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */; };
 		4395A1592106389800844E8E /* QuickStartTours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A1582106389800844E8E /* QuickStartTours.swift */; };
-		4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */; };
+		4395A15B21066DCD00844E8E /* QuickStartChecklistCellV1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4395A15A21066DCD00844E8E /* QuickStartChecklistCellV1.xib */; };
 		4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */; };
 		439F4F352196537500F8D0C7 /* RevisionDiffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */; };
 		439F4F38219B636500F8D0C7 /* Revisions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439F4F37219B636500F8D0C7 /* Revisions.storyboard */; };
@@ -951,13 +951,14 @@
 		9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
 		9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC68218899FB006A409B /* DiffAbstractValue.swift */; };
 		9A4697B221B002AD00468B64 /* RevisionDiffsPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */; };
-		9A4E215A21F7565A00EFF212 /* QuickStartChecklistCellV2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E215921F7565A00EFF212 /* QuickStartChecklistCellV2.xib */; };
+		9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */; };
 		9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
 		9A4E216021F87AE200EFF212 /* QuickStartChecklistHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */; };
 		9A4E216221F87AF300EFF212 /* QuickStartChecklistHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */; };
 		9A4E61F621A2C37B0017A925 /* WPStyleSuide+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */; };
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
+		9A938C5D21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9AF750F321EE196400DC47CA /* WPStyleGuide+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */; };
 		9AF9551821A1D7970057827C /* DiffAbstractValue+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9551721A1D7970057827C /* DiffAbstractValue+Attributes.swift */; };
@@ -2104,7 +2105,7 @@
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
 		4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+PushPrimer.swift"; sourceTree = "<group>"; };
 		4395A1582106389800844E8E /* QuickStartTours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartTours.swift; sourceTree = "<group>"; };
-		4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
+		4395A15A21066DCD00844E8E /* QuickStartChecklistCellV1.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistCellV1.xib; sourceTree = "<group>"; };
 		4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistCell.swift; sourceTree = "<group>"; };
 		439F4F332196537500F8D0C7 /* RevisionDiffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffViewController.swift; sourceTree = "<group>"; };
 		439F4F37219B636500F8D0C7 /* Revisions.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Revisions.storyboard; sourceTree = "<group>"; };
@@ -2865,13 +2866,14 @@
 		9A38DC67218899FB006A409B /* RevisionDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiff.swift; path = Revisions/RevisionDiff.swift; sourceTree = "<group>"; };
 		9A38DC68218899FB006A409B /* DiffAbstractValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffAbstractValue.swift; path = Revisions/DiffAbstractValue.swift; sourceTree = "<group>"; };
 		9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffsPageManager.swift; sourceTree = "<group>"; };
-		9A4E215921F7565A00EFF212 /* QuickStartChecklistCellV2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickStartChecklistCellV2.xib; sourceTree = "<group>"; };
+		9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
 		9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistManager.swift; sourceTree = "<group>"; };
 		9A4E215F21F87AE200EFF212 /* QuickStartChecklistHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistHeader.swift; sourceTree = "<group>"; };
 		9A4E216121F87AF300EFF212 /* QuickStartChecklistHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistHeader.xib; sourceTree = "<group>"; };
 		9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleSuide+Revisions.swift"; sourceTree = "<group>"; };
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
+		9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistViewControllerV1.swift; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
 		9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Colors.swift"; sourceTree = "<group>"; };
@@ -4677,6 +4679,7 @@
 			isa = PBXGroup;
 			children = (
 				43C9908D21067E22009EFFEB /* QuickStartChecklistViewController.swift */,
+				9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */,
 				9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */,
 				4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */,
 				4395A1582106389800844E8E /* QuickStartTours.swift */,
@@ -6311,8 +6314,8 @@
 		9A4E215D21F87A8500EFF212 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */,
-				9A4E215921F7565A00EFF212 /* QuickStartChecklistCellV2.xib */,
+				4395A15A21066DCD00844E8E /* QuickStartChecklistCellV1.xib */,
+				9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */,
 				4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */,
 				43DDFE8F21785EAC008BE72F /* QuickStartCongratulationsCell.xib */,
 				43DDFE912178635D008BE72F /* QuickStartCongratulationsCell.swift */,
@@ -8565,8 +8568,8 @@
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
-				9A4E215A21F7565A00EFF212 /* QuickStartChecklistCellV2.xib in Resources */,
-				4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */,
+				9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */,
+				4395A15B21066DCD00844E8E /* QuickStartChecklistCellV1.xib in Resources */,
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */,
@@ -10249,6 +10252,7 @@
 				436D56212117312700CEAA33 /* RegisterDomainDetailsViewModel+SectionDefinitions.swift in Sources */,
 				FFA162311CB7031A00E2E110 /* AppSettingsViewController.swift in Sources */,
 				B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */,
+				9A938C5D21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
