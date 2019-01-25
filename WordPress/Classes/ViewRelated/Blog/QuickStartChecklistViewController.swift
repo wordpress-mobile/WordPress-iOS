@@ -42,17 +42,7 @@ class QuickStartChecklistViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let tableView = UITableView(frame: .zero)
-
-        if #available(iOS 10, *) {
-            tableView.estimatedRowHeight = 90.0
-        }
-        tableView.separatorStyle = .none
-
-        let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
-        tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
-
-        self.tableView = tableView
+        configureTableView()
 
         guard let blog = blog, let configuration = configuration else {
             return
@@ -77,20 +67,35 @@ class QuickStartChecklistViewController: UITableViewController {
 
         WPAnalytics.track(.quickStartChecklistViewed)
     }
+}
 
-    private func startObservingForQuickStart() {
+private extension QuickStartChecklistViewController {
+    func configureTableView() {
+        let tableView = UITableView(frame: .zero)
+
+        if #available(iOS 10, *) {
+            tableView.estimatedRowHeight = 90.0
+        }
+        tableView.separatorStyle = .none
+
+        let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
+        tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
+
+        self.tableView = tableView
+    }
+
+    func startObservingForQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let userInfo = notification.userInfo,
                 let element = userInfo[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement,
                 element == .tourCompleted else {
                     return
             }
-
             self?.reload()
         }
     }
 
-    private func reload() {
+    func reload() {
         dataManager?.reloadData()
         tableView.reloadData()
     }
