@@ -4,22 +4,47 @@
 }
 
 class QuickStartChecklistViewController: UITableViewController {
+    private var blog: Blog
+    private var type: QuickStartType
+    private var observer: NSObjectProtocol?
     private var dataManager: QuickStartChecklistManager? {
         didSet {
             tableView?.dataSource = dataManager
             tableView?.delegate = dataManager
         }
     }
-    private var blog: Blog?
-    private var type: QuickStartType?
-    private var observer: NSObjectProtocol?
+    private lazy var tasksCompleteScreen: TasksCompleteScreenConfiguration = {
+        switch type {
+        case .customize:
+            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
+                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
+                                                    imageName: "wp-illustration-tasks-complete-site")
+        case .grow:
+            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
+                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
+                                                    imageName: "wp-illustration-tasks-complete-audience")
+        }
+    }()
+    private lazy var configuration: QuickStartChecklistConfiguration = {
+        switch type {
+        case .customize:
+            return QuickStartChecklistConfiguration(title: Constants.customizeYourSite,
+                                                    tours: QuickStartTourGuide.customizeListTours)
+        case .grow:
+            return QuickStartChecklistConfiguration(title: Constants.growYourAudience,
+                                                    tours: QuickStartTourGuide.growListTours)
+        }
+    }()
 
-    @objc convenience init(blog: Blog, type: QuickStartType) {
-        self.init()
+    @objc init(blog: Blog, type: QuickStartType) {
         self.blog = blog
         self.type = type
-
+        super.init(style: .plain)
         startObservingForQuickStart()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -27,15 +52,10 @@ class QuickStartChecklistViewController: UITableViewController {
 
         configureTableView()
 
-        guard let blog = blog,
-            let type = type else {
-            return
-        }
-
-        navigationItem.title = type.configuration.title
+        navigationItem.title = configuration.title
 
         dataManager = QuickStartChecklistManager(blog: blog,
-                                                 tours: type.configuration.tours,
+                                                 tours: configuration.tours,
                                                  didSelectTour: { [weak self] analyticsKey in
             DispatchQueue.main.async {
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
@@ -84,32 +104,6 @@ private extension QuickStartChecklistViewController {
     func reload() {
         dataManager?.reloadData()
         tableView.reloadData()
-    }
-}
-
-private extension QuickStartType {
-    var tasksCompleteScreen: TasksCompleteScreenConfiguration {
-        switch self {
-        case .customize:
-            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
-                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
-                                                    imageName: "wp-illustration-tasks-complete-site")
-        case .grow:
-            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
-                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
-                                                    imageName: "wp-illustration-tasks-complete-audience")
-        }
-    }
-
-    var configuration: QuickStartChecklistConfiguration {
-        switch self {
-        case .customize:
-            return QuickStartChecklistConfiguration(title: Constants.customizeYourSite,
-                                                    tours: QuickStartTourGuide.customizeListTours)
-        case .grow:
-            return QuickStartChecklistConfiguration(title: Constants.growYourAudience,
-                                                    tours: QuickStartTourGuide.growListTours)
-        }
     }
 }
 
