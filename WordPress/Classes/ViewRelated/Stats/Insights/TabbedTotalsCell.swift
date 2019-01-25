@@ -49,7 +49,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.showTotalCount = showTotalCount
         setupFilterBar()
-        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, rowDelegate: self)
+        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, forType: .insights, rowDelegate: self)
         configureSubtitles()
         applyStyles()
     }
@@ -79,7 +79,7 @@ private extension TabbedTotalsCell {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         removeRowsFromStackView(rowsStackView)
-        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, rowDelegate: self)
+        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, forType: .insights, rowDelegate: self)
         configureSubtitles()
         siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
     }

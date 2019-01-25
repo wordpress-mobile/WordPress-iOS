@@ -10,6 +10,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
+    private let periodDelegate: SiteStatsPeriodDelegate
     private let store: StatsPeriodStore
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
@@ -17,9 +18,13 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Constructor
 
-    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
+    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
+         selectedDate: Date,
+         selectedPeriod: StatsPeriodUnit,
+         periodDelegate: SiteStatsPeriodDelegate) {
+        self.periodDelegate = periodDelegate
         self.store = store
-        periodReceipt = store.query(.periods)
+        periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -42,8 +47,8 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodData() {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodData())
+    func refreshPeriodData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodData(date: date, period: period))
     }
 }
 
@@ -51,7 +56,7 @@ class SiteStatsPeriodViewModel: Observable {
 
 private extension SiteStatsPeriodViewModel {
 
-    // Period Stats strings
+    // MARK: - Period Stats strings
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
@@ -62,32 +67,34 @@ private extension SiteStatsPeriodViewModel {
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
     }
 
-    // Create Period Rows
+    // MARK: - Create Table Rows
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
 
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
-        tableRows.append(TopTotalsStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
                                            dataSubtitle: PostsAndPages.dataSubtitle,
                                            dataRows: postsAndPagesDataRows(),
-                                           siteStatsInsightsDelegate: nil))
+                                           siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
     }
 
     func postsAndPagesDataRows() -> [StatsTotalRowData] {
-
+        let postsAndPages = store.getTopPostsAndPages()
         var dataRows = [StatsTotalRowData]()
 
-        // TODO: replace with real Pages and Posts data from the Store
-        // let postsAndPages = store.getPostsAndPages()
+        postsAndPages?.forEach { item in
 
-        let icon = Style.imageForGridiconType(.folder)
+            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
+            let icon = Style.imageForGridiconType(.posts)
 
-        for count in 1...10 {
-            let row = StatsTotalRowData.init(name: "Row \(count)" ,
-                                             data: "666",
+            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
+                                             dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true)
 

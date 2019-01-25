@@ -33,7 +33,7 @@ class SimpleTotalsCell: UITableViewCell, NibLoadable {
         dataSubtitleLabel.text = dataSubtitle
 
         setSubtitleVisibility()
-        addRows(dataRows, toStackView: rowsStackView, limitRowsDisplayed: false)
+        addRows(dataRows, toStackView: rowsStackView, forType: .insights, limitRowsDisplayed: false)
         applyStyles()
     }
 
