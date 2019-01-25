@@ -53,28 +53,18 @@ extension BlogDetailsViewController {
     }
 
     @objc func showQuickStartCustomize() {
-        let tasksCompleteScreen = TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
-                                                                   subtitle: Constants.tasksCompleteScreenSubtitle,
-                                                                   imageName: "wp-illustration-tasks-complete-site")
-        showQuickStart(configuration: QuickStartChecklistConfiguration(title: Constants.customizeYourSite,
-                                                                       list: QuickStartTourGuide.customizeListTours,
-                                                                       tasksCompleteScreen: tasksCompleteScreen))
+        showQuickStart(with: .customize)
     }
 
     @objc func showQuickStartGrow() {
-        let tasksCompleteScreen = TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
-                                                                   subtitle: Constants.tasksCompleteScreenSubtitle,
-                                                                   imageName: "wp-illustration-tasks-complete-audience")
-        showQuickStart(configuration: QuickStartChecklistConfiguration(title: Constants.growYourAudience,
-                                                                       list: QuickStartTourGuide.growListTours,
-                                                                       tasksCompleteScreen: tasksCompleteScreen))
+        showQuickStart(with: .grow)
     }
 
-    private func showQuickStart(configuration: QuickStartChecklistConfiguration? = nil) {
+    private func showQuickStart(with type: QuickStartType? = nil) {
         let checklist: UIViewController
 
-        if let configuration = configuration, Feature.enabled(.quickStartV2) {
-            checklist = QuickStartChecklistViewController(blog: blog, configuration: configuration)
+        if let type = type, Feature.enabled(.quickStartV2) {
+            checklist = QuickStartChecklistViewController(blog: blog, type: type)
         } else {
             checklist = QuickStartChecklistViewControllerV1(blog: blog)
         }
@@ -116,12 +106,5 @@ extension BlogDetailsViewController {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
-    }
-
-    private enum Constants {
-        static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
-        static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
-        static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
-        static let tasksCompleteScreenSubtitle = NSLocalizedString("Congratulations on completing your list. A job well done.", comment: "Subtitle of the congratulation screen that appears when all the tasks are completed")
     }
 }

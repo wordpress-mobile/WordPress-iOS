@@ -1,19 +1,6 @@
-struct TasksCompleteScreenConfiguration {
-    var title: String
-    var subtitle: String
-    var imageName: String
-}
-
-struct QuickStartChecklistConfiguration {
-    var title: String?
-    var list: [QuickStartTour]
-    var tasksCompleteScreen: TasksCompleteScreenConfiguration?
-
-    init(title: String? = nil, list: [QuickStartTour], tasksCompleteScreen: TasksCompleteScreenConfiguration? = nil) {
-        self.title = title
-        self.list = list
-        self.tasksCompleteScreen = tasksCompleteScreen
-    }
+@objc enum QuickStartType: Int {
+    case customize
+    case grow
 }
 
 class QuickStartChecklistViewController: UITableViewController {
@@ -24,13 +11,13 @@ class QuickStartChecklistViewController: UITableViewController {
         }
     }
     private var blog: Blog?
-    private var configuration: QuickStartChecklistConfiguration?
+    private var type: QuickStartType?
     private var observer: NSObjectProtocol?
 
-    convenience init(blog: Blog, configuration: QuickStartChecklistConfiguration) {
+    @objc convenience init(blog: Blog, type: QuickStartType) {
         self.init()
         self.blog = blog
-        self.configuration = configuration
+        self.type = type
 
         startObservingForQuickStart()
     }
@@ -40,13 +27,16 @@ class QuickStartChecklistViewController: UITableViewController {
 
         configureTableView()
 
-        guard let blog = blog, let configuration = configuration else {
+        guard let blog = blog,
+            let type = type else {
             return
         }
 
-        navigationItem.title = configuration.title
+        navigationItem.title = type.configuration.title
 
-        dataManager = QuickStartChecklistManager(blog: blog, tours: configuration.list, didSelectTour: { [weak self] analyticsKey in
+        dataManager = QuickStartChecklistManager(blog: blog,
+                                                 tours: type.configuration.tours,
+                                                 didSelectTour: { [weak self] analyticsKey in
             DispatchQueue.main.async {
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
                 self?.navigationController?.popViewController(animated: true)
@@ -95,4 +85,48 @@ private extension QuickStartChecklistViewController {
         dataManager?.reloadData()
         tableView.reloadData()
     }
+}
+
+private extension QuickStartType {
+    var tasksCompleteScreen: TasksCompleteScreenConfiguration {
+        switch self {
+        case .customize:
+            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
+                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
+                                                    imageName: "wp-illustration-tasks-complete-site")
+        case .grow:
+            return TasksCompleteScreenConfiguration(title: Constants.tasksCompleteScreenTitle,
+                                                    subtitle: Constants.tasksCompleteScreenSubtitle,
+                                                    imageName: "wp-illustration-tasks-complete-audience")
+        }
+    }
+
+    var configuration: QuickStartChecklistConfiguration {
+        switch self {
+        case .customize:
+            return QuickStartChecklistConfiguration(title: Constants.customizeYourSite,
+                                                    tours: QuickStartTourGuide.customizeListTours)
+        case .grow:
+            return QuickStartChecklistConfiguration(title: Constants.growYourAudience,
+                                                    tours: QuickStartTourGuide.growListTours)
+        }
+    }
+}
+
+private struct TasksCompleteScreenConfiguration {
+    var title: String
+    var subtitle: String
+    var imageName: String
+}
+
+private struct QuickStartChecklistConfiguration {
+    var title: String
+    var tours: [QuickStartTour]
+}
+
+private enum Constants {
+    static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
+    static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
+    static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
+    static let tasksCompleteScreenSubtitle = NSLocalizedString("Congratulations on completing your list. A job well done.", comment: "Subtitle of the congratulation screen that appears when all the tasks are completed")
 }
