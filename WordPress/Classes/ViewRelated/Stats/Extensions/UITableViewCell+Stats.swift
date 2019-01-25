@@ -1,9 +1,17 @@
 import Foundation
 
+/// Convenience enum to easily indicate what type of rows are being added.
+///
+enum StatType: Int {
+    case insights
+    case period
+}
+
 extension UITableViewCell {
 
     func addRows(_ dataRows: [StatsTotalRowData],
                  toStackView rowsStackView: UIStackView,
+                 forType statType: StatType,
                  limitRowsDisplayed: Bool = true,
                  rowDelegate: StatsTotalRowDelegate? = nil) {
 
@@ -11,6 +19,7 @@ extension UITableViewCell {
 
         guard numberOfDataRows > 0 else {
             let row = StatsNoDataRow.loadFromNib()
+            row.configure(forType: statType)
             rowsStackView.addArrangedSubview(row)
             return
         }
