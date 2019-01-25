@@ -100,7 +100,7 @@ private extension SiteStatsInsightsTableViewController {
                 SimpleTotalsStatsSubtitlesRow.self,
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
-                TopTotalsStatsRow.self,
+                TopTotalsInsightStatsRow.self,
                 AnnualSiteStatsRow.self]
     }
 

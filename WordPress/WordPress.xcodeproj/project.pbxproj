@@ -511,6 +511,7 @@
 		73C8F06421BEEF3400DDDF7E /* SiteAssemblyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73178C2E21BEE1F500E37C9A /* SiteAssemblyService.swift */; };
 		73C8F06621BEF76B00DDDF7E /* SiteAssemblyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */; };
 		73C8F06821BF1A5E00DDDF7E /* SiteAssemblyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73C8F06721BF1A5E00DDDF7E /* SiteAssemblyContentView.swift */; };
+		73CE3E0E21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CE3E0D21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift */; };
 		73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */; };
 		73D5AC64212622B200ADDDD2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D5AC5E212622B200ADDDD2 /* Localizable.strings */; };
 		73E32389212CD8B5001B735C /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
@@ -922,6 +923,7 @@
 		98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B33C87202283860071E1E2 /* NoResults.storyboard */; };
 		98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */; };
 		98B3FA8621C05BF000148DD4 /* ViewMoreRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */; };
+		98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */; };
 		98BDFF6B20D0732900C72C58 /* SupportTableViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */; };
 		98D60B9B1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */; };
 		98D60B9E1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9C1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift */; };
@@ -2368,6 +2370,7 @@
 		73C8F06121BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyWizardContent.swift; sourceTree = "<group>"; };
 		73C8F06521BEF76B00DDDF7E /* SiteAssemblyViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyViewTests.swift; sourceTree = "<group>"; };
 		73C8F06721BF1A5E00DDDF7E /* SiteAssemblyContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteAssemblyContentView.swift; sourceTree = "<group>"; };
+		73CE3E0D21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewOffsetCoordinator.swift; sourceTree = "<group>"; };
 		73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		73D5AC5F212622B200ADDDD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73D5AC60212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2828,6 +2831,7 @@
 		98B33C87202283860071E1E2 /* NoResults.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NoResults.storyboard; sourceTree = "<group>"; };
 		98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreRow.swift; sourceTree = "<group>"; };
 		98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewMoreRow.xib; sourceTree = "<group>"; };
+		98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDataHelper.swift; sourceTree = "<group>"; };
 		98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SupportTableViewController+Activity.swift"; sourceTree = "<group>"; };
 		98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionViewController.swift; sourceTree = "<group>"; };
 		98D60B9C1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionCell.swift; sourceTree = "<group>"; };
@@ -5189,6 +5193,7 @@
 				738B9A4921B85CF20005062B /* ModelSettableCell.swift */,
 				738B9A4D21B85CF20005062B /* SiteCreationHeaderData.swift */,
 				738B9A4A21B85CF20005062B /* TableDataCoordinator.swift */,
+				73CE3E0D21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift */,
 				738B9A4B21B85CF20005062B /* TitleSubtitleHeader.swift */,
 				738B9A4821B85CF20005062B /* TitleSubtitleTextfieldHeader.swift */,
 				738B9A5D21B8632E0005062B /* UITableView+Header.swift */,
@@ -6193,6 +6198,7 @@
 			isa = PBXGroup;
 			children = (
 				9874767221963D320080967F /* SiteStatsInformation.swift */,
+				98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -9571,6 +9577,7 @@
 				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
 				F126FE0020A33BDB0010EB6E /* VideoUploadProcessor.swift in Sources */,
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
+				73CE3E0E21F7F9D3007C9C85 /* TableViewOffsetCoordinator.swift in Sources */,
 				436D56292117312700CEAA33 /* RegisterDomainDetailsViewController.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				91DCE84421A6A7840062F134 /* PostEditor+BlogPicker.swift in Sources */,
@@ -9591,6 +9598,7 @@
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,
 				D816C1F620E0896F00C4D82F /* TrashComment.swift in Sources */,
 				08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */,
+				98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */,
 				9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */,
 				74729CA62056FE6000D1394D /* SearchableItemConvertable.swift in Sources */,
 				5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */,
