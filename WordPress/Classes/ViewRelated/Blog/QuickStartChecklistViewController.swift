@@ -27,10 +27,6 @@ class QuickStartChecklistViewController: UITableViewController {
     private var configuration: QuickStartChecklistConfiguration?
     private var observer: NSObjectProtocol?
 
-    @objc convenience init(blog: Blog) {
-        self.init(blog: blog, configuration: QuickStartChecklistConfiguration(list: QuickStartTourGuide.checklistTours))
-    }
-
     convenience init(blog: Blog, configuration: QuickStartChecklistConfiguration) {
         self.init()
         self.blog = blog
