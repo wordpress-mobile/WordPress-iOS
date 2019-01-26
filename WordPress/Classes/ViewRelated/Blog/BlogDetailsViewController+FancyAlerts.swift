@@ -73,6 +73,8 @@ extension BlogDetailsViewController {
     }
 
     @objc func quickStartSectionViewModel() -> BlogDetailsSection {
+        let detailFormatStr = NSLocalizedString("%1$d of %2$d completed", comment: "Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
+
         let customizeRow = BlogDetailsRow(title: NSLocalizedString("Customize Your Site", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
                                           identifier: QuickStartListTitleCell.reuseIdentifier,
                                           accessibilityIdentifier: "Customize Your Site Row",
@@ -81,8 +83,8 @@ extension BlogDetailsViewController {
         }
         customizeRow.quickStartIdentifier = .checklist
         if let customizeDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.customizeListTours, for: blog) {
-            customizeRow.detail = "\(customizeDetailCounts.complete) of \(customizeDetailCounts.total) complete"
-            customizeRow.quickStartTitleState = .customizeIncomplete
+            customizeRow.detail = String(format: detailFormatStr, customizeDetailCounts.complete, customizeDetailCounts.total)
+            customizeRow.quickStartTitleState = customizeDetailCounts.complete == customizeDetailCounts.total ? .completed : .customizeIncomplete
         }
 
         let growRow = BlogDetailsRow(title: NSLocalizedString("Grow Your Audience", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
@@ -96,8 +98,8 @@ extension BlogDetailsViewController {
                                         }
         growRow.quickStartIdentifier = .checklist
         if let growDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.growListTours, for: blog) {
-            growRow.detail = "\(growDetailCounts.complete) of \(growDetailCounts.total) complete"
-            growRow.quickStartTitleState = .growIncomplete
+            growRow.detail = String(format: detailFormatStr, growDetailCounts.complete, growDetailCounts.total)
+            growRow.quickStartTitleState = growDetailCounts.complete == growDetailCounts.total ? .completed : .growIncomplete
         }
 
         let sectionTitle = NSLocalizedString("Quick Start", comment: "Table view title for the quick start section.")
