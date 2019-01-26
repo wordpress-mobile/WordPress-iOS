@@ -114,6 +114,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return ZendeskUtils.showSupportNotificationIndicator
     }
 
+    /// We allow to connect with WordPress.com account only if there is no default account connected already.
+    var allowWPComLogin: Bool {
+        let accountService = AccountService(managedObjectContext: ContextManager.shared.mainContext)
+        return accountService.defaultWordPressComAccount() == nil
+    }
+
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {

@@ -119,7 +119,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }
 }
 
-struct TopTotalsStatsRow: ImmuTableRow {
+struct TopTotalsInsightStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -130,7 +130,7 @@ struct TopTotalsStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -142,7 +142,36 @@ struct TopTotalsStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                       siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                       siteStatsPeriodDelegate: nil)
+    }
+}
+
+struct TopTotalsPeriodStatsRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let siteStatsPeriodDelegate: SiteStatsPeriodDelegate
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsInsightsDelegate: nil,
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
     }
 }
 

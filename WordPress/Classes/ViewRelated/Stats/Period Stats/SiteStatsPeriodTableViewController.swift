@@ -1,24 +1,31 @@
 import UIKit
 import WordPressFlux
 
-enum PeriodDisplayed: Int {
-    case days = 1
-    case weeks
-    case months
-    case years
+
+@objc protocol SiteStatsPeriodDelegate {
+    @objc optional func displayWebViewWithURL(_ url: URL)
 }
+
 
 class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var periodDisplayed: PeriodDisplayed? = .days {
+    var selectedDate: Date?
+    var selectedPeriod: StatsPeriodUnit? {
         didSet {
-            DDLogInfo("Stats Period selected: \(String(describing: periodDisplayed))")
-            guard periodDisplayed != nil else {
+
+            guard selectedPeriod != nil else {
                 return
             }
-            refreshData()
+
+            // If this is the first time setting the Period, need to initialize the view model.
+            // Otherwise, just refresh the data.
+            if oldValue == nil {
+                initViewModel()
+            } else {
+                refreshData()
+            }
         }
     }
 
@@ -37,9 +44,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         super.viewDidLoad()
 
         WPStyleGuide.Stats.configureTable(tableView)
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        initViewModel()
     }
 
 }
@@ -51,25 +57,29 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - View Model
 
     func initViewModel() {
-        viewModel = SiteStatsPeriodViewModel(store: store)
 
-        // TODO: remove this when code below is utilized.
-        refreshTableView()
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
 
-        // TODO: uncomment this when the Store actually does something.
+        viewModel = SiteStatsPeriodViewModel(store: store,
+                                             selectedDate: selectedDate,
+                                             selectedPeriod: selectedPeriod,
+                                             periodDelegate: self)
 
-//        changeReceipt = viewModel?.onChange { [weak self] in
-//            guard let store = self?.store,
-//                !store.isFetching else {
-//                    return
-//            }
-//
-//            self?.refreshTableView()
-//        }
+        changeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.store,
+                !store.isFetching else {
+                    return
+            }
+
+            self?.refreshTableView()
+        }
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self, TopTotalsStatsRow.self]
+        return [CellHeaderRow.self, TopTotalsPeriodStatsRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -80,14 +90,35 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-//        refreshControl?.endRefreshing()
+        refreshControl?.endRefreshing()
     }
 
-    @objc func refreshData() {
-//        refreshControl?.beginRefreshing()
+    @objc func userInitiatedRefresh() {
+        refreshControl?.beginRefreshing()
+        refreshData()
+    }
 
-        // TODO: use PeriodDisplayed when fetching data
-        viewModel?.refreshPeriodData()
+    func refreshData() {
+
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                refreshControl?.endRefreshing()
+                return
+        }
+
+        viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
+    }
+
+}
+
+// MARK: - SiteStatsPeriodDelegate Methods
+
+extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
     }
 
 }
