@@ -44,22 +44,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Helper Classes for Blog Details view model.
 
-@interface BlogDetailsRow : NSObject
-
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic, strong) NSString *accessibilityIdentifier;
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIView *accessoryView;
-@property (nonatomic, strong) NSString *detail;
-@property (nonatomic) BOOL showsSelectionState;
-@property (nonatomic) BOOL forDestructiveAction;
-@property (nonatomic, copy) void (^callback)(void);
-@property (nonatomic) QuickStartTourElement quickStartIdentifier;
-@property (nonatomic) QuickStartTitleState quickStartTitleState;
-
-@end
-
 @implementation BlogDetailsRow
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
@@ -113,13 +97,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     return self;
 }
-
-@end
-
-@interface BlogDetailsSection : NSObject
-
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSArray *rows;
 
 @end
 
@@ -546,39 +523,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
-}
-
-- (BlogDetailsSection *)quickStartSectionViewModel
-{
-    __weak __typeof(self) weakSelf = self;
-    NSMutableArray *rows = [NSMutableArray array];
-
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-                                                     identifier:[QuickStartListTitleCell reuseIdentifier]
-                                                          image:[Gridicon iconOfType:GridiconTypeCustomize]
-                                                       callback:^{
-                                                           [weakSelf showQuickStartCustomize];
-                                                       }];
-    row.quickStartIdentifier = QuickStartTourElementChecklist;
-    row.quickStartTitleState = QuickStartTitleStateCustomizeIncomplete;
-
-    row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
-    [rows addObject:row];
-
-    BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
-                                                      identifier:[QuickStartListTitleCell reuseIdentifier]
-                                                           image:[Gridicon iconOfType:GridiconTypeMultipleUsers]
-                                                        callback:^{
-                                                            [weakSelf showQuickStartGrow];
-                                                        }];
-    row2.quickStartIdentifier = QuickStartTourElementChecklist;
-    row2.quickStartTitleState = QuickStartTitleStateGrowIncomplete;
-
-    row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
-    [rows addObject:row2];
-
-    NSString *sectionTitle = NSLocalizedString(@"Quick Start", @"Table view title for the quick start section.");
-    return [[BlogDetailsSection alloc] initWithTitle:sectionTitle andRows:rows];
 }
 
 - (BlogDetailsSection *)generalSectionViewModel

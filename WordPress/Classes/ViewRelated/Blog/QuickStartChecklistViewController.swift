@@ -153,8 +153,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     }
 
     func shouldShowCongratulations() -> Bool {
-        // TODO: fix this count implementation to be compatible with v2
-        let completedToursCount = QuickStartTourGuide.countChecklistCompleted(for: blog)
+        let completedToursCount = QuickStartTourGuide.countChecklistCompleted(in: tours, for: blog)
         return completedToursCount >= tours.count
     }
 

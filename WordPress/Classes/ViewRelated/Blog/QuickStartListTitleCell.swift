@@ -1,12 +1,3 @@
-@objc enum QuickStartTitleState: Int {
-    typealias RawValue = Int
-
-    case undefined = 0
-    case customizeIncomplete
-    case growIncomplete
-    case completed
-}
-
 @objc
 class QuickStartListTitleCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel?
