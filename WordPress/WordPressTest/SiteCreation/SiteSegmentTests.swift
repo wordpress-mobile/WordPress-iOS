@@ -44,12 +44,8 @@ final class SiteSegmentTests: XCTestCase {
         XCTAssertEqual(subject?.icon, MockValues.icon)
     }
 
-    func testIconColorIsNotMutated() {
-        XCTAssertEqual(subject?.iconColor, MockValues.iconColor)
-    }
-
     func testSiteTypesWithSameIdAreEqual() {
-        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon, iconColor: .white)
+        let secondSiteType = SiteSegment(identifier: MockValues.identifier, title: "Another title", subtitle: "It does not matter", icon: MockValues.icon, iconColor: "#FF0000", mobile: true)
 
         XCTAssertEqual(subject, secondSiteType)
     }
