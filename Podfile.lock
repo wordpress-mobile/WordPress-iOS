@@ -226,7 +226,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v0.3.4`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `1559268a0d38df09266851f1dda10900b1e14fb4`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
   - MRProgress (= 0.8.3)
@@ -302,8 +302,8 @@ EXTERNAL SOURCES:
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
+    :commit: 1559268a0d38df09266851f1dda10900b1e14fb4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v0.3.4
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   react-native-keyboard-aware-scroll-view:
@@ -327,8 +327,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: '0.3'
   Gutenberg:
+    :commit: 1559268a0d38df09266851f1dda10900b1e14fb4
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v0.3.4
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
@@ -389,6 +389,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 2a1d64bc084e239209898a7983a56579bcbc52e4
+PODFILE CHECKSUM: 85dec766bd43d55144a49b87203bbcfe4d0a1440
 
 COCOAPODS: 1.5.3

@@ -17,10 +17,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - UI
 
-    private var titleTextField: UITextField {
-        return containerView.titleTextField
-    }
-
     private var containerView = GutenbergContainerView.loadFromNib()
 
     // MARK: - Aztec
@@ -39,11 +35,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     var postTitle: String {
-        get {
-            return titleTextField.text ?? ""
-        }
         set {
-            titleTextField.text = newValue
+            post.postTitle = newValue
+        }
+
+        get {
+            return post.postTitle ?? ""
         }
     }
 
@@ -75,6 +72,14 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         //TODO
+    }
+
+    func setTitle(_ title: String) {
+        guard gutenberg.isLoaded else {
+            return
+        }
+
+        gutenberg.setTitle(title)
     }
 
     func setHTML(_ html: String) {
@@ -137,12 +142,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         switchToAztec: @escaping (EditorViewController) -> ()) {
 
         self.post = post
+
         self.switchToAztec = switchToAztec
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         super.init(nibName: nil, bundle: nil)
-        postTitle = post.postTitle ?? ""
+
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -162,7 +168,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         super.viewDidLoad()
         setupContainerView()
         setupGutenbergView()
-        registerEventListeners()
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
@@ -176,10 +181,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Functions
-
-    private func registerEventListeners() {
-        titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
-    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -200,7 +201,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private func reloadEditorContents() {
         let content = post.content ?? String()
 
-        titleTextField.text = post.postTitle
+        setTitle(post.postTitle ?? "")
         setHTML(content)
     }
 
@@ -228,11 +229,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
-    }
-
-    @objc func titleTextFieldDidChange(_ textField: UITextField) {
-        mapUIContentToPostAndSave()
-        editorContentWasUpdated()
     }
 
     // MARK: - Switch to Aztec
@@ -280,9 +276,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                        callback: callback)
     }
 
-    func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
+    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
         if changed {
             self.html = html
+            self.postTitle = title
         }
 
         editorContentWasUpdated()
@@ -305,20 +302,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidLayout() {
-        defer {
-            isFirstGutenbergLayout = false
-        }
-        focusTitleIfNeeded()
-    }
-
-    private func focusTitleIfNeeded() {
-        if shouldFocusTitleAutomatically {
-            titleTextField.becomeFirstResponder()
-        }
-    }
-
-    private var shouldFocusTitleAutomatically: Bool {
-        return !post.hasContent() && !titleTextField.isFirstResponder && isFirstGutenbergLayout
     }
 }
 
@@ -327,6 +310,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController: GutenbergBridgeDataSource {
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
+    }
+
+    func gutenbergInitialTitle() -> String? {
+        return post.postTitle ?? ""
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
