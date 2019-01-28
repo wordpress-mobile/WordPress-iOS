@@ -49,10 +49,12 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var itemDetailLabel: UILabel!
 
+    @IBOutlet weak var leftStackView: UIStackView!
     @IBOutlet weak var dataBarView: UIView!
     @IBOutlet weak var dataBar: UIView!
     @IBOutlet weak var dataBarWidthConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var rightStackViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightStackView: UIStackView!
     @IBOutlet weak var dataLabel: UILabel!
     @IBOutlet weak var disclosureImageView: UIImageView!
@@ -155,7 +157,15 @@ private extension StatsTotalRow {
         // Calculate the bar width.
         // Determine the distance from the bar to the max width.
         // Set that distance as the bar width.
-        let maxBarWidth = Float(contentView.frame.width - rightStackView.frame.width)
+
+        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant
+        var maxBarWidth = Float(contentView.frame.width - dataWidth)
+
+        if !imageView.isHidden {
+            let imageWidth = imageView.frame.width + leftStackView.spacing
+            maxBarWidth -= Float(imageWidth)
+        }
+
         let barWidth = maxBarWidth * dataBarPercent
         let distanceFromMax = maxBarWidth - barWidth
         dataBarWidthConstraint.constant = CGFloat(distanceFromMax)

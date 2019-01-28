@@ -39,7 +39,6 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
-    private let maxNumberOfDataRows = 6
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var showTotalCount = false
 
@@ -50,14 +49,14 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.showTotalCount = showTotalCount
         setupFilterBar()
-        addRows()
+        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, forType: .insights, rowDelegate: self)
         configureSubtitles()
         applyStyles()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        removeExistingRows()
+        removeRowsFromStackView(rowsStackView)
     }
 }
 
@@ -79,8 +78,8 @@ private extension TabbedTotalsCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        removeExistingRows()
-        addRows()
+        removeRowsFromStackView(rowsStackView)
+        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, forType: .insights, rowDelegate: self)
         configureSubtitles()
         siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
     }
@@ -110,49 +109,6 @@ private extension TabbedTotalsCell {
         let noData = tabData.dataRows.count == 0
         totalCountView.isHidden = !showTotalCount || noData
         labelsStackView.isHidden = noData
-    }
-
-    func addRows() {
-        let dataRows = tabsData[filterTabBar.selectedIndex].dataRows
-        let numberOfDataRows = dataRows.count
-
-        if numberOfDataRows == 0 {
-            let row = StatsNoDataRow.loadFromNib()
-            rowsStackView.addArrangedSubview(row)
-            return
-        }
-
-        let numberOfRowsToAdd = numberOfDataRows > maxNumberOfDataRows ? maxNumberOfDataRows : numberOfDataRows
-
-        for index in 0..<numberOfRowsToAdd {
-            let dataRow = dataRows[index]
-            let row = StatsTotalRow.loadFromNib()
-            row.configure(rowData: dataRow, delegate: self)
-
-            // Don't show the separator line on the last row.
-            if index == (numberOfRowsToAdd - 1) {
-                row.showSeparator = false
-            }
-
-            rowsStackView.addArrangedSubview(row)
-        }
-
-        // If there are more data rows, show 'View more'.
-        if numberOfDataRows > maxNumberOfDataRows {
-            addViewMoreRow()
-        }
-    }
-
-    func addViewMoreRow() {
-        let row = ViewMoreRow.loadFromNib()
-        rowsStackView.addArrangedSubview(row)
-    }
-
-    func removeExistingRows() {
-        rowsStackView.arrangedSubviews.forEach {
-            rowsStackView.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
     }
 
 }

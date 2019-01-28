@@ -1,34 +1,16 @@
-version: 2
+version: 2.1
+
+orbs:
+  ios: wordpress-mobile/ios@0.0.7
+  danger: wordpress-mobile/danger@0.0.7
+
 jobs:
   build_and_test:
     macos:
       xcode: "10.1.0"
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - wordpress-ios-dependencies-{{ checksum "Gemfile.lock" }}-{{ checksum "Podfile.lock" }}
-            - wordpress-ios-dependencies-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-dependencies-
-      - run:
-          name: Bundle install
-          command: bundle install --path=vendor/bundle
-      - run:
-          name: CocoaPods Check
-          command: (bundle exec pod check && touch .skip_pod_install) || echo "Pods will be updated"
-      - run:
-          name: Fetch CocoaPods Specs (if needed)
-          command: test -e .skip_pod_install || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-      - run:
-          name: Pod Install (if needed)
-          command: test -e .skip_pod_install || bundle exec pod install
-          environment:
-            COCOAPODS_DISABLE_STATS: true
-      - save_cache:
-          key: wordpress-ios-dependencies-{{ checksum "Gemfile.lock" }}-{{ checksum "Podfile.lock" }}
-          paths:
-            - Pods/
-            - vendor/bundle
+      - ios/cached-pod-install
       - run:
           name: Build
           command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -sdk iphonesimulator build-for-testing | bundle exec xcpretty
@@ -38,37 +20,11 @@ jobs:
       - store_test_results:
           path: build/reports
 
-  danger:
-    docker:
-      - image: circleci/ruby:2.3
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
-            - wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}
-            - wordpress-ios-danger-gems-v2-
-      - run:
-          name: Bundle install
-          command: bundle install --path=vendor/bundle
-      - save_cache:
-          key: wordpress-ios-danger-gems-v2-{{ checksum "Rakefile" }}-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/
-      - run:
-          name: Danger
-          command: |
-            if [ -n "$DANGER_GITHUB_API_TOKEN" ]; then
-              bundle exec danger --fail-on-errors=true
-            else
-              echo "Not running danger because $DANGER_GITHUB_API_TOKEN is not found"
-            fi
-
 workflows:
-  version: 2
   wordpress_ios:
     jobs:
-      - danger:
+      - danger/danger-ruby:
+          name: danger
           filters:
             branches:
               # Disable Danger on develop
