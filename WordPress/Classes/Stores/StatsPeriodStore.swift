@@ -195,18 +195,15 @@ private extension StatsPeriodStore {
     /// of the array, making this unnecessary.
     ///
     func reorderSearchTerms(_ searchTerms: StatsGroup?) -> [StatsItem]? {
-
         guard var searchTerms = searchTerms?.items as? [StatsItem] else {
             return nil
         }
 
-        // Find the row in the array
-
         // This labelToFind matches that in WPStatsServiceRemote:operationForSearchTermsForDate
         let labelToFind = NSLocalizedString("Unknown Search Terms", comment: "N/A. Not visible to users.")
-        let unknownSearchTerms = searchTerms.filter({ return $0.label == labelToFind })
 
-        guard let unknownSearchTermRow = unknownSearchTerms.first else {
+        // Find the row in the array
+        guard let unknownSearchTermRow = searchTerms.first(where: ({ $0.label == labelToFind }))  else {
             return searchTerms
         }
 
