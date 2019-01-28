@@ -3,16 +3,31 @@ import WordPressFlux
 import WordPressComStatsiOS
 
 enum PeriodAction: Action {
-    case refreshPeriodData()
+    case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
+    case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
-    case periods
+    case periods(date: Date, period: StatsPeriodUnit)
+
+    var date: Date {
+        switch self {
+        case .periods(let date, _):
+            return date
+        }
+    }
+
+    var period: StatsPeriodUnit {
+        switch self {
+        case .periods( _, let period):
+            return period
+        }
+    }
 }
 
 struct PeriodStoreState {
-    var pagesAndPosts: [StatsItem]?
-    var fetchingPagesAndPosts = false
+    var topPostsAndPages: [StatsItem]?
+    var fetchingPostsAndPages = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -28,8 +43,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        case .refreshPeriodData:
-            refreshPeriodData()
+        case .receivedPostsAndPages(let postsAndPages):
+            receivedPostsAndPages(postsAndPages)
+        case .refreshPeriodData(let date, let period):
+            refreshPeriodData(date: date, period: period)
         }
     }
 
@@ -44,46 +61,128 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
 private extension StatsPeriodStore {
 
+    // MARK: - Get Data
+
     func processQueries() {
 
         guard !activeQueries.isEmpty && shouldFetch() else {
             return
         }
 
-        fetchPeriodData()
+        runPeriodsQuery()
     }
 
-    func fetchPeriodData() {
+    func runPeriodsQuery() {
+        let periodsQuery = activeQueries
+            .filter {
+                if case .periods = $0 {
+                    return true
+                } else {
+                    return false
+                }
+            }.first
 
-        // TODO: get some data
+        if let periodsQuery = periodsQuery {
+            fetchPeriodData(date: periodsQuery.date, period: periodsQuery.period)
+        }
+    }
+
+    func fetchPeriodData(date: Date, period: StatsPeriodUnit) {
+
+        setAllAsFetching()
+
+        SiteStatsInformation.statsService()?.retrieveAllStats(for: date, unit: period, withVisitsCompletionHandler: { (visits, error) in
+            if error != nil {
+                DDLogInfo("Error fetching visits: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, eventsCompletionHandler: { (events, error) in
+            if error != nil {
+                DDLogInfo("Error fetching events: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, postsCompletionHandler: { (postsAndPages, error) in
+            if error != nil {
+                DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
+        }, referrersCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching referrers: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, clicksCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching clicks: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, countryCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, videosCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, authorsCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, searchTermsCompletionHandler: { (group, error) in
+            if error != nil {
+                DDLogInfo("Error fetching search terms: \(String(describing: error?.localizedDescription))")
+            }
+
+        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
+
+        }, andOverallCompletionHandler: {
+
+        })
 
     }
 
-    func refreshPeriodData() {
+    func refreshPeriodData(date: Date, period: StatsPeriodUnit) {
         guard shouldFetch() else {
             DDLogInfo("Stats Period refresh triggered while one was in progress.")
             return
         }
 
-        fetchPeriodData()
+        fetchPeriodData(date: date, period: period)
     }
+
+    // MARK: - Receive data methods
+
+    func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
+        transaction { state in
+            state.topPostsAndPages = postsAndPages?.items as? [StatsItem]
+            state.fetchingPostsAndPages = false
+        }
+    }
+
+    // MARK: - Helpers
 
     func shouldFetch() -> Bool {
         return !isFetching
     }
 
+    func setAllAsFetching() {
+        state.fetchingPostsAndPages = true
+    }
 }
 
 // MARK: - Public Accessors
 
 extension StatsPeriodStore {
 
-    func getPostsAndPages() -> [StatsItem]? {
-        return state.pagesAndPosts
+    func getTopPostsAndPages() -> [StatsItem]? {
+        return state.topPostsAndPages
     }
 
     var isFetching: Bool {
-        return state.fetchingPagesAndPosts
+        return state.fetchingPostsAndPages
     }
 
 }
