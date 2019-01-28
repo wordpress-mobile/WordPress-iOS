@@ -78,8 +78,8 @@ extension BlogDetailsViewController {
         let customizeRow = BlogDetailsRow(title: NSLocalizedString("Customize Your Site", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
                                           identifier: QuickStartListTitleCell.reuseIdentifier,
                                           accessibilityIdentifier: "Customize Your Site Row",
-                                          image: Gridicon.iconOfType(.customize)) {
-                                            self.showQuickStartCustomize()
+                                          image: Gridicon.iconOfType(.customize)) { [weak self] in
+                                            self?.showQuickStartCustomize()
         }
         customizeRow.quickStartIdentifier = .checklist
         if let customizeDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.customizeListTours, for: blog) {
@@ -91,10 +91,7 @@ extension BlogDetailsViewController {
                                         identifier: QuickStartListTitleCell.reuseIdentifier,
                                         accessibilityIdentifier: "Grow Your Audience Row",
                                         image: Gridicon.iconOfType(.multipleUsers)) { [weak self] in
-                                            guard let self = self else {
-                                                return
-                                            }
-                                            self.showQuickStartGrow()
+                                            self?.showQuickStartGrow()
                                         }
         growRow.quickStartIdentifier = .checklist
         if let growDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.growListTours, for: blog) {

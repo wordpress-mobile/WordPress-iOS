@@ -1,9 +1,9 @@
 @objc
 class QuickStartListTitleCell: UITableViewCell {
-    @IBOutlet var titleLabel: UILabel?
-    @IBOutlet var countLabel: UILabel?
-    @IBOutlet var circleImageView: CircularImageView?
-    @IBOutlet var iconImageView: UIImageView?
+    @IBOutlet private var titleLabel: UILabel?
+    @IBOutlet private var countLabel: UILabel?
+    @IBOutlet private var circleImageView: CircularImageView?
+    @IBOutlet private var iconImageView: UIImageView?
     @objc var state: QuickStartTitleState = .undefined {
         didSet {
             refreshIconColor()
@@ -54,7 +54,6 @@ private extension UIColor {
     }
 
     class var mediumPink: UIColor {
-//        return UIColor(fromRGBColorWithRed: 188, green: 70, blue: 129)
         return UIColor(red: 188/255, green: 70/255, blue: 129/255, alpha: 1.0)
     }
 
