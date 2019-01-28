@@ -38,6 +38,7 @@ class SiteStatsPeriodViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: videosTableRows())
 
         return ImmuTable(sections: [
@@ -61,12 +62,18 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
     }
 
     struct PostsAndPages {
         static let itemSubtitle = NSLocalizedString("Title", comment: "Posts and Pages label for post/page title")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
+    }
+
+    struct SearchTerms {
+        static let itemSubtitle = NSLocalizedString("Search Term", comment: "Search Terms label for search term")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Search Terms label for number of views")
     }
 
     struct Videos {
@@ -110,6 +117,22 @@ private extension SiteStatsPeriodViewModel {
         return dataRows
     }
 
+    func searchTermsTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.searchTerms))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: SearchTerms.itemSubtitle,
+                                                 dataSubtitle: SearchTerms.dataSubtitle,
+                                                 dataRows: searchTermsDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func searchTermsDataRows() -> [StatsTotalRowData] {
+        return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label, data: $0.value.displayString()) }
+            ?? [StatsTotalRowData]()
+    }
+
     func videosTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.videos))
@@ -122,20 +145,12 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func videosDataRows() -> [StatsTotalRowData] {
-        let videos = store.getTopVideos()
-        var dataRows = [StatsTotalRowData]()
-
-        videos?.forEach { item in
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             mediaID: item.itemID,
-                                             icon: Style.imageForGridiconType(.video),
-                                             showDisclosure: true)
-
-            dataRows.append(row)
-        }
-
-        return dataRows
+        return store.getTopVideos()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                  data: $0.value.displayString(),
+                                                                  mediaID: $0.itemID,
+                                                                  icon: Style.imageForGridiconType(.video),
+                                                                  showDisclosure: true) }
+            ?? [StatsTotalRowData]()
     }
 
 }
