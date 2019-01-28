@@ -24,6 +24,10 @@ final class WebAddressWizardContent: UIViewController {
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
+    /// Manages header visibility, keyboard management, and table view offset
+    private(set) var tableViewOffsetCoordinator: TableViewOffsetCoordinator?
+
+    /// The throttle meters requests to the remote service
     private let throttle = Scheduler(seconds: 0.5)
 
     /// We track the last searched value so that we can retry
@@ -85,6 +89,8 @@ final class WebAddressWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
+
         applyTitle()
         setupBackground()
         setupTable()
@@ -93,6 +99,25 @@ final class WebAddressWizardContent: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         observeNetworkStatus()
+        tableViewOffsetCoordinator?.startListeningToKeyboardNotifications()
+        prepareViewIfNeeded()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        resignTextFieldResponderIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        restoreSearchIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
+        clearContent()
     }
 
     // MARK: Private behavior
@@ -109,6 +134,7 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
+        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
     private func fetchAddresses(_ searchTerm: String) {
@@ -180,6 +206,42 @@ final class WebAddressWizardContent: UIViewController {
         table.register(InlineErrorRetryTableViewCell.self, forCellReuseIdentifier: InlineErrorRetryTableViewCell.cellReuseIdentifier())
     }
 
+    private func resignTextFieldResponderIfNeeded() {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        let textField = header.textField
+        textField.resignFirstResponder()
+    }
+
+    private func restoreSearchIfNeeded() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        let textField = header.textField
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            return
+        }
+
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+        performSearchIfNeeded(query: inputText)
+    }
+
+    private func prepareViewIfNeeded() {
+        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+
+            return
+        }
+
+        let textField = header.textField
+        guard let inputText = textField.text, !inputText.isEmpty else {
+            return
+        }
+        textField.becomeFirstResponder()
+    }
+
     private func setupEmptyTableProvider() {
         let message: InlineErrorMessage
         if isNetworkActive {
@@ -202,6 +264,7 @@ final class WebAddressWizardContent: UIViewController {
         header.setSubtitle(headerData.subtitle)
 
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        header.textField.delegate = self
 
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
@@ -214,7 +277,7 @@ final class WebAddressWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
-            header.widthAnchor.constraint(lessThanOrEqualTo: table.widthAnchor),
+            header.widthAnchor.constraint(equalTo: table.widthAnchor),
             header.topAnchor.constraint(equalTo: table.topAnchor),
             noResultsLabel.widthAnchor.constraint(equalTo: header.textField.widthAnchor),
             noResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -227,13 +290,30 @@ final class WebAddressWizardContent: UIViewController {
 
     private func setupTable() {
         setupTableBackground()
+        setupTableSeparator()
         setupCells()
+        setupConstraints()
         setupHeaderAndNoResultsMessage()
         hideSeparators()
     }
 
     private func setupTableBackground() {
         table.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupTableSeparator() {
+        table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
+    private func setupConstraints() {
+        table.cellLayoutMarginsFollowReadableWidth = true
+
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
+            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
+            table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+        ])
     }
 
     private func setupTableDataProvider(_ data: [DomainSuggestion] = []) {
@@ -255,7 +335,9 @@ final class WebAddressWizardContent: UIViewController {
             clearContent()
             return
         }
+
         performSearchIfNeeded(query: searchTerm)
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }
 
@@ -264,5 +346,14 @@ final class WebAddressWizardContent: UIViewController {
 extension WebAddressWizardContent: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         isNetworkActive = active
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension WebAddressWizardContent: UITextFieldDelegate {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
+        return true
     }
 }

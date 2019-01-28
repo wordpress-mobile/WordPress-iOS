@@ -1,6 +1,20 @@
 import UIKit
 import Alamofire
 import Gridicons
+import WordPressKit
+
+
+private extension String {
+    func hexAsColor() -> UIColor? {
+        return UIColor(hexString: self)
+    }
+}
+
+private extension SiteSegment {
+    var iconTintColor: UIColor? {
+        return self.iconColor?.hexAsColor()
+    }
+}
 
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
@@ -14,7 +28,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             if let modelIcon = model?.icon {
                 icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
                     let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
-                    if let tintColor = self?.model?.iconColor {
+                    if let tintColor = self?.model?.iconTintColor {
                         self?.icon.tintColor = tintColor
                     }
                     self?.icon.image = tintedImage
@@ -26,7 +40,9 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     func set(segment: SiteSegment) {
         title.text = segment.title
         subtitle.text = segment.subtitle
-        icon.setImageWith(segment.icon)
+        if let segmentIcon = segment.icon {
+            icon.setImageWith(segmentIcon)
+        }
     }
 
     override func awakeFromNib() {

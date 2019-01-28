@@ -3,6 +3,7 @@ import UIKit
 struct StatsTotalRowData {
     var name: String
     var data: String
+    var mediaID: NSNumber?
     var dataBarPercent: Float?
     var icon: UIImage?
     var socialIconURL: URL?
@@ -13,6 +14,7 @@ struct StatsTotalRowData {
 
     init(name: String,
          data: String,
+         mediaID: NSNumber? = nil,
          dataBarPercent: Float? = nil,
          icon: UIImage? = nil,
          socialIconURL: URL? = nil,
@@ -22,6 +24,7 @@ struct StatsTotalRowData {
          disclosureURL: URL? = nil) {
         self.name = name
         self.data = data
+        self.mediaID = mediaID
         self.dataBarPercent = dataBarPercent
         self.nameDetail = nameDetail
         self.icon = icon
@@ -34,6 +37,8 @@ struct StatsTotalRowData {
 
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
+    @objc optional func displayMediaWithID(_ mediaID: NSNumber)
+
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -187,6 +192,11 @@ private extension StatsTotalRow {
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
+
+        if let mediaID = rowData?.mediaID {
+            delegate?.displayMediaWithID?(mediaID)
+            return
+        }
 
         guard let disclosureURL = rowData?.disclosureURL else {
             let alertController =  UIAlertController(title: "More will be disclosed.",

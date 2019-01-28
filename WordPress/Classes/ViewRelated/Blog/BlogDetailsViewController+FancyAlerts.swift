@@ -51,22 +51,26 @@ extension BlogDetailsViewController {
     }
 
     @objc func showQuickStartV1() {
-        let tours = QuickStartTourGuide.checklistTours
-        showQuickStart(list: tours)
+        showQuickStart()
     }
 
     @objc func showQuickStartCustomize() {
-        let tours = QuickStartTourGuide.customizeListTours
-        showQuickStart(list: tours)
+        showQuickStart(with: .customize)
     }
 
     @objc func showQuickStartGrow() {
-        let tours = QuickStartTourGuide.growListTours
-        showQuickStart(list: tours)
+        showQuickStart(with: .grow)
     }
 
-    private func showQuickStart(list: [QuickStartTour]) {
-        let checklist = QuickStartChecklistViewController(blog: blog, list: list)
+    private func showQuickStart(with type: QuickStartType? = nil) {
+        let checklist: UIViewController
+
+        if let type = type, Feature.enabled(.quickStartV2) {
+            checklist = QuickStartChecklistViewController(blog: blog, type: type)
+        } else {
+            checklist = QuickStartChecklistViewControllerV1(blog: blog)
+        }
+
         navigationController?.showDetailViewController(checklist, sender: self)
 
         QuickStartTourGuide.find()?.visited(.checklist)

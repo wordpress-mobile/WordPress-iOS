@@ -23,6 +23,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -30,14 +31,18 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     func configure(itemSubtitle: String,
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate) {
+                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate?) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         setSubtitleVisibility()
-        addRows(dataRows, toStackView: rowsStackView, rowDelegate: self)
+
+        let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
+        addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
         applyStyles()
     }
 
@@ -74,6 +79,11 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
+        siteStatsPeriodDelegate?.displayWebViewWithURL?(url)
+    }
+
+    func displayMediaWithID(_ mediaID: NSNumber) {
+        siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
     }
 
 }

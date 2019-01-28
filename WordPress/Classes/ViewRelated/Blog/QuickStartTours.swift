@@ -13,6 +13,14 @@ protocol QuickStartTour {
     var waypoints: [WayPoint] { get }
 }
 
+extension QuickStartTour {
+    var waypoints: [WayPoint] {
+        get {
+            return []
+        }
+    }
+}
+
 private struct Strings {
     static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
     static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
@@ -179,8 +187,6 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = []
 }
 
 struct QuickStartNewPageTour: QuickStartTour {
@@ -191,8 +197,6 @@ struct QuickStartNewPageTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = []
 }
 
 struct QuickStartPostSharingTour: QuickStartTour {
@@ -203,8 +207,6 @@ struct QuickStartPostSharingTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.share)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = []
 }
 
 struct QuickStartCheckStatsTour: QuickStartTour {
@@ -215,8 +217,6 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.statsAlt)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = []
 }
 
 struct QuickStartExplorePlansTour: QuickStartTour {
@@ -227,8 +227,6 @@ struct QuickStartExplorePlansTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.plans)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-
-    var waypoints: [WayPoint] = []
 }
 
 private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
