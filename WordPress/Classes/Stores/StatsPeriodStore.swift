@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
+    case receivedVideos(_ videos: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
@@ -28,6 +29,9 @@ enum PeriodQuery {
 struct PeriodStoreState {
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
+
+    var topVideos: [StatsItem]?
+    var fetchingVideos = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -45,6 +49,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
+        case .receivedVideos(let videos):
+            receivedVideos(videos)
         case .refreshPeriodData(let date, let period):
             refreshPeriodData(date: date, period: period)
         }
@@ -105,6 +111,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching posts and pages.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
         }, referrersCompletionHandler: { (group, error) in
             if error != nil {
@@ -121,11 +128,12 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
             }
 
-        }, videosCompletionHandler: { (group, error) in
+        }, videosCompletionHandler: { (videos, error) in
             if error != nil {
                 DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
             }
-
+            DDLogInfo("Stats: Finished fetching videos.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
         }, authorsCompletionHandler: { (group, error) in
             if error != nil {
                 DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
@@ -162,6 +170,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedVideos(_ videos: StatsGroup?) {
+        transaction { state in
+            state.topVideos = videos?.items as? [StatsItem]
+            state.fetchingVideos = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetch() -> Bool {
@@ -170,6 +185,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
+        state.fetchingVideos = true
     }
 }
 
@@ -181,8 +197,13 @@ extension StatsPeriodStore {
         return state.topPostsAndPages
     }
 
+    func getTopVideos() -> [StatsItem]? {
+        return state.topVideos
+    }
+
     var isFetching: Bool {
-        return state.fetchingPostsAndPages
+        return state.fetchingPostsAndPages ||
+            state.fetchingVideos
     }
 
 }
