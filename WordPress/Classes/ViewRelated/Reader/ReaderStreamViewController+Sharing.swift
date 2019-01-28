@@ -5,12 +5,6 @@ import Gridicons
 
 extension ReaderStreamViewController {
 
-    // MARK: Properties
-
-    private struct Metrics {
-        static let shareIconSize = CGFloat(44)  // NB : Matches size in ReaderDetailViewController
-    }
-
     // MARK: Internal behavior
 
     /// Exposes the Share button if the currently selected Reader topic represents a site.
