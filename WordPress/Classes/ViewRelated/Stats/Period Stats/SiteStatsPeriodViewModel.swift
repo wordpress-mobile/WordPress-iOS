@@ -122,15 +122,8 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func searchTermsDataRows() -> [StatsTotalRowData] {
-        let searchTerms = store.getTopSearchTerms()
-        var dataRows = [StatsTotalRowData]()
-
-        searchTerms?.forEach { item in
-            let row = StatsTotalRowData.init(name: item.label, data: item.value.displayString())
-            dataRows.append(row)
-        }
-
-        return dataRows
+        return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label, data: $0.value.displayString()) }
+            ?? [StatsTotalRowData]()
     }
 
 }
