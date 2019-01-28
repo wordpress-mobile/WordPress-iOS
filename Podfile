@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.6.2'
+    pod 'WordPressShared', '~> 1.7.0-beta.1'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -133,7 +133,7 @@ target 'WordPress' do
 
     pod 'WordPressAuthenticator', '~> 1.1.8'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    ## pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '8ee46debb41f9e2a761966034a23bc5a057b153a'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '82900447393674532003833cc1f3a4ad1c53997f'
 
 
     aztec
