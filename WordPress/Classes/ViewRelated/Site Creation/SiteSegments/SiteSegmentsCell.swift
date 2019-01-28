@@ -1,6 +1,8 @@
 import UIKit
 import Alamofire
 import Gridicons
+import WordPressKit
+
 
 private extension String {
     func hexAsColor() -> UIColor? {
