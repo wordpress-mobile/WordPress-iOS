@@ -1,5 +1,1 @@
-* Fixed an issue where the message field in "Customize the message" screen was empty.
-* Added clarification text about empty messages to footer of "Customize your message" screen.
-* Adds support for iOS's password autofill when entering a username during login
-* Fixes an issue where there'd be big spaces on top of (or below) some images.
-* Added alert to prompt the user to logout before connecting to a wordpress.com site, if they are already logged in with a wordpress.com account
+
