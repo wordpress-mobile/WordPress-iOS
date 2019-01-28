@@ -145,20 +145,12 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func videosDataRows() -> [StatsTotalRowData] {
-        let videos = store.getTopVideos()
-        var dataRows = [StatsTotalRowData]()
-
-        videos?.forEach { item in
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             mediaID: item.itemID,
-                                             icon: Style.imageForGridiconType(.video),
-                                             showDisclosure: true)
-
-            dataRows.append(row)
-        }
-
-        return dataRows
+        return store.getTopVideos()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                  data: $0.value.displayString(),
+                                                                  mediaID: $0.itemID,
+                                                                  icon: Style.imageForGridiconType(.video),
+                                                                  showDisclosure: true) }
+            ?? [StatsTotalRowData]()
     }
 
 }
