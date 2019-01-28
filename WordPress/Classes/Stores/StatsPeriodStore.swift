@@ -5,6 +5,7 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
+    case receivedVideos(_ videos: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
@@ -32,6 +33,9 @@ struct PeriodStoreState {
 
     var topSearchTerms: [StatsItem]?
     var fetchingSearchTerms = false
+
+    var topVideos: [StatsItem]?
+    var fetchingVideos = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -51,6 +55,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedPostsAndPages(postsAndPages)
         case .receivedSearchTerms(let searchTerms):
             receivedSearchTerms(searchTerms)
+        case .receivedVideos(let videos):
+            receivedVideos(videos)
         case .refreshPeriodData(let date, let period):
             refreshPeriodData(date: date, period: period)
         }
@@ -111,6 +117,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching posts and pages.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
         }, referrersCompletionHandler: { (group, error) in
             if error != nil {
@@ -127,11 +134,12 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
             }
 
-        }, videosCompletionHandler: { (group, error) in
+        }, videosCompletionHandler: { (videos, error) in
             if error != nil {
                 DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
             }
-
+            DDLogInfo("Stats: Finished fetching videos.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
         }, authorsCompletionHandler: { (group, error) in
             if error != nil {
                 DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
@@ -175,6 +183,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedVideos(_ videos: StatsGroup?) {
+        transaction { state in
+            state.topVideos = videos?.items as? [StatsItem]
+            state.fetchingVideos = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetch() -> Bool {
@@ -184,6 +199,7 @@ private extension StatsPeriodStore {
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
         state.fetchingSearchTerms = true
+        state.fetchingVideos = true
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -233,9 +249,14 @@ extension StatsPeriodStore {
         return state.topSearchTerms
     }
 
+    func getTopVideos() -> [StatsItem]? {
+        return state.topVideos
+    }
+
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
-        state.fetchingSearchTerms
+            state.fetchingSearchTerms ||
+            state.fetchingVideos
     }
 
 }

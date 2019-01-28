@@ -82,4 +82,8 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsPeriodDelegate?.displayWebViewWithURL?(url)
     }
 
+    func displayMediaWithID(_ mediaID: NSNumber) {
+        siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
+    }
+
 }
