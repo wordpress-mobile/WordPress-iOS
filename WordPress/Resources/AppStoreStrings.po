@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.6-whats-new"
+msgctxt "v11.7-whats-new"
 msgid ""
 "In this release, we’ve added the ability to change your password from within the app, polished the UI across the entire app, and squashed a huge pile of bugs! We’ve also reduced the CPU and battery usage of the app in an effort to be better citizens of your device.\n"
 "\n"
