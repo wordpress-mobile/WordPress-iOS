@@ -5,6 +5,8 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case receivedPublished(_ published: StatsGroup?)
+    case receivedSearchTerms(_ searchTerms: StatsGroup?)
+    case receivedVideos(_ videos: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
@@ -32,6 +34,12 @@ struct PeriodStoreState {
 
     var topPublished: [StatsItem]?
     var fetchingPublished = false
+
+    var topSearchTerms: [StatsItem]?
+    var fetchingSearchTerms = false
+
+    var topVideos: [StatsItem]?
+    var fetchingVideos = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -51,6 +59,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedPostsAndPages(postsAndPages)
         case .receivedPublished(let published):
             receivedPublished(published)
+        case .receivedSearchTerms(let searchTerms):
+            receivedSearchTerms(searchTerms)
+        case .receivedVideos(let videos):
+            receivedVideos(videos)
         case .refreshPeriodData(let date, let period):
             refreshPeriodData(date: date, period: period)
         }
@@ -111,6 +123,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching posts and pages.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
         }, referrersCompletionHandler: { (group, error) in
             if error != nil {
@@ -127,21 +140,22 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
             }
 
-        }, videosCompletionHandler: { (group, error) in
+        }, videosCompletionHandler: { (videos, error) in
             if error != nil {
                 DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
             }
-
+            DDLogInfo("Stats: Finished fetching videos.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
         }, authorsCompletionHandler: { (group, error) in
             if error != nil {
                 DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
             }
 
-        }, searchTermsCompletionHandler: { (group, error) in
+        }, searchTermsCompletionHandler: { (searchTerms, error) in
             if error != nil {
                 DDLogInfo("Error fetching search terms: \(String(describing: error?.localizedDescription))")
             }
-
+            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
         }, andOverallCompletionHandler: {
@@ -175,6 +189,20 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedSearchTerms(_ searchTerms: StatsGroup?) {
+        transaction { state in
+            state.topSearchTerms = reorderSearchTerms(searchTerms)
+            state.fetchingSearchTerms = false
+        }
+    }
+
+    func receivedVideos(_ videos: StatsGroup?) {
+        transaction { state in
+            state.topVideos = videos?.items as? [StatsItem]
+            state.fetchingVideos = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetch() -> Bool {
@@ -184,7 +212,43 @@ private extension StatsPeriodStore {
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
         state.fetchingPublished = true
+        state.fetchingSearchTerms = true
+        state.fetchingVideos = true
     }
+
+    /// This method modifies the 'Unknown search terms' row and changes its location in the array.
+    /// - Find the 'Unknown search terms' row
+    /// - Change the label
+    /// - Remove the row from the array
+    /// - Insert the row at the beginning of the array
+    /// NOTE: When the backend is updated, maybe it will return the unknown row at the top
+    /// of the array, making this unnecessary.
+    ///
+    func reorderSearchTerms(_ searchTerms: StatsGroup?) -> [StatsItem]? {
+        guard var searchTerms = searchTerms?.items as? [StatsItem] else {
+            return nil
+        }
+
+        // This labelToFind matches that in WPStatsServiceRemote:operationForSearchTermsForDate
+        let labelToFind = NSLocalizedString("Unknown Search Terms", comment: "N/A. Not visible to users.")
+
+        // Find the row in the array
+        guard let unknownSearchTermRow = searchTerms.first(where: ({ $0.label == labelToFind }))  else {
+            return searchTerms
+        }
+
+        // Capitalize only the firt letter of the label
+        unknownSearchTermRow.label = NSLocalizedString("Unknown search terms", comment: "Search Terms label for 'unknown search terms'.")
+
+        // Remove the row from the array
+        searchTerms = searchTerms.filter { $0 != unknownSearchTermRow }
+
+        // And add it back at the top
+        searchTerms.insert(unknownSearchTermRow, at: 0)
+
+        return searchTerms
+    }
+
 }
 
 // MARK: - Public Accessors
@@ -199,9 +263,19 @@ extension StatsPeriodStore {
         return state.topPublished
     }
 
+    func getTopSearchTerms() -> [StatsItem]? {
+        return state.topSearchTerms
+    }
+
+    func getTopVideos() -> [StatsItem]? {
+        return state.topVideos
+    }
+
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
-            state.fetchingPublished
+            state.fetchingPublished ||
+            state.fetchingSearchTerms ||
+            state.fetchingVideos
     }
 
 }
