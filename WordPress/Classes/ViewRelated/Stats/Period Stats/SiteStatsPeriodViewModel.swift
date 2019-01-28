@@ -116,19 +116,11 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func publishedDataRows() -> [StatsTotalRowData] {
-        let published = store.getTopPublished()
-        var dataRows = [StatsTotalRowData]()
-
-        published?.forEach { item in
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: "",
-                                             showDisclosure: true,
-                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item))
-
-            dataRows.append(row)
-        }
-
-        return dataRows
+        return store.getTopPublished()?.map { return StatsTotalRowData.init(name: $0.label,
+                                                                            data: "",
+                                                                            showDisclosure: true,
+                                                                            disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+            ?? [StatsTotalRowData]()
     }
 
 }
