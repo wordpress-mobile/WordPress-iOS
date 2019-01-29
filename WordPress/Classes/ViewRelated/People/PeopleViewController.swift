@@ -46,6 +46,11 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     ///
     private var isLoadingMore = false
 
+    /// Indicates when the People in Core Data have been refreshed.
+    /// Used to display the loading view on initial view and refresh.
+    ///
+    private var isInitialLoad = true
+
     /// Number of records to skip in the next request
     ///
     private var nextRequestOffset = 0
@@ -148,9 +153,9 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
         observeNetworkStatus()
+        resetManagedPeople()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -213,6 +218,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
 
     @IBAction
     func refresh() {
+        resetManagedPeople()
         refreshPeople()
     }
 
@@ -332,11 +338,23 @@ private extension PeopleViewController {
 
     func refreshPeople() {
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
+            self?.isInitialLoad = false
+            self?.refreshNoResultsView()
             self?.tableView.reloadData()
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
         }
+    }
+
+    func resetManagedPeople() {
+        isInitialLoad = true
+
+        guard let blog = blog, let service = PeopleService(blog: blog, context: context) else {
+            return
+        }
+
+        service.removeManagedPeople()
     }
 
     func loadMorePeopleIfNeeded() {
@@ -421,24 +439,39 @@ private extension PeopleViewController {
     func refreshNoResultsView() {
         noResultsViewController.removeFromView()
 
+        if isInitialLoad {
+            displayNoResultsView(forLoading: true)
+            return
+        }
+
         guard resultsController.fetchedObjects?.count == 0 else {
             return
         }
 
-        noResultsViewController.configure(title: noResultsTitle())
+        displayNoResultsView()
+    }
+
+    func displayNoResultsView(forLoading: Bool = false) {
+        let accessoryView = forLoading ? NoResultsViewController.loadingAccessoryView() : nil
+        noResultsViewController.configure(title: noResultsTitle(), accessoryView: accessoryView)
 
         addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
 
-        let headerInset = UIEdgeInsets(top: filterBar.frame.height, left: 0, bottom: 0, right: 0)
-        noResultsViewController.view.frame = tableView.bounds.inset(by: headerInset)
+        // Set the NRV top as the filterBar bottom so the NRV
+        // adjusts correctly when refreshControl is active.
+        let filterBarBottom = filterBar.frame.origin.y + filterBar.frame.size.height
+        noResultsViewController.view.frame.origin.y = filterBarBottom
 
         noResultsViewController.didMove(toParent: self)
     }
 
     func noResultsTitle() -> String {
-        let noPeopleFormat = NSLocalizedString("No %@ yet",
-                                               comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
+        if isInitialLoad {
+            return NSLocalizedString("Loading People...", comment: "Text displayed while loading site People.")
+        }
+
+        let noPeopleFormat = NSLocalizedString("No %@ yet", comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
         let noPeople = String(format: noPeopleFormat, filter.title.lowercased())
 
         return connectionAvailable() ? noPeople : noConnectionMessage()

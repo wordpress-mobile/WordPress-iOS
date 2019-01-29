@@ -17,6 +17,9 @@ final class SiteAssemblyWizardContent: UIViewController {
     /// The service with which the final assembly interacts to coordinate site creation.
     private let service: SiteAssemblyService
 
+    /// The new `Blog`, if successfully created; `nil` otherwise.
+    private var createdBlog: Blog?
+
     /// The content view serves as the root view of this view controller.
     private let contentView = SiteAssemblyContentView()
 
@@ -25,6 +28,9 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     /// This view controller manages the interaction with error states that can arise during site assembly.
     private var errorStateViewController: ErrorStateViewController?
+
+    /// Locally tracks the network connection status via `NetworkStatusDelegate`
+    private var isNetworkActive = ReachabilityUtils.isInternetReachable()
 
     // MARK: SiteAssemblyWizardContent
 
@@ -68,7 +74,11 @@ final class SiteAssemblyWizardContent: UIViewController {
         navigationController?.isNavigationBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
 
-        attemptSiteCreation()
+        observeNetworkStatus()
+
+        if service.currentStatus == .idle {
+            attemptSiteCreation()
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -83,19 +93,29 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     private func attemptSiteCreation() {
         do {
-            let wizardOutput = try siteCreator.build()
+            let creationRequest = try siteCreator.build()
 
-            contentView.domainName = wizardOutput.siteURLString
-            service.createSite(creatorOutput: wizardOutput) { [weak self] status in
-                guard let strongSelf = self else {
+            service.createSite(creationRequest: creationRequest) { [weak self] status in
+                guard let self = self else {
                     return
                 }
 
                 if status == .failed {
-                    strongSelf.installErrorStateViewController()
+                    let errorType: ErrorStateViewType
+                    if self.isNetworkActive == false {
+                        errorType = .networkUnreachable
+                    } else {
+                        errorType = .siteLoading
+                    }
+                    self.installErrorStateViewController(with: errorType)
+                } else if status == .succeeded {
+                    let blog = self.service.createdBlog
+                    self.contentView.siteURLString = blog?.url as String?
+                    self.contentView.siteName = blog?.displayURL as String?
+                    self.createdBlog = blog
                 }
 
-                strongSelf.contentView.status = status
+                self.contentView.status = status
             }
         } catch {
             DDLogError("Unable to proceed in Site Creation flow due to an unexpected error")
@@ -117,28 +137,28 @@ final class SiteAssemblyWizardContent: UIViewController {
         buttonViewController.didMove(toParent: self)
     }
 
-    private func installErrorStateViewController() {
-        var configuration = ErrorStateViewConfiguration.configuration(type: .siteLoading)
+    private func installErrorStateViewController(with type: ErrorStateViewType) {
+        var configuration = ErrorStateViewConfiguration.configuration(type: type)
 
         configuration.contactSupportActionHandler = { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.contactSupportTapped()
+            self.contactSupportTapped()
         }
 
         configuration.retryActionHandler = { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.retryTapped()
+            self.retryTapped()
         }
 
         configuration.dismissalActionHandler = { [weak self] in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.dismissTapped()
+            self.dismissTapped()
         }
 
         let errorStateViewController = ErrorStateViewController(with: configuration)
@@ -163,9 +183,9 @@ private extension SiteAssemblyWizardContent {
         supportVC.showFromTabBar()
     }
 
-    func dismissTapped(viaDone: Bool = false) {
+    func dismissTapped(viaDone: Bool = false, completion: (() -> Void)? = nil) {
         // TODO : using viaDone, capture analytics event via #10335
-        navigationController?.dismiss(animated: true)
+        navigationController?.dismiss(animated: true, completion: completion)
     }
 
     func retryTapped(viaDone: Bool = false) {
@@ -174,10 +194,23 @@ private extension SiteAssemblyWizardContent {
     }
 }
 
+// MARK: - NetworkStatusDelegate
+
+extension SiteAssemblyWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
+    }
+}
+
 // MARK: - NUXButtonViewControllerDelegate
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        dismissTapped(viaDone: true)
+        dismissTapped(viaDone: true) { [createdBlog] in
+            guard let blog = createdBlog else {
+                return
+            }
+            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+        }
     }
 }

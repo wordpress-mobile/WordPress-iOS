@@ -287,7 +287,6 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
         let nib = UINib(nibName: "MediaSizeSliderCell", bundle: Bundle(for: CellType.self))
         return ImmuTableCell.nib(nib, CellType.self)
     }()
-    static let customHeight: Float? = CellType.height
 
     let title: String
     let value: Int

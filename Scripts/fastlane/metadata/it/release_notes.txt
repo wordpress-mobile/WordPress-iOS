@@ -1,9 +1,20 @@
-*Se stai iniziando un nuovo sito tramite l'app, puoi registrare ora il tuo subdominio .blog!
-*Quando provi a eliminare un sito su un iPad, l'app non si arresterà più (a volte potrebbe capitare).
-*Risolto un arresto nella schermata "Informazioni su" nelle Impostazioni app.
-*Aggiornate le impostazioni dell'articolo in modo che appaia migliore sull'iPad.
+In questo rilascio, abbiamo aggiunto la possibilità di modificare la password dall'app, ritoccato la UI dell'intera app e risolto un gran numero di bug! Abbiamo anche ridotto l'utilizzo della CPU e della batteria dell'app nello sforzo di essere migliori cittadini del tuo dispositivo.
 
-Con un nuovo ciclo di miglioramenti alla funzione Cronologia/Revisioni, ora puoi…
-*Scorrere tra le revisioni in un secondo.
-*Passare dalla modalità HTML a quella visuale quando stai guardando una revisione.
-*Cambiare idea se applichi una revisione con un nuovo pulsante Annulla.
+Una ritoccatina extra non fa mai male.
+È più semplice modificare le impostazioni durante la creazione di un sito: puoi iniziare dalla schermata dell'argomento. Così la coerenza visiva è più uniforme. Abbiamo aumentato l'altezza minima e la spaziatura tra gli elementi in alcuni campi e in alcune schermate per rendere la scrittura più agevole. Inoltre, se accedi con un account che non è collegato a nessun sito, non vedrai una schermata superflua in cui vengono elencati i tuoi siti (o non vengono elencati).
+
+Tutto fatto accuratamente.
+Quando inserisci un commento nel Reader, i titoli degli articoli vengono visualizzati correttamente. Nei siti visualizzati con dimensioni di testo più grandi gli URL vengono mostrati in modo corretto e le etichette lunghe nelle impostazioni dell'app non vengono troncate: il ridimensionamento del testo nell'app è in generale migliore. Oh, e a volte vorresti aprire una revisione dell'articolo nell'editor e la tastiera ti nasconde la notifica. Ora non è più così.
+
+I messaggi di errore inutili sono senza scopo.
+Se si verifica un problema con l'impostazione della password quando ti iscrivi per creare un nuovo account, viene visualizzato un messaggio di errore utile. Allo stesso modo se un commento che scrivi non viene pubblicato correttamente. Inoltre, messaggi di errore completi vengono visualizzati per le ricerche senza risultati.
+
+Maggiore localizzazione significa una migliore app in ogni lingua.
+I Termini di servizio sono correttamente localizzati perché tutti dobbiamo capire cosa stiamo accettando. I pulsanti per la condivisione dei contenuti su WordPress da un'altra app sono tradotti senza errori, così come il pulsante per modificare un commento da Notifiche. È tradotto anche il pulsante "Fatto" che viene utilizzato dopo la pubblicazione di un articolo (ed è fisicamente più semplice da toccare!).
+
+A differenza dei veri bug, i bug tecnologici non hanno alcuno scopo.
+Ora puoi eliminare un utente e non comparirà più nell'elenco. Il widget Statistiche non tornerà più al sito principale e le immagini non corrette non verranno più visualizzate nell'elenco delle notifiche. Se il tuo sito è privato, la modalità visuale per la revisione funziona correttamente per articoli che includono immagini.
+
+Gli arresti anomali non piacciono a nessuno.
+Le immagini non caricate correttamente, il caricamento dei file multimediali in background e la navigazione che toglie tempo a una vista tabella mentre è attiva una barra di avanzamento non porteranno più ad arresti anomali. Che bello!
+

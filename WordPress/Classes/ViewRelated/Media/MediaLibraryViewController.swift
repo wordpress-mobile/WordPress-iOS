@@ -677,7 +677,9 @@ extension MediaLibraryViewController: GiphyPickerDelegate {
 
         let mediaCoordinator = MediaCoordinator.shared
         assets.forEach { giphyMedia in
-            mediaCoordinator.addMedia(from: giphyMedia, to: blog)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.giphy), selectionMethod: .fullScreenPicker)
+            mediaCoordinator.addMedia(from: giphyMedia, to: blog, analyticsInfo: info)
+            WPAnalytics.track(.giphyUploaded)
         }
     }
 }

@@ -233,10 +233,16 @@ import MobileCoreServices
         guard let error = error, (error as NSError).code != NSURLErrorCancelled else {
             return
         }
-        DispatchQueue.main.async {
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+
             if self.imageView.shouldShowLoadingIndicator {
                 self.loadingIndicator.state = .error
             }
+
             self.errorHandler?(error)
         }
     }

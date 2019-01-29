@@ -83,6 +83,11 @@ import WordPressShared
         }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        adjustTitleOnlyLabelHeight()
+    }
+
     /// Public method to get controller instance and set view values.
     ///
     /// - Parameters:
@@ -268,7 +273,10 @@ private extension NoResultsViewController {
         }
 
         if let accessorySubview = accessorySubview {
-            accessoryView.subviews.forEach { $0.removeFromSuperview() }
+            accessoryView.subviews.forEach { view in
+                stopAnimatingViewIfNeeded(view)
+                view.removeFromSuperview()
+            }
             accessoryView.addSubview(accessorySubview)
         }
 
@@ -385,6 +393,18 @@ private extension NoResultsViewController {
         titleLabelMaxWidthConstraint = titleOnlyLabel.widthAnchor.constraint(lessThanOrEqualToConstant: TitleLabelConstraints.maxWidth)
     }
 
+    func adjustTitleOnlyLabelHeight() {
+
+        guard let titleOnlyLabel = titleOnlyLabel else {
+            return
+        }
+
+        var titleOnlyLabelFrame = titleOnlyLabel.frame
+        titleOnlyLabel.sizeToFit()
+        titleOnlyLabelFrame.size.height = titleOnlyLabel.frame.height
+        titleOnlyLabel.frame = titleOnlyLabelFrame
+    }
+
     struct TitleLabelConstraints {
         static let top = CGFloat(64)
         static let leading = CGFloat(38)
@@ -475,10 +495,14 @@ private extension NoResultsViewController {
         animatedBox.animate(afterDelay: 0.1)
     }
 
-    func stopAnimatingIfNeeded() {
-        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+    func stopAnimatingViewIfNeeded(_ view: UIView?) {
+        guard let animatedBox = view as? WPAnimatedBox else {
             return
         }
         animatedBox.suspendAnimation()
+    }
+
+    func stopAnimatingIfNeeded() {
+        stopAnimatingViewIfNeeded(accessorySubview)
     }
 }

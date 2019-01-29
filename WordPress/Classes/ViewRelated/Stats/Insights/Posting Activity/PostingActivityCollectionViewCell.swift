@@ -16,6 +16,7 @@ class PostingActivityCollectionViewCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         subviews.forEach({ $0.removeFromSuperview()})
     }
 

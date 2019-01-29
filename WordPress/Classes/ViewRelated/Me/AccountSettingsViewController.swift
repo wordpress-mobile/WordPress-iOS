@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared
 
+
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
         return nil
@@ -25,6 +26,7 @@ private class AccountSettingsController: SettingsController {
             EditableTextRow.self
         ]
     }
+
 
     // MARK: - Initialization
 
@@ -61,11 +63,13 @@ private class AccountSettingsController: SettingsController {
         loadStatus()
     }
 
+
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
         return mapViewModel(settings, service: service, presenter: presenter)
     }
+
 
     // MARK: - Model mapping
 
@@ -95,11 +99,18 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(editWebAddress(service))
         )
 
+        let password = EditableTextRow(
+            title: Constants.title,
+            value: "",
+            action: presenter.push(changePassword(with: settings, service: service))
+        )
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
                     username,
                     email,
+                    password,
                     primarySite,
                     webAddress
                 ])
@@ -108,6 +119,7 @@ private class AccountSettingsController: SettingsController {
 
 
     // MARK: - Actions
+
     func editEmailAddress(_ settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
@@ -126,6 +138,39 @@ private class AccountSettingsController: SettingsController {
 
             return settingsViewController
         }
+    }
+
+    func changePassword(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
+        return { row in
+            return ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
+                DispatchQueue.main.async {
+                    SVProgressHUD.show(withStatus: Constants.changingPassword)
+                    service.updatePassword(value, finished: { (success, error) in
+                        if success {
+                            self?.refreshAccountDetails {
+                                SVProgressHUD.showSuccess(withStatus: Constants.changedPasswordSuccess)
+                            }
+                        } else {
+                            let errorMessage = error?.localizedDescription ?? Constants.changePasswordGenericError
+                            SVProgressHUD.showError(withStatus: errorMessage)
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    func refreshAccountDetails(finished: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        guard let account = service.defaultWordPressComAccount() else {
+            return
+        }
+        service.updateUserDetails(for: account, success: { () in
+            finished()
+        }, failure: { _ in
+            finished()
+        })
     }
 
     func editWebAddress(_ service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
@@ -168,5 +213,15 @@ private class AccountSettingsController: SettingsController {
             comment: "Displayed when there's a pending Email Change. The variable is the new email address.")
 
         return String(format: localizedNotice, pendingAddress)
+    }
+
+
+    // MARK: - Constants
+
+    enum Constants {
+        static let title = NSLocalizedString("Change Password", comment: "Account Settings Change password label")
+        static let changingPassword = NSLocalizedString("Changing password", comment: "Loader title displayed by the loading view while the password is changing")
+        static let changedPasswordSuccess = NSLocalizedString("Password changed successfully", comment: "Loader title displayed by the loading view while the password is changed successfully")
+        static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure loading the history.")
     }
 }

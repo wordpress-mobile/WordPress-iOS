@@ -1,9 +1,20 @@
-* Jika memulai situs baru di aplikasi, kini Anda dapat mendaftarkan subdomain .blog Anda sendiri!
-* Saat Anda mencoba menghapus situs di iPad, aplikasi tidak akan macet lagi (tadinya terkadang macet).
-* Memperbaiki macet di layar “Tentang” di Pengaturan Aplikasi.
-* Menyegarkan layar pengaturan pos agar terlihat lebih baik di iPad.
+Dalam rilis kali ini, kami telah menambahkan kemampuan untuk mengubah kata sandi Anda dari dalam aplikasi, menyempurnakan UI di seluruh bagian aplikasi, dan menyingkirkan banyak bug! Kami juga telah mengurangi penggunaan CPU dan baterai dari aplikasi guna menjadi penghuni yang baik dalam perangkat Anda.
 
-Dengan serangkaian peningkatan baru untuk fitur Riwayat/Revisi, kini Anda dapat…
-* Menggeser di antara revisi dalam sekejap.
-* Beralih di antara mode HTML dan Visual saat melihat revisi.
-* Berubah pikiran jika Anda menerapkan suatu revisi dengan tombol Urung baru.
+Sedikit polesan tambahan tidak akan merugikan.
+Penyesuaian pengaturan kini lebih mudah saat membuat situs – Anda dapat memulai dari awal dari layar topik, dan konsistensi visual lebih halus. Kami menambah ketinggian dan jarak antar-elemen di beberapa kolom dan layar agar penulisan lebih nyaman. Dan jika Anda login ke akun yang tidak memiliki situs, Anda tidak akan melihat layar tidak penting yang mencantumkan situs Anda (atau, ya, yang tidak mencantumkannya).
+
+Huruf I bertitik, huruf T bergaris.
+Saat berkomentar di Pembaca, judul pos ditampilkan dengan benar. Situs yang ditampilkan dengan ukuran teks yang lebih besar menampilkan URL dengan benar, dan label panjang di pengaturan aplikasi tidak terpotong — ukuran teks di seluruh bagian aplikasi menjadi lebih baik secara umum. Oh, terkadang Anda mungkin membuka revisi pos di penyunting, lalu keyboard akan menyembunyikan pemberitahuan. Sekarang hal tersebut tidak akan terjadi.
+
+Pesan error yang tidak penting memang tidak ada manfaatnya.
+Jika terjadi masalah saat mengatur kata sandi ketika mendaftar untuk akun baru, Anda akan mendapatkan pesan error yang membantu. Begitu pula jika komentar yang Anda tulis tidak dapat diposkan dengan benar. Dan pencarian tanpa hasil memiliki pesan error yang lengkap.
+
+Pelokalan yang lebih luas berarti aplikasi yang lebih baik dalam bahasa apa pun.
+Ketentuan Layanan sudah dilokalkan dengan benar, karena kita semua harus tahu mengenai hal yang kita setujui. Tombol untuk membagikan konten ke WordPress dari aplikasi lain telah diterjemahkan dengan benar, dan juga tombol untuk menyunting komentar dari Pemberitahuan Anda. Tombol “Selesai” setelah memublikasikan pos juga diterjemahkan (dan bentuknya lebih mudah diketuk!).
+
+Tidak seperti serangga, bug teknologi tidak memiliki manfaat.
+Sekarang Anda dapat menghapus pengguna, dan pengguna tersebut tidak akan lagi muncul di daftar. Widget Statistik tidak akan mengembalikan Anda ke situs utama, dan gambar yang salah tidak akan muncul lagi di daftar pemberitahuan Anda. I situs Anda bersifat pribadi, mode visual untuk revisi bekerja dengan baik untuk pos yang menyertakan gambar.
+
+Tidak ada yang suka mengalami crash.
+Gambar yang gagal diunggah dengan benar, media yang dimuat ulang di latar belakang, dan menavigasi keluar dari tampilan tabel sementara bilah kemajuan muncul tidak akan lagi menyebabkan crash. Hore.
+

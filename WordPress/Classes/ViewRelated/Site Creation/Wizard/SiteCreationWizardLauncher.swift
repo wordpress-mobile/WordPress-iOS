@@ -11,11 +11,15 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var verticalsStep: WizardStep = {
-        return VerticalsStep(creator: self.creator, service: MockSiteVerticalsService())
+        let promptService = SiteCreationVerticalsPromptService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let verticalsService = SiteCreationVerticalsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        return VerticalsStep(creator: self.creator, promptService: promptService, verticalsService: verticalsService)
     }()
 
     private lazy var addressStep: WizardStep = {
-        return WebAddressStep(creator: self.creator, service: MockSiteAddressService())
+        let addressService = DomainsServiceAdapter(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return WebAddressStep(creator: self.creator, service: addressService)
     }()
 
     private lazy var siteInfoStep: WizardStep = {
@@ -23,7 +27,8 @@ final class SiteCreationWizardLauncher {
     }()
 
     private lazy var siteAssemblyStep: WizardStep = {
-        return SiteAssemblyStep(creator: self.creator, service: MockSiteAssemblyService())
+        let siteAssemblyService = EnhancedSiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return SiteAssemblyStep(creator: self.creator, service: siteAssemblyService)
     }()
 
     private lazy var steps: [WizardStep] = {

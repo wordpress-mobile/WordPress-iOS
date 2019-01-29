@@ -62,6 +62,7 @@ class PostPostViewController: UIViewController {
         let clearImage = UIImage(color: UIColor.clear, havingSize: CGSize(width: 1, height: 1))
         navBar.shadowImage = clearImage
         navBar.setBackgroundImage(clearImage, for: .default)
+        navBar.topItem?.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "Label on button to dismiss view presented after publishing a post")
 
         view.alpha = WPAlphaZero
 
@@ -74,14 +75,11 @@ class PostPostViewController: UIViewController {
         configureForPost()
 
         if revealPost {
+            WPAnalytics.track(.postEpilogueDisplayed)
+
             view.alpha = WPAlphaFull
             animatePostPost()
         }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        WPAnalytics.track(.postEpilogueDisplayed)
     }
 
     private func setupActionButtons() {

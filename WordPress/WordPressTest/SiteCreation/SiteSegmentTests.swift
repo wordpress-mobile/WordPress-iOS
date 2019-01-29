@@ -4,7 +4,7 @@ import XCTest
 
 final class SiteSegmentTests: XCTestCase {
     private struct MockValues {
-        static let identifier = Identifier(value: "101")
+        static let identifier = Int64(1)
         static let title = "Blogger"
         static let subtitle = "Publish a collection of posts."
         static let icon = URL(string: "https://wordpress.com/icon/blogger.png")!
