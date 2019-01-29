@@ -4,6 +4,7 @@ import WordPressComStatsiOS
 
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
+    case receivedPublished(_ published: StatsGroup?)
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
     case receivedVideos(_ videos: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
@@ -31,6 +32,9 @@ struct PeriodStoreState {
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
 
+    var topPublished: [StatsItem]?
+    var fetchingPublished = false
+
     var topSearchTerms: [StatsItem]?
     var fetchingSearchTerms = false
 
@@ -53,6 +57,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
+        case .receivedPublished(let published):
+            receivedPublished(published)
         case .receivedSearchTerms(let searchTerms):
             receivedSearchTerms(searchTerms)
         case .receivedVideos(let videos):
@@ -108,11 +114,11 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching visits: \(String(describing: error?.localizedDescription))")
             }
 
-        }, eventsCompletionHandler: { (events, error) in
+        }, eventsCompletionHandler: { (published, error) in
             if error != nil {
                 DDLogInfo("Error fetching events: \(String(describing: error?.localizedDescription))")
             }
-
+            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
         }, postsCompletionHandler: { (postsAndPages, error) in
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -176,6 +182,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedPublished(_ published: StatsGroup?) {
+        transaction { state in
+            state.topPublished = published?.items as? [StatsItem]
+            state.fetchingPublished = false
+        }
+    }
+
     func receivedSearchTerms(_ searchTerms: StatsGroup?) {
         transaction { state in
             state.topSearchTerms = reorderSearchTerms(searchTerms)
@@ -198,6 +211,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
+        state.fetchingPublished = true
         state.fetchingSearchTerms = true
         state.fetchingVideos = true
     }
@@ -245,6 +259,10 @@ extension StatsPeriodStore {
         return state.topPostsAndPages
     }
 
+    func getTopPublished() -> [StatsItem]? {
+        return state.topPublished
+    }
+
     func getTopSearchTerms() -> [StatsItem]? {
         return state.topSearchTerms
     }
@@ -255,6 +273,7 @@ extension StatsPeriodStore {
 
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
+            state.fetchingPublished ||
             state.fetchingSearchTerms ||
             state.fetchingVideos
     }

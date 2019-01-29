@@ -39,6 +39,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         tableRows.append(contentsOf: postsAndPagesTableRows())
         tableRows.append(contentsOf: searchTermsTableRows())
+        tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
 
         return ImmuTable(sections: [
@@ -63,6 +64,7 @@ private extension SiteStatsPeriodViewModel {
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
         static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
+        static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
     }
 
@@ -130,6 +132,23 @@ private extension SiteStatsPeriodViewModel {
 
     func searchTermsDataRows() -> [StatsTotalRowData] {
         return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label, data: $0.value.displayString()) }
+            ?? [StatsTotalRowData]()
+    }
+
+    func publishedTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.published))
+        tableRows.append(TopTotalsNoSubtitlesPeriodStatsRow(dataRows: publishedDataRows(),
+                                                            siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func publishedDataRows() -> [StatsTotalRowData] {
+        return store.getTopPublished()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                     data: "",
+                                                                     showDisclosure: true,
+                                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
             ?? [StatsTotalRowData]()
     }
 
