@@ -179,7 +179,7 @@ extension PostEditor where Self: UIViewController {
     func cancelEditing() {
         stopEditing()
 
-        if post.canSave() && post.hasUnsavedChanges() {
+        if post.canSave() {
             showPostHasChangesAlert()
         } else {
             discardChangesAndUpdateGUI()
