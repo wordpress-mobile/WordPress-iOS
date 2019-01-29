@@ -275,6 +275,11 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
+    func gutenbergDidRequestMedia(from source: MediaSource, with callback: @escaping MediaPickerDidPickMediaCallback) {
+
+    }
+
+
     func gutenbergDidRequestMediaPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
