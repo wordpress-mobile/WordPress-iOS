@@ -1,6 +1,6 @@
 import UIKit
 import XCTest
-import WordPress
+@testable import WordPress
 
 class ReaderStreamViewControllerTests: XCTestCase {
 
@@ -20,5 +20,4 @@ class ReaderStreamViewControllerTests: XCTestCase {
         let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: 1), isFeed: false)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
-
 }
