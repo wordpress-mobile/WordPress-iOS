@@ -65,24 +65,9 @@ extension ReaderStreamViewController {
 // MARK: - ReaderSiteTopic support for sharing
 
 private extension ReaderSiteTopic {
-    var shareableDescriptionAndLink: String {
-        let value = "\(siteDescription)\n\n\(siteURL)"
-        return value
-    }
-
     var shareablePostData: Data {
         let shareSitePost = SharePost(title: title, summary: siteDescription, url: siteURL)
         return shareSitePost.data
-    }
-
-    var shareableSummary: String {
-        let value = "\(shareableTitleAndDescription)\n\n\(siteURL)"
-        return value
-    }
-
-    var shareableTitleAndDescription: String {
-        let value = "\(title) - \(siteDescription)"
-        return value
     }
 
     var shareableURL: URL? {
@@ -103,14 +88,10 @@ extension ReaderSiteTopic: UIActivityItemSource {
 
         let value: Any?
         switch activityType {
-        case .copyToPasteboard:
-            value = shareableURL
-        case .mail:
-            value = shareableDescriptionAndLink
         case SharePost.activityType:
             return shareablePostData
         default:
-            value = shareableSummary
+            value = shareableURL
         }
 
         return value
