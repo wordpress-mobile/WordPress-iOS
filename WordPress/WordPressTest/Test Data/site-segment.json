@@ -2,7 +2,7 @@
     "segment_type_title": "Blogger",
     "segment_type_subtitle": "Publish a collection of posts.",
     "icon_URL": "https://wordpress.com/icon/blogger.png",
-    "icon_color": "FFFAFA",
+    "icon_color": "#FFFAFA",
     "id": 1,
     "mobile": true
 }

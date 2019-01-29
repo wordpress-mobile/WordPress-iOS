@@ -196,7 +196,7 @@ PODS:
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.6.2):
+  - WordPressShared (1.7.0-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.2.0)
@@ -248,7 +248,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.4.1)
   - WordPressAuthenticator (~> 1.1.8)
   - WordPressKit (~> 1.8.0)
-  - WordPressShared (~> 1.6.2)
+  - WordPressShared (~> 1.7.0-beta.1)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -382,13 +382,13 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 617116ef6b454ff11eed2cbdeafc6cf78a54aec2
   WordPressAuthenticator: edea3f3cb344c97f2381722286c398a027054d4c
   WordPressKit: 23d7de239367cfea9f9eef8aefe1933e47566cf2
-  WordPressShared: 111e5c935a4540a403d63811f1aba2a14e2fd074
+  WordPressShared: 9889ea6eaeb951df12e2901f98bd194df728d2a1
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 85dec766bd43d55144a49b87203bbcfe4d0a1440
+PODFILE CHECKSUM: 99c1fd718368b9d6beef68b54a9144c74d75537b
 
 COCOAPODS: 1.5.3

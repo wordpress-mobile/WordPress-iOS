@@ -7,6 +7,10 @@ final class SiteSegmentsWizardContent: UIViewController {
     private var dataCoordinator: (UITableViewDataSource & UITableViewDelegate)?
     private let selection: (SiteSegment) -> Void
 
+    private var isNetworkActive = ReachabilityUtils.isInternetReachable()
+
+    private var errorStateViewController: ErrorStateViewController?
+
     @IBOutlet weak var table: UITableView!
 
     private struct StyleConstants {
@@ -40,18 +44,18 @@ final class SiteSegmentsWizardContent: UIViewController {
         initCancelButton()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchSegments()
+        observeNetworkStatus()
+    }
+
     private func applyTitle() {
         title = NSLocalizedString("Create Site", comment: "Site creation. Step 1. Screen title")
     }
 
     private func setupBackground() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        fetchSegments()
     }
 
     override func viewDidLayoutSubviews() {
@@ -98,7 +102,6 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func setupHeader() {
-        print("==== table width ===", table.frame.width )
         let initialHeaderFrame = CGRect(x: 0, y: 0, width: Int(table.frame.width), height: 0)
         let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
@@ -138,18 +141,70 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private func fetchSegments() {
-        service.siteSegments(for: Locale.current) { [weak self] results in
+        guard isNetworkActive == true else {
+            setupErrorView()
+            return
+        }
+
+        service.siteSegments(completion: { [weak self] results in
             switch results {
-            case .error(let error):
+            case .failure(let error):
                 self?.handleError(error)
             case .success(let data):
                 self?.handleData(data)
             }
-        }
+        })
     }
 
-    private func handleError(_ error: Error) {
-        debugPrint("=== handling error===")
+    private func handleError(_ error: SiteSegmentsError) {
+        setupErrorView()
+    }
+
+    private func setupErrorView() {
+        let errorType: ErrorStateViewType
+        if self.isNetworkActive == false {
+            errorType = .networkUnreachable
+        } else {
+            errorType = .general
+        }
+        self.installErrorStateViewController(with: errorType)
+    }
+
+    private func installErrorStateViewController(with type: ErrorStateViewType) {
+        var configuration = ErrorStateViewConfiguration.configuration(type: type)
+
+        configuration.contactSupportActionHandler = nil
+        configuration.dismissalActionHandler = nil
+        configuration.retryActionHandler = { [weak self] in
+            self?.retryTapped()
+        }
+
+        table.alpha = 0
+
+        let errorVC = ErrorStateViewController(with: configuration)
+
+        addChild(errorVC)
+        errorVC.view.frame = view.frame
+        view.addSubview(errorVC.view)
+        NSLayoutConstraint.activate([
+            errorVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorVC.view.topAnchor.constraint(equalTo: view.topAnchor),
+            errorVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        errorVC.didMove(toParent: self)
+
+
+        errorStateViewController = errorVC
+    }
+
+    private func clearErrorStateViewController() {
+        errorStateViewController?.willMove(toParent: nil)
+        errorStateViewController?.view.removeFromSuperview()
+        errorStateViewController?.removeFromParent()
+        errorStateViewController = nil
+
+        table.alpha = 1.0
     }
 
     private func handleData(_ data: [SiteSegment]) {
@@ -161,5 +216,19 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func didSelect(_ segment: SiteSegment) {
         selection(segment)
+    }
+}
+
+extension SiteSegmentsWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
+    }
+}
+
+private extension SiteSegmentsWizardContent {
+    func retryTapped(viaDone: Bool = false) {
+        // TODO : using viaDone, capture analytics event via #10335
+        clearErrorStateViewController()
+        fetchSegments()
     }
 }
