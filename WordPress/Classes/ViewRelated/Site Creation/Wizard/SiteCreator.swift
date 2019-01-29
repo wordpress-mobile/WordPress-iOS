@@ -1,6 +1,12 @@
 
 import Foundation
 
+extension DomainSuggestion {
+    var subdomain: String {
+        return domainName.components(separatedBy: ".").first ?? ""
+    }
+}
+
 // MARK: - SiteCreationRequestAssemblyError
 
 enum SiteCreationRequestAssemblyError: Error {
@@ -42,7 +48,7 @@ final class SiteCreator {
         guard let domainSuggestion = address else {
             throw SiteCreationRequestAssemblyError.invalidDomain
         }
-        let siteName = domainSuggestion.domainName
+        let siteName = domainSuggestion.subdomain
 
         guard let siteInformation = information else {
             throw SiteCreationRequestAssemblyError.invalidSiteInformation
