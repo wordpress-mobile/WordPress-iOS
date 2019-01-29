@@ -92,19 +92,15 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
 
-        guard !assets.isEmpty else {
+        guard let assetSelected = assets.first else {
             return
         }
 
-        for asset in assets {
-            invokeMediaPickerCallback(asset: asset)
-        }
-        context.dismiss(animated: true, completion: nil)
+        context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: assetSelected) })
     }
 
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        invokeMediaPickerCallback(asset: nil)
-        context.dismiss(animated: true, completion: nil)
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {        
+        context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }
 
     fileprivate func invokeMediaPickerCallback(asset: WPMediaAsset?) {
