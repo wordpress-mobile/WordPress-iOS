@@ -1190,6 +1190,8 @@ private extension AztecPostViewController {
                 guard let context = self.post.managedObjectContext else {
                     return
                 }
+
+                self.publishPost(action: .saveAsDraft, dismissWhenDone: false, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
                 ContextManager.sharedInstance().save(context)
             }
             self.displayPreview()
