@@ -99,7 +99,7 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: assetSelected) })
     }
 
-    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {        
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }
 
