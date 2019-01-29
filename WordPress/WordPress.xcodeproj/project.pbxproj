@@ -11866,7 +11866,6 @@
 					INTERNAL_BUILD,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 					ALPHA_BUILD,
-					BUDDYBUILD_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -11924,7 +11923,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
@@ -12059,7 +12057,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
@@ -12123,7 +12120,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
@@ -12187,7 +12183,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
@@ -12251,7 +12246,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/GoogleSignIn\"",
@@ -12409,7 +12403,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
@@ -12754,7 +12747,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
@@ -12788,7 +12780,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/BuddyBuildSDK\"",
 					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
 					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
 					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
