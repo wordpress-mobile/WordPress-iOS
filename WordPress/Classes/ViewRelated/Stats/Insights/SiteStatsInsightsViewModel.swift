@@ -371,15 +371,6 @@ private extension SiteStatsInsightsViewModel {
         var dataRows = [StatsTotalRowData]()
 
         tagsAndCategories?.forEach { item in
-
-            let disclosureURL: URL? = {
-                if let actions = item.actions,
-                    let action = actions.first as? StatsItemAction {
-                    return action.url
-                }
-                return nil
-            }()
-
             let icon: UIImage? = {
                 switch item.alternateIconValue {
                 case "category":
@@ -396,7 +387,7 @@ private extension SiteStatsInsightsViewModel {
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
-                                             disclosureURL: disclosureURL)
+                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item))
 
             dataRows.append(row)
         }
@@ -522,13 +513,7 @@ private extension SiteStatsInsightsViewModel {
 
         rowData?.forEach { row in
             let dataBarPercent = showDataBar ? StatsDataHelper.dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
-
-            let disclosureURL: URL? = {
-                if showDisclosure, let action = row.actions.first as? StatsItemAction {
-                    return action.url
-                }
-                return nil
-            }()
+            let disclosureURL = showDisclosure ? StatsDataHelper.disclosureUrlForItem(row) : nil
 
             rows.append(StatsTotalRowData.init(name: row.label,
                                                data: row.value.displayString(),

@@ -30,10 +30,9 @@
 }
 
 - (void)tearDown {
-    [super tearDown];
-    
     self.subject = nil;
     self.serviceMock = nil;
+    [super tearDown];
 }
 
 - (void)testVerifyTracksNamesMappings {

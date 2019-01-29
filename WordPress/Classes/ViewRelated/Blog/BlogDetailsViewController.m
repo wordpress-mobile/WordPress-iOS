@@ -1479,7 +1479,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
     if ([self shouldShowQuickStartChecklist]) {
-        QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
+        QuickStartChecklistViewControllerV1 *checklist = [[QuickStartChecklistViewControllerV1 alloc] initWithBlog:self.blog];
         return checklist;
     }
     StatsViewController *statsView = [StatsViewController new];

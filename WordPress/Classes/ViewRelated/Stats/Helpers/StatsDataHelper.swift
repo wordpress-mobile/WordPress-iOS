@@ -24,6 +24,17 @@ class StatsDataHelper {
         return rowValue / rowsMaxValue
     }
 
+    class func disclosureUrlForItem(_ statItem: StatsItem) -> URL? {
+        let disclosureURL: URL? = {
+            if let actions = statItem.actions,
+                let action = actions.first as? StatsItemAction {
+                return action.url
+            }
+            return nil
+        }()
+
+        return disclosureURL
+    }
 }
 
 /// These methods format stat Strings for display and usage.
