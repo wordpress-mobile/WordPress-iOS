@@ -113,7 +113,6 @@ target 'WordPress' do
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
     pod 'Crashlytics', '3.12.0'
-    pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'MGSwipeTableCell', '1.6.8'
