@@ -1,4 +1,6 @@
 
+import MobileCoreServices
+
 import Gridicons
 
 // MARK: - Functionality related to sharing a blog via the reader.
@@ -38,15 +40,89 @@ extension ReaderStreamViewController {
 
         WPAppAnalytics.track(.readerSiteShared, withBlogID: sitePendingPost.siteID)
 
-        /**
-            It may seem curious that we are employing a PostSharingController to share a site (Blog).
-            In this case, the Post is a `SharePost`, which can be serialized for use with `UIActivityViewController`.
-         */
-        sharingController.sharePost(
-            sitePendingPost.title,
-            summary: sitePendingPost.siteDescription,
-            link: sitePendingPost.siteURL,
-            fromView: sender,
-            inViewController: self)
+        let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
+        let activityViewController = UIActivityViewController(activityItems: [sitePendingPost], applicationActivities: activities)
+        activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
+            if completed {
+                WPActivityDefaults.trackActivityType((activityType).map { $0.rawValue })
+            }
+        }
+
+        if UIDevice.isPad() {
+            activityViewController.modalPresentationStyle = .popover
+        }
+
+        if let presentationController = activityViewController.popoverPresentationController {
+            presentationController.permittedArrowDirections = .any
+            presentationController.sourceView = sender
+            presentationController.sourceRect = sender.bounds
+        }
+
+        present(activityViewController, animated: true)
+    }
+}
+
+// MARK: - ReaderSiteTopic support for sharing
+
+private extension ReaderSiteTopic {
+    var shareableTitleAndDescription: String {
+        let value = "\(title) - \(siteDescription)"
+        return value
+    }
+
+    var shareableDescriptionAndLink: String {
+        let value = "\(siteDescription)\n\n\(siteURL)"
+        return value
+    }
+
+    var shareableSummary: String {
+        let value = "\(shareableTitleAndDescription)\n\n\(siteURL)"
+        return value
+    }
+
+    var shareableURL: URL? {
+        return URL(string: siteURL)
+    }
+}
+
+extension ReaderSiteTopic: UIActivityItemSource {
+    public func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return shareableURL as Any
+    }
+
+    public func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+
+        guard let activityType = activityType else {
+            return nil
+        }
+
+        let value: Any?
+        switch activityType {
+        case .copyToPasteboard:
+            value = shareableURL
+        case .mail:
+            value = shareableDescriptionAndLink
+        default:
+            value = shareableSummary
+        }
+
+        return value
+    }
+
+    public func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
+
+        let value: String
+        if activityType == nil {
+            value = ""
+        } else {
+            value = title
+        }
+
+        return value
+    }
+
+    public func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
+
+        return kUTTypeURL as String
     }
 }
