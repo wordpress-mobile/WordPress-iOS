@@ -60,6 +60,12 @@ class GutenbergMediaInserterHelper: NSObject {
 
     }
 
+    func syncUploads() {
+        if mediaObserverReceipt != nil {
+            registerMediaObserver()
+        }
+    }
+
     private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
         switch exportableAsset.assetMediaType {
         case .image:

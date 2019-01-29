@@ -314,6 +314,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestMediaUploadSync() {
+        self.mediaInserterHelper.syncUploads()
+    }
+
     func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
         if changed {
             self.html = html
