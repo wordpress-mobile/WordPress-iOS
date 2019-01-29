@@ -1,6 +1,12 @@
 import Foundation
 import MobileCoreServices
 
+/// A simple shared model to represent a Site
+///
+@objc class ShareBlog: NSObject {
+    @objc static let typeIdentifier = "org.wordpress.share-blog"
+}
+
 /// A simple shared model to represent a post
 ///
 /// This is a simplified version of a post used as a base for sharing amongst
