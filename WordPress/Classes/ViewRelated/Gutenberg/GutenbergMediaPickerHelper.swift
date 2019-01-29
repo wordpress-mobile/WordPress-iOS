@@ -81,7 +81,8 @@ class GutenbergMediaPickerHelper: NSObject {
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         didPickMediaCallback = callback
-
+        //reset the selected assets from previous uses
+        cameraPicker.resetState(false)
         cameraPicker.modalPresentationStyle = .currentContext
         cameraPicker.viewControllerToUseToPresent = context
         cameraPicker.showCapture()
@@ -96,7 +97,8 @@ extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
             return
         }
 
-        context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: assetSelected) })
+        invokeMediaPickerCallback(asset: assetSelected)
+        picker.dismiss(animated: true, completion: nil)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
