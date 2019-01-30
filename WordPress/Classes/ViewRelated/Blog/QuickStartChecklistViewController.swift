@@ -35,6 +35,16 @@ class QuickStartChecklistViewController: UITableViewController {
                                                     tours: QuickStartTourGuide.growListTours)
         }
     }()
+    private lazy var successScreen: NoResultsViewController = {
+        let successScreen = NoResultsViewController.controller()
+        successScreen.view.frame = tableView.bounds
+        successScreen.view.backgroundColor = .white
+        successScreen.configure(title: tasksCompleteScreen.title,
+                                subtitle: tasksCompleteScreen.subtitle,
+                                image: tasksCompleteScreen.imageName)
+        successScreen.viewWillAppear(false)
+        return successScreen
+    }()
 
     @objc init(blog: Blog, type: QuickStartType) {
         self.blog = blog
@@ -75,6 +85,16 @@ class QuickStartChecklistViewController: UITableViewController {
 
         WPAnalytics.track(.quickStartChecklistViewed)
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
+            self?.successScreen.hideImageView(hideImageView)
+            self?.successScreen.viewWillTransition(to: size, with: coordinator)
+            self?.tableView.backgroundView = self?.successScreen.view
+        })
+    }
 }
 
 private extension QuickStartChecklistViewController {
@@ -89,13 +109,8 @@ private extension QuickStartChecklistViewController {
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
-        let successScreen = NoResultsViewController.controller()
-        successScreen.view.frame = tableView.bounds
-        successScreen.configure(title: tasksCompleteScreen.title,
-                                subtitle: tasksCompleteScreen.subtitle,
-                                image: tasksCompleteScreen.imageName)
-        successScreen.viewWillAppear(false)
-        successScreen.view.backgroundColor = .white
+        let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
+        successScreen.hideImageView(hideImageView)
 
         tableView.backgroundView = successScreen.view
         self.tableView = tableView
