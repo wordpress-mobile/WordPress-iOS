@@ -25,6 +25,7 @@ enum InsightType: Int {
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
+    @objc optional func expandedCellUpdated()
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -120,6 +121,11 @@ private extension SiteStatsInsightsTableViewController {
         viewModel?.refreshInsights()
     }
 
+    func applyTableUpdates() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
     // MARK: User Defaults
 
     func loadInsightsFromUserDefaults() {
@@ -183,8 +189,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func tabbedTotalsCellUpdated() {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        applyTableUpdates()
+    }
+
+    func expandedCellUpdated() {
+        applyTableUpdates()
     }
 
 }
