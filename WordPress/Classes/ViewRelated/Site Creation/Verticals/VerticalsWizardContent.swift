@@ -151,7 +151,7 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
-        buttonWrapper.isHidden = false
+        showBottomToolbar()
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
@@ -224,7 +224,7 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
 
-        buttonWrapper.isHidden = true
+        hideBottonToolbar()
 
         lastSearchQuery = query
 
@@ -458,10 +458,6 @@ extension VerticalsWizardContent {
         bottomConstraint.constant = constraintConstant
         view.setNeedsUpdateConstraints()
 
-//        if let lastVisibleCell = table.visibleCells.last, lastVisibleCell.frame.contains(convertedKeyboardFrame.origin) {
-//            buttonWrapper.addShadow()
-//        }
-
         UIView.animate(withDuration: animationDuration,
                        delay: 0,
                        options: .beginFromCurrentState,
@@ -486,5 +482,13 @@ extension VerticalsWizardContent {
     private func keyboardWillHide(_ notification: Foundation.Notification) {
         buttonWrapper.clearShadow()
         bottomConstraint.constant = Constants.bottomMargin
+    }
+
+    private func showBottomToolbar() {
+        buttonWrapper.isHidden = false
+    }
+
+    private func hideBottonToolbar() {
+        buttonWrapper.isHidden = true
     }
 }
