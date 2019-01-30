@@ -138,8 +138,12 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        // 10908 Workaround - DO NOT MERGE THIS!
-        let suggestionType: DomainsServiceRemote.DomainSuggestionType = .wordPressDotComAndDotBlogSubdomains
+        let suggestionType: DomainsServiceRemote.DomainSuggestionType
+        if let segmentID = siteCreator.segment?.identifier, segmentID == SiteSegment.blogSegmentIdentifier {
+            suggestionType = .wordPressDotComAndDotBlogSubdomains
+        } else {
+            suggestionType = .onlyWordPressDotCom
+        }
 
         service.addresses(for: searchTerm, domainSuggestionType: suggestionType) { [weak self] results in
             switch results {
