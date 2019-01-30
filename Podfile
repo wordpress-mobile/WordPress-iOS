@@ -24,13 +24,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.0-beta'
+    ##pod 'WordPressShared', '~> 1.7.0-beta'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    ##pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '30809ffa12074b347355f73661d807766eade30b'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'b57818e9021c74508ff241d62ab112d7b2e40e7e'
 end
 
 def aztec
@@ -60,7 +60,7 @@ end
 def shared_with_all_pods
     wordpress_shared
     pod 'CocoaLumberjack', '3.4.2'
-    pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
+    #pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
 end
 

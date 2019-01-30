@@ -220,7 +220,6 @@ DEPENDENCIES:
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
-  - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
@@ -246,7 +245,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.4.1)
   - WordPressAuthenticator (~> 1.1.8)
   - WordPressKit (~> 1.8.0)
-  - WordPressShared (~> 1.7.0-beta)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `b57818e9021c74508ff241d62ab112d7b2e40e7e`)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -287,7 +286,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -313,6 +311,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v0.3.4
+  WordPressShared:
+    :commit: b57818e9021c74508ff241d62ab112d7b2e40e7e
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -332,6 +333,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v0.3.4
+  WordPressShared:
+    :commit: b57818e9021c74508ff241d62ab112d7b2e40e7e
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -385,6 +389,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: cbf4334fe05f69e4d20ea3c7391679fd9cb7b8af
+PODFILE CHECKSUM: ed223f9c7e847a89b8c4c84ca1756886e2df153d
 
 COCOAPODS: 1.5.3
