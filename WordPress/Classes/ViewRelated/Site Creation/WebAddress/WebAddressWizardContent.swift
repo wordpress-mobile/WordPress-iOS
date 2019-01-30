@@ -111,6 +111,7 @@ final class WebAddressWizardContent: UIViewController {
         setupButtonWrapper()
         setupCreateSiteButton()
         setupTable()
+        WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
     }
 
     override func viewWillAppear(_ animated: Bool) {

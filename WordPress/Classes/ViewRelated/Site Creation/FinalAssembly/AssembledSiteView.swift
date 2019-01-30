@@ -141,6 +141,7 @@ final class AssembledSiteView: UIView {
         generator.prepare()
 
         webView.load(siteRequest)
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed)
     }
 
     // MARK: Private behavior
@@ -190,6 +191,7 @@ extension AssembledSiteView: WKNavigationDelegate {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
         generator.notificationOccurred(.success)
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

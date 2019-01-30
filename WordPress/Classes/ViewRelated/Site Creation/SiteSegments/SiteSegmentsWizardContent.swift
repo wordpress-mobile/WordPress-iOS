@@ -44,6 +44,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         initCancelButton()
 
         prepareForVoiceOver()
+	WPAnalytics.track(.enhancedSiteCreationSegmentsViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -220,6 +221,15 @@ final class SiteSegmentsWizardContent: UIViewController {
 
     private func didSelect(_ segment: SiteSegment) {
         selection(segment)
+        trackSegmentSelection(segment)
+    }
+    
+    private func trackSegmentSelection(_ segment: SiteSegment) {
+        var segmentProperties = [String: AnyObject]()
+        segmentProperties["segment_name"] = segment.title as AnyObject?
+        segmentProperties["segment_id"] = segment.identifier as AnyObject?
+
+        WPAnalytics.track(.enhancedSiteCreationSegmentsSelected, withProperties: segmentProperties)
     }
 }
 
