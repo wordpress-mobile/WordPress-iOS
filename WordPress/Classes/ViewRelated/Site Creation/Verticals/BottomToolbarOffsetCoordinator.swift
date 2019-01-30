@@ -59,11 +59,11 @@ final class BottomToolbarOffsetCoordinator {
         bottomConstraint?.constant = Constants.bottomMargin
     }
 
-    private func showBottomToolbar() {
+    func showBottomToolbar() {
         toolbar?.isHidden = false
     }
 
-    private func hideBottonToolbar() {
+    func hideBottomToolbar() {
         toolbar?.isHidden = true
     }
 }
