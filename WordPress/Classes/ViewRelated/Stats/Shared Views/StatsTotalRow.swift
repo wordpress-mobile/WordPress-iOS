@@ -11,6 +11,7 @@ struct StatsTotalRowData {
     var nameDetail: String?
     var showDisclosure: Bool
     var disclosureURL: URL?
+    var childRows: [StatsTotalRowData]?
 
     init(name: String,
          data: String,
@@ -21,7 +22,8 @@ struct StatsTotalRowData {
          userIconURL: URL? = nil,
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
-         disclosureURL: URL? = nil) {
+         disclosureURL: URL? = nil,
+         childRows: [StatsTotalRowData]? = [StatsTotalRowData]()) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -32,12 +34,14 @@ struct StatsTotalRowData {
         self.userIconURL = userIconURL
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
+        self.childRows = childRows
     }
 }
 
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
+    @objc optional func displayChildRowsForRow(_ row: StatsTotalRow)
 
 }
 
@@ -65,7 +69,7 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var disclosureImageView: UIImageView!
     @IBOutlet weak var disclosureButton: UIButton!
 
-    private var rowData: StatsTotalRowData?
+    private(set) var rowData: StatsTotalRowData?
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
 
@@ -199,17 +203,22 @@ private extension StatsTotalRow {
             return
         }
 
-        guard let disclosureURL = rowData?.disclosureURL else {
-            let alertController =  UIAlertController(title: "More will be disclosed.",
-                                                     message: nil,
-                                                     preferredStyle: .alert)
-            alertController.addCancelActionWithTitle("OK")
-            alertController.presentFromRootViewController()
-
+        if let childRows = rowData?.childRows,
+            !childRows.isEmpty {
+            delegate?.displayChildRowsForRow?(self)
             return
         }
 
-        delegate?.displayWebViewWithURL?(disclosureURL)
+        if let disclosureURL = rowData?.disclosureURL {
+            delegate?.displayWebViewWithURL?(disclosureURL)
+            return
+        }
+
+        let alertController =  UIAlertController(title: "More will be disclosed.",
+                                                 message: nil,
+                                                 preferredStyle: .alert)
+        alertController.addCancelActionWithTitle("OK")
+        alertController.presentFromRootViewController()
     }
 
 }
