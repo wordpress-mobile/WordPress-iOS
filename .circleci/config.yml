@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.7
-  danger: wordpress-mobile/danger@0.0.7
+  ios: wordpress-mobile/ios@0.0.11
+  danger: wordpress-mobile/danger@0.0.11
 
 jobs:
   build_and_test:
