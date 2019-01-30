@@ -61,9 +61,11 @@ class QuickStartChecklistViewController: UITableViewController {
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
                 self?.navigationController?.popViewController(animated: true)
             }
-        }, didTapHeader: { collapse in
-            // display/hide congratulation screen
+        }, didTapHeader: { [weak self] collapse in
+            self?.checkForSuccessScreen(collapse)
         })
+
+        checkForSuccessScreen()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -87,6 +89,15 @@ private extension QuickStartChecklistViewController {
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
+        let successScreen = NoResultsViewController.controller()
+        successScreen.view.frame = tableView.bounds
+        successScreen.configure(title: tasksCompleteScreen.title,
+                                subtitle: tasksCompleteScreen.subtitle,
+                                image: tasksCompleteScreen.imageName)
+        successScreen.viewWillAppear(false)
+        successScreen.view.backgroundColor = .white
+
+        tableView.backgroundView = successScreen.view
         self.tableView = tableView
     }
 
@@ -104,6 +115,18 @@ private extension QuickStartChecklistViewController {
     func reload() {
         dataManager?.reloadData()
         tableView.reloadData()
+    }
+
+    func checkForSuccessScreen(_ collapse: Bool = false) {
+        if let dataManager = dataManager,
+            !dataManager.shouldShowCompleteTasksScreen() {
+            self.tableView.backgroundView?.alpha = 0
+            return
+        }
+
+        UIView.animate(withDuration: 0.3) {
+            self.tableView.backgroundView?.alpha = collapse ? 0.0 : 1.0
+        }
     }
 }
 
