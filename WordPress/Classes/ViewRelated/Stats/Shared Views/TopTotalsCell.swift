@@ -1,9 +1,10 @@
 import UIKit
 
-/// This cell type displays the top data rows for a Stat type, with subtitles for the items and data.
+/// This cell type displays the top data rows for a Stat type, with optional subtitles for the items and data.
 /// Ex: Insights Tags and Categories, Period Post and Pages.
 /// If there are more than 6 data rows, a View more row is added to display the full list.
-/// If a row is tapped, a webView is displayed (via StatsTotalRowDelegate) with the data row URL.
+/// If a row is tapped, StatsTotalRowDelegate is informed to display the associated detail.
+/// If the row has child rows, those child rows are added to the stack view below the selected row.
 ///
 
 class TopTotalsCell: UITableViewCell, NibLoadable {
@@ -86,6 +87,24 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
         siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
+    }
+
+    func displayChildRowsForRow(_ row: StatsTotalRow) {
+
+        guard let rowView = rowsStackView.arrangedSubviews.first(where: ({ $0 == row })),
+            var rowIndex = rowsStackView.arrangedSubviews.index(of: rowView),
+            let childRows = row.rowData?.childRows else {
+                return
+        }
+
+        childRows.forEach { childRow in
+            rowIndex += 1
+            let row = StatsTotalRow.loadFromNib()
+            row.configure(rowData: childRow, delegate: self)
+            rowsStackView.insertArrangedSubview(row, at: rowIndex)
+        }
+
+        siteStatsInsightsDelegate?.expandedCellUpdated?()
     }
 
 }
