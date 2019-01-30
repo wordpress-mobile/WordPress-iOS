@@ -105,6 +105,8 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         row.showSeparator = false
         row.showTopExpandedSeparator = true
 
+        row.collapsed = false
+
         // On the row before the parent row, hide the default bottom separator.
         if (rowIndex - 1) > 0,
             let previousRow = rowsStackView.arrangedSubviews[rowIndex - 1] as? StatsTotalRow {

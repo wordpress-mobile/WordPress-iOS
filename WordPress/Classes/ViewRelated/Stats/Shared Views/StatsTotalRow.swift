@@ -81,6 +81,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     private(set) var rowData: StatsTotalRowData?
     private var dataBarMaxTrailing: Float = 0.0
+    private lazy var animator = Animator()
     private typealias Style = WPStyleGuide.Stats
 
     private weak var delegate: StatsTotalRowDelegate?
@@ -103,6 +104,15 @@ class StatsTotalRow: UIView, NibLoadable {
         }
     }
 
+    var collapsed: Bool = true {
+        didSet {
+            let rotation = collapsed ? (DisclosureImageDirection.down) : (DisclosureImageDirection.up)
+            animator.animateWithDuration(0.3, animations: { [weak self] in
+                self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
+            })
+        }
+    }
+
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
@@ -111,6 +121,7 @@ class StatsTotalRow: UIView, NibLoadable {
         self.delegate = delegate
 
         configureIcon()
+        configureDisclosureIcon()
 
         // Set values
         itemLabel.text = rowData.name
@@ -136,6 +147,11 @@ class StatsTotalRow: UIView, NibLoadable {
 }
 
 private extension StatsTotalRow {
+
+    struct DisclosureImageDirection {
+        static let up = CGFloat.pi * 1.5
+        static let down = CGFloat.pi / 2
+    }
 
     func applyStyles() {
         Style.configureLabelAsCellRowTitle(itemLabel)
@@ -176,6 +192,15 @@ private extension StatsTotalRow {
 
             downloadImageFrom(iconURL)
         }
+    }
+
+    func configureDisclosureIcon() {
+        guard let childRows = rowData?.childRows,
+            !childRows.isEmpty else {
+            return
+        }
+
+        collapsed = true
     }
 
     func configureDataBar() {
