@@ -10,7 +10,9 @@ jobs:
       xcode: "10.1.0"
     steps:
       - checkout
-      - ios/cached-pod-install
+      - ios/cached-pod-install:
+          # If you want to reset the CircleCI cache, increment the number in the cache prefix below
+          cache-prefix: cocoapods-cache-v1
       - run:
           name: Build
           command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -sdk iphonesimulator build-for-testing | bundle exec xcpretty
