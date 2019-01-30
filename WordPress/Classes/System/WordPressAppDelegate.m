@@ -8,10 +8,6 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressUI/WordPressUI.h>
 
-#ifdef BUDDYBUILD_ENABLED
-#import <BuddyBuildSDK/BuddyBuildSDK.h>
-#endif
-
 // Data model
 #import "Blog.h"
 
@@ -102,7 +98,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
-    [self setupBuddyBuild];
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
@@ -110,27 +105,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self disableAnimationsForUITests:application];
 
     return YES;
-}
-
-- (void)setupBuddyBuild
-{
-#ifdef BUDDYBUILD_ENABLED
-    [BuddyBuildSDK setScreenshotAllowedCallback:^BOOL{
-        return NO;
-    }];
-    
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    NSString *username = defaultAccount.username;
-    
-    if (username.length > 0) {
-        [BuddyBuildSDK setUserDisplayNameCallback:^() {
-            return @"Johnny Appleseed";
-        }];
-    }
-    
-    [BuddyBuildSDK setup];
-#endif
 }
 
 - (void)setupPingHub
