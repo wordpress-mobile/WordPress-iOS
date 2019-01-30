@@ -92,16 +92,26 @@ extension TopTotalsCell: StatsTotalRowDelegate {
     func displayChildRowsForRow(_ row: StatsTotalRow) {
 
         guard let rowView = rowsStackView.arrangedSubviews.first(where: ({ $0 == row })),
-            var rowIndex = rowsStackView.arrangedSubviews.index(of: rowView),
+            let rowIndex = rowsStackView.arrangedSubviews.index(of: rowView),
             let childRows = row.rowData?.childRows else {
                 return
         }
 
-        childRows.forEach { childRow in
-            rowIndex += 1
-            let row = StatsTotalRow.loadFromNib()
-            row.configure(rowData: childRow, delegate: self)
-            rowsStackView.insertArrangedSubview(row, at: rowIndex)
+        // Hide the bottom separator on the parent row.
+        row.showSeparator = false
+
+        let numberOfRowsToAdd = childRows.count
+        var insertAtIndex = rowIndex + 1
+
+        childRows.forEach { childRowData in
+            let childRow = StatsTotalRow.loadFromNib()
+            childRow.configure(rowData: childRowData, delegate: self)
+
+            // Show the separator line only on the last row
+            childRow.showSeparator = (insertAtIndex == (rowIndex + numberOfRowsToAdd))
+
+            rowsStackView.insertArrangedSubview(childRow, at: insertAtIndex)
+            insertAtIndex += 1
         }
 
         siteStatsInsightsDelegate?.expandedCellUpdated?()
