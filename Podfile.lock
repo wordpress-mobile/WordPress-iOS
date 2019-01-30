@@ -246,7 +246,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.4.1)
   - WordPressAuthenticator (~> 1.1.8)
   - WordPressKit (~> 1.8.0)
-  - WordPressShared (~> 1.7.0-beta.1)
+  - WordPressShared (~> 1.7.0-beta)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -385,6 +385,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: a7b6da1af34339de4c87ee96755453523161046a
+PODFILE CHECKSUM: cbf4334fe05f69e4d20ea3c7391679fd9cb7b8af
 
 COCOAPODS: 1.5.3
