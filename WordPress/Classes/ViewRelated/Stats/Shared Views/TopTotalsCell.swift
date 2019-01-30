@@ -21,6 +21,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private let maxChildRowsToDisplay = 10
     private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
@@ -110,13 +111,16 @@ extension TopTotalsCell: StatsTotalRowDelegate {
             previousRow.showSeparator = false
         }
 
-        let numberOfRowsToAdd = childRows.count
+        let numberOfRowsToAdd = childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
         var insertAtIndex = rowIndex + 1
 
-        childRows.forEach { childRowData in
+        for childRowsIndex in 0..<numberOfRowsToAdd {
+            let childRowData = childRows[childRowsIndex]
             let childRow = StatsTotalRow.loadFromNib()
+
             childRow.configure(rowData: childRowData, delegate: self)
             childRow.showSeparator = false
+
             // Show the expanded bottom separator on the last row
             childRow.showBottomExpandedSeparator = (insertAtIndex == (rowIndex + numberOfRowsToAdd))
 
