@@ -95,7 +95,7 @@ target 'WordPress' do
     ## =====================
     ##
     pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '23137fc6718c0817c8acbd69d408c421782d877a'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.3.4'
+    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '23137fc6718c0817c8acbd69d408c421782d877a'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
