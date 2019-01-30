@@ -118,6 +118,18 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         }
         return 0.0
     }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let section = Sections(rawValue: indexPath.section), section == .todo else {
+            return nil
+        }
+
+        let buttonTitle = NSLocalizedString("Skip", comment: "Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.")
+        let skip = UITableViewRowAction(style: .destructive, title: buttonTitle) { [weak self] (_, indexPath) in
+            self?.tableView(tableView, completeTourAt: indexPath)
+        }
+        return [skip]
+    }
 }
 
 private extension QuickStartChecklistManager {
@@ -156,6 +168,29 @@ private extension QuickStartChecklistManager {
         }
 
         didTapHeader(collapsing)
+    }
+
+    func tableView(_ tableView: UITableView, completeTourAt indexPath: IndexPath) {
+        guard let tourGuide = QuickStartTourGuide.find() else {
+            return
+        }
+
+        let tour = todoTours[indexPath.row]
+        todoTours.remove(at: indexPath.row)
+        completedTours.append(tour)
+        completedToursKeys.insert(tour.key)
+
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        let sections = IndexSet(integer: Sections.completed.rawValue)
+        tableView.reloadSections(sections, with: .fade)
+        tableView.endUpdates()
+
+        if shouldShowCompleteTasksScreen() {
+            didTapHeader(completedSectionCollapse)
+        }
+
+        tourGuide.complete(tour: tour, for: blog, postNotification: false)
     }
 }
 
