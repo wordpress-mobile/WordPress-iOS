@@ -91,14 +91,24 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func displayChildRowsForRow(_ row: StatsTotalRow) {
 
+        // Find the row in the stackview, and the children of that row.
         guard let rowView = rowsStackView.arrangedSubviews.first(where: ({ $0 == row })),
             let rowIndex = rowsStackView.arrangedSubviews.index(of: rowView),
             let childRows = row.rowData?.childRows else {
                 return
         }
 
-        // Hide the bottom separator on the parent row.
+        // On the parent row:
+        // Hide the default bottom separator.
+        // Show the expanded top separator.
         row.showSeparator = false
+        row.showTopExpandedSeparator = true
+
+        // On the row before the parent row, hide the default bottom separator.
+        if (rowIndex - 1) > 0,
+            let previousRow = rowsStackView.arrangedSubviews[rowIndex - 1] as? StatsTotalRow {
+            previousRow.showSeparator = false
+        }
 
         let numberOfRowsToAdd = childRows.count
         var insertAtIndex = rowIndex + 1
@@ -106,9 +116,9 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         childRows.forEach { childRowData in
             let childRow = StatsTotalRow.loadFromNib()
             childRow.configure(rowData: childRowData, delegate: self)
-
-            // Show the separator line only on the last row
-            childRow.showSeparator = (insertAtIndex == (rowIndex + numberOfRowsToAdd))
+            childRow.showSeparator = false
+            // Show the expanded bottom separator on the last row
+            childRow.showBottomExpandedSeparator = (insertAtIndex == (rowIndex + numberOfRowsToAdd))
 
             rowsStackView.insertArrangedSubview(childRow, at: insertAtIndex)
             insertAtIndex += 1

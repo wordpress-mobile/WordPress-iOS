@@ -50,7 +50,17 @@ class StatsTotalRow: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var contentView: UIView!
+
+    // The default line shown indented at the bottom of the view.
+    // Shown by default unless otherwise specified.
     @IBOutlet weak var separatorLine: UIView!
+
+    // Lines shown at the top/bottom of the view, spanning the entire width.
+    // These are shown when a row is selected that has children, used to indicate
+    // the top and bottom of the expanded rows.
+    // Hidden by default unless otherwise specified.
+    @IBOutlet weak var topExpandedSeparatorLine: UIView!
+    @IBOutlet weak var bottomExpandedSeparatorLine: UIView!
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
@@ -78,6 +88,18 @@ class StatsTotalRow: UIView, NibLoadable {
     var showSeparator = true {
         didSet {
             separatorLine.isHidden = !showSeparator
+        }
+    }
+
+    var showTopExpandedSeparator = false {
+        didSet {
+            topExpandedSeparatorLine.isHidden = !showTopExpandedSeparator
+        }
+    }
+
+    var showBottomExpandedSeparator = false {
+        didSet {
+            bottomExpandedSeparatorLine.isHidden = !showBottomExpandedSeparator
         }
     }
 
@@ -120,6 +142,8 @@ private extension StatsTotalRow {
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
         Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsSeperator(topExpandedSeparatorLine)
+        Style.configureViewAsSeperator(bottomExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
     }
 
