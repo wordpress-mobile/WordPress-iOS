@@ -35,7 +35,7 @@ final class VerticalsWizardContent: UIViewController {
     private let verticalsService: SiteVerticalsService
 
     /// The action to perform once a Vertical is selected by the user
-    private let selection: (SiteVertical) -> Void
+    private let selection: (SiteVertical?) -> Void
 
     /// The localized prompt retrieved by remote service; `nil` otherwise
     private var prompt: SiteVerticalsPrompt?
@@ -77,7 +77,7 @@ final class VerticalsWizardContent: UIViewController {
     ///   - verticalsService:   the service which conducts searches for know verticals
     ///   - selection:          the action to perform once a Vertical is selected by the user
     ///
-    init(creator: SiteCreator, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
+    init(creator: SiteCreator, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical?) -> Void) {
         self.siteCreator = creator
         self.promptService = promptService
         self.verticalsService = verticalsService
@@ -334,7 +334,7 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     private func setupNextButton() {
-        nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
+        nextStep.addTarget(self, action: #selector(skip), for: .touchUpInside)
 
         setupButtonAsSkip()
     }
@@ -416,10 +416,8 @@ final class VerticalsWizardContent: UIViewController {
     }
 
     @objc
-    private func goNext() {
-        print("==== skipping==== ")
-//        let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
-//        completion(collectedData)
+    private func skip() {
+        selection(nil)
     }
 }
 

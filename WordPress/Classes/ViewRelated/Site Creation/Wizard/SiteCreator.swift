@@ -35,9 +35,7 @@ final class SiteCreator {
             throw SiteCreationRequestAssemblyError.invalidSegmentIdentifier
         }
 
-        guard let verticalIdentifier = vertical?.identifier.description else {
-            throw SiteCreationRequestAssemblyError.invalidVerticalIdentifier
-        }
+        let verticalIdentifier = vertical?.identifier.description
 
         guard let domainSuggestion = address else {
             throw SiteCreationRequestAssemblyError.invalidDomain
