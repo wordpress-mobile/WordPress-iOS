@@ -52,10 +52,13 @@ final class VerticalsWizardContent: UIViewController {
     /// The table view renders our server content
     @IBOutlet private weak var table: UITableView!
 
+    /// The view wrapping the skip button
     @IBOutlet weak var buttonWrapper: ShadowView!
 
+    /// The skip button
     @IBOutlet weak var nextStep: NUXButton!
 
+    /// The constraint between the bottom of the buttonWrapper and this view controller's view
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     /// Serves as both the data source & delegate of the table view
@@ -63,8 +66,6 @@ final class VerticalsWizardContent: UIViewController {
 
     /// Manages header visibility, keyboard management, and table view offset
     private(set) var tableViewOffsetCoordinator: TableViewOffsetCoordinator?
-
-    private(set) var toolbarOffsetCoordinator: BottomToolbarOffsetCoordinator?
 
     // MARK: VerticalsWizardContent
 
@@ -98,7 +99,6 @@ final class VerticalsWizardContent: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
         tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
     }
@@ -111,8 +111,7 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
-        toolbarOffsetCoordinator = BottomToolbarOffsetCoordinator(toolbar: buttonWrapper, container: view, bottomConstraint: bottomConstraint)
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, container: view, toolbar: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
 
         applyTitle()
         setupBackground()
@@ -127,14 +126,12 @@ final class VerticalsWizardContent: UIViewController {
         fetchPromptIfNeeded()
         observeNetworkStatus()
         tableViewOffsetCoordinator?.startListeningToKeyboardNotifications()
-        toolbarOffsetCoordinator?.startListeningToKeyboardNotifications()
         prepareViewIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignTextFieldResponderIfNeeded()
-        toolbarOffsetCoordinator?.stopListeningToKeyboardNotifications()
     }
 
     // MARK: Private behavior
@@ -151,8 +148,8 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
-        toolbarOffsetCoordinator?.showBottomToolbar()
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.showBottomToolbar()
     }
 
     private func fetchPromptIfNeeded() {
@@ -224,7 +221,7 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
 
-        toolbarOffsetCoordinator?.hideBottomToolbar()
+        tableViewOffsetCoordinator?.hideBottomToolbar()
 
         lastSearchQuery = query
 
