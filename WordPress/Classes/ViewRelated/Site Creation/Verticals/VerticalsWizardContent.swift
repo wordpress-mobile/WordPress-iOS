@@ -1,10 +1,13 @@
 import UIKit
 import WordPressKit
+import WordPressAuthenticator
 
 /// Contains the UI corresponding to the list of verticals
 ///
 final class VerticalsWizardContent: UIViewController {
-
+    private struct Constants {
+        static let bottomMargin: CGFloat = 0.0
+    }
     // MARK: Properties
 
     private static let defaultPrompt = SiteVerticalsPrompt(
@@ -51,6 +54,12 @@ final class VerticalsWizardContent: UIViewController {
 
     /// The table view renders our server content
     @IBOutlet private weak var table: UITableView!
+
+    @IBOutlet weak var buttonWrapper: ShadowView!
+
+    @IBOutlet weak var nextStep: NUXButton!
+
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
@@ -107,6 +116,8 @@ final class VerticalsWizardContent: UIViewController {
 
         applyTitle()
         setupBackground()
+        setupButtonWrapper()
+        setupNextButton()
         setupTable()
     }
 
@@ -115,12 +126,14 @@ final class VerticalsWizardContent: UIViewController {
 
         fetchPromptIfNeeded()
         observeNetworkStatus()
+        startListeningToKeyboardNotifications()
         tableViewOffsetCoordinator?.startListeningToKeyboardNotifications()
         prepareViewIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        stopListeningToKeyboardNotifications()
         resignTextFieldResponderIfNeeded()
     }
 
@@ -138,6 +151,7 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
+        buttonWrapper.isHidden = false
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
@@ -209,6 +223,8 @@ final class VerticalsWizardContent: UIViewController {
         guard !query.isEmpty else {
             return
         }
+
+        buttonWrapper.isHidden = true
 
         lastSearchQuery = query
 
@@ -313,6 +329,25 @@ final class VerticalsWizardContent: UIViewController {
         tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
     }
 
+    private func setupButtonWrapper() {
+        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupNextButton() {
+        nextStep.addTarget(self, action: #selector(goNext), for: .touchUpInside)
+
+        setupButtonAsSkip()
+    }
+
+    private func setupButtonAsSkip() {
+        let buttonTitle = NSLocalizedString("Skip", comment: "Button to progress to the next step")
+        nextStep.setTitle(buttonTitle, for: .normal)
+        nextStep.accessibilityLabel = buttonTitle
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates to the next step")
+
+        nextStep.isPrimary = false
+    }
+
     private func setupTable() {
         setupTableBackground()
         setupTableSeparator()
@@ -379,6 +414,13 @@ final class VerticalsWizardContent: UIViewController {
         performSearchIfNeeded(query: searchTerm)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
+
+    @objc
+    private func goNext() {
+        print("==== skipping==== ")
+//        let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
+//        completion(collectedData)
+    }
 }
 
 // MARK: - NetworkStatusDelegate
@@ -395,5 +437,56 @@ extension VerticalsWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
         return true
+    }
+}
+
+extension VerticalsWizardContent {
+    @objc
+    private func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard let payload = KeyboardInfo(notification) else { return }
+        let keyboardScreenFrame = payload.frameEnd
+
+        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
+
+        var constraintConstant = convertedKeyboardFrame.height
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = view.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
+
+        let animationDuration = payload.animationDuration
+
+        bottomConstraint.constant = constraintConstant
+        view.setNeedsUpdateConstraints()
+
+//        if let lastVisibleCell = table.visibleCells.last, lastVisibleCell.frame.contains(convertedKeyboardFrame.origin) {
+//            buttonWrapper.addShadow()
+//        }
+
+        UIView.animate(withDuration: animationDuration,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { [weak self] in
+                        self?.view.layoutIfNeeded()
+            },
+                       completion: nil)
+    }
+
+    func startListeningToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+    }
+
+    func stopListeningToKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillHide(_ notification: Foundation.Notification) {
+        buttonWrapper.clearShadow()
+        bottomConstraint.constant = Constants.bottomMargin
     }
 }
