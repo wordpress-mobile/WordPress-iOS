@@ -81,13 +81,12 @@ class StatsTotalRow: UIView, NibLoadable {
     private(set) var rowData: StatsTotalRowData?
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
+    private weak var delegate: StatsTotalRowDelegate?
 
     // This stack view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
     var childRowsStackView = UIStackView()
-    private lazy var animator = Animator()
-
-    private weak var delegate: StatsTotalRowDelegate?
+    private let animator = Animator()
 
     var showSeparator = true {
         didSet {
