@@ -41,8 +41,7 @@ struct StatsTotalRowData {
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func displayChildRowsForRow(_ row: StatsTotalRow)
-
+    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -81,8 +80,12 @@ class StatsTotalRow: UIView, NibLoadable {
 
     private(set) var rowData: StatsTotalRowData?
     private var dataBarMaxTrailing: Float = 0.0
-    private lazy var animator = Animator()
     private typealias Style = WPStyleGuide.Stats
+
+    // This stack view is modified by the containing cell, to show/hide
+    // child rows when a parent row is selected.
+    var childRowsStackView = UIStackView()
+    private lazy var animator = Animator()
 
     private weak var delegate: StatsTotalRowDelegate?
 
@@ -106,6 +109,9 @@ class StatsTotalRow: UIView, NibLoadable {
 
     var collapsed: Bool = true {
         didSet {
+            showSeparator = collapsed
+            showTopExpandedSeparator = !collapsed
+
             let rotation = collapsed ? (DisclosureImageDirection.down) : (DisclosureImageDirection.up)
             animator.animateWithDuration(0.3, animations: { [weak self] in
                 self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
@@ -254,7 +260,7 @@ private extension StatsTotalRow {
 
         if let childRows = rowData?.childRows,
             !childRows.isEmpty {
-            delegate?.displayChildRowsForRow?(self)
+            delegate?.toggleChildRowsForRow?(self)
             return
         }
 
