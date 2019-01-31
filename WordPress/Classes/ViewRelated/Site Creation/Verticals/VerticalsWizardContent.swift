@@ -111,7 +111,7 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, container: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
 
         applyTitle()
         setupBackground()

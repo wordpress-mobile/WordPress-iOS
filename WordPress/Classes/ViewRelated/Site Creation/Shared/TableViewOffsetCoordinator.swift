@@ -16,12 +16,12 @@ final class TableViewOffsetCoordinator {
     private weak var tableView: UITableView?
 
     //// The view containing the toolbar
-    private weak var container: UIView?
+    private weak var footerControlContainer: UIView?
 
     //// The toolbar
     private weak var footerControl: UIView?
 
-    //// The constraint linking the bottom of the toolbar to its container
+    //// The constraint linking the bottom of the footerControl to its container
     private weak var toolbarBottomConstraint: NSLayoutConstraint?
 
     /// Tracks the content offset introduced by the keyboard being presented
@@ -38,13 +38,13 @@ final class TableViewOffsetCoordinator {
     /// Initializes a table view offset coordinator with the specified table view.
     ///
     /// - Parameter tableView: the table view to manage
-    /// - Parameter container: the view containing the toolbar
+    /// - Parameter footerControlContainer: the view containing the toolbar
     /// - Parameter toolbar: a view that needs to be offset in coordination with the table view
-    /// - Parameter toolbarBottomConstraint: the constraint linking the bottom if container and toolbar
+    /// - Parameter toolbarBottomConstraint: the constraint linking the bottom if footerControlContainer and toolbar
     ///
-    init(coordinated tableView: UITableView, container: UIView? = nil, footerControl: UIView? = nil, toolbarBottomConstraint: NSLayoutConstraint? = nil) {
+    init(coordinated tableView: UITableView, footerControlContainer: UIView? = nil, footerControl: UIView? = nil, toolbarBottomConstraint: NSLayoutConstraint? = nil) {
         self.tableView = tableView
-        self.container = container
+        self.footerControlContainer = footerControlContainer
         self.footerControl = footerControl
         self.toolbarBottomConstraint = toolbarBottomConstraint
     }
@@ -139,14 +139,14 @@ final class TableViewOffsetCoordinator {
     }
 
     private func adjustToolbarOffsetIfNeeded() {
-        guard let footerControl = footerControl, let container = container else {
+        guard let footerControl = footerControl, let footerControlContainer = footerControlContainer else {
             return
         }
 
         var constraintConstant = keyboardContentOffset
 
         if #available(iOS 11.0, *) {
-            let bottomInset = container.safeAreaInsets.bottom
+            let bottomInset = footerControlContainer.safeAreaInsets.bottom
             constraintConstant -= bottomInset
         }
 
@@ -156,7 +156,7 @@ final class TableViewOffsetCoordinator {
             let newToolbarFrame = footerControl.frame.offsetBy(dx: 0.0, dy: -1 * constraintConstant)
 
             toolbarBottomConstraint?.constant = constraintConstant
-            container.setNeedsUpdateConstraints()
+            footerControlContainer.setNeedsUpdateConstraints()
 
             UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
                 guard let self = self, let tableView = self.tableView else {
@@ -169,7 +169,7 @@ final class TableViewOffsetCoordinator {
                     tableView.contentInset = contentInsets
                     tableView.scrollIndicatorInsets = contentInsets
                 }
-                container.layoutIfNeeded()
+                footerControlContainer.layoutIfNeeded()
                 }, completion: { [weak self] _ in
                     self?.tableViewHasBeenAdjusted = false
             })
