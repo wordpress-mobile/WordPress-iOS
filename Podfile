@@ -24,13 +24,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.0-beta.1'
+    pod 'WordPressShared', '~> 1.7.0-beta'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '84d09bcbb0c9c1ba7f39c119e7fce61927f02f43'
+    ##pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '30809ffa12074b347355f73661d807766eade30b'
 end
 
 def aztec
@@ -94,8 +94,8 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '1559268a0d38df09266851f1dda10900b1e14fb4'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.3.4'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '738dffcca0b6c1a55de28b911cf9613b33b51e03'
+    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '738dffcca0b6c1a55de28b911cf9613b33b51e03'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'

@@ -1,5 +1,8 @@
-* Fixed an issue where the message field in "Customize the message" screen was empty.
-* Added clarification text about empty messages to footer of "Customize your message" screen.
-* Adds support for iOS's password autofill when entering a username during login
-* Fixes an issue where there'd be big spaces on top of (or below) some images.
-* Added alert to prompt the user to logout before connecting to a wordpress.com site, if they are already logged in with a wordpress.com account
+For this release, we’ve smoothed out the experience in a few more areas:
+
+- Added support for password autofill when entering a username during login.
+- Added clarification text about empty messages when sharing posts to social media. If you don’t provide a message, we’ll use the post title by default.
+- We now automatically save your draft before showing you a preview.
+- Fixed an issue causing big spaces on top of (or below) some images in Reader.
+- Fixed an indentation bug in the Pages list for private pages.
+- Fixed a visual bug affecting the Posts list at large text sizes.

@@ -39,6 +39,9 @@ final class AssembledSiteView: UIView {
     /// The web view that renders our newly assembled site
     private let webView: WKWebView
 
+    /// The request formulated to present the site to the user for first time.
+    private var initialSiteRequest: URLRequest?
+
     /// This interacts with our `WKNavigationDelegate` to influence the policy behavior before & after site loading.
     /// After the site has been loaded, we want to disable user interaction with the rendered site.
     private var webViewHasLoadedContent: Bool = false
@@ -125,12 +128,17 @@ final class AssembledSiteView: UIView {
 
     // MARK: Internal behavior
 
-    /// Triggers the new site to load for the first time.
-    func loadSite() {
-        generator.prepare()
+    /// Triggers the new site to load, once, and only once.
+    ///
+    func loadSiteIfNeeded() {
+        guard initialSiteRequest == nil, let siteURL = URL(string: siteURLString) else {
+            return
+        }
 
-        let siteURL = URL(string: siteURLString)!
         let siteRequest = URLRequest(url: siteURL)
+        self.initialSiteRequest = siteRequest
+
+        generator.prepare()
 
         webView.load(siteRequest)
     }
