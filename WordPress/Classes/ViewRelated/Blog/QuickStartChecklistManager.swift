@@ -35,7 +35,7 @@ class QuickStartChecklistManager: NSObject {
     }
 
     func shouldShowCompleteTasksScreen() -> Bool {
-        return todoTours.isEmpty && !completedSectionCollapse
+        return todoTours.isEmpty
     }
 }
 
