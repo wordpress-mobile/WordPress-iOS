@@ -111,7 +111,7 @@ class StatsTotalRow: UIView, NibLoadable {
             showSeparator = collapsed
             showTopExpandedSeparator = !collapsed
 
-            let rotation = collapsed ? (DisclosureImageDirection.down) : (DisclosureImageDirection.up)
+            let rotation = collapsed ? (Constants.disclosureImageDown) : (Constants.disclosureImageUp)
             animator.animateWithDuration(0.3, animations: { [weak self] in
                 self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
             })
@@ -121,7 +121,6 @@ class StatsTotalRow: UIView, NibLoadable {
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
-
         self.rowData = rowData
         self.delegate = delegate
 
@@ -152,11 +151,6 @@ class StatsTotalRow: UIView, NibLoadable {
 }
 
 private extension StatsTotalRow {
-
-    struct DisclosureImageDirection {
-        static let up = CGFloat.pi * 1.5
-        static let down = CGFloat.pi / 2
-    }
 
     func applyStyles() {
         Style.configureLabelAsCellRowTitle(itemLabel)
@@ -248,6 +242,8 @@ private extension StatsTotalRow {
         static let defaultImageSize = CGFloat(24)
         static let socialImageSize = CGFloat(20)
         static let userImageSize = CGFloat(28)
+        static let disclosureImageUp = CGFloat.pi * 1.5
+        static let disclosureImageDown = CGFloat.pi / 2
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
