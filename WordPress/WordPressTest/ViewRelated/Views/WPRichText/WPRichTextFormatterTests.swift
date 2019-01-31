@@ -119,4 +119,14 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(attributes["title"] == "Example")
     }
 
+    func testThatParsingImageTagInsideVideoTagDoesntCrash() {
+        let html = "<video><img /></video>"
+
+        do {
+            _ = try WPRichTextFormatter().attributedStringFromHTMLString(html, defaultDocumentAttributes: nil)
+        }
+        catch let err {
+            XCTFail(err.localizedDescription)
+        }
+    }
 }
