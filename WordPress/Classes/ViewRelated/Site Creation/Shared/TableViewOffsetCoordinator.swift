@@ -19,7 +19,7 @@ final class TableViewOffsetCoordinator {
     private weak var container: UIView?
 
     //// The toolbar
-    private weak var toolbar: UIView?
+    private weak var footerControl: UIView?
 
     //// The constraint linking the bottom of the toolbar to its container
     private weak var toolbarBottomConstraint: NSLayoutConstraint?
@@ -42,10 +42,10 @@ final class TableViewOffsetCoordinator {
     /// - Parameter toolbar: a view that needs to be offset in coordination with the table view
     /// - Parameter toolbarBottomConstraint: the constraint linking the bottom if container and toolbar
     ///
-    init(coordinated tableView: UITableView, container: UIView? = nil, toolbar: UIView? = nil, toolbarBottomConstraint: NSLayoutConstraint? = nil) {
+    init(coordinated tableView: UITableView, container: UIView? = nil, footerControl: UIView? = nil, toolbarBottomConstraint: NSLayoutConstraint? = nil) {
         self.tableView = tableView
         self.container = container
-        self.toolbar = toolbar
+        self.footerControl = footerControl
         self.toolbarBottomConstraint = toolbarBottomConstraint
     }
 
@@ -103,8 +103,8 @@ final class TableViewOffsetCoordinator {
             }
 
             let finalOffset: UIEdgeInsets
-            if let toolbar = self.toolbar, self.toolbarHasBeenAdjusted == true {
-                let toolbarHeight = toolbar.frame.size.height
+            if let footerControl = self.footerControl, self.toolbarHasBeenAdjusted == true {
+                let toolbarHeight = footerControl.frame.size.height
                 finalOffset = UIEdgeInsets(top: -1 * toolbarHeight,
                     left: 0, bottom: toolbarHeight, right: 0)
             } else {
@@ -139,7 +139,7 @@ final class TableViewOffsetCoordinator {
     }
 
     private func adjustToolbarOffsetIfNeeded() {
-        guard let toolbar = toolbar, let container = container else {
+        guard let footerControl = footerControl, let container = container else {
             return
         }
 
@@ -153,7 +153,7 @@ final class TableViewOffsetCoordinator {
         if let header = tableView?.tableHeaderView as? TitleSubtitleTextfieldHeader {
             let textFieldFrame = header.textField.frame
 
-            let newToolbarFrame = toolbar.frame.offsetBy(dx: 0.0, dy: -1 * constraintConstant)
+            let newToolbarFrame = footerControl.frame.offsetBy(dx: 0.0, dy: -1 * constraintConstant)
 
             toolbarBottomConstraint?.constant = constraintConstant
             container.setNeedsUpdateConstraints()
@@ -164,7 +164,7 @@ final class TableViewOffsetCoordinator {
                 }
 
                 if textFieldFrame.intersects(newToolbarFrame) {
-                    let contentInsets = UIEdgeInsets(top: -1 * toolbar.frame.height, left: 0.0, bottom: constraintConstant + toolbar.frame.height, right: 0.0)
+                    let contentInsets = UIEdgeInsets(top: -1 * footerControl.frame.height, left: 0.0, bottom: constraintConstant + footerControl.frame.height, right: 0.0)
                     self.toolbarHasBeenAdjusted = true
                     tableView.contentInset = contentInsets
                     tableView.scrollIndicatorInsets = contentInsets
@@ -192,10 +192,10 @@ final class TableViewOffsetCoordinator {
     }
 
     func showBottomToolbar() {
-        toolbar?.isHidden = false
+        footerControl?.isHidden = false
     }
 
     func hideBottomToolbar() {
-        toolbar?.isHidden = true
+        footerControl?.isHidden = true
     }
 }
