@@ -311,7 +311,7 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutSucceeded() {
-        assembledSiteView?.loadSite()
+        assembledSiteView?.loadSiteIfNeeded()
 
         UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [statusStackView] in
             statusStackView.alpha = 0
