@@ -86,7 +86,6 @@ class StatsTotalRow: UIView, NibLoadable {
     // This stack view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
     var childRowsStackView = UIStackView()
-    private let animator = Animator()
 
     var showSeparator = true {
         didSet {
@@ -108,11 +107,16 @@ class StatsTotalRow: UIView, NibLoadable {
 
     var collapsed: Bool = true {
         didSet {
+            guard let childRows = rowData?.childRows,
+                !childRows.isEmpty else {
+                    return
+            }
+
             showSeparator = collapsed
             showTopExpandedSeparator = !collapsed
 
             let rotation = collapsed ? (Constants.disclosureImageDown) : (Constants.disclosureImageUp)
-            animator.animateWithDuration(0.3, animations: { [weak self] in
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
                 self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
             })
         }
@@ -125,7 +129,7 @@ class StatsTotalRow: UIView, NibLoadable {
         self.delegate = delegate
 
         configureIcon()
-        configureDisclosureIcon()
+        collapsed = true
 
         // Set values
         itemLabel.text = rowData.name
@@ -191,15 +195,6 @@ private extension StatsTotalRow {
 
             downloadImageFrom(iconURL)
         }
-    }
-
-    func configureDisclosureIcon() {
-        guard let childRows = rowData?.childRows,
-            !childRows.isEmpty else {
-            return
-        }
-
-        collapsed = true
     }
 
     func configureDataBar() {
