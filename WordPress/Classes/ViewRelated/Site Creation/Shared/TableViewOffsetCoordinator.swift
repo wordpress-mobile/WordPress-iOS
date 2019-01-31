@@ -30,6 +30,7 @@ final class TableViewOffsetCoordinator {
     /// To avoid wasted animations, we track whether or not we have already adjusted the table view
     private var tableViewHasBeenAdjusted = false
 
+    /// Track the status of the toolbar, wether we have adjusted its position or remains at its initial location
     private var toolbarHasBeenAdjusted = false
 
     // MARK: TableViewOffsetCoordinator
@@ -133,6 +134,7 @@ final class TableViewOffsetCoordinator {
 
     @objc
     private func keyboardWillHide(_ notification: Foundation.Notification) {
+        toolbarHasBeenAdjusted = false
         toolbarBottomConstraint?.constant = 0
     }
 
