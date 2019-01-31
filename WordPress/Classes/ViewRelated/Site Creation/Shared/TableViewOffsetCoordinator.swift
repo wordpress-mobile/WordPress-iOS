@@ -24,7 +24,7 @@ final class TableViewOffsetCoordinator {
     //// The constraint linking the bottom of the toolbar to its container
     private weak var toolbarBottomConstraint: NSLayoutConstraint?
 
-    /// The value of the bottom constraint constant is set in response to the keyboard appearance
+    /// Tracks the content offset introduced by the keyboard being presented
     private var keyboardContentOffset = CGFloat(0)
 
     /// To avoid wasted animations, we track whether or not we have already adjusted the table view
