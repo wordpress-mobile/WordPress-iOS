@@ -42,7 +42,7 @@ class QuickStartChecklistViewController: UITableViewController {
         successScreen.configure(title: tasksCompleteScreen.title,
                                 subtitle: tasksCompleteScreen.subtitle,
                                 image: tasksCompleteScreen.imageName)
-        successScreen.viewWillAppear(false)
+        successScreen.updateView()
         return successScreen
     }()
 
@@ -91,7 +91,7 @@ class QuickStartChecklistViewController: UITableViewController {
         coordinator.animate(alongsideTransition: { [weak self] context in
             let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
             self?.successScreen.hideImageView(hideImageView)
-            self?.successScreen.viewWillTransition(to: size, with: coordinator)
+            self?.successScreen.updateAccessoryViewsVisibility()
             self?.tableView.backgroundView = self?.successScreen.view
         })
     }
