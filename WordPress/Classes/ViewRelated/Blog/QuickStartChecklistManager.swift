@@ -128,6 +128,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         let skip = UITableViewRowAction(style: .destructive, title: buttonTitle) { [weak self] (_, indexPath) in
             self?.tableView(tableView, completeTourAt: indexPath)
         }
+        skip.backgroundColor = WPStyleGuide.errorRed()
         return [skip]
     }
 }
