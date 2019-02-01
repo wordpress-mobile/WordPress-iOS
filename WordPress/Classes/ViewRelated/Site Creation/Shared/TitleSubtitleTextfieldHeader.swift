@@ -146,6 +146,8 @@ final class TitleSubtitleTextfieldHeader: UIView {
             ])
 
         setStyles()
+
+        prepareForVoiceOver()
     }
 
     private func setStyles() {
@@ -158,5 +160,17 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
     func setSubtitle(_ text: String) {
         titleSubtitle.setSubtitle(text)
+    }
+}
+
+extension TitleSubtitleTextfieldHeader: Accessible {
+    func prepareForVoiceOver() {
+        titleSubtitle.prepareForVoiceOver()
+
+        prepareSearchFieldForVoiceOver()
+    }
+
+    private func prepareSearchFieldForVoiceOver() {
+        textField.accessibilityTraits = .searchField
     }
 }

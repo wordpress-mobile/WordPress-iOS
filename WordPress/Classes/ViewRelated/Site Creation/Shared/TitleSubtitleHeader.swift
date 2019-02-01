@@ -61,6 +61,8 @@ final class TitleSubtitleHeader: UIView {
         ])
 
         setStyles()
+
+        prepareForVoiceOver()
     }
 
     private func setStyles() {
@@ -91,5 +93,11 @@ final class TitleSubtitleHeader: UIView {
     func setSubtitle(_ text: String) {
         subtitleLabel.text = text
         subtitleLabel.accessibilityLabel = text
+    }
+}
+
+extension TitleSubtitleHeader: Accessible {
+    func prepareForVoiceOver() {
+
     }
 }
