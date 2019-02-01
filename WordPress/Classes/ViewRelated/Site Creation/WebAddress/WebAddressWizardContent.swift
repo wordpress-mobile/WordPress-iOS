@@ -102,7 +102,9 @@ final class WebAddressWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
+
+        tableViewOffsetCoordinator?.hideBottomToolbar()
 
         applyTitle()
         setupBackground()
@@ -143,6 +145,8 @@ final class WebAddressWizardContent: UIViewController {
 
     private func clearContent() {
         throttle.cancel()
+
+        tableViewOffsetCoordinator?.hideBottomToolbar()
 
         guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
             setupTableDataProvider()
@@ -359,6 +363,7 @@ final class WebAddressWizardContent: UIViewController {
 
             let domainSuggestion = provider.data[selectedIndexPath.row]
             self.selectedDomain = domainSuggestion
+            self.tableViewOffsetCoordinator?.showBottomToolbar()
         }
 
         self.tableViewProvider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
