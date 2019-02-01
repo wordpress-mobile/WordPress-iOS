@@ -80,6 +80,11 @@ class GutenbergMediaPickerHelper: NSObject {
     func presentCameraCaptureFullScreen(animated: Bool,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
 
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else{
+            callback(nil)
+            return
+        }
+
         didPickMediaCallback = callback
         //reset the selected assets from previous uses
         cameraPicker.resetState(false)
