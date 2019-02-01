@@ -371,6 +371,8 @@ final class VerticalsWizardContent: UIViewController {
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         header.textField.delegate = self
 
+        header.accessibilityTraits = .header
+
         let placeholderText = prompt.hint
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)

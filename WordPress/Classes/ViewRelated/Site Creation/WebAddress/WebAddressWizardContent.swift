@@ -262,6 +262,8 @@ final class WebAddressWizardContent: UIViewController {
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         header.textField.delegate = self
 
+        header.accessibilityTraits = .header
+
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
