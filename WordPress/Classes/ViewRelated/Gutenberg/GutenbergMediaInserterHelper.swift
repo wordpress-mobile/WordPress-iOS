@@ -139,6 +139,6 @@ class GutenbergMediaInserterHelper: NSObject {
 
 extension Media {
     var gutenbergUploadID: Int32 {
-        return Int32(truncatingIfNeeded:objectID.uriRepresentation().absoluteString.hash)
+        return Int32(truncatingIfNeeded: objectID.uriRepresentation().absoluteString.hash)
     }
 }
