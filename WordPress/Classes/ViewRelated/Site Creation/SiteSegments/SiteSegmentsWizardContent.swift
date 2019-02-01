@@ -237,7 +237,6 @@ private extension SiteSegmentsWizardContent {
     }
 }
 
-
 extension SiteSegmentsWizardContent: Accessible {
     func prepareForVoiceOver() {
         prepareTableForVoiceOver()

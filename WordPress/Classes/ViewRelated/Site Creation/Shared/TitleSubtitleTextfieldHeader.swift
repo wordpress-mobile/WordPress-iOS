@@ -60,11 +60,12 @@ private final class SearchTextField: UITextField {
 
         backgroundColor = .white
         clearButtonMode = .whileEditing
-        font = WPStyleGuide.fixedFont(for: .headline)
+        font = WPStyleGuide.fontForTextStyle(.headline)
         textColor = WPStyleGuide.darkGrey()
 
         autocapitalizationType = .none
         autocorrectionType = .no
+        adjustsFontForContentSizeCategory = true
 
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
         let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()

@@ -79,3 +79,17 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         accessoryType = .disclosureIndicator
     }
 }
+
+extension SiteSegmentsCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        // Title needs to be forced to reset its style, otherwise the types do not change
+        styleTitle()
+    }
+}

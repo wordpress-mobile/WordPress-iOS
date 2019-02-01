@@ -96,6 +96,20 @@ final class TitleSubtitleHeader: UIView {
     }
 }
 
+extension TitleSubtitleHeader {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        // Title needs to be forced to reset its style, otherwise the types do not change
+        styleTitle()
+    }
+}
+
 extension TitleSubtitleHeader: Accessible {
     func prepareForVoiceOver() {
 
