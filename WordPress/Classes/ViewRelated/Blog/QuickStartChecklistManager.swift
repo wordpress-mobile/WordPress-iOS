@@ -162,11 +162,13 @@ private extension QuickStartChecklistManager {
             indexPaths.append(IndexPath(row: index, section: Sections.completed.rawValue))
         }
 
-        if collapsing {
-            tableView.insertRows(at: indexPaths, with: .fade)
-        } else {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        }
+        tableView.perform(update: { tableView in
+            if collapsing {
+                tableView.insertRows(at: indexPaths, with: .fade)
+            } else {
+                tableView.deleteRows(at: indexPaths, with: .fade)
+            }
+        })
 
         didTapHeader(collapsing)
     }
@@ -175,23 +177,25 @@ private extension QuickStartChecklistManager {
         guard let tourGuide = QuickStartTourGuide.find() else {
             return
         }
-
         let tour = todoTours[indexPath.row]
         todoTours.remove(at: indexPath.row)
         completedTours.append(tour)
         completedToursKeys.insert(tour.key)
 
-        tableView.beginUpdates()
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-        let sections = IndexSet(integer: Sections.completed.rawValue)
-        tableView.reloadSections(sections, with: .fade)
-        tableView.endUpdates()
-
-        if shouldShowCompleteTasksScreen() {
-            didTapHeader(completedSectionCollapse)
+        tableView.perform(update: { tableView in
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            let sections = IndexSet(integer: Sections.completed.rawValue)
+            tableView.reloadSections(sections, with: .fade)
+        }) { [unowned self] tableView, _ in
+            DispatchQueue.main.async {
+                if self.shouldShowCompleteTasksScreen() {
+                    self.didTapHeader(self.completedSectionCollapse)
+                }
+                tourGuide.complete(tour: tour, for: self.blog, postNotification: false)
+                let sections = IndexSet(integer: Sections.todo.rawValue)
+                tableView.reloadSections(sections, with: .automatic)
+            }
         }
-
-        tourGuide.complete(tour: tour, for: blog, postNotification: false)
     }
 }
 
