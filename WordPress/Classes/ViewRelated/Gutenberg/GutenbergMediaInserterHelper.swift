@@ -66,6 +66,24 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
+    func mediaFor(uploadID: Int32) -> Media? {
+        for media in post.media {
+            if media.gutenbergUploadID == uploadID {
+                return media
+            }
+        }
+        return nil
+    }
+
+    func cancelUploadOf(media: Media) {
+        mediaCoordinator.cancelUpload(of: media)
+        gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
+    }
+
+    func retryUploadOf(media: Media) {
+        mediaCoordinator.retryMedia(media)
+    }
+
     private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
         switch exportableAsset.assetMediaType {
         case .image:
