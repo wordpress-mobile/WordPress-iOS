@@ -1,6 +1,16 @@
 
 import Foundation
 
+extension DomainSuggestion {
+    var subdomain: String {
+        return domainName.components(separatedBy: ".").first ?? ""
+    }
+
+    var isWordPress: Bool {
+        return domainName.contains("wordpress.com")
+    }
+}
+
 // MARK: - SiteCreationRequestAssemblyError
 
 enum SiteCreationRequestAssemblyError: Error {
@@ -42,7 +52,7 @@ final class SiteCreator {
         guard let domainSuggestion = address else {
             throw SiteCreationRequestAssemblyError.invalidDomain
         }
-        let siteName = domainSuggestion.domainName
+        let siteName = domainSuggestion.isWordPress ? domainSuggestion.subdomain : domainSuggestion.domainName
 
         guard let siteInformation = information else {
             throw SiteCreationRequestAssemblyError.invalidSiteInformation
