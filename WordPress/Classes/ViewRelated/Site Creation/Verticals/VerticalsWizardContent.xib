@@ -35,10 +35,9 @@
                     <rect key="frame" x="0.0" y="593" width="375" height="74"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vaK-ii-Amu" customClass="NUXButton" customModule="WordPressAuthenticator">
-                            <rect key="frame" x="275" y="16" width="80" height="42"/>
+                            <rect key="frame" x="309" y="16" width="46" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="Xwj-pA-YCa"/>
-                                <constraint firstAttribute="width" constant="80" id="vQE-60-zNs"/>
                             </constraints>
                             <state key="normal" title="Button"/>
                         </button>
