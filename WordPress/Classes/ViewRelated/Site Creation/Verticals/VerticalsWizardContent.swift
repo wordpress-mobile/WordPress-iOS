@@ -436,3 +436,16 @@ extension VerticalsWizardContent: UITextFieldDelegate {
         return true
     }
 }
+
+extension VerticalsWizardContent {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+}
