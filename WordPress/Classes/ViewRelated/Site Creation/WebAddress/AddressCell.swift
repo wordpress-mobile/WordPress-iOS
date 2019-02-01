@@ -38,6 +38,10 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         accessoryType = highlighted ? .checkmark : .none
     }
 
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        accessoryType = selected ? .checkmark : .none
+    }
+
     private func styleCheckmark() {
         tintColor = WPStyleGuide.mediumBlue()
     }
