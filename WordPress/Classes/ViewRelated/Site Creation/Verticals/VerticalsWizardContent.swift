@@ -1,10 +1,10 @@
 import UIKit
 import WordPressKit
+import WordPressAuthenticator
 
 /// Contains the UI corresponding to the list of verticals
 ///
 final class VerticalsWizardContent: UIViewController {
-
     // MARK: Properties
 
     private static let defaultPrompt = SiteVerticalsPrompt(
@@ -32,7 +32,7 @@ final class VerticalsWizardContent: UIViewController {
     private let verticalsService: SiteVerticalsService
 
     /// The action to perform once a Vertical is selected by the user
-    private let selection: (SiteVertical) -> Void
+    private let selection: (SiteVertical?) -> Void
 
     /// The localized prompt retrieved by remote service; `nil` otherwise
     private var prompt: SiteVerticalsPrompt?
@@ -52,6 +52,15 @@ final class VerticalsWizardContent: UIViewController {
     /// The table view renders our server content
     @IBOutlet private weak var table: UITableView!
 
+    /// The view wrapping the skip button
+    @IBOutlet weak var buttonWrapper: ShadowView!
+
+    /// The skip button
+    @IBOutlet weak var nextStep: NUXButton!
+
+    /// The constraint between the bottom of the buttonWrapper and this view controller's view
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
@@ -68,7 +77,7 @@ final class VerticalsWizardContent: UIViewController {
     ///   - verticalsService:   the service which conducts searches for know verticals
     ///   - selection:          the action to perform once a Vertical is selected by the user
     ///
-    init(creator: SiteCreator, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical) -> Void) {
+    init(creator: SiteCreator, promptService: SiteVerticalsPromptService, verticalsService: SiteVerticalsService, selection: @escaping (SiteVertical?) -> Void) {
         self.siteCreator = creator
         self.promptService = promptService
         self.verticalsService = verticalsService
@@ -90,7 +99,6 @@ final class VerticalsWizardContent: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-
         tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
     }
@@ -103,10 +111,12 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
 
         applyTitle()
         setupBackground()
+        setupButtonWrapper()
+        setupNextButton()
         setupTable()
     }
 
@@ -139,6 +149,7 @@ final class VerticalsWizardContent: UIViewController {
         }
         validDataProvider.data = []
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.showBottomToolbar()
     }
 
     private func fetchPromptIfNeeded() {
@@ -209,6 +220,8 @@ final class VerticalsWizardContent: UIViewController {
         guard !query.isEmpty else {
             return
         }
+
+        tableViewOffsetCoordinator?.hideBottomToolbar()
 
         lastSearchQuery = query
 
@@ -313,6 +326,25 @@ final class VerticalsWizardContent: UIViewController {
         tableViewProvider = InlineErrorTableViewProvider(tableView: table, message: message, selectionHandler: handler)
     }
 
+    private func setupButtonWrapper() {
+        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupNextButton() {
+        nextStep.addTarget(self, action: #selector(skip), for: .touchUpInside)
+
+        setupButtonAsSkip()
+    }
+
+    private func setupButtonAsSkip() {
+        let buttonTitle = NSLocalizedString("Skip", comment: "Button to progress to the next step")
+        nextStep.setTitle(buttonTitle, for: .normal)
+        nextStep.accessibilityLabel = buttonTitle
+        nextStep.accessibilityHint = NSLocalizedString("Navigates to the next step without making changes", comment: "Site creation. Navigates to the next step")
+
+        nextStep.isPrimary = false
+    }
+
     private func setupTable() {
         setupTableBackground()
         setupTableSeparator()
@@ -378,6 +410,11 @@ final class VerticalsWizardContent: UIViewController {
 
         performSearchIfNeeded(query: searchTerm)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+
+    @objc
+    private func skip() {
+        selection(nil)
     }
 }
 

@@ -60,18 +60,6 @@ class SiteCreatorTests: XCTestCase {
         XCTAssertThrowsError(try siteInput.build())
     }
 
-    func testSiteCreator_buildFails_MissingSiteVertical() {
-        // Given
-        XCTAssertNotNil(pendingSiteInput)
-        let siteInput = pendingSiteInput!
-
-        // When
-        siteInput.vertical = nil
-
-        // Then
-        XCTAssertThrowsError(try siteInput.build())
-    }
-
     func testSiteCreator_buildFails_MissingSiteInfo() {
         // Given
         XCTAssertNotNil(pendingSiteInput)
@@ -82,6 +70,18 @@ class SiteCreatorTests: XCTestCase {
 
         // Then
         XCTAssertThrowsError(try siteInput.build())
+    }
+
+    func testSiteCreator_buildSucceeds_MissingSiteVertical() {
+        // Given
+        XCTAssertNotNil(pendingSiteInput)
+        let siteInput = pendingSiteInput!
+
+        // When
+        siteInput.vertical = nil
+
+        // Then
+        XCTAssertNoThrow(try siteInput.build())
     }
 
     func testSiteCreator_buildSucceeds_MissingSiteInfoTagline() {
