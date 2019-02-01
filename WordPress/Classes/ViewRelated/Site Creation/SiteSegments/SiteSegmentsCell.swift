@@ -66,11 +66,13 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         title.textColor = WPStyleGuide.darkGrey()
+        title.adjustsFontForContentSizeCategory = true
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.darkGrey()
+        subtitle.adjustsFontForContentSizeCategory = true
     }
 
     private func styleAccessoryView() {
