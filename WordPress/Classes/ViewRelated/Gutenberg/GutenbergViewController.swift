@@ -327,6 +327,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.mediaInserterHelper.syncUploads()
     }
 
+    func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
+        print("Actions")
+    }
+
     func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
         if changed {
             self.html = html
