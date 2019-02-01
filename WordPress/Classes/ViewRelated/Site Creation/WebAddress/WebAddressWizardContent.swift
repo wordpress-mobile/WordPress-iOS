@@ -365,7 +365,7 @@ final class WebAddressWizardContent: UIViewController {
 
             let domainSuggestion = provider.data[selectedIndexPath.row]
             self.selectedDomain = domainSuggestion
-            self.tableViewOffsetCoordinator?.updateTableOffsetIfToolbarVisible()
+            self.resignTextFieldResponderIfNeeded()
             self.tableViewOffsetCoordinator?.showBottomToolbar()
         }
 
@@ -381,6 +381,10 @@ final class WebAddressWizardContent: UIViewController {
 
         performSearchIfNeeded(query: searchTerm)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+
+    private func hideKeyboard() {
+
     }
 }
 

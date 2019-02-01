@@ -120,29 +120,6 @@ final class TableViewOffsetCoordinator {
         })
     }
 
-    func updateTableOffsetIfToolbarVisible() {
-        guard let table = tableView, let footerControl = footerControl, footerControl.isHidden == true else {
-            return
-        }
-
-        let currentInsets = table.contentInset
-
-        let bottomInset = currentInsets.bottom + footerControl.frame.size.height
-
-        let targetInsets = UIEdgeInsets(top: -1 * currentInsets.top, left: 0, bottom: bottomInset, right: 0)
-
-        UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            guard let self = self, let tableView = self.tableView else {
-                return
-            }
-
-            tableView.contentInset = targetInsets
-            tableView.scrollIndicatorInsets = targetInsets
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = true
-        })
-    }
-
     @objc
     func keyboardWillShow(_ notification: Foundation.Notification) {
         guard let payload = KeyboardInfo(notification) else {
