@@ -186,8 +186,11 @@ private extension QuickStartChecklistManager {
             tableView.deleteRows(at: [indexPath], with: .automatic)
             let sections = IndexSet(integer: Sections.completed.rawValue)
             tableView.reloadSections(sections, with: .fade)
-        }) { [unowned self] tableView, _ in
+        }) { [weak self] tableView, _ in
             DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
                 if self.shouldShowCompleteTasksScreen() {
                     self.didTapHeader(self.completedSectionCollapse)
                 }
