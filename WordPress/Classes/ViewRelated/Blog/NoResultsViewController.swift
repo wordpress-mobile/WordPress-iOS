@@ -230,13 +230,13 @@ import WordPressShared
 
     /// Public method to expose the private configure view method
     ///
-    @objc func updateView() {
+    func updateView() {
         configureView()
     }
 
     /// Public method to expose the private set accessory views method
     ///
-    @objc func updateAccessoryViewsVisibility() {
+    func updateAccessoryViewsVisibility() {
         setAccessoryViewsVisibility()
     }
 }

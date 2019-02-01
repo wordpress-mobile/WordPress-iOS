@@ -15,20 +15,38 @@ final class TableViewOffsetCoordinator {
     /// The table view to coordinate
     private weak var tableView: UITableView?
 
-    /// The value of the bottom constraint constant is set in response to the keyboard appearance
+    //// The view containing the toolbar
+    private weak var footerControlContainer: UIView?
+
+    //// The toolbar
+    private weak var footerControl: UIView?
+
+    //// The constraint linking the bottom of the footerControl to its container
+    private weak var toolbarBottomConstraint: NSLayoutConstraint?
+
+    /// Tracks the content offset introduced by the keyboard being presented
     private var keyboardContentOffset = CGFloat(0)
 
     /// To avoid wasted animations, we track whether or not we have already adjusted the table view
     private var tableViewHasBeenAdjusted = false
+
+    /// Track the status of the toolbar, wether we have adjusted its position or remains at its initial location
+    private var toolbarHasBeenAdjusted = false
 
     // MARK: TableViewOffsetCoordinator
 
     /// Initializes a table view offset coordinator with the specified table view.
     ///
     /// - Parameter tableView: the table view to manage
+    /// - Parameter footerControlContainer: the view containing the toolbar
+    /// - Parameter toolbar: a view that needs to be offset in coordination with the table view
+    /// - Parameter toolbarBottomConstraint: the constraint linking the bottom if footerControlContainer and toolbar
     ///
-    init(coordinated tableView: UITableView) {
+    init(coordinated tableView: UITableView, footerControlContainer: UIView? = nil, footerControl: UIView? = nil, toolbarBottomConstraint: NSLayoutConstraint? = nil) {
         self.tableView = tableView
+        self.footerControlContainer = footerControlContainer
+        self.footerControl = footerControl
+        self.toolbarBottomConstraint = toolbarBottomConstraint
     }
 
     // MARK: Internal behavior
@@ -84,8 +102,16 @@ final class TableViewOffsetCoordinator {
                 return
             }
 
-            tableView.contentInset = .zero
-            tableView.scrollIndicatorInsets = .zero
+            let finalOffset: UIEdgeInsets
+            if let footerControl = self.footerControl, self.toolbarHasBeenAdjusted == true {
+                let toolbarHeight = footerControl.frame.size.height
+                finalOffset = UIEdgeInsets(top: -1 * toolbarHeight,
+                    left: 0, bottom: toolbarHeight, right: 0)
+            } else {
+                finalOffset = .zero
+            }
+            tableView.contentInset = finalOffset
+            tableView.scrollIndicatorInsets = finalOffset
             if WPDeviceIdentification.isiPhone(), let header = tableView.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 1.0
             }
@@ -102,6 +128,52 @@ final class TableViewOffsetCoordinator {
 
         let keyboardScreenFrame = payload.frameEnd
         keyboardContentOffset = keyboardScreenFrame.height
+
+        adjustToolbarOffsetIfNeeded()
+    }
+
+    @objc
+    private func keyboardWillHide(_ notification: Foundation.Notification) {
+        toolbarHasBeenAdjusted = false
+        toolbarBottomConstraint?.constant = 0
+    }
+
+    private func adjustToolbarOffsetIfNeeded() {
+        guard let footerControl = footerControl, let footerControlContainer = footerControlContainer else {
+            return
+        }
+
+        var constraintConstant = keyboardContentOffset
+
+        if #available(iOS 11.0, *) {
+            let bottomInset = footerControlContainer.safeAreaInsets.bottom
+            constraintConstant -= bottomInset
+        }
+
+        if let header = tableView?.tableHeaderView as? TitleSubtitleTextfieldHeader {
+            let textFieldFrame = header.textField.frame
+
+            let newToolbarFrame = footerControl.frame.offsetBy(dx: 0.0, dy: -1 * constraintConstant)
+
+            toolbarBottomConstraint?.constant = constraintConstant
+            footerControlContainer.setNeedsUpdateConstraints()
+
+            UIView.animate(withDuration: Constants.headerAnimationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
+                guard let self = self, let tableView = self.tableView else {
+                    return
+                }
+
+                if textFieldFrame.intersects(newToolbarFrame) {
+                    let contentInsets = UIEdgeInsets(top: -1 * footerControl.frame.height, left: 0.0, bottom: constraintConstant + footerControl.frame.height, right: 0.0)
+                    self.toolbarHasBeenAdjusted = true
+                    tableView.contentInset = contentInsets
+                    tableView.scrollIndicatorInsets = contentInsets
+                }
+                footerControlContainer.layoutIfNeeded()
+                }, completion: { [weak self] _ in
+                    self?.tableViewHasBeenAdjusted = false
+            })
+        }
     }
 
     func startListeningToKeyboardNotifications() {
@@ -109,9 +181,21 @@ final class TableViewOffsetCoordinator {
                                                selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
 
     func stopListeningToKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+
+    func showBottomToolbar() {
+        footerControl?.isHidden = false
+    }
+
+    func hideBottomToolbar() {
+        footerControl?.isHidden = true
     }
 }
