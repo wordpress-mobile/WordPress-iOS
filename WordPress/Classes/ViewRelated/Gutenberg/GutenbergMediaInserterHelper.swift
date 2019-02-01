@@ -31,7 +31,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromSiteMediaLibrary(media: Media, callback: @escaping MediaPickerDidPickMediaCallback) {
-        callback(media.mediaID?.intValue, media.remoteURL)
+        callback(media.mediaID?.int32Value, media.remoteURL)
     }
 
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -103,7 +103,7 @@ class GutenbergMediaInserterHelper: NSObject {
         case .uploading:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
         case .ended:
-            guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.intValue else {
+            guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
                 break
             }
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
@@ -116,7 +116,7 @@ class GutenbergMediaInserterHelper: NSObject {
 }
 
 extension Media {
-    var gutenbergUploadID: Int {
-        return objectID.uriRepresentation().absoluteString.hash
+    var gutenbergUploadID: Int32 {
+        return Int32(truncatingIfNeeded:objectID.uriRepresentation().absoluteString.hash)
     }
 }
