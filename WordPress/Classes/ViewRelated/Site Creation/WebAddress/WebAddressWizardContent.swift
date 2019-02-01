@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
@@ -18,8 +19,20 @@ final class WebAddressWizardContent: UIViewController {
 
     private let selection: (DomainSuggestion) -> Void
 
-    @IBOutlet
-    private weak var table: UITableView!
+    /// Tracks the site address selected by users
+    private var selectedDomain: DomainSuggestion?
+
+    /// The table view renders our server content
+    @IBOutlet private weak var table: UITableView!
+
+    /// The view wrapping the skip button
+    @IBOutlet private weak var buttonWrapper: ShadowView!
+
+    /// The Create Site button
+    @IBOutlet private weak var createSite: NUXButton!
+
+    /// The constraint between the bottom of the buttonWrapper and this view controller's view
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
 
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
@@ -93,6 +106,8 @@ final class WebAddressWizardContent: UIViewController {
 
         applyTitle()
         setupBackground()
+        setupButtonWrapper()
+        setupCreateSiteButton()
         setupTable()
     }
 
@@ -192,6 +207,30 @@ final class WebAddressWizardContent: UIViewController {
 
     private func setupBackground() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupButtonWrapper() {
+        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupCreateSiteButton() {
+        createSite.addTarget(self, action: #selector(commitSelection), for: .touchUpInside)
+
+        let buttonTitle = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
+        createSite.setTitle(buttonTitle, for: .normal)
+        createSite.accessibilityLabel = buttonTitle
+        createSite.accessibilityHint = NSLocalizedString("Creates a new Site", comment: "Site creation. Navigates to the next step")
+
+        createSite.isPrimary = true
+    }
+
+    @objc
+    private func commitSelection() {
+        guard let selectedDomain = selectedDomain else {
+            return
+        }
+
+        selection(selectedDomain)
     }
 
     private func setupCells() {
@@ -319,7 +358,7 @@ final class WebAddressWizardContent: UIViewController {
             }
 
             let domainSuggestion = provider.data[selectedIndexPath.row]
-            self.selection(domainSuggestion)
+            self.selectedDomain = domainSuggestion
         }
 
         self.tableViewProvider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
