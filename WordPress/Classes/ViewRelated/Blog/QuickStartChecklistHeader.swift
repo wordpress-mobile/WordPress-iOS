@@ -10,7 +10,7 @@ class QuickStartChecklistHeader: UIView {
             *  Therefore CGFloat.pi and -CGFloat.pi animates in same position.
             *  As we need anti-clockwise rotation we forcefully made it a shortest way by using 0.999
             */
-            let rotate = (collapse ? 180.0 : 0.999) * CGFloat.pi
+            let rotate = (collapse ? 0.999 : 180.0) * CGFloat.pi
             let alpha = collapse ? 0.0 : 1.0
             animator.animateWithDuration(0.3, animations: { [weak self] in
                 self?.bottomStroke.alpha = CGFloat(alpha)

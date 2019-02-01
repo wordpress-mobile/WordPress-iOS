@@ -60,11 +60,12 @@ private final class SearchTextField: UITextField {
 
         backgroundColor = .white
         clearButtonMode = .whileEditing
-        font = WPStyleGuide.fixedFont(for: .headline)
+        font = WPStyleGuide.fontForTextStyle(.headline)
         textColor = WPStyleGuide.darkGrey()
 
         autocapitalizationType = .none
         autocorrectionType = .no
+        adjustsFontForContentSizeCategory = true
 
         let iconSize = CGSize(width: Constants.iconDimension, height: Constants.iconDimension)
         let loupeIcon = Gridicon.iconOfType(.search, withSize: iconSize).imageWithTintColor(WPStyleGuide.readerCardCellHighlightedBorderColor())?.imageFlippedForRightToLeftLayoutDirection()
@@ -146,6 +147,8 @@ final class TitleSubtitleTextfieldHeader: UIView {
             ])
 
         setStyles()
+
+        prepareForVoiceOver()
     }
 
     private func setStyles() {
@@ -158,5 +161,17 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
     func setSubtitle(_ text: String) {
         titleSubtitle.setSubtitle(text)
+    }
+}
+
+extension TitleSubtitleTextfieldHeader: Accessible {
+    func prepareForVoiceOver() {
+        titleSubtitle.prepareForVoiceOver()
+
+        prepareSearchFieldForVoiceOver()
+    }
+
+    private func prepareSearchFieldForVoiceOver() {
+        textField.accessibilityTraits = .searchField
     }
 }

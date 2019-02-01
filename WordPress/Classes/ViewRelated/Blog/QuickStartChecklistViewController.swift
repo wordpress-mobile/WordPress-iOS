@@ -35,6 +35,16 @@ class QuickStartChecklistViewController: UITableViewController {
                                                     tours: QuickStartTourGuide.growListTours)
         }
     }()
+    private lazy var successScreen: NoResultsViewController = {
+        let successScreen = NoResultsViewController.controller()
+        successScreen.view.frame = tableView.bounds
+        successScreen.view.backgroundColor = .white
+        successScreen.configure(title: tasksCompleteScreen.title,
+                                subtitle: tasksCompleteScreen.subtitle,
+                                image: tasksCompleteScreen.imageName)
+        successScreen.updateView()
+        return successScreen
+    }()
 
     @objc init(blog: Blog, type: QuickStartType) {
         self.blog = blog
@@ -61,9 +71,11 @@ class QuickStartChecklistViewController: UITableViewController {
                 WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
                 self?.navigationController?.popViewController(animated: true)
             }
-        }, didTapHeader: { collapse in
-            // display/hide congratulation screen
+        }, didTapHeader: { [weak self] collapse in
+            self?.checkForSuccessScreen(collapse)
         })
+
+        checkForSuccessScreen()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -73,6 +85,16 @@ class QuickStartChecklistViewController: UITableViewController {
 
         WPAnalytics.track(.quickStartChecklistViewed)
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] context in
+            let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
+            self?.successScreen.hideImageView(hideImageView)
+            self?.successScreen.updateAccessoryViewsVisibility()
+            self?.tableView.backgroundView = self?.successScreen.view
+        })
+    }
 }
 
 private extension QuickStartChecklistViewController {
@@ -80,13 +102,17 @@ private extension QuickStartChecklistViewController {
         let tableView = UITableView(frame: .zero)
 
         if #available(iOS 10, *) {
-            tableView.estimatedRowHeight = 90.0
+            tableView.estimatedRowHeight = Constants.estimatedRowHeight
         }
         tableView.separatorStyle = .none
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
+        let hideImageView = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
+        successScreen.hideImageView(hideImageView)
+
+        tableView.backgroundView = successScreen.view
         self.tableView = tableView
     }
 
@@ -105,6 +131,18 @@ private extension QuickStartChecklistViewController {
         dataManager?.reloadData()
         tableView.reloadData()
     }
+
+    func checkForSuccessScreen(_ collapse: Bool = false) {
+        if let dataManager = dataManager,
+            !dataManager.shouldShowCompleteTasksScreen() {
+            self.tableView.backgroundView?.alpha = 0
+            return
+        }
+
+        UIView.animate(withDuration: Constants.successScreenFadeAnimationDuration) {
+            self.tableView.backgroundView?.alpha = collapse ? 0.0 : 1.0
+        }
+    }
 }
 
 private struct TasksCompleteScreenConfiguration {
@@ -119,6 +157,8 @@ private struct QuickStartChecklistConfiguration {
 }
 
 private enum Constants {
+    static let estimatedRowHeight: CGFloat = 90.0
+    static let successScreenFadeAnimationDuration: TimeInterval = 0.3
     static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
     static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
     static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
