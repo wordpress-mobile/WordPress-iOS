@@ -11,7 +11,7 @@ class SupportTableViewController: UITableViewController {
     // Specifically for Me > Help & Support on the iPad.
     var showHelpFromViewController: UIViewController?
 
-    private var tableHandler: ImmuTableViewHandler!
+    private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserDefaults.standard
 
     // MARK: - Init
@@ -146,7 +146,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler.viewModel = tableViewModel()
+        tableHandler?.viewModel = tableViewModel()
     }
 
     // MARK: - Row Handlers
