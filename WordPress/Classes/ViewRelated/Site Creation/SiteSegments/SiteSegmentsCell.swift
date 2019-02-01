@@ -93,3 +93,14 @@ extension SiteSegmentsCell {
         styleTitle()
     }
 }
+
+extension SiteSegmentsCell: Accessible {
+    func prepareForVoiceOver() {
+        prepareIconForVoiceOver()
+    }
+
+    private func prepareIconForVoiceOver() {
+        icon.accessibilityLabel = NSLocalizedString("Icon representing ", comment: "Accessibility description for Site Segment icon. Will be followed by the kind of site") + (model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site "))
+        icon.accessibilityTraits = .image
+    }
+}
