@@ -102,7 +102,7 @@ private extension QuickStartChecklistViewController {
         let tableView = UITableView(frame: .zero)
 
         if #available(iOS 10, *) {
-            tableView.estimatedRowHeight = 90.0
+            tableView.estimatedRowHeight = Constants.estimatedRowHeight
         }
         tableView.separatorStyle = .none
 
@@ -139,7 +139,7 @@ private extension QuickStartChecklistViewController {
             return
         }
 
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: Constants.successScreenFadeAnimationDuration) {
             self.tableView.backgroundView?.alpha = collapse ? 0.0 : 1.0
         }
     }
@@ -157,6 +157,8 @@ private struct QuickStartChecklistConfiguration {
 }
 
 private enum Constants {
+    static let estimatedRowHeight: CGFloat = 90.0
+    static let successScreenFadeAnimationDuration: TimeInterval = 0.3
     static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
     static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
     static let tasksCompleteScreenTitle = NSLocalizedString("All tasks complete", comment: "Title of the congratulation screen that appears when all the tasks are completed")
