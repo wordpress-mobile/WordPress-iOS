@@ -57,6 +57,7 @@ final class SiteSegmentsCellTests: XCTestCase {
     }
 
     func testCellSubtitleIsTheCorrectFont() {
+        cell?.subtitle.text = ""
         XCTAssertEqual(cell?.subtitle.font, WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular))
     }
 
