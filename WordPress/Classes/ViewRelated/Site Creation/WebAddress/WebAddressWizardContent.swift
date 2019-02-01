@@ -363,6 +363,7 @@ final class WebAddressWizardContent: UIViewController {
 
             let domainSuggestion = provider.data[selectedIndexPath.row]
             self.selectedDomain = domainSuggestion
+            self.tableViewOffsetCoordinator?.updateTableOffsetIfToolbarVisible()
             self.tableViewOffsetCoordinator?.showBottomToolbar()
         }
 

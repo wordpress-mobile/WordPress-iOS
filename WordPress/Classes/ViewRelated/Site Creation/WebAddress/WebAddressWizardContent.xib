@@ -32,7 +32,7 @@
                     </constraints>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tlo-3p-qcj" userLabel="Button Wrapper" customClass="ShadowView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="567" width="375" height="74"/>
+                    <rect key="frame" x="0.0" y="593" width="375" height="74"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="67Z-L0-vE2" userLabel="Create Site" customClass="NUXButton" customModule="WordPressAuthenticator">
                             <rect key="frame" x="309" y="16" width="46" height="42"/>
@@ -52,7 +52,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="yJE-cr-Vx8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" placeholder="YES" id="KUd-R4-fA5"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Tlo-3p-qcj" secondAttribute="bottom" constant="26" id="NwM-aT-uUs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Tlo-3p-qcj" secondAttribute="bottom" id="NwM-aT-uUs"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Tlo-3p-qcj" secondAttribute="trailing" id="Tk4-p5-6jv"/>
                 <constraint firstItem="yJE-cr-Vx8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" placeholder="YES" id="fMg-JB-ghl"/>
                 <constraint firstItem="67Z-L0-vE2" firstAttribute="trailing" secondItem="yJE-cr-Vx8" secondAttribute="trailing" constant="-20" id="kF3-K4-Nk5"/>
