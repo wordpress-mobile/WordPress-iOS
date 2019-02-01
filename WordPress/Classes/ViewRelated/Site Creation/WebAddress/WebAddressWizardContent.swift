@@ -305,6 +305,8 @@ final class WebAddressWizardContent: UIViewController {
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         header.textField.delegate = self
 
+        header.accessibilityTraits = .header
+
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
@@ -396,5 +398,18 @@ extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
         return true
+    }
+}
+
+extension WebAddressWizardContent {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }

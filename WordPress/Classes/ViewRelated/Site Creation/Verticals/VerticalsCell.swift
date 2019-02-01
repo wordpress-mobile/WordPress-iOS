@@ -24,5 +24,19 @@ final class VerticalsCell: UITableViewCell, SiteVerticalPresenter {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         title.textColor = WPStyleGuide.darkGrey()
+        title.adjustsFontForContentSizeCategory = true
+    }
+}
+
+extension VerticalsCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        styleTitle()
     }
 }

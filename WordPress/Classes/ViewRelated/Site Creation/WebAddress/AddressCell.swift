@@ -68,3 +68,16 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         return completeDomainName
     }
 }
+
+extension AddressCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        title.attributedText = processName(model?.domainName)
+    }
+}
