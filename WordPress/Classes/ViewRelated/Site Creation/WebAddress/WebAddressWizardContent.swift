@@ -383,8 +383,10 @@ final class WebAddressWizardContent: UIViewController {
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 
-    private func hideKeyboard() {
-
+    private func clearSelectionAndCreateSiteButton() {
+        selectedDomain = nil
+        table.deselectSelectedRowWithAnimation(true)
+        tableViewOffsetCoordinator?.hideBottomToolbar()
     }
 }
 
@@ -401,6 +403,11 @@ extension WebAddressWizardContent: NetworkStatusDelegate {
 extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
+        return true
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        clearSelectionAndCreateSiteButton()
         return true
     }
 }
