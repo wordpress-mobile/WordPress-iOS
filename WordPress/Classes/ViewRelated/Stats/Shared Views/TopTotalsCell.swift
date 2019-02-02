@@ -80,7 +80,14 @@ private extension TopTotalsCell {
     // MARK: - Child Row Handling
 
     func initChildRows() {
-        rowsStackView.arrangedSubviews.filter({ $0 is StatsTotalRow }).forEach { toggleChildRowsForRow($0 as! StatsTotalRow) }
+        rowsStackView.arrangedSubviews.forEach { subview in
+            guard let row = subview as? StatsTotalRow,
+                row.hasChildRows else {
+                    return
+            }
+
+            toggleChildRowsForRow(row)
+        }
     }
 
     func addChildRowsForRow(_ row: StatsTotalRow) {

@@ -105,7 +105,7 @@ class StatsTotalRow: UIView, NibLoadable {
         }
     }
 
-    private var hasChildRows: Bool {
+    var hasChildRows: Bool {
         if let childRows = rowData?.childRows,
             !childRows.isEmpty {
             return true
