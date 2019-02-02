@@ -246,7 +246,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func resignTextFieldResponderIfNeeded() {
-        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
             return
         }
 
