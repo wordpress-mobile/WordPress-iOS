@@ -47,6 +47,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
         addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
+        initChildRows()
+
         applyStyles()
     }
 
@@ -77,25 +79,19 @@ private extension TopTotalsCell {
 
     // MARK: - Child Row Handling
 
-    func childStackView() -> UIStackView {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.spacing = 0
-        stackView.distribution = .fill
-        return stackView
+    func initChildRows() {
+        rowsStackView.arrangedSubviews.filter({ $0 is StatsTotalRow }).forEach { toggleChildRowsForRow($0 as! StatsTotalRow) }
     }
 
     func addChildRowsForRow(_ row: StatsTotalRow) {
-
-        // Make sure we don't duplicate child rows.
-        removeChildRowsForRow(row)
 
         guard let rowIndex = indexForRow(row),
             let childRows = row.rowData?.childRows else {
                 return
         }
+
+        // Make sure we don't duplicate child rows.
+        removeChildRowsForRow(row)
 
         // Add child rows to their own stack view,
         // store that on the row (for possible removal later),
@@ -132,7 +128,7 @@ private extension TopTotalsCell {
             return
         }
 
-        previousRow.showSeparator = row.collapsed
+        previousRow.showSeparator = !row.expanded
     }
 
     func indexForRow(_ row: StatsTotalRow) -> Int? {
@@ -143,6 +139,17 @@ private extension TopTotalsCell {
 
         return rowIndex
     }
+
+    func childStackView() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.spacing = 0
+        stackView.distribution = .fill
+        return stackView
+    }
+
 }
 
 // MARK: - StatsTotalRowDelegate
@@ -159,10 +166,9 @@ extension TopTotalsCell: StatsTotalRowDelegate {
     }
 
     func toggleChildRowsForRow(_ row: StatsTotalRow) {
-        row.collapsed ? addChildRowsForRow(row) : removeChildRowsForRow(row)
-        row.collapsed.toggle()
+        row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
         toggleSeparatorForRowPreviousTo(row)
-        siteStatsInsightsDelegate?.expandedCellUpdated?()
+        siteStatsInsightsDelegate?.expandedRowUpdated?(row)
     }
 
 }
