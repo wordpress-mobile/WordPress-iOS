@@ -134,8 +134,8 @@ class StatsTotalRow: UIView, NibLoadable {
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
         self.rowData = rowData
         self.delegate = delegate
-        expanded = StatsDataHelper.expandedRowLabels.contains(rowData.name)
 
+        configureExpandedState()
         configureIcon()
 
         // Set values
@@ -171,6 +171,17 @@ private extension StatsTotalRow {
         Style.configureViewAsSeperator(topExpandedSeparatorLine)
         Style.configureViewAsSeperator(bottomExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
+    }
+
+    func configureExpandedState() {
+
+        guard let name = rowData?.name else {
+            expanded = false
+            return
+        }
+
+        expanded = (StatsDataHelper.expandedRowLabels[.insights]?.contains(name) ?? false) ||
+            (StatsDataHelper.expandedRowLabels[.period]?.contains(name) ?? false)
     }
 
     func configureIcon() {

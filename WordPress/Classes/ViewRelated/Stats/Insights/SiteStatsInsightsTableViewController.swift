@@ -74,7 +74,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
-        StatsDataHelper.expandedRowLabels.removeAll()
+        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
     }
 
 }
@@ -200,11 +200,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        StatsDataHelper.expandedRowLabels = StatsDataHelper.expandedRowLabels.filter { $0 != rowData.name }
+        var insightsExpandedRowLabels = StatsDataHelper.expandedRowLabels[.insights] ?? []
 
+        // Remove from array
+        insightsExpandedRowLabels = insightsExpandedRowLabels.filter { $0 != rowData.name }
+
+        // If expanded, add to array.
         if row.expanded {
-            StatsDataHelper.expandedRowLabels.append(rowData.name)
+            insightsExpandedRowLabels.append(rowData.name)
         }
+
+        StatsDataHelper.expandedRowLabels[.insights] = insightsExpandedRowLabels
     }
 
 }
