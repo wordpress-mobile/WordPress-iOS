@@ -105,17 +105,24 @@ class StatsTotalRow: UIView, NibLoadable {
         }
     }
 
-    var collapsed: Bool = true {
+    private var hasChildRows: Bool {
+        if let childRows = rowData?.childRows,
+            !childRows.isEmpty {
+            return true
+        }
+        return false
+    }
+
+    var expanded: Bool = false {
         didSet {
-            guard let childRows = rowData?.childRows,
-                !childRows.isEmpty else {
-                    return
+            guard hasChildRows else {
+                return
             }
 
-            showSeparator = collapsed
-            showTopExpandedSeparator = !collapsed
+            showSeparator = !expanded
+            showTopExpandedSeparator = expanded
 
-            let rotation = collapsed ? (Constants.disclosureImageDown) : (Constants.disclosureImageUp)
+            let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
                 self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
             })
@@ -127,9 +134,9 @@ class StatsTotalRow: UIView, NibLoadable {
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
         self.rowData = rowData
         self.delegate = delegate
+        expanded = StatsDataHelper.expandedRowLabels.contains(rowData.name)
 
         configureIcon()
-        collapsed = true
 
         // Set values
         itemLabel.text = rowData.name
@@ -248,8 +255,8 @@ private extension StatsTotalRow {
             return
         }
 
-        if let childRows = rowData?.childRows,
-            !childRows.isEmpty {
+        if hasChildRows {
+            expanded.toggle()
             delegate?.toggleChildRowsForRow?(self)
             return
         }
