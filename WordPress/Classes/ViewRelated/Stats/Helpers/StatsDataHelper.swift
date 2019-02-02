@@ -5,6 +5,8 @@ import Foundation
 ///
 class StatsDataHelper {
 
+    static var expandedRowLabels = [String]()
+
     class func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
 
         // Get value from maxValueRow

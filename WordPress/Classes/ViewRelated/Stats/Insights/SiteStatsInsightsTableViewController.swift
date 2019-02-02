@@ -25,7 +25,7 @@ enum InsightType: Int {
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
-    @objc optional func expandedCellUpdated()
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -74,6 +74,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
+        StatsDataHelper.expandedRowLabels.removeAll()
     }
 
 }
@@ -192,8 +193,18 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         applyTableUpdates()
     }
 
-    func expandedCellUpdated() {
+    func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
+
+        guard let rowData = row.rowData else {
+            return
+        }
+
+        StatsDataHelper.expandedRowLabels = StatsDataHelper.expandedRowLabels.filter { $0 != rowData.name }
+
+        if row.expanded {
+            StatsDataHelper.expandedRowLabels.append(rowData.name)
+        }
     }
 
 }
