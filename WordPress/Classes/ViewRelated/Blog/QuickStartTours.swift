@@ -187,6 +187,12 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Tap %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let descriptionTarget = NSLocalizedString("Your Site Icon", comment: "The icon to tap during a guided tour.")
+        return [(element: .siteIcon, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.create)))]
+    }()
 }
 
 struct QuickStartNewPageTour: QuickStartTour {

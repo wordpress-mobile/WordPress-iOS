@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementReaderSearch = 12,
     QuickStartTourElementTourCompleted = 13,
     QuickStartTourElementCongratulations = 14,
+    QuickStartTourElementSiteIcon = 15
 };
 
 
