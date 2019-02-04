@@ -63,6 +63,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -74,7 +75,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
-        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
     }
 
 }
@@ -119,13 +119,17 @@ private extension SiteStatsInsightsTableViewController {
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
-        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
+        clearExpandedRows()
         viewModel?.refreshInsights()
     }
 
     func applyTableUpdates() {
         tableView.beginUpdates()
         tableView.endUpdates()
+    }
+
+    func clearExpandedRows() {
+        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
     }
 
     // MARK: User Defaults
