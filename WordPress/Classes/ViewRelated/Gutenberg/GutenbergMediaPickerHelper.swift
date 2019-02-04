@@ -73,7 +73,7 @@ class GutenbergMediaPickerHelper: NSObject {
         let cameraPicker = WPMediaPickerViewController()
         cameraPicker.options = mediaPickerOptions
         cameraPicker.mediaPickerDelegate = self
-        cameraPicker.dataSource = devicePhotoLibraryDataSource
+        cameraPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         return cameraPicker
     }()
 
