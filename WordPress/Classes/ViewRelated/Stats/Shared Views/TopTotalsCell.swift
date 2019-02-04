@@ -114,6 +114,10 @@ private extension TopTotalsCell {
             childRow.configure(rowData: childRowData, delegate: self)
             childRow.showSeparator = false
 
+            // Never hide the image for a child row. It will either display
+            // an image or an intentional blank space.
+            childRow.imageView.isHidden = false
+
             // Show the expanded bottom separator on the last row
             childRow.showBottomExpandedSeparator = (childRowsIndex == numberOfRowsToAdd - 1)
 
