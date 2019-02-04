@@ -119,6 +119,7 @@ private extension SiteStatsInsightsTableViewController {
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
+        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
         viewModel?.refreshInsights()
     }
 
