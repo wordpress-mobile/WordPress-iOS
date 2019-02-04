@@ -334,7 +334,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         let title: String = MediaAttachmentActionSheet.title
-        var message: String? = ""
+        var message: String? = nil
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
 
