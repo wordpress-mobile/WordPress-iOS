@@ -138,11 +138,13 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func authorsDataRows() -> [StatsTotalRowData] {
-        return store.getTopAuthors()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                   data: $0.value.displayString(),
-                                                                   userIconURL: $0.iconURL,
-                                                                   showDisclosure: true,
-                                                                   childRows: childRowsForAuthor($0)) }
+        let authors = store.getTopAuthors()
+        return authors?.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
+                                                     userIconURL: $0.iconURL,
+                                                     showDisclosure: true,
+                                                     childRows: childRowsForAuthor($0)) }
             ?? [StatsTotalRowData]()
     }
 
