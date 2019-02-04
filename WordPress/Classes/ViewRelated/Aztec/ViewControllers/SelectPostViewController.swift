@@ -39,7 +39,12 @@ class SelectPostViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.tableHeaderView = searchController.searchBar
+        tableView.tableHeaderView = searchController.searchBar
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchController.dismiss(animated: false, completion: nil)
     }
 }
 
@@ -115,6 +120,6 @@ extension SelectPostViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
         fetchController = PostCoordinator.shared.posts(for: self.blog, wichTitleContains: searchText)
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
 }
