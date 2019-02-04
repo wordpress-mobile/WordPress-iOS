@@ -176,6 +176,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
         toggleSeparatorForRowPreviousTo(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
+        siteStatsPeriodDelegate?.expandedRowUpdated?(row)
     }
 
 }
