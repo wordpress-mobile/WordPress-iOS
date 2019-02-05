@@ -229,7 +229,7 @@ private extension StatsTotalRow {
         // Determine the distance from the bar to the max width.
         // Set that distance as the bar width.
 
-        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant
+        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant + rightStackView.spacing
         var maxBarWidth = Float(contentView.frame.width - dataWidth)
 
         if !imageView.isHidden {
