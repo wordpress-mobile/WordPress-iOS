@@ -85,7 +85,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // This stack view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
-    var childRowsStackView = UIStackView()
+    var childRowsStackView: UIStackView?
 
     var showSeparator = true {
         didSet {
