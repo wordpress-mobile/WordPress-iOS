@@ -428,6 +428,7 @@ final class VerticalsWizardContent: UIViewController {
     @objc
     private func skip() {
         selection(nil)
+        WPAnalytics.track(.enhancedSiteCreationVerticalsSkipped)
     }
 }
 
