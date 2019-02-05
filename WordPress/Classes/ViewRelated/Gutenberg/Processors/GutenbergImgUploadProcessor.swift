@@ -4,18 +4,14 @@ import Aztec
 class GutenbergImgUploadProcessor: Processor {
 
     let mediaUploadID: Int32
-    let width: Int?
-    let height: Int?
     let remoteURLString: String
     let serverMediaID: Int
     static let imgClassIDPrefixAttribute = "wp-image-"
 
-    init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String, width: Int?, height: Int?) {
+    init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String) {
         self.mediaUploadID = mediaUploadID
         self.serverMediaID = serverMediaID
         self.remoteURLString = remoteURLString
-        self.width = width
-        self.height = height
     }
 
     lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: "img", replacer: { (img) in
@@ -43,13 +39,6 @@ class GutenbergImgUploadProcessor: Processor {
 
         var attributes = img.attributes
         attributes.set(.string(self.remoteURLString), forKey: "src")
-        if let width = self.width {
-            attributes.set(.string("\(width)"), forKey: "width")
-        }
-        if let height = self.height {
-            attributes.set(.string("\(height)"), forKey: "height")
-        }
-
         attributes.set(.string(newImgClassAttributes), forKey: "class")
 
         var html = "<img "

@@ -11,7 +11,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
 
     let postResultContent = """
 <!-- wp:image {"id":100} -->
-<figure class="wp-block-image"><img src="http://www.wordpress.com/logo.jpg" alt="" class="wp-image-100" width="100" height="100"></figure>
+<figure class="wp-block-image"><img src="http://www.wordpress.com/logo.jpg" alt="" class="wp-image-100"></figure>
 <!-- /wp:image -->
 """
 
@@ -19,10 +19,8 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
         let gutenbergMediaUploadID = Int32(-181231834)
         let mediaID = 100
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
-        let width = 100
-        let height = 100
 
-        let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID:mediaID , remoteURLString: remoteURLStr, width: width, height: height)
+        let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID:mediaID , remoteURLString: remoteURLStr)
         let resultContent = gutenbergImgPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
