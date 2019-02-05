@@ -19,13 +19,17 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQm-TV-IDW">
-                        <rect key="frame" x="16" y="12" width="288" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQm-TV-IDW">
+                        <rect key="frame" x="16" y="12" width="288" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="hQm-TV-IDW" secondAttribute="bottom" constant="11.5" id="Ha9-TU-iXg"/>
+                    <constraint firstItem="hQm-TV-IDW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="p5U-pr-Me7"/>
+                </constraints>
             </tableViewCellContentView>
             <constraints>
                 <constraint firstItem="hQm-TV-IDW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="QB9-fd-Zsn"/>

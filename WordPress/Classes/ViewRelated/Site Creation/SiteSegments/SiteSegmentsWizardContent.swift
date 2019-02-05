@@ -42,6 +42,8 @@ final class SiteSegmentsWizardContent: UIViewController {
         setupBackground()
         setupTable()
         initCancelButton()
+
+        prepareForVoiceOver()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -106,6 +108,8 @@ final class SiteSegmentsWizardContent: UIViewController {
         let header = TitleSubtitleHeader(frame: initialHeaderFrame)
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
+
+        header.accessibilityTraits = .header
 
         table.tableHeaderView = header
 
@@ -230,5 +234,16 @@ private extension SiteSegmentsWizardContent {
         // TODO : using viaDone, capture analytics event via #10335
         clearErrorStateViewController()
         fetchSegments()
+    }
+}
+
+extension SiteSegmentsWizardContent: Accessible {
+    func prepareForVoiceOver() {
+        prepareTableForVoiceOver()
+    }
+
+    private func prepareTableForVoiceOver() {
+        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list ")
+        table.accessibilityTraits = UIAccessibilityTraits.allowsDirectInteraction
     }
 }
