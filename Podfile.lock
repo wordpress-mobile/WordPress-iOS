@@ -176,7 +176,7 @@ PODS:
   - WordPress-Aztec-iOS (1.4.1)
   - WordPress-Editor-iOS (1.4.1):
     - WordPress-Aztec-iOS (= 1.4.1)
-  - WordPressAuthenticator (1.1.8):
+  - WordPressAuthenticator (1.1.9-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -185,10 +185,10 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 1.8.0)
+    - WordPressKit (~> 2.0-beta)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
-  - WordPressKit (1.8.0):
+  - WordPressKit (2.0.0-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -245,8 +245,8 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `4d4d897bdfa7f0e10a90774a1ade14b47dc41b33`)
   - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `4d4d897bdfa7f0e10a90774a1ade14b47dc41b33`)
-  - WordPressAuthenticator (~> 1.1.8)
-  - WordPressKit (~> 1.8.0)
+  - WordPressAuthenticator (~> 1.1.9-beta)
+  - WordPressKit (~> 2.0.0-beta)
   - WordPressShared (~> 1.7.0-beta)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
@@ -387,8 +387,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 383ea61afd3f96ef4d0c7e3f1ab8e7a362f5cd67
   WordPress-Editor-iOS: 617116ef6b454ff11eed2cbdeafc6cf78a54aec2
-  WordPressAuthenticator: edea3f3cb344c97f2381722286c398a027054d4c
-  WordPressKit: 23d7de239367cfea9f9eef8aefe1933e47566cf2
+  WordPressAuthenticator: 40ed3d920f134227a6ab069576378293c0bda401
+  WordPressKit: 2b6f01a7459d358b8cf6d825348c6cf7174107b2
   WordPressShared: 9889ea6eaeb951df12e2901f98bd194df728d2a1
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
@@ -396,6 +396,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 5ca45d6970ddcf11b57908ab7e942e0f0d2ee4e5
+PODFILE CHECKSUM: 7fef9c67d66d5a5fc6de91135b4895d517a43d0b
 
 COCOAPODS: 1.5.3
