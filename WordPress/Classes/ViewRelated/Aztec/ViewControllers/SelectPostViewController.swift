@@ -87,7 +87,7 @@ extension SelectPostViewController {
         } else {
             cell.detailTextLabel?.text = NSLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
         }
-        if post.permaLink == self.selectedLink {
+        if post.permaLink == selectedLink {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -119,7 +119,7 @@ extension SelectPostViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
-        fetchController = PostCoordinator.shared.posts(for: self.blog, wichTitleContains: searchText)
+        fetchController = PostCoordinator.shared.posts(for: blog, wichTitleContains: searchText)
         tableView.reloadData()
     }
 }
