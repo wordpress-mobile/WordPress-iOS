@@ -64,6 +64,11 @@ class GutenbergMediaInserterHelper: NSObject {
         if mediaObserverReceipt != nil {
             registerMediaObserver()
         }
+        for media in post.media {
+            if media.remoteStatus == .failed {
+                gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
+            }
+        }
     }
 
     func mediaFor(uploadID: Int32) -> Media? {
