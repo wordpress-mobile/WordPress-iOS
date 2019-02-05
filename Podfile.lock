@@ -173,9 +173,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.4.1)
-  - WordPress-Editor-iOS (1.4.1):
-    - WordPress-Aztec-iOS (= 1.4.1)
+  - WordPress-Aztec-iOS (1.4.2)
+  - WordPress-Editor-iOS (1.4.2):
+    - WordPress-Aztec-iOS (= 1.4.2)
   - WordPressAuthenticator (1.1.9-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -224,7 +224,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `a3869657bdfefe4988511b219755291f73122151`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `a8966547b09b4eedc84fba042b8e698f764c2128`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
   - MRProgress (= 0.8.3)
@@ -239,12 +239,11 @@ DEPENDENCIES:
   - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `8.0.9-gb.0`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `a3869657bdfefe4988511b219755291f73122151`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `a8966547b09b4eedc84fba042b8e698f764c2128`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `4d4d897bdfa7f0e10a90774a1ade14b47dc41b33`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `4d4d897bdfa7f0e10a90774a1ade14b47dc41b33`)
+  - WordPress-Editor-iOS (= 1.4.2)
   - WordPressAuthenticator (~> 1.1.9-beta)
   - WordPressKit (~> 2.0.0-beta)
   - WordPressShared (~> 1.7.0-beta)
@@ -284,6 +283,8 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
@@ -298,7 +299,7 @@ EXTERNAL SOURCES:
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
-    :commit: a3869657bdfefe4988511b219755291f73122151
+    :commit: a8966547b09b4eedc84fba042b8e698f764c2128
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
@@ -310,14 +311,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: a3869657bdfefe4988511b219755291f73122151
+    :commit: a8966547b09b4eedc84fba042b8e698f764c2128
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPress-Aztec-iOS:
-    :commit: 4d4d897bdfa7f0e10a90774a1ade14b47dc41b33
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: 4d4d897bdfa7f0e10a90774a1ade14b47dc41b33
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -329,20 +324,14 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: '0.3'
   Gutenberg:
-    :commit: a3869657bdfefe4988511b219755291f73122151
+    :commit: a8966547b09b4eedc84fba042b8e698f764c2128
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: a3869657bdfefe4988511b219755291f73122151
+    :commit: a8966547b09b4eedc84fba042b8e698f764c2128
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPress-Aztec-iOS:
-    :commit: 4d4d897bdfa7f0e10a90774a1ade14b47dc41b33
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: 4d4d897bdfa7f0e10a90774a1ade14b47dc41b33
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -385,8 +374,8 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: 383ea61afd3f96ef4d0c7e3f1ab8e7a362f5cd67
-  WordPress-Editor-iOS: 617116ef6b454ff11eed2cbdeafc6cf78a54aec2
+  WordPress-Aztec-iOS: d9e816350ab1e200681d433287fbb079675e9159
+  WordPress-Editor-iOS: 5a09651534181c9f3ab43516b7666e9c55b2330e
   WordPressAuthenticator: 40ed3d920f134227a6ab069576378293c0bda401
   WordPressKit: 2b6f01a7459d358b8cf6d825348c6cf7174107b2
   WordPressShared: 9889ea6eaeb951df12e2901f98bd194df728d2a1
@@ -396,6 +385,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 7fef9c67d66d5a5fc6de91135b4895d517a43d0b
+PODFILE CHECKSUM: b27bc6ef9465591738db8a3ed69a37c11cbfccc7
 
 COCOAPODS: 1.5.3
