@@ -73,12 +73,17 @@ class GutenbergMediaPickerHelper: NSObject {
         let cameraPicker = WPMediaPickerViewController()
         cameraPicker.options = mediaPickerOptions
         cameraPicker.mediaPickerDelegate = self
-        cameraPicker.dataSource = devicePhotoLibraryDataSource
+        cameraPicker.dataSource = WPPHAssetDataSource.sharedInstance()
         return cameraPicker
     }()
 
     func presentCameraCaptureFullScreen(animated: Bool,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
+
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            callback(nil)
+            return
+        }
 
         didPickMediaCallback = callback
         //reset the selected assets from previous uses
