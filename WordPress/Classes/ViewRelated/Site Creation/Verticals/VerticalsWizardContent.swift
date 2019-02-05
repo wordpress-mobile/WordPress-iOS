@@ -404,13 +404,13 @@ final class VerticalsWizardContent: UIViewController {
     private func setupTableSeparator() {
         table.separatorColor = WPStyleGuide.greyLighten20()
     }
-    
+
     private func trackVerticalSelection(_ vertical: SiteVertical) {
         var verticalProperties = [String: AnyObject]()
         verticalProperties["vertical_name"] = vertical.title as AnyObject?
         verticalProperties["vertical_id"] = vertical.identifier as AnyObject?
         verticalProperties["vertical_is_user"] = vertical.isNew as AnyObject?
-        
+
         WPAnalytics.track(.enhancedSiteCreationVerticalsSelected, withProperties: verticalProperties)
     }
 

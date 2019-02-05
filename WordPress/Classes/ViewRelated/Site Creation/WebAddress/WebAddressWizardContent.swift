@@ -390,12 +390,12 @@ final class WebAddressWizardContent: UIViewController {
         table.deselectSelectedRowWithAnimation(true)
         tableViewOffsetCoordinator?.hideBottomToolbar()
     }
-    
+
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
         var domainSuggestionProperties = [String: AnyObject]()
         domainSuggestionProperties["chosen_domain"] = domainSuggestion.domainName as AnyObject?
         domainSuggestionProperties["search_term"] = lastSearchQuery as AnyObject?
-        
+
         WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
     }
 }

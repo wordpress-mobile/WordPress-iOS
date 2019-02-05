@@ -177,7 +177,7 @@ final class AssembledSiteView: UIView {
 // MARK: - WKNavigationDelegate
 
 extension AssembledSiteView: WKNavigationDelegate {
-    
+
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed)
     }

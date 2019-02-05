@@ -223,7 +223,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         selection(segment)
         trackSegmentSelection(segment)
     }
-    
+
     private func trackSegmentSelection(_ segment: SiteSegment) {
         var segmentProperties = [String: AnyObject]()
         segmentProperties["segment_name"] = segment.title as AnyObject?
