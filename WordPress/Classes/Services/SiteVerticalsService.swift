@@ -43,12 +43,16 @@ final class SiteCreationVerticalsService: LocalCoreDataService, SiteVerticalsSer
     override init(managedObjectContext context: NSManagedObjectContext) {
         self.accountService = AccountService(managedObjectContext: context)
 
+        let userAgent = WPUserAgent.wordPress()
+        let localeKey = WordPressComRestApi.LocaleKeyV2
+
         let api: WordPressComRestApi
-        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
-            api = wpcomApi
+        if let account = accountService.defaultWordPressComAccount(), let token = account.authToken {
+            api = WordPressComRestApi(oAuthToken: token, userAgent: userAgent, localeKey: localeKey)
         } else {
-            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+            api = WordPressComRestApi(userAgent: userAgent, localeKey: localeKey)
         }
+
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
 
         super.init(managedObjectContext: context)

@@ -71,7 +71,11 @@ class TimeZoneStore: QueryStore<TimeZoneStoreState, TimeZoneQuery> {
 private extension TimeZoneStore {
     func fetchTimeZones() {
         state = .loading
-        let remote = TimeZoneServiceRemote(wordPressComRestApi: .anonymousApi(userAgent: WPUserAgent.wordPress()))
+
+        let api: WordPressComRestApi = .anonymousApi(userAgent: WPUserAgent.wordPress())
+        api.appendsPreferredLanguageLocale = false  // TimeZoneServiceRemote currently injects "_locale"
+
+        let remote = TimeZoneServiceRemote(wordPressComRestApi: api)
         remote.getTimezones(
             success: { [weak self] (groups) in
                 self?.state = .loaded(groups)
