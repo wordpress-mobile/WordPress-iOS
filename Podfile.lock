@@ -99,7 +99,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.3.2)
+  - Nimble (7.3.3)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
   - OCMock (3.4.3)
@@ -173,9 +173,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.4.1)
-  - WordPress-Editor-iOS (1.4.1):
-    - WordPress-Aztec-iOS (= 1.4.1)
+  - WordPress-Aztec-iOS (1.4.2)
+  - WordPress-Editor-iOS (1.4.2):
+    - WordPress-Aztec-iOS (= 1.4.2)
   - WordPressAuthenticator (1.1.9-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -224,7 +224,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `32cd4315ce2f099d747eb55da60174e30c74d59d`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `8af6464ca479784bf462c5c8bcd1f873e951ded1`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
   - MRProgress (= 0.8.3)
@@ -239,11 +239,11 @@ DEPENDENCIES:
   - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `8.0.9-gb.0`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `32cd4315ce2f099d747eb55da60174e30c74d59d`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `8af6464ca479784bf462c5c8bcd1f873e951ded1`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (= 1.4.1)
+  - WordPress-Editor-iOS (= 1.4.2)
   - WordPressAuthenticator (~> 1.1.9-beta)
   - WordPressKit (~> 2.0.0-beta.3)
   - WordPressShared (~> 1.7.0-beta)
@@ -299,7 +299,7 @@ EXTERNAL SOURCES:
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
-    :commit: 32cd4315ce2f099d747eb55da60174e30c74d59d
+    :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
@@ -311,7 +311,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: 32cd4315ce2f099d747eb55da60174e30c74d59d
+    :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -324,13 +324,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: '0.3'
   Gutenberg:
-    :commit: 32cd4315ce2f099d747eb55da60174e30c74d59d
+    :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: 32cd4315ce2f099d747eb55da60174e30c74d59d
+    :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -359,7 +359,7 @@ SPEC CHECKSUMS:
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MGSwipeTableCell: dc4eca3212ed38a563b27d6aa7b3c01ce656c1e2
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 5e94a8cacb355943c6c87198035dc4adbb0f10e4
+  Nimble: 3b434b1e7d0a92603a13550a82880b0d952f518e
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
@@ -374,8 +374,8 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: 383ea61afd3f96ef4d0c7e3f1ab8e7a362f5cd67
-  WordPress-Editor-iOS: 617116ef6b454ff11eed2cbdeafc6cf78a54aec2
+  WordPress-Aztec-iOS: d9e816350ab1e200681d433287fbb079675e9159
+  WordPress-Editor-iOS: 5a09651534181c9f3ab43516b7666e9c55b2330e
   WordPressAuthenticator: 40ed3d920f134227a6ab069576378293c0bda401
   WordPressKit: c70ff713b000e346aa345d71d6dcf9c8aa66c767
   WordPressShared: 9889ea6eaeb951df12e2901f98bd194df728d2a1
@@ -385,6 +385,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 49ce973f75125c2f4405746a94396cea56df19d8
+PODFILE CHECKSUM: d53f6597e345ff4aed738da51e4a65d64f7aa360
 
 COCOAPODS: 1.5.3

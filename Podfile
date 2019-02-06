@@ -39,7 +39,7 @@ def aztec
     ##
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    pod 'WordPress-Editor-iOS', '1.4.1'
+    pod 'WordPress-Editor-iOS', '1.4.2'
 end
 
 def wordpress_ui
@@ -94,8 +94,8 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '32cd4315ce2f099d747eb55da60174e30c74d59d'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '32cd4315ce2f099d747eb55da60174e30c74d59d'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '8af6464ca479784bf462c5c8bcd1f873e951ded1'
+    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '8af6464ca479784bf462c5c8bcd1f873e951ded1'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
