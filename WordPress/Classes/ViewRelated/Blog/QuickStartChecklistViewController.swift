@@ -157,7 +157,7 @@ private struct QuickStartChecklistConfiguration {
 }
 
 private enum Constants {
-    static let estimatedRowHeight = CGFloat(90.0)
+    static let estimatedRowHeight: CGFloat = 90.0
     static let successScreenFadeAnimationDuration: TimeInterval = 0.3
     static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")
     static let growYourAudience = NSLocalizedString("Grow Your Audience", comment: "Title of the Quick Start Checklist that guides users through a few tasks to grow the audience of their new website.")
