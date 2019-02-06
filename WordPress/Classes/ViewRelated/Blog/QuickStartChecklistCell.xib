@@ -45,7 +45,7 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leadingMargin" priority="750" constant="48" id="3eA-72-02A"/>
+                    <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leadingMargin" priority="750" id="3eA-72-02A"/>
                     <constraint firstAttribute="bottom" secondItem="q9O-Tl-jRn" secondAttribute="bottom" id="6zL-eP-5kL"/>
                     <constraint firstItem="KNn-zz-lLY" firstAttribute="top" secondItem="Yc4-11-laP" secondAttribute="bottom" constant="2" id="GKD-om-l0b"/>
                     <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="KNn-zz-lLY" secondAttribute="leading" id="IP9-A7-b0C"/>
