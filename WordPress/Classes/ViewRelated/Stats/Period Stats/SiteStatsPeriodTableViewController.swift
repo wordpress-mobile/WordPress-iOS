@@ -35,6 +35,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
                 return
             }
 
+            clearExpandedRows()
+
             // If this is the first time setting the Period, need to initialize the view model.
             // Otherwise, just refresh the data.
             if oldValue == nil {
