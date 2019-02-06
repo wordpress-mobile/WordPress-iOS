@@ -35,7 +35,7 @@ class GutenbergImgUploadProcessor: Processor {
             return nil
         }
 
-        let newImgClassAttributes = imgClass.replacingOccurrences(of: imageIDAttribute, with:GutenbergImgUploadProcessor.imgClassIDPrefixAttribute + String(self.serverMediaID))
+        let newImgClassAttributes = imgClass.replacingOccurrences(of: imageIDAttribute, with: GutenbergImgUploadProcessor.imgClassIDPrefixAttribute + String(self.serverMediaID))
 
         var attributes = img.attributes
         attributes.set(.string(self.remoteURLString), forKey: "src")

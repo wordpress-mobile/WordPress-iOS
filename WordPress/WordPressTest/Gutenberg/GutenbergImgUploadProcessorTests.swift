@@ -20,7 +20,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
         let mediaID = 100
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
 
-        let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID:mediaID , remoteURLString: remoteURLStr)
+        let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
         let resultContent = gutenbergImgPostUploadProcessor.process(postContent)
 
         XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
