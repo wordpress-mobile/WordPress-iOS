@@ -262,7 +262,13 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         let textField = header.textField
-        guard let inputText = textField.text, !inputText.isEmpty else {
+
+        let inputText: String
+        if let text = textField.text, !text.isEmpty {
+            inputText = text
+        } else if let text = siteCreator.information?.title, !text.isEmpty {
+            inputText = text
+        } else {
             return
         }
 
