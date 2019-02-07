@@ -22,7 +22,10 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        let checklistCompletedCount = countChecklistCompleted(for: blog)
+        // TODO: this needs to become a argument to deal with multiple lists
+        let list = checklistTours
+
+        let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
 
         let quickStartIsEnabled = checklistCompletedCount > 0
@@ -32,10 +35,18 @@ open class QuickStartTourGuide: NSObject {
         return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
     }
 
+    /// Note: this is only used for QS v1, and can be removed once the feature flag
+    ///       is also removed.
     @objc func detailString(for blog: Blog) -> String {
-        let completedCount = countChecklistCompleted(for: blog)
+        let completedCount = countChecklistCompleted(in: QuickStartTourGuide.checklistTours, for: blog)
         let totalCount = QuickStartTourGuide.checklistTours.count
         return "\(completedCount)/\(totalCount)"
+    }
+
+    func completionCount(of list: [QuickStartTour], for blog: Blog) -> (complete: Int, total: Int) {
+        let completedCount = countChecklistCompleted(in: list, for: blog)
+        let totalCount = list.count
+        return (complete: completedCount, total: totalCount)
     }
 
     /// Provides a tour to suggest to the user
@@ -207,15 +218,15 @@ open class QuickStartTourGuide: NSObject {
         WPTabBarController.sharedInstance()?.present(alertController, animated: true)
     }
 
-    static func countChecklistCompleted(for blog: Blog) -> Int {
-        let allChecklistTourIDs =  QuickStartTourGuide.checklistTours.map { $0.key }
+    static func countChecklistCompleted(in list: [QuickStartTour], for blog: Blog) -> Int {
+        let allChecklistTourIDs =  list.map { $0.key }
         let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
         let filteredIDs = allChecklistTourIDs.filter { completedTourIDs.contains($0) }
         return Set(filteredIDs).count
     }
 
-    func countChecklistCompleted(for blog: Blog) -> Int {
-        return QuickStartTourGuide.countChecklistCompleted(for: blog)
+    func countChecklistCompleted(in list: [QuickStartTour], for blog: Blog) -> Int {
+        return QuickStartTourGuide.countChecklistCompleted(in: list, for: blog)
     }
 
     func endCurrentTour() {
@@ -243,7 +254,7 @@ open class QuickStartTourGuide: NSObject {
     ]
 
     static let growListTours: [QuickStartTour] = [
-        QuickStartPostSharingTour(),
+        QuickStartShareTour(),
         QuickStartPublishTour(),
         QuickStartFollowTour(),
         QuickStartCheckStatsTour(),
@@ -285,7 +296,10 @@ private extension QuickStartTourGuide {
     }
 
     func allToursCompleted(for blog: Blog) -> Bool {
-        return countChecklistCompleted(for: blog) >= QuickStartTourGuide.checklistTours.count
+        // TODO: this needs to become a argument to deal with multiple lists
+        let list = QuickStartTourGuide.checklistTours
+
+        return countChecklistCompleted(in: list, for: blog) >= QuickStartTourGuide.checklistTours.count
     }
 
     func showCurrentStep() {
@@ -365,25 +379,6 @@ private extension QuickStartTourGuide {
 
 internal extension NSNotification.Name {
     static let QuickStartTourElementChangedNotification = NSNotification.Name(rawValue: "QuickStartTourElementChangedNotification")
-}
-
-@objc
-public enum QuickStartTourElement: Int {
-    case noSuchElement
-    case tabFlipped
-    case blogDetailNavigation
-    case viewSite
-    case checklist
-    case themes
-    case customize
-    case newpost
-    case sharing
-    case connections
-    case readerTab
-    case readerBack
-    case readerSearch
-    case tourCompleted
-    case congratulations
 }
 
 private struct TourState {

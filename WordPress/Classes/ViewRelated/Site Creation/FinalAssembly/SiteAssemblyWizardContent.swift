@@ -66,6 +66,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         hidesBottomBarWhenPushed = true
         installButtonViewController()
+        WPAnalytics.track(.enhancedSiteCreationSuccessLoading)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -210,6 +211,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
+            WPAnalytics.track(.enhancedSiteCreationCompleted)
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
         }
     }

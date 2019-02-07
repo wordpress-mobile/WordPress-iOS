@@ -571,6 +571,54 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorUploadMediaRetried:
             eventName = @"editor_upload_media_retried";
             break;
+        case WPAnalyticsStatEnhancedSiteCreationAccessed:
+            eventName = @"enhanced_site_creation_accessed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSegmentsViewed:
+            eventName = @"enhanced_site_creation_segments_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSegmentsSelected:
+            eventName = @"enhanced_site_creation_segments_selected";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationVerticalsViewed:
+            eventName = @"enhanced_site_creation_verticals_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationVerticalsSelected:
+            eventName = @"enhanced_site_creation_verticals_selected";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationVerticalsSkipped:
+            eventName = @"enhanced_site_creation_verticals_skipped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationBasicInformationViewed:
+            eventName = @"enhanced_site_creation_basic_information_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationBasicInformationCompleted:
+            eventName = @"enhanced_site_creation_basic_information_completed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationBasicInformationSkipped:
+            eventName = @"enhanced_site_creation_basic_information_skipped";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationDomainsAccessed:
+            eventName = @"enhanced_site_creation_domains_accessed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationDomainsSelected:
+            eventName = @"enhanced_site_creation_domains_selected";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSuccessLoading:
+            eventName = @"enhanced_site_creation_success_loading";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSuccessPreviewViewed:
+            eventName = @"enhanced_site_creation_preview_viewed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationSuccessPreviewLoaded:
+            eventName = @"enhanced_site_creation_preview_loaded";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationCompleted:
+            eventName = @"enhanced_site_creation_completed";
+            break;
+        case WPAnalyticsStatEnhancedSiteCreationErrorShown:
+            eventName = @"enhanced_site_creation_error_shown";
+            break;
         case WPAnalyticsStatGiphyAccessed:
             eventName = @"giphy_accessed";
             break;
@@ -1254,6 +1302,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderSiteUnfollowed:
             eventName = @"reader_site_unfollowed";
+            break;
+        case WPAnalyticsStatReaderSiteShared:
+            eventName = @"reader_site_shared";
             break;
         case WPAnalyticsStatReaderTagFollowed:
             eventName = @"reader_reader_tag_followed";

@@ -228,6 +228,17 @@ import WordPressShared
         hideImage = hide
     }
 
+    /// Public method to expose the private configure view method
+    ///
+    func updateView() {
+        configureView()
+    }
+
+    /// Public method to expose the private set accessory views method
+    ///
+    func updateAccessoryViewsVisibility() {
+        setAccessoryViewsVisibility()
+    }
 }
 
 private extension NoResultsViewController {

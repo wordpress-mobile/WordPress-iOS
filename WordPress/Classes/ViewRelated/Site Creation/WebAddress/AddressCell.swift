@@ -38,6 +38,10 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         accessoryType = highlighted ? .checkmark : .none
     }
 
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        accessoryType = selected ? .checkmark : .none
+    }
+
     private func styleCheckmark() {
         tintColor = WPStyleGuide.mediumBlue()
     }
@@ -62,5 +66,18 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
         completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
         return completeDomainName
+    }
+}
+
+extension AddressCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        title.attributedText = processName(model?.domainName)
     }
 }

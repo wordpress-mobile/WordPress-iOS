@@ -3,6 +3,8 @@ import CoreServices
 import WPMediaPicker
 import Gutenberg
 
+public typealias GutenbergMediaPickerHelperCallback = (WPMediaAsset?) -> Void
+
 class GutenbergMediaPickerHelper: NSObject {
 
     fileprivate struct Constants {
@@ -28,7 +30,7 @@ class GutenbergMediaPickerHelper: NSObject {
     fileprivate lazy var mediaPickerOptions: WPMediaPickerOptions = {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
-        options.filter = [.all]
+        options.filter = [.image]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
@@ -36,7 +38,7 @@ class GutenbergMediaPickerHelper: NSObject {
         return options
     }()
 
-    var didPickMediaCallback: MediaPickerDidPickMediaCallback?
+    var didPickMediaCallback: GutenbergMediaPickerHelperCallback?
 
     init(context: UIViewController, post: AbstractPost) {
         self.context = context
@@ -45,7 +47,7 @@ class GutenbergMediaPickerHelper: NSObject {
 
     func presentMediaPickerFullScreen(animated: Bool,
                                       dataSourceType: MediaPickerDataSourceType = .device,
-                                      callback: @escaping MediaPickerDidPickMediaCallback) {
+                                      callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         didPickMediaCallback = callback
 
@@ -66,34 +68,50 @@ class GutenbergMediaPickerHelper: NSObject {
         picker.modalPresentationStyle = .currentContext
         context.present(picker, animated: true)
     }
+
+    private lazy var cameraPicker: WPMediaPickerViewController = {
+        let cameraPicker = WPMediaPickerViewController()
+        cameraPicker.options = mediaPickerOptions
+        cameraPicker.mediaPickerDelegate = self
+        cameraPicker.dataSource = WPPHAssetDataSource.sharedInstance()
+        return cameraPicker
+    }()
+
+    func presentCameraCaptureFullScreen(animated: Bool,
+                                        callback: @escaping GutenbergMediaPickerHelperCallback) {
+
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            callback(nil)
+            return
+        }
+
+        didPickMediaCallback = callback
+        //reset the selected assets from previous uses
+        cameraPicker.resetState(false)
+        cameraPicker.modalPresentationStyle = .currentContext
+        cameraPicker.viewControllerToUseToPresent = context
+        cameraPicker.showCapture()
+    }
 }
 
 extension GutenbergMediaPickerHelper: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
 
-        guard !assets.isEmpty else {
+        guard let assetSelected = assets.first else {
             return
         }
 
-        for asset in assets {
-            switch asset {
-            case let media as Media:
-                invokeMediaPickerCallback(url: media.remoteURL)
-            default:
-                continue
-            }
-        }
+        invokeMediaPickerCallback(asset: assetSelected)
         picker.dismiss(animated: true, completion: nil)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        invokeMediaPickerCallback(url: nil)
-        picker.dismiss(animated: true, completion: nil)
+        context.dismiss(animated: true, completion: { self.invokeMediaPickerCallback(asset: nil) })
     }
 
-    fileprivate func invokeMediaPickerCallback(url: String?) {
-        didPickMediaCallback?(url)
+    fileprivate func invokeMediaPickerCallback(asset: WPMediaAsset?) {
+        didPickMediaCallback?(asset)
         didPickMediaCallback = nil
     }
 }

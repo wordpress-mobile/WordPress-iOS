@@ -24,13 +24,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.6.1-beta.1'
+    pod 'WordPressShared', '~> 1.7.0-beta'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    ## pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '84d09bcbb0c9c1ba7f39c119e7fce61927f02f43'
+    ##pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '4781c4764f69ca116c93c15a1297616b8920c4de'
 end
 
 def aztec
@@ -39,7 +39,7 @@ def aztec
     ##
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    pod 'WordPress-Editor-iOS', '1.4.1'
+    pod 'WordPress-Editor-iOS', '1.4.2'
 end
 
 def wordpress_ui
@@ -52,8 +52,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 1.7.0-beta'
-    ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '28ca4a9'
+    pod 'WordPressKit', '~> 2.0.0-beta.4'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '0469f41'
     ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
 
@@ -94,8 +94,8 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '2bade57ef289ec1ddd1604a5f354381a2a3c78fa'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '2bade57ef289ec1ddd1604a5f354381a2a3c78fa'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '8af6464ca479784bf462c5c8bcd1f873e951ded1'
+    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '8af6464ca479784bf462c5c8bcd1f873e951ded1'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
@@ -113,7 +113,6 @@ target 'WordPress' do
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
     pod 'Crashlytics', '3.12.0'
-    pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'MGSwipeTableCell', '1.6.8'
@@ -124,14 +123,14 @@ target 'WordPress' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3-beta.1'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3.1'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
     pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.1.8-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.1.9-beta'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '82900447393674532003833cc1f3a4ad1c53997f'
 

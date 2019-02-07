@@ -22,22 +22,29 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
     private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
+    private var subtitlesProvided = true
     private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
 
-    func configure(itemSubtitle: String,
-                   dataSubtitle: String,
+    func configure(itemSubtitle: String? = nil,
+                   dataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
+                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
+        subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         setSubtitleVisibility()
-        addRows(dataRows, toStackView: rowsStackView, rowDelegate: self)
+
+        let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
+        addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
         applyStyles()
     }
 
@@ -58,10 +65,10 @@ private extension TopTotalsCell {
         Style.configureViewAsSeperator(bottomSeparatorLine)
     }
 
-    /// Hide the subtitles if there is no data.
+    /// Hide the subtitles if there is no data or Subtitles.
     ///
     func setSubtitleVisibility() {
-        let showSubtitles = dataRows.count > 0
+        let showSubtitles = dataRows.count > 0 && subtitlesProvided
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + subtitlesBottomMargin : 0
     }
@@ -74,6 +81,11 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
+        siteStatsPeriodDelegate?.displayWebViewWithURL?(url)
+    }
+
+    func displayMediaWithID(_ mediaID: NSNumber) {
+        siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
     }
 
 }

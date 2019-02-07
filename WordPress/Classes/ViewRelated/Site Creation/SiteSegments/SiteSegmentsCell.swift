@@ -1,6 +1,20 @@
 import UIKit
 import Alamofire
 import Gridicons
+import WordPressKit
+
+
+private extension String {
+    func hexAsColor() -> UIColor? {
+        return UIColor(hexString: self)
+    }
+}
+
+private extension SiteSegment {
+    var iconTintColor: UIColor? {
+        return self.iconColor?.hexAsColor()
+    }
+}
 
 final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     @IBOutlet weak var icon: UIImageView!
@@ -14,7 +28,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
             if let modelIcon = model?.icon {
                 icon.downloadImage(from: modelIcon, placeholderImage: nil, success: { [weak self] downloadedImage in
                     let tintedImage = downloadedImage.withRenderingMode(.alwaysTemplate)
-                    if let tintColor = self?.model?.iconColor {
+                    if let tintColor = self?.model?.iconTintColor {
                         self?.icon.tintColor = tintColor
                     }
                     self?.icon.image = tintedImage
@@ -26,7 +40,9 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     func set(segment: SiteSegment) {
         title.text = segment.title
         subtitle.text = segment.subtitle
-        icon.setImageWith(segment.icon)
+        if let segmentIcon = segment.icon {
+            icon.setImageWith(segmentIcon)
+        }
     }
 
     override func awakeFromNib() {
@@ -50,14 +66,41 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         title.textColor = WPStyleGuide.darkGrey()
+        title.adjustsFontForContentSizeCategory = true
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.darkGrey()
+        subtitle.adjustsFontForContentSizeCategory = true
     }
 
     private func styleAccessoryView() {
         accessoryType = .disclosureIndicator
+    }
+}
+
+extension SiteSegmentsCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        // Title needs to be forced to reset its style, otherwise the types do not change
+        styleTitle()
+    }
+}
+
+extension SiteSegmentsCell: Accessible {
+    func prepareForVoiceOver() {
+        prepareIconForVoiceOver()
+    }
+
+    private func prepareIconForVoiceOver() {
+        icon.accessibilityLabel = NSLocalizedString("Icon representing ", comment: "Accessibility description for Site Segment icon. Will be followed by the kind of site") + (model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site "))
+        icon.accessibilityTraits = .image
     }
 }

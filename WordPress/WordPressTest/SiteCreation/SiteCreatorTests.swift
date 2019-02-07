@@ -18,7 +18,8 @@ class SiteCreatorTests: XCTestCase {
             title: "A title",
             subtitle: "A subtitle",
             icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-            iconColor: .red)
+            iconColor: "#FF0000",
+            mobile: true)
 
         defaultInput.vertical = SiteVertical(identifier: "678910",
             title: "A title",
@@ -59,18 +60,6 @@ class SiteCreatorTests: XCTestCase {
         XCTAssertThrowsError(try siteInput.build())
     }
 
-    func testSiteCreator_buildFails_MissingSiteVertical() {
-        // Given
-        XCTAssertNotNil(pendingSiteInput)
-        let siteInput = pendingSiteInput!
-
-        // When
-        siteInput.vertical = nil
-
-        // Then
-        XCTAssertThrowsError(try siteInput.build())
-    }
-
     func testSiteCreator_buildFails_MissingSiteInfo() {
         // Given
         XCTAssertNotNil(pendingSiteInput)
@@ -81,6 +70,18 @@ class SiteCreatorTests: XCTestCase {
 
         // Then
         XCTAssertThrowsError(try siteInput.build())
+    }
+
+    func testSiteCreator_buildSucceeds_MissingSiteVertical() {
+        // Given
+        XCTAssertNotNil(pendingSiteInput)
+        let siteInput = pendingSiteInput!
+
+        // When
+        siteInput.vertical = nil
+
+        // Then
+        XCTAssertNoThrow(try siteInput.build())
     }
 
     func testSiteCreator_buildSucceeds_MissingSiteInfoTagline() {

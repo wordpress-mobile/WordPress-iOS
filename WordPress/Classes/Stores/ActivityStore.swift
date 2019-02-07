@@ -237,7 +237,7 @@ private extension ActivityStore {
             return
         }
 
-        remote(site: site)?.restoreSite(
+        remoteV1(site: site)?.restoreSite(
             site.siteID,
             rewindID: rewindID,
             success: { [actionDispatcher] restoreID in
@@ -374,13 +374,25 @@ private extension ActivityStore {
     }
 
     // MARK: - Helpers
+
     func remote(site: JetpackSiteRef) -> ActivityServiceRemote? {
+        guard let token = CredentialsService().getOAuthToken(site: site) else {
+            return nil
+        }
+
+        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
+        api.appendsPreferredLanguageLocale = false  // ActivityServiceRemote currently injects "locale"
+
+        return ActivityServiceRemote(wordPressComRestApi: api)
+    }
+
+    func remoteV1(site: JetpackSiteRef) -> ActivityServiceRemote_ApiVersion1_0? {
         guard let token = CredentialsService().getOAuthToken(site: site) else {
             return nil
         }
         let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
-        return ActivityServiceRemote(wordPressComRestApi: api)
+        return ActivityServiceRemote_ApiVersion1_0(wordPressComRestApi: api)
     }
 
     private func mediumString(from date: Date, adjustingTimezoneTo site: JetpackSiteRef) -> String {

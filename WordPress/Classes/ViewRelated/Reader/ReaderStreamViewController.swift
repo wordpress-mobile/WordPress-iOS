@@ -1,4 +1,5 @@
 import Foundation
+
 import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
@@ -16,7 +17,7 @@ import WordPressFlux
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
 ///
-@objc open class ReaderStreamViewController: UIViewController, UIViewControllerRestoration {
+@objc class ReaderStreamViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
@@ -25,40 +26,40 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
-    fileprivate var tableView: UITableView! {
+    private var tableView: UITableView! {
         return tableViewController.tableView
     }
 
-    fileprivate var syncHelper: WPContentSyncHelper!
-    fileprivate var resultsStatusView = NoResultsViewController.controller()
+    private var syncHelper: WPContentSyncHelper!
+    private var resultsStatusView = NoResultsViewController.controller()
 
-    fileprivate lazy var footerView: PostListFooterView = {
+    private lazy var footerView: PostListFooterView = {
         return tableConfiguration.footer()
     }()
 
-    fileprivate let tableViewController = UITableViewController(style: .plain)
+    private let tableViewController = UITableViewController(style: .plain)
 
-    fileprivate lazy var refreshControl: UIRefreshControl = {
+    private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         tableViewController.refreshControl = refreshControl
         return refreshControl
     }()
 
-    fileprivate let loadMoreThreashold = 4
+    private let loadMoreThreashold = 4
 
-    fileprivate let refreshInterval = 300
-    fileprivate var cleanupAndRefreshAfterScrolling = false
-    fileprivate let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    fileprivate let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
-    fileprivate let heightForFooterView = CGFloat(34.0)
-    fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
-    fileprivate var isLoggedIn = false
-    fileprivate var isFeed = false
-    fileprivate var syncIsFillingGap = false
-    fileprivate var indexPathForGapMarker: IndexPath?
-    fileprivate var didSetupView = false
-    fileprivate var listentingForBlockedSiteNotification = false
-    fileprivate var didBumpStats = false
+    private let refreshInterval = 300
+    private var cleanupAndRefreshAfterScrolling = false
+    private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
+    private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
+    private let heightForFooterView = CGFloat(34.0)
+    private let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
+    private var isLoggedIn = false
+    private var isFeed = false
+    private var syncIsFillingGap = false
+    private var indexPathForGapMarker: IndexPath?
+    private var didSetupView = false
+    private var listentingForBlockedSiteNotification = false
+    private var didBumpStats = false
 
     /// Content management
     private let content = ReaderTableContent()
@@ -72,10 +73,10 @@ import WordPressFlux
     let news = ReaderNewsCard()
 
     /// Used for fetching content.
-    fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
+    private lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
 
-    fileprivate var siteID: NSNumber? {
+    private var siteID: NSNumber? {
         didSet {
             if siteID != nil {
                 fetchSiteTopic()
@@ -84,7 +85,7 @@ import WordPressFlux
     }
 
 
-    fileprivate var tagSlug: String? {
+    private var tagSlug: String? {
         didSet {
             if tagSlug != nil {
                 // Fixes https://github.com/wordpress-mobile/WordPress-iOS/issues/5223
@@ -96,13 +97,13 @@ import WordPressFlux
     }
 
 
-    var isShowingResultStatusView: Bool {
+    private var isShowingResultStatusView: Bool {
         return resultsStatusView.view?.superview != nil
     }
 
 
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
-    @objc open var readerTopic: ReaderAbstractTopic? {
+    @objc var readerTopic: ReaderAbstractTopic? {
         didSet {
             oldValue?.inUse = false
 
@@ -122,6 +123,8 @@ import WordPressFlux
         }
     }
 
+    /// Facilitates sharing of a blog via `ReaderStreamViewController+Sharing.swift`.
+    let sharingController = PostSharingController()
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
@@ -131,7 +134,7 @@ import WordPressFlux
     ///
     /// - Returns: An instance of the controller
     ///
-    @objc open class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
+    @objc class func controllerWithTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -149,7 +152,7 @@ import WordPressFlux
     ///
     /// - Returns: An instance of the controller
     ///
-    @objc open class func controllerWithSiteID(_ siteID: NSNumber, isFeed: Bool) -> ReaderStreamViewController {
+    @objc class func controllerWithSiteID(_ siteID: NSNumber, isFeed: Bool) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.isFeed = isFeed
@@ -166,7 +169,7 @@ import WordPressFlux
     ///
     /// - Returns: An instance of the controller
     ///
-    @objc open class func controllerWithTagSlug(_ tagSlug: String) -> ReaderStreamViewController {
+    @objc class func controllerWithTagSlug(_ tagSlug: String) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.tagSlug = tagSlug
@@ -197,7 +200,7 @@ import WordPressFlux
     }
 
 
-    open override func encodeRestorableState(with coder: NSCoder) {
+    override func encodeRestorableState(with coder: NSCoder) {
         if let topic = readerTopic {
             coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
         }
@@ -215,14 +218,14 @@ import WordPressFlux
     }
 
 
-    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
+    override func awakeAfter(using aDecoder: NSCoder) -> Any? {
         restorationIdentifier = type(of: self).restorationClassIdentifier
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)
     }
 
-    open override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         // Disable the view until we have a topic.  This prevents a premature
@@ -251,13 +254,13 @@ import WordPressFlux
         }
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         syncIfAppropriate()
     }
 
-    open override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         let mainContext = ContextManager.sharedInstance().mainContext
@@ -268,7 +271,7 @@ import WordPressFlux
     }
 
 
-    open override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         // We want to listen for any changes (following, liked) in a post detail so we can refresh the child context.
@@ -277,12 +280,12 @@ import WordPressFlux
     }
 
 
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
 
-    open override func viewDidLayoutSubviews() {
+    override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         // There appears to be a scenario where this method can be called prior to
@@ -298,7 +301,7 @@ import WordPressFlux
 
     /// Fetches a site topic for the value of the `siteID` property.
     ///
-    fileprivate func fetchSiteTopic() {
+    private func fetchSiteTopic() {
         if isViewLoaded {
             displayLoadingStream()
         }
@@ -327,7 +330,7 @@ import WordPressFlux
 
     /// Fetches a tag topic for the value of the `tagSlug` property
     ///
-    fileprivate func fetchTagTopic() {
+    private func fetchTagTopic() {
         if isViewLoaded {
             displayLoadingStream()
         }
@@ -355,24 +358,24 @@ import WordPressFlux
 
     // MARK: - Setup
 
-    fileprivate func setupTableView() {
+    private func setupTableView() {
         configureRefreshControl()
         add(tableViewController, asChildOf: self)
         layoutTableView()
         tableConfiguration.setup(tableView)
     }
 
-    fileprivate func configureRefreshControl() {
+    @objc func configureRefreshControl() {
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
     }
 
-    fileprivate func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
+    private func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
         controller.addChild(childController)
         controller.view.addSubview(childController.view)
         childController.didMove(toParent: controller)
     }
 
-    fileprivate func layoutTableView() {
+    private func layoutTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -382,22 +385,22 @@ import WordPressFlux
             ])
     }
 
-    fileprivate func setupContentHandler() {
+    private func setupContentHandler() {
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         content.initializeContent(tableView: tableView, delegate: self)
     }
 
-    fileprivate func setupSyncHelper() {
+    private func setupSyncHelper() {
         syncHelper = WPContentSyncHelper()
         syncHelper.delegate = self
     }
 
-    fileprivate func setupResultsStatusView() {
+    private func setupResultsStatusView() {
         resultsStatusView.delegate = self
     }
 
-    fileprivate func setupFooterView() {
+    private func setupFooterView() {
         footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
@@ -408,7 +411,7 @@ import WordPressFlux
 
     // MARK: - Configuration / Topic Presentation
 
-    @objc func configureStreamHeader() {
+    @objc private func configureStreamHeader() {
         guard let topic = readerTopic else {
             assertionFailure()
             return
@@ -437,7 +440,7 @@ import WordPressFlux
 
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
-    @objc func refreshTableHeaderIfNeeded() {
+    private func refreshTableHeaderIfNeeded() {
         guard let _ = readerTopic else {
             return
         }
@@ -447,7 +450,7 @@ import WordPressFlux
 
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
-    @objc func configureControllerForTopic() {
+    private func configureControllerForTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded, "The controller's view must be loaded before displaying the topic")
 
@@ -468,6 +471,7 @@ import WordPressFlux
         managedObjectContext().reset()
 
         configureTitleForTopic()
+        configureShareButtonIfNeeded()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -496,7 +500,7 @@ import WordPressFlux
     }
 
 
-    @objc func configureTitleForTopic() {
+    private func configureTitleForTopic() {
         guard let topic = readerTopic else {
             title = NSLocalizedString("Reader", comment: "The default title of the Reader")
             return
@@ -507,7 +511,7 @@ import WordPressFlux
 
 
     /// Fetch and cache the current defaultAccount authtoken, if available.
-    fileprivate func refreshImageRequestAuthToken() {
+    private func refreshImageRequestAuthToken() {
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         postCellActions?.imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
     }
@@ -523,7 +527,7 @@ import WordPressFlux
     ///
     /// - Returns: The post fetched from the main context or nil if the post does not exist in the context.
     ///
-    @objc func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
+    private func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
         guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
             DDLogError("Error retrieving an exsting post from the main context by its object ID.")
             return nil
@@ -535,7 +539,7 @@ import WordPressFlux
     /// Refreshes the layout of the header.  Required for sizing the tableHeaderView according
     /// to its intrinsic content layout, and after major layout changes on the viewcontroller itself.
     ///
-    @objc func refreshTableViewHeaderLayout() {
+    private func refreshTableViewHeaderLayout() {
         guard let headerView = tableView.tableHeaderView else {
             return
         }
@@ -570,13 +574,13 @@ import WordPressFlux
 
     /// Scrolls to the top of the list of posts.
     ///
-    @objc open func scrollViewToTop() {
+    @objc func scrollViewToTop() {
         tableView.setContentOffset(.zero, animated: true)
     }
 
 
     /// Returns the analytics property dictionary for the current topic.
-    fileprivate func topicPropertyForStats() -> [AnyHashable: Any]? {
+    private func topicPropertyForStats() -> [AnyHashable: Any]? {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
             return nil
@@ -595,14 +599,14 @@ import WordPressFlux
     /// being displayed has changed (blocking sites for instance).  Call this method to
     /// update the fetch request predicate and then perform a new fetch.
     ///
-    fileprivate func updateAndPerformFetchRequest() {
+    private func updateAndPerformFetchRequest() {
         assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
 
         content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
     }
 
 
-    @objc func updateStreamHeaderIfNeeded() {
+    private func updateStreamHeaderIfNeeded() {
         guard let topic = readerTopic else {
             assertionFailure("A reader topic is required")
             return
@@ -614,12 +618,12 @@ import WordPressFlux
     }
 
 
-    @objc func showManageSites(animated: Bool = true) {
+    func showManageSites(animated: Bool = true) {
         let controller = ReaderFollowedSitesViewController.controller()
         navigationController?.pushViewController(controller, animated: animated)
     }
 
-    func showFollowing() {
+    private func showFollowing() {
         guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
             return
         }
@@ -629,7 +633,7 @@ import WordPressFlux
 
     // MARK: - Blocking
 
-    fileprivate func blockSiteForPost(_ post: ReaderPost) {
+    private func blockSiteForPost(_ post: ReaderPost) {
         guard let indexPath = content.indexPath(forObject: post) else {
             return
         }
@@ -647,7 +651,7 @@ import WordPressFlux
     }
 
 
-    fileprivate func unblockSiteForPost(_ post: ReaderPost) {
+    private func unblockSiteForPost(_ post: ReaderPost) {
         guard let indexPath = content.indexPath(forObject: post) else {
             return
         }
@@ -668,7 +672,7 @@ import WordPressFlux
     /// to update the list UI to properly reflect the change. Listen for the
     /// notification and call blockSiteForPost as needed.
     ///
-    @objc func handleBlockSiteNotification(_ notification: Foundation.Notification) {
+    @objc private func handleBlockSiteNotification(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo, let aPost = userInfo["post"] as? ReaderPost else {
             return
         }
@@ -703,20 +707,13 @@ import WordPressFlux
         syncHelper.syncContentWithUserInteraction(true)
     }
 
-    /// Handle's the user tapping the search button.  Displays the search controller
-    ///
-    @objc func handleSearchButtonTapped(_ sender: UIBarButtonItem) {
-        let controller = ReaderSearchViewController.controller()
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
 
     // MARK: - Analytics
 
 
     /// Bump tracked analytics stats if necessary.
     ///
-    @objc func bumpStats() {
+    private func bumpStats() {
         if didBumpStats {
             return
         }
@@ -740,7 +737,7 @@ import WordPressFlux
     /// - Parameters:
     ///     - objectID: The objectID of the topic that was synced.
     ///
-    @objc func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
+    private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.sharedInstance().mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
             DDLogError("Failed to retrive an existing topic when updating last sync date.")
@@ -751,19 +748,12 @@ import WordPressFlux
     }
 
 
-    @objc func canSync() -> Bool {
+    private func canSync() -> Bool {
         return (readerTopic != nil) && connectionAvailable()
     }
 
     @objc func connectionAvailable() -> Bool {
         return WordPressAppDelegate.sharedInstance()!.connectionAvailable
-    }
-
-    @objc func canLoadMore() -> Bool {
-        if content.contentCount == 0 {
-            return false
-        }
-        return canSync()
     }
 
 
@@ -775,7 +765,7 @@ import WordPressFlux
     /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
-    @objc func syncIfAppropriate() {
+    private func syncIfAppropriate() {
         guard UIApplication.shared.isRunningTestSuite() == false else {
             return
         }
@@ -827,7 +817,7 @@ import WordPressFlux
         })
     }
 
-    @objc func syncFillingGap(_ indexPath: IndexPath) {
+    private func syncFillingGap(_ indexPath: IndexPath) {
         if !canSync() {
             let alertTitle = NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
             let alertMessage = NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
@@ -858,7 +848,7 @@ import WordPressFlux
     }
 
 
-    @objc func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    private func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             DDLogError("Error: Reader tried to sync items when the topic was nil.")
             return
@@ -905,7 +895,7 @@ import WordPressFlux
     }
 
 
-    @objc func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    private func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(syncIsFillingGap)
         guard let topic = readerTopic else {
             assertionFailure("Tried to fill a gap when the topic was nil.")
@@ -968,7 +958,7 @@ import WordPressFlux
     }
 
 
-    @objc func loadMoreItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    private func loadMoreItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             assertionFailure("Tried to fill a gap when the topic was nil.")
             return
@@ -1020,7 +1010,7 @@ import WordPressFlux
     }
 
 
-    @objc open func cleanupAfterSync(refresh: Bool = true) {
+    private func cleanupAfterSync(refresh: Bool = true) {
         syncIsFillingGap = false
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
@@ -1034,7 +1024,7 @@ import WordPressFlux
 
     // MARK: - Notifications
 
-    @objc fileprivate func defaultAccountDidChange(_ notification: Foundation.Notification) {
+    @objc private func defaultAccountDidChange(_ notification: Foundation.Notification) {
         refreshImageRequestAuthToken()
     }
 
@@ -1042,7 +1032,7 @@ import WordPressFlux
     // MARK: - Helpers for TableViewHandler
 
 
-    @objc func predicateForFetchRequest() -> NSPredicate {
+    private func predicateForFetchRequest() -> NSPredicate {
 
         // If readerTopic is nil return a predicate that is valid, but still
         // avoids returning readerPosts that do not belong to a topic (e.g. those
@@ -1067,13 +1057,13 @@ import WordPressFlux
     }
 
 
-    @objc func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
+    private func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
         let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: false)
         return [sortDescriptor]
     }
 
 
-    @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
+    private func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         guard let topic = readerTopic else {
             return
         }
@@ -1090,7 +1080,7 @@ import WordPressFlux
                                                 loggedInActionVisibility: .visible(enabled: isLoggedIn))
     }
 
-    @objc func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
+    @objc private func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
         ContextManager.sharedInstance().mergeChanges(displayContext, fromContextDidSave: notification)
     }
 
@@ -1098,7 +1088,7 @@ import WordPressFlux
     // MARK: - Helpers for ReaderStreamHeader
 
 
-    @objc func toggleFollowingForTag(_ topic: ReaderTagTopic) {
+    private func toggleFollowingForTag(_ topic: ReaderTagTopic) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -1118,7 +1108,7 @@ import WordPressFlux
     }
 
 
-    @objc func toggleFollowingForSite(_ topic: ReaderSiteTopic) {
+    private func toggleFollowingForSite(_ topic: ReaderSiteTopic) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -1154,7 +1144,7 @@ import WordPressFlux
 
 extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
-    public func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
+    func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
         if let topic = readerTopic as? ReaderTagTopic {
             toggleFollowingForTag(topic)
 
@@ -1236,7 +1226,7 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         }
     }
 
-    fileprivate func reportStreamLoadFailure() {
+    private func reportStreamLoadFailure() {
         streamLoadFailureBlock?()
 
         // We'll nil out the failure block so we don't perform multiple callbacks
@@ -1250,14 +1240,14 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: Scrolling Related
 
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
         }
     }
 
 
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if decelerate {
             return
         }
@@ -1267,7 +1257,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
 
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if cleanupAndRefreshAfterScrolling {
             cleanupAfterSync()
         }
@@ -1276,12 +1266,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: - Fetched Results Related
 
-    public func managedObjectContext() -> NSManagedObjectContext {
+    func managedObjectContext() -> NSManagedObjectContext {
         return displayContext
     }
 
 
-    public func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
@@ -1289,7 +1279,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
 
-    public func tableViewDidChangeContent(_ tableView: UITableView) {
+    func tableViewDidChangeContent(_ tableView: UITableView) {
         if content.contentCount == 0 {
             displayNoResultsView()
         }
@@ -1298,13 +1288,13 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: - Refresh Bookends
 
-    public func tableViewHandlerWillRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
+    func tableViewHandlerWillRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         // Reload the table view to reflect new content.
         managedObjectContext().reset()
         updateAndPerformFetchRequest()
     }
 
-    public func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
+    func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             if syncHelper.isSyncing {
@@ -1319,7 +1309,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: - TableView Related
 
-    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         // When using UITableViewAutomaticDimension for auto-sizing cells, UITableView
         // likes to reload rows in a strange way.
         // It uses the estimated height as a starting value for reloading animations.
@@ -1335,19 +1325,19 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
 
-    public func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.0
     }
 
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
 
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let posts = content.content as? [ReaderPost] else {
             return UITableViewCell()
         }
@@ -1381,7 +1371,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         return cell
     }
 
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Cache the cell's layout height as the currently known height, for estimation.
         // See estimatedHeightForRowAtIndexPath
         estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
@@ -1413,7 +1403,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
 
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
@@ -1469,7 +1459,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
 
-    public func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
     }
 
@@ -1648,7 +1638,7 @@ extension ReaderStreamViewController: NetworkStatusDelegate {
 // MARK: - UIViewControllerTransitioningDelegate
 //
 extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
-    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
         }
