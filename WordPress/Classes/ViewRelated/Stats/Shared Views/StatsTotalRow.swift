@@ -129,6 +129,13 @@ class StatsTotalRow: UIView, NibLoadable {
         }
     }
 
+    var hasIcon: Bool {
+        guard let rowData = rowData else {
+            return false
+        }
+        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
+    }
+
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
@@ -190,8 +197,7 @@ private extension StatsTotalRow {
             return
         }
 
-        let haveIcon = rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
-        imageView.isHidden = !haveIcon
+        imageView.isHidden = !hasIcon
 
         if let icon = rowData.icon {
             imageWidthConstraint.constant = Constants.defaultImageSize
