@@ -44,11 +44,9 @@ class QuickStartChecklistCell: UITableViewCell {
         didSet {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
+            iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
 
-            if Feature.enabled(.quickStartV2) {
-                imageView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-            } else {
-                iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+            if !Feature.enabled(.quickStartV2) {
                 accessoryType = .disclosureIndicator
             }
         }
