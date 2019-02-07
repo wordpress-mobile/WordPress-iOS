@@ -4,7 +4,15 @@ class QuickStartChecklistCell: UITableViewCell {
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var iconView: UIImageView?
-    @IBOutlet private var bottomStrokeLeading: NSLayoutConstraint?
+    @IBOutlet private var stroke: UIView?
+
+    private var bottomStrokeLeading: NSLayoutConstraint?
+    private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
+        return WPDeviceIdentification.isiPhone() ? contentView.leadingAnchor : contentView.readableContentGuide.leadingAnchor
+    }
+    private var contentViewTrailingAnchor: NSLayoutXAxisAnchor {
+        return WPDeviceIdentification.isiPhone() ? contentView.trailingAnchor : contentView.readableContentGuide.trailingAnchor
+    }
 
     public var completed = false {
         didSet {
@@ -32,7 +40,6 @@ class QuickStartChecklistCell: UITableViewCell {
             }
         }
     }
-
     public var tour: QuickStartTour? {
         didSet {
             titleLabel.text = tour?.title
@@ -57,9 +64,16 @@ class QuickStartChecklistCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        if Feature.enabled(.quickStartV2) {
+        if let stroke = stroke, Feature.enabled(.quickStartV2) {
             WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
             WPStyleGuide.configureLabel(descriptionLabel, textStyle: .subheadline)
+
+            bottomStrokeLeading = stroke.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
+            bottomStrokeLeading?.isActive = true
+            let strokeSuperviewLeading = stroke.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor)
+            strokeSuperviewLeading.priority = UILayoutPriority(999.0)
+            strokeSuperviewLeading.isActive = true
+            stroke.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
         }
     }
 
