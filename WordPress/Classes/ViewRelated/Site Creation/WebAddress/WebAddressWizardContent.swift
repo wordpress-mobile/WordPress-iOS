@@ -111,6 +111,7 @@ final class WebAddressWizardContent: UIViewController {
         setupButtonWrapper()
         setupCreateSiteButton()
         setupTable()
+        WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -235,6 +236,7 @@ final class WebAddressWizardContent: UIViewController {
         }
 
         selection(selectedDomain)
+        trackDomainsSelection(selectedDomain)
     }
 
     private func setupCells() {
@@ -387,6 +389,15 @@ final class WebAddressWizardContent: UIViewController {
         selectedDomain = nil
         table.deselectSelectedRowWithAnimation(true)
         tableViewOffsetCoordinator?.hideBottomToolbar()
+    }
+
+    private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
+        let domainSuggestionProperties: [String: AnyObject] = [
+            "chosen_domain": domainSuggestion.domainName as AnyObject,
+            "search_term": lastSearchQuery as AnyObject
+        ]
+
+        WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
     }
 }
 

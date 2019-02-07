@@ -150,7 +150,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.switchToAztec = switchToAztec
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
         super.init(nibName: nil, bundle: nil)
 

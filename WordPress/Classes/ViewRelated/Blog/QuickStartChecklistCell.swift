@@ -19,7 +19,7 @@ class QuickStartChecklistCell: UITableViewCell {
                                                                                 .foregroundColor: WPStyleGuide.grey()])
                     descriptionLabel.textColor = WPStyleGuide.grey()
                 } else {
-                    titleLabel?.attributedText = NSAttributedString(string: titleText, attributes: [.strikethroughStyle: 1])
+                    titleLabel.attributedText = NSAttributedString(string: titleText, attributes: [.strikethroughStyle: 1])
                     accessoryView = UIImageView(image: Gridicon.iconOfType(.checkmark))
                 }
             } else {
@@ -35,8 +35,8 @@ class QuickStartChecklistCell: UITableViewCell {
 
     public var tour: QuickStartTour? {
         didSet {
-            titleLabel?.text = tour?.title
-            descriptionLabel?.text = tour?.description
+            titleLabel.text = tour?.title
+            descriptionLabel.text = tour?.description
 
             if Feature.enabled(.quickStartV2) {
                 imageView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
