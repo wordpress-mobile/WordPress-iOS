@@ -22,7 +22,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private let maxChildRowsToDisplay = 10
-    private let subtitlesBottomMargin: CGFloat = 7.0
+    private let subtitlesVerticalMargins: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
@@ -84,7 +84,7 @@ private extension TopTotalsCell {
     func setSubtitleVisibility() {
         let showSubtitles = dataRows.count > 0 && subtitlesProvided
         subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + subtitlesBottomMargin : 0
+        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + (subtitlesVerticalMargins * 2) : 0
     }
 
     // MARK: - Child Row Handling
