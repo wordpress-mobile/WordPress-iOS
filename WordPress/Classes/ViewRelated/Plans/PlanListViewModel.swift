@@ -5,7 +5,7 @@ import WordPressUI
 enum PlanListViewModel {
     case loading
     case ready([Plan], [PlanFeature])
-    case error(String)
+    case error
 
     var noResultsViewModel: NoResultsViewController.Model? {
         switch self {
@@ -15,15 +15,9 @@ enum PlanListViewModel {
         case .ready:
             return nil
         case .error:
-            let appDelegate = WordPressAppDelegate.sharedInstance()
-            if (appDelegate?.connectionAvailable)! {
-                return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
-                                                     subtitle: NSLocalizedString("There was an error loading plans", comment: "Text displayed when there is a failure loading the plan list"),
-                                                     buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
-            } else {
-                return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                                                     subtitle: NSLocalizedString("An active internet connection is required to view plans", comment: "An error message shown when there is no internet connection."))
-            }
+            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
+                                                 subtitle: NSLocalizedString("There was an error loading plans", comment: "Text displayed when there is a failure loading the plan list"),
+                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
         }
     }
 
