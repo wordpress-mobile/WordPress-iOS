@@ -194,6 +194,7 @@ extension AssembledSiteView: WKNavigationDelegate {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
         generator.notificationOccurred(.success)
+        hideGetStartedBar()
         WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
     }
 
@@ -204,5 +205,13 @@ extension AssembledSiteView: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         completionHandler(.performDefaultHandling, nil)
+    }
+
+    func hideGetStartedBar() {
+        let javascript = """
+        document.querySelector('html').style.cssText += '; margin-top: 0 !important;';\n
+        document.getElementById('wpadminbar').style.display = 'none';\n
+        """
+        webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
 }
