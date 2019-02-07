@@ -224,7 +224,7 @@ DEPENDENCIES:
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `49178f8ab7b156885a1ed82d667671ee06a5c601`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `9e76613af1b0ab1ff3dc5447ba866e51633f2e2f`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
   - MRProgress (= 0.8.3)
@@ -239,7 +239,7 @@ DEPENDENCIES:
   - react-native-keyboard-aware-scroll-view (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/develop/react-native-gutenberg-bridge/third-party-podspecs/react-native-keyboard-aware-scroll-view.podspec.json`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `8.0.9-gb.0`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `49178f8ab7b156885a1ed82d667671ee06a5c601`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `9e76613af1b0ab1ff3dc5447ba866e51633f2e2f`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
@@ -299,7 +299,7 @@ EXTERNAL SOURCES:
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
-    :commit: 49178f8ab7b156885a1ed82d667671ee06a5c601
+    :commit: 9e76613af1b0ab1ff3dc5447ba866e51633f2e2f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
@@ -311,7 +311,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: 49178f8ab7b156885a1ed82d667671ee06a5c601
+    :commit: 9e76613af1b0ab1ff3dc5447ba866e51633f2e2f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -324,13 +324,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.3.1
   Gutenberg:
-    :commit: 49178f8ab7b156885a1ed82d667671ee06a5c601
+    :commit: 9e76613af1b0ab1ff3dc5447ba866e51633f2e2f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 8.0.9-gb.0
   RNTAztecView:
-    :commit: 49178f8ab7b156885a1ed82d667671ee06a5c601
+    :commit: 9e76613af1b0ab1ff3dc5447ba866e51633f2e2f
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -385,6 +385,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 1c1e4d6ac098ffd3d38028be400c9397ecebcf19
+PODFILE CHECKSUM: ec5441b77054513715bc8ed7f4ce99aa504f72af
 
 COCOAPODS: 1.5.3
