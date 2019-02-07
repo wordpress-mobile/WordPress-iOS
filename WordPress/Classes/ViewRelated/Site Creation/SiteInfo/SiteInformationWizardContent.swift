@@ -57,6 +57,7 @@ final class SiteInformationWizardContent: UIViewController {
         setupTable()
         setupButtonWrapper()
         setupNextButton()
+        WPAnalytics.track(.enhancedSiteCreationBasicInformationViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -195,6 +196,20 @@ final class SiteInformationWizardContent: UIViewController {
     private func goNext() {
         let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
         completion(collectedData)
+        trackBasicInformationNextStep()
+    }
+
+    private func trackBasicInformationNextStep() {
+        if nextStep.isPrimary {
+            let basicInformationProperties: [String: AnyObject] = [
+                "site_title": titleString() as AnyObject,
+                "tagline": taglineString() as AnyObject
+            ]
+
+            WPAnalytics.track(.enhancedSiteCreationBasicInformationCompleted, withProperties: basicInformationProperties)
+        } else {
+            WPAnalytics.track(.enhancedSiteCreationBasicInformationSkipped)
+        }
     }
 
     private func titleString() -> String {

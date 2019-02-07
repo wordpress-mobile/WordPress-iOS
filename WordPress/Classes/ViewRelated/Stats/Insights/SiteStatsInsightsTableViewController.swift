@@ -199,6 +199,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
+        // Go ahead an update the table. The remaining logic just updates
+        // the array that tracks the expanded rows.
         applyTableUpdates()
 
         guard let rowData = row.rowData else {
