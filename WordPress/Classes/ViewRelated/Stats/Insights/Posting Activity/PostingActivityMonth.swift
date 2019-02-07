@@ -10,7 +10,7 @@ class PostingActivityMonth: UIView, NibLoadable {
 
     private var month: Date?
     private var monthData: [PostingActivityDayData]?
-    private var postingActivityDayDelegate: PostingActivityDayDelegate?
+    private weak var postingActivityDayDelegate: PostingActivityDayDelegate?
 
     // 14 = day width (12) + column margin (2).
     // Used to adjust the view width when hiding the last stack view.

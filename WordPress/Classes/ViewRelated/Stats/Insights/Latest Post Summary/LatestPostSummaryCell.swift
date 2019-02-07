@@ -27,7 +27,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
-    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var summaryData: StatsLatestPostSummary?
 
