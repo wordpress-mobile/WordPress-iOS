@@ -254,7 +254,7 @@ open class QuickStartTourGuide: NSObject {
     ]
 
     static let growListTours: [QuickStartTour] = [
-        QuickStartPostSharingTour(),
+        QuickStartShareTour(),
         QuickStartPublishTour(),
         QuickStartFollowTour(),
         QuickStartCheckStatsTour(),

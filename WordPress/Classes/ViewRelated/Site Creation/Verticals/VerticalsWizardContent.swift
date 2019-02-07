@@ -118,6 +118,7 @@ final class VerticalsWizardContent: UIViewController {
         setupButtonWrapper()
         setupNextButton()
         setupTable()
+        WPAnalytics.track(.enhancedSiteCreationVerticalsViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -394,6 +395,7 @@ final class VerticalsWizardContent: UIViewController {
 
             let vertical = provider.data[selectedIndexPath.row]
             self.selection(vertical)
+            self.trackVerticalSelection(vertical)
         }
 
         self.tableViewProvider = VerticalsTableViewProvider(tableView: table, data: data, selectionHandler: handler)
@@ -401,6 +403,16 @@ final class VerticalsWizardContent: UIViewController {
 
     private func setupTableSeparator() {
         table.separatorColor = WPStyleGuide.greyLighten20()
+    }
+
+    private func trackVerticalSelection(_ vertical: SiteVertical) {
+        let verticalProperties: [String: AnyObject] = [
+            "vertical_name": vertical.title as AnyObject,
+            "vertical_id": vertical.identifier as AnyObject,
+            "vertical_is_user": vertical.isNew as AnyObject
+        ]
+
+        WPAnalytics.track(.enhancedSiteCreationVerticalsSelected, withProperties: verticalProperties)
     }
 
     @objc
@@ -417,6 +429,7 @@ final class VerticalsWizardContent: UIViewController {
     @objc
     private func skip() {
         selection(nil)
+        WPAnalytics.track(.enhancedSiteCreationVerticalsSkipped)
     }
 }
 
