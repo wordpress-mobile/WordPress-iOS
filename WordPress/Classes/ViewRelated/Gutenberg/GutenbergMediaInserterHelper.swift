@@ -31,7 +31,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func insertFromSiteMediaLibrary(media: Media, callback: @escaping MediaPickerDidPickMediaCallback) {
-        callback(media.mediaID?.intValue, media.remoteURL)
+        callback(media.mediaID?.int32Value, media.remoteURL)
     }
 
     func insertFromDevice(asset: PHAsset, callback: @escaping MediaPickerDidPickMediaCallback) {
@@ -66,6 +66,24 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
+    func mediaFor(uploadID: Int32) -> Media? {
+        for media in post.media {
+            if media.gutenbergUploadID == uploadID {
+                return media
+            }
+        }
+        return nil
+    }
+
+    func cancelUploadOf(media: Media) {
+        mediaCoordinator.cancelUpload(of: media)
+        gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
+    }
+
+    func retryUploadOf(media: Media) {
+        mediaCoordinator.retryMedia(media)
+    }
+
     private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
         switch exportableAsset.assetMediaType {
         case .image:
@@ -98,16 +116,20 @@ class GutenbergMediaInserterHelper: NSObject {
         switch state {
         case .processing:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
-        case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: url, serverID: nil)
+        case .thumbnailReady:
+            break
         case .uploading:
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
+            break
         case .ended:
-            guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.intValue else {
+            guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
                 break
             }
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
-        case .failed:
+        case .failed(let error):
+            if error.code == NSURLErrorCancelled {
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
+                return
+            }
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
@@ -116,7 +138,7 @@ class GutenbergMediaInserterHelper: NSObject {
 }
 
 extension Media {
-    var gutenbergUploadID: Int {
-        return objectID.uriRepresentation().absoluteString.hash
+    var gutenbergUploadID: Int32 {
+        return Int32(truncatingIfNeeded: objectID.uriRepresentation().absoluteString.hash)
     }
 }
