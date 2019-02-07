@@ -150,7 +150,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.switchToAztec = switchToAztec
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
         super.init(nibName: nil, bundle: nil)
 
@@ -327,6 +327,41 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.mediaInserterHelper.syncUploads()
     }
 
+    func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
+
+        guard let media = mediaInserterHelper.mediaFor(uploadID: mediaID) else {
+            return
+        }
+
+        let title: String = MediaAttachmentActionSheet.title
+        var message: String? = nil
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
+
+        }
+        alertController.addAction(dismissAction)
+
+        if media.remoteStatus == .pushing || media.remoteStatus == .processing {
+            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { (action) in
+                self.mediaInserterHelper.cancelUploadOf(media: media)
+            }
+            alertController.addAction(cancelUploadAction)
+        } else if media.remoteStatus == .failed, let error = media.error {
+            message = error.localizedDescription
+            let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                self.mediaInserterHelper.retryUploadOf(media: media)
+            }
+            alertController.addAction(retryUploadAction)
+        }
+
+        alertController.title = title
+        alertController.message = message
+        alertController.popoverPresentationController?.sourceView = view
+        alertController.popoverPresentationController?.sourceRect = view.frame
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated: true, completion: nil)
+    }
+
     func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
         if changed {
             self.html = html
@@ -436,5 +471,15 @@ private extension GutenbergViewController {
 
     enum Analytics {
         static let editorSource = "gutenberg"
+    }
+}
+
+private extension GutenbergViewController {
+    struct MediaAttachmentActionSheet {
+        static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
+        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
+        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
     }
 }

@@ -178,6 +178,10 @@ final class AssembledSiteView: UIView {
 
 extension AssembledSiteView: WKNavigationDelegate {
 
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed)
+    }
+
     func webView(_ webView: WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         guard webViewHasLoadedContent else {
             decisionHandler(.allow)
@@ -190,6 +194,7 @@ extension AssembledSiteView: WKNavigationDelegate {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
         generator.notificationOccurred(.success)
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

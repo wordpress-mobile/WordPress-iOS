@@ -42,11 +42,12 @@ final class SiteCreationVerticalsPromptService: LocalCoreDataService, SiteVertic
         self.accountService = AccountService(managedObjectContext: context)
 
         let api: WordPressComRestApi
-        if let wpcomApi = accountService.defaultWordPressComAccount()?.wordPressComRestApi {
-            api = wpcomApi
+        if let account = accountService.defaultWordPressComAccount() {
+            api = account.wordPressComRestV2Api
         } else {
-            api = WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
         }
+
         self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
 
         super.init(managedObjectContext: context)

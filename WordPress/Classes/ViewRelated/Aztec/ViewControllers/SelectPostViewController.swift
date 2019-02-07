@@ -1,9 +1,12 @@
 import UIKit
 
-class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
+
+class SelectPostViewController: UITableViewController {
+
+    typealias SelectPostCallback = (_ url: String, _ title: String) -> ()
+    private var callback: SelectPostCallback?
 
     private var blog: Blog!
-
     private var selectedLink: String?
 
     private lazy var searchController: UISearchController = {
@@ -19,9 +22,7 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
         return PostCoordinator.shared.posts(for: self.blog, wichTitleContains: "")
     }()
 
-    typealias SelectPostCallback = (_ url: String, _ title: String) -> ()
-
-    private var callback: SelectPostCallback?
+    // MARK: - Initialization
 
     init(blog: Blog, selectedLink: String? = nil, callback: SelectPostCallback? = nil) {
         self.blog = blog
@@ -33,25 +34,38 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+
+    // MARK: - Lifecycle methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tableView.tableHeaderView = searchController.searchBar
+        tableView.tableHeaderView = searchController.searchBar
     }
 
-    // MARK: - Table view data source
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchController.dismiss(animated: false, completion: nil)
+    }
+}
+
+
+// MARK: - UITableViewDataSource Conformance
+//
+extension SelectPostViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let count =  fetchController.sections?.count {
-            return count
+        guard let count =  fetchController.sections?.count else {
+            return 0
         }
-        return 0
+
+        return count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = self.fetchController.sections else {
             return 0
         }
+
         let sectionInfo = sections[section]
         return sectionInfo.numberOfObjects
     }
@@ -73,7 +87,7 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
         } else {
             cell.detailTextLabel?.text = NSLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
         }
-        if post.permaLink == self.selectedLink {
+        if post.permaLink == selectedLink {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -81,9 +95,14 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
 
         return cell
     }
+}
+
+
+// MARK: - UITableViewDelegate Conformance
+//
+extension SelectPostViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         let post = fetchController.object(at: indexPath)
         guard let title = post.titleForDisplay(), let url = post.permaLink else {
             return
@@ -91,10 +110,16 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
 
         callback?(url, title)
     }
+}
+
+
+// MARK: - UISearchResultsUpdating Conformance
+//
+extension SelectPostViewController: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
-        fetchController = PostCoordinator.shared.posts(for: self.blog, wichTitleContains: searchText)
-        self.tableView.reloadData()
+        fetchController = PostCoordinator.shared.posts(for: blog, wichTitleContains: searchText)
+        tableView.reloadData()
     }
 }

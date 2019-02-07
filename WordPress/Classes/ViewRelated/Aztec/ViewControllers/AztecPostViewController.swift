@@ -426,7 +426,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         self.switchToGutenberg = switchToGutenberg
 
         super.init(nibName: nil, bundle: nil)
-        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)

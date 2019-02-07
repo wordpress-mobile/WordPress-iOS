@@ -134,8 +134,8 @@ open class QuickStartTourGuide: NSObject {
         }
     }
 
-    func complete(tour: QuickStartTour, for blog: Blog) {
-        completed(tour: tour, for: blog)
+    func complete(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
+        completed(tour: tour, for: blog, postNotification: postNotification)
     }
 
     // we have this because poor stupid ObjC doesn't know what the heck an optional is
@@ -254,7 +254,7 @@ open class QuickStartTourGuide: NSObject {
     ]
 
     static let growListTours: [QuickStartTour] = [
-        QuickStartPostSharingTour(),
+        QuickStartShareTour(),
         QuickStartPublishTour(),
         QuickStartFollowTour(),
         QuickStartCheckStatsTour(),
@@ -272,7 +272,7 @@ private extension QuickStartTourGuide {
         return completedTours.count > 0
     }
 
-    func completed(tour: QuickStartTour, for blog: Blog) {
+    func completed(tour: QuickStartTour, for blog: Blog, postNotification: Bool = true) {
         let completedTourIDs = (blog.completedQuickStartTours ?? []).map { $0.tourID }
         guard !completedTourIDs.contains(tour.key) else {
             return
@@ -280,7 +280,9 @@ private extension QuickStartTourGuide {
 
         blog.completeTour(tour.key)
 
-        NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+        if postNotification {
+            NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+        }
 
         guard !(tour is QuickStartCongratulationsTour) else {
             WPAnalytics.track(.quickStartCongratulationsViewed)
