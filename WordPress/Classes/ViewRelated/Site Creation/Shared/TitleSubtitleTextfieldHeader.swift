@@ -60,7 +60,7 @@ private final class SearchTextField: UITextField {
 
         backgroundColor = .white
         clearButtonMode = .whileEditing
-        font = WPStyleGuide.fontForTextStyle(.body, fontWeight: UIFont.Weight.regular)
+        font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         textColor = WPStyleGuide.darkGrey()
 
         autocapitalizationType = .none
