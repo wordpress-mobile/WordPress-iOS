@@ -170,7 +170,7 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
 }
 
 // MARK: WebView delegate methods
-extension WPRichTextEmbed : WKNavigationDelegate {
+extension WPRichTextEmbed: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // We're fully loaded so we can unassign the delegate.
