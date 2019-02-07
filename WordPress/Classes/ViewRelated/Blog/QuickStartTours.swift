@@ -111,8 +111,8 @@ struct QuickStartCustomizeTour: QuickStartTour {
 struct QuickStartShareTour: QuickStartTour {
     let key = "quick-start-share-tour"
     let analyticsKey = "share_site"
-    let title = NSLocalizedString("Share your site", comment: "Title of a Quick Start Tour")
-    let description = NSLocalizedString("Connect to your social media accounts -- your site will automatically share new posts.", comment: "Description of a Quick Start Tour")
+    let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
+    let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
     let icon = Gridicon.iconOfType(.share)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
@@ -187,6 +187,12 @@ struct QuickStartSiteIconTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.globe)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Tap %@ to upload a new one.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let descriptionTarget = NSLocalizedString("Your Site Icon", comment: "The item to tap during a guided tour.")
+        return [(element: .siteIcon, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
+    }()
 }
 
 struct QuickStartNewPageTour: QuickStartTour {
@@ -197,16 +203,18 @@ struct QuickStartNewPageTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.pages)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
-}
 
-struct QuickStartPostSharingTour: QuickStartTour {
-    let key = "quick-start-post-sharing-tour"
-    let analyticsKey = "post_sharing"
-    let title = NSLocalizedString("Enable post sharing", comment: "Title of a Quick Start Tour")
-    let description = NSLocalizedString("Automatically share new posts to your social media accounts.", comment: "Description of a Quick Start Tour")
-    let icon = Gridicon.iconOfType(.share)
-    let suggestionNoText = Strings.notNow
-    let suggestionYesText = Strings.yesShowMe
+    var waypoints: [WayPoint] = {
+        let pagesStepDesc = NSLocalizedString("Tap %@ to continue.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let pagesStepTarget = NSLocalizedString("Site Pages", comment: "The item to tap during a guided tour.")
+
+        let newStepDesc = NSLocalizedString("Tap %@ to create a new page.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+
+        return [
+            (element: .pages, description: pagesStepDesc.highlighting(phrase: pagesStepTarget, icon: nil)),
+            (element: .newPage, description: newStepDesc.highlighting(phrase: "", icon: Gridicon.iconOfType(.plus)))
+        ]
+    }()
 }
 
 struct QuickStartCheckStatsTour: QuickStartTour {
@@ -217,6 +225,12 @@ struct QuickStartCheckStatsTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.statsAlt)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Tap %@ to see how your site is performing.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let descriptionTarget = NSLocalizedString("Stats", comment: "The item to tap during a guided tour.")
+        return [(element: .stats, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.stats)))]
+    }()
 }
 
 struct QuickStartExplorePlansTour: QuickStartTour {
@@ -227,6 +241,12 @@ struct QuickStartExplorePlansTour: QuickStartTour {
     let icon = Gridicon.iconOfType(.plans)
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
+
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Tap %@ to see your current plan and other available plans.", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let descriptionTarget = NSLocalizedString("Plan", comment: "The item to tap during a guided tour.")
+        return [(element: .plans, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.plans)))]
+    }()
 }
 
 private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
