@@ -6,5 +6,6 @@ extension BlogListViewController {
             return
         }
         present(wizard, animated: true)
+        WPAnalytics.track(.enhancedSiteCreationAccessed)
     }
 }

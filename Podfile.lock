@@ -195,7 +195,7 @@ PODS:
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.7.0-beta.1):
+  - WordPressShared (1.7.0-beta.2):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.2.0)
@@ -216,7 +216,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.1`)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
@@ -295,7 +295,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: '0.3'
+    :tag: 0.3.1
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
@@ -322,7 +322,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: '0.3'
+    :tag: 0.3.1
   Gutenberg:
     :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -378,13 +378,13 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 5a09651534181c9f3ab43516b7666e9c55b2330e
   WordPressAuthenticator: 40ed3d920f134227a6ab069576378293c0bda401
   WordPressKit: 9f32d40719c9dbd32d2f4e36cfb61af02e952dac
-  WordPressShared: 9889ea6eaeb951df12e2901f98bd194df728d2a1
+  WordPressShared: ce9d771015c70dacaad8a5748410580073937b9e
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 4051af86a8ff0412cf4addbe5e42347cca8e6021
+PODFILE CHECKSUM: 6dd41774aeb4893ede04994d080f61d042e574e1
 
 COCOAPODS: 1.5.3
