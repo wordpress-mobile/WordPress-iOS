@@ -16,13 +16,15 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
+    // If the subtitles are not shown, this is active.
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
+    // If the subtitles are shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
 
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private let maxChildRowsToDisplay = 10
-    private let subtitlesVerticalMargins: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
@@ -43,10 +45,9 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        setSubtitleVisibility()
-
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
         addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
+        setSubtitleVisibility()
         initChildRows()
 
         applyStyles()
@@ -84,7 +85,8 @@ private extension TopTotalsCell {
     func setSubtitleVisibility() {
         let showSubtitles = dataRows.count > 0 && subtitlesProvided
         subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + (subtitlesVerticalMargins * 2) : 0
+        rowsStackViewTopConstraint.isActive = !showSubtitles
+        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
     }
 
     // MARK: - Child Row Handling
