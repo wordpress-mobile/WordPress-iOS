@@ -33,8 +33,12 @@ private final class SearchTextField: UITextField {
         return bounds.insetBy(dx: Constants.textInset, dy: 0)
     }
 
-    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: Constants.textInset, dy: 0)
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        let startX = bounds.origin.x + Constants.textInset
+        let startY = bounds.origin.y
+        let width = bounds.width - Constants.textInset * 2
+        let height = bounds.height;
+        return CGRect(x: startX, y: startY, width: width, height: height)
     }
 
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
