@@ -122,6 +122,7 @@ private extension TopTotalsCell {
             let childRow = StatsTotalRow.loadFromNib()
 
             childRow.configure(rowData: childRowData, delegate: self)
+            Style.configureLabelAsChildRowTitle(childRow.itemLabel)
             childRow.showSeparator = false
 
             // If the parent row has an icon, show the image view for the child
