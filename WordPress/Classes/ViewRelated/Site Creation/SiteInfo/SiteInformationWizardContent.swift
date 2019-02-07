@@ -201,9 +201,10 @@ final class SiteInformationWizardContent: UIViewController {
 
     private func trackBasicInformationNextStep() {
         if nextStep.isPrimary {
-            var basicInformationProperties = [String: AnyObject]()
-            basicInformationProperties["site_title"] = titleString() as AnyObject?
-            basicInformationProperties["tagline"] = taglineString() as AnyObject?
+            let basicInformationProperties: [String: AnyObject] = [
+                "site_title": titleString() as AnyObject,
+                "tagline": taglineString() as AnyObject
+            ]
 
             WPAnalytics.track(.enhancedSiteCreationBasicInformationCompleted, withProperties: basicInformationProperties)
         } else {

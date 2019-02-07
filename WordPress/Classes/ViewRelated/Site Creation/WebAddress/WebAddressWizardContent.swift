@@ -392,9 +392,10 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
-        var domainSuggestionProperties = [String: AnyObject]()
-        domainSuggestionProperties["chosen_domain"] = domainSuggestion.domainName as AnyObject?
-        domainSuggestionProperties["search_term"] = lastSearchQuery as AnyObject?
+        let domainSuggestionProperties: [String: AnyObject] = [
+            "chosen_domain": domainSuggestion.domainName as AnyObject,
+            "search_term": lastSearchQuery as AnyObject
+        ]
 
         WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
     }

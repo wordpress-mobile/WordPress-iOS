@@ -37,8 +37,9 @@ final class ErrorStateViewController: UIViewController {
     }
 
     private func trackError() {
-        var errorProperties = [String: AnyObject]()
-        errorProperties["error_info"] = configuration.title as AnyObject?
+        let errorProperties: [String: AnyObject] = [
+            "error_info": configuration.title as AnyObject
+        ]
 
         WPAnalytics.track(.enhancedSiteCreationErrorShown, withProperties: errorProperties)
     }
