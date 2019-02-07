@@ -34,11 +34,8 @@ private final class SearchTextField: UITextField {
     }
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        let startX = bounds.origin.x + Constants.textInset
-        let startY = bounds.origin.y
-        let width = bounds.width - Constants.textInset * 2
-        let height = bounds.height;
-        return CGRect(x: startX, y: startY, width: width, height: height)
+        let textInsets = UIEdgeInsets(top: 0, left: Constants.textInset, bottom: 0, right: 0)
+        return bounds.inset(by: textInsets)
     }
 
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
