@@ -1,10 +1,19 @@
 import Gridicons
 
 class QuickStartChecklistCell: UITableViewCell {
-    @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var descriptionLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel! {
+        didSet {
+            WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
+        }
+    }
+    @IBOutlet private var descriptionLabel: UILabel! {
+        didSet {
+            WPStyleGuide.configureLabel(descriptionLabel, textStyle: .subheadline)
+        }
+    }
     @IBOutlet private var iconView: UIImageView?
     @IBOutlet private var stroke: UIView?
+    @IBOutlet private var topSeparator: UIView?
 
     private var bottomStrokeLeading: NSLayoutConstraint?
     private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
@@ -58,22 +67,38 @@ class QuickStartChecklistCell: UITableViewCell {
         }
     }
 
+    public var topSeparatorIsHidden: Bool = false {
+        didSet {
+            topSeparator?.isHidden = topSeparatorIsHidden
+        }
+    }
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        if let stroke = stroke, Feature.enabled(.quickStartV2) {
-            WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
-            WPStyleGuide.configureLabel(descriptionLabel, textStyle: .subheadline)
-
-            bottomStrokeLeading = stroke.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
-            bottomStrokeLeading?.isActive = true
-            let strokeSuperviewLeading = stroke.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor)
-            strokeSuperviewLeading.priority = UILayoutPriority(999.0)
-            strokeSuperviewLeading.isActive = true
-            stroke.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+        if Feature.enabled(.quickStartV2) {
+            setupConstraints()
         }
     }
 
     static let reuseIdentifier = "QuickStartChecklistCell"
+}
+
+extension QuickStartChecklistCell {
+    private func setupConstraints() {
+        guard let stroke = stroke,
+            let topSeparator = topSeparator else {
+            return
+        }
+
+        bottomStrokeLeading = stroke.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
+        bottomStrokeLeading?.isActive = true
+        let strokeSuperviewLeading = stroke.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor)
+        strokeSuperviewLeading.priority = UILayoutPriority(999.0)
+        strokeSuperviewLeading.isActive = true
+        stroke.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+        topSeparator.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor).isActive = true
+        topSeparator.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+    }
 }
