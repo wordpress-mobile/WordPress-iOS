@@ -23,8 +23,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
-    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    private var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
