@@ -110,21 +110,6 @@ private extension SiteStatsPeriodTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
-        scrollToBottomIfNeeded()
-    }
-
-    func scrollToBottomIfNeeded() {
-
-        // If there are no visible cells, scroll to the last table row.
-        // This can happen when switching from a period with a lot of data (ex. Year)
-        // to a period with much less data (ex. Day).
-
-        guard tableView.visibleCells.isEmpty else {
-            return
-        }
-
-        let indexPath = IndexPath(row: tableView.numberOfRows(inSection: 0) - 1, section: 0)
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
     }
 
     @objc func userInitiatedRefresh() {
