@@ -112,6 +112,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if QuickStartTourGuide.find()?.isCurrentElement(.newPage) ?? false {
+            updateFilterWithPostStatus(.publish)
+        }
+
         super.updateAndPerformFetchRequest()
 
         title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
@@ -448,6 +453,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let page = postService.createDraftPage(for: blog)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
         showEditor(post: page)
+
+        QuickStartTourGuide.find()?.visited(.newPage)
     }
 
     fileprivate func editPage(_ apost: AbstractPost) {
