@@ -168,17 +168,21 @@ class PostCoordinator: NSObject {
 
     private func updateReferences(to media: Media, in post: AbstractPost) {
         guard var postContent = post.content,
+            let mediaID = media.mediaID?.intValue,
             let remoteURLStr = media.remoteURL else {
             return
         }
 
         let mediaUploadID = media.uploadID
+        let gutenbergMediaUploadID = media.gutenbergUploadID
         if media.remoteStatus == .failed {
             return
         }
         if media.mediaType == .image {
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
             postContent = imgPostUploadProcessor.process(postContent)
+            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            postContent = gutenbergImgPostUploadProcessor.process(postContent)
         } else if media.mediaType == .video {
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             postContent = videoPostUploadProcessor.process(postContent)
