@@ -152,7 +152,7 @@ private extension TopTotalsCell {
     }
 
     func toggleSeparatorForRowPreviousTo(_ row: StatsTotalRow) {
-        guard let rowIndex = indexForRow(row), (rowIndex - 1) > 0,
+        guard let rowIndex = indexForRow(row), (rowIndex - 1) >= 0,
         let previousRow = rowsStackView.arrangedSubviews[rowIndex - 1] as? StatsTotalRow else {
             return
         }
