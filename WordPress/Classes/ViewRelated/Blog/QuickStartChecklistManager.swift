@@ -118,6 +118,19 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         }
         return 0.0
     }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let section = Sections(rawValue: indexPath.section), section == .todo else {
+            return nil
+        }
+
+        let buttonTitle = NSLocalizedString("Skip", comment: "Button title that appears when you swipe to left the row. It indicates the possibility to skip a specific tour.")
+        let skip = UITableViewRowAction(style: .destructive, title: buttonTitle) { [weak self] (_, indexPath) in
+            self?.tableView(tableView, completeTourAt: indexPath)
+        }
+        skip.backgroundColor = WPStyleGuide.errorRed()
+        return [skip]
+    }
 }
 
 private extension QuickStartChecklistManager {
@@ -149,19 +162,75 @@ private extension QuickStartChecklistManager {
             indexPaths.append(IndexPath(row: index, section: Sections.completed.rawValue))
         }
 
-        if collapsing {
-            tableView.insertRows(at: indexPaths, with: .fade)
-        } else {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-        }
+        tableView.perform(update: { tableView in
+            if collapsing {
+                tableView.insertRows(at: indexPaths, with: .fade)
+            } else {
+                tableView.deleteRows(at: indexPaths, with: .fade)
+            }
+        })
 
         didTapHeader(collapsing)
+    }
+
+    func tableView(_ tableView: UITableView, completeTourAt indexPath: IndexPath) {
+        guard let tourGuide = QuickStartTourGuide.find() else {
+            return
+        }
+        let tour = todoTours[indexPath.row]
+        todoTours.remove(at: indexPath.row)
+        completedTours.append(tour)
+        completedToursKeys.insert(tour.key)
+
+        tableView.perform(update: { tableView in
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            let sections = IndexSet(integer: Sections.completed.rawValue)
+            tableView.reloadSections(sections, with: .fade)
+        }) { [weak self] tableView, _ in
+            DispatchQueue.main.async {
+                guard let self = self else {
+                    return
+                }
+                if self.shouldShowCompleteTasksScreen() {
+                    self.didTapHeader(self.completedSectionCollapse)
+                }
+                tourGuide.complete(tour: tour, for: self.blog, postNotification: false)
+                let sections = IndexSet(integer: Sections.todo.rawValue)
+                tableView.reloadSections(sections, with: .automatic)
+            }
+        }
+    }
+}
+
+private extension UITableView {
+    /// Allows multiple insert/delete/reload/move calls to be animated simultaneously.
+    ///
+    /// - Parameters:
+    ///   - update: The block that performs the relevant insert, delete, reload, or move operations.
+    ///   - completion: A completion handler block to execute when all of the operations are finished. The Boolean value indicating whether the animations completed successfully. The value of this parameter is false if the animations were interrupted for any reason. On iOS 10 the value is always true.
+    func perform(update: (UITableView) -> Void, _ completion: ((UITableView, Bool) -> Void)? = nil) {
+        if #available(iOS 11.0, *) {
+            performBatchUpdates({
+                update(self)
+            }) { success in
+                completion?(self, success)
+            }
+        } else {
+            CATransaction.begin()
+            CATransaction.setCompletionBlock {
+                completion?(self, true)
+            }
+            beginUpdates()
+            update(self)
+            endUpdates()
+            CATransaction.commit()
+        }
     }
 }
 
 private enum Sections: Int, CaseIterable {
-    static let footerHeight = CGFloat(20.0)
-    static let headerHeight = CGFloat(44.0)
+    static let footerHeight: CGFloat = 20.0
+    static let headerHeight: CGFloat = 44.0
 
     case todo
     case completed
