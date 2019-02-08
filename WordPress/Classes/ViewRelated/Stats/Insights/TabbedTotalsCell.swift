@@ -39,7 +39,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
-    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var showTotalCount = false
 
     // MARK: - Configure
