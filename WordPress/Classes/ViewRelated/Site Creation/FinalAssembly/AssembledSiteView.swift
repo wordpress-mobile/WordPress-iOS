@@ -193,6 +193,7 @@ extension AssembledSiteView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
+        webView.prepareWPComPreview()
         generator.notificationOccurred(.success)
         WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
     }
