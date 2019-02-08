@@ -1,9 +1,8 @@
-*Se stai iniziando un nuovo sito tramite l'app, puoi registrare ora il tuo subdominio .blog!
-*Quando provi a eliminare un sito su un iPad, l'app non si arresterà più (a volte potrebbe capitare).
-*Risolto un arresto nella schermata "Informazioni su" nelle Impostazioni app.
-*Aggiornate le impostazioni dell'articolo in modo che appaia migliore sull'iPad.
+Per questo rilascio abbiamo migliorato la nostra esperienza in alcune aree:
 
-Con un nuovo ciclo di miglioramenti alla funzione Cronologia/Revisioni, ora puoi…
-*Scorrere tra le revisioni in un secondo.
-*Passare dalla modalità HTML a quella visuale quando stai guardando una revisione.
-*Cambiare idea se applichi una revisione con un nuovo pulsante Annulla.
+- Aggiunta di un supporto per l'inserimento automatico della password quando viene immesso il nome utente durante l'accesso.
+- Aggiunta di un testo di chiarimento relativo ai messaggi vuoti quando vengono condivisi gli articoli sui social media. Se non fornisci un messaggio, utilizziamo il titolo dell'articolo predefinito.
+- Abbiamo automaticamente salvato la tua bozza prima di mostrarti un'anteprima.
+- Correzione di un errore che causa grandi spazi sopra (o sotto) alcune immagini nel Reader.
+- Correzione di un bug di rientro nell'elenco Pagine per pagine private.
+- Correzione di un bug visivo che influenza l'elenco Articoli con grandi dimensioni di testo.
