@@ -1026,6 +1026,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return detailSection.title;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionNum {
+    BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
+    if (section.showQuickStartMenu) {
+        PageListSectionHeaderView *view = [[[NSBundle mainBundle] loadNibNamed:[PageListSectionHeaderView classNameWithoutNamespaces] owner:nil options:nil] firstObject];
+        [view setTite:@"TEST"];
+        return view;
+    } else {
+        return [super tableView:tableView viewForHeaderInSection:sectionNum];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionHeader:view];
