@@ -7,7 +7,7 @@ class LoginPasswordScreen: BaseScreen {
 
     init() {
         passwordTextField = XCUIApplication().secureTextFields["Password"]
-        loginButton = XCUIApplication().buttons["Log In Button"]
+        loginButton = XCUIApplication().buttons["Next"]
         super.init(element: passwordTextField)
     }
 
@@ -41,6 +41,6 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["Log In Button"].exists
+        return XCUIApplication().buttons["Next"].exists
     }
 }
