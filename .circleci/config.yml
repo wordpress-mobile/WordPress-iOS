@@ -23,6 +23,7 @@ jobs:
           path: build/reports
 
 workflows:
+  version: 2
   wordpress_ios:
     jobs:
       - danger/danger-ruby:
