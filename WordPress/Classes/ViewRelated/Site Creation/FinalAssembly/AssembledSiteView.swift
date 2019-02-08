@@ -171,6 +171,20 @@ final class AssembledSiteView: UIView {
         layer.shadowOffset = Parameters.shadowOffset
         layer.shadowOpacity = Parameters.shadowOpacity
         layer.shadowRadius = Parameters.shadowRadius
+
+        // Used to prevent touch highlights on the webview
+        let tapRecognizer = UITapGestureRecognizer(target: nil, action: nil)
+        tapRecognizer.delegate = self
+        webView.addGestureRecognizer(tapRecognizer)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension AssembledSiteView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // This prevents WKWebView's touch highlighting from activating
+        return true
     }
 }
 
