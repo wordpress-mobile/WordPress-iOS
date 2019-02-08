@@ -44,12 +44,6 @@ open class QuickStartTourGuide: NSObject {
         return "\(completedCount)/\(totalCount)"
     }
 
-    func completionCount(of list: [QuickStartTour], for blog: Blog) -> (complete: Int, total: Int) {
-        let completedCount = countChecklistCompleted(in: list, for: blog)
-        let totalCount = list.count
-        return (complete: completedCount, total: totalCount)
-    }
-
     /// Provides a tour to suggest to the user
     ///
     /// - Parameter blog: The Blog for which to suggest a tour.
@@ -321,10 +315,14 @@ private extension QuickStartTourGuide {
     }
 
     func allToursCompleted(for blog: Blog) -> Bool {
-        // TODO: this needs to become a argument to deal with multiple lists
-        let list = QuickStartTourGuide.checklistTours
+        let list: [QuickStartTour]
+        if Feature.enabled(.quickStartV2) {
+            list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        } else {
+            list = QuickStartTourGuide.checklistTours
+        }
 
-        return countChecklistCompleted(in: list, for: blog) >= QuickStartTourGuide.checklistTours.count
+        return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 
     func showCurrentStep() {
