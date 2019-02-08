@@ -27,6 +27,19 @@ class QuickStartListTitleCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         refreshIconColor()
+        refreshTitleLabel()
+    }
+
+    private func refreshTitleLabel() {
+        guard let label = titleLabel,
+            let text = label.text else {
+                return
+        }
+
+        if state == .completed {
+            label.textColor = WPStyleGuide.grey()
+            label.attributedText = NSAttributedString(string: text, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+        }
     }
 
     private func refreshIconColor() {
