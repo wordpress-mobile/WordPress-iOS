@@ -112,7 +112,7 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     }
 
     @objc func loadHTMLString(_ html: NSString) {
-        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
+        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /><style>video { width: 100vw; }</style></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
@@ -170,7 +170,7 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
 }
 
 // MARK: WebView delegate methods
-extension WPRichTextEmbed : WKNavigationDelegate {
+extension WPRichTextEmbed: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // We're fully loaded so we can unassign the delegate.

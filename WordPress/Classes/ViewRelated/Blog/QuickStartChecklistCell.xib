@@ -14,7 +14,7 @@
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="106" id="AyJ-E5-JK1" customClass="QuickStartChecklistCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AyJ-E5-JK1" id="fK0-aP-tbW">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AyJ-E5-JK1" id="fK0-aP-tbW">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="71.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -31,7 +31,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q9O-Tl-jRn" userLabel="Stroke">
-                        <rect key="frame" x="64" y="71" width="311" height="0.5"/>
+                        <rect key="frame" x="64" y="71" width="295" height="0.5"/>
                         <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.33000000000000002" id="I9A-zJ-Npt"/>
@@ -39,7 +39,7 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leading" priority="750" id="3eA-72-02A"/>
+                    <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leadingMargin" priority="750" id="3eA-72-02A"/>
                     <constraint firstAttribute="bottom" secondItem="q9O-Tl-jRn" secondAttribute="bottom" id="6zL-eP-5kL"/>
                     <constraint firstItem="KNn-zz-lLY" firstAttribute="top" secondItem="Yc4-11-laP" secondAttribute="bottom" priority="999" constant="2" id="GKD-om-l0b"/>
                     <constraint firstItem="q9O-Tl-jRn" firstAttribute="leading" secondItem="KNn-zz-lLY" secondAttribute="leading" id="IP9-A7-b0C"/>
@@ -47,7 +47,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="Yc4-11-laP" secondAttribute="trailing" constant="6" id="ZAh-HX-yVH"/>
                     <constraint firstItem="Yc4-11-laP" firstAttribute="top" secondItem="fK0-aP-tbW" secondAttribute="top" constant="16" id="dCt-t5-oGk"/>
                     <constraint firstItem="Yc4-11-laP" firstAttribute="leading" secondItem="fK0-aP-tbW" secondAttribute="leadingMargin" constant="48" id="eWp-sF-urj"/>
-                    <constraint firstAttribute="trailing" secondItem="q9O-Tl-jRn" secondAttribute="trailing" id="iWA-GZ-njV"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="q9O-Tl-jRn" secondAttribute="trailing" id="iWA-GZ-njV"/>
                     <constraint firstAttribute="trailingMargin" secondItem="KNn-zz-lLY" secondAttribute="trailing" constant="6" id="imd-Jt-Xqm"/>
                     <constraint firstAttribute="bottom" secondItem="KNn-zz-lLY" secondAttribute="bottom" constant="15.5" id="oba-ae-wVR"/>
                 </constraints>

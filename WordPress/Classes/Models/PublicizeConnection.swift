@@ -26,7 +26,7 @@ open class PublicizeConnection: NSManagedObject {
     @NSManaged open var userID: NSNumber
 
     @objc open func isBroken() -> Bool {
-        return status == "broken"
+        return status != "ok"
     }
 
     @objc open func mustDisconnect() -> Bool {
