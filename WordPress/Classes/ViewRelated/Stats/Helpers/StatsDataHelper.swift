@@ -68,3 +68,39 @@ extension String {
     }
 
 }
+
+extension Date {
+    func relativeStringInPast(timezone: TimeZone = TimeZone.autoupdatingCurrent) -> String {
+        // This is basically a Swift rewrite of https://github.com/wordpress-mobile/WordPressCom-Stats-iOS/blob/develop/WordPressCom-Stats-iOS/Services/StatsDateUtilities.m#L97
+        // It could definitely use some love!
+
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timezone
+
+        let now = Date()
+
+        let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)
+        let niceComponents = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
+
+        switch (components.day, components.hour, components.minute) {
+        case (let day?, _, _) where day >= 548:
+            return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), niceComponents.year!)
+        case (let day?, _, _) where day >= 345:
+            return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
+        case (let day?, _, _) where day >= 45:
+            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), niceComponents.month!)
+        case (let day?, _, _) where day >= 25:
+            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month"))
+        case (let day?, let hour?, _) where (day > 1 || (day == 1 && hour >= 12)):
+            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), niceComponents.day!)
+        case (_, let hour?, _) where hour >= 22:
+            return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
+        case (_, let hour?, let minute?) where (hour > 1 || (hour == 1 && minute >= 30)):
+            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), niceComponents.hour!)
+        case (_, _, let minute?) where minute >= 45:
+            return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
+        default:
+            return NSLocalizedString("<1 hour", comment: "Age between dates less than one hour.")
+        }
+    }
+}
