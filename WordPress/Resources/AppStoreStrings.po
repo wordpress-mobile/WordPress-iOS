@@ -114,3 +114,68 @@ msgid ""
 "in your hand"
 msgstr ""
 
+#: gutenberg/packages/block-library/src/paragraph/edit.native.js:115
+msgid "Add text or type / to add content"
+msgstr ""
+
+#: gutenberg/packages/block-library/src/image/edit.native.js:214
+msgid "Add URL"
+msgstr ""
+
+#: gutenberg/packages/block-library/src/image/edit.native.js:221
+msgid "Alt Text"
+msgstr ""
+
+#: gutenberg/packages/block-library/src/image/edit.native.js:227
+msgid "Reset to Original"
+msgstr ""
+
+#: gutenberg/packages/block-library/src/image/edit.native.js:282
+msgid ""
+"Failed to insert media.\n"
+"Please tap for options."
+msgstr ""
+
+#: gutenberg/packages/editor/src/components/media-placeholder/index.native.js:17
+msgid "Upload a new image or select a file from your library."
+msgstr ""
+
+#: gutenberg/packages/editor/src/components/media-placeholder/index.native.js:20
+msgid "Device Library"
+msgstr ""
+
+#: gutenberg/packages/editor/src/components/media-placeholder/index.native.js:21
+msgid "Take photo"
+msgstr ""
+
+#: gutenberg/packages/editor/src/components/default-block-appender/index.native.js:26
+msgid "Start writing or press ⊕ to add content"
+msgstr ""
+
+#: src/block-types/unsupported-block/index.js:21
+msgid "Unsupported Block"
+msgstr ""
+
+#: src/block-types/unsupported-block/index.js:23
+msgid "Unsupported block type."
+msgstr ""
+
+#: src/block-management/block-picker.js:30
+msgid "ADD BLOCK"
+msgstr ""
+
+#: src/block-management/block-manager.js:252
+msgid "ADD BLOCK HERE"
+msgstr ""
+
+#: src/block-management/inline-toolbar/index.js:48
+msgid "Move block up"
+msgstr ""
+
+#: src/block-management/inline-toolbar/index.js:55
+msgid "Move block down"
+msgstr ""
+
+#: src/block-management/inline-toolbar/index.js:66
+msgid "Remove content"
+msgstr ""
