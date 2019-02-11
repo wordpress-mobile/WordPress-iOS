@@ -63,15 +63,14 @@ extension BlogDetailsViewController {
     }
 
     private func showQuickStart(with type: QuickStartType? = nil) {
-        let checklist: UIViewController
-
         if let type = type, Feature.enabled(.quickStartV2) {
-            checklist = QuickStartChecklistViewController(blog: blog, type: type)
+            let checklist = QuickStartChecklistViewController(blog: blog, type: type)
+            let navigationViewController = UINavigationController(rootViewController: checklist)
+            present(navigationViewController, animated: true, completion: nil)
         } else {
-            checklist = QuickStartChecklistViewControllerV1(blog: blog)
+            let checklist = QuickStartChecklistViewControllerV1(blog: blog)
+            navigationController?.showDetailViewController(checklist, sender: self)
         }
-
-        navigationController?.showDetailViewController(checklist, sender: self)
 
         QuickStartTourGuide.find()?.visited(.checklist)
     }
@@ -86,6 +85,7 @@ extension BlogDetailsViewController {
                                             self?.showQuickStartCustomize()
         }
         customizeRow.quickStartIdentifier = .checklist
+        customizeRow.showsSelectionState = false
         if let customizeDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.customizeListTours, for: blog) {
             customizeRow.detail = String(format: detailFormatStr, customizeDetailCounts.complete, customizeDetailCounts.total)
             customizeRow.quickStartTitleState = customizeDetailCounts.complete == customizeDetailCounts.total ? .completed : .customizeIncomplete
@@ -98,6 +98,7 @@ extension BlogDetailsViewController {
                                             self?.showQuickStartGrow()
                                         }
         growRow.quickStartIdentifier = .checklist
+        growRow.showsSelectionState = false
         if let growDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.growListTours, for: blog) {
             growRow.detail = String(format: detailFormatStr, growDetailCounts.complete, growDetailCounts.total)
             growRow.quickStartTitleState = growDetailCounts.complete == growDetailCounts.total ? .completed : .growIncomplete

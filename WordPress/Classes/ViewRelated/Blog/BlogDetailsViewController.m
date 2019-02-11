@@ -435,7 +435,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)restorableSelectedIndexPath
 {
     if (!_restorableSelectedIndexPath) {
-        _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        NSUInteger section = [Feature enabled:FeatureFlagQuickStartV2] && [self shouldShowQuickStartChecklist] ? 1 : 0;
+        _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
     return _restorableSelectedIndexPath;
@@ -1436,7 +1437,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    if ([self shouldShowQuickStartChecklist]) {
+    if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
         QuickStartChecklistViewControllerV1 *checklist = [[QuickStartChecklistViewControllerV1 alloc] initWithBlog:self.blog];
         return checklist;
     }

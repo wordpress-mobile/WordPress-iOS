@@ -1,9 +1,8 @@
-* Om du skapar en ny webbplats med hjälp av appen kan du nu registrera din alldeles egna subdomän under .blog!
-* Om du försöker att ta bort en webbplats med en iPad kommer appen inte längre att krascha, vilket den ibland gjorde tidigare.
-* Rättat ett problem med kraschar på skärmbilden ”Om” under appens inställningar.
-* Snyggat till skärmen med inställningar för inlägg så att den ser bättre ut på iPad
+För denna utgåva har vi skapat en smidigare upplevelse på ytterligare några områden:
 
-Med de senaste förbättringarna i funktionen för historik och versionshantering kan du nu:
-* Bläddra mellan versioner på ett ögonblick.
-* Växla mellan HTML och visuellt läge när du visar en version.
-* Klicka på en ny ångra-knapp om du skulle ändra dig efter att du aktiverat en tidigare version.
+- Lagt till stöd för automatisk ifyllning av lösenord när man fyller i användarnamnet vid inloggning.
+- Lagt till ett förtydligande om tomma meddelanden när man delar inlägg till sociala media. Om du inte skriver något meddelande kommer inläggets rubrik att användas som stanardval.
+- Nu sparar si automatiskt ditt utkast innan vi visar dig en förhandsvisning.
+- Korrigerat ett problem som orsakade stora tomma områden ovanför (eller nedanför) vissa bilder i Läsaren.
+- Rättat ett indenteringsfel för privata sidor i sidlistan.
+- Rättat ett visuellt fel som påverkade inläggslistan vid användning av stor textstorlek.
