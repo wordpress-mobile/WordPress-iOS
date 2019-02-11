@@ -5,6 +5,7 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case receivedPublished(_ published: StatsGroup?)
+    case receivedAuthors(_ authors: StatsGroup?)
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
     case receivedVideos(_ videos: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
@@ -35,6 +36,9 @@ struct PeriodStoreState {
     var topPublished: [StatsItem]?
     var fetchingPublished = false
 
+    var topAuthors: [StatsItem]?
+    var fetchingAuthors = false
+
     var topSearchTerms: [StatsItem]?
     var fetchingSearchTerms = false
 
@@ -59,6 +63,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedPostsAndPages(postsAndPages)
         case .receivedPublished(let published):
             receivedPublished(published)
+        case .receivedAuthors(let authors):
+            receivedAuthors(authors)
         case .receivedSearchTerms(let searchTerms):
             receivedSearchTerms(searchTerms)
         case .receivedVideos(let videos):
@@ -118,6 +124,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching events: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching published.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
         }, postsCompletionHandler: { (postsAndPages, error) in
             if error != nil {
@@ -146,15 +153,17 @@ private extension StatsPeriodStore {
             }
             DDLogInfo("Stats: Finished fetching videos.")
             self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
-        }, authorsCompletionHandler: { (group, error) in
+        }, authorsCompletionHandler: { (authors, error) in
             if error != nil {
                 DDLogInfo("Error fetching authors: \(String(describing: error?.localizedDescription))")
             }
-
+            DDLogInfo("Stats: Finished fetching authors.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors))
         }, searchTermsCompletionHandler: { (searchTerms, error) in
             if error != nil {
                 DDLogInfo("Error fetching search terms: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching search terms.")
             self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
         }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
@@ -179,6 +188,13 @@ private extension StatsPeriodStore {
         transaction { state in
             state.topPostsAndPages = postsAndPages?.items as? [StatsItem]
             state.fetchingPostsAndPages = false
+        }
+    }
+
+    func receivedAuthors(_ authors: StatsGroup?) {
+        transaction { state in
+            state.topAuthors = authors?.items as? [StatsItem]
+            state.fetchingAuthors = false
         }
     }
 
@@ -212,6 +228,7 @@ private extension StatsPeriodStore {
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
         state.fetchingPublished = true
+        state.fetchingAuthors = true
         state.fetchingSearchTerms = true
         state.fetchingVideos = true
     }
@@ -263,6 +280,10 @@ extension StatsPeriodStore {
         return state.topPublished
     }
 
+    func getTopAuthors() -> [StatsItem]? {
+        return state.topAuthors
+    }
+
     func getTopSearchTerms() -> [StatsItem]? {
         return state.topSearchTerms
     }
@@ -274,6 +295,7 @@ extension StatsPeriodStore {
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingPublished ||
+            state.fetchingAuthors ||
             state.fetchingSearchTerms ||
             state.fetchingVideos
     }

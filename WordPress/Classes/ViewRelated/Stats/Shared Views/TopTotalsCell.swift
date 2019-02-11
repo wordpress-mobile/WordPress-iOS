@@ -54,6 +54,16 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        rowsStackView.arrangedSubviews.forEach { subview in
+            guard let row = subview as? StatsTotalRow,
+                row.hasChildRows else {
+                    return
+            }
+
+            removeChildRowsForRow(row)
+        }
+
         removeRowsFromStackView(rowsStackView)
     }
 
@@ -114,6 +124,10 @@ private extension TopTotalsCell {
             childRow.configure(rowData: childRowData, delegate: self)
             childRow.showSeparator = false
 
+            // Never hide the image for a child row. It will either display
+            // an image or an intentional blank space.
+            childRow.imageView.isHidden = false
+
             // Show the expanded bottom separator on the last row
             childRow.showBottomExpandedSeparator = (childRowsIndex == numberOfRowsToAdd - 1)
 
@@ -125,8 +139,14 @@ private extension TopTotalsCell {
     }
 
     func removeChildRowsForRow(_ row: StatsTotalRow) {
-        rowsStackView.removeArrangedSubview(row.childRowsStackView)
-        row.childRowsStackView.removeFromSuperview()
+
+        guard let childRowsStackView = row.childRowsStackView else {
+            return
+        }
+
+        removeRowsFromStackView(childRowsStackView)
+        rowsStackView.removeArrangedSubview(childRowsStackView)
+        childRowsStackView.removeFromSuperview()
     }
 
     func toggleSeparatorForRowPreviousTo(_ row: StatsTotalRow) {
@@ -176,6 +196,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
         toggleSeparatorForRowPreviousTo(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
+        siteStatsPeriodDelegate?.expandedRowUpdated?(row)
     }
 
 }
