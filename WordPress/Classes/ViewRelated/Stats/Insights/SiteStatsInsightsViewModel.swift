@@ -368,31 +368,42 @@ private extension SiteStatsInsightsViewModel {
 
     func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
         let tagsAndCategories = store.getTopTagsAndCategories()
-        var dataRows = [StatsTotalRowData]()
+        return tagsAndCategories?.map { StatsTotalRowData.init(name: $0.label,
+                                                               data: $0.value.displayString(),
+                                                               dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: tagsAndCategories?.first),
+                                                               icon: tagsAndCategoriesIconForItem($0),
+                                                               showDisclosure: true,
+                                                               disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                               childRows: childRowsForItem($0)) }
+            ?? [StatsTotalRowData]()
+    }
 
-        tagsAndCategories?.forEach { item in
-            let icon: UIImage? = {
-                switch item.alternateIconValue {
-                case "category":
-                    return Style.imageForGridiconType(.folder)
-               default:
-                    return Style.imageForGridiconType(.tag)
-                }
-            }()
+    func tagsAndCategoriesIconForItem(_ item: StatsItem) -> UIImage? {
 
-            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
-
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             dataBarPercent: dataBarPercent,
-                                             icon: icon,
-                                             showDisclosure: true,
-                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item))
-
-            dataRows.append(row)
+        if let children = item.children,
+            children.count > 0 {
+            return Style.imageForGridiconType(.folderMultiple)
         }
 
-        return dataRows
+        switch item.alternateIconValue {
+        case "category":
+            return Style.imageForGridiconType(.folder)
+        default:
+            return Style.imageForGridiconType(.tag)
+        }
+    }
+
+    func childRowsForItem(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        guard let children = item.children as? [StatsItem] else {
+            return [StatsTotalRowData]()
+        }
+
+        return children.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: ($0.value != nil) ? $0.value.displayString() : "",
+                                                     icon: tagsAndCategoriesIconForItem($0),
+                                                     showDisclosure: true,
+                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
     }
 
     func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {

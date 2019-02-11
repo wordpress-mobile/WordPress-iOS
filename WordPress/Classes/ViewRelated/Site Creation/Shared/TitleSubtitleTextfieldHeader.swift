@@ -33,8 +33,9 @@ private final class SearchTextField: UITextField {
         return bounds.insetBy(dx: Constants.textInset, dy: 0)
     }
 
-    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: Constants.textInset, dy: 0)
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        let textInsets = UIEdgeInsets(top: 0, left: Constants.textInset, bottom: 0, right: 0)
+        return bounds.inset(by: textInsets)
     }
 
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
@@ -60,7 +61,7 @@ private final class SearchTextField: UITextField {
 
         backgroundColor = .white
         clearButtonMode = .whileEditing
-        font = WPStyleGuide.fontForTextStyle(.headline)
+        font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
         textColor = WPStyleGuide.darkGrey()
 
         autocapitalizationType = .none

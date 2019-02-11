@@ -7,4 +7,9 @@ extension AbstractPost: ImageSourceInformation {
     var isSelfHostedWithCredentials: Bool {
         return blog.isSelfHostedWithCredentials
     }
+
+    var isLocalRevision: Bool {
+        return self.isDraft() && self.isRevision() && self.remoteStatus == .local
+    }
+
 }
