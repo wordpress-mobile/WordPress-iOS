@@ -190,6 +190,7 @@
 		17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */; };
 		17D975AF1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */; };
 		17E24F5420FCF1D900BD70A3 /* Routes+MySites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E24F5320FCF1D900BD70A3 /* Routes+MySites.swift */; };
+		17E60E09220DBD6E00848F89 /* WKWebView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */; };
 		17F0AE301F091563007D5A6B /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0AE2F1F091563007D5A6B /* ConfettiView.swift */; };
 		17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */; };
 		17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F67C55203D81430072001E /* PostCardStatusViewModel.swift */; };
@@ -1971,6 +1972,7 @@
 		17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Aztec.swift"; sourceTree = "<group>"; };
 		17E24F5320FCF1D900BD70A3 /* Routes+MySites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+MySites.swift"; sourceTree = "<group>"; };
 		17E553B520910791000D3005 /* WordPress 75.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 75.xcdatamodel"; sourceTree = "<group>"; };
+		17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKWebView+Preview.swift"; sourceTree = "<group>"; };
 		17F0AE2F1F091563007D5A6B /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Routes+Me.swift"; sourceTree = "<group>"; };
 		17F2A5D020ACC70D00F0BE10 /* WordPress 76.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 76.xcdatamodel"; sourceTree = "<group>"; };
@@ -6808,6 +6810,7 @@
 				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
 				9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */,
 				9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */,
+				17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -10148,6 +10151,7 @@
 				E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */,
 				B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */,
 				D82253DC2199411F0014D0E2 /* SiteAddressService.swift in Sources */,
+				17E60E09220DBD6E00848F89 /* WKWebView+Preview.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
