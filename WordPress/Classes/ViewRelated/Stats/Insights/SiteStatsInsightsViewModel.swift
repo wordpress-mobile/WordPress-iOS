@@ -301,18 +301,10 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
-        let publicize = store.getPublicize()
-        var dataRows = [StatsTotalRowData]()
-
-        publicize?.forEach { item in
-            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: publicize?.first)
-            dataRows.append(StatsTotalRowData.init(name: item.label,
-                                                   data: item.value.displayString(),
-                                                   dataBarPercent: dataBarPercent,
-                                                   socialIconURL: item.iconURL))
-        }
-
-        return dataRows
+        return store.getPublicize()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                  data: $0.value.displayString(),
+                                                                  socialIconURL: $0.iconURL) }
+            ?? [StatsTotalRowData]()
     }
 
     func createTodaysStatsRows() -> [StatsTotalRowData] {
