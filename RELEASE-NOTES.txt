@@ -4,3 +4,4 @@
 * Adds support for sharing a blog via Reader.
 * Fixed a crash in reader caused by a video with a fallback image.
 * Fixed some over lapping buttons and cropped text when viewing the reader with the Larger Text accessibility setting enabled.
+* Added connection error alert in Sharing screen.
