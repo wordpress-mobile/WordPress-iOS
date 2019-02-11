@@ -248,7 +248,9 @@
 		40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */; };
 		40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */; };
 		40A71C66220E1952002E3D25 /* StatsRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C60220E1950002E3D25 /* StatsRecord+CoreDataProperties.swift */; };
+		40A71C67220E1952002E3D25 /* LastPostStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C61220E1950002E3D25 /* LastPostStatsRecordValue+CoreDataProperties.swift */; };
 		40A71C68220E1952002E3D25 /* StatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C62220E1950002E3D25 /* StatsRecordValue+CoreDataClass.swift */; };
+		40A71C69220E1952002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C63220E1951002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift */; };
 		40A71C6A220E1952002E3D25 /* StatsRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */; };
 		40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */; };
 		40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
@@ -2058,7 +2060,9 @@
 		40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginDirectoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		40A71C5E220E102E002E3D25 /* WordPress 87.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 87.xcdatamodel"; sourceTree = "<group>"; };
 		40A71C60220E1950002E3D25 /* StatsRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		40A71C61220E1950002E3D25 /* LastPostStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LastPostStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40A71C62220E1950002E3D25 /* StatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
+		40A71C63220E1951002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LastPostStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40ADB15420686870009A9161 /* PluginStore+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PluginStore+Persistence.swift"; sourceTree = "<group>"; };
@@ -4607,6 +4611,8 @@
 				40F46B6922121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift */,
 				40E7FECB2211FFA60032834E /* AllTimeStatsRecordValue+CoreDataClass.swift */,
 				40E7FECC2211FFA70032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift */,
+				40A71C63220E1951002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift */,
+				40A71C61220E1950002E3D25 /* LastPostStatsRecordValue+CoreDataProperties.swift */,
 			);
 			name = Insights;
 			sourceTree = "<group>";
@@ -9391,6 +9397,7 @@
 				2FA6511521F269A6009AA935 /* VerticalsTableViewProvider.swift in Sources */,
 				08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */,
 				E62AFB6C1DC8E593007484FC /* WPRichTextFormatter.swift in Sources */,
+				40A71C67220E1952002E3D25 /* LastPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
@@ -10294,6 +10301,7 @@
 				40E7FECF2211FFB90032834E /* AllTimeStatsRecordValue+CoreDataClass.swift in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
 				319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */,
+				40A71C69220E1952002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				7E4A773720F802A8001C706D /* ActivityRangesFactory.swift in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 				7EDAB3F420B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift in Sources */,
@@ -10568,6 +10576,7 @@
 				FF9A6E7121F9361700D36D14 /* MediaUploadHashTests.swift in Sources */,
 				B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */,
 				7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */,
+				40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */,
