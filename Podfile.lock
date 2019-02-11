@@ -176,7 +176,7 @@ PODS:
   - WordPress-Aztec-iOS (1.4.2)
   - WordPress-Editor-iOS (1.4.2):
     - WordPress-Aztec-iOS (= 1.4.2)
-  - WordPressAuthenticator (1.1.9-beta.1):
+  - WordPressAuthenticator (1.1.9):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -244,7 +244,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.4.2)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `90a025caaf91cbecd43fa09f98d86b2402f81a09`)
+  - WordPressAuthenticator (~> 1.1.9)
   - WordPressKit (~> 2.0.0-beta.4)
   - WordPressShared (~> 1.7.0-beta)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
@@ -285,6 +285,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
     - WPMediaPicker
@@ -312,9 +313,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 90a025caaf91cbecd43fa09f98d86b2402f81a09
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -334,9 +332,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 8af6464ca479784bf462c5c8bcd1f873e951ded1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressAuthenticator:
-    :commit: 90a025caaf91cbecd43fa09f98d86b2402f81a09
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -381,7 +376,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: d9e816350ab1e200681d433287fbb079675e9159
   WordPress-Editor-iOS: 5a09651534181c9f3ab43516b7666e9c55b2330e
-  WordPressAuthenticator: 40ed3d920f134227a6ab069576378293c0bda401
+  WordPressAuthenticator: 9559bc45373f1b6c2f58d664d34f564bcf73111f
   WordPressKit: 9f32d40719c9dbd32d2f4e36cfb61af02e952dac
   WordPressShared: ce9d771015c70dacaad8a5748410580073937b9e
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
@@ -390,6 +385,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 429fc748cf77206d604d1fda31f3aa5f2f64d20f
+PODFILE CHECKSUM: e383f15624ca26e911257cbd3ace9957cfb6a06f
 
 COCOAPODS: 1.5.3
