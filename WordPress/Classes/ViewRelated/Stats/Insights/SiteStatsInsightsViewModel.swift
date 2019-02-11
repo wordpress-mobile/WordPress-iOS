@@ -548,33 +548,4 @@ private extension SiteStatsInsightsViewModel {
                        dataRows: followersData ?? [])
     }
 
-    func tabDataFor(rowData: [StatsItem]?,
-                    tabTitle: String,
-                    itemSubtitle: String,
-                    dataSubtitle: String,
-                    totalCount: String? = nil,
-                    showDisclosure: Bool = false,
-                    showDataBar: Bool = false) -> TabData {
-
-        var rows = [StatsTotalRowData]()
-
-        rowData?.forEach { row in
-            let dataBarPercent = showDataBar ? StatsDataHelper.dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
-            let disclosureURL = showDisclosure ? StatsDataHelper.disclosureUrlForItem(row) : nil
-
-            rows.append(StatsTotalRowData.init(name: row.label,
-                                               data: row.value.displayString(),
-                                               dataBarPercent: dataBarPercent,
-                                               userIconURL: row.iconURL,
-                                               showDisclosure: showDisclosure,
-                                               disclosureURL: disclosureURL))
-        }
-
-        return TabData.init(tabTitle: tabTitle,
-                            itemSubtitle: itemSubtitle,
-                            dataSubtitle: dataSubtitle,
-                            totalCount: totalCount,
-                            dataRows: rows)
-    }
-
 }

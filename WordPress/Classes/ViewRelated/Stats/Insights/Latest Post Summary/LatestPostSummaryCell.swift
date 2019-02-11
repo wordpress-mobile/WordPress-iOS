@@ -145,7 +145,7 @@ private extension LatestPostSummaryCell {
         }
 
         let postAge = lastPostInsight?.publishedDate.relativeStringInPast() ?? ""
-        let postTitle = lastPostInsight?.title ?? ""
+        let postTitle = lastPostInsight?.title.nonEmptyString() ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
 
         var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
