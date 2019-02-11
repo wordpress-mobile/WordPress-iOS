@@ -247,6 +247,10 @@
 		4093FE40218C384200B1D224 /* AztecVerificationPromptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402FFB23218C36CF00FF4A0B /* AztecVerificationPromptHelper.swift */; };
 		40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */; };
 		40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */; };
+		40A71C66220E1952002E3D25 /* StatsRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C60220E1950002E3D25 /* StatsRecord+CoreDataProperties.swift */; };
+		40A71C68220E1952002E3D25 /* StatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C62220E1950002E3D25 /* StatsRecordValue+CoreDataClass.swift */; };
+		40A71C6A220E1952002E3D25 /* StatsRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */; };
+		40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */; };
 		40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
 		40D7823A206AEA880015A3A1 /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78238206ABD970015A3A1 /* Scheduler.swift */; };
 		40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */; };
@@ -2048,6 +2052,11 @@
 		4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDateFormatting.swift; sourceTree = "<group>"; };
 		40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginDirectoryCollectionViewCell.xib; sourceTree = "<group>"; };
+		40A71C5E220E102E002E3D25 /* WordPress 87.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 87.xcdatamodel"; sourceTree = "<group>"; };
+		40A71C60220E1950002E3D25 /* StatsRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		40A71C62220E1950002E3D25 /* StatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
+		40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
+		40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40ADB15420686870009A9161 /* PluginStore+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PluginStore+Persistence.swift"; sourceTree = "<group>"; };
 		40D78238206ABD970015A3A1 /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryEntryStateTests.swift; sourceTree = "<group>"; };
@@ -4397,6 +4406,7 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				40A71C5F220E1941002E3D25 /* Stats */,
 				9A38DC63218899E4006A409B /* Revisions */,
 				D8CB56212181A93F00554EAE /* Site Creation */,
 				B5176CC41CDCE3C80083CF2D /* Account Settings */,
@@ -4568,6 +4578,17 @@
 				402FFB23218C36CF00FF4A0B /* AztecVerificationPromptHelper.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		40A71C5F220E1941002E3D25 /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */,
+				40A71C60220E1950002E3D25 /* StatsRecord+CoreDataProperties.swift */,
+				40A71C62220E1950002E3D25 /* StatsRecordValue+CoreDataClass.swift */,
+				40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */,
+			);
+			name = Stats;
 			sourceTree = "<group>";
 		};
 		4349B0A6218A2E810034118A /* Revisions */ = {
@@ -7522,6 +7543,7 @@
 				E6B9B8AB1B94EA710001B92F /* Reader */,
 				B5AEEC7E1ACAD088008BF2A4 /* Services */,
 				73178C2021BEE09300E37C9A /* SiteCreation */,
+				40E7FEC32211DF490032834E /* Stats */,
 				D88A6490208D79F1008AE9BC /* Stock Photos */,
 				BEA0E4821BD8353B000AEE81 /* System */,
 				59B48B601B99E0B0008EBB84 /* TestUtilities */,
@@ -9351,6 +9373,7 @@
 				74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
+				40A71C6A220E1952002E3D25 /* StatsRecord+CoreDataClass.swift in Sources */,
 				9826AE8221B5C6A700C851FA /* LatestPostSummaryCell.swift in Sources */,
 				433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */,
 				4395A1592106389800844E8E /* QuickStartTours.swift in Sources */,
@@ -9501,6 +9524,7 @@
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
+				40A71C68220E1952002E3D25 /* StatsRecordValue+CoreDataClass.swift in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				CE1CCB2D204DDD18000EE3AC /* MyProfileHeaderView.swift in Sources */,
 				98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */,
@@ -10124,6 +10148,7 @@
 				B5416CF51C171D7100006DD8 /* PushNotificationsManager.swift in Sources */,
 				98AE3DF5219A1789003C0E24 /* StatsInsightsStore.swift in Sources */,
 				08216FCD1CDBF96000304BA7 /* MenuItemPagesViewController.m in Sources */,
+				40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */,
 				177B4C2D2123192200CF8084 /* GiphyMedia.swift in Sources */,
 				7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */,
 				D865721221869C590023A99C /* WizardStep.swift in Sources */,
@@ -10132,6 +10157,7 @@
 				73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */,
 				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
+				40A71C66220E1952002E3D25 /* StatsRecord+CoreDataProperties.swift in Sources */,
 				7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */,
 				B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */,
 				D86572172186C3600023A99C /* WizardDelegate.swift in Sources */,
@@ -13193,6 +13219,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				40A71C5E220E102E002E3D25 /* WordPress 87.xcdatamodel */,
 				E6F2787921BC179B008B4DB5 /* WordPress 86.xcdatamodel */,
 				9A341E51219979BA0036662E /* WordPress 85.xcdatamodel */,
 				402FFB20218C33BF00FF4A0B /* WordPress 84.xcdatamodel */,
@@ -13280,7 +13307,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E6F2787921BC179B008B4DB5 /* WordPress 86.xcdatamodel */;
+			currentVersion = 40A71C5E220E102E002E3D25 /* WordPress 87.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
