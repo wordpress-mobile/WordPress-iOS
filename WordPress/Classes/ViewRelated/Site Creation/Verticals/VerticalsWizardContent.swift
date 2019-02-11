@@ -55,16 +55,8 @@ final class VerticalsWizardContent: UIViewController {
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
 
-    /// We manipulate the bottom constraint in response to the keyboard.
-    private lazy var bottomConstraint: NSLayoutConstraint = {
-        return self.table.bottomAnchor.constraint(equalTo: self.view.prevailingLayoutGuide.bottomAnchor)
-    }()
-
-    /// The value of the bottom constraint constant is set in response to the keyboard appearance
-    private var bottomConstraintConstant = CGFloat(0)
-
-    /// To avoid wasted animations, we track whether or not we have already adjusted the table view
-    private var tableViewHasBeenAdjusted = false
+    /// Manages header visibility, keyboard management, and table view offset
+    private(set) var tableViewOffsetCoordinator: TableViewOffsetCoordinator?
 
     // MARK: VerticalsWizardContent
 
@@ -99,7 +91,7 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        stopListeningToKeyboardNotifications()
+        tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
     }
 
@@ -111,6 +103,8 @@ final class VerticalsWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
+
         applyTitle()
         setupBackground()
         setupTable()
@@ -121,7 +115,7 @@ final class VerticalsWizardContent: UIViewController {
 
         fetchPromptIfNeeded()
         observeNetworkStatus()
-        startListeningToKeyboardNotifications()
+        tableViewOffsetCoordinator?.startListeningToKeyboardNotifications()
         prepareViewIfNeeded()
     }
 
@@ -144,7 +138,7 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
         validDataProvider.data = []
-        resetTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
     private func fetchPromptIfNeeded() {
@@ -260,7 +254,7 @@ final class VerticalsWizardContent: UIViewController {
             return
         }
 
-        adjustTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
         performSearchIfNeeded(query: inputText)
     }
 
@@ -297,7 +291,7 @@ final class VerticalsWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
-            bottomConstraint,
+            table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
             table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
         ])
@@ -383,7 +377,7 @@ final class VerticalsWizardContent: UIViewController {
         }
 
         performSearchIfNeeded(query: searchTerm)
-        adjustTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }
 
@@ -399,99 +393,7 @@ extension VerticalsWizardContent: NetworkStatusDelegate {
 
 extension VerticalsWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        resetTableOffsetIfNeeded()
+        tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
         return true
-    }
-}
-
-// MARK: - Table management
-
-private extension VerticalsWizardContent {
-    struct Constants {
-        static let bottomMargin             = CGFloat(0)
-        static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
-        static let topMargin                = CGFloat(36)
-    }
-
-    func adjustTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
-        guard WPDeviceIdentification.isiPhone(), bottomConstraintConstant > 0, tableViewHasBeenAdjusted == false else {
-            return
-        }
-
-        bottomConstraint.constant = bottomConstraintConstant
-        view.setNeedsUpdateConstraints()
-
-        let targetInsets: UIEdgeInsets
-        if let header = table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-            let textfieldFrame = header.textField.frame
-            targetInsets = UIEdgeInsets(top: (-1 * textfieldFrame.origin.y) + Constants.topMargin, left: 0.0, bottom: bottomConstraintConstant, right: 0.0)
-        } else {
-            targetInsets = .zero
-        }
-
-        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.view.layoutIfNeeded()
-            self.table.contentInset = targetInsets
-            self.table.scrollIndicatorInsets = targetInsets
-            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                header.titleSubtitle.alpha = 0.0
-            }
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = true
-        })
-    }
-
-    @objc
-    func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let payload = KeyboardInfo(notification) else {
-            return
-        }
-
-        let keyboardScreenFrame = payload.frameEnd
-        let convertedKeyboardFrame = view.convert(keyboardScreenFrame, from: nil)
-
-        var adjustedKeyboardHeight = convertedKeyboardFrame.height
-        if #available(iOS 11.0, *) {
-            let bottomInset = view.safeAreaInsets.bottom
-            adjustedKeyboardHeight -= bottomInset
-        }
-        bottomConstraintConstant = adjustedKeyboardHeight
-    }
-
-    func resetTableOffsetIfNeeded(_ animationDuration: Double = Constants.headerAnimationDuration) {
-        guard WPDeviceIdentification.isiPhone(), tableViewHasBeenAdjusted == true else {
-            return
-        }
-
-        UIView.animate(withDuration: animationDuration, delay: 0, options: .beginFromCurrentState, animations: { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.view.layoutIfNeeded()
-            self.table.contentInset = .zero
-            self.table.scrollIndicatorInsets = .zero
-            self.bottomConstraint.constant = Constants.bottomMargin
-            if let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader {
-                header.titleSubtitle.alpha = 1.0
-            }
-            }, completion: { [weak self] _ in
-                self?.tableViewHasBeenAdjusted = false
-        })
-    }
-
-    func startListeningToKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-    }
-
-    func stopListeningToKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     }
 }

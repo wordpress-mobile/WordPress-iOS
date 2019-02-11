@@ -1,2 +1,1 @@
-* Fixed an issue where the message field in "Customize the message" screen was empty.
-* Added clarification text about empty messages to footer of "Customize your message" screen.
+

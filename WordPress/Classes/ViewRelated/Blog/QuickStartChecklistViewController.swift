@@ -5,12 +5,17 @@ class QuickStartChecklistViewController: UITableViewController {
         }
     }
     private var blog: Blog?
+    private var list: [QuickStartTour] = []
     private var observer: NSObjectProtocol?
 
-    @objc
-    convenience init(blog: Blog) {
+    @objc convenience init(blog: Blog) {
+        self.init(blog: blog, list: QuickStartTourGuide.checklistTours)
+    }
+
+    convenience init(blog: Blog, list: [QuickStartTour]) {
         self.init()
         self.blog = blog
+        self.list = list
 
         startObservingForQuickStart()
     }
@@ -37,7 +42,7 @@ class QuickStartChecklistViewController: UITableViewController {
         guard let blog = blog else {
             return
         }
-        dataSource = QuickStartChecklistDataSource(blog: blog)
+        dataSource = QuickStartChecklistDataSource(blog: blog, tours: list)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -115,10 +120,12 @@ class QuickStartChecklistViewController: UITableViewController {
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     private var blog: Blog
+    private var tours: [QuickStartTour]
     private var completedTours = Set<String>()
 
-    init(blog: Blog) {
+    init(blog: Blog, tours: [QuickStartTour]) {
         self.blog = blog
+        self.tours = tours
 
         super.init()
         loadCompletedTours()
@@ -138,7 +145,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     // managing tours
 
     func tour(at indexPath: IndexPath) -> QuickStartTour {
-        return QuickStartTourGuide.checklistTours[indexPath.row]
+        return tours[indexPath.row]
     }
 
     func isCompleted(tour: QuickStartTour) -> Bool {
@@ -146,8 +153,9 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     }
 
     func shouldShowCongratulations() -> Bool {
+        // TODO: fix this count implementation to be compatible with v2
         let completedToursCount = QuickStartTourGuide.countChecklistCompleted(for: blog)
-        return completedToursCount >= QuickStartTourGuide.checklistTours.count
+        return completedToursCount >= tours.count
     }
 
     // UITableViewDataSource
@@ -169,7 +177,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
                 return 0
             }
         case .checklistItems:
-            return QuickStartTourGuide.checklistTours.count
+            return tours.count
         case .skipAll:
             return shouldShowCongratulations() ? 0 : 1
         }
@@ -184,7 +192,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
                 }
             case .checklistItems:
                 if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
-                    let tour = QuickStartTourGuide.checklistTours[indexPath.row]
+                    let tour = tours[indexPath.row]
                     cell.tour = tour
                     cell.completed = isCompleted(tour: tour)
                     return cell

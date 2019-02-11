@@ -1,20 +1,8 @@
-In dieser Version haben wir die Möglichkeit hinzugefügt, dein Passwort in der App zu ändern, die Benutzeroberfläche in der gesamten App optimiert und eine Menge Fehler beseitigt! Wir haben auch den CPU- und Akkuverbrauch der App reduziert und so die App für dein Gerät leichter gemacht.
+Für diese Version haben wir die Erfahrungen in einigen weiteren Bereichen verbessert: 
 
-Zusätzlicher Feinschliff schadet nie.
-Es ist einfacher, die Einstellungen beim Erstellen einer Website anzupassen – du kannst auf dem Themenbildschirm neu beginnen, und das Erscheinungsbild ist einheitlicher. Wir haben die Mindesthöhen und den Abstand zwischen den Elementen in einigen Feldern und Bildschirmen erhöht, um das Schreiben komfortabler zu gestalten. Und wenn du dich bei einem Konto anmeldest, das keine Websites hat, wird dir kein unnötiger Bildschirm angezeigt, auf dem deine Websites aufgelistet werden.
-
-Bis ins kleinste Detail.
-Beim Kommentieren im Reader werden Beitragstitel korrekt angezeigt. Websites, die in größeren Textgrößen angezeigt werden, zeigen die URL richtig an, und lange Bezeichnungen in App-Einstellungen werden nicht abgeschnitten – die Textgrößenanpassung funktioniert in der gesamte App im Allgemeinen besser. Ach ja und manchmal hat die Tastatur die Benachrichtigung ausgeblendet, wenn du eine Beitragsrevision im Editor geöffnet hast; das passiert jetzt nicht mehr.
-
-Nutzlose Fehlermeldungen sind nutzlos.
-Wenn du dich für ein neues Konto registrierst und es ein Problem beim Festlegen deines Passworts gibt, wird dir eine hilfreiche Fehlermeldung angezeigt; ebenso, wenn ein Kommentar, den du schreibst, nicht korrekt veröffentlicht wird. Und bei ergebnislosen Suchen werden umfassende Fehlermeldungen angezeigt.
-
-Mehr Lokalisierung führt zu einer besseren App in jeder Sprache.
-Die Geschäftsbedingungen sind richtig lokalisiert, da wir alle wissen sollten, worauf wir uns einlassen. Buttons für das Teilen von Inhalten mit WordPress von einer anderen App aus sind richtig übersetzt; ebenso der Button zum Bearbeiten eines Kommentars über deine Benachrichtigungen. Der Button „Fertig“ nach der Veröffentlichung eines Beitrags ist ebenfalls übersetzt (und ist einfacher anzutippen!).
-
-Fehler können wir nicht gebrauchen.
-Du kannst einen Benutzer jetzt löschen und er wird nicht mehr in der Liste angezeigt. Das Statistik-Widget wird nicht mehr auf die Hauptwebsite zurückgesetzt und in der Benachrichtigungsliste werden nicht mehr die falschen Bilder angezeigt. Wenn deine Website privat ist, funktioniert der visuelle Modus für Revisionen bei Beiträgen, die Bilder enthalten, korrekt.
-
-Niemand stürzt gerne ab.
-Wenn Bilder nicht richtig hochgeladen werden, Medien im Hintergrund neu geladen werden und eine Tabellenansicht beendet wird, während ein Fortschrittsbalken angezeigt wird, verursacht dies keine Abstürze mehr. Hurra.
-
+- Unterstützung für das automatische Ausfüllen von Passwörtern bei der Eingabe eines Benutzernamens während der Anmeldung hinzugefügt.
+- Klarstellungstext über leere Nachrichten beim Teilen von Beiträgen in Social Media hinzugefügt. Wenn du keine Nachricht eingibst, verwenden wir standardmäßig den Titel des Beitrags.
+- Wir speichern nun automatisch deinen Entwurf, bevor wir dir eine Vorschau anzeigen.
+- Ein Problem wurde behoben, das bei einigen Bildern in Reader. Der zu großen Abständen über (oder unter) den Bildern führte.
+- Ein Einrückungsfehler in der Seitenliste für private Seiten behoben.
+- Ein visueller Fehler wurde behoben, der die Liste der Beiträge bei großen Textgrößen betraf.

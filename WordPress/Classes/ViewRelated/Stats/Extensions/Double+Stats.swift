@@ -47,3 +47,9 @@ extension NSNumber {
         return self.doubleValue.abbreviatedString()
     }
 }
+
+extension Float {
+    func abbreviatedString() -> String {
+        return Double(self).abbreviatedString()
+    }
+}

@@ -298,8 +298,15 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         let finalSize = efficientImageSize(with: url, proposedSize: proposedSize)
         let image = richTextImage(with: finalSize, url, attachment)
 
+        let isUsingTemporaryLayoutDimensions = finalSize.height == 0
+
         // show that something is loading.
-        attachment.maxSize = CGSize(width: proposedSize.width, height: proposedSize.height)
+        if isUsingTemporaryLayoutDimensions {
+            attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.width / 2)
+        }
+        else {
+            attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.height)
+        }
 
         let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
@@ -311,6 +318,10 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             }
 
             richMedia.attachment.maxSize = image.contentSize()
+
+            if isUsingTemporaryLayoutDimensions {
+                self?.layoutAttachmentViews()
+            }
         }, onError: { (indexPath, error) in
             DDLogError("\(String(describing: error))")
         })
