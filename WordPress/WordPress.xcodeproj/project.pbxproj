@@ -259,6 +259,9 @@
 		40E469932017F4070030DB5F /* PluginDirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E469922017F3D20030DB5F /* PluginDirectoryViewController.swift */; };
 		40E469952017FB1F0030DB5F /* PluginDirectoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E469942017FB1F0030DB5F /* PluginDirectoryViewModel.swift */; };
 		40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E728841FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift */; };
+		40E7FEC52211DF790032834E /* StatsRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FEC42211DF790032834E /* StatsRecordTests.swift */; };
+		40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */; };
+		40E7FECA2211EEFE0032834E /* StatsTestsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FEC92211EEFE0032834E /* StatsTestsHelpers.swift */; };
 		40E7FECF2211FFB90032834E /* AllTimeStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FECB2211FFA60032834E /* AllTimeStatsRecordValue+CoreDataClass.swift */; };
 		40E7FED02211FFBC0032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FECC2211FFA70032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift */; };
 		40F46B6A22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F46B6822121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift */; };
@@ -2071,6 +2074,9 @@
 		40E469922017F3D20030DB5F /* PluginDirectoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryViewController.swift; sourceTree = "<group>"; };
 		40E469942017FB1F0030DB5F /* PluginDirectoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryViewModel.swift; sourceTree = "<group>"; };
 		40E728841FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDetailViewHeaderCell.swift; sourceTree = "<group>"; };
+		40E7FEC42211DF790032834E /* StatsRecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsRecordTests.swift; sourceTree = "<group>"; };
+		40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPostStatsRecordValueTests.swift; sourceTree = "<group>"; };
+		40E7FEC92211EEFE0032834E /* StatsTestsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTestsHelpers.swift; sourceTree = "<group>"; };
 		40E7FECB2211FFA60032834E /* AllTimeStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllTimeStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40E7FECC2211FFA70032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllTimeStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40F46B6822121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -4600,6 +4606,16 @@
 				40A71C60220E1950002E3D25 /* StatsRecord+CoreDataProperties.swift */,
 				40A71C62220E1950002E3D25 /* StatsRecordValue+CoreDataClass.swift */,
 				40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */,
+			);
+			name = Stats;
+			sourceTree = "<group>";
+		};
+		40E7FEC32211DF490032834E /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				40E7FEC42211DF790032834E /* StatsRecordTests.swift */,
+				40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */,
+				40E7FEC92211EEFE0032834E /* StatsTestsHelpers.swift */,
 			);
 			name = Stats;
 			sourceTree = "<group>";
@@ -10608,6 +10624,8 @@
 				E180BD4C1FB462FF00D0D781 /* CookieJarTests.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */,
+				40E7FECA2211EEFE0032834E /* StatsTestsHelpers.swift in Sources */,
+				40E7FEC52211DF790032834E /* StatsRecordTests.swift in Sources */,
 				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
 				D88A64B0208DA093008AE9BC /* StockPhotosResultsPageTests.swift in Sources */,
 				0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */,
