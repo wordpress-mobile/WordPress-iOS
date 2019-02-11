@@ -174,6 +174,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         // Noop
     }
 
+    override func configureFooterView() {
+        super.configureFooterView()
+        tableView.tableFooterView = UIView(frame: .zero)
+    }
+
 
     // MARK: - Sync Methods
 
@@ -346,13 +351,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return Constant.Size.pageSectionHeaderHeight
     }
 
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
-    }
-
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let page = pageAtIndexPath(indexPath)
-        return page.canDisplayTags ? Constant.Size.pageCellWithTagEstimatedRowHeight : Constant.Size.pageCellEstimatedRowHeight
+        return Constant.Size.pageCellWithTagEstimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
@@ -369,10 +369,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         return headerView
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
-        return UIView(frame: CGRect.zero)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -414,10 +410,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         cell.accessoryType = .none
 
         let page = pageAtIndexPath(indexPath)
+        let filterType = filterSettings.currentPostListFilter().filterType
 
         if cell.reuseIdentifier == Constant.Identifiers.pageCellIdentifier {
             cell.indentationWidth = _tableViewHandler.isSearching ? 0.0 : Constant.Size.pageListTableViewCellLeading
-            cell.indentationLevel = page.status != .publish ? 0 : page.hierarchyIndex
+            cell.indentationLevel = filterType != .published ? 0 : page.hierarchyIndex
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }

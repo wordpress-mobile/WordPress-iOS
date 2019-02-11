@@ -1,20 +1,8 @@
-En esta versión, hemos añadido la posibilidad de cambiar tu contraseña desde dentro de la aplicación, pulido la interfaz de usuario en toda la aplicación, y ¡aplastado una enorme pila de errores! También hemos reducido el uso de la CPU y la batería de la aplicación en un esfuerzo por ser mejores ciudadanos de tu dispositivo.
+Para esta versión, hemos suavizado la experiencia en algunas áreas más: 
 
-Un poco de esmalte extra nunca está de más. 
-Es más fácil modificar los ajustes al crear un sitio: puedes empezar de nuevo desde la pantalla del tema y la consistencia visual es más suave. Hemos aumentado las alturas y el espacio mínimo entre los elementos en algunos campos y pantallas para que la escritura sea más cómoda. Y si te conectas a una cuenta que no tiene sitios, no verás una pantalla innecesaria que muestre tus sitios (o, ya sabes, que no los muestre).
-
-Ls con puntos, Ts cruzados.
-Al comentar en el lector, los títulos de las publicaciones se muestran correctamente. Los sitios que se visualizan en tamaños de texto más grandes muestran su URL correctamente, y las etiquetas largas en la configuración de la aplicación no se cortan - el tamaño del texto en toda la aplicación es mejor en general. Ah, y a veces se abría una revisión de mensajes en el editor, y el teclado ocultaba la notificación; ahora ya no lo hace. 
-
-Los mensajes de error sin sentido no tienen sentido.
-Si hay algún problema al establecer una contraseña al registrarte en una cuenta nueva, recibirás un útil mensaje de error; lo mismo si un comentario que escribes no se publica correctamente. Y las búsquedas sin resultados tienen mensajes de error completos.
-
-Más localización significa una mejor aplicación en cualquier idioma.
-Los términos del servicio están correctamente localizados, porque todos debemos saber a lo que estamos de acuerdo. Los botones para compartir contenido con WordPress desde otra aplicación están correctamente traducidos, al igual que el botón para editar un comentario de tus avisos. El botón «Hecho» después de publicar un mensaje también se traduce (¡y es físicamente más fácil de tocar!).
-
-A diferencia de los errores reales, los errores técnicos no sirven para nada. 
-Ahora puedes eliminar un usuario y ya no aparecerá en la lista. El widget de estadísticas dejará de volver al sitio principal, y las imágenes incorrectas ya no aparecerán en la lista de notificaciones. Si tu sitio es privado, el modo visual para revisiones funciona correctamente para las entradas que incluyan imágenes.
-
-A nadie le gusta estrellarse. 
-Las imágenes que no se cargan correctamente, los medios que se recargan en segundo plano y la navegación fuera de una vista de tabla mientras tiene una barra de progreso ya no provocan fallos. Hurra.
-
+- Añadida compatibilidad con el relleno automático de contraseñas al introducir un nombre de usuario durante el inicio de sesión.
+- Añadido texto aclaratorio sobre mensajes vacíos cuando se comparten mensajes en medios sociales. Si no nos proporcionas un mensaje, usaremos el título de la entrada por defecto.
+- Ahora guardamos automáticamente tu borrador antes de mostrarte una vista previa.
+- Se ha solucionado un problema que causaba grandes espacios en la parte superior (o inferior) de algunas imágenes del lector.
+- Arreglado un error de sangría en la lista de páginas en las páginas privadas.
+- Arreglado un error visual que afectaba a la lista de entradas en textos de gran tamaño.

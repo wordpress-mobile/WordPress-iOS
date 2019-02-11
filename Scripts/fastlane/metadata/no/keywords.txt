@@ -1,1 +1,1 @@
-sosial,nettverk,notater,jetpack,foto,skriving,geotagging,medier,blogg,wordpress,nettside,blogging,design
+sosial,notater,foto,skriving,geotagging,medier,blogg,wordpress,nettsted,hjemmeside,blogging,design

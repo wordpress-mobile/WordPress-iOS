@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.6.1-beta.1'
+    pod 'WordPressShared', '~> 1.6.2'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -52,7 +52,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 1.7.0-beta'
+    pod 'WordPressKit', '~> 1.8.0'
     ##pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '28ca4a9'
     ##pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
@@ -62,13 +62,11 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
-    pod 'UIDeviceIdentifier', '~> 0.4'
 end
 
 def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
-    pod 'wpxmlrpc', '0.8.3'
 
 	wordpress_kit
 end
@@ -79,8 +77,8 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
-def gutenberg_pod(name)
-    gutenberg_branch='master'
+def gutenberg_pod(name, branch=nil)
+    gutenberg_branch=branch || 'master'
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
@@ -96,14 +94,15 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.3.3'
+    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.3.4'
+    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v0.3.4'
+
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     gutenberg_pod 'react-native-safe-area'
+    gutenberg_pod 'react-native-keyboard-aware-scroll-view', 'develop'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-    pod 'RNTAztecView', :git => 'https://github.com/wordpress-mobile/react-native-aztec.git', :tag => 'v0.1.3'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.2'
 
     ## Third party libraries
     ## =====================
@@ -113,12 +112,11 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'Crashlytics', '3.11.0'
+    pod 'Crashlytics', '3.12.0'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
-    pod 'MGSwipeTableCell', '1.6.7'
-    pod 'lottie-ios', '2.5.0'
+    pod 'MGSwipeTableCell', '1.6.8'
     pod 'Starscream', '3.0.6'
     pod 'ZendeskSDK', '2.2.0'
 
@@ -126,23 +124,25 @@ target 'WordPress' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
-    pod 'Gridicons', '0.16'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
+    pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.1.7'
+    pod 'WordPressAuthenticator', '~> 1.1.8'
+    #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '82900447393674532003833cc1f3a4ad1c53997f'
+
 
     aztec
     wordpress_ui
-
     target 'WordPressTest' do
         inherit! :search_paths
 
         shared_test_pods
-        pod 'Nimble', '~> 7.1.1'
+        pod 'Nimble', '~> 7.3.1'
     end
 
 
@@ -156,7 +156,6 @@ target 'WordPress' do
         shared_with_networking_pods
         aztec
         wordpress_ui
-        pod 'Gridicons', '0.16'
     end
 
 
@@ -170,7 +169,6 @@ target 'WordPress' do
         shared_with_networking_pods
         aztec
         wordpress_ui
-        pod 'Gridicons', '0.16'
     end
 
 
@@ -209,8 +207,6 @@ target 'WordPressNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
     inherit! :search_paths
-
-    pod 'Gridicons', '0.16'
 
     wordpress_kit
     wordpress_shared

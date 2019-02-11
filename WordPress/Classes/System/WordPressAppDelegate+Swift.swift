@@ -217,8 +217,8 @@ extension WordPressAppDelegate {
 
         DDLogInfo("Extra debug: \(extraDebug ? "YES" : "NO")")
 
-        let devicePlatform = UIDeviceHardware.platformString() ?? unknown
-        let architecture = UIDeviceHardware.platform() ?? unknown
+        let devicePlatform = UIDeviceHardware.platformString()
+        let architecture = UIDeviceHardware.platform()
         let languages = UserDefaults.standard.array(forKey: "AppleLanguages")
         let currentLanguage = languages?.first ?? unknown
         let udid = device.wordPressIdentifier() ?? unknown

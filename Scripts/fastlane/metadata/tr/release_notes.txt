@@ -1,20 +1,8 @@
-Bu sürümde, parolarınızı uygulama içinden değiştirebilme özelliğini ekledik, tüm uygulamanın kullanıcı arayüzünü parlattık ve büyük bir hata yığını ezdik! Cihazınızın daha iyi vatandaşı olma çabasıyla uygulamanın CPU ve batarya kullanımını da azalttık. ”
+Bu sürüm için, birkaç alanda daha deneyim kazandık:
 
-Fazladan bir cila zarar vermez.
-Bir site oluştururken ayarları yapmak daha kolaydır - konu ekranından başlayabilirsiniz ve görsel tutarlılık daha yumuşak olur. Yazmayı daha konforlu hale getirmek için bazı alanlardaki ve ekranlardaki öğeler arasındaki minimum yükseklik ve boşlukları yükselttik. Siteleri olmayan bir hesaba giriş yaparsanız, sitelerinizi listeleyen gereksiz bir ekran göremezsiniz (veya, onları listelemeyi bilmezsiniz).
-
-Noktalı Is, Ts.
- geçti
-Okuyucuda yorum yaparken yazı başlıkları doğru şekilde görüntüleniyor. Daha büyük metin boyutlarında görüntülenen siteler URL'lerini düzgün görüntüler ve uygulama ayarlarındaki uzun etiketler kesilmez - uygulamadaki metin boyutlandırma genel olarak daha iyidir. Ah, ve bazen editöre bir yazı revizyonu açarsınız ve klavye bildirimi gizlerdi; şimdi olmuyor.
-
-Anlamsız hata mesajları anlamsızdır.
-Yeni bir hesaba kaydolurken bir parola belirlemede sorun varsa, yardımcı bir hata mesajı alırsınız; yazdığınız bir yorum doğru şekilde yayınlanmazsa ve sonuçları olmayan aramalar tam hata mesajlarına sahiptir.
-
-Daha fazla yerelleştirme, herhangi bir dilde daha iyi bir uygulama anlamına gelir.
-hizmet şartları uygun şekilde yerelleştirilmiştir, çünkü hepimiz neyi kabul ettiğimizi bilmeliyiz. İçeriği başka bir uygulamadan WordPress'e paylaşmak için kullanılan düğmeler uygun şekilde çevrilmiş ve bildirimlerinizden gelen bir yorumu düzenlemek için de düğme kullanılıyor. Bir gönderi yayınladıktan sonra "Tamamlandı" düğmesi de çevrilir (ve dokunması fiziksel olarak daha kolaydır!).
-
-Gerçek hataların aksine, teknoloji hatalarının hiçbir amacı yoktur.
-Şimdi bir kullanıcıyı silebilirsiniz; listede artık görünmezler. İstatistikler gereci birincil siteye geri dönmeyi durdurur ve yanlış görüntüler artık bildirim listesinde görünmez. Siteniz özel, revizyon amaçlı görsel mod görüntüleri içeren yayınlar için doğru çalışıyor.
-
-Kimse kaza yapmayı sevmez.
-Düzgün yüklenemeyen görüntüler, ortam arka planda yeniden yüklenir ve üzerinde bir ilerleme çubuğu varken tablo görünümünden uzaklaşmak artık çökmelere yol açmaz.
+- Giriş sırasında bir kullanıcı adı girerken parola otomatik doldurma desteği eklendi.
+- Yazıları sosyal medyada paylaşırken boş mesajlarla ilgili açıklama metni eklendi. Bir mesaj girmezseniz, yazı başlığını varsayılan olarak kullanırız.
+- Şimdi size bir önizleme göstermeden önce taslağınızı otomatik olarak kaydederiz.
+- Okuyucudaki bazı görüntülerin üstünde (veya altında) büyük boşluklara neden olan bir sorun düzeltildi.
+- Özel sayfalar için sayfalar listesindeki bir girinti hatası düzeltildi.
+- Yazı listesini büyük metin boyutlarında etkileyen görsel bir hata düzeltildi.

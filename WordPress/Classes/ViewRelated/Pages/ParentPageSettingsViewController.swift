@@ -4,6 +4,8 @@ import UIKit
 private struct Row: ImmuTableRow {
     static let cell = ImmuTableCell.class(CheckmarkTableViewCell.self)
 
+    let titleFont = UIFont.systemFont(ofSize: 17.0)
+
     enum RowType {
         case topLevel
         case child
@@ -16,12 +18,6 @@ private struct Row: ImmuTableRow {
         switch type {
         case .topLevel: return NSLocalizedString("Top level", comment: "Cell title for the Top Level option case")
         case .child: return page?.postTitle ?? ""
-        }
-    }
-    var titleFont: UIFont {
-        switch type {
-        case .topLevel: return UIFont.systemFont(ofSize: 16.0)
-        case .child: return WPFontManager.notoRegularFont(ofSize: 17)
         }
     }
 

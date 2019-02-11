@@ -1,5 +1,10 @@
 import UIKit
 
+/// This cell type simply displays all data rows provided for a Stat type.
+/// The cell and rows have no functionality; the cell is simply a list, with optional subtitles.
+/// Ex: Insights All Time Stats, Insights Follower Totals.
+///
+
 class SimpleTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
@@ -17,7 +22,6 @@ class SimpleTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
-    private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -25,18 +29,17 @@ class SimpleTotalsCell: UITableViewCell, NibLoadable {
     func configure(dataRows: [StatsTotalRowData],
                    itemSubtitle: String? = nil,
                    dataSubtitle: String? = nil) {
-        self.dataRows = dataRows
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
 
         setSubtitleVisibility()
-        addRows()
+        addRows(dataRows, toStackView: rowsStackView, forType: .insights, limitRowsDisplayed: false)
         applyStyles()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        removeExistingRows()
+        removeRowsFromStackView(rowsStackView)
     }
 
 }
@@ -48,33 +51,6 @@ private extension SimpleTotalsCell {
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.isActive = !showSubtitles
         rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
-    }
-
-    func addRows() {
-        if dataRows.count == 0 {
-            let row = StatsNoDataRow.loadFromNib()
-            rowsStackView.addArrangedSubview(row)
-            return
-        }
-
-        for (index, dataRow) in dataRows.enumerated() {
-            let row = StatsTotalRow.loadFromNib()
-            row.configure(rowData: dataRow)
-
-            // Don't show the separator line on the last row.
-            if index == (dataRows.count - 1) {
-                row.showSeparator = false
-            }
-
-            rowsStackView.addArrangedSubview(row)
-        }
-    }
-
-    func removeExistingRows() {
-        rowsStackView.arrangedSubviews.forEach {
-            rowsStackView.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
     }
 
     func applyStyles() {

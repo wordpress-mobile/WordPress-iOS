@@ -1,19 +1,7 @@
-Dans cette version, nous avons ajouté la possibilité de changer votre mot de passe à partir de l'application, perfectionné l'interface utilisateur sur l'ensemble de l’application, et résolu une grande quantité de bugs ! Nous avons également réduit l'utilisation du CPU et de la batterie de l’application pour être plus urbains avec votre appareil.
-
-Un coup de peinture supplémentaire ne fait jamais de mal.
-Il est plus facile d'ajuster les réglages lors de la création d'un site. Vous pouvez recommencer à partir de l'écran d’accueil et la cohérence visuelle est plus joli. Nous avons augmenté les hauteurs minimales et l’espacement entre les éléments sur certains champs et écrans pour rendre l’écriture plus confortable. Et si vous vous connectez à un compte qui n’a pas de sites, vous ne verrez pas un écran inutile énumérant vos sites.
-
-Points sur les i, barres sur les t.
-Lorsque vous commentez dans le lecteur, les titres des articles s’affichent correctement. Les sites affichés à des tailles de texte plus grandes affichent leur URL correctement et les étiquettes longues dans les réglages de l’application ne sont pas coupées : en général, le dimensionnement des textes dans l’application rend beaucoup mieux. Oh, et parfois vous vouliez ouvrir une révision d’article dans l’éditeur et le clavier dissimulait la notification ; plus maintenant.
-
-Les messages d'erreur inutiles sont… inutiles.
-S’il y a un problème en définissant un mot de passe lors de l’ouverture d'un nouveau compte, vous obtiendrez un message d'erreur utile ; Idem si un commentaire que vous écrivez ne se publie pas correctement. Et les recherches sans résultats ont des messages d’erreur complets.
-
-Une meilleure localisation signifie une meilleure application dans n’importe quelle langue.
-Les conditions d’utilisation sont correctement localisées, parce que nous devrions tous savoir ce avec quoi nous sommes d’accord. Les boutons de partage de contenu vers WordPress à partir d’autres applications sont correctement traduits, ainsi que le bouton pour modifier un commentaire depuis vos notifications. Le bouton « terminé » après la publication d’un message est également traduit (et physiquement plus facile à toucher !).
-
-Contrairement aux vrais bugs (insectes en anglais), les bugs technologiques ne servent à rien.
-Vous pouvez supprimer un utilisateur maintenant, et ils n’apparaîtront plus dans la liste. Le widget statistiques cessera de revenir au site principal, et les mauvaises images n'apparaîtront plus dans la liste des notifications. Si votre site est privé, le mode visuel pour les révisions fonctionne correctement pour les articles qui incluent des images.
-
-Personne n’aime se planter.
-Les images qui ne parviennent pas à se téléverser correctement, le rechargement des médias en arrière-plan et le changement de page pendant qu’il avait une barre de progression ne sont plus responsables de plantage. Hourra.
+Pour cette version, nous avons lissé l’expérience sur quelques points :
+- Ajout du support de l'auto-remplissage de mots de passe lors de la saisie des identifiants de connexion.
+- Ajout d’un texte plus clair à propos du partage sur les réseaux sociaux d’un message vide. Si vous ne saisissez pas de message, nous utiliserons le titre de l’article par défaut.
+- Nous enregistrons automatiquement votre brouillon avant de vous afficher l’aperçu.
+- Correctif sur un problème d’espace en haut (ou en bas) de quelques images dans le Lecteur.
+- Correctif sur un bug d’indentation dans la liste des pages pour les pages privées.
+- Correctif sur un bug visuel affectant la liste des articles avec une taille de texte large.

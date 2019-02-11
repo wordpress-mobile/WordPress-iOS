@@ -1,20 +1,8 @@
-I denna utgåva har vi lagt till möjligheten att ändra lösenordet inifrån appen, snyggat till användargränssnittet i hela appen och rättat en enorm hög av fel! Vi har också appens konsumtion av CPU-kraft och batteri för att vara en snällare invånare i din mobila enhet.
+För denna utgåva har vi skapat en smidigare upplevelse på ytterligare några områden:
 
-Lite extra omsorg har aldrig varit fel.
-Det har blivit enklare att justera inställningar när du skapar en ny webbplats – du kan börja om från skärmbilden med bloggens ämne, och visuellt hänger flödet samman bättre. Vi har ökat minimihöjden och avståndet mellan elementen i vissa fält och skärmbilder för att göra det bekvämare att skriva. Och om du loggar in till ett konto som inte har några bloggar kommer du inte längre att se den onödiga skärmbilden som visade (eller snarare – inte visade) en lista med dina bloggar.
-
-Vi har satt dit pricken över några i:n.
-När du kommenterar inifrån läsaren visas nu inläggsrubrikerna korrekt. För webbplatser som visas i större typsnitt visas nu URL:en på rätt sätt, och långa etiketter i appens inställningar klipps inte längre av — överlag har vi förbättrat storleken på olika texter i hela appen. Jo, ibland när du öppnade en inläggsversion i redigeraren hände det att tangentbordet täckte notisen, men det är det slut med nu.
-
-Meningslösa felmeddelanden är meningslösa.
-Om det är något problem när du väljer lösenord när du skapar ett nytt konto får du nu ett hjälpsamt meddelande. Samma sak om en kommentar du skrivit inte publiceras som den ska. Och om en sökning inte ger något resultat visas nu fullständiga felmeddelanden.
-
-Mer språkanpassning innebär att appen är bättre på vilket språk som helst.
-Användarvillkoren är nu korrekt språkanpassade eftersom vi alltid behöver veta vad vi accepterar. Knapparna för delning av innehåll till WordPress från andra appar är nu korrekt översatta, liksom även knappen för redigering av kommentar från dina aviseringar. Även knappen ”Klart” efter att du publicerat ett inlägg är nu översatt (och fysiskt lättare att klicka på!).
-
-Visst kan det vara kul att bugga, men buggar gör ju ingen glad.
-Nu kan du ta bort en användare utan att den visas igen i listan. Statistikwidgeten skickar inte längre tillbaka dig till huvudwebbplatsen, och aviseringslistan kommer inte längre att visa fel bilder. Om din webbplats är privat kommer det visuella läget för versioner nu att fungera korrekt även för inlägg som innehåller bilder.
-
-Vem gillar krascher?.
-Bilder som inte laddas upp som de ska, media som laddas om i bakgrunden och om man lämnade en tabellvy medan en förloppsindikator ännu visades får inte längre appen att krascha. Hurra!.
-
+- Lagt till stöd för automatisk ifyllning av lösenord när man fyller i användarnamnet vid inloggning.
+- Lagt till ett förtydligande om tomma meddelanden när man delar inlägg till sociala media. Om du inte skriver något meddelande kommer inläggets rubrik att användas som stanardval.
+- Nu sparar si automatiskt ditt utkast innan vi visar dig en förhandsvisning.
+- Korrigerat ett problem som orsakade stora tomma områden ovanför (eller nedanför) vissa bilder i Läsaren.
+- Rättat ett indenteringsfel för privata sidor i sidlistan.
+- Rättat ett visuellt fel som påverkade inläggslistan vid användning av stor textstorlek.
