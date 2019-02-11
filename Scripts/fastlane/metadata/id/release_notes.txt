@@ -1,9 +1,8 @@
-* Jika memulai situs baru di aplikasi, kini Anda dapat mendaftarkan subdomain .blog Anda sendiri!
-* Saat Anda mencoba menghapus situs di iPad, aplikasi tidak akan macet lagi (tadinya terkadang macet).
-* Memperbaiki macet di layar “Tentang” di Pengaturan Aplikasi.
-* Menyegarkan layar pengaturan pos agar terlihat lebih baik di iPad.
+Untuk rilis ini, kami telah menyempurnakan pengalaman di beberapa area:
 
-Dengan serangkaian peningkatan baru untuk fitur Riwayat/Revisi, kini Anda dapat…
-* Menggeser di antara revisi dalam sekejap.
-* Beralih di antara mode HTML dan Visual saat melihat revisi.
-* Berubah pikiran jika Anda menerapkan suatu revisi dengan tombol Urung baru.
+- Menambahkan dukungan untuk isi otomatis kata sandi saat memasukkan nama pengguna selama login.
+- Menambahkan teks klarifikasi tentang pesan kosong saat membagikan pos ke media sosial. Jika Anda tidak menyediakan pesan, kami akan menggunakan judul pos sebagai pengaturan asal.
+- Kini konsep disimpan secara otomatis sebelum pratinjau ditampilkan.
+- Memperbaiki masalah yang menyebabkan ruang besar di atas (atau di bawah) beberapa gambar di Pembaca.
+- Memperbaiki bug indentasi di daftar Halaman untuk halaman privat.
+- Memperbaiki bug visual yang memengaruhi daftar Pos dengan teks berukuran besar.

@@ -1,9 +1,8 @@
-* Als je een nieuwe site start op de app, kun je nu je eigen .blog-subdomein registreren!
-* Als je een site probeert te verwijderen op een iPad, zal de app niet langer crashen (wat soms gebeurde).
-* Een crash op het scherm 'Over' in App-instellingen verholpen.
-* Het berichtinstellingenscherm is vernieuwd zodat het er beter uitziet op een iPad.
+Voor deze uitgave hebben we de ervaring op een aantal extra gebieden verbeterd:
 
-Er zijn verbeteringen aangebracht aan de hulpmiddelen Geschiedenis/Revisie, zodat je nu...
-* In een oogwenk van revisie kunt wisselen.
-* Tussen de HTML-modus en visuele modus kunt schakelen wanneer je een revisie bekijkt.
-* Van gedachten kunt veranderen bij het toepassen van een revisie, door de knop 'Ongedaan maken' te gebruiken.
+- Toegevoegde ondersteuning voor het automatisch invullen van het wachtwoord wanneer een gebruikersnaam wordt ingevoerd bij het inloggen.
+- Toegevoegde verduidelijking over lege berichten wanneer ze op social media worden gedeeld. Als je geen bericht opgeeft, gebruiken we standaard de berichttitel.
+- We slaan je concept nu automatisch op voordat we je een voorbeeld tonen
+- Probleem opgelost waarbij grote ruimtes boven (of onder) bepaalde afbeeldingen in de Reader werden weergegeven.
+- Een inspring-bug in de lijst Pagina's voor privé-pagina's is gerepareerd.
+- Een visuele bug die de weergave van de lijst Berichten aantastte bij groot tekstformaat is gerepareerd.
