@@ -44,7 +44,6 @@ class GutenbergSettings {
     /// - Returns: true if the post must be edited with Gutenberg.
     ///
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
-        return isGutenbergEnabled()
-            && (!post.hasRemote() || post.containsGutenbergBlocks() || post.isContentEmpty())
+        return post.containsGutenbergBlocks() || (isGutenbergEnabled() && post.isContentEmpty())
     }
 }
