@@ -1,44 +1,20 @@
-import XCTest
-import CoreData
 @testable import WordPress
 
-class StatsRecordTests: XCTestCase {
-
-    fileprivate var manager: TestContextManager!
-
-    override func setUp() {
-        manager = TestContextManager()
-    }
-
-    var mainContext: NSManagedObjectContext {
-        return manager.mainContext
-    }
-
-    override func tearDown() {
-        mainContext.reset()
-    }
+class StatsRecordTests: StatsTestCase {
 
     func testCreatingAndSaving() {
         createStatsRecord(in: mainContext, type: .blogStats, date: Date())
         createStatsRecord(in: mainContext, type: .blogStats, date: Date())
         createStatsRecord(in: mainContext, type: .blogStats, date: Date())
 
-        do {
-            try mainContext.save()
-            XCTAssert(true)
-        } catch {
-            XCTAssert(false, "error while saving, should never be true")
-        }
+        XCTAssertNoThrow(try mainContext.save())
     }
 
     func testDateValidationWorks() {
         let record = createStatsRecord(in: mainContext, type: .blogStats, date: Date())
         record.date = nil
 
-        do {
-            try mainContext.save()
-            XCTAssert(false, "this should throw a validation error")
-        } catch {
+        XCTAssertThrowsError(try mainContext.save()) { error in
             let thrownErrorAsNSError = error as NSError
             let expectedErrorAsNSErrror = StatsCoreDataValidationError.noDate as NSError
 
@@ -52,12 +28,7 @@ class StatsRecordTests: XCTestCase {
         let record = createStatsRecord(in: mainContext, type: .allTimeStatsInsight, date: Date())
         record.date = nil
 
-        do {
-            try mainContext.save()
-            XCTAssert(true)
-        } catch {
-            XCTAssert(false, "error while saving, should never be true")
-        }
+        XCTAssertNoThrow(try mainContext.save())
     }
 
     func testSingleElementValidation() {
@@ -67,11 +38,7 @@ class StatsRecordTests: XCTestCase {
         createStatsRecord(in: mainContext, type: .allTimeStatsInsight, date: Date())
         createStatsRecord(in: mainContext, type: .allTimeStatsInsight, date: Date())
 
-        do {
-            try mainContext.save()
-            XCTAssert(false, "this should never succeed and fail with validation warning")
-        }
-        catch {
+        XCTAssertThrowsError(try mainContext.save()) { error in
             let thrownErrorAsNSError = error as NSError
             let expectedErrorAsNSErrror = StatsCoreDataValidationError.singleEntryTypeViolation as NSError
 
@@ -94,8 +61,8 @@ class StatsRecordTests: XCTestCase {
         let allResults = try! mainContext.fetch(StatsRecord.fetchRequest())
         let results = try! mainContext.fetch(fetchRequest)
 
-        XCTAssert(allResults.isEmpty == false)
-        XCTAssert(results.count == 3)
+        XCTAssertEqual(allResults.isEmpty, false)
+        XCTAssertEqual(results.count, 3)
     }
 
     func testFetchingProperTypeOnly() {
@@ -106,7 +73,7 @@ class StatsRecordTests: XCTestCase {
 
         let results = try! mainContext.fetch(fetchRequest)
 
-        XCTAssert(results.count == 1)
+        XCTAssertEqual(results.count, 1)
     }
 
     func testFetchingForYesterday() {
@@ -123,7 +90,7 @@ class StatsRecordTests: XCTestCase {
 
         let results = try! mainContext.fetch(fetchRequest)
 
-        XCTAssert(results.count == 2)
+        XCTAssertEqual(results.count, 2)
     }
 
     func testFetchingForAnywhereInADay() {
@@ -145,6 +112,6 @@ class StatsRecordTests: XCTestCase {
 
         let results = try! mainContext.fetch(fetchRequest)
 
-        XCTAssert(results.count == 5)
+        XCTAssertEqual(results.count, 5)
     }
 }

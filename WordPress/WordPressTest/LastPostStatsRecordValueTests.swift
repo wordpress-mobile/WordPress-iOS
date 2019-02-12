@@ -1,25 +1,8 @@
-import XCTest
-import CoreData
 @testable import WordPress
-
 
 // Note: This also tests a bunch of behavior that is actually provided by `StatsRecordValue` —
 // but that's an a abstract entity and we can't instantiate it directly, so I put it together here.
-class LastPostStatsRecordValueTests: XCTestCase {
-
-    fileprivate var manager: TestContextManager!
-
-    override func setUp() {
-        manager = TestContextManager()
-    }
-
-    override func tearDown() {
-        mainContext.reset()
-    }
-
-    var mainContext: NSManagedObjectContext {
-        return manager.mainContext
-    }
+class LastPostStatsRecordValueTests: StatsTestCase {
 
     // MARK: - StatsRecordValue tests
     func testEntityCreationWorks() {
@@ -30,8 +13,8 @@ class LastPostStatsRecordValueTests: XCTestCase {
 
         let result = try! mainContext.fetch(fetchRequest)
 
-        XCTAssert(result.count == 1)
-        XCTAssert(result.first!.values!.count == 1)
+        XCTAssertEqual(result.count, 1)
+        XCTAssertEqual(result.first!.values!.count, 1)
     }
 
     func testCastingWorks() {
@@ -46,8 +29,8 @@ class LastPostStatsRecordValueTests: XCTestCase {
 
         let castedResults = statsRecord.values?.array as? [LastPostStatsRecordValue]
 
-        XCTAssert(castedResults != nil)
-        XCTAssert(castedResults!.count == 1)
+        XCTAssertNotNil(castedResults)
+        XCTAssertEqual(castedResults!.count, 1)
     }
 
     func testInverseRelationShipWorks() {
@@ -58,8 +41,8 @@ class LastPostStatsRecordValueTests: XCTestCase {
 
         let result = try! mainContext.fetch(fetchRequest)
 
-        XCTAssert(result.count == 1)
-        XCTAssert((result.first!.values!.firstObject! as! LastPostStatsRecordValue).statsRecord != nil)
+        XCTAssertEqual(result.count, 1)
+        XCTAssertNotNil((result.first!.values!.firstObject! as! LastPostStatsRecordValue).statsRecord)
     }
 
     func testInsertingSingleValueWorks() {
@@ -68,13 +51,7 @@ class LastPostStatsRecordValueTests: XCTestCase {
         let parent = createStatsRecord(in: mainContext, type: .lastPostInsight, date: Date())
         createLastPostStatsRecordValue(parent: parent)
 
-        do {
-            try mainContext.save()
-            XCTAssert(true)
-        }
-        catch {
-            XCTAssert(false, "this should never fail and always succeed, the error was \(error)")
-        }
+        XCTAssertNoThrow(try mainContext.save())
     }
 
     func testInsertingMultipleFails() {
@@ -85,11 +62,7 @@ class LastPostStatsRecordValueTests: XCTestCase {
         createLastPostStatsRecordValue(parent: parent)
         createLastPostStatsRecordValue(parent: parent)
 
-        do {
-            try mainContext.save()
-            XCTAssert(false, "this should never succeed and fail with validation warning")
-        }
-        catch {
+        XCTAssertThrowsError(try mainContext.save()) { error in
             // the error is being bubbled up trough Obj-C Core Data innards, which means we can't just compare the enums.
             let thrownErrorAsNSError = error as NSError
             let expectedErrorAsNSErrror = StatsCoreDataValidationError.singleEntryTypeViolation as NSError
@@ -115,7 +88,7 @@ class LastPostStatsRecordValueTests: XCTestCase {
         let result = try! mainContext.fetch(fetchRequest)
 
         let fetchedValue = result.first!.values!.firstObject as! LastPostStatsRecordValue
-        XCTAssert(fetchedValue.url != nil)
+        XCTAssertNotNil(fetchedValue.url)
     }
 
     @discardableResult func createLastPostStatsRecordValue(parent: StatsRecord) -> LastPostStatsRecordValue {
