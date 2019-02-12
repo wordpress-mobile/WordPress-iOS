@@ -796,6 +796,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="AllTimeStatsRecordValue" positionX="27" positionY="162" width="128" height="120"/>
+        <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="36" positionY="162" width="128" height="255"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="763"/>
         <element name="BlogAuthor" positionX="36" positionY="162" width="128" height="165"/>
@@ -806,7 +807,6 @@
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="36" positionY="162" width="128" height="255"/>
         <element name="LastPostStatsRecordValue" positionX="45" positionY="504" width="128" height="30"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="420"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
