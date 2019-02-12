@@ -6,6 +6,7 @@ open class QuickStartTourGuide: NSObject {
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
     private var suggestionWorkItem: DispatchWorkItem?
+    private weak var recentlyTouredBlog: Blog?
     static let notificationElementKey = "QuickStartElementKey"
 
     @objc static func find() -> QuickStartTourGuide? {
@@ -54,6 +55,27 @@ open class QuickStartTourGuide: NSObject {
     /// - Parameter blog: The Blog for which to suggest a tour.
     /// - Returns: A QuickStartTour to suggest. `nil` if there are no appropriate tours.
     func tourToSuggest(for blog: Blog) -> QuickStartTour? {
+        guard Feature.enabled(.quickStartV2) else {
+            return tourToSuggestV1(for: blog)
+        }
+
+        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
+        let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
+        let unavailableTours = Array(Set(completedTours + skippedTours))
+        let allTours = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+
+        guard isQuickStartEnabled(for: blog),
+            recentlyTouredBlog == blog else {
+                return nil
+        }
+
+        let unavailableIDs = unavailableTours.map { $0.tourID }
+        let remainingTours = allTours.filter { !unavailableIDs.contains($0.key) }
+
+        return remainingTours.first
+    }
+
+    private func tourToSuggestV1(for blog: Blog) -> QuickStartTour? {
         let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
         let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
         let unavailableTours = Array(Set(completedTours + skippedTours))
@@ -279,6 +301,7 @@ private extension QuickStartTourGuide {
         }
 
         blog.completeTour(tour.key)
+        recentlyTouredBlog = blog
 
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])

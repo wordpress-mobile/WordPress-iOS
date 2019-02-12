@@ -11,6 +11,7 @@ struct StatsTotalRowData {
     var nameDetail: String?
     var showDisclosure: Bool
     var disclosureURL: URL?
+    var childRows: [StatsTotalRowData]?
 
     init(name: String,
          data: String,
@@ -21,7 +22,8 @@ struct StatsTotalRowData {
          userIconURL: URL? = nil,
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
-         disclosureURL: URL? = nil) {
+         disclosureURL: URL? = nil,
+         childRows: [StatsTotalRowData]? = [StatsTotalRowData]()) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -32,13 +34,14 @@ struct StatsTotalRowData {
         self.userIconURL = userIconURL
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
+        self.childRows = childRows
     }
 }
 
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-
+    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -46,7 +49,17 @@ class StatsTotalRow: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var contentView: UIView!
+
+    // The default line shown indented at the bottom of the view.
+    // Shown by default unless otherwise specified.
     @IBOutlet weak var separatorLine: UIView!
+
+    // Lines shown at the top/bottom of the view, spanning the entire width.
+    // These are shown when a row is selected that has children, used to indicate
+    // the top and bottom of the expanded rows.
+    // Hidden by default unless otherwise specified.
+    @IBOutlet weak var topExpandedSeparatorLine: UIView!
+    @IBOutlet weak var bottomExpandedSeparatorLine: UIView!
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
@@ -65,11 +78,14 @@ class StatsTotalRow: UIView, NibLoadable {
     @IBOutlet weak var disclosureImageView: UIImageView!
     @IBOutlet weak var disclosureButton: UIButton!
 
-    private var rowData: StatsTotalRowData?
+    private(set) var rowData: StatsTotalRowData?
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
-
     private weak var delegate: StatsTotalRowDelegate?
+
+    // This stack view is modified by the containing cell, to show/hide
+    // child rows when a parent row is selected.
+    var childRowsStackView: UIStackView?
 
     var showSeparator = true {
         didSet {
@@ -77,13 +93,49 @@ class StatsTotalRow: UIView, NibLoadable {
         }
     }
 
+    var showTopExpandedSeparator = false {
+        didSet {
+            topExpandedSeparatorLine.isHidden = !showTopExpandedSeparator
+        }
+    }
+
+    var showBottomExpandedSeparator = false {
+        didSet {
+            bottomExpandedSeparatorLine.isHidden = !showBottomExpandedSeparator
+        }
+    }
+
+    var hasChildRows: Bool {
+        if let childRows = rowData?.childRows,
+            !childRows.isEmpty {
+            return true
+        }
+        return false
+    }
+
+    var expanded: Bool = false {
+        didSet {
+            guard hasChildRows else {
+                return
+            }
+
+            showSeparator = !expanded
+            showTopExpandedSeparator = expanded
+
+            let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+                self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
+            })
+        }
+    }
+
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
-
         self.rowData = rowData
         self.delegate = delegate
 
+        configureExpandedState()
         configureIcon()
 
         // Set values
@@ -116,7 +168,20 @@ private extension StatsTotalRow {
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
         Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsSeperator(topExpandedSeparatorLine)
+        Style.configureViewAsSeperator(bottomExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
+    }
+
+    func configureExpandedState() {
+
+        guard let name = rowData?.name else {
+            expanded = false
+            return
+        }
+
+        expanded = (StatsDataHelper.expandedRowLabels[.insights]?.contains(name) ?? false) ||
+            (StatsDataHelper.expandedRowLabels[.period]?.contains(name) ?? false)
     }
 
     func configureIcon() {
@@ -164,7 +229,7 @@ private extension StatsTotalRow {
         // Determine the distance from the bar to the max width.
         // Set that distance as the bar width.
 
-        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant
+        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant + rightStackView.spacing
         var maxBarWidth = Float(contentView.frame.width - dataWidth)
 
         if !imageView.isHidden {
@@ -190,6 +255,8 @@ private extension StatsTotalRow {
         static let defaultImageSize = CGFloat(24)
         static let socialImageSize = CGFloat(20)
         static let userImageSize = CGFloat(28)
+        static let disclosureImageUp = CGFloat.pi * 1.5
+        static let disclosureImageDown = CGFloat.pi / 2
     }
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
@@ -199,17 +266,22 @@ private extension StatsTotalRow {
             return
         }
 
-        guard let disclosureURL = rowData?.disclosureURL else {
-            let alertController =  UIAlertController(title: "More will be disclosed.",
-                                                     message: nil,
-                                                     preferredStyle: .alert)
-            alertController.addCancelActionWithTitle("OK")
-            alertController.presentFromRootViewController()
-
+        if hasChildRows {
+            expanded.toggle()
+            delegate?.toggleChildRowsForRow?(self)
             return
         }
 
-        delegate?.displayWebViewWithURL?(disclosureURL)
+        if let disclosureURL = rowData?.disclosureURL {
+            delegate?.displayWebViewWithURL?(disclosureURL)
+            return
+        }
+
+        let alertController =  UIAlertController(title: "More will be disclosed.",
+                                                 message: nil,
+                                                 preferredStyle: .alert)
+        alertController.addCancelActionWithTitle("OK")
+        alertController.presentFromRootViewController()
     }
 
 }
