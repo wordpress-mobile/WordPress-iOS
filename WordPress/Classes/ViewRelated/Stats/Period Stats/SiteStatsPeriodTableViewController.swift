@@ -113,6 +113,10 @@ private extension SiteStatsPeriodTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
+
+        // Scroll to the top of the table.
+        // TODO: look at removing this when loading view is added.
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 
     @objc func userInitiatedRefresh() {

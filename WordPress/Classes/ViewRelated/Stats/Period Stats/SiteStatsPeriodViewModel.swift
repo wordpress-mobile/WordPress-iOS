@@ -38,6 +38,7 @@ class SiteStatsPeriodViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: clicksTableRows())
         tableRows.append(contentsOf: authorsTableRows())
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
@@ -65,6 +66,7 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
         static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
         static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
         static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
@@ -74,6 +76,11 @@ private extension SiteStatsPeriodViewModel {
     struct PostsAndPages {
         static let itemSubtitle = NSLocalizedString("Title", comment: "Posts and Pages label for post/page title")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
+    }
+
+    struct Clicks {
+        static let itemSubtitle = NSLocalizedString("Link", comment: "Clicks label for link title")
+        static let dataSubtitle = NSLocalizedString("Clicks", comment: "Clicks label for number of clicks")
     }
 
     struct Authors {
@@ -125,6 +132,38 @@ private extension SiteStatsPeriodViewModel {
         }
 
         return dataRows
+    }
+
+    func clicksTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.clicks))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Clicks.itemSubtitle,
+                                                 dataSubtitle: Clicks.dataSubtitle,
+                                                 dataRows: clicksDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func clicksDataRows() -> [StatsTotalRowData] {
+        return store.getTopClicks()?.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     showDisclosure: true,
+                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                     childRows: childRowsForClicks($0)) }
+            ?? [StatsTotalRowData]()
+    }
+
+    func childRowsForClicks(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        guard let children = item.children as? [StatsItem] else {
+            return [StatsTotalRowData]()
+        }
+
+        return children.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     showDisclosure: true,
+                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
     }
 
     func authorsTableRows() -> [ImmuTableRow] {
