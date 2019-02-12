@@ -11,8 +11,8 @@ class LoginEmailScreen: BaseScreen {
         let app = XCUIApplication()
         navBar = app.navigationBars["WordPress.LoginEmailView"]
         navBackButton = navBar.buttons["Back"]
-        emailTextField = app.textFields["Email address"]
-        nextButton = app.buttons["Next Button"]
+        emailTextField = app.textFields["Login Email Address"]
+        nextButton = app.buttons["Login Email Next Button"]
 
         super.init(element: emailTextField)
     }
@@ -26,7 +26,7 @@ class LoginEmailScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        let expectedElement = XCUIApplication().textFields["Email address"]
+        let expectedElement = XCUIApplication().textFields["Login Email Address"]
         return expectedElement.exists && expectedElement.isHittable
     }
 }

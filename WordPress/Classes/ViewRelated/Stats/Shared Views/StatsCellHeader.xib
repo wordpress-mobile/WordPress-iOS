@@ -12,10 +12,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="57" id="3fP-pA-Ovw" customClass="StatsCellHeader" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3fP-pA-Ovw" id="fMA-Y8-HGb">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="56.5"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3fP-pA-Ovw" id="fMA-Y8-HGb">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="55.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="B45-HF-Mto">
@@ -47,7 +47,7 @@
                     <constraint firstItem="B45-HF-Mto" firstAttribute="leading" secondItem="fMA-Y8-HGb" secondAttribute="leading" constant="16" id="Bum-ye-yWk"/>
                     <constraint firstAttribute="trailing" secondItem="B45-HF-Mto" secondAttribute="trailing" constant="16" id="OPB-sC-KWU"/>
                     <constraint firstItem="B45-HF-Mto" firstAttribute="top" secondItem="fMA-Y8-HGb" secondAttribute="top" constant="20" id="RWL-Fv-z9B"/>
-                    <constraint firstAttribute="bottom" secondItem="B45-HF-Mto" secondAttribute="bottom" id="zBu-as-SLm"/>
+                    <constraint firstAttribute="bottom" secondItem="B45-HF-Mto" secondAttribute="bottom" priority="999" id="zBu-as-SLm"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
