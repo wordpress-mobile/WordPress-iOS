@@ -67,4 +67,17 @@ class FollowersStatsRecordValueTests: StatsTestCase {
         XCTAssertEqual(dotComFollowers.first!.name, follower2.name)
     }
 
+    func testURLConversionWorks() {
+        let parent = createStatsRecord(in: mainContext, type: .followers, date: Date())
+
+        let follower = FollowersStatsRecordValue(parent: parent)
+        follower.type = FollowersStatsType.email.rawValue
+        follower.avatarURLString = "www.wordpress.com"
+
+        let fetchRequest = StatsRecord.fetchRequest(for: .followers)
+        let result = try! mainContext.fetch(fetchRequest)
+
+        let fetchedValue = result.first!.values!.firstObject as! FollowersStatsRecordValue
+        XCTAssertNotNil(fetchedValue.avatarURL)
+    }
 }
