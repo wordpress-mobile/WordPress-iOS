@@ -82,6 +82,9 @@ class SiteStatsInsightsViewModel: Observable {
             }
         }
 
+
+        tableRows.append(TableFooterRow())
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: tableRows)
