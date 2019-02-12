@@ -263,6 +263,8 @@
 		40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */; };
 		40E7FECF2211FFB90032834E /* AllTimeStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FECB2211FFA60032834E /* AllTimeStatsRecordValue+CoreDataClass.swift */; };
 		40E7FED02211FFBC0032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E7FECC2211FFA70032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift */; };
+		40EE947F2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE947D2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift */; };
+		40EE94802213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EE947E2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift */; };
 		40F46B6A22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F46B6822121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift */; };
 		40F46B6B22121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F46B6922121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift */; };
 		40F50B82221310F000CBBB73 /* StatsTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F50B81221310F000CBBB73 /* StatsTestCase.swift */; };
@@ -2078,6 +2080,8 @@
 		40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPostStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		40E7FECB2211FFA60032834E /* AllTimeStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllTimeStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40E7FECC2211FFA70032834E /* AllTimeStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllTimeStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		40EE947D2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeConnectionStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
+		40EE947E2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicizeConnectionStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40F46B6822121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40F46B6922121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40F50B81221310F000CBBB73 /* StatsTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTestCase.swift; sourceTree = "<group>"; };
@@ -4623,6 +4627,8 @@
 		40F46B6C22121BBC00A2143B /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				40EE947D2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift */,
+				40EE947E2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift */,
 				40F46B6822121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataClass.swift */,
 				40F46B6922121BA800A2143B /* AnnualAndMostPopularTimeStatsRecordValue+CoreDataProperties.swift */,
 				40E7FECB2211FFA60032834E /* AllTimeStatsRecordValue+CoreDataClass.swift */,
@@ -9698,6 +9704,7 @@
 				9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */,
 				E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */,
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
+				40EE947F2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift in Sources */,
 				1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */,
 				D817799420ABFDB300330998 /* ReaderPostCellActions.swift in Sources */,
 				FF7E510A1FBDE0C500AD2918 /* MediaAttachment+WordPress.swift in Sources */,
@@ -10125,6 +10132,7 @@
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				177B4C2B2123185300CF8084 /* GiphyMediaGroup.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
+				40EE94802213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift in Sources */,
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
 				98D60B9B1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,

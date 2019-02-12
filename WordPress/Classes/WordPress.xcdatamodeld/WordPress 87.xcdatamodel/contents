@@ -572,6 +572,11 @@
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="connections" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="PublicizeConnectionStatsRecordValue" representedClassName=".PublicizeConnectionStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="followersCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="iconURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="PublicizeService" representedClassName="WordPress.PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
@@ -840,5 +845,6 @@
         <element name="StatsRecord" positionX="27" positionY="486" width="128" height="120"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
+        <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
     </elements>
 </model>

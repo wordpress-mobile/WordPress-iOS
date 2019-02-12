@@ -27,6 +27,7 @@ import CoreData
 public enum StatsRecordType: Int16 {
     case lastPostInsight
     case allTimeStatsInsight
+    case publicizeConnection
 
     case postStats
     case blogStats
