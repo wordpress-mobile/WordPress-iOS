@@ -141,7 +141,16 @@ private extension QuickStartChecklistManager {
     }
 
     func hideTopSeparator(at indexPath: IndexPath) -> Bool {
-        return !(WPDeviceIdentification.isiPad() && !todoTours.isEmpty && indexPath.row == 0)
+        guard let section = Sections(rawValue: indexPath.section) else {
+            return true
+        }
+
+        switch section {
+        case .todo:
+            return !(WPDeviceIdentification.isiPad() && !todoTours.isEmpty && indexPath.row == 0)
+        case .completed:
+            return true
+        }
     }
 
     func tours(at section: Int) -> [QuickStartTour] {
