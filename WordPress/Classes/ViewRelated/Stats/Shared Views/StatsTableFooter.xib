@@ -12,16 +12,16 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="57" id="3fP-pA-Ovw" customClass="StatsTableFooter" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3fP-pA-Ovw" id="fMA-Y8-HGb">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="15.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="19.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="00b-C3-u58">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="16.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="16" id="fLR-8g-RcH"/>
+                            <constraint firstAttribute="height" constant="20" id="fLR-8g-RcH"/>
                         </constraints>
                     </view>
                 </subviews>

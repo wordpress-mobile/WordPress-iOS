@@ -6218,12 +6218,12 @@
 		98F89D47219E008600190EE6 /* Shared Views */ = {
 			isa = PBXGroup;
 			children = (
-				983DBBA922125DD300753988 /* StatsTableFooter.swift */,
-				983DBBA822125DD300753988 /* StatsTableFooter.xib */,
 				9881296C219CF1300075FF33 /* StatsCellHeader.swift */,
 				9881296D219CF1310075FF33 /* StatsCellHeader.xib */,
 				98458CB721A39D350025D232 /* StatsNoDataRow.swift */,
 				98458CB921A39D7A0025D232 /* StatsNoDataRow.xib */,
+				983DBBA922125DD300753988 /* StatsTableFooter.swift */,
+				983DBBA822125DD300753988 /* StatsTableFooter.xib */,
 				98812964219CE42A0075FF33 /* StatsTotalRow.swift */,
 				98812965219CE42A0075FF33 /* StatsTotalRow.xib */,
 				984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */,
