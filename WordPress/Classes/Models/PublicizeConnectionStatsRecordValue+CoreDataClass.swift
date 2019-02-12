@@ -3,7 +3,7 @@ import CoreData
 
 
 public class PublicizeConnectionStatsRecordValue: StatsRecordValue {
-    public var icoURL: URL? {
+    public var iconURL: URL? {
         guard let url = iconURLString as String? else {
             return nil
         }
