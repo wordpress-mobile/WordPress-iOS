@@ -52,9 +52,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: MostPopularStats.itemSubtitle,
-                                                               dataSubtitle: MostPopularStats.dataSubtitle,
-                                                               dataRows: createMostPopularStatsRows()))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
                 tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
@@ -105,7 +103,7 @@ private extension SiteStatsInsightsViewModel {
     struct InsightsHeaders {
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
-        static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
+        static let mostPopularStats = NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
@@ -128,8 +126,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct MostPopularStats {
-        static let itemSubtitle = NSLocalizedString("Day/Hour", comment: "Most Popular Day and Hour label for day and hour")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Most Popular Day and Hour label for number of views")
+        static let percentOfViews = NSLocalizedString("%@ of views", comment: "'Most Popular Time' label displaying percent of views. %@ is the percent value.")
     }
 
     struct FollowerTotals {
@@ -263,11 +260,15 @@ private extension SiteStatsInsightsViewModel {
             highestDayPercentValue.floatValue > 0 {
 
             // Day
-            dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek, data: highestDayPercent))
+            dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek,
+                                                   data: String(format: MostPopularStats.percentOfViews, highestDayPercent),
+                                                   icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)))
 
             // Hour
             let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
-            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour, data: highestHourPercent))
+            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour,
+                                                   data: String(format: MostPopularStats.percentOfViews, highestHourPercent),
+                                                   icon: Style.imageForGridiconType(.time, withTint: .darkGrey)))
         }
 
         return dataRows
