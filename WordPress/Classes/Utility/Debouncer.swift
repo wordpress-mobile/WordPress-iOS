@@ -3,22 +3,26 @@ import Foundation
 //From : https://github.com/webadnan/swift-debouncer
 
 final class Debouncer {
-    var callback: (() -> Void)?
+    var callback: (() -> Void)
     var delay: Double
     weak var timer: Timer?
 
-    init(delay: Double, callback: (() -> Void)? = nil) {
+    init(delay: Double, callback: @escaping (() -> Void)) {
         self.delay = delay
         self.callback = callback
     }
 
-    func call() {
-        timer?.invalidate()
-        let nextTimer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(Debouncer.fireNow), userInfo: nil, repeats: false)
-        timer = nextTimer
+    deinit {
+        if let timer = timer, timer.fireDate >= Date() {
+            timer.fire()
+        }
     }
 
-    @objc func fireNow() {
-        self.callback?()
+    func call() {
+        timer?.invalidate()
+
+        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] timer in
+            self?.callback()
+        }
     }
 }
