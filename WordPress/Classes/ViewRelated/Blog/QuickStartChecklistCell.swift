@@ -85,8 +85,8 @@ class QuickStartChecklistCell: UITableViewCell {
     static let reuseIdentifier = "QuickStartChecklistCell"
 }
 
-extension QuickStartChecklistCell {
-    private func setupConstraints() {
+private extension QuickStartChecklistCell {
+    func setupConstraints() {
         guard let stroke = stroke,
             let topSeparator = topSeparator else {
             return
