@@ -26,10 +26,14 @@ class QuickStartListTitleCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        accessoryView = nil
+        accessoryType = .none
         refreshIconColor()
     }
+}
 
-    private func refreshIconColor() {
+private extension QuickStartListTitleCell {
+    func refreshIconColor() {
         switch state {
         case .customizeIncomplete:
             circleImageView?.backgroundColor = .mediumBlue
@@ -41,7 +45,7 @@ class QuickStartListTitleCell: UITableViewCell {
 
         guard let iconImageView = iconImageView,
             let iconImage = iconImageView.image else {
-            return
+                return
         }
 
         iconImageView.image = iconImage.imageWithTintColor(.white)

@@ -85,7 +85,7 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // This stack view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
-    var childRowsStackView = UIStackView()
+    var childRowsStackView: UIStackView?
 
     var showSeparator = true {
         didSet {
@@ -127,6 +127,13 @@ class StatsTotalRow: UIView, NibLoadable {
                 self?.disclosureImageView.transform = CGAffineTransform(rotationAngle: rotation)
             })
         }
+    }
+
+    var hasIcon: Bool {
+        guard let rowData = rowData else {
+            return false
+        }
+        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
     }
 
     // MARK: - Configure
@@ -190,8 +197,7 @@ private extension StatsTotalRow {
             return
         }
 
-        let haveIcon = rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
-        imageView.isHidden = !haveIcon
+        imageView.isHidden = !hasIcon
 
         if let icon = rowData.icon {
             imageWidthConstraint.constant = Constants.defaultImageSize
@@ -229,7 +235,7 @@ private extension StatsTotalRow {
         // Determine the distance from the bar to the max width.
         // Set that distance as the bar width.
 
-        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant
+        let dataWidth = rightStackView.frame.width + rightStackViewLeadingConstraint.constant + rightStackView.spacing
         var maxBarWidth = Float(contentView.frame.width - dataWidth)
 
         if !imageView.isHidden {

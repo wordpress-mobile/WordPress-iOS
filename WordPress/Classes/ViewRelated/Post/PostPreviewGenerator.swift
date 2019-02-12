@@ -20,7 +20,7 @@ class PostPreviewGenerator: NSObject {
 
     @objc func generate() {
         guard let url = post.permaLink.flatMap(URL.init(string:)),
-            (!post.hasLocalChanges() || post.isDraft()) else {
+            !post.hasLocalChanges() else {
                 showFakePreview()
                 return
         }
