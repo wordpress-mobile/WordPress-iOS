@@ -1037,7 +1037,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
         [removeConfirmation addCancelActionWithTitle:cancelTitle handler:nil];
         [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
-            // do the remove
+            [[QuickStartTourGuide find] removeFrom:self.blog];
         }];
 
         UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -1447,16 +1447,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
-        if ([self shouldShowQuickStartChecklist]) {
-            [self configureTableViewData];
-            NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
-            if (generalSectionCountBefore != generalSectionCountAfter) {
-                // quick start was just enabled
-                if ([Feature enabled:FeatureFlagQuickStartV2]) {
-                    [self showQuickStartCustomize];
-                } else {
-                    [self showQuickStartV1];
-                }
+        [self configureTableViewData];
+        NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
+        // quick start was just enabled
+        if (generalSectionCountBefore != generalSectionCountAfter && [self shouldShowQuickStartChecklist]) {
+            if ([Feature enabled:FeatureFlagQuickStartV2]) {
+                [self showQuickStartCustomize];
+            } else {
+                [self showQuickStartV1];
             }
         }
         [self reloadTableViewPreservingSelection];
