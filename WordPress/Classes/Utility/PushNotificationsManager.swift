@@ -169,7 +169,8 @@ final public class PushNotificationsManager: NSObject {
         let handlers = [ handleSupportNotification,
                          handleAuthenticationNotification,
                          handleInactiveNotification,
-                         handleBackgroundNotification ]
+                         handleBackgroundNotification,
+                         handleQuickStartLocalNotification ]
 
         for handler in handlers {
             if handler(userInfo, completionHandler) {
@@ -332,6 +333,32 @@ extension PushNotificationsManager {
             let result = newData ? UIBackgroundFetchResult.newData : .noData
             completionHandler?(result)
         }
+
+        return true
+    }
+
+    /// Handles a Quick Start Local Notification
+    ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    @objc func handleQuickStartLocalNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+            type == QuickStartTourGuide.Notification.local else {
+                return false
+        }
+
+        if WPTabBarController.sharedInstance()?.presentedViewController != nil {
+            WPTabBarController.sharedInstance()?.dismiss(animated: false)
+        }
+        WPTabBarController.sharedInstance()?.showMySitesTab()
+
+        completionHandler?(.newData)
 
         return true
     }
