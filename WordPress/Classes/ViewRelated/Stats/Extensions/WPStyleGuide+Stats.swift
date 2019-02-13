@@ -68,6 +68,10 @@ extension WPStyleGuide {
             label.textColor = secondaryTextColor
         }
 
+        static func configureLabelAsChildRowTitle(_ label: UILabel) {
+            label.textColor = secondaryTextColor
+        }
+
         static func configureLabelAsNoData(_ label: UILabel) {
             label.textColor = secondaryTextColor
         }

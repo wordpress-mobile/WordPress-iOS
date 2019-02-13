@@ -16,13 +16,15 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
+    // If the subtitles are not shown, this is active.
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
+    // If the subtitles are shown, this is active.
+    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
 
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private let maxChildRowsToDisplay = 10
-    private let subtitlesBottomMargin: CGFloat = 7.0
     private var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
@@ -43,10 +45,9 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        setSubtitleVisibility()
-
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
         addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
+        setSubtitleVisibility()
         initChildRows()
 
         applyStyles()
@@ -54,6 +55,16 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+
+        rowsStackView.arrangedSubviews.forEach { subview in
+            guard let row = subview as? StatsTotalRow,
+                row.hasChildRows else {
+                    return
+            }
+
+            removeChildRowsForRow(row)
+        }
+
         removeRowsFromStackView(rowsStackView)
     }
 
@@ -74,7 +85,8 @@ private extension TopTotalsCell {
     func setSubtitleVisibility() {
         let showSubtitles = dataRows.count > 0 && subtitlesProvided
         subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleStackView.frame.height + subtitlesBottomMargin : 0
+        rowsStackViewTopConstraint.isActive = !showSubtitles
+        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
     }
 
     // MARK: - Child Row Handling
@@ -112,7 +124,13 @@ private extension TopTotalsCell {
             let childRow = StatsTotalRow.loadFromNib()
 
             childRow.configure(rowData: childRowData, delegate: self)
+            Style.configureLabelAsChildRowTitle(childRow.itemLabel)
             childRow.showSeparator = false
+
+            // If the parent row has an icon, show the image view for the child
+            // to make the child row appear "indented".
+            // If the parent does not have an icon, don't indent the child row.
+            childRow.imageView.isHidden = !row.hasIcon
 
             // Show the expanded bottom separator on the last row
             childRow.showBottomExpandedSeparator = (childRowsIndex == numberOfRowsToAdd - 1)
@@ -125,12 +143,18 @@ private extension TopTotalsCell {
     }
 
     func removeChildRowsForRow(_ row: StatsTotalRow) {
-        rowsStackView.removeArrangedSubview(row.childRowsStackView)
-        row.childRowsStackView.removeFromSuperview()
+
+        guard let childRowsStackView = row.childRowsStackView else {
+            return
+        }
+
+        removeRowsFromStackView(childRowsStackView)
+        rowsStackView.removeArrangedSubview(childRowsStackView)
+        childRowsStackView.removeFromSuperview()
     }
 
     func toggleSeparatorForRowPreviousTo(_ row: StatsTotalRow) {
-        guard let rowIndex = indexForRow(row), (rowIndex - 1) > 0,
+        guard let rowIndex = indexForRow(row), (rowIndex - 1) >= 0,
         let previousRow = rowsStackView.arrangedSubviews[rowIndex - 1] as? StatsTotalRow else {
             return
         }
@@ -176,6 +200,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
         toggleSeparatorForRowPreviousTo(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
+        siteStatsPeriodDelegate?.expandedRowUpdated?(row)
     }
 
 }
