@@ -24,16 +24,18 @@ extension GutenbergViewController {
     }
 
     func showInformativeDialogIfNecessary() {
-        GutenbergViewController.showInformativeDialogIfNecessary(on: self)
+        GutenbergViewController.showInformativeDialogIfNecessary(showing: post, on: self)
     }
 
     static func showInformativeDialogIfNecessary(
         using userDefaults: GutenbergFlagsUserDefaultsProtocol = UserDefaults.standard,
+        showing post: AbstractPost,
         on viewController: UIViewControllerTransitioningDelegate & UIViewController,
         animated: Bool = true
     ) {
-        guard !userDefaults.bool(forKey: Const.Key.informativeDialog) else {
-            // Don't show if it was shown before
+        guard !userDefaults.bool(forKey: Const.Key.informativeDialog),
+            post.containsGutenbergBlocks() else {
+            // Don't show if this was shown before or the post does not contain blocks
             return
         }
         let okButton: (title: String, handler: FancyAlertViewController.FancyAlertButtonHandler?) =

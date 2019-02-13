@@ -1,5 +1,6 @@
 import XCTest
 import UIKit
+import CoreData
 @testable import WordPress
 
 fileprivate class MockUserDefaults: GutenbergFlagsUserDefaultsProtocol {
@@ -23,14 +24,30 @@ fileprivate class MockUIViewController: UIViewController, UIViewControllerTransi
 
 class GutenbergInformativeDialogTests: XCTestCase {
 
+    enum PostContent {
+        static let classic = """
+        Text <strong>bold</strong> <em>italic</em>
+        """
+
+        static let gutenberg = """
+        <!-- wp:image {"id":-181231834} -->
+        <figure class="wp-block-image"><img src="file://tmp/EC856C66-7B79-4631-9503-2FB9FF0E6C66.jpg" alt="" class="wp-image--181231834"/></figure>
+        <!-- /wp:image -->
+        """
+    }
+
     private var rootWindow: UIWindow!
     private var viewController: MockUIViewController!
+    private var mockUserDefaults: MockUserDefaults!
+    private var context: NSManagedObjectContext!
 
     override func setUp() {
         viewController = MockUIViewController()
         rootWindow = UIWindow(frame: UIScreen.main.bounds)
         rootWindow.isHidden = false
         rootWindow.rootViewController = viewController
+        context = setUpInMemoryManagedObjectContext()
+        mockUserDefaults = MockUserDefaults()
     }
 
     override func tearDown() {
@@ -38,22 +55,65 @@ class GutenbergInformativeDialogTests: XCTestCase {
         rootWindow.isHidden = true
         rootWindow = nil
         viewController = nil
+        context = nil
+        mockUserDefaults = nil
     }
 
-    func testShowInformativeDialog() {
-        let mockUserDefaults = MockUserDefaults()
+    func testShowInformativeDialogWithUserDefaultsFlagWithGutenbergContent() {
+        let post = insertPost()
+        post.content = PostContent.gutenberg
+        mockUserDefaults.set(true, forKey: GutenbergViewController.Const.Key.informativeDialog)
+        XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
+        GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults,
+                                                                 showing: post,
+                                                                 on: viewController,
+                                                                 animated: false)
+        XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
+        XCTAssertNil(viewController.presentedViewController as? FancyAlertViewController)
+    }
+
+    func testShowInformativeDialogWithNoUserDefaultsFlagWithGutenbergContent() {
+        let post = insertPost()
+        post.content = PostContent.gutenberg
         XCTAssertFalse(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
-        GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults, on: viewController, animated: false)
+        GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults,
+                                                                 showing: post,
+                                                                 on: viewController,
+                                                                 animated: false)
         XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
         XCTAssertNotNil(viewController.presentedViewController as? FancyAlertViewController)
     }
 
-    func testShowInformativeDialogNotNecessary() {
-        let mockUserDefaults = MockUserDefaults()
-        mockUserDefaults.set(true, forKey: GutenbergViewController.Const.Key.informativeDialog)
-        XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
-        GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults, on: viewController, animated: false)
-        XCTAssertTrue(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
+    func testShowInformativeDialogWithNoUserDefaultsFlagWithClassicContent() {
+        let post = insertPost()
+        post.content = PostContent.classic
+        XCTAssertFalse(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
+        GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults,
+                                                                 showing: post,
+                                                                 on: viewController,
+                                                                 animated: false)
+        XCTAssertFalse(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
         XCTAssertNil(viewController.presentedViewController as? FancyAlertViewController)
+    }
+
+    private func insertPost() -> AbstractPost {
+        return NSEntityDescription.insertNewObject(forEntityName: "Post", into: context) as! AbstractPost
+    }
+
+    private func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
+        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
+
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+
+        do {
+            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
+        } catch {
+            print("Adding in-memory persistent store failed")
+        }
+
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
+
+        return managedObjectContext
     }
 }
