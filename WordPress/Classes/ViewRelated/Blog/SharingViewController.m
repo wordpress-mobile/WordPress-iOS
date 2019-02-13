@@ -291,8 +291,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
     } failure:^(NSError *error) {
-        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
-        [weakSelf refreshPublicizers];
+        if (!weakSelf.reachability.isReachable) {
+            [weakSelf showConnectionError];
+        } else {
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+            [weakSelf refreshPublicizers];
+        }
     }];
 }
 
