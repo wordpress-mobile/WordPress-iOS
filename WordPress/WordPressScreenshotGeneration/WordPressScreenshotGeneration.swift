@@ -103,6 +103,10 @@ class WordPressScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() {
         let app = XCUIApplication()
 
+        // Switch to the correct site
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+        app.tables.cells["infocusphotographers.com"].tap()
+
         // Get My Site Screenshot
         let blogDetailsTable = app.tables["Blog Details Table"]
         XCTAssert(blogDetailsTable.exists, "My site view not visibile")
