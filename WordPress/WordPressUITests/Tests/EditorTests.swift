@@ -30,6 +30,7 @@ class EditorTests: XCTestCase {
             .enterTextInTitle(text: "Hello XCUI World!")
             .enterText(text: longText)
             .publish()
+            .viewPublishedPost()
             .done()
             .tabBar.gotoEditorScreen()
     }

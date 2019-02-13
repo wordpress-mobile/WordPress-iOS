@@ -11,7 +11,12 @@ class EditorNoticeComponent: BaseScreen {
         super.init(element: notice)
     }
 
-    func doAction() {
+    func viewPublishedPost() -> EditorPublishEpilogueScreen {
+        let expectedAction = XCUIApplication().buttons["View"]
+        XCTAssertEqual(noticeAction, expectedAction)
+
         noticeAction.tap()
+
+        return EditorPublishEpilogueScreen()
     }
 }
