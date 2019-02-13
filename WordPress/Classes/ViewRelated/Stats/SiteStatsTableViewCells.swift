@@ -11,7 +11,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let summaryData: StatsLatestPostSummary?
+    let summaryData: StatsLastPostInsight?
     let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
