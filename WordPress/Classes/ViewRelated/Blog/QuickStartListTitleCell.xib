@@ -65,6 +65,7 @@
                     <constraint firstItem="0G7-da-TFG" firstAttribute="leading" secondItem="bAc-r5-9Gc" secondAttribute="leading" constant="16" id="yYf-Se-IiO"/>
                 </constraints>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="70" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="circleImageView" destination="0G7-da-TFG" id="SnF-gE-qQ9"/>
                 <outlet property="countLabel" destination="4zs-C7-CtU" id="Ad1-1E-dfN"/>
