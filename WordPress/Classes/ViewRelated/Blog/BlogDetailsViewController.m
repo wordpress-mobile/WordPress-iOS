@@ -1029,32 +1029,37 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
-        NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
-        NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
-        NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
-        NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
-
-        UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
-        [removeConfirmation addCancelActionWithTitle:cancelTitle handler:nil];
-        [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
-            [[QuickStartTourGuide find] removeFrom:self.blog];
-        }];
-
-        UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
-            [self presentViewController:removeConfirmation animated:YES completion:nil];
-        }];
-        [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
-
-        BlogDetailsSectionHeaderView *view = [[[NSBundle mainBundle] loadNibNamed:[BlogDetailsSectionHeaderView classNameWithoutNamespaces] owner:nil options:nil] firstObject];
-        [view setTitle:section.title];
-        view.callback = ^{
-            [self presentViewController:removeSheet animated:YES completion:nil];
-        };
-        return view;
+        return [self quickStartHeaderWithTitle:section.title];
     } else {
         return [super tableView:tableView viewForHeaderInSection:sectionNum];
     }
+}
+
+- (UIView *)quickStartHeaderWithTitle:(NSString *)title
+{
+    NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
+    NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
+    NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
+
+    UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
+    [removeConfirmation addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
+        [[QuickStartTourGuide find] removeFrom:self.blog];
+    }];
+
+    UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
+        [self presentViewController:removeConfirmation animated:YES completion:nil];
+    }];
+    [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
+
+    BlogDetailsSectionHeaderView *view = [[[NSBundle mainBundle] loadNibNamed:[BlogDetailsSectionHeaderView classNameWithoutNamespaces] owner:nil options:nil] firstObject];
+    [view setTitle:title];
+    view.callback = ^{
+        [self presentViewController:removeSheet animated:YES completion:nil];
+    };
+    return view;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
