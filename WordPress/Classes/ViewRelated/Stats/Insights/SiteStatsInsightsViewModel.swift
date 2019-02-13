@@ -212,7 +212,9 @@ private extension SiteStatsInsightsViewModel {
         static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
         static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
         static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
-        static let perPost = NSLocalizedString("%@ Per Post", comment: "'Annual Site Stats' label for averages per post. %@ will be Comments, Likes, or Words.")
+        static let commentsPerPost = NSLocalizedString("Comments Per Post", comment: "'Annual Site Stats' label for average comments per post.")
+        static let likesPerPost = NSLocalizedString("Likes Per Post", comment: "'Annual Site Stats' label for average likes per post.")
+        static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -424,12 +426,9 @@ private extension SiteStatsInsightsViewModel {
         let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
 
         // Averages rows
-        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments),
-                                                   data: fakeValue)
-        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes),
-                                                data: fakeValue)
-        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words),
-                                                data: fakeValue)
+        let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost, data: fakeValue)
+        let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost, data: fakeValue)
+        let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost, data: fakeValue)
         let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
 
         return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
