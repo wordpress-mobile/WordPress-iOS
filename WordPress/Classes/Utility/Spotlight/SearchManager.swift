@@ -445,8 +445,9 @@ fileprivate extension SearchManager {
 
         let editor = editorFactory.instantiateEditor(
             for: page,
-            switchToAztec: switchToAztec,
-            switchToGutenberg: switchToGutenberg)
+            replaceEditor: { [weak self] (editor, replacement) in
+                self?.replaceEditor(editor: editor, replacement: replacement)
+        })
 
         open(editor)
     }
@@ -462,31 +463,9 @@ fileprivate extension SearchManager {
         WPTabBarController.sharedInstance().present(navController, animated: true)
     }
 
-    // MARK: - Opening Specific Editors
-
-    private func showAztec(loading post: AbstractPost) {
-        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
-
-        open(editor)
-    }
-
-    private func showGutenberg(loading post: AbstractPost) {
-        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
-
-        open(editor)
-    }
-
-    // MARK: - Switching Editors
-
-    private func switchToAztec(dismissing editor: EditorViewController) {
-        editor.dismiss(animated: true) { [unowned self] in
-            self.showAztec(loading: editor.post)
-        }
-    }
-
-    private func switchToGutenberg(dismissing editor: EditorViewController) {
-        editor.dismiss(animated: true) { [unowned self] in
-            self.showGutenberg(loading: editor.post)
+    func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
+        editor.dismiss(animated: true) { [weak self] in
+            self?.open(replacement)
         }
     }
 

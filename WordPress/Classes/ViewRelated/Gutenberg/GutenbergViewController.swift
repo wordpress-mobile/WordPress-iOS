@@ -21,7 +21,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    private let switchToAztec: (EditorViewController) -> ()
+    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -144,11 +144,11 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
-        switchToAztec: @escaping (EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) {
 
         self.post = post
 
-        self.switchToAztec = switchToAztec
+        self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
@@ -380,7 +380,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .more:
                 displayMoreSheet()
             case .switchToAztec:
-                switchToAztec(self)
+                EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
             }

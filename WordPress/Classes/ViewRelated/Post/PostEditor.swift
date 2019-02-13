@@ -89,6 +89,10 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
 
     /// Navigation bar manager for this post editor
     var navigationBarManager: PostEditorNavigationBarManager { get }
+
+    /// Closure to call when the editor needs to be replaced with a different editor
+    /// First argument is the existing editor, second argument is the replacement editor
+    var replaceEditor: (EditorViewController, EditorViewController) -> () { get }
 }
 
 extension PostEditor {

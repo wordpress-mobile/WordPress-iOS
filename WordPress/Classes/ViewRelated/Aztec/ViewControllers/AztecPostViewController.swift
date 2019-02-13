@@ -76,9 +76,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
 
-    // MARK: - Gutenberg Support
+    // MARK: - Editor Replacing Support
 
-    private let switchToGutenberg: (EditorViewController) -> ()
+    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - fileprivate & private variables
 
@@ -418,12 +418,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     required init(
         post: AbstractPost,
-        switchToGutenberg: @escaping (EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.switchToGutenberg = switchToGutenberg
+        self.replaceEditor = replaceEditor
 
         super.init(nibName: nil, bundle: nil)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
@@ -1169,7 +1169,7 @@ private extension AztecPostViewController {
             postContent.count > 0 && post.containsGutenbergBlocks() {
 
             alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
-                self.switchToGutenberg(self)
+                EditorFactory().switchToGutenberg(from: self)
             }
         }
 
