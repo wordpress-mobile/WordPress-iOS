@@ -246,7 +246,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.4.2)
   - WordPressAuthenticator (~> 1.1.9)
   - WordPressKit (~> 2.0.0)
-  - WordPressShared (~> 1.7.0)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `76335ba41b1cc57057b8372dfcd866681f70a13c`)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -287,7 +287,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -313,6 +312,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 3aca8d421f234dc7d52790297619322454cdcb03
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :commit: 76335ba41b1cc57057b8372dfcd866681f70a13c
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -332,6 +334,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 3aca8d421f234dc7d52790297619322454cdcb03
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+  WordPressShared:
+    :commit: 76335ba41b1cc57057b8372dfcd866681f70a13c
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -385,6 +390,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 8d95a6d8686cd22fad94d94bef1015291e64cb24
+PODFILE CHECKSUM: 346c449904e76557ed9665079e88847e1bccf05a
 
 COCOAPODS: 1.5.3

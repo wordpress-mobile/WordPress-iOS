@@ -277,6 +277,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
             eventName = @"app_settings_video_optimization_changed";
             break;
+        case WPAnalyticsStatAppSettingsGutenbergEnabled:
+            eventName = @"gutenberg_enabled";
+            break;
+        case WPAnalyticsStatAppSettingsGutenbergDisabled:
+            eventName = @"gutenberg_disabled";
+            break;
         case WPAnalyticsStatAutomatedTransferCustomDomainDialogShown:
             eventName = @"automated_transfer_custom_domain_dialog_shown";
             break;
@@ -462,6 +468,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEditorScheduledPost:
             eventName = @"editor_post_scheduled";
+            break;
+        case WPAnalyticsStatEditorSessionStart:
+            eventName = @"editor_session_start";
+            break;
+        case WPAnalyticsStatEditorSessionSwitchEditor:
+            eventName = @"editor_session_switch";
+            break;
+        case WPAnalyticsStatEditorSessionEnd:
+            eventName = @"editor_session_end";
             break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
