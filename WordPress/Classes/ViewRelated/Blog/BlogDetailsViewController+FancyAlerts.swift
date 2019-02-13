@@ -64,7 +64,14 @@ extension BlogDetailsViewController {
 
     private func showQuickStart(with type: QuickStartType? = nil) {
         if let type = type, Feature.enabled(.quickStartV2) {
-            let checklist = QuickStartChecklistViewController(blog: blog, type: type)
+            let checklist = QuickStartChecklistViewController(blog: blog, type: type) { [unowned self] tour in
+                DispatchQueue.main.async {
+                    if let tourGuide = QuickStartTourGuide.find() {
+                        tourGuide.start(tour: tour, for: self.blog)
+                        self.scrollToElementBlock()
+                    }
+                }
+            }
             let navigationViewController = UINavigationController(rootViewController: checklist)
             present(navigationViewController, animated: true, completion: nil)
         } else {
