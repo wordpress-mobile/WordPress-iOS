@@ -87,6 +87,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 }
 
 @property (nonatomic, strong, nonnull) Blog * blog;
+@property (nonatomic, copy, readonly, nonnull) void (^scrollToElementBlock)(void);
 
 - (void)showDetailViewForSubsection:(BlogDetailsSubsection)section;
 - (void)reloadTableViewPreservingSelection;
