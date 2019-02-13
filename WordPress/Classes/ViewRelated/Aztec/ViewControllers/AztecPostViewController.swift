@@ -53,7 +53,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
-    let editorSession: PostEditorSession
+    var editorSession: PostEditorSession
 
     /// Indicates if Aztec was launched for Photo Posting
     ///
@@ -117,6 +117,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         return editorView
     }()
+
+    private var analyticsEditor: PostEditorSession.Editor {
+        switch editorView.editingMode {
+        case .richText:
+            return .gutenberg
+        case .html:
+            return .html
+        }
+    }
 
     /// Aztec's Awesomeness
     ///
@@ -480,6 +489,10 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
+        }
+
+        if !editorSession.started {
+            editorSession.start(editor: .classic, hasUnsupportedBlocks: false)
         }
     }
 
@@ -1858,6 +1871,7 @@ extension AztecPostViewController {
         formatBar.overflowToolbar(expand: true)
 
         editorView.toggleEditingMode()
+        editorSession.switch(editor: analyticsEditor)
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {

@@ -5,6 +5,7 @@ struct PostEditorSession {
     let postType: String
     let blogType: String
     let contentType: String
+    var started = false
 
     init(post: AbstractPost) {
         postType = post.analyticsPostType ?? "unsupported"
@@ -12,13 +13,15 @@ struct PostEditorSession {
         contentType = ContentType(post: post).rawValue
     }
 
-    func start(editor: Editor, hasUnsupportedBlocks: Bool) {
+    mutating func start(editor: Editor, hasUnsupportedBlocks: Bool) {
+        assert(!started, "An editor session was attempted to start more than once")
         let properties = [
             Property.editor: editor.rawValue,
             Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
         ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
+        started = true
     }
 
     func `switch`(editor: Editor) {

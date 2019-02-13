@@ -87,6 +87,8 @@ extension PostEditor where Self: UIViewController {
                 self.trackPostSave(stat: analyticsStat)
             }
 
+            self.editorSession.end(reason: action.analyticsEndReason)
+
             if action.isAsync || dismissWhenDone {
                 self.asyncUploadPost(action: action)
             } else {
@@ -182,6 +184,7 @@ extension PostEditor where Self: UIViewController {
         if post.canSave() && post.hasUnsavedChanges() {
             showPostHasChangesAlert()
         } else {
+            editorSession.end(reason: .cancel)
             discardChangesAndUpdateGUI()
         }
     }
@@ -264,6 +267,7 @@ extension PostEditor where Self: UIViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
+                self.editorSession.end(reason: .save)
                 let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
                 self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
@@ -271,6 +275,7 @@ extension PostEditor where Self: UIViewController {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
+            self.editorSession.end(reason: .discard)
             self.discardChangesAndUpdateGUI()
         }
 

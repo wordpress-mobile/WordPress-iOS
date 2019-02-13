@@ -56,7 +56,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
-    let editorSession: PostEditorSession
+    var editorSession: PostEditorSession
 
     var onClose: ((Bool, Bool) -> Void)?
 
@@ -141,6 +141,14 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
+    private var analyticsEditor: PostEditorSession.Editor {
+        switch mode {
+        case .richText:
+            return .gutenberg
+        case .html:
+            return .html
+        }
+    }
     private var isFirstGutenbergLayout = true
 
     // MARK: - Initializers
@@ -227,6 +235,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     func toggleEditingMode() {
         gutenberg.toggleHTMLMode()
         mode.toggle()
+        editorSession.switch(editor: analyticsEditor)
     }
 
     func requestHTML(for reason: RequestHTMLReason) {
@@ -384,6 +393,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .more:
                 displayMoreSheet()
             case .switchToAztec:
+                editorSession.switch(editor: .classic)
                 EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
@@ -395,6 +405,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+        if !editorSession.started {
+            editorSession.start(editor: .gutenberg, hasUnsupportedBlocks: hasUnsupportedBlocks)
+        }
     }
 }
 
