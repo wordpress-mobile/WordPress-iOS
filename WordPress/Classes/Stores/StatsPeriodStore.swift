@@ -5,6 +5,7 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case receivedPublished(_ published: StatsGroup?)
+    case receivedClicks(_ clicks: StatsGroup?)
     case receivedAuthors(_ authors: StatsGroup?)
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
     case receivedVideos(_ videos: StatsGroup?)
@@ -32,6 +33,9 @@ enum PeriodQuery {
 struct PeriodStoreState {
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
+
+    var topClicks: [StatsItem]?
+    var fetchingClicks = false
 
     var topPublished: [StatsItem]?
     var fetchingPublished = false
@@ -61,6 +65,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
+        case .receivedClicks(let clicks):
+            receivedClicks(clicks)
         case .receivedPublished(let published):
             receivedPublished(published)
         case .receivedAuthors(let authors):
@@ -137,11 +143,12 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching referrers: \(String(describing: error?.localizedDescription))")
             }
 
-        }, clicksCompletionHandler: { (group, error) in
+        }, clicksCompletionHandler: { (clicks, error) in
             if error != nil {
                 DDLogInfo("Error fetching clicks: \(String(describing: error?.localizedDescription))")
             }
-
+            DDLogInfo("Stats: Finished fetching clicks.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks))
         }, countryCompletionHandler: { (group, error) in
             if error != nil {
                 DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
@@ -191,6 +198,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedClicks(_ clicks: StatsGroup?) {
+        transaction { state in
+            state.topClicks = clicks?.items as? [StatsItem]
+            state.fetchingClicks = false
+        }
+    }
+
     func receivedAuthors(_ authors: StatsGroup?) {
         transaction { state in
             state.topAuthors = authors?.items as? [StatsItem]
@@ -227,6 +241,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
+        state.fetchingClicks = true
         state.fetchingPublished = true
         state.fetchingAuthors = true
         state.fetchingSearchTerms = true
@@ -276,6 +291,10 @@ extension StatsPeriodStore {
         return state.topPostsAndPages
     }
 
+    func getTopClicks() -> [StatsItem]? {
+        return state.topClicks
+    }
+
     func getTopPublished() -> [StatsItem]? {
         return state.topPublished
     }
@@ -294,6 +313,7 @@ extension StatsPeriodStore {
 
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
+            state.fetchingClicks ||
             state.fetchingPublished ||
             state.fetchingAuthors ||
             state.fetchingSearchTerms ||
