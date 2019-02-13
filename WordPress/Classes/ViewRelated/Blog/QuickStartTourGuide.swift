@@ -24,7 +24,7 @@ open class QuickStartTourGuide: NSObject {
 
     @objc func remove(from blog: Blog) {
         blog.removeAllTours { (error) in
-            // TODO: handle error
+            DDLogError("Error: couldn't remove quick start from \(String(describing: blog)) with error \(error.description)")
         }
     }
 
