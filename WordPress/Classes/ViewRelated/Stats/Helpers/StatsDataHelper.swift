@@ -82,25 +82,39 @@ extension Date {
         let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)
         let niceComponents = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: self, to: now)
 
-        switch (components.day, components.hour, components.minute) {
-        case (let day?, _, _) where day >= 548:
+        let days = components.day ?? 0
+        let hours = components.hour ?? 0
+        let minutes = components.minute ?? 0
+
+        if days >= DateFormattingBreakpoints.aboutYearAndAHalf.rawValue {
             return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), niceComponents.year!)
-        case (let day?, _, _) where day >= 345:
+        } else if days >= DateFormattingBreakpoints.almostAYear.rawValue {
             return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
-        case (let day?, _, _) where day >= 45:
+        } else if days >= DateFormattingBreakpoints.monthAndAHalf.rawValue {
             return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), niceComponents.month!)
-        case (let day?, _, _) where day >= 25:
+        } else if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
             return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month"))
-        case (let day?, let hour?, _) where (day > 1 || (day == 1 && hour >= 12)):
+        } else if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
             return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), niceComponents.day!)
-        case (_, let hour?, _) where hour >= 22:
+        } else if hours > DateFormattingBreakpoints.almostADay.rawValue {
             return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
-        case (_, let hour?, let minute?) where (hour > 1 || (hour == 1 && minute >= 30)):
+        } else if hours > 1 || (hours == 1 && minutes >= DateFormattingBreakpoints.halfAnHour.rawValue) {
             return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), niceComponents.hour!)
-        case (_, _, let minute?) where minute >= 45:
+        } else if minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
             return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
-        default:
+        } else {
             return NSLocalizedString("<1 hour", comment: "Age between dates less than one hour.")
         }
+    }
+
+    private enum DateFormattingBreakpoints: Int {
+        case aboutYearAndAHalf = 548
+        case almostAYear = 345
+        case monthAndAHalf = 35
+        case almostAMonth = 25
+        case halfADay = 12
+        case almostADay = 22
+        case halfAnHour = 30
+        case almostAnHour = 45
     }
 }
