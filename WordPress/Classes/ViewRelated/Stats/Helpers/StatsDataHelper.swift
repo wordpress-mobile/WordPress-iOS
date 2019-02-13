@@ -88,23 +88,39 @@ extension Date {
 
         if days >= DateFormattingBreakpoints.aboutYearAndAHalf.rawValue {
             return String(format: NSLocalizedString("%d years", comment: "Age between dates over one year."), niceComponents.year!)
-        } else if days >= DateFormattingBreakpoints.almostAYear.rawValue {
-            return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
-        } else if days >= DateFormattingBreakpoints.monthAndAHalf.rawValue {
-            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), niceComponents.month!)
-        } else if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
-            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month"))
-        } else if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
-            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), niceComponents.day!)
-        } else if hours > DateFormattingBreakpoints.almostADay.rawValue {
-            return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
-        } else if hours > 1 || (hours == 1 && minutes >= DateFormattingBreakpoints.halfAnHour.rawValue) {
-            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), niceComponents.hour!)
-        } else if minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
-            return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
-        } else {
-            return NSLocalizedString("<1 hour", comment: "Age between dates less than one hour.")
         }
+
+        if days >= DateFormattingBreakpoints.almostAYear.rawValue {
+            return String(format: NSLocalizedString("a year", comment: "Age between dates equaling one year."))
+        }
+
+        if days >= DateFormattingBreakpoints.monthAndAHalf.rawValue {
+            return String(format: NSLocalizedString("%d months", comment: "Age between dates over one month."), niceComponents.month!)
+        }
+
+        if days >= DateFormattingBreakpoints.almostAMonth.rawValue {
+            return String(format: NSLocalizedString("a month", comment: "Age between dates equaling one month"))
+        }
+
+        if days > 1 || (days == 1 && hours >= DateFormattingBreakpoints.halfADay.rawValue) {
+            return String(format: NSLocalizedString("%d days", comment: "Age between dates over one day."), niceComponents.day!)
+        }
+
+        if hours > DateFormattingBreakpoints.almostADay.rawValue {
+            return String(format: NSLocalizedString("a day", comment: "Age between dates equaling one day."))
+        }
+
+        if hours > 1 || (hours == 1 && minutes >= DateFormattingBreakpoints.halfAnHour.rawValue) {
+            return String(format: NSLocalizedString("%d hours", comment: "Age between dates over one hour."), niceComponents.hour!)
+        }
+
+        if minutes >= DateFormattingBreakpoints.almostAnHour.rawValue {
+            return String(format: NSLocalizedString("an hour", comment: "Age between dates equaling one hour."))
+        }
+
+        return NSLocalizedString("<1 hour", comment: "Age between dates less than one hour.")
+
+
     }
 
     private enum DateFormattingBreakpoints: Int {
