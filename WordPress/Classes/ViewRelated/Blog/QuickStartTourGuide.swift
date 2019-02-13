@@ -411,6 +411,7 @@ private extension QuickStartTourGuide {
         content.title = nextTour.title
         content.body = nextTour.description
         content.sound = UNNotificationSound.default
+        content.userInfo = [Notification.typeKey: Notification.local]
 
         let interval = BuildConfiguration.current == .localDeveloper ? 30 : Constants.localNotificationInterval
         let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
@@ -432,6 +433,13 @@ private extension QuickStartTourGuide {
         static let suggestionTimeout = 10.0
         static let localNotificationInterval: TimeInterval = 60*60*24*2
         static let localNotificationIdentifier = "QuickStartTourNotificationIdentifier"
+    }
+}
+
+extension QuickStartTourGuide {
+    enum Notification {
+        static let typeKey = "type"
+        static let local = "qs-local-notification"
     }
 }
 
