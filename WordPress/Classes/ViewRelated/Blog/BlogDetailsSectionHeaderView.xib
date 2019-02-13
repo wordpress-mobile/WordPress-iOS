@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="iN0-l3-epB" customClass="BlogDetailsSectionHeaderView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0w-kY-8uW">
+                    <rect key="frame" x="16" y="13" width="296" height="24"/>
+                    <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.30980392156862746" green="0.45490196078431372" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEo-2z-Cmk">
+                    <rect key="frame" x="260" y="8" width="44" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="44" id="NQj-8B-nY9"/>
+                    </constraints>
+                    <connections>
+                        <action selector="ellipsisTapped" destination="iN0-l3-epB" eventType="touchUpInside" id="39J-kD-m13"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="OEo-2z-Cmk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="0ab-DS-gfb"/>
+                <constraint firstAttribute="trailingMargin" secondItem="T0w-kY-8uW" secondAttribute="trailing" priority="999" id="DfH-Qk-uHM"/>
+                <constraint firstAttribute="trailingMargin" secondItem="OEo-2z-Cmk" secondAttribute="trailing" id="EWN-SE-Ilb"/>
+                <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailingMargin" constant="16" id="UYn-hJ-O0G"/>
+                <constraint firstAttribute="bottom" secondItem="OEo-2z-Cmk" secondAttribute="bottom" id="a35-Lf-TpM"/>
+                <constraint firstAttribute="bottom" secondItem="T0w-kY-8uW" secondAttribute="bottom" constant="3" id="bEL-Gi-2rw"/>
+                <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="eA8-WK-DnH"/>
+                <constraint firstItem="T0w-kY-8uW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="p5g-Am-UlJ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="ellipsisButton" destination="OEo-2z-Cmk" id="8N1-SW-wiK"/>
+                <outlet property="titleLabel" destination="T0w-kY-8uW" id="K25-0x-Mm9"/>
+            </connections>
+            <point key="canvasLocation" x="235" y="185"/>
+        </view>
+    </objects>
+</document>
