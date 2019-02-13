@@ -23,7 +23,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEo-2z-Cmk">
-                    <rect key="frame" x="260" y="8" width="44" height="32"/>
+                    <rect key="frame" x="273" y="8" width="44" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="NQj-8B-nY9"/>
                     </constraints>
@@ -36,7 +36,7 @@
             <constraints>
                 <constraint firstItem="OEo-2z-Cmk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="0ab-DS-gfb"/>
                 <constraint firstAttribute="trailingMargin" secondItem="T0w-kY-8uW" secondAttribute="trailing" priority="999" id="DfH-Qk-uHM"/>
-                <constraint firstAttribute="trailingMargin" secondItem="OEo-2z-Cmk" secondAttribute="trailing" id="EWN-SE-Ilb"/>
+                <constraint firstAttribute="trailingMargin" secondItem="OEo-2z-Cmk" secondAttribute="trailing" constant="-13" id="EWN-SE-Ilb"/>
                 <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailingMargin" constant="16" id="UYn-hJ-O0G"/>
                 <constraint firstAttribute="bottom" secondItem="OEo-2z-Cmk" secondAttribute="bottom" id="a35-Lf-TpM"/>
                 <constraint firstAttribute="bottom" secondItem="T0w-kY-8uW" secondAttribute="bottom" constant="3" id="bEL-Gi-2rw"/>
