@@ -730,6 +730,10 @@ static NSInteger HideSearchMinSites = 3;
         RecentSitesService *recentSites = [RecentSitesService new];
         [recentSites touchBlog:blog];
 
+        if (![blog isEqual:self.selectedBlog]) {
+            [QuickStartTourGuide deletePendingLocalNotifications];
+        }
+
         self.selectedBlog = blog;
     }
 }
