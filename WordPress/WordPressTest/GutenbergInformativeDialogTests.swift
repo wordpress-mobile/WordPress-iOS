@@ -84,6 +84,18 @@ class GutenbergInformativeDialogTests: XCTestCase {
         XCTAssertNotNil(viewController.presentedViewController as? FancyAlertViewController)
     }
 
+    func testShowInformativeDialogWithNoUserDefaultsFlagWithEmptyContent() {
+        let post = insertPost()
+        post.content = ""
+        XCTAssertFalse(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
+        GutenbergViewController.showInformativeDialogIfNecessary(using: mockUserDefaults,
+                                                                 showing: post,
+                                                                 on: viewController,
+                                                                 animated: false)
+        XCTAssertFalse(mockUserDefaults.bool(forKey: GutenbergViewController.Const.Key.informativeDialog))
+        XCTAssertNil(viewController.presentedViewController as? FancyAlertViewController)
+    }
+
     func testShowInformativeDialogWithNoUserDefaultsFlagWithClassicContent() {
         let post = insertPost()
         post.content = PostContent.classic
