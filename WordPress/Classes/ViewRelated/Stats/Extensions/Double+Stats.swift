@@ -53,3 +53,9 @@ extension Float {
         return Double(self).abbreviatedString()
     }
 }
+
+extension Int {
+    func abbreviatedString() -> String {
+        return Double(self).abbreviatedString()
+    }
+}

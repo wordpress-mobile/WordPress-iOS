@@ -42,7 +42,7 @@ class SiteStatsInsightsViewModel: Observable {
             switch insightType {
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.latestPostSummary))
-                tableRows.append(LatestPostSummaryRow(summaryData: store.getLatestPostSummary(),
+                tableRows.append(LatestPostSummaryRow(summaryData: store.getLastPostInsight(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
@@ -81,7 +81,6 @@ class SiteStatsInsightsViewModel: Observable {
                                                                dataRows: createPublicizeRows()))
             }
         }
-
 
         tableRows.append(TableFooterRow())
 
@@ -129,7 +128,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct MostPopularStats {
-        static let percentOfViews = NSLocalizedString("%@ of views", comment: "'Most Popular Time' label displaying percent of views. %@ is the percent value.")
+        static let percentOfViews = NSLocalizedString("%i%% of views", comment: "'Most Popular Time' label displaying percent of views. %i is the percent value.")
     }
 
     struct FollowerTotals {
@@ -218,88 +217,106 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
-        let allTimeStats = store.getAllTimeStats()
+        guard let allTimeInsight = store.getAllTimeStats() else {
+            return []
+        }
+
         var dataRows = [StatsTotalRowData]()
 
-        if let numberOfPosts = allTimeStats?.numberOfPostsValue.doubleValue,
-            numberOfPosts > 0 {
+        if allTimeInsight.postsCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: numberOfPosts.abbreviatedString(),
+                                                   data: allTimeInsight.postsCount.abbreviatedString(),
                                                    icon: AllTimeStats.postsIcon))
         }
 
-        if let numberOfViews = allTimeStats?.numberOfViewsValue.doubleValue,
-            numberOfViews > 0 {
+        if allTimeInsight.viewsCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: numberOfViews.abbreviatedString(),
+                                                   data: allTimeInsight.viewsCount.abbreviatedString(),
                                                    icon: AllTimeStats.viewsIcon))
         }
 
-        if let numberOfVisitors = allTimeStats?.numberOfVisitorsValue.doubleValue,
-            numberOfVisitors > 0 {
+        if allTimeInsight.visitorsCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: numberOfVisitors.abbreviatedString(),
+                                                   data: allTimeInsight.visitorsCount.abbreviatedString(),
                                                    icon: AllTimeStats.visitorsIcon))
         }
 
-        if let bestNumberOfViews = allTimeStats?.bestNumberOfViewsValue.doubleValue,
-            bestNumberOfViews > 0 {
+        if allTimeInsight.bestViewsPerDayCount > 0 {
+            let formattedDate = { () -> String in
+                let df = DateFormatter()
+                df.dateStyle = .medium
+                df.timeStyle = .none
+                return df.string(from: allTimeInsight.bestViewsDay)
+            }()
+
             dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: bestNumberOfViews.abbreviatedString(),
+                                                   data: allTimeInsight.bestViewsPerDayCount.abbreviatedString(),
                                                    icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: allTimeStats?.bestViewsOn))
+                                                   nameDetail: formattedDate))
         }
 
         return dataRows
     }
 
     func createMostPopularStatsRows() -> [StatsTotalRowData] {
-        let mostPopularStats = store.getMostPopularStats()
-        var dataRows = [StatsTotalRowData]()
-
-        if let highestDayOfWeek = mostPopularStats?.highestDayOfWeek,
-            let highestDayPercent = mostPopularStats?.highestDayPercent,
-            let highestHour = mostPopularStats?.highestHour,
-            let highestHourPercent = mostPopularStats?.highestHourPercent,
-            let highestDayPercentValue = mostPopularStats?.highestDayPercentValue,
-            highestDayPercentValue.floatValue > 0 {
-
-            // Day
-            dataRows.append(StatsTotalRowData.init(name: highestDayOfWeek,
-                                                   data: String(format: MostPopularStats.percentOfViews, highestDayPercent),
-                                                   icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)))
-
-            // Hour
-            let trimmedHighestHour = highestHour.replacingOccurrences(of: ":00", with: "")
-            dataRows.append(StatsTotalRowData.init(name: trimmedHighestHour,
-                                                   data: String(format: MostPopularStats.percentOfViews, highestHourPercent),
-                                                   icon: Style.imageForGridiconType(.time, withTint: .darkGrey)))
+        guard let mostPopularStats = store.getAnnualAndMostPopularTime(),
+                let mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
+                let mostPopularHour = mostPopularStats.mostPopularHour.hour,
+                mostPopularStats.mostPopularDayOfWeekPercentage > 0
+         else {
+                return []
         }
 
-        return dataRows
-    }
+        var calendar = Calendar.init(identifier: .gregorian)
+        calendar.locale = Locale.autoupdatingCurrent
+
+        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday - 1]
+
+        let nowWithChangedHour = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date())
+
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateStyle = .none
+        timeFormatter.timeStyle = .short
+
+        guard let timeModifiedDate = nowWithChangedHour else {
+
+            return []
+        }
+
+        let timeString = timeFormatter.string(from: timeModifiedDate)
+
+        return [StatsTotalRowData(name: dayString,
+                                  data: String(format: MostPopularStats.percentOfViews,
+                                               mostPopularStats.mostPopularDayOfWeekPercentage),
+                                  icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)),
+                StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
+                                  data: String(format: MostPopularStats.percentOfViews,
+                                               mostPopularStats.mostPopularHourPercentage),
+                                  icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
+        }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
-        if let totalDotComFollowers = store.getTotalDotComFollowers(),
-            !totalDotComFollowers.isEmpty {
+        if let totalDotComFollowers = store.getDotComFollowers()?.dotComFollowersCount,
+            totalDotComFollowers > 0 {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.wordPressDotCom.title,
-                                                   data: totalDotComFollowers.displayString(),
+                                                   data: totalDotComFollowers.abbreviatedString(),
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
-        if let totalEmailFollowers = store.getTotalEmailFollowers(),
-            !totalEmailFollowers.isEmpty {
+        if let totalEmailFollowers = store.getEmailFollowers()?.emailFollowersCount,
+            totalEmailFollowers > 0 {
             dataRows.append(StatsTotalRowData.init(name: FollowerType.email.title,
-                                                   data: totalEmailFollowers.displayString(),
+                                                   data: totalEmailFollowers.abbreviatedString(),
                                                    icon: FollowerTotals.emailIcon))
         }
 
-        if let totalPublicizeFollowers = store.getTotalPublicizeFollowers(),
-            !totalPublicizeFollowers.isEmpty {
+        if let publicize = store.getPublicize(), !publicize.publicizeServices.isEmpty {
+            let publicizeSum = publicize.publicizeServices.reduce(0) { $0 + $1.followers }
+
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
-                                                   data: totalPublicizeFollowers.displayString(),
+                                                   data: publicizeSum.abbreviatedString(),
                                                    icon: FollowerTotals.socialIcon))
         }
 
@@ -307,41 +324,44 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
-        return store.getPublicize()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                  data: $0.value.displayString(),
-                                                                  socialIconURL: $0.iconURL) }
-            ?? [StatsTotalRowData]()
+        guard let services = store.getPublicize()?.publicizeServices else {
+            return []
+        }
+
+        return services.map {
+            return StatsTotalRowData(name: $0.name,
+                                     data: $0.followers.abbreviatedString(),
+                                     socialIconURL: $0.iconURL)
+        }
     }
 
     func createTodaysStatsRows() -> [StatsTotalRowData] {
-        let todaysStats = store.getTodaysStats()
+        guard let todaysStats = store.getTodaysStats() else {
+            return []
+        }
         var dataRows = [StatsTotalRowData]()
 
-        if let views = todaysStats?.viewsValue.doubleValue,
-            views > 0 {
+        if todaysStats.viewsCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.viewsTitle,
-                                                   data: views.abbreviatedString(),
+                                                   data: todaysStats.viewsCount.abbreviatedString(),
                                                    icon: TodaysStats.viewsIcon))
         }
 
-        if let visitors = todaysStats?.visitorsValue.doubleValue,
-            visitors > 0 {
+        if todaysStats.visitorsCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.visitorsTitle,
-                                                   data: visitors.abbreviatedString(),
+                                                   data: todaysStats.visitorsCount.abbreviatedString(),
                                                    icon: TodaysStats.visitorsIcon))
         }
 
-        if let likes = todaysStats?.likesValue.doubleValue,
-            likes > 0 {
+        if todaysStats.likesCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.likesTitle,
-                                                   data: likes.abbreviatedString(),
+                                                   data: todaysStats.likesCount.abbreviatedString(),
                                                    icon: TodaysStats.likesIcon))
         }
 
-        if let comments = todaysStats?.commentsValue.doubleValue,
-            comments > 0 {
+        if todaysStats.commentsCount > 0 {
             dataRows.append(StatsTotalRowData.init(name: TodaysStats.commentsTitle,
-                                                   data: comments.abbreviatedString(),
+                                                   data: todaysStats.commentsCount.abbreviatedString(),
                                                    icon: TodaysStats.commentsIcon))
         }
 
@@ -365,70 +385,71 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
-        let tagsAndCategories = store.getTopTagsAndCategories()
-        return tagsAndCategories?.map { StatsTotalRowData.init(name: $0.label,
-                                                               data: $0.value.displayString(),
-                                                               dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: tagsAndCategories?.first),
-                                                               icon: tagsAndCategoriesIconForItem($0),
-                                                               showDisclosure: true,
-                                                               disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                               childRows: childRowsForItem($0)) }
-            ?? [StatsTotalRowData]()
-    }
-
-    func tagsAndCategoriesIconForItem(_ item: StatsItem) -> UIImage? {
-
-        if let children = item.children,
-            children.count > 0 {
-            return Style.imageForGridiconType(.folderMultiple)
+        guard let tagsAndCategories = store.getTopTagsAndCategories()?.topTagsAndCategories else {
+            return []
         }
 
-        switch item.alternateIconValue {
-        case "category":
+        return tagsAndCategories.map {
+            let viewsCount = $0.viewsCount ?? 0
+
+            return StatsTotalRowData(name: $0.name,
+                                     data: viewsCount.abbreviatedString(),
+                                     dataBarPercent: Float(viewsCount) / Float(tagsAndCategories.first?.viewsCount ?? 1),
+                                     icon: tagsAndCategoriesIconForKind($0.kind),
+                                     showDisclosure: true,
+                                     disclosureURL: $0.url,
+                                     childRows: childRowsForItems($0.children))
+
+        }
+    }
+
+    func tagsAndCategoriesIconForKind(_ kind: StatsTagAndCategory.Kind) -> UIImage? {
+        switch kind {
+        case .folder:
+            return Style.imageForGridiconType(.folderMultiple)
+        case .category:
             return Style.imageForGridiconType(.folder)
-        default:
+        case .tag:
             return Style.imageForGridiconType(.tag)
         }
     }
 
-    func childRowsForItem(_ item: StatsItem) -> [StatsTotalRowData] {
-
-        guard let children = item.children as? [StatsItem] else {
-            return [StatsTotalRowData]()
+    func childRowsForItems(_ children: [StatsTagAndCategory]) -> [StatsTotalRowData] {
+        return children.map {
+            StatsTotalRowData.init(name: $0.name,
+                                   data: "",
+                                   icon: tagsAndCategoriesIconForKind($0.kind),
+                                   showDisclosure: true,
+                                   disclosureURL: $0.url)
         }
-
-        return children.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: ($0.value != nil) ? $0.value.displayString() : "",
-                                                     icon: tagsAndCategoriesIconForItem($0),
-                                                     showDisclosure: true,
-                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
     }
 
     func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
-
-        // TODO: use real data when backend provides it.
-        let fakeValue = Float(987654321).abbreviatedString()
-
-        // Once we can get totalPosts from the store, enable this test (with the correct method)
-        // to add an empty row if there are no posts.
-        //        guard let totalPosts = store.getTotalPosts() else {
-        //            return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
-        //        }
-
+        guard let annualInsights = store.getAnnualAndMostPopularTime(),
+            annualInsights.annualInsightsTotalPostsCount > 0 else {
+                return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
+        }
 
         // Total Posts row
-        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts, data: fakeValue)
+        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts,
+                                                  data: annualInsights.annualInsightsTotalPostsCount.abbreviatedString())
 
         // Totals rows
-        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments, data: fakeValue)
-        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes, data: fakeValue)
-        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words, data: fakeValue)
+        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments,
+                                                 data: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString())
+        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes,
+                                              data: annualInsights.annualInsightsTotalLikesCount.abbreviatedString())
+        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words,
+                                              data: annualInsights.annualInsightsTotalWordsCount.abbreviatedString())
         let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
 
         // Averages rows
-        let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost, data: fakeValue)
-        let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost, data: fakeValue)
-        let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost, data: fakeValue)
+        let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
+                                                   data: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString())
+        let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
+                                                data: annualInsights.annualInsightsAverageLikesCount.abbreviatedString())
+        let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
+                                                data: annualInsights.annualInsightsAverageWordsCount.abbreviatedString())
         let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
 
         return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
@@ -445,30 +466,44 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func tabDataForCommentType(_ commentType: CommentType) -> TabData {
+        let commentsInsight = store.getTopCommentsInsight()
 
         var tabTitle: String
         var itemSubtitle: String
-        var topComments: [StatsItem]?
-        var showDisclosure: Bool
+        var rowItems: [StatsTotalRowData] = []
 
         switch commentType {
         case .author:
+            let authors = commentsInsight?.topAuthors ?? []
+
             tabTitle = CommentType.author.title
             itemSubtitle = CommentType.author.itemSubtitle
-            topComments = store.getTopCommentsAuthors()
-            showDisclosure = false
+
+            rowItems = authors.map {
+                StatsTotalRowData(name: $0.name,
+                                  data: $0.commentCount.abbreviatedString(),
+                                  userIconURL: $0.iconURL,
+                                  showDisclosure: false)
+            }
         case .post:
+            let posts = commentsInsight?.topPosts ?? []
+
             tabTitle = CommentType.post.title
             itemSubtitle = CommentType.post.itemSubtitle
-            topComments = store.getTopCommentsPosts()
-            showDisclosure = true
+
+            rowItems = posts.map {
+                StatsTotalRowData(name: $0.name,
+                                  data: $0.commentCount.abbreviatedString(),
+                                  showDisclosure: true,
+                                  disclosureURL: $0.postURL)
+
+            }
         }
 
-        return tabDataFor(rowData: topComments,
-                          tabTitle: tabTitle,
-                          itemSubtitle: itemSubtitle,
-                          dataSubtitle: Comments.dataSubtitle,
-                          showDisclosure: showDisclosure)
+        return TabData(tabTitle: tabTitle,
+                       itemSubtitle: itemSubtitle,
+                       dataSubtitle: Comments.dataSubtitle,
+                       dataRows: rowItems)
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
@@ -481,53 +516,37 @@ private extension SiteStatsInsightsViewModel {
     func tabDataForFollowerType(_ followerType: FollowerType) -> TabData {
 
         var tabTitle: String
-        var followers: [StatsItem]?
-        var totalFollowers: String
+        var followers: [StatsFollower]?
+        var totalFollowers: Int?
 
         switch followerType {
         case .wordPressDotCom:
+
             tabTitle = FollowerType.wordPressDotCom.title
-            followers = store.getTopDotComFollowers()
-            totalFollowers = store.getTotalDotComFollowers() ?? ""
+            followers = store.getDotComFollowers()?.topDotComFollowers
+            totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
         case .email:
+
             tabTitle = FollowerType.email.title
-            followers = store.getTopEmailFollowers()
-            totalFollowers = store.getTotalEmailFollowers() ?? ""
+            followers = store.getEmailFollowers()?.topEmailFollowers
+            totalFollowers = store.getEmailFollowers()?.emailFollowersCount
         }
 
         let totalCount = String(format: Followers.totalFollowers,
                                 tabTitle,
-                                totalFollowers.displayString())
+                                (totalFollowers ?? 0).abbreviatedString())
 
-        return tabDataFor(rowData: followers,
-                          tabTitle: tabTitle,
-                          itemSubtitle: Followers.itemSubtitle,
-                          dataSubtitle: Followers.dataSubtitle,
-                          totalCount: totalCount)
-    }
-
-    func tabDataFor(rowData: [StatsItem]?,
-                    tabTitle: String,
-                    itemSubtitle: String,
-                    dataSubtitle: String,
-                    totalCount: String? = nil,
-                    showDisclosure: Bool = false) -> TabData {
-
-        var rows = [StatsTotalRowData]()
-
-        rowData?.forEach { row in
-            rows.append(StatsTotalRowData.init(name: row.label,
-                                               data: row.value.displayString(),
-                                               userIconURL: row.iconURL,
-                                               showDisclosure: showDisclosure,
-                                               disclosureURL: showDisclosure ? StatsDataHelper.disclosureUrlForItem(row) : nil))
+        let followersData = followers?.compactMap {
+            return StatsTotalRowData(name: $0.name,
+                                     data: $0.subscribedDate.relativeStringInPast(),
+                                     userIconURL: $0.avatarURL)
         }
 
-        return TabData.init(tabTitle: tabTitle,
-                            itemSubtitle: itemSubtitle,
-                            dataSubtitle: dataSubtitle,
-                            totalCount: totalCount,
-                            dataRows: rows)
+        return TabData(tabTitle: tabTitle,
+                       itemSubtitle: Followers.itemSubtitle,
+                       dataSubtitle: Followers.dataSubtitle,
+                       totalCount: totalCount,
+                       dataRows: followersData ?? [])
     }
 
 }
