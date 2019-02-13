@@ -53,6 +53,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
+    let editorSession: PostEditorSession
+
     /// Indicates if Aztec was launched for Photo Posting
     ///
     var isOpenedDirectlyForPhotoPost = false
@@ -418,12 +420,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     required init(
         post: AbstractPost,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        editorSession: PostEditorSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
         self.replaceEditor = replaceEditor
+        self.editorSession = editorSession ?? PostEditorSession(post: post)
 
         super.init(nibName: nil, bundle: nil)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision

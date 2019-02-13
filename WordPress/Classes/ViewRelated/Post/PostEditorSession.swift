@@ -6,10 +6,10 @@ struct PostEditorSession {
     let blogType: String
     let contentType: String
 
-    init(editor: PostEditor) {
-        postType = editor.post.analyticsPostType ?? "unsupported"
-        blogType = editor.post.blog.analyticsType.rawValue
-        contentType = ContentType(post: editor.post).rawValue
+    init(post: AbstractPost) {
+        postType = post.analyticsPostType ?? "unsupported"
+        blogType = post.blog.analyticsType.rawValue
+        contentType = ContentType(post: post).rawValue
     }
 
     func start(editor: Editor, hasUnsupportedBlocks: Bool) {

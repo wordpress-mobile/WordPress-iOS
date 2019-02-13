@@ -56,6 +56,8 @@ class GutenbergViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
+    let editorSession: PostEditorSession
+
     var onClose: ((Bool, Bool) -> Void)?
 
     var isOpenedDirectlyForPhotoPost: Bool = false
@@ -144,13 +146,15 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Initializers
     required init(
         post: AbstractPost,
-        replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        editorSession: PostEditorSession? = nil) {
 
         self.post = post
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
+        self.editorSession = editorSession ?? PostEditorSession(post: post)
 
         super.init(nibName: nil, bundle: nil)
 
