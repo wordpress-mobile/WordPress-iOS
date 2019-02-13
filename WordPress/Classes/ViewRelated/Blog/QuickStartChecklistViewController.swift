@@ -6,6 +6,9 @@ import Gridicons
 }
 
 class QuickStartChecklistViewController: UITableViewController {
+    typealias QuickStartChecklistDidDismiss = (QuickStartTour) -> Void
+
+    private var didDismiss: QuickStartChecklistDidDismiss
     private var blog: Blog
     private var type: QuickStartType
     private var observer: NSObjectProtocol?
@@ -55,9 +58,10 @@ class QuickStartChecklistViewController: UITableViewController {
         return UIBarButtonItem(customView: cancelButton)
     }()
 
-    @objc init(blog: Blog, type: QuickStartType) {
+    init(blog: Blog, type: QuickStartType, viewController didDismiss: @escaping QuickStartChecklistDidDismiss) {
         self.blog = blog
         self.type = type
+        self.didDismiss = didDismiss
         super.init(style: .plain)
         startObservingForQuickStart()
     }
@@ -76,10 +80,12 @@ class QuickStartChecklistViewController: UITableViewController {
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: configuration.tours,
-                                                 didSelectTour: { [weak self] analyticsKey in
+                                                 didSelectTour: { [weak self] tour in
             DispatchQueue.main.async {
-                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
-                self?.dismiss(animated: true, completion: nil)
+                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
+                self?.dismiss(animated: true) {
+                    self?.didDismiss(tour)
+                }
             }
         }, didTapHeader: { [weak self] collapse in
             self?.checkForSuccessScreen(collapse)
