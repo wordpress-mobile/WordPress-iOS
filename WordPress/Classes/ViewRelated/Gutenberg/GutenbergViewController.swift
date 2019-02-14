@@ -390,6 +390,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidLayout() {
     }
+
+    func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
