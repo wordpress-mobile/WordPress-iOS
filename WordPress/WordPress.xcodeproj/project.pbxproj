@@ -239,6 +239,9 @@
 		4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4034FDED2007D4F700153B87 /* ExpandableCell.xib */; };
 		403E192B21377DEA00E4E657 /* BlogService+JetpackConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E192A21377DEA00E4E657 /* BlogService+JetpackConvenience.swift */; };
 		403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */; };
+		4054F43B221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */; };
+		4054F43C221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */; };
+		4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */; };
 		4054F4422213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4402213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift */; };
 		4054F4432213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4412213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift */; };
 		4054F445221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F444221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift */; };
@@ -2063,6 +2066,9 @@
 		4034FDED2007D4F700153B87 /* ExpandableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandableCell.xib; sourceTree = "<group>"; };
 		403E192A21377DEA00E4E657 /* BlogService+JetpackConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+JetpackConvenience.swift"; sourceTree = "<group>"; };
 		403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewindStatusRow.swift; sourceTree = "<group>"; };
+		4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentedPostStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
+		4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentedPostStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommentedPostStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		4054F4402213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentsAuthorStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4054F4412213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4054F444221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommentsAuthorStatsRecordValueTests.swift; sourceTree = "<group>"; };
@@ -4632,6 +4638,7 @@
 			isa = PBXGroup;
 			children = (
 				40EE948122132F5800CD264F /* PublicizeConectionStatsRecordValueTests.swift */,
+				4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */,
 				4054F444221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift */,
 				40F50B7F221310D400CBBB73 /* FollowersStatsRecordValueTests.swift */,
 				40E7FEC42211DF790032834E /* StatsRecordTests.swift */,
@@ -4646,6 +4653,8 @@
 			children = (
 				40EE947D2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataClass.swift */,
 				40EE947E2213213F00CD264F /* PublicizeConnectionStatsRecordValue+CoreDataProperties.swift */,
+				4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */,
+				4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */,
 				4054F4402213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift */,
 				4054F4412213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift */,
 				40F50B7B22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataClass.swift */,
@@ -9902,6 +9911,7 @@
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */,
 				4034FDEA2007C42400153B87 /* ExpandableCell.swift in Sources */,
+				4054F43C221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				7E4123B920F4097B00DF8486 /* FormattableContentFactory.swift in Sources */,
 				40E469932017F4070030DB5F /* PluginDirectoryViewController.swift in Sources */,
 				E1D28E931F2F6EB500A5DAFD /* RoleService.swift in Sources */,
@@ -9916,6 +9926,7 @@
 				08216FD31CDBF96000304BA7 /* MenuItemTagsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */,
+				4054F43B221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
@@ -10593,6 +10604,7 @@
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				E1EBC3731C118ED200F638E0 /* ImmuTableTest.swift in Sources */,
 				E1AB5A091E0BF31E00574B4E /* ArrayTests.swift in Sources */,
+				4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
 				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
 				732A473F21878EB10015DA74 /* WPRichContentViewTests.swift in Sources */,
