@@ -23,17 +23,26 @@ open class QuickStartTourGuide: NSObject {
     }
 
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        // TODO: this needs to become a argument to deal with multiple lists
-        let list = checklistTours
+        let list: [QuickStartTour]
+        if Feature.enabled(.quickStartV2) {
+            list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        } else {
+            list = QuickStartTourGuide.checklistTours
+        }
 
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
-
         let quickStartIsEnabled = checklistCompletedCount > 0
-        let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
-        let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
 
-        return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
+        if Feature.enabled(.quickStartV2) {
+            // in QSv2 the checklists appear even after completion
+            return quickStartIsEnabled
+        } else {
+            let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
+            let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
+
+            return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
+        }
     }
 
     /// Note: this is only used for QS v1, and can be removed once the feature flag
@@ -42,12 +51,6 @@ open class QuickStartTourGuide: NSObject {
         let completedCount = countChecklistCompleted(in: QuickStartTourGuide.checklistTours, for: blog)
         let totalCount = QuickStartTourGuide.checklistTours.count
         return "\(completedCount)/\(totalCount)"
-    }
-
-    func completionCount(of list: [QuickStartTour], for blog: Blog) -> (complete: Int, total: Int) {
-        let completedCount = countChecklistCompleted(in: list, for: blog)
-        let totalCount = list.count
-        return (complete: completedCount, total: totalCount)
     }
 
     /// Provides a tour to suggest to the user
@@ -321,10 +324,14 @@ private extension QuickStartTourGuide {
     }
 
     func allToursCompleted(for blog: Blog) -> Bool {
-        // TODO: this needs to become a argument to deal with multiple lists
-        let list = QuickStartTourGuide.checklistTours
+        let list: [QuickStartTour]
+        if Feature.enabled(.quickStartV2) {
+            list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        } else {
+            list = QuickStartTourGuide.checklistTours
+        }
 
-        return countChecklistCompleted(in: list, for: blog) >= QuickStartTourGuide.checklistTours.count
+        return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 
     func showCurrentStep() {
