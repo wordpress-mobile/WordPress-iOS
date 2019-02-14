@@ -803,6 +803,11 @@
         <attribute name="postURLString" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="TopCommentsAuthorStatsRecordValue" representedClassName=".TopCommentsAuthorStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
@@ -857,6 +862,7 @@
         <element name="StatsRecord" positionX="27" positionY="486" width="128" height="120"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
+        <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
