@@ -8,6 +8,7 @@ struct PostEditorAnalyticsSession {
     var started = false
     var currentEditor: Editor
     var hasUnsupportedBlocks = false
+    var outcome: Outcome? = nil
 
     init(editor: Editor, post: AbstractPost) {
         currentEditor = editor
@@ -28,9 +29,23 @@ struct PostEditorAnalyticsSession {
         WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
     }
 
-    func end(reason: EndReason) {
+    mutating func forceOutcome(_ newOutcome: Outcome) {
+        // We're allowing an outcome to be force in a few specific cases:
+        // - If a post was published, that should be the outcome no matter what happens later
+        // - If a post is saved, that should be the outcome unless it's published later
+        // - Otherwise, we'll use whatever outcome is set when the session ends
+        switch (outcome, newOutcome) {
+        case (_, .publish), (nil, .save):
+            self.outcome = newOutcome
+        default:
+            break
+        }
+    }
+
+    func end(outcome endOutcome: Outcome) {
+        let outcome = self.outcome ?? endOutcome
         let properties = [
-            Property.reason: reason.rawValue,
+            Property.outcome: outcome.rawValue,
             ].merging(commonProperties, uniquingKeysWith: { $1 })
 
         WPAppAnalytics.track(.editorSessionEnd, withProperties: properties)
@@ -44,7 +59,7 @@ private extension PostEditorAnalyticsSession {
         static let editor = "editor"
         static let hasUnsupportedBlocks = "has_unsupported_blocks"
         static let postType = "post_type"
-        static let reason = "reason"
+        static let outcome = "outcome"
         static let sessionId = "session_id"
     }
 
@@ -83,7 +98,7 @@ extension PostEditorAnalyticsSession {
         }
     }
 
-    enum EndReason: String {
+    enum Outcome: String {
         case cancel
         case discard
         case save

@@ -96,7 +96,7 @@ public enum PostEditorAction {
         }
     }
 
-    var analyticsEndReason: PostEditorAnalyticsSession.EndReason {
+    var analyticsEndOutcome: PostEditorAnalyticsSession.Outcome {
         switch self {
         case .save, .saveAsDraft, .update:
             return .save

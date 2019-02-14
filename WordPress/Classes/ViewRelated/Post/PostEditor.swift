@@ -91,7 +91,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     var navigationBarManager: PostEditorNavigationBarManager { get }
 
     /// Editor Session information for analytics reporting
-    var editorSession: PostEditorAnalyticsSession { get }
+    var editorSession: PostEditorAnalyticsSession { get set }
 
     /// Closure to call when the editor needs to be replaced with a different editor
     /// First argument is the existing editor, second argument is the replacement editor
