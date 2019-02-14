@@ -121,7 +121,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     private var analyticsEditor: PostEditorAnalyticsSession.Editor {
         switch editorView.editingMode {
         case .richText:
-            return .gutenberg
+            return .classic
         case .html:
             return .html
         }
