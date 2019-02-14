@@ -30,6 +30,7 @@ public enum StatsRecordType: Int16 {
     case publicizeConnection
     case followers
 
+    case searchTerms
     case postStats
     case blogStats
     // those last two aren't used anywhere yet, I've left them here for illustration purposes.
@@ -42,7 +43,9 @@ public enum StatsRecordType: Int16 {
         case .lastPostInsight, .allTimeStatsInsight, .publicizeConnection, .followers:
 
             return false
-        case .postStats, .blogStats:
+        case .postStats,
+             .blogStats,
+             .searchTerms:
             return true
         }
     }

@@ -740,6 +740,10 @@
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <relationship name="blog" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="roles" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="SearchResultsStatsRecordValue" representedClassName=".SearchResultsStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="searchTerm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="SharingButton" representedClassName="WordPress.SharingButton" syncable="YES">
         <attribute name="buttonID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="custom" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -853,5 +857,6 @@
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
         <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="SearchResultsStatsRecordValue" positionX="27" positionY="153" width="128" height="75"/>
     </elements>
 </model>
