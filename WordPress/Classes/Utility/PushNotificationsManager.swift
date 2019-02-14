@@ -166,11 +166,11 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Handling!
-        let handlers = [ handleSupportNotification,
-                         handleAuthenticationNotification,
-                         handleInactiveNotification,
-                         handleBackgroundNotification,
-                         handleQuickStartLocalNotification ]
+        let handlers = [handleSupportNotification,
+                        handleAuthenticationNotification,
+                        handleInactiveNotification,
+                        handleBackgroundNotification,
+                        handleQuickStartLocalNotification]
 
         for handler in handlers {
             if handler(userInfo, completionHandler) {
