@@ -40,10 +40,10 @@ msgstr ""
 
 msgctxt "v11.8-whats-new"
 msgid ""
-"* You can now share a site via Reader.\n"
-"* Fixed a bug in which editing a local copy of a draft post, then discarding changes, would result in deleting the post.\n"
-"* Fixed a bug in Reader that caused the app to crash when showing a post with a video.\n"
-"* Fixed some UI layout errors where elements overlapped or had wrong sizes.\n"
+"- You can now share a site via Reader.\n"
+"- Fixed a bug in which editing a local copy of a draft post, then discarding changes, would result in deleting the post.\n"
+"- Fixed a bug in Reader that caused the app to crash when showing a post with a video.\n"
+"- Fixed some UI layout errors where elements overlapped or had wrong sizes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
