@@ -1186,6 +1186,7 @@ private extension AztecPostViewController {
             postContent.count > 0 && post.containsGutenbergBlocks() {
 
             alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
+                self.editorSession.switch(editor: .gutenberg)
                 EditorFactory().switchToGutenberg(from: self)
             }
         }
