@@ -34,6 +34,7 @@ class GutenbergSettings {
             WPAppAnalytics.track(.appSettingsGutenbergEnabled)
             database.set(true, forKey: gutenbergEditorEnabledKey)
         }
+        WPAnalytics.refreshMetadata()
     }
 
     // MARK: - Gutenberg Choice Logic
