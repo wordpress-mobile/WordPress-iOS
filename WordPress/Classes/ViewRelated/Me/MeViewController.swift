@@ -403,7 +403,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service.removeDefaultWordPressComAccount()
 
         // Delete local notification on logout
-        QuickStartTourGuide.deletePendingLocalNotifications()
+        PushNotificationsManager.shared.deletePendingLocalNotifications()
 
         // Also clear the spotlight index
         SearchManager.shared.deleteAllSearchableItems()

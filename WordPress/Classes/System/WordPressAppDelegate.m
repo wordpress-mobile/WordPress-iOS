@@ -105,7 +105,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self disableAnimationsForUITests:application];
 
     if ([Feature enabled:FeatureFlagQuickStartV2]) {
-        [QuickStartTourGuide deletePendingLocalNotifications];
+        [[PushNotificationsManager shared] deletePendingLocalNotifications];
     }
 
     return YES;
