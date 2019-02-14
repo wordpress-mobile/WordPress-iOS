@@ -97,8 +97,14 @@ private extension TopTotalsCell {
                 row.hasChildRows else {
                     return
             }
-
             toggleChildRowsForRow(row)
+
+            row.childRowsStackView?.arrangedSubviews.forEach { child in
+                guard let childRow = child as? StatsTotalRow else {
+                    return
+                }
+                toggleChildRowsForRow(childRow)
+            }
         }
     }
 
