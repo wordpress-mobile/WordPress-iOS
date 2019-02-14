@@ -13,13 +13,23 @@ class EditorFactory {
 
     func instantiateEditor(
         for post: AbstractPost,
-        switchToAztec: @escaping (EditorViewController) -> (),
-        switchToGutenberg: @escaping (EditorViewController) -> ()) -> EditorViewController {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> ()) -> EditorViewController {
 
         if gutenbergSettings.mustUseGutenberg(for: post) {
-            return GutenbergViewController(post: post, switchToAztec: switchToAztec)
+            return GutenbergViewController(post: post, replaceEditor: replaceEditor)
         } else {
-            return AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
+            return AztecPostViewController(post: post, replaceEditor: replaceEditor)
         }
+    }
+
+    func switchToAztec(from source: EditorViewController) {
+        let replacement = AztecPostViewController(post: source.post, replaceEditor: source.replaceEditor, editorSession: source.editorSession)
+        source.replaceEditor(source, replacement)
+    }
+
+    func switchToGutenberg(from source: EditorViewController) {
+        let replacement = GutenbergViewController(post: source.post, replaceEditor: source.replaceEditor, editorSession: source.editorSession)
+        source.replaceEditor(source, replacement)
+
     }
 }
