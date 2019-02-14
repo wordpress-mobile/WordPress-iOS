@@ -28,6 +28,8 @@ public enum StatsRecordType: Int16 {
     case lastPostInsight
     case allTimeStatsInsight
     case topCommentAuthors
+    case publicizeConnection
+    case followers
 
     case postStats
     case blogStats
@@ -38,7 +40,8 @@ public enum StatsRecordType: Int16 {
         // lot of sense to hold on to Insights from the past...).
         // This lets us disambiguate between which is which.
         switch self {
-        case .lastPostInsight, .allTimeStatsInsight, .topCommentAuthors:
+        case .lastPostInsight, .allTimeStatsInsight, .topCommentAuthors, . publicizeConnection:
+
             return false
         case .postStats, .blogStats:
             return true
@@ -94,6 +97,7 @@ public enum StatsCoreDataValidationError: Error {
     case incorrectRecordType
     case noManagedObjectContext
     case noDate
+    case invalidEnumValue
 
     /// Thrown when trying to insert a second instance of a type that only supports
     /// a single entry being present in the Core Data store.
