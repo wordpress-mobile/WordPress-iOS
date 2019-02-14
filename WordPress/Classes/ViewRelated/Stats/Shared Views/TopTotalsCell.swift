@@ -166,15 +166,24 @@ private extension TopTotalsCell {
     }
 
     func toggleSeparatorForRowPreviousTo(_ row: StatsTotalRow) {
-        // Only toggle the separator lines on top level rows. Children don't show them.
-        guard stackViewContainingRow(row) == rowsStackView,
+
+        guard let containingStackView = stackViewContainingRow(row),
             let rowIndex = indexForRow(row),
-            (rowIndex - 1) >= 0,
-            let previousRow = rowsStackView.arrangedSubviews[rowIndex - 1] as? StatsTotalRow else {
+            (rowIndex - 1) >= 0 else {
                 return
         }
 
-        previousRow.showSeparator = !row.expanded
+        let previousRow = containingStackView.arrangedSubviews[rowIndex - 1]
+
+        // Only toggle the indented separator lines on top level rows. Children don't show them.
+        if previousRow is StatsTotalRow && containingStackView == rowsStackView {
+            (previousRow as! StatsTotalRow).showSeparator = !row.expanded
+        }
+
+        // If the previous row is expanded, don't show this row's top line to prevent double lines.
+        if previousRow is UIStackView {
+            row.showTopExpandedSeparator = false
+        }
     }
 
     func indexForRow(_ row: StatsTotalRow) -> Int? {
