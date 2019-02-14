@@ -122,7 +122,8 @@ class StatsTotalRow: UIView, NibLoadable {
                 return
             }
 
-            showSeparator = !expanded
+            // Don't show row separator on child rows.
+            showSeparator = (parentRow != nil) ? false : !expanded
             showTopExpandedSeparator = expanded
 
             let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
