@@ -28,8 +28,10 @@ class GutenbergSettings {
 
     func toggleGutenberg() {
         if isGutenbergEnabled() {
+            WPAppAnalytics.track(.appSettingsGutenbergDisabled)
             database.set(false, forKey: gutenbergEditorEnabledKey)
         } else {
+            WPAppAnalytics.track(.appSettingsGutenbergEnabled)
             database.set(true, forKey: gutenbergEditorEnabledKey)
         }
     }
