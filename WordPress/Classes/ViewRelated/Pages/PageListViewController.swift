@@ -370,7 +370,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
 
         if let sectionInfo = sectionInfo {
-            headerView.setTite(sectionInfo.name)
+            headerView.setTitle(sectionInfo.name)
         }
 
         return headerView

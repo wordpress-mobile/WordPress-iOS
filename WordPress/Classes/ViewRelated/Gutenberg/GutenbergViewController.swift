@@ -190,6 +190,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         refreshInterface()
 
         gutenberg.delegate = self
+        showInformativeDialogIfNecessary()
     }
 
     override func viewWillAppear(_ animated: Bool) {
