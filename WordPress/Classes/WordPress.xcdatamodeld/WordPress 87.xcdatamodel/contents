@@ -344,6 +344,12 @@
         <attribute name="isPrimary" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="domains" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="FollowersStatsRecordValue" representedClassName=".FollowersStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="subscribedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="LastPostStatsRecordValue" representedClassName="WordPress.LastPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="likesCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -840,5 +846,6 @@
         <element name="StatsRecord" positionX="27" positionY="486" width="128" height="120"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
+        <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
     </elements>
 </model>
