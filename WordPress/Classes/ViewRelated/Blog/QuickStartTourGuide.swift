@@ -1,6 +1,5 @@
 import WordPressFlux
 import Gridicons
-import UserNotifications
 
 open class QuickStartTourGuide: NSObject {
     @objc var navigationWatcher = QuickStartNavigationWatcher()
@@ -35,12 +34,6 @@ open class QuickStartTourGuide: NSObject {
         let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
 
         return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
-    }
-
-    @objc static func deletePendingLocalNotifications() {
-        if Feature.enabled(.quickStartV2) {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Constants.localNotificationIdentifier])
-        }
     }
 
     /// Note: this is only used for QS v1, and can be removed once the feature flag
@@ -325,7 +318,9 @@ private extension QuickStartTourGuide {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
         } else if Feature.enabled(.quickStartV2) {
-            setLocalNotification(for: blog)
+            if let nextTour = tourToSuggest(for: blog) {
+                PushNotificationsManager.shared.postNotification(for: nextTour)
+            }
         }
     }
 
@@ -400,29 +395,6 @@ private extension QuickStartTourGuide {
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }
 
-    func setLocalNotification(for blog: Blog) {
-        guard let nextTour = tourToSuggest(for: blog) else {
-            return
-        }
-
-        QuickStartTourGuide.deletePendingLocalNotifications()
-
-        let content = UNMutableNotificationContent()
-        content.title = nextTour.title
-        content.body = nextTour.description
-        content.sound = UNNotificationSound.default
-        content.userInfo = [Notification.typeKey: Notification.local]
-
-        let interval = BuildConfiguration.current == .localDeveloper ? 30 : Constants.localNotificationInterval
-        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
-                                                          from: Date(timeIntervalSinceNow: interval))
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-        let request = UNNotificationRequest(identifier: Constants.localNotificationIdentifier,
-                                            content: content,
-                                            trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
-    }
-
     private func grantCongratulationsAward(for blog: Blog) {
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.markQuickStartChecklistAsComplete(for: blog)
@@ -431,15 +403,6 @@ private extension QuickStartTourGuide {
     private struct Constants {
         static let maxSkippedTours = 3
         static let suggestionTimeout = 10.0
-        static let localNotificationInterval: TimeInterval = 60*60*24*2
-        static let localNotificationIdentifier = "QuickStartTourNotificationIdentifier"
-    }
-}
-
-extension QuickStartTourGuide {
-    enum Notification {
-        static let typeKey = "type"
-        static let local = "qs-local-notification"
     }
 }
 
