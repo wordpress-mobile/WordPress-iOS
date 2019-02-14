@@ -11,6 +11,14 @@ class MySiteScreen: BaseScreen {
         super.init(element: blogTable)
     }
 
+    func dismissNotificationAlertIfNeeded() -> MySiteScreen {
+        let dismissAlertButton = app.buttons["cancelAlertButton"]
+        if dismissAlertButton.exists {
+            dismissAlertButton.tap()
+        }
+        return self
+    }
+
     func switchSite() -> MySitesScreen {
         app.buttons["Switch Site"].tap()
 

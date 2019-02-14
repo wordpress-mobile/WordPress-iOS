@@ -26,6 +26,7 @@ class LoginTests: XCTestCase {
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testUserPassword)
             .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
             .tabBar.gotoMeScreen()
             .logout()
 

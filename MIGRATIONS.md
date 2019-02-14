@@ -13,6 +13,7 @@ data model as well as any custom migrations.
 * `AllTimeStatsRecordValue` 
 * `LastPostStatsRecordValue`
 * `PublicizeConnectionStatsRecordValue`
+* `FollowersStatsRecordValue`
 
 More types are incoming, hence why I'm not putting a firm date above — I'll change it when all related PRs are merged.    
 
