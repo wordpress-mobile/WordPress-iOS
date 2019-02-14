@@ -10,7 +10,7 @@
 
 @implementation PageListSectionHeaderView
 
-- (void)setTite:(NSString *)title
+- (void)setTitle:(NSString *)title
 {
     self.titleLabel.text = [title uppercaseStringWithLocale:[NSLocale currentLocale]];
 }
