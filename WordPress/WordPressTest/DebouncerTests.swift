@@ -22,6 +22,8 @@ class DebouncerTests: XCTestCase {
                 && actualDelay <= maxDelay {
 
                 debouncerHasRunAccurately.fulfill()
+            } else {
+                XCTFail("Actual delay was: \(actualDelay))")
             }
         }
         debouncer.call()
