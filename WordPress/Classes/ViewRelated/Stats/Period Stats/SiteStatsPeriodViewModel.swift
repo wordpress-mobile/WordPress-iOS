@@ -37,7 +37,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        // TODO: add chart here
+        // TODO: add overview chart here
         tableRows.append(contentsOf: postsAndPagesTableRows())
         tableRows.append(contentsOf: referrersTableRows())
         tableRows.append(contentsOf: clicksTableRows())
@@ -165,14 +165,29 @@ private extension SiteStatsPeriodViewModel {
 
     func childRowsForReferrers(_ item: StatsItem) -> [StatsTotalRowData] {
 
+        var childRows = [StatsTotalRowData]()
+
         guard let children = item.children as? [StatsItem] else {
-            return [StatsTotalRowData]()
+            return childRows
         }
 
-        return children.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     showDisclosure: true,
-                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+        children.forEach { child in
+            var childsChildrenRows = [StatsTotalRowData]()
+            if let childsChildren = child.children as? [StatsItem] {
+                childsChildrenRows = childsChildren.map { StatsTotalRowData.init(name: $0.label,
+                                                                                 data: $0.value.displayString(),
+                                                                                 showDisclosure: true,
+                                                                                 disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+            }
+
+            childRows.append(StatsTotalRowData.init(name: child.label,
+                                                    data: child.value.displayString(),
+                                                    showDisclosure: true,
+                                                    disclosureURL: StatsDataHelper.disclosureUrlForItem(child),
+                                                    childRows: childsChildrenRows))
+        }
+
+        return childRows
     }
 
     func clicksTableRows() -> [ImmuTableRow] {
