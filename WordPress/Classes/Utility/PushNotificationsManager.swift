@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import UserNotifications
 import CocoaLumberjack
+import UserNotifications
 
 
 
@@ -349,7 +350,7 @@ extension PushNotificationsManager {
     /// - Returns: True when handled. False otherwise
     @objc func handleQuickStartLocalNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard let type = userInfo.string(forKey: Notification.typeKey),
-            type == QuickStartTourGuide.Notification.local else {
+            type == Notification.local else {
                 return false
         }
 
@@ -361,6 +362,40 @@ extension PushNotificationsManager {
         completionHandler?(.newData)
 
         return true
+    }
+}
+
+extension PushNotificationsManager {
+    func postNotification(for tour: QuickStartTour) {
+        deletePendingLocalNotifications()
+
+        let content = UNMutableNotificationContent()
+        content.title = tour.title
+        content.body = tour.description
+        content.sound = UNNotificationSound.default
+        content.userInfo = [Notification.typeKey: Notification.local]
+
+        guard let futureDate = Calendar.current.date(byAdding: .day,
+                                                     value: Constants.localNotificationIntervalInDays,
+                                                     to: Date()) else {
+            return
+        }
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                                          from: futureDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        let request = UNNotificationRequest(identifier: Constants.localNotificationIdentifier,
+                                            content: content,
+                                            trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    @objc func deletePendingLocalNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Constants.localNotificationIdentifier])
+    }
+
+    private enum Constants {
+        static let localNotificationIntervalInDays = 2
+        static let localNotificationIdentifier = "QuickStartTourNotificationIdentifier"
     }
 }
 
@@ -380,6 +415,7 @@ private extension PushNotificationsManager {
         static let typeKey = "type"
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
+        static let local = "qs-local-notification"
     }
 
     enum Tracking {
