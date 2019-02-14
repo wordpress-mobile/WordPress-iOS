@@ -20,10 +20,15 @@ public class TagsCategoriesStatsRecordValue: StatsRecordValue {
     public override func validateForInsert() throws {
         try super.validateForInsert()
 
-        guard TagsCategoriesType(rawValue: type) != nil else {
+        guard let type = TagsCategoriesType(rawValue: type) else {
             throw StatsCoreDataValidationError.invalidEnumValue
         }
-    }
 
+        if let children = children, children.count > 0 {
+            guard type == .folder else {
+                throw StatsCoreDataValidationError.invalidEnumValue
+            }
+        }
+    }
 
 }
