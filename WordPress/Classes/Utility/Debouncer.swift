@@ -2,10 +2,15 @@ import Foundation
 
 //From : https://github.com/webadnan/swift-debouncer
 
+/// This class de-bounces the execution of a provided callback.
+/// It also offers a mechanism to immediately trigger the scheduled call if necessary.
+///
 final class Debouncer {
-    var callback: (() -> Void)
-    var delay: Double
-    weak var timer: Timer?
+    private let callback: (() -> Void)
+    private let delay: Double
+    private var timer: Timer?
+
+    // MARK: - Init & deinit
 
     init(delay: Double, callback: @escaping (() -> Void)) {
         self.delay = delay
@@ -19,11 +24,28 @@ final class Debouncer {
         }
     }
 
-    func call() {
+    // MARK: - Debounce Request
+
+    func call(immediate: Bool = false) {
         timer?.invalidate()
 
-        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] timer in
-            self?.callback()
+        if immediate {
+            immediateCallback()
+        } else {
+            scheduleCallback()
+        }
+    }
+
+    // MARK: - Callback interaction
+
+    private func immediateCallback() {
+        timer = nil
+        callback()
+    }
+
+    private func scheduleCallback() {
+        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [unowned self] timer in
+            self.callback()
         }
     }
 }

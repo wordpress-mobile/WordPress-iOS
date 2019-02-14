@@ -5,12 +5,12 @@ extension PostEditor where Self: UIViewController {
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
     var debouncerCallback: (() -> Void) {
         return { [weak self] in
-            guard let strongSelf = self else {
-                assertionFailure("self was nil while trying to save a post using Debouncer")
+            guard let self = self else {
                 return
             }
-            if strongSelf.post.hasLocalChanges() {
-                guard let context = strongSelf.post.managedObjectContext else {
+
+            if self.post.hasLocalChanges() {
+                guard let context = self.post.managedObjectContext else {
                     return
                 }
                 ContextManager.sharedInstance().save(context)
@@ -334,7 +334,7 @@ extension PostEditor where Self: UIViewController {
     fileprivate func asyncUploadPost(action: PostEditorAction) {
         postEditorStateContext.updated(isBeingPublished: true)
 
-        mapUIContentToPostAndSave()
+        mapUIContentToPostAndSave(immediate: true)
 
         post.updatePathForDisplayImageBasedOnContent()
 
@@ -351,7 +351,7 @@ extension PostEditor where Self: UIViewController {
     ///     - completion: the closure to execute when the publish operation completes.
     ///
     private func uploadPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
-        mapUIContentToPostAndSave()
+        mapUIContentToPostAndSave(immediate: true)
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: managedObjectContext)
@@ -380,10 +380,10 @@ extension PostEditor where Self: UIViewController {
         view.endEditing(true)
     }
 
-    func mapUIContentToPostAndSave() {
+    func mapUIContentToPostAndSave(immediate: Bool = false) {
         post.postTitle = postTitle
         post.content = getHTML()
-        debouncer.call()
+        debouncer.call(immediate: immediate)
     }
 
     // TODO: Rip this out and put it into the PostService
