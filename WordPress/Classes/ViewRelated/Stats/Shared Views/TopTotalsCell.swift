@@ -124,9 +124,14 @@ private extension TopTotalsCell {
             let childRow = StatsTotalRow.loadFromNib()
 
             childRow.configure(rowData: childRowData, delegate: self)
-            Style.configureLabelAsChildRowTitle(childRow.itemLabel)
             childRow.showSeparator = false
             childRow.parentRow = row
+
+            // If this child is just a child, then change the label color.
+            // If this child is also a parent, then leave the color as default.
+            if !childRow.hasChildRows {
+                Style.configureLabelAsChildRowTitle(childRow.itemLabel)
+            }
 
             // If the parent row has an icon, show the image view for the child
             // to make the child row appear "indented".
