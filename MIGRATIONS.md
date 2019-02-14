@@ -5,9 +5,15 @@ data model as well as any custom migrations.
 
 ## WordPress 87
 @klausa 2019-02-??
-- Added `StatsRecord`, `StatsRecordValue`, `AnnualAndMostPopularTimeStatsRecordValue`,  `AllTimeStatsRecordValue`, `LastPostStatsRecordValue`,  `StatsRecord` and `StatsRecordValue`. 
-    
-More types are incoming, hence why I'm not putting a firm date above — I'll change it when all related PRs are merged.    
+- Added following entities:
+
+* `StatsRecord`
+* `StatsRecordValue`
+* `AnnualAndMostPopularTimeStatsRecordValue` 
+* `AllTimeStatsRecordValue` 
+* `LastPostStatsRecordValue`
+* `StreakInsightStatsRecordValue`
+* `StreakStatsRecordValue`
 
 ## WordPress 86
 @aerych 2018-12-08

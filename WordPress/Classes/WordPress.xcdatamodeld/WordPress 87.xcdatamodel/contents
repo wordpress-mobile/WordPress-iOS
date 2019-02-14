@@ -763,6 +763,17 @@
     <entity name="StatsRecordValue" representedClassName="WordPress.StatsRecordValue" isAbstract="YES" syncable="YES">
         <relationship name="statsRecord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StatsRecord" inverseName="values" inverseEntity="StatsRecord" syncable="YES"/>
     </entity>
+    <entity name="StreakInsightStatsRecordValue" representedClassName=".StreakInsightStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="currentStreakEnd" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="currentStreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="currentStreakStart" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="longestStreakEnd" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="longestStreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="longestStreakStart" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
+    <entity name="StreakStatsRecordValue" representedClassName=".StreakStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="postCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorUrl" optional="YES" attributeType="String" syncable="YES"/>
@@ -839,6 +850,8 @@
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="StatsRecord" positionX="27" positionY="486" width="128" height="120"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
+        <element name="StreakInsightStatsRecordValue" positionX="54" positionY="180" width="128" height="135"/>
+        <element name="StreakStatsRecordValue" positionX="72" positionY="198" width="128" height="60"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
     </elements>
 </model>

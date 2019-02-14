@@ -27,7 +27,9 @@ import CoreData
 public enum StatsRecordType: Int16 {
     case lastPostInsight
     case allTimeStatsInsight
+    case streakInsight
 
+    case postingStreak
     case postStats
     case blogStats
     // those last two aren't used anywhere yet, I've left them here for illustration purposes.
@@ -37,9 +39,9 @@ public enum StatsRecordType: Int16 {
         // lot of sense to hold on to Insights from the past...).
         // This lets us disambiguate between which is which.
         switch self {
-        case .lastPostInsight, .allTimeStatsInsight:
+        case .lastPostInsight, .allTimeStatsInsight, .streakInsight:
             return false
-        case .postStats, .blogStats:
+        case .postStats, .blogStats, .postingStreak:
             return true
         }
     }
