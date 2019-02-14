@@ -28,10 +28,13 @@ class GutenbergSettings {
 
     func toggleGutenberg() {
         if isGutenbergEnabled() {
+            WPAppAnalytics.track(.appSettingsGutenbergDisabled)
             database.set(false, forKey: gutenbergEditorEnabledKey)
         } else {
+            WPAppAnalytics.track(.appSettingsGutenbergEnabled)
             database.set(true, forKey: gutenbergEditorEnabledKey)
         }
+        WPAnalytics.refreshMetadata()
     }
 
     // MARK: - Gutenberg Choice Logic
@@ -46,5 +49,13 @@ class GutenbergSettings {
     func mustUseGutenberg(for post: AbstractPost) -> Bool {
         return isGutenbergEnabled()
             && (!post.hasRemote() || post.containsGutenbergBlocks() || post.isContentEmpty())
+    }
+}
+
+@objc(GutenbergSettings)
+class GutenbergSettingsBridge: NSObject {
+    @objc
+    static func isGutenbergEnabled() -> Bool {
+        return GutenbergSettings().isGutenbergEnabled()
     }
 }
