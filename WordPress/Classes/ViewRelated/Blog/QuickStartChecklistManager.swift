@@ -120,6 +120,13 @@ extension QuickStartChecklistManager: UITableViewDelegate {
         return WPDeviceIdentification.isiPhone() ? 0.0 : Sections.iPadTopInset
     }
 
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        guard let section = Sections(rawValue: indexPath.section), section == .todo else {
+            return .none
+        }
+        return .delete
+    }
+
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         guard let section = Sections(rawValue: indexPath.section), section == .todo else {
             return nil
