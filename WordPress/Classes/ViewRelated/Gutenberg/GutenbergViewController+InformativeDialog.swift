@@ -18,7 +18,7 @@ extension GutenbergViewController {
         }
         enum Alert {
             static let message = NSLocalizedString(
-                "The post was originally created in the Block Editor, so we've also enabled it on this Post. Switch back to Classic at any time by tapping ••• in the top bar.",
+                "This post was originally created in the Block Editor, so we've also enabled it on this Post. Switch back to Classic at any time by tapping ••• in the top bar.",
                 comment: "Popup content about why this post is being opened in Block Editor"
             )
             static let title = NSLocalizedString("Block Editor Enabled", comment: "Popup title about why this post is being opened in Block Editor")
