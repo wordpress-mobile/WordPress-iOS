@@ -48,3 +48,11 @@ class GutenbergSettings {
             && (!post.hasRemote() || post.containsGutenbergBlocks() || post.isContentEmpty())
     }
 }
+
+@objc(GutenbergSettings)
+class GutenbergSettingsBridge: NSObject {
+    @objc
+    static func isGutenbergEnabled() -> Bool {
+        return GutenbergSettings().isGutenbergEnabled()
+    }
+}
