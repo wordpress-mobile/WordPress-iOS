@@ -60,7 +60,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="4ZS-AN-Jkl" secondAttribute="bottom" id="D7x-L2-tnt"/>
                                                 <constraint firstItem="4ZS-AN-Jkl" firstAttribute="leading" secondItem="iS7-PL-Iwy" secondAttribute="leading" id="XWr-Mh-3pQ"/>
                                                 <constraint firstItem="4ZS-AN-Jkl" firstAttribute="top" secondItem="iS7-PL-Iwy" secondAttribute="top" constant="6" id="sBc-0d-zGY"/>
-                                                <constraint firstAttribute="width" secondItem="4ZS-AN-Jkl" secondAttribute="width" id="u1V-y7-Ial"/>
+                                                <constraint firstAttribute="width" secondItem="4ZS-AN-Jkl" secondAttribute="width" priority="999" id="u1V-y7-Ial"/>
                                             </constraints>
                                         </view>
                                     </subviews>
