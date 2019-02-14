@@ -6,30 +6,26 @@ struct PostEditorSession {
     let blogType: String
     let contentType: String
     var started = false
+    var currentEditor: Editor
+    var hasUnsupportedBlocks = false
 
-    init(post: AbstractPost) {
+    init(editor: Editor, post: AbstractPost) {
+        currentEditor = editor
         postType = post.analyticsPostType ?? "unsupported"
         blogType = post.blog.analyticsType.rawValue
         contentType = ContentType(post: post).rawValue
     }
 
-    mutating func start(editor: Editor, hasUnsupportedBlocks: Bool) {
+    mutating func start(hasUnsupportedBlocks: Bool) {
         assert(!started, "An editor session was attempted to start more than once")
-        let properties = [
-            Property.editor: editor.rawValue,
-            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
-        ].merging(commonProperties, uniquingKeysWith: { $1 })
-
-        WPAppAnalytics.track(.editorSessionStart, withProperties: properties)
+        self.hasUnsupportedBlocks = hasUnsupportedBlocks
+        WPAppAnalytics.track(.editorSessionStart, withProperties: commonProperties)
         started = true
     }
 
-    func `switch`(editor: Editor) {
-        let properties = [
-            Property.editor: editor.rawValue,
-            ].merging(commonProperties, uniquingKeysWith: { $1 })
-
-        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: properties)
+    mutating func `switch`(editor: Editor) {
+        currentEditor = editor
+        WPAppAnalytics.track(.editorSessionSwitchEditor, withProperties: commonProperties)
     }
 
     func end(reason: EndReason) {
@@ -54,10 +50,12 @@ private extension PostEditorSession {
 
     var commonProperties: [String: String] {
         return [
+            Property.editor: currentEditor.rawValue,
             Property.contentType: contentType,
             Property.postType: postType,
             Property.blogType: blogType,
-            Property.sessionId: sessionId
+            Property.sessionId: sessionId,
+            Property.hasUnsupportedBlocks: hasUnsupportedBlocks ? "1" : "0"
         ]
     }
 }

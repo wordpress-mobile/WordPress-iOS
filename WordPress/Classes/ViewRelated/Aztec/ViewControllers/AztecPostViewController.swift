@@ -436,7 +436,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         self.post = post
         self.replaceEditor = replaceEditor
-        self.editorSession = editorSession ?? PostEditorSession(post: post)
+        self.editorSession = editorSession ?? PostEditorSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
@@ -492,7 +492,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
 
         if !editorSession.started {
-            editorSession.start(editor: .classic, hasUnsupportedBlocks: false)
+            editorSession.start(hasUnsupportedBlocks: false)
         }
     }
 

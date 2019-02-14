@@ -162,7 +162,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
-        self.editorSession = editorSession ?? PostEditorSession(post: post)
+        self.editorSession = editorSession ?? PostEditorSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -406,7 +406,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
         if !editorSession.started {
-            editorSession.start(editor: .gutenberg, hasUnsupportedBlocks: hasUnsupportedBlocks)
+            editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
         }
     }
 }
