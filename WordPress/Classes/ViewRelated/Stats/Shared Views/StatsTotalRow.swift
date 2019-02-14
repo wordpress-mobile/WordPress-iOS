@@ -87,6 +87,9 @@ class StatsTotalRow: UIView, NibLoadable {
     // child rows when a parent row is selected.
     var childRowsStackView: UIStackView?
 
+    // This is set by the containing cell when child rows are added.
+    var parentRow: StatsTotalRow?
+
     var showSeparator = true {
         didSet {
             separatorLine.isHidden = !showSeparator
