@@ -53,7 +53,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
-    var editorSession: PostEditorSession
+    var editorSession: PostEditorAnalyticsSession
 
     /// Indicates if Aztec was launched for Photo Posting
     ///
@@ -118,7 +118,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         return editorView
     }()
 
-    private var analyticsEditor: PostEditorSession.Editor {
+    private var analyticsEditor: PostEditorAnalyticsSession.Editor {
         switch editorView.editingMode {
         case .richText:
             return .gutenberg
@@ -430,13 +430,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     required init(
         post: AbstractPost,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
-        editorSession: PostEditorSession? = nil) {
+        editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
         self.replaceEditor = replaceEditor
-        self.editorSession = editorSession ?? PostEditorSession(editor: .classic, post: post)
+        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision

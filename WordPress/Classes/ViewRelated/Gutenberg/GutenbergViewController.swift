@@ -56,7 +56,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
-    var editorSession: PostEditorSession
+    var editorSession: PostEditorAnalyticsSession
 
     var onClose: ((Bool, Bool) -> Void)?
 
@@ -141,7 +141,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
-    private var analyticsEditor: PostEditorSession.Editor {
+    private var analyticsEditor: PostEditorAnalyticsSession.Editor {
         switch mode {
         case .richText:
             return .gutenberg
@@ -155,14 +155,14 @@ class GutenbergViewController: UIViewController, PostEditor {
     required init(
         post: AbstractPost,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
-        editorSession: PostEditorSession? = nil) {
+        editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
-        self.editorSession = editorSession ?? PostEditorSession(editor: .gutenberg, post: post)
+        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 

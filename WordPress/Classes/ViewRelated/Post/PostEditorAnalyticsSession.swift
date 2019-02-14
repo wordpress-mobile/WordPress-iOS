@@ -1,6 +1,6 @@
 import Foundation
 
-struct PostEditorSession {
+struct PostEditorAnalyticsSession {
     private let sessionId = UUID().uuidString
     let postType: String
     let blogType: String
@@ -37,7 +37,7 @@ struct PostEditorSession {
     }
 }
 
-private extension PostEditorSession {
+private extension PostEditorAnalyticsSession {
     enum Property {
         static let blogType = "blog_type"
         static let contentType = "content_type"
@@ -60,7 +60,7 @@ private extension PostEditorSession {
     }
 }
 
-extension PostEditorSession {
+extension PostEditorAnalyticsSession {
     enum Editor: String {
         case gutenberg
         case classic
