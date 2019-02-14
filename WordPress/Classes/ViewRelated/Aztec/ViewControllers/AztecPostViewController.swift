@@ -3237,7 +3237,7 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let gutenbergTitle = NSLocalizedString("Switch to Gutenberg", comment: "Switches from the classic editor to Gutenberg.")
+        static let gutenbergTitle = NSLocalizedString("Switch to Block Editor", comment: "Switches from the Classic Editor to Block Editor.")
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")

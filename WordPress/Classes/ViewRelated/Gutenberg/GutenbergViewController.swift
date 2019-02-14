@@ -178,6 +178,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         refreshInterface()
 
         gutenberg.delegate = self
+        showInformativeDialogIfNecessary()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -388,6 +389,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidLayout() {
+    }
+
+    func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
     }
 }
 

@@ -780,6 +780,8 @@
 		85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */; };
 		9111C15121CA59A100DA0662 /* GutenbergContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9111C15021CA59A100DA0662 /* GutenbergContainerView.xib */; };
 		9111C15321CA59BC00DA0662 /* GutenbergContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9111C15221CA59BB00DA0662 /* GutenbergContainerView.swift */; };
+		912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */; };
+		9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */; };
 		91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */; };
 		91DCE84421A6A7840062F134 /* PostEditor+BlogPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84321A6A7840062F134 /* PostEditor+BlogPicker.swift */; };
 		91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84521A6A7F50062F134 /* PostEditor+MoreOptions.swift */; };
@@ -2659,6 +2661,8 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9111C15021CA59A100DA0662 /* GutenbergContainerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GutenbergContainerView.xib; sourceTree = "<group>"; };
 		9111C15221CA59BB00DA0662 /* GutenbergContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergContainerView.swift; sourceTree = "<group>"; };
+		912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+InformativeDialog.swift"; sourceTree = "<group>"; };
+		9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergInformativeDialogTests.swift; sourceTree = "<group>"; };
 		91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaPickerHelper.swift; sourceTree = "<group>"; };
 		91DCE84321A6A7840062F134 /* PostEditor+BlogPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditor+BlogPicker.swift"; sourceTree = "<group>"; };
 		91DCE84521A6A7F50062F134 /* PostEditor+MoreOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditor+MoreOptions.swift"; sourceTree = "<group>"; };
@@ -5451,6 +5455,7 @@
 				7EA30DB321ADA20F0092F894 /* EditorMediaUtility.swift */,
 				9111C15021CA59A100DA0662 /* GutenbergContainerView.xib */,
 				9111C15221CA59BB00DA0662 /* GutenbergContainerView.swift */,
+				912347182213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift */,
 			);
 			path = Gutenberg;
 			sourceTree = "<group>";
@@ -8102,6 +8107,7 @@
 			children = (
 				FF9A6E7021F9361700D36D14 /* MediaUploadHashTests.swift */,
 				FF2EC3C12209AC19006176E1 /* GutenbergImgUploadProcessorTests.swift */,
+				9123471A221449E200BD9F97 /* GutenbergInformativeDialogTests.swift */,
 			);
 			name = Gutenberg;
 			sourceTree = "<group>";
@@ -9769,6 +9775,7 @@
 				D818FFD72191566B000E5FEE /* VerticalsWizardContent.swift in Sources */,
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
 				4308ACFD210107F90059EA64 /* SiteCreationDomainSuggestionsTableViewController.swift in Sources */,
+				912347192213484300BD9F97 /* GutenbergViewController+InformativeDialog.swift in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */,
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
@@ -10493,6 +10500,7 @@
 				D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */,
 				74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */,
 				D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */,
+				9123471B221449E200BD9F97 /* GutenbergInformativeDialogTests.swift in Sources */,
 				FF1FD02620912AA900186384 /* URL+LinkNormalizationTests.swift in Sources */,
 				7E442FCF20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift in Sources */,
 				D81C2F6620F8ACCD002AE1F1 /* FormattableContentFormatterTests.swift in Sources */,
