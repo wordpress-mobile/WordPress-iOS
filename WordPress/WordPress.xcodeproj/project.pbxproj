@@ -1150,11 +1150,11 @@
 		BED4D8371FF1289B00A11345 /* EditorEditLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8361FF1289B00A11345 /* EditorEditLinkScreen.swift */; };
 		BED4D8391FF137FD00A11345 /* EditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8381FF137FD00A11345 /* EditorTests.swift */; };
 		BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
-		BEF950881FD7CCD000ACCB1E /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF27169E1CAAF5060006E2D4 /* WPUITestCredentials.swift */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
+		CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
 		CE1CCB2D204DDD18000EE3AC /* MyProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CCB2C204DDD18000EE3AC /* MyProfileHeaderView.swift */; };
 		CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */; };
 		CE39E17220CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */; };
@@ -3120,6 +3120,7 @@
 		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CC24E5F21577DFF400A6D5B5 /* Twitter.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPUITestCredentials.swift; sourceTree = "<group>"; };
 		CDF46FFC7F78DB8FEB56E6F9 /* Pods-WordPressShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		CE1CCB2C204DDD18000EE3AC /* MyProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileHeaderView.swift; sourceTree = "<group>"; };
 		CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileHeaderView.xib; sourceTree = "<group>"; };
@@ -3746,8 +3747,6 @@
 		FF27168F1CAAC87A0006E2D4 /* WordPressUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF2716911CAAC87B0006E2D4 /* LoginTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTests.swift; sourceTree = "<group>"; };
 		FF2716931CAAC87B0006E2D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FF27169B1CAAF3190006E2D4 /* gencredentials.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
-		FF27169E1CAAF5060006E2D4 /* WPUITestCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPUITestCredentials.swift; sourceTree = "<group>"; };
 		FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Extensions.swift"; sourceTree = "<group>"; };
 		FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+Exporters.swift"; sourceTree = "<group>"; };
 		FF28B3EF1AEB251200E11AAE /* InfoPListTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPListTranslator.h; sourceTree = "<group>"; };
@@ -7747,7 +7746,6 @@
 		E1756E661694AA1500D9EC00 /* Derived Sources */ = {
 			isa = PBXGroup;
 			children = (
-				FF27169E1CAAF5060006E2D4 /* WPUITestCredentials.swift */,
 				FFB7B81D1A0012E80032E723 /* ApiCredentials.m */,
 			);
 			name = "Derived Sources";
@@ -8062,8 +8060,8 @@
 				BED4D8311FF11E2B00A11345 /* Flows */,
 				BE2B4EA01FD6653E007AE3E4 /* Utils */,
 				BE2B4E991FD6640E007AE3E4 /* Screens */,
-				FF27169B1CAAF3190006E2D4 /* gencredentials.rb */,
 				FF2716931CAAC87B0006E2D4 /* Info.plist */,
+				CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */,
 			);
 			path = WordPressUITests;
 			sourceTree = "<group>";
@@ -8285,7 +8283,7 @@
 			buildConfigurationList = FF27169A1CAAC87B0006E2D4 /* Build configuration list for PBXNativeTarget "WordPressUITests" */;
 			buildPhases = (
 				928885381E5E057F001F9637 /* Reset Simulator */,
-				928885371E5CE0B2001F9637 /* Generate Credentials */,
+				CC8A5EAC2215A147001B7874 /* ShellScript */,
 				FF27168B1CAAC87A0006E2D4 /* Sources */,
 				FF27168C1CAAC87A0006E2D4 /* Frameworks */,
 				FF27168D1CAAC87A0006E2D4 /* Resources */,
@@ -9028,22 +9026,6 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		928885371E5CE0B2001F9637 /* Generate Credentials */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/WordPressUITests/gencredentials.rb",
-			);
-			name = "Generate Credentials";
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/../Derived Sources/WPUITestCredentials.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "DERIVED_SOURCES_DIR=\"${BUILT_PRODUCTS_DIR}/../Derived Sources\"\n\necho \"Generating credentials file in ${DERIVED_SOURCES_DIR}/WPUICredentials.swift\"\n\nruby \"${SOURCE_ROOT}/WordPressUITests/gencredentials.rb\" > \"${DERIVED_SOURCES_DIR}/WPUITestCredentials.swift\"\n";
-		};
 		928885381E5E057F001F9637 /* Reset Simulator */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -9125,6 +9107,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CC8A5EAC2215A147001B7874 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"~/.mobile-secrets/iOS/WPiOS/WPUITestCredentials.swift",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/WordPressUITests/WPUITestCredentials.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\nsh ../Scripts/BuildPhases/CopyUITestCredentials.sh\n";
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10625,7 +10626,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEF950881FD7CCD000ACCB1E /* WPUITestCredentials.swift in Sources */,
 				BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */,
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
@@ -10641,6 +10641,7 @@
 				BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */,
 				BE6DD32A1FD6708900E55192 /* LinkOrPasswordScreen.swift in Sources */,
 				BE6DD3261FD66C2900E55192 /* SignupScreen.swift in Sources */,
+				CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */,
 				BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */,
 				BED4D8371FF1289B00A11345 /* EditorEditLinkScreen.swift in Sources */,
 				BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */,
