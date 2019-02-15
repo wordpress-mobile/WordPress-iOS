@@ -69,6 +69,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
 }
 
+// MARK: - Private Extension
+
 private extension TopTotalsCell {
 
     func applyStyles() {
@@ -98,7 +100,7 @@ private extension TopTotalsCell {
             }
             toggleChildRowsForRow(row)
 
-            row.childRowsStackView?.arrangedSubviews.forEach { child in
+            row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
                 guard let childRow = child as? StatsTotalRow else {
                     return
                 }
@@ -118,11 +120,11 @@ private extension TopTotalsCell {
 
         // Add child rows to their own stack view,
         // store that on the row (for possible removal later),
-        // and add the child stack view to the row stack view.
+        // and add the child view to the row stack view.
 
         let numberOfRowsToAdd = childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
-        let childRowsStackView = childStackView()
         let containingStackView = stackViewContainingRow(row)
+        let childRowsView = StatsChildRowsView.loadFromNib()
 
         for childRowsIndex in 0..<numberOfRowsToAdd {
             let childRowData = childRows[childRowsIndex]
@@ -144,37 +146,39 @@ private extension TopTotalsCell {
             childRow.imageView.isHidden = row.imageView.isHidden
             childRow.imageWidthConstraint.constant = row.imageWidthConstraint.constant
 
-            // Show the expanded bottom separator on the last row
-            childRow.showBottomExpandedSeparator = (childRowsIndex == numberOfRowsToAdd - 1)
-
-            childRowsStackView.addArrangedSubview(childRow)
+            childRowsView.rowsStackView.addArrangedSubview(childRow)
         }
 
-        row.childRowsStackView = childRowsStackView
-        containingStackView?.insertArrangedSubview(childRowsStackView, at: rowIndex + 1)
+        row.childRowsView = childRowsView
+        containingStackView?.insertArrangedSubview(childRowsView, at: rowIndex + 1)
     }
 
     func removeChildRowsForRow(_ row: StatsTotalRow) {
-        guard let childRowsStackView = row.childRowsStackView else {
+        guard let childRowsView = row.childRowsView,
+        let childRowsStackView = childRowsView.rowsStackView else {
             return
         }
 
         // If the row's children have children, remove those too.
         childRowsStackView.arrangedSubviews.forEach { subView in
-            if let subView = subView as? UIStackView {
-                removeRowsFromStackView(subView)
+            if let subView = subView as? StatsChildRowsView {
+                removeRowsFromStackView(subView.rowsStackView)
                 childRowsStackView.removeArrangedSubview(subView)
                 subView.removeFromSuperview()
             }
         }
 
         removeRowsFromStackView(childRowsStackView)
-        stackViewContainingRow(row)?.removeArrangedSubview(childRowsStackView)
         childRowsStackView.removeFromSuperview()
+        childRowsView.removeFromSuperview()
     }
 
-    func toggleSeparatorForRowPreviousTo(_ row: StatsTotalRow) {
+    func toggleSeparatorsAroundRow(_ row: StatsTotalRow) {
+        toggleSeparatorsBeforeRow(row)
+        toggleSeparatorsAfterRow(row)
+    }
 
+    func toggleSeparatorsBeforeRow(_ row: StatsTotalRow) {
         guard let containingStackView = stackViewContainingRow(row),
             let rowIndex = indexForRow(row),
             (rowIndex - 1) >= 0 else {
@@ -183,14 +187,43 @@ private extension TopTotalsCell {
 
         let previousRow = containingStackView.arrangedSubviews[rowIndex - 1]
 
-        // Only toggle the indented separator lines on top level rows. Children don't show them.
+        // Toggle the indented separator line only on top level rows. Children don't show them.
         if previousRow is StatsTotalRow && containingStackView == rowsStackView {
             (previousRow as! StatsTotalRow).showSeparator = !row.expanded
         }
 
-        // If the previous row is expanded, don't show this row's top line to prevent double lines.
-        if previousRow is UIStackView {
-            row.showTopExpandedSeparator = false
+        // Toggle the bottom line on the previous stack view
+        if previousRow is StatsChildRowsView {
+            (previousRow as! StatsChildRowsView).showBottomSeperatorLine = !row.expanded
+        }
+
+    }
+
+    func toggleSeparatorsAfterRow(_ row: StatsTotalRow) {
+        guard let containingStackView = stackViewContainingRow(row),
+            let rowIndex = indexForRow(row),
+            (rowIndex + 1) < containingStackView.arrangedSubviews.count else {
+                return
+        }
+
+        let nextRow = containingStackView.arrangedSubviews[rowIndex + 1]
+
+        // Toggle the indented separator line only on top level rows. Children don't show them.
+        if nextRow is StatsTotalRow && containingStackView == rowsStackView {
+            row.showSeparator = !(nextRow as! StatsTotalRow).expanded
+        }
+
+        // If the next row is a stack view, it is the children of this row.
+        // Proceed to the next parent row, and toggle this row's bottom line
+        // according to the next parent's expanded state.
+        if nextRow is StatsChildRowsView {
+
+            guard (rowIndex + 2) < containingStackView.arrangedSubviews.count,
+                let nextParentRow = containingStackView.arrangedSubviews[rowIndex + 2] as? StatsTotalRow else {
+                    return
+            }
+
+            row.childRowsView?.showBottomSeperatorLine = !nextParentRow.expanded
         }
     }
 
@@ -204,18 +237,8 @@ private extension TopTotalsCell {
         return rowIndex
     }
 
-    func childStackView() -> UIStackView {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.spacing = 0
-        stackView.distribution = .fill
-        return stackView
-    }
-
     func stackViewContainingRow(_ row: StatsTotalRow) -> UIStackView? {
-        return row.parentRow?.childRowsStackView ?? rowsStackView
+        return row.parentRow?.childRowsView?.rowsStackView ?? rowsStackView
     }
 
 }
@@ -235,7 +258,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func toggleChildRowsForRow(_ row: StatsTotalRow) {
         row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
-        toggleSeparatorForRowPreviousTo(row)
+        toggleSeparatorsAroundRow(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
     }
