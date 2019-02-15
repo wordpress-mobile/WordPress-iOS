@@ -124,28 +124,28 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Switch the filter to drafts
         app.buttons["drafts"].tap()
 
-        // Tap on the editor post
-        app.tables.cells["summer-band-jam"].tap()
+        // Get a screenshot of the post editor
+        screenshotPost(withSlug: "summer-band-jam", called: "1-PostEditor")
 
-        let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
-        waitForElementToExist(element: editorNavigationBar)
+        // Get a screenshot of the drafts feature
+        screenshotPost(withSlug: "ideas", called: "2-DraftEditor")
 
-        sleep(imagesWaitTime) // wait for post images to load
-        // The title field gets focus automatically
-        snapshot("1-PostEditor")
-
-        editorNavigationBar.buttons["Close"].tap()
-        // Dismiss Unsaved Changes Alert if it shows up
-        if app.sheets.element(boundBy: 0).exists {
-            // Tap discard
-            app.sheets.element(boundBy: 0).buttons.element(boundBy: 1).tap()
-        }
-
-        // Get Stats screenshot
         // Tap the back button if on an iPhone screen
         if UIDevice.current.userInterfaceIdiom == .phone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
+
+        blogDetailsTable.cells["Media Row"].tap() // Tap Media
+        sleep(imagesWaitTime) // wait for post images to load
+
+        snapshot("3-Media")
+
+        // Tap the back button if on an iPhone screen
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
+        }
+
+        // Get Stats screenshot
         blogDetailsTable.cells["Stats Row"].tap() // tap Stats
         app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
 
@@ -154,11 +154,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         waitForElementToNotExist(element: app.progressIndicators.firstMatch)
 
         snapshot("4-Stats")
-
-        blogDetailsTable.cells["Media Row"].tap() // Tap Media
-        sleep(imagesWaitTime) // wait for post images to load
-
-        snapshot("2-Media")
 
         // Get Notifications screenshot
         app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
@@ -171,5 +166,26 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         snapshot("5-Notifications")
+    }
+
+    private func screenshotPost(withSlug slug: String, called screenshotName: String) {
+
+        let app = XCUIApplication()
+
+        app.tables.cells[slug].tap()
+
+        let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
+        waitForElementToExist(element: editorNavigationBar)
+
+        sleep(imagesWaitTime) // wait for post images to load
+        // The title field gets focus automatically
+        snapshot(screenshotName)
+
+        editorNavigationBar.buttons["Close"].tap()
+        // Dismiss Unsaved Changes Alert if it shows up
+        if app.sheets.element(boundBy: 0).exists {
+            // Tap discard
+            app.sheets.element(boundBy: 0).buttons.element(boundBy: 1).tap()
+        }
     }
 }
