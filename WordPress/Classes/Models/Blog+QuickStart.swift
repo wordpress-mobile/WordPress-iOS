@@ -32,7 +32,7 @@ extension Blog {
 
         let context = managedObjectContext ?? ContextManager.sharedInstance().mainContext
 
-        quickStartTours.map {
+        quickStartTours.forEach {
             context.delete($0)
         }
         ContextManager.sharedInstance().saveContextAndWait(context)
