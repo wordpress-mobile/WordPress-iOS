@@ -34,6 +34,7 @@ public enum StatsRecordType: Int16 {
     case publicizeConnection
     case followers
 
+    case searchTerms
     case postingStreak
     case postStats
     case blogStats
@@ -56,6 +57,7 @@ public enum StatsRecordType: Int16 {
             return false
         case .postStats,
              .blogStats,
+             .searchTerms,
              .postingStreak:
 
             return true
