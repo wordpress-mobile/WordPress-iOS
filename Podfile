@@ -112,6 +112,7 @@ target 'WordPress' do
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
+    pod 'Charts', '~> 3.2.2'
     pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'

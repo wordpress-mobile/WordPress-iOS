@@ -21,6 +21,9 @@ PODS:
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 1.1.4)
   - boost-for-react-native (1.63.0)
+  - Charts (3.2.2):
+    - Charts/Core (= 3.2.2)
+  - Charts/Core (3.2.2)
   - CocoaLumberjack (3.4.2):
     - CocoaLumberjack/Default (= 3.4.2)
     - CocoaLumberjack/Extensions (= 3.4.2)
@@ -217,6 +220,7 @@ DEPENDENCIES:
   - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.2-beta.1`)
+  - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
@@ -258,6 +262,7 @@ SPEC REPOS:
     - AFNetworking
     - Alamofire
     - boost-for-react-native
+    - Charts
     - CocoaLumberjack
     - Crashlytics
     - DoubleConversion
@@ -342,6 +347,7 @@ SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Automattic-Tracks-iOS: 7678d30a5e2dfe75ff93e6496024790eefcf441d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
@@ -385,6 +391,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: e855b822a181962718bb84130da5bd7bd5c15014
+PODFILE CHECKSUM: 22f577d12261b72211f607d4ffde1448795982d6
 
 COCOAPODS: 1.5.3
