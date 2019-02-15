@@ -135,7 +135,7 @@ extension XCTestCase {
 
         let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
         let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
-        let siteNameField = app.tables.staticTexts[ WPUITestCredentials.selfHostedSiteName ]
+        let siteNameField = app.tables.staticTexts[ WPUITestCredentials.selfHostedSiteAddress ]
 
         // Tap the My Sites button twice to be sure that we're on the All Sites list
         mySitesTabButton.tap()

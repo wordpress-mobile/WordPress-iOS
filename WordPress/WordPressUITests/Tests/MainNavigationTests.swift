@@ -14,7 +14,7 @@ class MainNavigationTests: XCTestCase {
         app.activate()
 
         mySiteScreen = LoginFlow
-            .login(email: WPUITestCredentials.testUserEmail, password: WPUITestCredentials.testUserPassword)
+            .login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
     }
 
     override func tearDown() {
