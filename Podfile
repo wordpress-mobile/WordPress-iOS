@@ -30,7 +30,7 @@ def wordpress_shared
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '3a80f1e5d1fca6937d66b0c63014c6d1746d2b4c'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07'
 end
 
 def aztec
