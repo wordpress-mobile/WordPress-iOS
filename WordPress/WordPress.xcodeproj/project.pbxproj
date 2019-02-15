@@ -1595,7 +1595,6 @@
 		E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F2787E21BC1A49008B4DB5 /* PlanFeature.swift */; };
 		E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */; };
-		F10D23F4218B990600C4F39F /* GutenbergAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10D23F3218B990600C4F39F /* GutenbergAlertPresenter.swift */; };
 		F10E655021B0613A007AB2EE /* GutenbergViewController+MoreActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10E654F21B06139007AB2EE /* GutenbergViewController+MoreActions.swift */; };
 		F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F115308021B17E65002F1D65 /* EditorFactory.swift */; };
 		F126FE0020A33BDB0010EB6E /* VideoUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFD20A33BDB0010EB6E /* VideoUploadProcessor.swift */; };
@@ -3694,7 +3693,6 @@
 		E9BAA39DBCC9B24D1C785074 /* Pods-WordPressScreenshotGeneration.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressScreenshotGeneration.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressScreenshotGeneration/Pods-WordPressScreenshotGeneration.release-internal.xcconfig"; sourceTree = "<group>"; };
 		EEF80689364FA9CAE10405E8 /* Pods-WordPressNotificationServiceExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		EF379F0A70B6AC45330EE287 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
-		F10D23F3218B990600C4F39F /* GutenbergAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergAlertPresenter.swift; sourceTree = "<group>"; };
 		F10E654F21B06139007AB2EE /* GutenbergViewController+MoreActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+MoreActions.swift"; sourceTree = "<group>"; };
 		F115308021B17E65002F1D65 /* EditorFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorFactory.swift; sourceTree = "<group>"; };
 		F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 67.xcdatamodel"; sourceTree = "<group>"; };
@@ -4795,7 +4793,6 @@
 		5D09CBA61ACDE532007A23BD /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				F10D23F3218B990600C4F39F /* GutenbergAlertPresenter.swift */,
 				595CB3751D2317D50082C7E9 /* PostListFilter.swift */,
 				43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */,
 				E1CECE011E6EC7A8009C6695 /* FakePreviewBuilder.swift */,
@@ -9981,7 +9978,6 @@
 				D8225409219AB2030014D0E2 /* SiteInformation.swift in Sources */,
 				D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
-				F10D23F4218B990600C4F39F /* GutenbergAlertPresenter.swift in Sources */,
 				E1F391EF1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift in Sources */,
 				E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */,
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
