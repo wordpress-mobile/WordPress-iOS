@@ -779,7 +779,8 @@
         <attribute name="type" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="TagsCategoriesStatsRecordValue" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="TagsCategoriesStatsRecordValue" inverseName="parent" inverseEntity="TagsCategoriesStatsRecordValue" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TagsCategoriesStatsRecordValue" inverseName="children" inverseEntity="TagsCategoriesStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
