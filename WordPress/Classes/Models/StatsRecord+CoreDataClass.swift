@@ -57,7 +57,7 @@ public enum StatsRecordType: Int16 {
             return false
         case .postStats,
              .blogStats,
-             .searchTerms:
+             .searchTerms,
              .postingStreak:
 
             return true
