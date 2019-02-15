@@ -24,6 +24,8 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
+static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSectionHeaderView";
+static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartListTitleCellNibName = @"QuickStartListTitleCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
@@ -33,6 +35,7 @@ NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedInde
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
+CGFloat const BlogDetailQuickStartSectionHeight = 26.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -227,6 +230,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
+    UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
+    [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
 
@@ -462,6 +467,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return UITableViewAutomaticDimension;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (self.tableSections[section].showQuickStartMenu == true) {
+        return BlogDetailQuickStartSectionHeight;
+    }
+    return UITableViewAutomaticDimension;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if (@available(iOS 11, *)) {
         return nil;
@@ -532,7 +544,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *rows = [NSMutableArray array];
 
     if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
-        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Next Steps", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                            callback:^{
@@ -1029,13 +1041,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
-        return [self quickStartHeaderWithTitle:section.title];
+        return [self quickStartHeader];
     } else {
         return [super tableView:tableView viewForHeaderInSection:sectionNum];
     }
 }
 
-- (UIView *)quickStartHeaderWithTitle:(NSString *)title
+- (UIView *)quickStartHeader
 {
     NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
     NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
@@ -1054,8 +1066,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }];
     [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
 
-    BlogDetailsSectionHeaderView *view = [[[NSBundle mainBundle] loadNibNamed:[BlogDetailsSectionHeaderView classNameWithoutNamespaces] owner:nil options:nil] firstObject];
-    [view setTitle:title];
+    BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     view.callback = ^{
         [self presentViewController:removeSheet animated:YES completion:nil];
     };
