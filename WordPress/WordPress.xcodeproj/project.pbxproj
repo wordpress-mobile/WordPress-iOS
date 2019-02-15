@@ -268,6 +268,11 @@
 		40A71C6A220E1952002E3D25 /* StatsRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */; };
 		40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */; };
 		40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
+		40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403EF2215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift */; };
+		40C403F42215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403F02215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift */; };
+		40C403F52215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403F12215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift */; };
+		40C403F62215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403F22215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift */; };
+		40C403F82215D88100E8C894 /* TopViewedStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403F72215D88100E8C894 /* TopViewedStatsTests.swift */; };
 		40C403EB2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403E92215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift */; };
 		40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403EA2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift */; };
 		40C403EE2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403ED2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift */; };
@@ -2106,6 +2111,11 @@
 		40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40ADB15420686870009A9161 /* PluginStore+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PluginStore+Persistence.swift"; sourceTree = "<group>"; };
+		40C403EF2215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopViewedAuthorStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
+		40C403F02215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopViewedAuthorStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		40C403F12215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopViewedPostStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
+		40C403F22215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopViewedPostStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		40C403F72215D88100E8C894 /* TopViewedStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewedStatsTests.swift; sourceTree = "<group>"; };
 		40C403E92215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchResultsStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40C403EA2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchResultsStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40C403ED2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsStatsRecordValueTests.swift; sourceTree = "<group>"; };
@@ -4647,6 +4657,10 @@
 		40A71C5F220E1941002E3D25 /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				40C403EF2215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift */,
+				40C403F02215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift */,
+				40C403F12215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift */,
+				40C403F22215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift */,
 				40C403E92215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift */,
 				40C403EA2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift */,
 				40F46B6C22121BBC00A2143B /* Insights */,
@@ -4661,6 +4675,7 @@
 		40E7FEC32211DF490032834E /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				40C403F72215D88100E8C894 /* TopViewedStatsTests.swift */,
 				40C403ED2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift */,
 				4054F4632214F94D00D261AB /* StreakStatsRecordValueTests.swift */,
 				4054F4582214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift */,
@@ -9396,6 +9411,7 @@
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
 				177B4C3321236F5C00CF8084 /* GiphyPageable.swift in Sources */,
+				40C403F42215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataProperties.swift in Sources */,
 				7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */,
 				7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */,
 				17A4A36920EE51870071C2CA /* Routes+Reader.swift in Sources */,
@@ -9437,6 +9453,7 @@
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */,
+				40C403F62215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataProperties.swift in Sources */,
 				82FC61251FA8ADAD00A1757E /* ActivityListViewController.swift in Sources */,
 				E66E2A651FE4311300788F22 /* SettingsTitleSubtitleController.swift in Sources */,
 				E1222B671F878E4700D23173 /* WebViewControllerFactory.swift in Sources */,
@@ -9981,6 +9998,7 @@
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
 				D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */,
 				FF8C54AD21F677260003ABCF /* GutenbergMediaInserterHelper.swift in Sources */,
+				40C403F32215D66A00E8C894 /* TopViewedAuthorStatsRecordValue+CoreDataClass.swift in Sources */,
 				E11C4B72201096EF00A6619C /* JetpackState.swift in Sources */,
 				437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */,
 				9859DF842021063600FB848E /* SiteCreationCategoryTableViewController.swift in Sources */,
@@ -10088,6 +10106,7 @@
 				9865257D2194D77F0078B916 /* SiteStatsInsightsViewModel.swift in Sources */,
 				9F74696B209EFD0C0074D52B /* CheckmarkTableViewCell.swift in Sources */,
 				FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */,
+				40C403F52215D66A00E8C894 /* TopViewedPostStatsRecordValue+CoreDataClass.swift in Sources */,
 				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
 				40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */,
 				D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */,
@@ -10660,6 +10679,7 @@
 				D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */,
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
+				40C403F82215D88100E8C894 /* TopViewedStatsTests.swift in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
 				40C403EE2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift in Sources */,

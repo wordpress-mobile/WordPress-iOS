@@ -820,6 +820,19 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="TopViewedAuthorStatsRecordValue" representedClassName=".TopViewedAuthorStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TopViewedPostStatsRecordValue" inverseName="author" inverseEntity="TopViewedPostStatsRecordValue" syncable="YES"/>
+    </entity>
+    <entity name="TopViewedPostStatsRecordValue" representedClassName=".TopViewedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopViewedAuthorStatsRecordValue" inverseName="posts" inverseEntity="TopViewedAuthorStatsRecordValue" syncable="YES"/>
+    </entity>
     <entity name="TopCommentedPostStatsRecordValue" representedClassName=".TopCommentedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
@@ -892,6 +905,8 @@
         <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="TopViewedAuthorStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="SearchResultsStatsRecordValue" positionX="27" positionY="153" width="128" height="75"/>
     </elements>
 </model>
