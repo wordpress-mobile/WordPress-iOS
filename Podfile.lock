@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - Alamofire (4.7.3)
-  - Automattic-Tracks-iOS (0.3):
+  - Automattic-Tracks-iOS (0.3.2-beta.1):
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 1.1.4)
@@ -195,7 +195,7 @@ PODS:
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.7.1-beta.2):
+  - WordPressShared (1.7.1-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.2.0)
@@ -216,7 +216,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.1`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.2-beta.1`)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
@@ -246,7 +246,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.4.2)
   - WordPressAuthenticator (~> 1.1.9)
   - WordPressKit (~> 2.1.0-beta.1)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07`)
+  - WordPressShared (~> 1.7.1-beta.1)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -287,6 +287,7 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
+    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -294,7 +295,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.3.1
+    :tag: 0.3.2-beta.1
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
@@ -312,9 +313,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :commit: 3aca8d421f234dc7d52790297619322454cdcb03
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressShared:
-    :commit: 43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -324,7 +322,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.3.1
+    :tag: 0.3.2-beta.1
   Gutenberg:
     :commit: 3aca8d421f234dc7d52790297619322454cdcb03
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
@@ -334,9 +332,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :commit: 3aca8d421f234dc7d52790297619322454cdcb03
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-  WordPressShared:
-    :commit: 43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -345,7 +340,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  Automattic-Tracks-iOS: ebf4af27bc662682f785a272afe19eba49747fe3
+  Automattic-Tracks-iOS: 7678d30a5e2dfe75ff93e6496024790eefcf441d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
@@ -383,13 +378,13 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 5a09651534181c9f3ab43516b7666e9c55b2330e
   WordPressAuthenticator: 9559bc45373f1b6c2f58d664d34f564bcf73111f
   WordPressKit: 8605e6564f1dfa846265b2d3b48f950d02ae3173
-  WordPressShared: 767ec76c229351ac1c3f860ec14218073fda2099
+  WordPressShared: 50f9cfe6a79884898264e8ec8dc6bfebae942d85
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 7540e6b00b5b642b98d8f4479079dea0fc47eadf
+PODFILE CHECKSUM: fe153601e61dddf173575eca6614a4ea8d27291a
 
 COCOAPODS: 1.5.3
