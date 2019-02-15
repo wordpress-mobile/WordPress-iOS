@@ -10,7 +10,7 @@ import Gridicons
     @objc static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     @objc static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
-    fileprivate enum Section: Int {
+    fileprivate enum Section: Int, FilterTabBarItem {
         case posts
         case sites
 
@@ -19,6 +19,14 @@ import Gridicons
             case .posts: return NSLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
             case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
             }
+        }
+
+        var filterTitle: String {
+            return self.title
+        }
+
+        var accessibilityIdentifier: String {
+            return "\(self)"
         }
     }
 
@@ -172,7 +180,7 @@ import Gridicons
         filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterBar.dividerColor = WPStyleGuide.greyLighten20()
         filterBar.tabSizingStyle = .equalWidths
-        filterBar.items = sections.map({ $0.title })
+        filterBar.tabBarItems = sections
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }

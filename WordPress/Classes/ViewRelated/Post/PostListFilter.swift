@@ -15,6 +15,7 @@ import Foundation
     @objc var predicateForFetchRequest: NSPredicate
     var statuses: [BasePost.Status]
     @objc var title: String
+    @objc var accessibilityIdentifier: String = ""
 
     /// For Obj-C compatibility only
     @objc(statuses)
@@ -71,7 +72,10 @@ import Foundation
 
         let title = NSLocalizedString("Published", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
 
-        return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        filter.accessibilityIdentifier = "published"
+
+        return filter
     }
 
     @objc class func draftFilter() -> PostListFilter {
@@ -83,7 +87,10 @@ import Foundation
 
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
-        return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        filter.accessibilityIdentifier = "drafts"
+
+        return filter
     }
 
     @objc class func scheduledFilter() -> PostListFilter {
@@ -92,7 +99,10 @@ import Foundation
         let predicate = NSPredicate(format: "status IN %@", statuses.strings)
         let title = NSLocalizedString("Scheduled", comment: "Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.")
 
-        return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        filter.accessibilityIdentifier = "scheduled"
+
+        return filter
     }
 
     @objc class func trashedFilter() -> PostListFilter {
@@ -101,6 +111,16 @@ import Foundation
         let predicate = NSPredicate(format: "status IN %@", statuses.strings)
         let title = NSLocalizedString("Trashed", comment: "Title of the trashed filter. This filter shows posts that have been moved to the trash bin.")
 
-        return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
+        filter.accessibilityIdentifier = "trashed"
+
+        return filter
+    }
+}
+
+extension PostListFilter: FilterTabBarItem {
+
+    var filterTitle: String {
+        return self.title
     }
 }
