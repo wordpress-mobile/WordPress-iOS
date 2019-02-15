@@ -344,6 +344,12 @@
         <attribute name="isPrimary" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="domains" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="FollowersStatsRecordValue" representedClassName=".FollowersStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="subscribedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="LastPostStatsRecordValue" representedClassName="WordPress.LastPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="likesCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -572,6 +578,11 @@
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="connections" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="PublicizeConnectionStatsRecordValue" representedClassName=".PublicizeConnectionStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="followersCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="iconURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="PublicizeService" representedClassName="WordPress.PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
@@ -793,11 +804,23 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="TopCommentedPostStatsRecordValue" representedClassName=".TopCommentedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postURLString" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="TopCommentsAuthorStatsRecordValue" representedClassName=".TopCommentsAuthorStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="AllTimeStatsRecordValue" positionX="27" positionY="162" width="128" height="120"/>
+        <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="36" positionY="162" width="128" height="255"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="763"/>
         <element name="BlogAuthor" positionX="36" positionY="162" width="128" height="165"/>
@@ -808,7 +831,6 @@
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="AnnualAndMostPopularTimeStatsRecordValue" positionX="36" positionY="162" width="128" height="255"/>
         <element name="LastPostStatsRecordValue" positionX="45" positionY="504" width="128" height="30"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="420"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
@@ -848,5 +870,9 @@
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
         <element name="TagsCategoriesStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
+        <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
+        <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
+        <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
     </elements>
 </model>

@@ -28,6 +28,10 @@ public enum StatsRecordType: Int16 {
     case lastPostInsight
     case allTimeStatsInsight
     case tagsAndCategories
+    case topCommentedPosts
+    case topCommentAuthors
+    case publicizeConnection
+    case followers
 
     case postStats
     case blogStats
@@ -38,9 +42,18 @@ public enum StatsRecordType: Int16 {
         // lot of sense to hold on to Insights from the past...).
         // This lets us disambiguate between which is which.
         switch self {
-        case .lastPostInsight, .allTimeStatsInsight, .tagsAndCategories:
+        case .lastPostInsight,
+             .allTimeStatsInsight,
+             .tagsAndCategories,
+             .topCommentedPosts,
+             .topCommentAuthors,
+             .publicizeConnection,
+             .followers:
+
             return false
-        case .postStats, .blogStats:
+        case .postStats,
+             .blogStats:
+
             return true
         }
     }
