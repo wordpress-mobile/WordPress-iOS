@@ -121,6 +121,9 @@ class WordPressScreenshotGeneration: XCTestCase {
         blogDetailsTable.cells["Blog Post Row"].tap() // tap Blog Posts
         waitForElementToExist(element: app.tables["PostsTable"])
 
+        // Switch the filter to drafts
+        app.buttons["drafts"].tap()
+
         // Tap on the first post to bring up the editor
         app.tables["PostsTable"].tap()
 
