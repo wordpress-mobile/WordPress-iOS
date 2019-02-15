@@ -288,7 +288,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self createUserActivity];
     [self startAlertTimer];
 
-    [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
+    if (![Feature enabled:FeatureFlagQuickStartV2]) {
+        [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
