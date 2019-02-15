@@ -5,6 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 87
 @klausa 2019-02-??
+
 - Added following entities:
 
 * `StatsRecord`
@@ -14,6 +15,13 @@ data model as well as any custom migrations.
 * `LastPostStatsRecordValue`
 * `StreakInsightStatsRecordValue`
 * `StreakStatsRecordValue`
+* `TagsCategoriesStatsRecordValue`
+* `TopCommentedPostStatsRecordValue`
+* `TopCommentsAuthorStatsRecordValue`
+* `PublicizeConnectionStatsRecordValue`
+* `FollowersStatsRecordValue`
+
+More types are incoming, hence why I'm not putting a firm date above — I'll change it when all related PRs are merged.    
 
 ## WordPress 86
 @aerych 2018-12-08
