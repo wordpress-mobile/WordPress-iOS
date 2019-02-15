@@ -416,6 +416,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
 
+    func gutenbergLocale() -> String? {
+        return Locale.current.languageCode
+    }
+
+    func gutenbergTranslations() -> [String: String]? {
+        return parseGutenbergTranslations(forLanguage: Locale.current.languageCode)
+    }
+
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
     }
