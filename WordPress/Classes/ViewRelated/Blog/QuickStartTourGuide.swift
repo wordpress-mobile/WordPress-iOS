@@ -320,6 +320,10 @@ private extension QuickStartTourGuide {
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
+        } else if Feature.enabled(.quickStartV2) {
+            if let nextTour = tourToSuggest(for: blog) {
+                PushNotificationsManager.shared.postNotification(for: nextTour)
+            }
         }
     }
 
