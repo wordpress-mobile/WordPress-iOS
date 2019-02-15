@@ -1246,7 +1246,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatQuickStartListExpanded:
             eventName = @"quick_start_list_expanded";
             break;
-        case WPAnalyticsStatQuickStartItemSkipped:
+        case WPAnalyticsStatQuickStartListItemSkipped:
             eventName = @"quick_start_list_item_skipped";
             break;
         case WPAnalyticsStatQuickStartNotificationStarted:
