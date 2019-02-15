@@ -13,22 +13,22 @@
     NSLocalizedString(@"Save as Draft", @"WordPressDraftActionExtension.CFBundleDisplayName and WordPressDraftActionExtension.CFBundleName: The localised name of the Draft Extension. It will be displayed in the system Share Sheets.");
 
     // gutenberg mobile strings
-    NSLocalizedString(@"Add text or type / to add content");
-    NSLocalizedString(@"Add URL");
-    NSLocalizedString(@"Alt Text");
-    NSLocalizedString(@"Reset to Original");
-    NSLocalizedString(@"Failed to insert media.\nPlease tap for options.");
-    NSLocalizedString(@"Upload a new image or select a file from your library.");
-    NSLocalizedString(@"Device Library");
-    NSLocalizedString(@"Take photo");
-    NSLocalizedString(@"Start writing or press ⊕ to add content");
-    NSLocalizedString(@"Unsupported Block");
-    NSLocalizedString(@"Unsupported block type.");
-    NSLocalizedString(@"ADD BLOCK");
-    NSLocalizedString(@"ADD BLOCK HERE");
-    NSLocalizedString(@"Move block up");
-    NSLocalizedString(@"Move block down" );
-    NSLocalizedString(@"Remove content");
+    NSLocalizedString(@"Add text or type / to add content", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Add URL", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Alt Text", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Reset to Original", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Failed to insert media.\nPlease tap for options.", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Upload a new image or select a file from your library.", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Device Library", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Take photo", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Start writing or press ⊕ to add content", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Unsupported Block", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Unsupported block type.", @"Gutenberg mobile UI");
+    NSLocalizedString(@"ADD BLOCK", @"Gutenberg mobile UI");
+    NSLocalizedString(@"ADD BLOCK HERE", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Move block up", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Move block down", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Remove content", @"Gutenberg mobile UI");
 }
 
 @end
