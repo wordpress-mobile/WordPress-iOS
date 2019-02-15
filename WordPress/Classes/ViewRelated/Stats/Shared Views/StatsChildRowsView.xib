@@ -29,7 +29,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aRH-KY-BdX" secondAttribute="bottom" id="AeW-OQ-A7m"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aRH-KY-BdX" secondAttribute="bottom" priority="999" id="AeW-OQ-A7m"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aRH-KY-BdX" secondAttribute="trailing" id="Fhj-J1-F3c"/>
                 <constraint firstItem="aRH-KY-BdX" firstAttribute="top" secondItem="EKr-3x-noM" secondAttribute="bottom" id="ZqI-uC-B8y"/>
                 <constraint firstItem="EKr-3x-noM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="iLe-eX-vYg"/>

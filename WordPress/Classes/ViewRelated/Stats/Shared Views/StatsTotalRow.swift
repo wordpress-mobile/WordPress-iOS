@@ -82,10 +82,10 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
-    var childRowsView: StatsChildRowsView?
+    weak var childRowsView: StatsChildRowsView?
 
     // This is set by the containing cell when child rows are added.
-    var parentRow: StatsTotalRow?
+    weak var parentRow: StatsTotalRow?
 
     var showSeparator = true {
         didSet {

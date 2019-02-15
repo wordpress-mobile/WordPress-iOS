@@ -57,11 +57,16 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         super.prepareForReuse()
 
         rowsStackView.arrangedSubviews.forEach { subview in
-            guard let row = subview as? StatsTotalRow else {
-                    return
+
+            // Remove granchild rows
+            if let row = subview as? StatsTotalRow {
+                removeChildRowsForRow(row)
             }
 
-            removeChildRowsForRow(row)
+            // Remove child rows
+            if let childView = subview as? StatsChildRowsView {
+                removeRowsFromStackView(childView.rowsStackView)
+            }
         }
 
         removeRowsFromStackView(rowsStackView)
@@ -94,8 +99,7 @@ private extension TopTotalsCell {
 
     func initChildRows() {
         rowsStackView.arrangedSubviews.forEach { subview in
-            guard let row = subview as? StatsTotalRow,
-                row.hasChildRows else {
+            guard let row = subview as? StatsTotalRow else {
                     return
             }
             toggleChildRowsForRow(row)
@@ -163,14 +167,11 @@ private extension TopTotalsCell {
         childRowsStackView.arrangedSubviews.forEach { subView in
             if let subView = subView as? StatsChildRowsView {
                 removeRowsFromStackView(subView.rowsStackView)
-                childRowsStackView.removeArrangedSubview(subView)
-                subView.removeFromSuperview()
             }
         }
 
         removeRowsFromStackView(childRowsStackView)
-        childRowsStackView.removeFromSuperview()
-        childRowsView.removeFromSuperview()
+        stackViewContainingRow(row)?.removeArrangedSubview(childRowsView)
     }
 
     func toggleSeparatorsAroundRow(_ row: StatsTotalRow) {
