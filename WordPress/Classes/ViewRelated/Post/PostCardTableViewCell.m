@@ -250,6 +250,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self configureProgressView];
     [self configureActionBar];
     [self configureStickyPost];
+    [self configureAccessibility];
 
     [self setNeedsUpdateConstraints];
 }
@@ -340,6 +341,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.stickyLabel.hidden = !self.post.isStickyPost;
 }
 
+- (void)configureAccessibility
+{
+    self.accessibilityIdentifier = self.post.slugForDisplay;
+}
 
 #pragma mark - Configure Meta
 
