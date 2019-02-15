@@ -124,8 +124,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Switch the filter to drafts
         app.buttons["drafts"].tap()
 
-        // Tap on the first post to bring up the editor
-        app.tables["PostsTable"].tap()
+        // Tap on the editor post
+        app.tables.cells["summer-band-jam"].tap()
 
         let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
         waitForElementToExist(element: editorNavigationBar)
