@@ -698,6 +698,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                  accessibilityIdentifier:@"Media Row"
                                                     image:[Gridicon iconOfType:GridiconTypeImage]
                                                  callback:^{
                                                      [weakSelf showMediaLibrary];

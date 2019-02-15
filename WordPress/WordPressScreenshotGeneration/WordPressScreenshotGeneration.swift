@@ -155,19 +155,10 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         snapshot("4-Stats")
 
-        // Get Reader Screenshot
-        app.tabBars["Main Navigation"].buttons["readerTabButton"].tap()
-        // Tap the back button if on an iPhone screen
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
-        }
-        let discoverCell = app.tables.cells.element(boundBy: 1)
-        waitForElementToExist(element: discoverCell)
-        discoverCell.tap() // tap Discover
+        blogDetailsTable.cells["Media Row"].tap() // Tap Media
+        sleep(imagesWaitTime) // wait for post images to load
 
-        waitForElementToExist(element: app.tables["Reader"])
-        sleep(imagesWaitTime) // Wait for images to load
-        snapshot("2-Reader")
+        snapshot("2-Media")
 
         // Get Notifications screenshot
         app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
