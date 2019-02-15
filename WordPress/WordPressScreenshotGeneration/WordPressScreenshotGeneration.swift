@@ -116,7 +116,6 @@ class WordPressScreenshotGeneration: XCTestCase {
             waitForElementToExist(element: app.tables["PostsTable"])
             sleep(imagesWaitTime) // Wait for post images to load
         }
-        snapshot("3-My-Site")
 
         // Get Editor Screenshot
         blogDetailsTable.cells["Blog Post Row"].tap() // tap Blog Posts
