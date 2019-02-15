@@ -42,7 +42,7 @@ private extension SiteStatsDashboardViewController {
         static let progressViewHideDuration = 0.15
     }
 
-    enum StatsPeriodType: Int {
+    enum StatsPeriodType: Int, FilterTabBarItem {
         case insights = 0
         case days
         case weeks
@@ -59,6 +59,10 @@ private extension SiteStatsDashboardViewController {
             case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
             case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
             }
+        }
+
+        var accessibilityIdentifier: String {
+            return "\(self)"
         }
     }
 
@@ -88,7 +92,7 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.items = StatsPeriodType.allPeriods.map { $0.filterTitle }
+        filterTabBar.tabBarItems = StatsPeriodType.allPeriods
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 

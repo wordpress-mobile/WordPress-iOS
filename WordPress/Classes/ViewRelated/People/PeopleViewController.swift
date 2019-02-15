@@ -259,7 +259,8 @@ private extension PeopleViewController {
 
     // MARK: Enums
 
-    enum Filter: String, CaseIterable {
+    enum Filter: String, CaseIterable, FilterTabBarItem {
+
         case users      = "users"
         case followers  = "followers"
         case viewers    = "viewers"
@@ -288,6 +289,14 @@ private extension PeopleViewController {
             case .viewers:
                 return .viewer
             }
+        }
+
+        var filterTitle: String {
+            return self.title
+        }
+
+        var accessibilityIdentifier: String {
+            return self.rawValue
         }
     }
 
@@ -505,7 +514,7 @@ private extension PeopleViewController {
         filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        filterBar.items = filtersAvailableForBlog(blog).map { $0.title }
+        filterBar.tabBarItems = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
         // By default, let's display the Blog's Users
