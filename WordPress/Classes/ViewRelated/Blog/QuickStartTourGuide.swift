@@ -386,6 +386,7 @@ private extension QuickStartTourGuide {
 
     func skipped(_ tour: QuickStartTour, for blog: Blog) {
         blog.skipTour(tour.key)
+        recentlyTouredBlog = nil
     }
 
     func findNoticePresenter() -> NoticePresenter? {
