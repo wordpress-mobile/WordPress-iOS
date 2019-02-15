@@ -380,9 +380,7 @@ extension PushNotificationsManager {
                                                      to: Date()) else {
             return
         }
-        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
-                                                          from: futureDate)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: futureDate.components, repeats: false)
         let request = UNNotificationRequest(identifier: Constants.localNotificationIdentifier,
                                             content: content,
                                             trigger: trigger)
@@ -399,6 +397,12 @@ extension PushNotificationsManager {
     }
 }
 
+private extension Date {
+    var components: DateComponents {
+        return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                               from: self)
+    }
+}
 
 // MARK: - Nested Types
 //
