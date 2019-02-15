@@ -8,6 +8,11 @@ extension BlogDetailsViewController {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
+            if let index = QuickStartTourGuide.find()?.currentElementInt(),
+                let element = QuickStartTourElement(rawValue: index),
+                Feature.enabled(.quickStartV2) {
+                self?.scroll(to: element)
+            }
         }
     }
 
