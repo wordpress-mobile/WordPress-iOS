@@ -27,12 +27,14 @@ import CoreData
 public enum StatsRecordType: Int16 {
     case lastPostInsight
     case allTimeStatsInsight
+    case streakInsight
     case tagsAndCategories
     case topCommentedPosts
     case topCommentAuthors
     case publicizeConnection
     case followers
 
+    case postingStreak
     case postStats
     case blogStats
     // those last two aren't used anywhere yet, I've left them here for illustration purposes.
@@ -48,11 +50,13 @@ public enum StatsRecordType: Int16 {
              .topCommentedPosts,
              .topCommentAuthors,
              .publicizeConnection,
-             .followers:
+             .followers,
+             .streakInsight:
 
             return false
         case .postStats,
-             .blogStats:
+             .blogStats,
+             .postingStreak:
 
             return true
         }

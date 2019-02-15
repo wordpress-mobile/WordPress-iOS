@@ -13,6 +13,8 @@ data model as well as any custom migrations.
 * `AnnualAndMostPopularTimeStatsRecordValue` 
 * `AllTimeStatsRecordValue` 
 * `LastPostStatsRecordValue`
+* `StreakInsightStatsRecordValue`
+* `StreakStatsRecordValue`
 * `TagsCategoriesStatsRecordValue`
 * `TopCommentedPostStatsRecordValue`
 * `TopCommentsAuthorStatsRecordValue`
