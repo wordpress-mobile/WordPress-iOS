@@ -25,7 +25,7 @@ extension Blog {
         ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
-    public func removeAllTours(onError: (NSError) -> ()) {
+    public func removeAllTours() {
         guard let quickStartTours = quickStartTours else {
             return
         }
