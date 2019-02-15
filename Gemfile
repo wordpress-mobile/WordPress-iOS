@@ -1,6 +1,6 @@
 source 'https://rubygems.org' do
   gem 'rake'
-  gem 'cocoapods', '1.5.3'
+  gem 'cocoapods', '1.6.0'
   gem 'cocoapods-repo-update', '~> 0.0.3'
   gem 'cocoapods-check'
   gem 'xcpretty-travis-formatter'
