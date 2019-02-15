@@ -124,7 +124,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 @property (nonatomic, strong) ImageCropViewController *imageCropViewController;
-@property (nonatomic, copy) void (^scrollToElementBlock)(void);
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -288,12 +287,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewDidAppear:animated];
     [self createUserActivity];
     [self startAlertTimer];
-
-    __typeof(self) weakSelf = self;
-    self.scrollToElementBlock = ^{
-        [weakSelf scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
-    };
-    self.scrollToElementBlock();
 }
 
 - (void)viewWillDisappear:(BOOL)animated

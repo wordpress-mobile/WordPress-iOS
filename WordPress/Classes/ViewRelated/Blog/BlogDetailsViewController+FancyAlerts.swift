@@ -8,6 +8,10 @@ extension BlogDetailsViewController {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
+            if let index = QuickStartTourGuide.find()?.currentElementInt(),
+                let element = QuickStartTourElement(rawValue: index) {
+                self?.scroll(to: element)
+            }
         }
     }
 
@@ -64,14 +68,7 @@ extension BlogDetailsViewController {
 
     private func showQuickStart(with type: QuickStartType? = nil) {
         if let type = type, Feature.enabled(.quickStartV2) {
-            let checklist = QuickStartChecklistViewController(blog: blog, type: type) { [unowned self] tour in
-                DispatchQueue.main.async {
-                    if let tourGuide = QuickStartTourGuide.find() {
-                        tourGuide.start(tour: tour, for: self.blog)
-                        self.scrollToElementBlock()
-                    }
-                }
-            }
+            let checklist = QuickStartChecklistViewController(blog: blog, type: type)
             let navigationViewController = UINavigationController(rootViewController: checklist)
             present(navigationViewController, animated: true, completion: nil)
         } else {
