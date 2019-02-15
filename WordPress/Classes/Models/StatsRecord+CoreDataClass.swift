@@ -27,6 +27,7 @@ import CoreData
 public enum StatsRecordType: Int16 {
     case lastPostInsight
     case allTimeStatsInsight
+    case tagsAndCategories
     case topCommentedPosts
     case topCommentAuthors
     case publicizeConnection
@@ -43,6 +44,7 @@ public enum StatsRecordType: Int16 {
         switch self {
         case .lastPostInsight,
              .allTimeStatsInsight,
+             .tagsAndCategories,
              .topCommentedPosts,
              .topCommentAuthors,
              .publicizeConnection,

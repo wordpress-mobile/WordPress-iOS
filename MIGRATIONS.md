@@ -13,6 +13,7 @@ data model as well as any custom migrations.
 * `AnnualAndMostPopularTimeStatsRecordValue` 
 * `AllTimeStatsRecordValue` 
 * `LastPostStatsRecordValue`
+* `TagsCategoriesStatsRecordValue`
 * `TopCommentedPostStatsRecordValue`
 * `TopCommentsAuthorStatsRecordValue`
 * `PublicizeConnectionStatsRecordValue`
