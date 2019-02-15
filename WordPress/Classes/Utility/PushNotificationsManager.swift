@@ -359,6 +359,11 @@ extension PushNotificationsManager {
         }
         WPTabBarController.sharedInstance()?.showMySitesTab()
 
+        if let taskName = userInfo.string(forKey: Tracking.taskNameKey) {
+            WPAnalytics.track(.quickStartNotificationTapped,
+                              withProperties: [Tracking.taskNameKey: taskName])
+        }
+
         completionHandler?(.newData)
 
         return true
@@ -373,7 +378,8 @@ extension PushNotificationsManager {
         content.title = tour.title
         content.body = tour.description
         content.sound = UNNotificationSound.default
-        content.userInfo = [Notification.typeKey: Notification.local]
+        content.userInfo = [Notification.typeKey: Notification.local,
+                            Tracking.taskNameKey: tour.analyticsKey]
 
         guard let futureDate = Calendar.current.date(byAdding: .day,
                                                      value: Constants.localNotificationIntervalInDays,
@@ -385,6 +391,9 @@ extension PushNotificationsManager {
                                             content: content,
                                             trigger: trigger)
         UNUserNotificationCenter.current().add(request)
+
+        WPAnalytics.track(.quickStartNotificationStarted,
+                          withProperties: [Tracking.taskNameKey: tour.analyticsKey])
     }
 
     @objc func deletePendingLocalNotifications() {
@@ -426,5 +435,6 @@ private extension PushNotificationsManager {
         static let identifierKey = "push_notification_note_id"
         static let typeKey = "push_notification_type"
         static let tokenKey = "push_notification_token"
+        static let taskNameKey = "push_notification_token"
     }
 }
