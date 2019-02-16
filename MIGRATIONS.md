@@ -4,24 +4,32 @@ This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
 ## WordPress 87
-@klausa 2019-02-??
+@klausa 2019-02-15
 
 - Added following entities:
 
-* `StatsRecord`
 * `StatsRecordValue`
-* `AnnualAndMostPopularTimeStatsRecordValue` 
+* `StatsRecord`
+
 * `AllTimeStatsRecordValue` 
+* `AnnualAndMostPopularTimeStatsRecordValue` 
+* `ClicksStatsRecordValue`
+* `CountryStatsRecordValue`
+* `FollowersStatsRecordValue`
 * `LastPostStatsRecordValue`
+* `PublicizeConnectionStatsRecordValue`
+* `ReferrerStatsRecordValue`
+* `SearchResultsStatsRecordValue`
 * `StreakInsightStatsRecordValue`
 * `StreakStatsRecordValue`
 * `TagsCategoriesStatsRecordValue`
 * `TopCommentedPostStatsRecordValue`
 * `TopCommentsAuthorStatsRecordValue`
-* `PublicizeConnectionStatsRecordValue`
-* `FollowersStatsRecordValue`
+* `TopViewedAuthorStatsRecordValue`
+* `TopViewedPostStatsRecordValue`
+* `TopViewedVideoStatsRecordValue`
+* `VisitsSummaryStatsRecordValue`
 
-More types are incoming, hence why I'm not putting a firm date above — I'll change it when all related PRs are merged.    
 
 ## WordPress 86
 @aerych 2018-12-08
