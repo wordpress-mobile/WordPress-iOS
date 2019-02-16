@@ -25,6 +25,19 @@ extension Blog {
         ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
+    public func removeAllTours() {
+        guard let quickStartTours = quickStartTours else {
+            return
+        }
+
+        let context = managedObjectContext ?? ContextManager.sharedInstance().mainContext
+
+        quickStartTours.forEach {
+            context.delete($0)
+        }
+        ContextManager.sharedInstance().saveContextAndWait(context)
+    }
+
     public func tourState(for tourID: String) -> QuickStartTourState? {
         return quickStartTours?.filter { $0.tourID == tourID }.first
     }

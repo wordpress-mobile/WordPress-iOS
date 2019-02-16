@@ -109,8 +109,10 @@ extension BlogDetailsViewController {
              growRow.quickStartTitleState = growDetailCount == QuickStartTourGuide.growListTours.count ? .completed : .growIncomplete
         }
 
-        let sectionTitle = NSLocalizedString("Quick Start", comment: "Table view title for the quick start section.")
-        return BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
+        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        section.showQuickStartMenu = true
+        return section
     }
 
     private func showNotificationPrimerAlert() {

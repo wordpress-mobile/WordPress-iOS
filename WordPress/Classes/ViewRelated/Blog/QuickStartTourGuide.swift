@@ -22,6 +22,10 @@ open class QuickStartTourGuide: NSObject {
         completed(tour: createTour, for: blog)
     }
 
+    @objc func remove(from blog: Blog) {
+        blog.removeAllTours()
+    }
+
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
         let list: [QuickStartTour]
         if Feature.enabled(.quickStartV2) {
