@@ -236,6 +236,7 @@
 		400A2C892217A985000A8A59 /* CountryStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C7F2217A985000A8A59 /* CountryStatsRecordValue+CoreDataProperties.swift */; };
 		400A2C8B2217A985000A8A59 /* ClicksStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C812217A985000A8A59 /* ClicksStatsRecordValue+CoreDataClass.swift */; };
 		400A2C8C2217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C822217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift */; };
+		400A2C8F2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */; };
 		400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */; };
 		4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4019B27020885AB900A0C7EB /* Activity.storyboard */; };
 		401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 401A3D012027DBD80099A127 /* PluginListCell.xib */; };
@@ -2093,6 +2094,7 @@
 		400A2C7F2217A985000A8A59 /* CountryStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CountryStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		400A2C812217A985000A8A59 /* ClicksStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClicksStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		400A2C822217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClicksStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClicksStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewContainerRow.swift; sourceTree = "<group>"; };
 		4019B27020885AB900A0C7EB /* Activity.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
 		401A3D012027DBD80099A127 /* PluginListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginListCell.xib; sourceTree = "<group>"; };
@@ -4723,6 +4725,7 @@
 		40E7FEC32211DF490032834E /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */,
 				40C403F72215D88100E8C894 /* TopViewedStatsTests.swift */,
 				40C403ED2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift */,
 				4054F4632214F94D00D261AB /* StreakStatsRecordValueTests.swift */,
@@ -10717,6 +10720,7 @@
 				D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */,
 				748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */,
 				D88A649E208D82D2008AE9BC /* XCTestCase+Wait.swift in Sources */,
+				400A2C8F2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift in Sources */,
 				7320C8BD2190C9FC0082FED5 /* UITextView+SummaryTests.swift in Sources */,
 				7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */,
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
