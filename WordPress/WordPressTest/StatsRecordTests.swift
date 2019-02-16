@@ -3,15 +3,15 @@
 class StatsRecordTests: StatsTestCase {
 
     func testCreatingAndSaving() {
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
 
         XCTAssertNoThrow(try mainContext.save())
     }
 
     func testDateValidationWorks() {
-        let record = createStatsRecord(in: mainContext, type: .blogStats, date: Date())
+        let record = createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
         record.date = nil
 
         XCTAssertThrowsError(try mainContext.save()) { error in
@@ -52,11 +52,11 @@ class StatsRecordTests: StatsTestCase {
     }
 
     func testFetchingForToday() {
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .blogStats)
+        let fetchRequest = StatsRecord.fetchRequest(for: .blogVisitsSummary)
 
         let allResults = try! mainContext.fetch(StatsRecord.fetchRequest())
         let results = try! mainContext.fetch(fetchRequest)
@@ -66,10 +66,10 @@ class StatsRecordTests: StatsTestCase {
     }
 
     func testFetchingProperTypeOnly() {
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
         createStatsRecord(in: mainContext, type: .lastPostInsight, date: Date())
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .blogStats)
+        let fetchRequest = StatsRecord.fetchRequest(for: .blogVisitsSummary)
 
         let results = try! mainContext.fetch(fetchRequest)
 
@@ -80,13 +80,13 @@ class StatsRecordTests: StatsTestCase {
         let calendar = Calendar.autoupdatingCurrent
         let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
 
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterday)
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterday)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterday)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterday)
         createStatsRecord(in: mainContext, type: .lastPostInsight, date: yesterday)
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
-        createStatsRecord(in: mainContext, type: .blogStats, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .blogStats, on: yesterday)
+        let fetchRequest = StatsRecord.fetchRequest(for: .blogVisitsSummary, on: yesterday)
 
         let results = try! mainContext.fetch(fetchRequest)
 
@@ -102,13 +102,13 @@ class StatsRecordTests: StatsTestCase {
 
         let yesterdayRange = calendar.dateInterval(of: .day, for: yesterday)!
 
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterday)
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterdayHourLater)
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterdayHourEarlier)
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterdayRange.start)
-        createStatsRecord(in: mainContext, type: .blogStats, date: yesterdayRange.end)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterday)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayHourLater)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayHourEarlier)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayRange.start)
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayRange.end)
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .blogStats, on: yesterday)
+        let fetchRequest = StatsRecord.fetchRequest(for: .blogVisitsSummary, on: yesterday)
 
         let results = try! mainContext.fetch(fetchRequest)
 
