@@ -279,7 +279,6 @@
     </entity>
     <entity name="ClicksStatsRecordValue" representedClassName=".ClicksStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="clicksCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="countryName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ClicksStatsRecordValue" inverseName="parent" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
