@@ -277,7 +277,7 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="ClicksStatsRecordValue" representedClassName=".TopViewedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+    <entity name="ClicksStatsRecordValue" representedClassName=".ClicksStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="clicksCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="countryName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
@@ -334,7 +334,7 @@
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
         <userInfo/>
     </entity>
-    <entity name="CountryStatsRecordValue" representedClassName=".TopViewedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+    <entity name="CountryStatsRecordValue" representedClassName=".CountryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="countryCode" attributeType="String" syncable="YES"/>
         <attribute name="countryName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
@@ -726,7 +726,7 @@
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="ReferrerStatsRecordValue" representedClassName=".TopViewedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+    <entity name="ReferrerStatsRecordValue" representedClassName=".ReferrerStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="iconURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
@@ -865,13 +865,13 @@
         <attribute name="viewsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopViewedAuthorStatsRecordValue" inverseName="posts" inverseEntity="TopViewedAuthorStatsRecordValue" syncable="YES"/>
     </entity>
-    <entity name="TopViewedVideoStatsRecordValue" representedClassName=".TopViewedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+    <entity name="TopViewedVideoStatsRecordValue" representedClassName=".TopViewedVideoStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="playsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="VisitsSummaryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+    <entity name="VisitsSummaryStatsRecordValue" representedClassName=".VisitsSummaryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="likesCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
