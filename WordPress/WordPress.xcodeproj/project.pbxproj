@@ -238,6 +238,7 @@
 		400A2C8C2217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C822217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift */; };
 		400A2C8F2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */; };
 		400A2C912217B308000A8A59 /* CountryStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C902217B308000A8A59 /* CountryStatsRecordValueTests.swift */; };
+		400A2C932217B463000A8A59 /* ReferrerStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A2C922217B463000A8A59 /* ReferrerStatsRecordValueTests.swift */; };
 		400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */; };
 		4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4019B27020885AB900A0C7EB /* Activity.storyboard */; };
 		401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 401A3D012027DBD80099A127 /* PluginListCell.xib */; };
@@ -2097,6 +2098,7 @@
 		400A2C822217A985000A8A59 /* ClicksStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ClicksStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClicksStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400A2C902217B308000A8A59 /* CountryStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryStatsRecordValueTests.swift; sourceTree = "<group>"; };
+		400A2C922217B463000A8A59 /* ReferrerStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferrerStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewContainerRow.swift; sourceTree = "<group>"; };
 		4019B27020885AB900A0C7EB /* Activity.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
 		401A3D012027DBD80099A127 /* PluginListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginListCell.xib; sourceTree = "<group>"; };
@@ -4728,6 +4730,7 @@
 			isa = PBXGroup;
 			children = (
 				400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */,
+				400A2C922217B463000A8A59 /* ReferrerStatsRecordValueTests.swift */,
 				400A2C902217B308000A8A59 /* CountryStatsRecordValueTests.swift */,
 				40C403F72215D88100E8C894 /* TopViewedStatsTests.swift */,
 				40C403ED2215CE9500E8C894 /* SearchResultsStatsRecordValueTests.swift */,
@@ -10857,6 +10860,7 @@
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
+				400A2C932217B463000A8A59 /* ReferrerStatsRecordValueTests.swift in Sources */,
 				E1928B2E1F8369F100E076C8 /* WebViewAuthenticatorTests.swift in Sources */,
 				4054F445221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
