@@ -281,7 +281,7 @@
         <attribute name="clicksCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ClicksStatsRecordValue" inverseName="parent" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ClicksStatsRecordValue" inverseName="parent" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ClicksStatsRecordValue" inverseName="children" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="Comment" representedClassName="Comment">
@@ -730,7 +730,7 @@
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReferrerStatsRecordValue" inverseName="parent" inverseEntity="ReferrerStatsRecordValue" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ReferrerStatsRecordValue" inverseName="parent" inverseEntity="ReferrerStatsRecordValue" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReferrerStatsRecordValue" inverseName="children" inverseEntity="ReferrerStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="Revision" representedClassName="WordPress.Revision" syncable="YES">
