@@ -1,9 +1,8 @@
-* Uygulamada yeni bir site başlatırsanız kendi .blog alt alan adınızı kaydedebilirsiniz!
-* Bir siteyi iPad’de silmeyi denediğinizde uygulama artık kilitlenmiyor (daha önce kilitlenebiliyordu).
-* Uygulama Ayarları’nda bulunan “Hakkında” ekranındaki bir kilitlenme sorunu giderildi.
-* Gönderi ayarları ekranı iPad’de daha iyi görünecek şekilde yenilendi.
+Bu sürüm için, birkaç alanda daha deneyim kazandık:
 
-Geçmiş/Revizyonlar özelliğinde yapılan bir dizi yeni iyileştirme sayesinde artık…
-* Revizyonlar arasında hızla geçiş yapabilirsiniz.
-* Bir revizyonu görüntülerken HTML ile Görsel modlar arasında geçiş yapabilirsiniz.
-* Bir revizyonu uyguladıktan sonra fikrinizi değiştirdiğinizde yeni Geri Al düğmesini kullanabilirsiniz.
+- Giriş sırasında bir kullanıcı adı girerken parola otomatik doldurma desteği eklendi.
+- Yazıları sosyal medyada paylaşırken boş mesajlarla ilgili açıklama metni eklendi. Bir mesaj girmezseniz, yazı başlığını varsayılan olarak kullanırız.
+- Şimdi size bir önizleme göstermeden önce taslağınızı otomatik olarak kaydederiz.
+- Okuyucudaki bazı görüntülerin üstünde (veya altında) büyük boşluklara neden olan bir sorun düzeltildi.
+- Özel sayfalar için sayfalar listesindeki bir girinti hatası düzeltildi.
+- Yazı listesini büyük metin boyutlarında etkileyen görsel bir hata düzeltildi.

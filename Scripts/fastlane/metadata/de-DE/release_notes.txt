@@ -1,9 +1,8 @@
-* Wenn du eine neue Website in der App beginnst, kannst du jetzt deine eigene .blog-Subdomain registrieren!
-* Wenn du versuchst, eine Website auf einem iPad zu löschen, stürzt die App nicht mehr ab (das kam hin und wieder vor).
-* Ein Fehler auf dem „Informationen“-Bildschirm in den App-Einstellungen wurde behoben, der zum Absturz führte.
-* Bildschirm zu Beitragseinstellungen wurde aktualisiert, um die Darstellung auf iPads zu verbessern.
+Für diese Version haben wir die Erfahrungen in einigen weiteren Bereichen verbessert: 
 
-Nachdem eine Reihe von Verbesserungen an der Verlaufs-/Revisionsfunktion vorgenommen wurde, kannst du jetzt …
-* direkt zwischen Revisionen wechseln,
-* in der Revisionsansicht zwischen HTML- und visuellem Modus wechseln,
-* über den neuen „Rückgängig“-Button Revisionen ganz leicht wieder aufheben.
+- Unterstützung für das automatische Ausfüllen von Passwörtern bei der Eingabe eines Benutzernamens während der Anmeldung hinzugefügt.
+- Klarstellungstext über leere Nachrichten beim Teilen von Beiträgen in Social Media hinzugefügt. Wenn du keine Nachricht eingibst, verwenden wir standardmäßig den Titel des Beitrags.
+- Wir speichern nun automatisch deinen Entwurf, bevor wir dir eine Vorschau anzeigen.
+- Ein Problem wurde behoben, das bei einigen Bildern in Reader. Der zu großen Abständen über (oder unter) den Bildern führte.
+- Ein Einrückungsfehler in der Seitenliste für private Seiten behoben.
+- Ein visueller Fehler wurde behoben, der die Liste der Beiträge bei großen Textgrößen betraf.

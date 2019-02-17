@@ -3,14 +3,14 @@ import Foundation
 extension Double {
 
     /// Provides a short, friendly representation of the current Double value. If the value is
-    /// below 1000, the decimal is stripped and the string returned will look like an Int. If the value
-    /// is above 1000, the value is rounded to the nearest tenth and the appropriate abbreviation
+    /// below 10,000, the decimal is stripped and the string returned will look like an Int. If the value
+    /// is above 10,000, the value is rounded to the nearest tenth and the appropriate abbreviation
     /// will be appended (k, m, b, t, p, e).
     ///
     /// Examples:
     ///  - 0 becomes "0"
-    ///  - 999 becomes "999"
-    ///  - 1000 becomes "1k"
+    ///  - 9999 becomes "9999"
+    ///  - 10000 becomes "10.0k"
     ///  - 987654 becomes "987.7k"
     ///  - 999999 becomes "1m"
     ///  - 1000000 becomes "1m"
@@ -25,7 +25,7 @@ extension Double {
         let sign = num < 0 ? "-" : ""
         num = fabs(num)
 
-        if num < 1000.0 {
+        if num < 10000.0 {
             return "\(sign)\(Int(num))"
         }
 
@@ -49,6 +49,12 @@ extension NSNumber {
 }
 
 extension Float {
+    func abbreviatedString() -> String {
+        return Double(self).abbreviatedString()
+    }
+}
+
+extension Int {
     func abbreviatedString() -> String {
         return Double(self).abbreviatedString()
     }

@@ -13,7 +13,7 @@ class EditorAztecTests: XCTestCase {
         app.activate()
 
         editorScreen = LoginFlow
-            .login(email: WPUITestCredentials.testUserEmail, password: WPUITestCredentials.testUserPassword)
+            .login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
             .tabBar.gotoEditorScreen()
     }
 

@@ -2,6 +2,6 @@
 
 @interface PageListSectionHeaderView : UIView
 
-- (void)setTite:(NSString *)title;
+- (void)setTitle:(NSString *)title;
 
 @end

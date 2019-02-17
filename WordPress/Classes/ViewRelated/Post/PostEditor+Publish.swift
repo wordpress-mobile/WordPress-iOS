@@ -5,12 +5,12 @@ extension PostEditor where Self: UIViewController {
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
     var debouncerCallback: (() -> Void) {
         return { [weak self] in
-            guard let self = self else {
+            guard let strongSelf = self else {
                 assertionFailure("self was nil while trying to save a post using Debouncer")
                 return
             }
-            if self.post.hasLocalChanges() {
-                guard let context = self.post.managedObjectContext else {
+            if strongSelf.post.hasLocalChanges() {
+                guard let context = strongSelf.post.managedObjectContext else {
                     return
                 }
                 ContextManager.sharedInstance().save(context)
@@ -85,6 +85,12 @@ extension PostEditor where Self: UIViewController {
 
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
+            }
+
+            if dismissWhenDone {
+                self.editorSession.end(outcome: action.analyticsEndOutcome)
+            } else {
+                self.editorSession.forceOutcome(action.analyticsEndOutcome)
             }
 
             if action.isAsync || dismissWhenDone {
@@ -182,6 +188,7 @@ extension PostEditor where Self: UIViewController {
         if post.canSave() && post.hasUnsavedChanges() {
             showPostHasChangesAlert()
         } else {
+            editorSession.end(outcome: .cancel)
             discardChangesAndUpdateGUI()
         }
     }
@@ -264,6 +271,7 @@ extension PostEditor where Self: UIViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
+                self.editorSession.end(outcome: .save)
                 let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
                 self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
@@ -271,6 +279,7 @@ extension PostEditor where Self: UIViewController {
 
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
+            self.editorSession.end(outcome: .discard)
             self.discardChangesAndUpdateGUI()
         }
 

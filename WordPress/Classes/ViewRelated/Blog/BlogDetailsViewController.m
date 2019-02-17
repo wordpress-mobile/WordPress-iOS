@@ -24,6 +24,8 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
+static NSString *const BlogDetailsSectionHeaderViewIdentifier = @"BlogDetailsSectionHeaderView";
+static NSString *const QuickStartHeaderViewNibName = @"BlogDetailsSectionHeaderView";
 static NSString *const QuickStartListTitleCellNibName = @"QuickStartListTitleCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
@@ -33,6 +35,7 @@ NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedInde
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
+CGFloat const BlogDetailQuickStartSectionHeight = 26.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -227,6 +230,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
+    UINib *qsHeaderViewNib = [UINib nibWithNibName:QuickStartHeaderViewNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
+    [self.tableView registerNib:qsHeaderViewNib forHeaderFooterViewReuseIdentifier:BlogDetailsSectionHeaderViewIdentifier];
     UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
     [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
 
@@ -288,7 +293,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self createUserActivity];
     [self startAlertTimer];
 
-    [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
+    if (![Feature enabled:FeatureFlagQuickStartV2]) {
+        [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -435,7 +442,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)restorableSelectedIndexPath
 {
     if (!_restorableSelectedIndexPath) {
-        _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        NSUInteger section = [Feature enabled:FeatureFlagQuickStartV2] && [self shouldShowQuickStartChecklist] ? 1 : 0;
+        _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
     return _restorableSelectedIndexPath;
@@ -458,6 +466,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         if (section == self.tableSections.count - 1) {
             return BlogDetailBottomPaddingForQuickStartNotices;
         }
+    }
+    return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (self.tableSections[section].showQuickStartMenu == true) {
+        return BlogDetailQuickStartSectionHeight;
     }
     return UITableViewAutomaticDimension;
 }
@@ -1026,6 +1041,41 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return detailSection.title;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionNum {
+    BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
+    if (section.showQuickStartMenu) {
+        return [self quickStartHeader];
+    } else {
+        return [super tableView:tableView viewForHeaderInSection:sectionNum];
+    }
+}
+
+- (UIView *)quickStartHeader
+{
+    NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
+    NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
+    NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
+
+    UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
+    [removeConfirmation addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
+        [[QuickStartTourGuide find] removeFrom:self.blog];
+    }];
+
+    UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
+        [self presentViewController:removeConfirmation animated:YES completion:nil];
+    }];
+    [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
+
+    BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
+    view.callback = ^{
+        [self presentViewController:removeSheet animated:YES completion:nil];
+    };
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionHeader:view];
@@ -1416,16 +1466,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
-        if ([self shouldShowQuickStartChecklist]) {
-            [self configureTableViewData];
-            NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
-            if (generalSectionCountBefore != generalSectionCountAfter) {
-                // quick start was just enabled
-                if ([Feature enabled:FeatureFlagQuickStartV2]) {
-                    [self showQuickStartCustomize];
-                } else {
-                    [self showQuickStartV1];
-                }
+        [self configureTableViewData];
+        NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
+        // quick start was just enabled
+        if (generalSectionCountBefore != generalSectionCountAfter && [self shouldShowQuickStartChecklist]) {
+            if ([Feature enabled:FeatureFlagQuickStartV2]) {
+                [self showQuickStartCustomize];
+            } else {
+                [self showQuickStartV1];
             }
         }
         [self reloadTableViewPreservingSelection];
@@ -1436,7 +1484,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    if ([self shouldShowQuickStartChecklist]) {
+    if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
         QuickStartChecklistViewControllerV1 *checklist = [[QuickStartChecklistViewControllerV1 alloc] initWithBlog:self.blog];
         return checklist;
     }

@@ -1,8 +1,4 @@
-For this release, we’ve smoothed out the experience in a few more areas:
-
-- Added support for password autofill when entering a username during login.
-- Added clarification text about empty messages when sharing posts to social media. If you don’t provide a message, we’ll use the post title by default.
-- We now automatically save your draft before showing you a preview.
-- Fixed an issue causing big spaces on top of (or below) some images in Reader.
-- Fixed an indentation bug in the Pages list for private pages.
-- Fixed a visual bug affecting the Posts list at large text sizes.
+- You can now share a site via Reader.
+- Fixed a bug in which editing a local copy of a draft post, then discarding changes, would result in deleting the post.
+- Fixed a bug in Reader that caused the app to crash when showing a post with a video.
+- Fixed some UI layout errors where elements overlapped or had wrong sizes.

@@ -402,6 +402,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
 
+        // Delete local notification on logout
+        PushNotificationsManager.shared.deletePendingLocalNotifications()
+
         // Also clear the spotlight index
         SearchManager.shared.deleteAllSearchableItems()
 
