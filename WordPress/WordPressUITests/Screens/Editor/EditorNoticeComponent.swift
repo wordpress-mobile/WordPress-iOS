@@ -11,10 +11,8 @@ class EditorNoticeComponent: BaseScreen {
         super.init(element: notice)
     }
 
-    func viewPublishedPost() -> EditorPublishEpilogueScreen {
-        let expectedAction = XCUIApplication().buttons["View"]
-        XCTAssertEqual(noticeAction, expectedAction)
-
+    func viewPublishedPost(withTitle title: String) -> EditorPublishEpilogueScreen {
+        XCTAssert(XCUIApplication().staticTexts[title].exists)
         noticeAction.tap()
 
         return EditorPublishEpilogueScreen()
