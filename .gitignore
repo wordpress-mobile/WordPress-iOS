@@ -62,6 +62,7 @@ WordPress/Derived Sources/
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
 WordPress/WordPressScreenshotGeneration/ScreenshotCredentials.swift
+WordPress/WordPressUITests/WPUITestCredentials.swift
 
 # Bundler
 /vendor/bundle/

@@ -11,7 +11,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let summaryData: StatsLatestPostSummary?
+    let summaryData: StatsLastPostInsight?
     let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
@@ -237,5 +237,21 @@ struct CellHeaderRow: ImmuTableRow {
         }
 
         cell.configure(withTitle: title)
+    }
+}
+
+struct TableFooterRow: ImmuTableRow {
+
+    typealias CellType = StatsTableFooter
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        // No configuration needed.
+        // This method is needed to satisfy ImmuTableRow protocol requirements.
     }
 }

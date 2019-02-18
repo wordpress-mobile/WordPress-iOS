@@ -8,6 +8,11 @@ extension BlogDetailsViewController {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
+            if let index = QuickStartTourGuide.find()?.currentElementInt(),
+                let element = QuickStartTourElement(rawValue: index),
+                Feature.enabled(.quickStartV2) {
+                self?.scroll(to: element)
+            }
         }
     }
 
@@ -86,9 +91,9 @@ extension BlogDetailsViewController {
         }
         customizeRow.quickStartIdentifier = .checklist
         customizeRow.showsSelectionState = false
-        if let customizeDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.customizeListTours, for: blog) {
-            customizeRow.detail = String(format: detailFormatStr, customizeDetailCounts.complete, customizeDetailCounts.total)
-            customizeRow.quickStartTitleState = customizeDetailCounts.complete == customizeDetailCounts.total ? .completed : .customizeIncomplete
+         if let customizeDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.customizeListTours, for: blog) {
+             customizeRow.detail = String(format: detailFormatStr, customizeDetailCount, QuickStartTourGuide.customizeListTours.count)
+             customizeRow.quickStartTitleState = customizeDetailCount == QuickStartTourGuide.customizeListTours.count ? .completed : .customizeIncomplete
         }
 
         let growRow = BlogDetailsRow(title: NSLocalizedString("Grow Your Audience", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
@@ -99,13 +104,15 @@ extension BlogDetailsViewController {
                                         }
         growRow.quickStartIdentifier = .checklist
         growRow.showsSelectionState = false
-        if let growDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.growListTours, for: blog) {
-            growRow.detail = String(format: detailFormatStr, growDetailCounts.complete, growDetailCounts.total)
-            growRow.quickStartTitleState = growDetailCounts.complete == growDetailCounts.total ? .completed : .growIncomplete
+         if let growDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.growListTours, for: blog) {
+             growRow.detail = String(format: detailFormatStr, growDetailCount, QuickStartTourGuide.growListTours.count)
+             growRow.quickStartTitleState = growDetailCount == QuickStartTourGuide.growListTours.count ? .completed : .growIncomplete
         }
 
-        let sectionTitle = NSLocalizedString("Quick Start", comment: "Table view title for the quick start section.")
-        return BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
+        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        section.showQuickStartMenu = true
+        return section
     }
 
     private func showNotificationPrimerAlert() {
