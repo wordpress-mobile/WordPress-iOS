@@ -46,6 +46,7 @@ class SiteStatsPeriodViewModel: Observable {
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
+        tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
             ImmuTableSection(

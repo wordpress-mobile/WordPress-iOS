@@ -9,6 +9,7 @@ extension WPStyleGuide {
         enum ImageTintColor: Int {
             case blue
             case grey
+            case darkGrey
 
             var styleGuideColor: UIColor {
                 switch self {
@@ -16,6 +17,8 @@ extension WPStyleGuide {
                     return WPStyleGuide.mediumBlue()
                 case .grey:
                     return WPStyleGuide.greyLighten10()
+                case .darkGrey:
+                    return WPStyleGuide.darkGrey()
                 }
             }
         }

@@ -22,6 +22,10 @@ open class QuickStartTourGuide: NSObject {
         completed(tour: createTour, for: blog)
     }
 
+    @objc func remove(from blog: Blog) {
+        blog.removeAllTours()
+    }
+
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
         let list: [QuickStartTour]
         if Feature.enabled(.quickStartV2) {
@@ -320,6 +324,10 @@ private extension QuickStartTourGuide {
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
+        } else if Feature.enabled(.quickStartV2) {
+            if let nextTour = tourToSuggest(for: blog) {
+                PushNotificationsManager.shared.postNotification(for: nextTour)
+            }
         }
     }
 
@@ -382,6 +390,7 @@ private extension QuickStartTourGuide {
 
     func skipped(_ tour: QuickStartTour, for blog: Blog) {
         blog.skipTour(tour.key)
+        recentlyTouredBlog = nil
     }
 
     func findNoticePresenter() -> NoticePresenter? {

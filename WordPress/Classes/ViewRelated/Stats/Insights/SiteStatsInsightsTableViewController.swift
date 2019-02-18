@@ -16,7 +16,18 @@ enum InsightType: Int {
     case publicize
 
     // TODO: remove when Manage Insights is implemented.
-    static let allValues = [InsightType.latestPostSummary, .allTimeStats, .followersTotals, .mostPopularDayAndHour, .tagsAndCategories, .annualSiteStats, .comments, .followers, .todaysStats, .postingActivity, .publicize]
+    static let allValues = [InsightType.latestPostSummary,
+                            .todaysStats,
+                            .annualSiteStats,
+                            .allTimeStats,
+                            .mostPopularDayAndHour,
+                            .postingActivity,
+                            .comments,
+                            .tagsAndCategories,
+                            .followersTotals,
+                            .followers,
+                            .publicize
+    ]
 }
 
 @objc protocol SiteStatsInsightsDelegate {
@@ -103,7 +114,8 @@ private extension SiteStatsInsightsTableViewController {
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
-                AnnualSiteStatsRow.self]
+                AnnualSiteStatsRow.self,
+                TableFooterRow.self]
     }
 
     // MARK: - Table Refreshing

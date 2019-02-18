@@ -98,7 +98,10 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self, TopTotalsPeriodStatsRow.self, TopTotalsNoSubtitlesPeriodStatsRow.self]
+        return [CellHeaderRow.self,
+                TopTotalsPeriodStatsRow.self,
+                TopTotalsNoSubtitlesPeriodStatsRow.self,
+                TableFooterRow.self]
     }
 
     // MARK: - Table Refreshing

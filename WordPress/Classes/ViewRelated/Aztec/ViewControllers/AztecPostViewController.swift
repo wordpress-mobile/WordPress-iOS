@@ -53,6 +53,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
+    var editorSession: PostEditorAnalyticsSession
+
     /// Indicates if Aztec was launched for Photo Posting
     ///
     var isOpenedDirectlyForPhotoPost = false
@@ -76,9 +78,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     private lazy var optionsTablePresenter = OptionsTablePresenter(presentingViewController: self, presentingTextView: editorView.richTextView)
 
-    // MARK: - Gutenberg Support
+    // MARK: - Editor Replacing Support
 
-    private let switchToGutenberg: (EditorViewController) -> ()
+    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - fileprivate & private variables
 
@@ -115,6 +117,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         return editorView
     }()
+
+    private var analyticsEditor: PostEditorAnalyticsSession.Editor {
+        switch editorView.editingMode {
+        case .richText:
+            return .classic
+        case .html:
+            return .html
+        }
+    }
 
     /// Aztec's Awesomeness
     ///
@@ -418,12 +429,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     required init(
         post: AbstractPost,
-        switchToGutenberg: @escaping (EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.switchToGutenberg = switchToGutenberg
+        self.replaceEditor = replaceEditor
+        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
         self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
@@ -476,6 +489,10 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
+        }
+
+        if !editorSession.started {
+            editorSession.start(hasUnsupportedBlocks: false)
         }
     }
 
@@ -1169,7 +1186,8 @@ private extension AztecPostViewController {
             postContent.count > 0 && post.containsGutenbergBlocks() {
 
             alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in
-                self.switchToGutenberg(self)
+                self.editorSession.switch(editor: .gutenberg)
+                EditorFactory().switchToGutenberg(from: self)
             }
         }
 
@@ -1854,6 +1872,7 @@ extension AztecPostViewController {
         formatBar.overflowToolbar(expand: true)
 
         editorView.toggleEditingMode()
+        editorSession.switch(editor: analyticsEditor)
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {

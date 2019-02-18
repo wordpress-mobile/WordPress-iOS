@@ -324,7 +324,7 @@ private extension AppSettingsViewController {
         )
 
         let headerText = NSLocalizedString("Editor", comment: "Title for the editor settings section")
-        let footerText = NSLocalizedString("Edit new posts and pages with the block editor", comment: "Explanation for the option to enable the block editor")
+        let footerText = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
 
         return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
     }
