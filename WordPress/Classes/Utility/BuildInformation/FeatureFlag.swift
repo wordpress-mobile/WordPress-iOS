@@ -33,7 +33,7 @@ enum FeatureFlag: Int {
         case .statsRefresh:
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
+            return true
         case .quickStartV2:
             return BuildConfiguration.current == .localDeveloper
         }

@@ -318,16 +318,13 @@ private extension AppSettingsViewController {
         let gutenbergSettings = GutenbergSettings()
         let enabled = gutenbergSettings.isGutenbergEnabled()
         let gutenbergEditor = SwitchRow(
-            title: "(A8C) Enable Gutenberg editor",
+            title: NSLocalizedString("Use Block Editor", comment: "Option to enable the block editor for new posts"),
             value: enabled,
             onChange: toggleGutenberg()
         )
 
-        // I'm intentionally not localizing strings since this is a temporary workaround for internal versions
-        let headerText = "Gutenberg"
-        let footerTextDisabled = "💣 This is still an experimental version of Gutenberg 🙈"
-        let footerTextEnabled = "💣 This is still an experimental version of Gutenberg 🙊"
-        let footerText = enabled ? footerTextEnabled : footerTextDisabled
+        let headerText = NSLocalizedString("Editor", comment: "Title for the editor settings section")
+        let footerText = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
 
         return ImmuTableSection(headerText: headerText, rows: [gutenbergEditor], footerText: footerText)
     }
