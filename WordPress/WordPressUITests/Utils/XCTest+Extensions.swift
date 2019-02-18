@@ -46,8 +46,9 @@ extension XCUIElement {
      */
     func clearAndEnterText(text: String) -> Void {
         let app = XCUIApplication()
+        let content = self.value as! String
 
-        if (self.value as! String).count > 0 {
+        if content.count > 0 && content != self.placeholderValue {
             self.press(forDuration: 1.2)
             app.menuItems["Select All"].tap()
         } else {
