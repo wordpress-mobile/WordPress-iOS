@@ -100,7 +100,9 @@ extension SiteSegmentsCell: Accessible {
     }
 
     private func prepareIconForVoiceOver() {
-        icon.accessibilityLabel = NSLocalizedString("Icon representing ", comment: "Accessibility description for Site Segment icon. Will be followed by the kind of site") + (model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site "))
+        let format = NSLocalizedString("Icon representing %@", comment: "Accessibility description for Site Segment icon. The %@ is a placeholder for the name of the kind of site. If the kind of site is unknown the phrase 'kind of site' is used.")
+        let site = model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site.")
+        icon.accessibilityLabel =  String(format: format, site )
         icon.accessibilityTraits = .image
     }
 }
