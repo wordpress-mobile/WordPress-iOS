@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D42" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -277,6 +277,13 @@
         </relationship>
         <userInfo/>
     </entity>
+    <entity name="ClicksStatsRecordValue" representedClassName=".ClicksStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="clicksCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="label" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ClicksStatsRecordValue" inverseName="parent" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ClicksStatsRecordValue" inverseName="children" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
+    </entity>
     <entity name="Comment" representedClassName="Comment">
         <attribute name="author" optional="YES" attributeType="String">
             <userInfo/>
@@ -325,6 +332,11 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="comments" inverseEntity="Blog" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BasePost" inverseName="comments" inverseEntity="BasePost" syncable="YES"/>
         <userInfo/>
+    </entity>
+    <entity name="CountryStatsRecordValue" representedClassName=".CountryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="countryCode" attributeType="String" syncable="YES"/>
+        <attribute name="countryName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="DiffAbstractValue" representedClassName="WordPress.DiffAbstractValue" isAbstract="YES" syncable="YES">
         <attribute name="diffOperation" optional="YES" attributeType="String" syncable="YES"/>
@@ -713,6 +725,14 @@
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="ReferrerStatsRecordValue" representedClassName=".ReferrerStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="iconURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="label" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ReferrerStatsRecordValue" inverseName="parent" inverseEntity="ReferrerStatsRecordValue" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReferrerStatsRecordValue" inverseName="children" inverseEntity="ReferrerStatsRecordValue" syncable="YES"/>
+    </entity>
     <entity name="Revision" representedClassName="WordPress.Revision" syncable="YES">
         <attribute name="postAuthorId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postContent" optional="YES" attributeType="String" syncable="YES"/>
@@ -820,6 +840,17 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="TopCommentedPostStatsRecordValue" representedClassName=".TopCommentedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postURLString" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="TopCommentsAuthorStatsRecordValue" representedClassName=".TopCommentsAuthorStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="TopViewedAuthorStatsRecordValue" representedClassName=".TopViewedAuthorStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -833,16 +864,17 @@
         <attribute name="viewsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopViewedAuthorStatsRecordValue" inverseName="posts" inverseEntity="TopViewedAuthorStatsRecordValue" syncable="YES"/>
     </entity>
-    <entity name="TopCommentedPostStatsRecordValue" representedClassName=".TopCommentedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
-        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+    <entity name="TopViewedVideoStatsRecordValue" representedClassName=".TopViewedVideoStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="playsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="postURLString" attributeType="String" syncable="YES"/>
+        <attribute name="postURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="TopCommentsAuthorStatsRecordValue" representedClassName=".TopCommentsAuthorStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
-        <attribute name="avatarURLString" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="VisitsSummaryStatsRecordValue" representedClassName=".VisitsSummaryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="commentsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="likesCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="visitorsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="180"/>
@@ -860,6 +892,7 @@
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
         <element name="LastPostStatsRecordValue" positionX="45" positionY="504" width="128" height="30"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="420"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
@@ -875,6 +908,7 @@
         <element name="PostTag" positionX="27" positionY="153" width="128" height="135"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
+        <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="210"/>
         <element name="QuickStartTourState" positionX="36" positionY="162" width="128" height="105"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
@@ -893,20 +927,23 @@
         <element name="Revision" positionX="27" positionY="153" width="128" height="195"/>
         <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
         <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="SearchResultsStatsRecordValue" positionX="27" positionY="153" width="128" height="75"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="StatsRecord" positionX="27" positionY="486" width="128" height="120"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
         <element name="StreakInsightStatsRecordValue" positionX="54" positionY="180" width="128" height="135"/>
         <element name="StreakStatsRecordValue" positionX="72" positionY="198" width="128" height="60"/>
-        <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
         <element name="TagsCategoriesStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
-        <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
-        <element name="PublicizeConnectionStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
-        <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
-        <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
         <element name="TopViewedAuthorStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
-        <element name="SearchResultsStatsRecordValue" positionX="27" positionY="153" width="128" height="75"/>
+        <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
+        <element name="TopViewedVideoStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="CountryStatsRecordValue" positionX="54" positionY="180" width="128" height="90"/>
+        <element name="ClicksStatsRecordValue" positionX="63" positionY="189" width="128" height="135"/>
+        <element name="ReferrerStatsRecordValue" positionX="81" positionY="198" width="128" height="135"/>
+        <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
     </elements>
 </model>

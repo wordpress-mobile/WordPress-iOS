@@ -25,49 +25,60 @@ import CoreData
 // shoving all kinds of stuff into some sort of `StatsObject`.
 
 public enum StatsRecordType: Int16 {
-    case lastPostInsight
     case allTimeStatsInsight
+    case followers
+    case lastPostInsight
+    case publicizeConnection
     case streakInsight
     case tagsAndCategories
-    case topCommentedPosts
     case topCommentAuthors
-    case publicizeConnection
-    case followers
+    case topCommentedPosts
 
-    case topViewedAuthor
-    case topViewedPost
-    case searchTerms
+
+    case blogVisitsSummary
+    case clicks
+    case countryViews
+    case postViews
     case postingStreak
-    case postStats
-    case blogStats
-    // those last two aren't used anywhere yet, I've left them here for illustration purposes.
+    case publishedPosts
+    case referrers
+    case searchTerms
+    case topViewedPost
+    case videos
+    case topViewedAuthor
 
     fileprivate var requiresDate: Bool {
         // For some kinds of data, we'll only support storing one dataPoint (it doesn't make a whole
         // lot of sense to hold on to Insights from the past...).
         // This lets us disambiguate between which is which.
         switch self {
-        case .lastPostInsight,
-             .allTimeStatsInsight,
-             .tagsAndCategories,
-             .topCommentedPosts,
-             .topCommentAuthors,
-             .publicizeConnection,
-             .followers,
-             .streakInsight:
+        case  .allTimeStatsInsight,
+              .followers,
+              .publicizeConnection,
+              .streakInsight,
+              .tagsAndCategories,
+              .topCommentAuthors,
+              .topCommentedPosts,
+              .lastPostInsight:
 
             return false
-        case .postStats,
-             .blogStats,
-             .topViewedAuthor,
-             .topViewedPost,
-             .searchTerms,
-             .postingStreak:
+        case  .blogVisitsSummary,
+              .clicks,
+              .countryViews,
+              .postingStreak,
+              .publishedPosts,
+              .referrers,
+              .searchTerms,
+              .topViewedAuthor,
+              .topViewedPost,
+              .videos,
+              .postViews:
 
             return true
         }
     }
 }
+
 
 public class StatsRecord: NSManagedObject {
 
