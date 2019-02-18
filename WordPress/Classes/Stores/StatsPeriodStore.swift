@@ -10,6 +10,7 @@ enum PeriodAction: Action {
     case receivedAuthors(_ authors: StatsGroup?)
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
     case receivedVideos(_ videos: StatsGroup?)
+    case receivedCountries(_ countries: StatsGroup?)
     case refreshPeriodData(date: Date, period: StatsPeriodUnit)
 }
 
@@ -50,6 +51,9 @@ struct PeriodStoreState {
     var topSearchTerms: [StatsItem]?
     var fetchingSearchTerms = false
 
+    var topCountries: [StatsItem]?
+    var fetchingCountries = false
+
     var topVideos: [StatsItem]?
     var fetchingVideos = false
 }
@@ -81,6 +85,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedSearchTerms(searchTerms)
         case .receivedVideos(let videos):
             receivedVideos(videos)
+        case .receivedCountries(let countries):
+            receivedCountries(countries)
         case .refreshPeriodData(let date, let period):
             refreshPeriodData(date: date, period: period)
         }
@@ -156,10 +162,12 @@ private extension StatsPeriodStore {
             }
             DDLogInfo("Stats: Finished fetching clicks.")
             self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks))
-        }, countryCompletionHandler: { (group, error) in
+        }, countryCompletionHandler: { (countries, error) in
             if error != nil {
-                DDLogInfo("Error fetching country: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching countries: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching countries.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries))
 
         }, videosCompletionHandler: { (videos, error) in
             if error != nil {
@@ -247,6 +255,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedCountries(_ countries: StatsGroup?) {
+        transaction { state in
+            state.topCountries = countries?.items as? [StatsItem]
+            state.fetchingCountries = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetch() -> Bool {
@@ -261,6 +276,7 @@ private extension StatsPeriodStore {
         state.fetchingAuthors = true
         state.fetchingSearchTerms = true
         state.fetchingVideos = true
+        state.fetchingCountries = true
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -330,6 +346,10 @@ extension StatsPeriodStore {
         return state.topVideos
     }
 
+    func getTopCountries() -> [StatsItem]? {
+        return state.topCountries
+    }
+
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -337,7 +357,8 @@ extension StatsPeriodStore {
             state.fetchingPublished ||
             state.fetchingAuthors ||
             state.fetchingSearchTerms ||
-            state.fetchingVideos
+            state.fetchingVideos ||
+            state.fetchingCountries
     }
 
 }
