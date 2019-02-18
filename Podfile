@@ -82,6 +82,11 @@ def gutenberg_pod(name, branch=nil)
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
+def gutenberg(options)
+    pod 'Gutenberg', options
+    pod 'RNTAztecView', options
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -94,8 +99,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'cf651e61a052513e85cc9e632451b01bb02519de'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'cf651e61a052513e85cc9e632451b01bb02519de'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'cf651e61a052513e85cc9e632451b01bb02519de'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
