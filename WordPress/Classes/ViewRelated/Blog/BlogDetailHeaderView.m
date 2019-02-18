@@ -91,6 +91,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
         [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
         self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
+        [self.blavatarImageView applyPlaceholderBorder];
     }
 
     if ([[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementSiteIcon]) {
@@ -141,10 +142,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     NSAssert(_stackView != nil, @"stackView was nil");
 
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.backgroundColor = [UIColor whiteColor];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    imageView.layer.borderWidth = 1.0;
 
     [_stackView addArrangedSubview:imageView];
 

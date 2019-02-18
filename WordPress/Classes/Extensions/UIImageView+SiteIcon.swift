@@ -66,13 +66,19 @@ extension UIImageView {
             return
         }
 
-        if !blog.isPrivate() {
-            setImageWith(siteIconURL, placeholderImage: placeholderImage)
-            return
+        let request: URLRequest
+        if blog.isPrivate() {
+            request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
+        } else {
+            request = URLRequest(url: siteIconURL)
         }
 
-        let request = PrivateSiteURLProtocol.requestForPrivateSite(from: siteIconURL)
-        setImageWith(request, placeholderImage: placeholderImage, success: nil, failure: nil)
+        setImageWith(request, placeholderImage: placeholderImage, success: { [weak self] (_, _, image) in
+            self?.image = image
+            self?.removePlaceholderBorder()
+        }) { [weak self] (_, _, _) in
+            self?.applyPlaceholderBorder()
+        }
     }
 }
 
@@ -168,5 +174,20 @@ private extension UIImageView {
         components.query = query
 
         return components.url
+    }
+}
+
+// MARK: - Border handling
+
+@objc
+extension UIImageView {
+
+    func applyPlaceholderBorder() {
+        layer.borderColor = UIColor.white.cgColor
+        layer.borderWidth = CGFloat(1)
+    }
+
+    func removePlaceholderBorder() {
+        layer.borderColor = UIColor.clear.cgColor
     }
 }
