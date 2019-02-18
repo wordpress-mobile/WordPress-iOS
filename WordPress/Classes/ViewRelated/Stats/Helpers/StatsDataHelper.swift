@@ -1,15 +1,54 @@
 import Foundation
 
-
 /// Helper class for getting/modifying Stats data for display purposes.
 ///
 class StatsDataHelper {
 
+    // MARK: - Expanded Row Handling
+
     // This stores the labels for expanded rows.
     // It is used to track which rows are expanded, so the expanded view can be restored
     // when the cells are recreated (ex: on scrolling).
-    // They are segregated by StatType (Insights or Period) for easy access.
-    static var expandedRowLabels = [StatType: [String]]()
+    // They are segregated by StatSection for easy access.
+    static var expandedRowLabels = [StatSection: [String]]()
+
+    class func updatedExpandedState(forRow row: StatsTotalRow) {
+
+        guard let rowData = row.rowData,
+            let statSection = rowData.statSection else {
+                return
+        }
+
+        var expandedRowLabels = StatsDataHelper.expandedRowLabels[statSection] ?? []
+
+        // Remove from array
+        expandedRowLabels = expandedRowLabels.filter { $0 != rowData.name }
+
+        // Remove children from array
+        rowData.childRows?.forEach { child in
+            expandedRowLabels = expandedRowLabels.filter { $0 != child.name }
+        }
+
+        // If expanded, add to array.
+        if row.expanded {
+            expandedRowLabels.append(rowData.name)
+        }
+        StatsDataHelper.expandedRowLabels[statSection] = expandedRowLabels
+    }
+
+    class func clearExpandedInsights() {
+        StatSection.allInsights.forEach {
+            StatsDataHelper.expandedRowLabels[$0]?.removeAll()
+        }
+    }
+
+    class func clearExpandedPeriods() {
+        StatSection.allPeriods.forEach {
+            StatsDataHelper.expandedRowLabels[$0]?.removeAll()
+        }
+    }
+
+    // MARK: - Data Bar Percent
 
     class func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
 
@@ -29,6 +68,8 @@ class StatsDataHelper {
         // Return percent
         return rowValue / rowsMaxValue
     }
+
+    // MARK: - Disclosure URL
 
     class func disclosureUrlForItem(_ statItem: StatsItem) -> URL? {
         let disclosureURL: URL? = {

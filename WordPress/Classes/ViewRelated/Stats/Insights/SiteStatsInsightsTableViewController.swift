@@ -141,7 +141,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func clearExpandedRows() {
-        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
+        StatsDataHelper.clearExpandedInsights()
     }
 
     // MARK: User Defaults
@@ -211,25 +211,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
-        // Go ahead an update the table. The remaining logic just updates
-        // the array that tracks the expanded rows.
         applyTableUpdates()
-
-        guard let rowData = row.rowData else {
-            return
-        }
-
-        var insightsExpandedRowLabels = StatsDataHelper.expandedRowLabels[.insights] ?? []
-
-        // Remove from array
-        insightsExpandedRowLabels = insightsExpandedRowLabels.filter { $0 != rowData.name }
-
-        // If expanded, add to array.
-        if row.expanded {
-            insightsExpandedRowLabels.append(rowData.name)
-        }
-
-        StatsDataHelper.expandedRowLabels[.insights] = insightsExpandedRowLabels
+        StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
 }
