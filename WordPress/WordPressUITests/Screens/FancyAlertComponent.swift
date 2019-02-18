@@ -19,4 +19,8 @@ class FancyAlertComponent: BaseScreen {
     func cancelAlert() {
         cancelAlertButton.tap()
     }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().buttons["defaultAlertButton"].exists
+    }
 }

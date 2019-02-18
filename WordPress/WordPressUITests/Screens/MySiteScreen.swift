@@ -12,9 +12,8 @@ class MySiteScreen: BaseScreen {
     }
 
     func dismissNotificationAlertIfNeeded() -> MySiteScreen {
-        let notificationAlert = FancyAlertComponent()
-        if notificationAlert.isLoaded() {
-            notificationAlert.cancelAlert()
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().cancelAlert()
         }
         return self
     }
