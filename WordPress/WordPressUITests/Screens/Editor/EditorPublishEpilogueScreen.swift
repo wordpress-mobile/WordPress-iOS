@@ -7,9 +7,9 @@ class EditorPublishEpilogueScreen: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        let published = app.staticTexts["Published just now on"]
-        doneButton = app.navigationBars.buttons["Done"]
-        viewButton = app.buttons["View Post"]
+        let published = app.staticTexts["publishedPostStatusLabel"]
+        doneButton = app.navigationBars.buttons["doneButton"]
+        viewButton = app.buttons["viewPostButton"]
 
         super.init(element: published)
     }
@@ -17,5 +17,15 @@ class EditorPublishEpilogueScreen: BaseScreen {
     func done() -> MySiteScreen {
         doneButton.tap()
         return MySiteScreen()
+    }
+
+    func verifyEpilogueDisplays(postTitle expectedPostTitle: String, siteAddress expectedSiteAddress: String) -> EditorPublishEpilogueScreen {
+        let actualPostTitle = XCUIApplication().staticTexts["postTitle"].label
+        let actualSiteAddress = XCUIApplication().staticTexts["siteUrl"].label
+
+        XCTAssertEqual(expectedPostTitle, actualPostTitle)
+        XCTAssertEqual(expectedSiteAddress, actualSiteAddress)
+
+        return self
     }
 }

@@ -34,6 +34,7 @@ class EditorTests: XCTestCase {
             .enterText(text: longText)
             .publish()
             .viewPublishedPost(withTitle: title)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
             .done()
     }
 }
