@@ -445,6 +445,7 @@
 		731E88CB21C9A10B0055C014 /* ErrorStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E88C821C9A10A0055C014 /* ErrorStateViewController.swift */; };
 		7320C8BD2190C9FC0082FED5 /* UITextView+SummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7320C8BC2190C9FC0082FED5 /* UITextView+SummaryTests.swift */; };
 		7326718B210F75D2001FA866 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7326718D210F75D2001FA866 /* Localizable.strings */; };
+		7326A4A8221C8F4100B4EB8C /* UIStackView+Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7326A4A7221C8F4100B4EB8C /* UIStackView+Subviews.swift */; };
 		732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732A473C218787500015DA74 /* WPRichTextFormatterTests.swift */; };
 		732A473F21878EB10015DA74 /* WPRichContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732A473E21878EB10015DA74 /* WPRichContentViewTests.swift */; };
 		732B99172180D3A600C4EBDB /* FeatureFlagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732B99162180D3A600C4EBDB /* FeatureFlagTests.swift */; };
@@ -2341,6 +2342,7 @@
 		7320C8BC2190C9FC0082FED5 /* UITextView+SummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "UITextView+SummaryTests.swift"; path = "Aztec/UITextView+SummaryTests.swift"; sourceTree = "<group>"; };
 		7326718E210F75F0001FA866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7326718F210F7601001FA866 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7326A4A7221C8F4100B4EB8C /* UIStackView+Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Subviews.swift"; sourceTree = "<group>"; };
 		732A473C218787500015DA74 /* WPRichTextFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPRichTextFormatterTests.swift; sourceTree = "<group>"; };
 		732A473E21878EB10015DA74 /* WPRichContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPRichContentViewTests.swift; sourceTree = "<group>"; };
 		732B99162180D3A600C4EBDB /* FeatureFlagTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagTests.swift; sourceTree = "<group>"; };
@@ -6813,6 +6815,7 @@
 				B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */,
 				1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */,
 				177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */,
+				7326A4A7221C8F4100B4EB8C /* UIStackView+Subviews.swift */,
 				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
 				9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */,
 				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
@@ -10127,6 +10130,7 @@
 				433A550220F693A100757928 /* ManyDelegateNavigationController.swift in Sources */,
 				E10290741F30615A00DAC588 /* Role.swift in Sources */,
 				08216FD11CDBF96000304BA7 /* MenuItemSourceResultsViewController.m in Sources */,
+				7326A4A8221C8F4100B4EB8C /* UIStackView+Subviews.swift in Sources */,
 				4349B0AC218A45270034118A /* RevisionsTableViewController.swift in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
 				984B139421F66B2D0004B6A2 /* StatsPeriodStore.swift in Sources */,

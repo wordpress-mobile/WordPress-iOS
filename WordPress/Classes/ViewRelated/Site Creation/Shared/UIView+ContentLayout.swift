@@ -14,18 +14,6 @@ extension UILabel {
     }
 }
 
-// MARK: - UIStackView
-
-extension UIStackView {
-
-    /// Convenience method to add multiple `UIView` instances as arranged subviews en masse.
-    ///
-    /// - Parameter views: the views to install as arranged subviews
-    func addArrangedSubviews(_ views: [UIView]) {
-        views.forEach(addArrangedSubview)
-    }
-}
-
 // MARK: - UIView
 
 extension UIView {
