@@ -1635,7 +1635,7 @@
 		FF0148E51DFABBC9001AD265 /* NSFileManager+FolderSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0148E41DFABBC9001AD265 /* NSFileManager+FolderSize.swift */; };
 		FF0A4FEA1F16C9BD00D6CC69 /* ImageAttachment+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0A4FE91F16C9BD00D6CC69 /* ImageAttachment+WordPress.swift */; };
 		FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */; };
-		FF0AAE0D1A16550D0089841D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		FF0AAE0D1A16550D0089841D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0D8145205809C8000EE505 /* PostCoordinator.swift */; };
 		FF0F722C206E5345000DAAB5 /* PostService+RefreshStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0F722B206E5345000DAAB5 /* PostService+RefreshStatus.swift */; };
 		FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */; };
@@ -4030,12 +4030,12 @@
 		086C4D0C1E81F7920011D960 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				7EDAB3F320B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift */,
 				FF355D971FB492DD00244E6D /* ExportableAsset.swift */,
+				086C4D0F1E81F9240011D960 /* Media+Blog.swift */,
 				FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */,
 				FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */,
 				FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */,
-				086C4D0F1E81F9240011D960 /* Media+Blog.swift */,
-				7EDAB3F320B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -4287,7 +4287,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -6778,51 +6778,51 @@
 			children = (
 				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
+				7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */,
+				E1AB5A061E0BF17500574B4E /* Array.swift */,
+				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
+				7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */,
 				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
 				177CBE4F1DA3A3AC009F951E /* CollectionType+Helpers.swift */,
 				E14DFAFA1E07E7C400494688 /* Data.swift */,
+				E1C9AA501C10419200732665 /* Math.swift */,
+				98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */,
+				E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */,
 				B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */,
+				1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */,
 				B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */,
 				B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */,
 				B5DD04731CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift */,
+				FF0148E41DFABBC9001AD265 /* NSFileManager+FolderSize.swift */,
 				E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */,
 				B574CE141B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift */,
 				B587797119B799D800E57C5A /* NSParagraphStyle+Helpers.swift */,
 				B5BE31C31CB825A100BDF770 /* NSURLCache+Helpers.swift */,
+				E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */,
 				FF70A3201FD5840500BC270D /* PHAsset+Metadata.swift */,
+				FFD12D5D1FE1998D00F20A00 /* Progress+Helpers.swift */,
+				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
+				7360018E20A265C7001E5E31 /* String+Files.swift */,
+				B55FFCF91F034F1A0070812C /* String+Ranges.swift */,
+				B54C02231F38F50100574572 /* String+RegEx.swift */,
+				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
 				1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
 				B58C4EC9207C5E1900E32E4D /* UIImage+Assets.swift */,
 				FF70A3211FD5840500BC270D /* UIImage+Export.swift */,
 				B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */,
 				1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */,
-				0845B8C51E833C56001BA771 /* URL+Helpers.swift */,
-				E1C9AA501C10419200732665 /* Math.swift */,
-				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
-				E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */,
-				17AD36D41D36C1A60044B10D /* WPStyleGuide+Search.swift */,
-				17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */,
-				4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */,
-				98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */,
-				1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */,
 				177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */,
-				FF0148E41DFABBC9001AD265 /* NSFileManager+FolderSize.swift */,
-				E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */,
-				E1AB5A061E0BF17500574B4E /* Array.swift */,
-				7360018E20A265C7001E5E31 /* String+Files.swift */,
-				B55FFCF91F034F1A0070812C /* String+Ranges.swift */,
-				B54C02231F38F50100574572 /* String+RegEx.swift */,
-				FFD12D5D1FE1998D00F20A00 /* Progress+Helpers.swift */,
-				7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */,
-				7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */,
-				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
-				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
-				E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */,
-				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
 				D829C33A21B12EFE00B09F12 /* UIView+Borders.swift */,
 				9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */,
-				9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */,
+				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
+				0845B8C51E833C56001BA771 /* URL+Helpers.swift */,
 				17E60E08220DBD6E00848F89 /* WKWebView+Preview.swift */,
+				E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */,
+				17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */,
+				9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */,
+				4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */,
+				17AD36D41D36C1A60044B10D /* WPStyleGuide+Search.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -8516,7 +8516,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -9943,7 +9943,7 @@
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
 				7E442FCD20F6AB9C00DEACA5 /* ActivityRange.swift in Sources */,
-				FF0AAE0D1A16550D0089841D /* BuildFile in Sources */,
+				FF0AAE0D1A16550D0089841D /* (null) in Sources */,
 				9AF9551821A1D7970057827C /* DiffAbstractValue+Attributes.swift in Sources */,
 				7E58879A20FE8D9300DB6F80 /* Environment.swift in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
