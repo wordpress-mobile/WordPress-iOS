@@ -21,7 +21,7 @@
     NSLocalizedString(@"Upload a new image or select a file from your library.", @"Gutenberg mobile UI");
     NSLocalizedString(@"Device Library", @"Gutenberg mobile UI");
     NSLocalizedString(@"Take photo", @"Gutenberg mobile UI");
-    NSLocalizedString(@"Start writing or press %s to add content", @"Gutenberg mobile UI");
+    NSLocalizedString(@"Start writing or press %@ to add content", @"Gutenberg mobile UI");
     NSLocalizedString(@"Unsupported Block", @"Gutenberg mobile UI");
     NSLocalizedString(@"Unsupported block type.", @"Gutenberg mobile UI");
     NSLocalizedString(@"ADD BLOCK", @"Gutenberg mobile UI");
