@@ -160,7 +160,8 @@ private extension SiteStatsPeriodViewModel {
                                                                   socialIconURL: $0.iconURL,
                                                                   showDisclosure: true,
                                                                   disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                  childRows: childRowsForReferrers($0)) }
+                                                                  childRows: childRowsForReferrers($0),
+                                                                  statSection: .periodReferrers) }
             ?? [StatsTotalRowData]()
     }
 
@@ -185,7 +186,8 @@ private extension SiteStatsPeriodViewModel {
                                                     data: child.value.displayString(),
                                                     showDisclosure: true,
                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem(child),
-                                                    childRows: childsChildrenRows))
+                                                    childRows: childsChildrenRows,
+                                                    statSection: .periodReferrers))
         }
 
         return childRows
@@ -207,7 +209,8 @@ private extension SiteStatsPeriodViewModel {
                                                      data: $0.value.displayString(),
                                                      showDisclosure: true,
                                                      disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                     childRows: childRowsForClicks($0)) }
+                                                     childRows: childRowsForClicks($0),
+                                                     statSection: .periodClicks) }
             ?? [StatsTotalRowData]()
     }
 
@@ -241,7 +244,8 @@ private extension SiteStatsPeriodViewModel {
                                                      dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
                                                      userIconURL: $0.iconURL,
                                                      showDisclosure: true,
-                                                     childRows: childRowsForAuthor($0)) }
+                                                     childRows: childRowsForAuthor($0),
+                                                     statSection: .periodAuthors) }
             ?? [StatsTotalRowData]()
     }
 

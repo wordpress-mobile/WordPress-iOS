@@ -398,8 +398,8 @@ private extension SiteStatsInsightsViewModel {
                                      icon: tagsAndCategoriesIconForKind($0.kind),
                                      showDisclosure: true,
                                      disclosureURL: $0.url,
-                                     childRows: childRowsForItems($0.children))
-
+                                     childRows: childRowsForItems($0.children),
+                                     statSection: .insightsTagsAndCategories)
         }
     }
 

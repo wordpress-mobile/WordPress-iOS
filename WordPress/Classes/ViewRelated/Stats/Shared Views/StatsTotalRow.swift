@@ -12,6 +12,7 @@ struct StatsTotalRowData {
     var showDisclosure: Bool
     var disclosureURL: URL?
     var childRows: [StatsTotalRowData]?
+    var statSection: StatSection?
 
     init(name: String,
          data: String,
@@ -23,7 +24,8 @@ struct StatsTotalRowData {
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
-         childRows: [StatsTotalRowData]? = [StatsTotalRowData]()) {
+         childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
+         statSection: StatSection? = nil) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -35,6 +37,7 @@ struct StatsTotalRowData {
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
         self.childRows = childRows
+        self.statSection = statSection
     }
 }
 
@@ -176,13 +179,13 @@ private extension StatsTotalRow {
 
     func configureExpandedState() {
 
-        guard let name = rowData?.name else {
+        guard let name = rowData?.name,
+        let statSection = rowData?.statSection else {
             expanded = false
             return
         }
 
-        expanded = (StatsDataHelper.expandedRowLabels[.insights]?.contains(name) ?? false) ||
-            (StatsDataHelper.expandedRowLabels[.period]?.contains(name) ?? false)
+        expanded = StatsDataHelper.expandedRowLabels[statSection]?.contains(name) ?? false
     }
 
     func configureIcon() {
