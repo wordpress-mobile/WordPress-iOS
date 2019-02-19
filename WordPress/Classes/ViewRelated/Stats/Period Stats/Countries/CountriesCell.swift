@@ -27,7 +27,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
 
-        addRows(dataRows, toStackView: rowsStackView, forType: .period)
+        addRows(dataRows, toStackView: rowsStackView, forType: .period, viewMoreDelegate: self)
         setSubtitleVisibility()
         applyStyles()
     }
@@ -53,6 +53,15 @@ private extension CountriesCell {
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.isActive = !showSubtitles
         rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+    }
+
+}
+
+// MARK: - ViewMoreRowDelegate
+
+extension CountriesCell: ViewMoreRowDelegate {
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
     }
 
 }
