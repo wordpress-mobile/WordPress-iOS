@@ -420,7 +420,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         return Locale.current.languageCode
     }
 
-    func gutenbergTranslations() -> [String: String]? {
+    func gutenbergTranslations() -> [String: [String]]? {
         return parseGutenbergTranslations(forLanguage: Locale.current.languageCode)
     }
 

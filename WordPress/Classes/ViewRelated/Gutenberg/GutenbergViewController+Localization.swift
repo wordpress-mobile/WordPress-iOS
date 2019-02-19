@@ -7,7 +7,7 @@ extension GutenbergViewController {
     }
 
     func parseGutenbergTranslations(forLanguage language: String?,
-                                    in bundle: Bundle = Bundle.main) -> [String: String]? {
+                                    in bundle: Bundle = Bundle.main) -> [String: [String]]? {
         guard let fileURL = bundle.url(
             forResource: Localization.fileName,
             withExtension: "strings",
@@ -17,7 +17,11 @@ extension GutenbergViewController {
                 return nil
         }
         if let dictionary = NSDictionary(contentsOf: fileURL) as? [String: String] {
-            return dictionary
+            var resultDict: [String: [String]] = [:]
+            for (key, value) in dictionary {
+                resultDict[key] = [value]
+            }
+            return resultDict
         }
         return nil
     }
