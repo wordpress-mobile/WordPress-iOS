@@ -7,7 +7,7 @@ class DebouncerTests: XCTestCase {
     ///
     func testDebouncerRunsNormally() {
         let timerDelay = 0.5
-        let allowedError = 0.25
+        let allowedError = 0.3
         let minDelay = timerDelay * (1 - allowedError)
         let maxDelay = timerDelay * (1 + allowedError)
         let testTimeout = maxDelay + 0.01
