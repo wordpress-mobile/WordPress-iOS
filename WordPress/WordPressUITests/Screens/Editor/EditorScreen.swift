@@ -233,9 +233,18 @@ class EditorScreen: BaseScreen {
         }
     }
 
-    func publish() -> EditorPublishEpilogueScreen {
+    func publish() -> EditorNoticeComponent {
         app.buttons["Publish"].tap()
-        return EditorPublishEpilogueScreen()
+        acceptPublishAlertIfNeeded() // Accepts "Publish with Confidence" alert
+
+        return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
+    }
+
+    private func acceptPublishAlertIfNeeded() {
+        let publishAlert = FancyAlertComponent()
+        if publishAlert.isLoaded() {
+            publishAlert.acceptAlert()
+        }
     }
 
     private func getHTMLContent() -> String {
