@@ -271,6 +271,8 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 extension TopTotalsCell: ViewMoreRowDelegate {
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
+        siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }

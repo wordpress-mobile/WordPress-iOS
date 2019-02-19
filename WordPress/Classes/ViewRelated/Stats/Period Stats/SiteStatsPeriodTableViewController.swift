@@ -6,6 +6,7 @@ import WordPressFlux
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 
@@ -177,6 +178,9 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
         StatsDataHelper.updatedExpandedState(forRow: row)
+    }
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
     }
 
 }

@@ -37,6 +37,7 @@ enum InsightType: Int {
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -213,6 +214,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
         StatsDataHelper.updatedExpandedState(forRow: row)
+    }
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
     }
 
 }

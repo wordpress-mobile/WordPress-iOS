@@ -65,6 +65,7 @@ private extension CountriesCell {
 extension CountriesCell: ViewMoreRowDelegate {
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }
