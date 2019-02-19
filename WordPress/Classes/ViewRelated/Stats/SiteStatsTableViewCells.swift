@@ -230,6 +230,7 @@ struct CountriesStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
+    let siteStatsPeriodDelegate: SiteStatsPeriodDelegate
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -238,7 +239,10 @@ struct CountriesStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows)
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
     }
 }
 

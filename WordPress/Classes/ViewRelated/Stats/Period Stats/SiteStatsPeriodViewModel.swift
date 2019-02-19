@@ -271,7 +271,8 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(CellHeaderRow(title: PeriodHeaders.countries))
         tableRows.append(CountriesStatsRow(itemSubtitle: Countries.itemSubtitle,
                                            dataSubtitle: Countries.dataSubtitle,
-                                           dataRows: countriesDataRows()))
+                                           dataRows: countriesDataRows(),
+                                           siteStatsPeriodDelegate: periodDelegate))
         return tableRows
     }
 
