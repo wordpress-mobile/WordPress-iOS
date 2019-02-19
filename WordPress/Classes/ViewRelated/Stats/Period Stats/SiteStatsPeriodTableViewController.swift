@@ -181,6 +181,11 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         // Remove from array
         periodExpandedRowLabels = periodExpandedRowLabels.filter { $0 != rowData.name }
 
+        // Remove children from array
+        row.rowData?.childRows?.forEach { child in
+            periodExpandedRowLabels = periodExpandedRowLabels.filter { $0 != child.name }
+        }
+
         // If expanded, add to array.
         if row.expanded {
             periodExpandedRowLabels.append(rowData.name)

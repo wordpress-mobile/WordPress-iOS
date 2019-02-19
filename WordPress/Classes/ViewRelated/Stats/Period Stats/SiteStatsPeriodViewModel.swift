@@ -37,9 +37,12 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
+        // TODO: add overview chart here
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: referrersTableRows())
         tableRows.append(contentsOf: clicksTableRows())
         tableRows.append(contentsOf: authorsTableRows())
+        // TODO: add countries here
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
@@ -66,6 +69,7 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
         static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
         static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
         static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
@@ -76,6 +80,11 @@ private extension SiteStatsPeriodViewModel {
     struct PostsAndPages {
         static let itemSubtitle = NSLocalizedString("Title", comment: "Posts and Pages label for post/page title")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
+    }
+
+    struct Referrers {
+        static let itemSubtitle = NSLocalizedString("Referrer", comment: "Referrers label for link title")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Referrers label for number of views")
     }
 
     struct Clicks {
@@ -132,6 +141,54 @@ private extension SiteStatsPeriodViewModel {
         }
 
         return dataRows
+    }
+
+    func referrersTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.referrers))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Referrers.itemSubtitle,
+                                                 dataSubtitle: Referrers.dataSubtitle,
+                                                 dataRows: referrersDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func referrersDataRows() -> [StatsTotalRowData] {
+        return store.getTopReferrers()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                  data: $0.value.displayString(),
+                                                                  socialIconURL: $0.iconURL,
+                                                                  showDisclosure: true,
+                                                                  disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                  childRows: childRowsForReferrers($0)) }
+            ?? [StatsTotalRowData]()
+    }
+
+    func childRowsForReferrers(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        var childRows = [StatsTotalRowData]()
+
+        guard let children = item.children as? [StatsItem] else {
+            return childRows
+        }
+
+        children.forEach { child in
+            var childsChildrenRows = [StatsTotalRowData]()
+            if let childsChildren = child.children as? [StatsItem] {
+                childsChildrenRows = childsChildren.map { StatsTotalRowData.init(name: $0.label,
+                                                                                 data: $0.value.displayString(),
+                                                                                 showDisclosure: true,
+                                                                                 disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+            }
+
+            childRows.append(StatsTotalRowData.init(name: child.label,
+                                                    data: child.value.displayString(),
+                                                    showDisclosure: true,
+                                                    disclosureURL: StatsDataHelper.disclosureUrlForItem(child),
+                                                    childRows: childsChildrenRows))
+        }
+
+        return childRows
     }
 
     func clicksTableRows() -> [ImmuTableRow] {

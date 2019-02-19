@@ -5,6 +5,7 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case receivedPublished(_ published: StatsGroup?)
+    case receivedReferrers(_ referrers: StatsGroup?)
     case receivedClicks(_ clicks: StatsGroup?)
     case receivedAuthors(_ authors: StatsGroup?)
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
@@ -33,6 +34,9 @@ enum PeriodQuery {
 struct PeriodStoreState {
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
+
+    var topReferrers: [StatsItem]?
+    var fetchingReferrers = false
 
     var topClicks: [StatsItem]?
     var fetchingClicks = false
@@ -65,6 +69,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedPostsAndPages(let postsAndPages):
             receivedPostsAndPages(postsAndPages)
+        case .receivedReferrers(let referrers):
+            receivedReferrers(referrers)
         case .receivedClicks(let clicks):
             receivedClicks(clicks)
         case .receivedPublished(let published):
@@ -138,11 +144,12 @@ private extension StatsPeriodStore {
             }
             DDLogInfo("Stats: Finished fetching posts and pages.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(postsAndPages))
-        }, referrersCompletionHandler: { (group, error) in
+        }, referrersCompletionHandler: { (referrers, error) in
             if error != nil {
                 DDLogInfo("Error fetching referrers: \(String(describing: error?.localizedDescription))")
             }
-
+            DDLogInfo("Stats: Finished fetching referrers.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers))
         }, clicksCompletionHandler: { (clicks, error) in
             if error != nil {
                 DDLogInfo("Error fetching clicks: \(String(describing: error?.localizedDescription))")
@@ -198,6 +205,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedReferrers(_ referrers: StatsGroup?) {
+        transaction { state in
+            state.topReferrers = referrers?.items as? [StatsItem]
+            state.fetchingReferrers = false
+        }
+    }
+
     func receivedClicks(_ clicks: StatsGroup?) {
         transaction { state in
             state.topClicks = clicks?.items as? [StatsItem]
@@ -241,6 +255,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetching() {
         state.fetchingPostsAndPages = true
+        state.fetchingReferrers = true
         state.fetchingClicks = true
         state.fetchingPublished = true
         state.fetchingAuthors = true
@@ -291,6 +306,10 @@ extension StatsPeriodStore {
         return state.topPostsAndPages
     }
 
+    func getTopReferrers() -> [StatsItem]? {
+        return state.topReferrers
+    }
+
     func getTopClicks() -> [StatsItem]? {
         return state.topClicks
     }
@@ -313,6 +332,7 @@ extension StatsPeriodStore {
 
     var isFetching: Bool {
         return state.fetchingPostsAndPages ||
+            state.fetchingReferrers ||
             state.fetchingClicks ||
             state.fetchingPublished ||
             state.fetchingAuthors ||
