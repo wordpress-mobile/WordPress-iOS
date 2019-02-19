@@ -1237,11 +1237,10 @@ FeaturedImageViewControllerDelegate>
 - (void)showEditShareMessageController
 {
     NSString *text = !self.post.publicizeMessage ? self.post.titleForDisplay : self.post.publicizeMessage;
-    NSString *hintText = [NSString stringWithFormat:@"%@\n%@", @"Customize the message you want to share.", @"If you don't add your own text here, we'll use the post's title as the message."];
 
     SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:text
                                                                                     placeholder:nil
-                                                                                           hint:NSLocalizedString(([NSString stringWithFormat:@"%@", hintText]), @"Hint displayed when the user is customizing the share message.")
+                                                                                           hint:NSLocalizedString(@"Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.", @"Hint displayed when the user is customizing the share message.")
                                                                                      isPassword:NO];
     vc.title = NSLocalizedString(@"Customize the message", @"Title for the edition of the share message.");
     vc.onValueChanged = ^(NSString *value) {

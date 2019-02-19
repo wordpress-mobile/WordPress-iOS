@@ -33,14 +33,14 @@ extension FancyAlertViewController {
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
             controller.dismiss(animated: true)
-
+            PushNotificationsManager.shared.deletePendingLocalNotifications()
             WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "neutral"])
         }
 
         let neverButton = ButtonConfig(Strings.neverText) { controller, _ in
             UserDefaults.standard.quickStartWasDismissedPermanently = true
             controller.dismiss(animated: true)
-
+            PushNotificationsManager.shared.deletePendingLocalNotifications()
             WPAnalytics.track(.quickStartRequestAlertButtonTapped, withProperties: ["type": "negative"])
         }
 

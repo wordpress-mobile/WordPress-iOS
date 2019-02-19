@@ -52,9 +52,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: MostPopularStats.itemSubtitle,
-                                                               dataSubtitle: MostPopularStats.dataSubtitle,
-                                                               dataRows: createMostPopularStatsRows()))
+                tableRows.append(SimpleTotalsStatsRow(dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
                 tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
@@ -84,6 +82,8 @@ class SiteStatsInsightsViewModel: Observable {
             }
         }
 
+        tableRows.append(TableFooterRow())
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: tableRows)
@@ -105,7 +105,7 @@ private extension SiteStatsInsightsViewModel {
     struct InsightsHeaders {
         static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
         static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
-        static let mostPopularStats = NSLocalizedString("Most Popular Day and Hour", comment: "Insights 'Most Popular Day and Hour' header")
+        static let mostPopularStats = NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
         static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
@@ -128,8 +128,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct MostPopularStats {
-        static let itemSubtitle = NSLocalizedString("Day/Hour", comment: "Most Popular Day and Hour label for day and hour")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Most Popular Day and Hour label for number of views")
+        static let percentOfViews = NSLocalizedString("%i%% of views", comment: "'Most Popular Time' label displaying percent of views. %i is the percent value.")
     }
 
     struct FollowerTotals {
@@ -212,7 +211,9 @@ private extension SiteStatsInsightsViewModel {
         static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
         static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
         static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
-        static let perPost = NSLocalizedString("%@ Per Post", comment: "'Annual Site Stats' label for averages per post. %@ will be Comments, Likes, or Words.")
+        static let commentsPerPost = NSLocalizedString("Comments Per Post", comment: "'Annual Site Stats' label for average comments per post.")
+        static let likesPerPost = NSLocalizedString("Likes Per Post", comment: "'Annual Site Stats' label for average likes per post.")
+        static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -285,9 +286,13 @@ private extension SiteStatsInsightsViewModel {
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
         return [StatsTotalRowData(name: dayString,
-                                  data: "\(mostPopularStats.mostPopularDayOfWeekPercentage)%"),
+                                  data: String(format: MostPopularStats.percentOfViews,
+                                               mostPopularStats.mostPopularDayOfWeekPercentage),
+                                  icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)),
                 StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
-                                  data: "\(mostPopularStats.mostPopularHourPercentage)%")]
+                                  data: String(format: MostPopularStats.percentOfViews,
+                                               mostPopularStats.mostPopularHourPercentage),
+                                  icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
         }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
@@ -326,7 +331,6 @@ private extension SiteStatsInsightsViewModel {
         return services.map {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.followers.abbreviatedString(),
-                                     dataBarPercent: Float($0.followers) / Float(services.first!.followers),
                                      socialIconURL: $0.iconURL)
         }
     }
@@ -385,7 +389,6 @@ private extension SiteStatsInsightsViewModel {
             return []
         }
 
-
         return tagsAndCategories.map {
             let viewsCount = $0.viewsCount ?? 0
 
@@ -441,11 +444,11 @@ private extension SiteStatsInsightsViewModel {
         let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
 
         // Averages rows
-        let averageCommentsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.comments),
+        let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
                                                    data: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString())
-        let averageLikesRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.likes),
+        let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
                                                 data: annualInsights.annualInsightsAverageLikesCount.abbreviatedString())
-        let averageWordsRow = StatsTotalRowData(name: String(format: AnnualSiteStats.perPost, AnnualSiteStats.words),
+        let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
                                                 data: annualInsights.annualInsightsAverageWordsCount.abbreviatedString())
         let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
 
@@ -479,7 +482,6 @@ private extension SiteStatsInsightsViewModel {
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
-                                  dataBarPercent: Float($0.commentCount) / Float(authors.first!.commentCount),
                                   userIconURL: $0.iconURL,
                                   showDisclosure: false)
             }
@@ -492,7 +494,6 @@ private extension SiteStatsInsightsViewModel {
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
-                                  dataBarPercent: Float($0.commentCount) / Float(posts.first!.commentCount),
                                   showDisclosure: true,
                                   disclosureURL: $0.postURL)
 
