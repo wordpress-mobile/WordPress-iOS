@@ -483,7 +483,8 @@ private extension SiteStatsInsightsViewModel {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
                                   userIconURL: $0.iconURL,
-                                  showDisclosure: false)
+                                  showDisclosure: false,
+                                  statSection: .insightsCommentsAuthors)
             }
         case .post:
             let posts = commentsInsight?.topPosts ?? []
@@ -495,8 +496,8 @@ private extension SiteStatsInsightsViewModel {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
                                   showDisclosure: true,
-                                  disclosureURL: $0.postURL)
-
+                                  disclosureURL: $0.postURL,
+                                  statSection: .insightsCommentsPosts)
             }
         }
 
@@ -518,18 +519,19 @@ private extension SiteStatsInsightsViewModel {
         var tabTitle: String
         var followers: [StatsFollower]?
         var totalFollowers: Int?
+        var statSection: StatSection?
 
         switch followerType {
         case .wordPressDotCom:
-
             tabTitle = FollowerType.wordPressDotCom.title
             followers = store.getDotComFollowers()?.topDotComFollowers
             totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
+            statSection = .insightsFollowersWordPress
         case .email:
-
             tabTitle = FollowerType.email.title
             followers = store.getEmailFollowers()?.topEmailFollowers
             totalFollowers = store.getEmailFollowers()?.emailFollowersCount
+            statSection = .insightsFollowersEmail
         }
 
         let totalCount = String(format: Followers.totalFollowers,
@@ -539,7 +541,8 @@ private extension SiteStatsInsightsViewModel {
         let followersData = followers?.compactMap {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.subscribedDate.relativeStringInPast(),
-                                     userIconURL: $0.avatarURL)
+                                     userIconURL: $0.avatarURL,
+                                     statSection: statSection)
         }
 
         return TabData(tabTitle: tabTitle,

@@ -14,8 +14,10 @@ enum StatSection: Int {
     case insightsMostPopularTime
     case insightsTagsAndCategories
     case insightsAnnualSiteStats
-    case insightsComments
-    case insightsFollowers
+    case insightsCommentsAuthors
+    case insightsCommentsPosts
+    case insightsFollowersWordPress
+    case insightsFollowersEmail
     case insightsTodaysStats
     case insightsPostActivity
     case insightsPublicize
@@ -30,8 +32,10 @@ enum StatSection: Int {
                               .insightsMostPopularTime,
                               .insightsTagsAndCategories,
                               .insightsAnnualSiteStats,
-                              .insightsComments,
-                              .insightsFollowers,
+                              .insightsCommentsAuthors,
+                              .insightsCommentsPosts,
+                              .insightsFollowersWordPress,
+                              .insightsFollowersEmail,
                               .insightsTodaysStats,
                               .insightsPostActivity,
                               .insightsPublicize
