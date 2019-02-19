@@ -417,7 +417,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergLocale() -> String? {
-        return Locale.current.languageCode
+        return WordPressComLanguageDatabase().deviceLanguage.slug
     }
 
     func gutenbergTranslations() -> [String: [String]]? {
