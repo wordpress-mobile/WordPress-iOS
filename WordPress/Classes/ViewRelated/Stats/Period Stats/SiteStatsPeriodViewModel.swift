@@ -277,7 +277,7 @@ private extension SiteStatsPeriodViewModel {
     func countriesDataRows() -> [StatsTotalRowData] {
         return store.getTopCountries()?.map { StatsTotalRowData.init(name: $0.label,
                                                                      data: $0.value.displayString(),
-                                                                     userIconURL: $0.iconURL) }
+                                                                     countryIconURL: $0.iconURL) }
             ?? []
     }
 
