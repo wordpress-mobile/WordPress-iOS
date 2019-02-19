@@ -5,11 +5,12 @@ class ViewMoreRow: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var viewMoreLabel: UILabel!
+    private var statSection: StatSection?
 
-    // MARK: - Init
+    // MARK: - Configure
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    func configure(statSection: StatSection?) {
+        self.statSection = statSection
         applyStyles()
     }
 

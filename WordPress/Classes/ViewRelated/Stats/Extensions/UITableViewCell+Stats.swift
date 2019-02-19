@@ -49,7 +49,7 @@ extension UITableViewCell {
 
         // If there are more data rows, show 'View more'.
         if limitRowsDisplayed && numberOfDataRows > maxRows {
-            addViewMoreToStackView(rowsStackView)
+            addViewMoreToStackView(rowsStackView, withStatSection: dataRows.first?.statSection)
         }
     }
 
@@ -60,8 +60,9 @@ extension UITableViewCell {
         }
     }
 
-    func addViewMoreToStackView(_ rowsStackView: UIStackView) {
+    func addViewMoreToStackView(_ rowsStackView: UIStackView, withStatSection statSection: StatSection?) {
         let row = ViewMoreRow.loadFromNib()
+        row.configure(statSection: statSection)
         rowsStackView.addArrangedSubview(row)
     }
 
