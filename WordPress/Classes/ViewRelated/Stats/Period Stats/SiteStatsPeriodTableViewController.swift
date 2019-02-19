@@ -101,6 +101,7 @@ private extension SiteStatsPeriodTableViewController {
         return [CellHeaderRow.self,
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
+                CountriesStatsRow.self,
                 TableFooterRow.self]
     }
 
