@@ -891,12 +891,21 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
+
+    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+    }
 }
 
 - (void) showReaderBadge:(NSNotification *)notification
 {
     UIImage *readerTabBarImage = [[UIImage imageNamed:@"icon-tab-reader-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
+
+    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
+        [self hideReaderBadge:nil];
+    }
 }
 
 - (void) hideReaderBadge:(NSNotification *)notification
@@ -913,6 +922,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         meTabBarItem.image = self.meTabBarImageUnreadUnselected;
         meTabBarItem.selectedImage = self.meTabBarImageUnreadSelected;
     } else {
+        meTabBarItem.image = self.meTabBarImage;
+        meTabBarItem.selectedImage = self.meTabBarImage;
+    }
+
+    if( UIApplication.sharedApplication.isCreatingScreenshots ) {
         meTabBarItem.image = self.meTabBarImage;
         meTabBarItem.selectedImage = self.meTabBarImage;
     }
