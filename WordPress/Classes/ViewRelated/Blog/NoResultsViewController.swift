@@ -67,7 +67,7 @@ import Reachability
     private var titleLabelCenterXConstraint: NSLayoutConstraint?
     private var titleLabelMaxWidthConstraint: NSLayoutConstraint?
     private var titleLabelTopConstraint: NSLayoutConstraint?
-    
+
     //For No results on connection issue
     private var reachability = Reachability.forInternetConnection()
     private var isConnectionAvailable: Bool? {
@@ -543,7 +543,7 @@ private extension NoResultsViewController {
     func stopAnimatingIfNeeded() {
         stopAnimatingViewIfNeeded(accessorySubview)
     }
-    
+
     struct NoConnectionMessages {
         static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
         static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
