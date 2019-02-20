@@ -24,9 +24,9 @@ class TabNavComponent: BaseScreen {
         return MeTabScreen()
     }
 
-    func gotoMySitesScreen() -> MySitesScreen {
+    func gotoMySitesScreen() -> MySiteScreen {
         mySitesTabButton.tap()
-        return MySitesScreen()
+        return MySiteScreen()
     }
 
     func gotoEditorScreen() -> EditorScreen {

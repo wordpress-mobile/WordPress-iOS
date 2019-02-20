@@ -20,7 +20,7 @@ class LoginTests: XCTestCase {
         super.tearDown()
     }
 
-    func testSimpleLoginLogout() {
+    func testEmailPasswordLoginLogout() {
         let welcomeScreen = WelcomeScreen().login()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
@@ -31,6 +31,28 @@ class LoginTests: XCTestCase {
             .logout()
 
         XCTAssert(welcomeScreen.isLoaded())
+    }
+
+    func testWpcomUsernamePasswordLogin() {
+        _ = WelcomeScreen().login()
+            .goToSiteAddressLogin()
+            .proceedWith(siteUrl: "WordPress.com")
+            .proceedWith(username: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+
+        XCTAssert(MySiteScreen().isLoaded())
+    }
+
+    func testSelfHostedUsernamePasswordLoginLogout() {
+        _ = WelcomeScreen().login()
+            .goToSiteAddressLogin()
+            .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
+            .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .continueWithSelectedSite()
+            .removeSelfHostedSite()
+
+        XCTAssert(WelcomeScreen().isLoaded())
     }
 
     func testUnsuccessfulLogin() {

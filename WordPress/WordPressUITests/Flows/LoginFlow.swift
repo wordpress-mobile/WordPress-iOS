@@ -16,11 +16,20 @@ class LoginFlow {
     static func logoutIfNeeded() {
         if TabNavComponent.isLoaded() {
             Logger.log(message: "Logging out...", event: .i)
-            _ = TabNavComponent().gotoMeScreen().logout()
+            let meScreen = TabNavComponent().gotoMeScreen()
+            if meScreen.isLoggedInToWpcom() {
+                _ = meScreen.logout()
+            } else {
+                _ = TabNavComponent().gotoMySitesScreen()
+                .removeSelfHostedSite()
+            }
             return
         }
 
-        while LoginPasswordScreen.isLoaded() || LoginEmailScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() {
+        while LoginPasswordScreen.isLoaded() || LoginEmailScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() {
+            if LoginEmailScreen.isLoaded() && LoginEmailScreen.isEmailEntered() {
+                LoginEmailScreen().emailTextField.clearAndEnterText(text: "")
+            }
             XCUIApplication().buttons["Back"].tap()
         }
     }
