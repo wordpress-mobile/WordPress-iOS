@@ -219,6 +219,29 @@ struct AnnualSiteStatsRow: ImmuTableRow {
     }
 }
 
+struct CountriesStatsRow: ImmuTableRow {
+
+    typealias CellType = CountriesCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: dataRows)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
