@@ -16,10 +16,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEo-2z-Cmk">
-                    <rect key="frame" x="273" y="-1" width="44" height="37"/>
+                    <rect key="frame" x="273" y="0.0" width="44" height="36"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="NQj-8B-nY9"/>
-                        <constraint firstAttribute="height" constant="37" id="j12-ha-Xlw"/>
+                        <constraint firstAttribute="height" constant="36" id="j12-ha-Xlw"/>
                     </constraints>
                     <connections>
                         <action selector="ellipsisTapped" destination="iN0-l3-epB" eventType="touchUpInside" id="39J-kD-m13"/>
