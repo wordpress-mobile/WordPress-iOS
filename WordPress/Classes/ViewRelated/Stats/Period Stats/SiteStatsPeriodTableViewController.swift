@@ -181,6 +181,12 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allPeriods.contains(statSection) else {
+            return
+        }
+
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
 }

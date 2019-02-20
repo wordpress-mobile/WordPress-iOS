@@ -877,6 +877,8 @@
 		983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983DBBA922125DD300753988 /* StatsTableFooter.swift */; };
 		98458CB821A39D350025D232 /* StatsNoDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98458CB721A39D350025D232 /* StatsNoDataRow.swift */; };
 		98458CBA21A39D7A0025D232 /* StatsNoDataRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98458CB921A39D7A0025D232 /* StatsNoDataRow.xib */; };
+		98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98467A3E221CD48500DF51AE /* SiteStatsDetailTableViewController.swift */; };
+		98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98467A42221CD74D00DF51AE /* SiteStatsDetailTableViewController.storyboard */; };
 		98487E3A21EE8FB500352B4E /* UITableViewCell+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98487E3921EE8FB500352B4E /* UITableViewCell+Stats.swift */; };
 		9848DF8121B8BB5700B99DA4 /* PostingActivityLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9848DF8021B8BB5600B99DA4 /* PostingActivityLegend.swift */; };
 		9848DF8321B8BB6900B99DA4 /* PostingActivityLegend.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9848DF8221B8BB6900B99DA4 /* PostingActivityLegend.xib */; };
@@ -2808,6 +2810,8 @@
 		983DBBA922125DD300753988 /* StatsTableFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTableFooter.swift; sourceTree = "<group>"; };
 		98458CB721A39D350025D232 /* StatsNoDataRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsNoDataRow.swift; sourceTree = "<group>"; };
 		98458CB921A39D7A0025D232 /* StatsNoDataRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsNoDataRow.xib; sourceTree = "<group>"; };
+		98467A3E221CD48500DF51AE /* SiteStatsDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsDetailTableViewController.swift; sourceTree = "<group>"; };
+		98467A42221CD74D00DF51AE /* SiteStatsDetailTableViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SiteStatsDetailTableViewController.storyboard; sourceTree = "<group>"; };
 		98487E3921EE8FB500352B4E /* UITableViewCell+Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Stats.swift"; sourceTree = "<group>"; };
 		9848DF8021B8BB5600B99DA4 /* PostingActivityLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingActivityLegend.swift; sourceTree = "<group>"; };
 		9848DF8221B8BB6900B99DA4 /* PostingActivityLegend.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostingActivityLegend.xib; sourceTree = "<group>"; };
@@ -6160,6 +6164,15 @@
 			name = "Site Creation";
 			sourceTree = "<group>";
 		};
+		98467A3B221CD30600DF51AE /* Stats Detail */ = {
+			isa = PBXGroup;
+			children = (
+				98467A42221CD74D00DF51AE /* SiteStatsDetailTableViewController.storyboard */,
+				98467A3E221CD48500DF51AE /* SiteStatsDetailTableViewController.swift */,
+			);
+			path = "Stats Detail";
+			sourceTree = "<group>";
+		};
 		984B138C21F65F680004B6A2 /* Period Stats */ = {
 			isa = PBXGroup;
 			children = (
@@ -6251,6 +6264,7 @@
 		98F89D47219E008600190EE6 /* Shared Views */ = {
 			isa = PBXGroup;
 			children = (
+				98467A3B221CD30600DF51AE /* Stats Detail */,
 				9881296C219CF1300075FF33 /* StatsCellHeader.swift */,
 				9881296D219CF1310075FF33 /* StatsCellHeader.xib */,
 				98B11B882216535100B7F2D7 /* StatsChildRowsView.swift */,
@@ -8562,6 +8576,7 @@
 				9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */,
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
+				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
@@ -10198,6 +10213,7 @@
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
+				98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */,
 				7E14635720B3BEAB00B95F41 /* WPStyleGuide+Loader.swift in Sources */,
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,

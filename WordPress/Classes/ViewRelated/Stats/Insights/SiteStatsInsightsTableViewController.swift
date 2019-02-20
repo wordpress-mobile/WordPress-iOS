@@ -217,6 +217,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allInsights.contains(statSection) else {
+            return
+        }
+
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
 }
