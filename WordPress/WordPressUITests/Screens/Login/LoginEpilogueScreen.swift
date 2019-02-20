@@ -9,7 +9,7 @@ class LoginEpilogueScreen: BaseScreen {
     init() {
         let app = XCUIApplication()
         headerText = app.otherElements["LOGGED IN AS"]
-        connectSiteButton = app.buttons["Connect another site"]
+        connectSiteButton = app.buttons["connectSite"]
         continueButton = app.buttons["Continue"]
 
         super.init(element: headerText)
