@@ -60,7 +60,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="4ZS-AN-Jkl" secondAttribute="bottom" id="D7x-L2-tnt"/>
                                                 <constraint firstItem="4ZS-AN-Jkl" firstAttribute="leading" secondItem="iS7-PL-Iwy" secondAttribute="leading" id="XWr-Mh-3pQ"/>
                                                 <constraint firstItem="4ZS-AN-Jkl" firstAttribute="top" secondItem="iS7-PL-Iwy" secondAttribute="top" constant="6" id="sBc-0d-zGY"/>
-                                                <constraint firstAttribute="width" secondItem="4ZS-AN-Jkl" secondAttribute="width" id="u1V-y7-Ial"/>
+                                                <constraint firstAttribute="width" secondItem="4ZS-AN-Jkl" secondAttribute="width" priority="999" id="u1V-y7-Ial"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -75,7 +75,7 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ivc-26-vsM" userLabel="Data Label">
                                     <rect key="frame" x="0.0" y="19" width="31.5" height="20.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -122,18 +122,9 @@
                         <constraint firstAttribute="height" constant="0.5" id="8mm-vL-dtX"/>
                     </constraints>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UZ0-Pr-quK" userLabel="Bottom Expanded Seperator Line">
-                    <rect key="frame" x="0.0" y="79.5" width="442" height="0.5"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="0.5" id="KAG-Lp-Yvl"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="WYW-xm-J1v" firstAttribute="trailing" secondItem="UZ0-Pr-quK" secondAttribute="trailing" id="7Xf-kJ-3fL"/>
-                <constraint firstItem="UZ0-Pr-quK" firstAttribute="top" secondItem="KoQ-BR-jDc" secondAttribute="bottom" id="8yw-oH-1EE"/>
                 <constraint firstItem="WYW-xm-J1v" firstAttribute="trailing" secondItem="KoQ-BR-jDc" secondAttribute="trailing" id="BVP-Ge-BxJ"/>
                 <constraint firstItem="WYW-xm-J1v" firstAttribute="bottom" secondItem="bi9-y4-md7" secondAttribute="bottom" priority="999" constant="11" id="M8E-ae-P7t"/>
                 <constraint firstItem="KoQ-BR-jDc" firstAttribute="top" secondItem="WYW-xm-J1v" secondAttribute="top" id="MYh-55-gJa"/>
@@ -144,8 +135,6 @@
                 <constraint firstItem="Log-hR-ceZ" firstAttribute="leading" secondItem="WYW-xm-J1v" secondAttribute="leading" id="Yal-2x-nTO"/>
                 <constraint firstItem="KoQ-BR-jDc" firstAttribute="leading" secondItem="WYW-xm-J1v" secondAttribute="leading" id="Yo1-QF-NXV"/>
                 <constraint firstItem="8Dx-gl-EZn" firstAttribute="leading" secondItem="U2I-mF-Pab" secondAttribute="leading" id="e4Q-yY-OTR"/>
-                <constraint firstItem="WYW-xm-J1v" firstAttribute="bottom" secondItem="UZ0-Pr-quK" secondAttribute="bottom" id="erU-hn-EN1"/>
-                <constraint firstItem="UZ0-Pr-quK" firstAttribute="leading" secondItem="WYW-xm-J1v" secondAttribute="leading" id="gIQ-8d-wmM"/>
                 <constraint firstItem="WYW-xm-J1v" firstAttribute="trailing" secondItem="Log-hR-ceZ" secondAttribute="trailing" id="m3s-p7-tFy"/>
                 <constraint firstItem="WYW-xm-J1v" firstAttribute="trailing" secondItem="8Dx-gl-EZn" secondAttribute="trailing" id="nxP-0h-xyh"/>
                 <constraint firstItem="bi9-y4-md7" firstAttribute="leading" secondItem="WYW-xm-J1v" secondAttribute="leading" constant="16" id="xmp-fo-0J0"/>
@@ -154,7 +143,6 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="WYW-xm-J1v"/>
             <connections>
-                <outlet property="bottomExpandedSeparatorLine" destination="UZ0-Pr-quK" id="MaB-gN-LtO"/>
                 <outlet property="contentView" destination="bi9-y4-md7" id="HtH-Ed-HUW"/>
                 <outlet property="dataBar" destination="4ZS-AN-Jkl" id="pyA-0x-ZI4"/>
                 <outlet property="dataBarView" destination="iS7-PL-Iwy" id="PHD-tv-NqI"/>

@@ -4,6 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "WordPress-Swift.h"
 @import AutomatticTracks;
 
 @interface  TracksEventPair : NSObject
@@ -118,6 +119,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }];
     
     BOOL dotcom_user = (accountPresent && username.length > 0);
+    BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
     
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
@@ -126,6 +128,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
+    userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
@@ -276,6 +279,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
             eventName = @"app_settings_video_optimization_changed";
+            break;
+        case WPAnalyticsStatAppSettingsGutenbergEnabled:
+            eventName = @"gutenberg_setting_enabled";
+            break;
+        case WPAnalyticsStatAppSettingsGutenbergDisabled:
+            eventName = @"gutenberg_setting_disabled";
             break;
         case WPAnalyticsStatAutomatedTransferCustomDomainDialogShown:
             eventName = @"automated_transfer_custom_domain_dialog_shown";
@@ -462,6 +471,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEditorScheduledPost:
             eventName = @"editor_post_scheduled";
+            break;
+        case WPAnalyticsStatEditorSessionStart:
+            eventName = @"editor_session_start";
+            break;
+        case WPAnalyticsStatEditorSessionSwitchEditor:
+            eventName = @"editor_session_switch_editor";
+            break;
+        case WPAnalyticsStatEditorSessionEnd:
+            eventName = @"editor_session_end";
             break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";

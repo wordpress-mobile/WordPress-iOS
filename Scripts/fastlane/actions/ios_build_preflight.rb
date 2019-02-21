@@ -11,7 +11,7 @@ module Fastlane
         # Verify that ImageMagick exists on this machine and can be called from the command-line.
         # Internal Builds use it to generate the App Icon as part of the build process
         begin
-            Action.sh("which magick")
+            Action.sh("which convert")
         rescue
             UI.user_error!("Couldn't find ImageMagick. Please install it by running `brew install imagemagick`")
             raise

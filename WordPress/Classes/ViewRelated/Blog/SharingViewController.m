@@ -6,6 +6,7 @@
 #import "WordPress-Swift.h"
 #import <WordPressUI/UIImage+Util.h>
 #import <WordPressShared/WPTableViewCell.h>
+#import <Reachability/Reachability.h>
 
 typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
     SharingPublicizeServices = 0,
@@ -19,6 +20,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) NSArray *publicizeServices;
+@property (nonatomic, strong, readwrite) Reachability *reachability;
 
 @end
 
@@ -42,15 +44,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    // Optimistically sync the sharing buttons.
-    [self syncSharingButtonsIfNeeded];
-
-    // Refreshes the tableview.
-    [self refreshPublicizers];
-
-    // Syncs servcies and connections.
-    [self syncPublicizeServices];
+    [self setupReachability];
+    [self syncServices];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -58,6 +53,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [super viewWillAppear:animated];
 
     [self.tableView reloadData];
+}
+
+-(void) dealloc
+{
+    [self.reachability stopNotifier];
 }
 
 - (void)refreshPublicizers
@@ -241,6 +241,33 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     return self.blog.managedObjectContext;
 }
 
+-(void)syncServices
+{
+    // Optimistically sync the sharing buttons.
+    [self syncSharingButtonsIfNeeded];
+    
+    // Refreshes the tableview.
+    [self refreshPublicizers];
+    
+    // Syncs servcies and connections.
+    [self syncPublicizeServices];
+    
+}
+- (void)setupReachability
+{
+    self.reachability = [Reachability reachabilityForInternetConnection];
+    [self.reachability startNotifier];
+}
+
+-(void)showConnectionError
+{
+    NSString *title = NSLocalizedString(@"No Connection", @"Title of error prompt when no internet connection is available.");
+    NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [WPError showAlertWithTitle:title message:message];
+    });
+}
+
 - (void)syncPublicizeServices
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
@@ -248,8 +275,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf syncConnections];
     } failure:^(NSError *error) {
-        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
-        [weakSelf refreshPublicizers];
+        if (!weakSelf.reachability.isReachable) {
+            [weakSelf showConnectionError];
+        } else {
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
+            [weakSelf refreshPublicizers];
+        }
     }];
 }
 
@@ -260,8 +291,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
     } failure:^(NSError *error) {
-        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
-        [weakSelf refreshPublicizers];
+        if (!weakSelf.reachability.isReachable) {
+            [weakSelf showConnectionError];
+        } else {
+            [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+            [weakSelf refreshPublicizers];
+        }
     }];
 }
 

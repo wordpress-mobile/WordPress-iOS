@@ -96,6 +96,15 @@ public enum PostEditorAction {
         }
     }
 
+    var analyticsEndOutcome: PostEditorAnalyticsSession.Outcome {
+        switch self {
+        case .save, .saveAsDraft, .update:
+            return .save
+        case .publish, .publishNow, .schedule, .submitForReview:
+            return .publish
+        }
+    }
+
     fileprivate var isPostPostShown: Bool {
         return false
     }

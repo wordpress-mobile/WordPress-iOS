@@ -16,7 +16,18 @@ enum InsightType: Int {
     case publicize
 
     // TODO: remove when Manage Insights is implemented.
-    static let allValues = [InsightType.latestPostSummary, .allTimeStats, .followersTotals, .mostPopularDayAndHour, .tagsAndCategories, .annualSiteStats, .comments, .followers, .todaysStats, .postingActivity, .publicize]
+    static let allValues = [InsightType.latestPostSummary,
+                            .todaysStats,
+                            .annualSiteStats,
+                            .allTimeStats,
+                            .mostPopularDayAndHour,
+                            .postingActivity,
+                            .comments,
+                            .tagsAndCategories,
+                            .followersTotals,
+                            .followers,
+                            .publicize
+    ]
 }
 
 @objc protocol SiteStatsInsightsDelegate {
@@ -103,7 +114,8 @@ private extension SiteStatsInsightsTableViewController {
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
-                AnnualSiteStatsRow.self]
+                AnnualSiteStatsRow.self,
+                TableFooterRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -129,7 +141,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func clearExpandedRows() {
-        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
+        StatsDataHelper.clearExpandedInsights()
     }
 
     // MARK: User Defaults
@@ -199,25 +211,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
-        // Go ahead an update the table. The remaining logic just updates
-        // the array that tracks the expanded rows.
         applyTableUpdates()
-
-        guard let rowData = row.rowData else {
-            return
-        }
-
-        var insightsExpandedRowLabels = StatsDataHelper.expandedRowLabels[.insights] ?? []
-
-        // Remove from array
-        insightsExpandedRowLabels = insightsExpandedRowLabels.filter { $0 != rowData.name }
-
-        // If expanded, add to array.
-        if row.expanded {
-            insightsExpandedRowLabels.append(rowData.name)
-        }
-
-        StatsDataHelper.expandedRowLabels[.insights] = insightsExpandedRowLabels
+        StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
 }

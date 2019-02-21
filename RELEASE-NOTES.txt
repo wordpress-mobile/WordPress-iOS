@@ -1,5 +1,4 @@
-* Fix a bug where sometimes editing a local copy of a draft post, then discarding changes, would delete the whole post instead. #10248 
-* Fixed an issue where some cells in Activity Log would lay out incorrectly
-* Improved styling of Headers in the post editor
-* Adds support for sharing a blog via Reader.
-* Fix a crash in reader caused by a video with a fallback image.
+11.9
+------
+* Added connection error alert in Sharing screen.
+* Increased padding at the bottom of the share extension's editor, to make typing a longer post a bit more comfortable.

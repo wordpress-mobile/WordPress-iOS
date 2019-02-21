@@ -55,8 +55,7 @@ namespace :dependencies do
 
   namespace :pod do
     task :check do
-      sh "bundle exec pod check &> /dev/null", verbose: false do |ok, res|
-        next if ok && podfile_locked?
+      unless podfile_locked? && lockfiles_match?
         dependency_failed("CocoaPods")
         Rake::Task["dependencies:pod:install"].invoke
       end
@@ -256,6 +255,10 @@ end
 def pod(args)
   args = %w[bundle exec pod] + args
   sh(*args)
+end
+
+def lockfiles_match?
+  File.file?('Pods/Manifest.lock') && FileUtils.compare_file('Podfile.lock', 'Pods/Manifest.lock')
 end
 
 def podfile_locked?

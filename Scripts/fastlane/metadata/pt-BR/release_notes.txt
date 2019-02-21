@@ -1,9 +1,8 @@
-* Se você criar um novo site pelo aplicativo, agora você poderá registrar seu próprio sub-domínio .blog!
-* Quando você tentar excluir um site usando um iPad, o aplicativo não parará de funcionar.
-* Corrigimos uma falha na tela "Sobre" nas configurações do aplicativo.
-* Melhoramos a tela de configurações de posts para que fique melhor em iPads.
+Nessa versão, nós melhoramos a experiência em mais algumas áreas:
 
-Com algumas melhorias no recurso de Histórico/Revisões, agora você pode...
-* Deslizar por revisões em um instante.
-* Mudar entre o modo HTML e Visual ao acessar uma revisão.
-* Mudar de ideia ao aplicar uma revisão com o novo botão desfazer.
+- Adicionado suporte ao preenchimento automático ao informar um nome de usuário durante o login.
+- Mensagens mais claras sobre mensagens vazias ao compartilhar posts em redes sociais. Se você não informar uma mensagem, usaremos o título do post por padrão.
+- Agora nós salvamos um rascunho automaticamente antes de exibir uma pré-visualização.
+- Correção de um erro que adicionava espaços acima ou abaixo de imagens no Leitor.
+- Corrigido da indentação na lista de páginas para páginas privadas.
+- Correção de um erro visual que afetava a lista de posts em ao exibir com fontes grandes.

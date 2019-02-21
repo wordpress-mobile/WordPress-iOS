@@ -1,9 +1,8 @@
-* Si empiezas un nuevo sitio en la aplicación, ahora puedes registrar tu propio subdominio .blog!
-* Cuando intentas eliminar un sitio en un iPad, la aplicación ya no se bloquea (a veces lo hace).
-* Se ha corregido un error en la pantalla "Acerca de" de los ajustes de la aplicación.
-* Actualizada la pantalla de ajustes de publicación para que se vea mejor en iPad.
+Para esta versión, hemos suavizado la experiencia en algunas áreas más: 
 
-Con una nueva ronda de mejoras en la característica de Historial/Revisiones, ahora puedes....
-* Moverte de una revisión a otra en un instante.
-* Cambiar entre los modos HTML y visual al ver una revisión.
-* Cambiar de opinión si aplicas una revisión con un nuevo botón de deshacer. 
+- Añadida compatibilidad con el relleno automático de contraseñas al introducir un nombre de usuario durante el inicio de sesión.
+- Añadido texto aclaratorio sobre mensajes vacíos cuando se comparten mensajes en medios sociales. Si no nos proporcionas un mensaje, usaremos el título de la entrada por defecto.
+- Ahora guardamos automáticamente tu borrador antes de mostrarte una vista previa.
+- Se ha solucionado un problema que causaba grandes espacios en la parte superior (o inferior) de algunas imágenes del lector.
+- Arreglado un error de sangría en la lista de páginas en las páginas privadas.
+- Arreglado un error visual que afectaba a la lista de entradas en textos de gran tamaño.

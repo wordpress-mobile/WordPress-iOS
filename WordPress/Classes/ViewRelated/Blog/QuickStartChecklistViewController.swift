@@ -1,3 +1,5 @@
+import Gridicons
+
 @objc enum QuickStartType: Int {
     case customize
     case grow
@@ -45,8 +47,15 @@ class QuickStartChecklistViewController: UITableViewController {
         successScreen.updateView()
         return successScreen
     }()
+    private lazy var closeButtonItem: UIBarButtonItem = {
+        let cancelButton = WPStyleGuide.buttonForBar(with: Constants.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
+        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
+        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
+        cancelButton.setContentHuggingPriority(.required, for: .horizontal)
+        return UIBarButtonItem(customView: cancelButton)
+    }()
 
-    @objc init(blog: Blog, type: QuickStartType) {
+    init(blog: Blog, type: QuickStartType) {
         self.blog = blog
         self.type = type
         super.init(style: .plain)
@@ -63,13 +72,19 @@ class QuickStartChecklistViewController: UITableViewController {
         configureTableView()
 
         navigationItem.title = configuration.title
+        navigationItem.leftBarButtonItem = closeButtonItem
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: configuration.tours,
-                                                 didSelectTour: { [weak self] analyticsKey in
+                                                 didSelectTour: { [weak self] tour in
             DispatchQueue.main.async {
-                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
-                self?.navigationController?.popViewController(animated: true)
+                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
+                self?.dismiss(animated: true) {
+                    if let blog = self?.blog,
+                        let tourGuide = QuickStartTourGuide.find() {
+                        tourGuide.start(tour: tour, for: blog)
+                    }
+                }
             }
         }, didTapHeader: { [weak self] collapse in
             self?.checkForSuccessScreen(collapse)
@@ -101,10 +116,9 @@ private extension QuickStartChecklistViewController {
     func configureTableView() {
         let tableView = UITableView(frame: .zero)
 
-        if #available(iOS 10, *) {
-            tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        }
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
         tableView.separatorStyle = .none
+        tableView.cellLayoutMarginsFollowReadableWidth = true
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
@@ -143,6 +157,10 @@ private extension QuickStartChecklistViewController {
             self.tableView.backgroundView?.alpha = collapse ? 0.0 : 1.0
         }
     }
+
+    @objc private func closeWasPressed(sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 private struct TasksCompleteScreenConfiguration {
@@ -157,6 +175,8 @@ private struct QuickStartChecklistConfiguration {
 }
 
 private enum Constants {
+    static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+    static let closeButtonModalImage = Gridicon.iconOfType(.cross)
     static let estimatedRowHeight: CGFloat = 90.0
     static let successScreenFadeAnimationDuration: TimeInterval = 0.3
     static let customizeYourSite = NSLocalizedString("Customize Your Site", comment: "Title of the Quick Start Checklist that guides users through a few tasks to customize their new website.")

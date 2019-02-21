@@ -37,10 +37,16 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
+        // TODO: add overview chart here
         tableRows.append(contentsOf: postsAndPagesTableRows())
+        tableRows.append(contentsOf: referrersTableRows())
+        tableRows.append(contentsOf: clicksTableRows())
+        tableRows.append(contentsOf: authorsTableRows())
+        tableRows.append(contentsOf: countriesTableRows())
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
+        tableRows.append(TableFooterRow())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -63,6 +69,10 @@ private extension SiteStatsPeriodViewModel {
 
     struct PeriodHeaders {
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
+        static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
+        static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
+        static let countries = NSLocalizedString("Countries", comment: "Period Stats 'Countries' header")
         static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
         static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
@@ -71,6 +81,26 @@ private extension SiteStatsPeriodViewModel {
     struct PostsAndPages {
         static let itemSubtitle = NSLocalizedString("Title", comment: "Posts and Pages label for post/page title")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
+    }
+
+    struct Referrers {
+        static let itemSubtitle = NSLocalizedString("Referrer", comment: "Referrers label for link title")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Referrers label for number of views")
+    }
+
+    struct Clicks {
+        static let itemSubtitle = NSLocalizedString("Link", comment: "Clicks label for link title")
+        static let dataSubtitle = NSLocalizedString("Clicks", comment: "Clicks label for number of clicks")
+    }
+
+    struct Authors {
+        static let itemSubtitle = NSLocalizedString("Author", comment: "Authors label for post author")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Authors label for number of views")
+    }
+
+    struct Countries {
+        static let itemSubtitle = NSLocalizedString("Country", comment: "Countries label for country")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Countries label for number of views")
     }
 
     struct SearchTerms {
@@ -119,6 +149,138 @@ private extension SiteStatsPeriodViewModel {
         return dataRows
     }
 
+    func referrersTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.referrers))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Referrers.itemSubtitle,
+                                                 dataSubtitle: Referrers.dataSubtitle,
+                                                 dataRows: referrersDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func referrersDataRows() -> [StatsTotalRowData] {
+        return store.getTopReferrers()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                  data: $0.value.displayString(),
+                                                                  socialIconURL: $0.iconURL,
+                                                                  showDisclosure: true,
+                                                                  disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                  childRows: childRowsForReferrers($0),
+                                                                  statSection: .periodReferrers) }
+            ?? []
+    }
+
+    func childRowsForReferrers(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        var childRows = [StatsTotalRowData]()
+
+        guard let children = item.children as? [StatsItem] else {
+            return childRows
+        }
+
+        children.forEach { child in
+            var childsChildrenRows = [StatsTotalRowData]()
+            if let childsChildren = child.children as? [StatsItem] {
+                childsChildrenRows = childsChildren.map { StatsTotalRowData.init(name: $0.label,
+                                                                                 data: $0.value.displayString(),
+                                                                                 showDisclosure: true,
+                                                                                 disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+            }
+
+            childRows.append(StatsTotalRowData.init(name: child.label,
+                                                    data: child.value.displayString(),
+                                                    showDisclosure: true,
+                                                    disclosureURL: StatsDataHelper.disclosureUrlForItem(child),
+                                                    childRows: childsChildrenRows,
+                                                    statSection: .periodReferrers))
+        }
+
+        return childRows
+    }
+
+    func clicksTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.clicks))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Clicks.itemSubtitle,
+                                                 dataSubtitle: Clicks.dataSubtitle,
+                                                 dataRows: clicksDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func clicksDataRows() -> [StatsTotalRowData] {
+        return store.getTopClicks()?.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     showDisclosure: true,
+                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                     childRows: childRowsForClicks($0),
+                                                     statSection: .periodClicks) }
+            ?? []
+    }
+
+    func childRowsForClicks(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        guard let children = item.children as? [StatsItem] else {
+            return [StatsTotalRowData]()
+        }
+
+        return children.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     showDisclosure: true,
+                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+    }
+
+    func authorsTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.authors))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Authors.itemSubtitle,
+                                                 dataSubtitle: Authors.dataSubtitle,
+                                                 dataRows: authorsDataRows(),
+                                                 siteStatsPeriodDelegate: periodDelegate))
+
+        return tableRows
+    }
+
+    func authorsDataRows() -> [StatsTotalRowData] {
+        let authors = store.getTopAuthors()
+        return authors?.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
+                                                     userIconURL: $0.iconURL,
+                                                     showDisclosure: true,
+                                                     childRows: childRowsForAuthor($0),
+                                                     statSection: .periodAuthors) }
+            ?? []
+    }
+
+    func childRowsForAuthor(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        guard let children = item.children as? [StatsItem] else {
+            return [StatsTotalRowData]()
+        }
+
+        return children.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString()) }
+    }
+
+    func countriesTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.countries))
+        tableRows.append(CountriesStatsRow(itemSubtitle: Countries.itemSubtitle,
+                                           dataSubtitle: Countries.dataSubtitle,
+                                           dataRows: countriesDataRows()))
+        return tableRows
+    }
+
+    func countriesDataRows() -> [StatsTotalRowData] {
+        return store.getTopCountries()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                     data: $0.value.displayString(),
+                                                                     countryIconURL: $0.iconURL) }
+            ?? []
+    }
+
     func searchTermsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: PeriodHeaders.searchTerms))
@@ -132,7 +294,7 @@ private extension SiteStatsPeriodViewModel {
 
     func searchTermsDataRows() -> [StatsTotalRowData] {
         return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label, data: $0.value.displayString()) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func publishedTableRows() -> [ImmuTableRow] {
@@ -149,7 +311,7 @@ private extension SiteStatsPeriodViewModel {
                                                                      data: "",
                                                                      showDisclosure: true,
                                                                      disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func videosTableRows() -> [ImmuTableRow] {
@@ -169,7 +331,7 @@ private extension SiteStatsPeriodViewModel {
                                                                   mediaID: $0.itemID,
                                                                   icon: Style.imageForGridiconType(.video),
                                                                   showDisclosure: true) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
 }

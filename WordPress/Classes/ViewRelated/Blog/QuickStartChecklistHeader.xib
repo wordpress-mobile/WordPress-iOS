@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rkz-KZ-Ayy" userLabel="Content View">
+                <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rkz-KZ-Ayy" userLabel="Content View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QaU-FW-PcA" userLabel="Top Stroke">
@@ -33,7 +33,7 @@
                                 <constraint firstAttribute="height" constant="0.33000000000000002" id="TaS-fP-pXw"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xiK-ca-ccq">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xiK-ca-ccq">
                             <rect key="frame" x="16" y="12.5" width="303" height="19"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
@@ -46,7 +46,7 @@
                                 <constraint firstAttribute="width" constant="24" id="trJ-6b-F4Y"/>
                             </constraints>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yus-75-Z9J">
+                        <button opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yus-75-Z9J">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <connections>
                                 <action selector="headerDidTouch:" destination="iN0-l3-epB" eventType="touchUpInside" id="g6s-7J-Fwg"/>
@@ -55,12 +55,12 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="xiK-ca-ccq" firstAttribute="leading" secondItem="rkz-KZ-Ayy" secondAttribute="leading" constant="16" id="96L-CX-bjS"/>
+                        <constraint firstItem="xiK-ca-ccq" firstAttribute="leading" secondItem="rkz-KZ-Ayy" secondAttribute="leadingMargin" constant="8" id="96L-CX-bjS"/>
                         <constraint firstAttribute="bottom" secondItem="Yus-75-Z9J" secondAttribute="bottom" id="FvG-Uj-huH"/>
                         <constraint firstItem="2ag-iN-nJf" firstAttribute="top" secondItem="rkz-KZ-Ayy" secondAttribute="top" constant="10" id="K8N-yy-qzD"/>
                         <constraint firstItem="QaU-FW-PcA" firstAttribute="top" secondItem="rkz-KZ-Ayy" secondAttribute="top" id="KE0-Mv-gQE"/>
                         <constraint firstItem="Yus-75-Z9J" firstAttribute="leading" secondItem="rkz-KZ-Ayy" secondAttribute="leading" id="Rx0-3q-tA8"/>
-                        <constraint firstAttribute="trailing" secondItem="2ag-iN-nJf" secondAttribute="trailing" constant="16" id="TIG-45-jVS"/>
+                        <constraint firstAttribute="trailingMargin" secondItem="2ag-iN-nJf" secondAttribute="trailing" constant="8" id="TIG-45-jVS"/>
                         <constraint firstItem="Yus-75-Z9J" firstAttribute="top" secondItem="rkz-KZ-Ayy" secondAttribute="top" id="X3c-u2-Ek8"/>
                         <constraint firstItem="hgL-Ff-jIb" firstAttribute="leading" secondItem="rkz-KZ-Ayy" secondAttribute="leading" id="ax6-VY-Phy"/>
                         <constraint firstAttribute="trailing" secondItem="hgL-Ff-jIb" secondAttribute="trailing" id="dIb-vm-arH"/>
@@ -77,8 +77,8 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rkz-KZ-Ayy" secondAttribute="trailing" id="32s-vC-eRb"/>
-                <constraint firstItem="rkz-KZ-Ayy" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="3LJ-Tb-Pc8"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rkz-KZ-Ayy" secondAttribute="trailing" placeholder="YES" id="32s-vC-eRb"/>
+                <constraint firstItem="rkz-KZ-Ayy" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" placeholder="YES" id="3LJ-Tb-Pc8"/>
                 <constraint firstItem="rkz-KZ-Ayy" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="8R4-t4-EiC"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="rkz-KZ-Ayy" secondAttribute="bottom" id="BeK-YT-USm"/>
             </constraints>
@@ -88,15 +88,10 @@
             <connections>
                 <outlet property="bottomStroke" destination="hgL-Ff-jIb" id="xuE-EE-rcw"/>
                 <outlet property="chevronView" destination="2ag-iN-nJf" id="fe5-yH-BhN"/>
+                <outlet property="contentView" destination="rkz-KZ-Ayy" id="NET-gR-3xr"/>
                 <outlet property="titleLabel" destination="xiK-ca-ccq" id="HrR-PQ-Mtc"/>
             </connections>
             <point key="canvasLocation" x="53.600000000000001" y="48.575712143928037"/>
         </view>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="76p-ko-nof">
-            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <state key="normal" title="Button"/>
-            <point key="canvasLocation" x="27" y="-59"/>
-        </button>
     </objects>
 </document>

@@ -223,7 +223,7 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
                 return UIView()
         }
 
-        headerView.setTite(sectionInfo.name)
+        headerView.setTitle(sectionInfo.name)
         return headerView
     }
 

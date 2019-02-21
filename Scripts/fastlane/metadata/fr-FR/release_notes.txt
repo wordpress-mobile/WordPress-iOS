@@ -1,9 +1,7 @@
-* Si vous créer un nouveau site depuis l’application, vous pouvez désormais enregistrer votre propre domaine .blog !
-* L’application ne plante plus quand vous essayez de supprimer un site depuis un iPad, comme cela arrivait parfois.
-* Correction d’un plantage sur l’écran « A propos » des réglages de l’application.
-* L’écran de réglage de publication a été amélioré pour le rendre plus agréable sur iPad.
-
-Grâce à une série d’améliorations de la fonctionnalité Historique/Révisions, vous pouvez maintenant :
-* Glisser d’une révision à l’autre d’un geste du pouce.
-* Passer du mode HTML au mode Visuel quand vous parcourez une révision.
-* Changer d’avis après avoir appliqué une révision, grâce au nouveau bouton Annuler.
+Pour cette version, nous avons lissé l’expérience sur quelques points :
+- Ajout du support de l'auto-remplissage de mots de passe lors de la saisie des identifiants de connexion.
+- Ajout d’un texte plus clair à propos du partage sur les réseaux sociaux d’un message vide. Si vous ne saisissez pas de message, nous utiliserons le titre de l’article par défaut.
+- Nous enregistrons automatiquement votre brouillon avant de vous afficher l’aperçu.
+- Correctif sur un problème d’espace en haut (ou en bas) de quelques images dans le Lecteur.
+- Correctif sur un bug d’indentation dans la liste des pages pour les pages privées.
+- Correctif sur un bug visuel affectant la liste des articles avec une taille de texte large.

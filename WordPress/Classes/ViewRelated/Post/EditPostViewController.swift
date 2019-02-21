@@ -118,41 +118,14 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    // MARK: - Show a specific editor
-
-    private func showAztec(loading post: AbstractPost) {
-        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
-
-        showEditor(editor)
-    }
-
-    private func showGutenberg(loading post: AbstractPost) {
-        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
-
-        showEditor(editor)
-    }
-
-    // MARK: - Switching Editors
-
-    private func switchToAztec(dismissing editor: EditorViewController) {
-        editor.dismiss(animated: true) { [weak self] in
-            self?.showAztec(loading: editor.post)
-        }
-    }
-
-    private func switchToGutenberg(dismissing editor: EditorViewController) {
-        editor.dismiss(animated: true) { [weak self] in
-            self?.showGutenberg(loading: editor.post)
-        }
-    }
-
     // MARK: - Show editor by settings and post
 
     fileprivate func showEditor() {
         let editor = editorFactory.instantiateEditor(
             for: postToEdit(),
-            switchToAztec: switchToAztec,
-            switchToGutenberg: switchToGutenberg)
+            replaceEditor: { [weak self] (editor, replacement) in
+                self?.replaceEditor(editor: editor, replacement: replacement)
+        })
 
         showEditor(editor)
     }
@@ -187,6 +160,12 @@ class EditPostViewController: UIViewController {
                 let aztec = editor as? AztecPostViewController {
                 aztec.prepopulateMediaItems(insertedMedia)
             }
+        }
+    }
+
+    func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
+        editor.dismiss(animated: true) { [weak self] in
+            self?.showEditor(replacement)
         }
     }
 

@@ -625,6 +625,12 @@ private extension ZendeskUtils {
         // Add platformTag
         tags.append(Constants.platformTag)
 
+        // Add gutenbergIsDefault tag
+        let gutenbergSettings = GutenbergSettings()
+        if gutenbergSettings.isGutenbergEnabled() {
+            tags.append(Constants.gutenbergIsDefault)
+        }
+
         return tags
     }
 
@@ -876,6 +882,7 @@ private extension ZendeskUtils {
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
         static let sourcePlatform = "mobile_-_ios"
+        static let gutenbergIsDefault = "mobile_gutenberg_is_default"
     }
 
     // Zendesk expects these as NSNumber. However, they are defined as UInt64 to satisfy 32-bit devices (ex: iPhone 5).

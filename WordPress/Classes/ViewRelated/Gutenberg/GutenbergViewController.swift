@@ -21,7 +21,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    private let switchToAztec: (EditorViewController) -> ()
+    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -55,6 +55,8 @@ class GutenbergViewController: UIViewController, PostEditor {
     var analyticsEditorSource: String {
         return Analytics.editorSource
     }
+
+    var editorSession: PostEditorAnalyticsSession
 
     var onClose: ((Bool, Bool) -> Void)?
 
@@ -139,18 +141,28 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
+    private var analyticsEditor: PostEditorAnalyticsSession.Editor {
+        switch mode {
+        case .richText:
+            return .gutenberg
+        case .html:
+            return .html
+        }
+    }
     private var isFirstGutenbergLayout = true
 
     // MARK: - Initializers
     required init(
         post: AbstractPost,
-        switchToAztec: @escaping (EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
 
-        self.switchToAztec = switchToAztec
+        self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
+        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -178,6 +190,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         refreshInterface()
 
         gutenberg.delegate = self
+        showInformativeDialogIfNecessary()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -223,6 +236,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     func toggleEditingMode() {
         gutenberg.toggleHTMLMode()
         mode.toggle()
+        editorSession.switch(editor: analyticsEditor)
     }
 
     func requestHTML(for reason: RequestHTMLReason) {
@@ -380,7 +394,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .more:
                 displayMoreSheet()
             case .switchToAztec:
-                switchToAztec(self)
+                editorSession.switch(editor: .classic)
+                EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
             }
@@ -388,6 +403,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidLayout() {
+    }
+
+    func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+        if !editorSession.started {
+            editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+        }
     }
 }
 

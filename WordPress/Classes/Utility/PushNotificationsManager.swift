@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import UserNotifications
 import CocoaLumberjack
+import UserNotifications
 
 
 
@@ -166,10 +167,11 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Handling!
-        let handlers = [ handleSupportNotification,
-                         handleAuthenticationNotification,
-                         handleInactiveNotification,
-                         handleBackgroundNotification ]
+        let handlers = [handleSupportNotification,
+                        handleAuthenticationNotification,
+                        handleInactiveNotification,
+                        handleBackgroundNotification,
+                        handleQuickStartLocalNotification]
 
         for handler in handlers {
             if handler(userInfo, completionHandler) {
@@ -335,8 +337,72 @@ extension PushNotificationsManager {
 
         return true
     }
+
+    /// Handles a Quick Start Local Notification
+    ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    @objc func handleQuickStartLocalNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+            type == Notification.local else {
+                return false
+        }
+
+        if WPTabBarController.sharedInstance()?.presentedViewController != nil {
+            WPTabBarController.sharedInstance()?.dismiss(animated: false)
+        }
+        WPTabBarController.sharedInstance()?.showMySitesTab()
+
+        completionHandler?(.newData)
+
+        return true
+    }
 }
 
+extension PushNotificationsManager {
+    func postNotification(for tour: QuickStartTour) {
+        deletePendingLocalNotifications()
+
+        let content = UNMutableNotificationContent()
+        content.title = tour.title
+        content.body = tour.description
+        content.sound = UNNotificationSound.default
+        content.userInfo = [Notification.typeKey: Notification.local]
+
+        guard let futureDate = Calendar.current.date(byAdding: .day,
+                                                     value: Constants.localNotificationIntervalInDays,
+                                                     to: Date()) else {
+            return
+        }
+        let trigger = UNCalendarNotificationTrigger(dateMatching: futureDate.components, repeats: false)
+        let request = UNNotificationRequest(identifier: Constants.localNotificationIdentifier,
+                                            content: content,
+                                            trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    @objc func deletePendingLocalNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Constants.localNotificationIdentifier])
+    }
+
+    private enum Constants {
+        static let localNotificationIntervalInDays = 2
+        static let localNotificationIdentifier = "QuickStartTourNotificationIdentifier"
+    }
+}
+
+private extension Date {
+    var components: DateComponents {
+        return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                               from: self)
+    }
+}
 
 // MARK: - Nested Types
 //
@@ -353,6 +419,7 @@ private extension PushNotificationsManager {
         static let typeKey = "type"
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
+        static let local = "qs-local-notification"
     }
 
     enum Tracking {

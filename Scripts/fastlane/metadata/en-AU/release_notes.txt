@@ -1,9 +1,8 @@
-* If you start a new site on the app, you can now register your very own .blog subdomain!
-* When you try to delete a site on an iPad, the app will no longer crash (it sometimes would).
-* Fixed a crash on the “About” screen in App Settings.
-* Refreshed the post settings screen so that it looks better on iPad.
+For this release, we’ve smoothed out the experience in a few more areas:
 
-With a fresh round of improvements to the History/Revisions feature, you can now…
-* Swipe between revisions in an instant.
-* Switch between HTML and Visual modes when viewing a revision.
-* Change your mind if you apply a revision with a new Undo button.
+- Added support for password autofill when entering a username during log in.
+- Added clarification text about empty messages when sharing posts to social media. If you don’t provide a message, we’ll use the post title by default.
+- We now automatically save your draft before showing you a preview.
+- Fixed an issue causing big spaces on top of (or below) some images in Reader.
+- Fixed an indentation bug in the Pages list for private pages.
+- Fixed a visual bug affecting the Posts list at large text sizes.

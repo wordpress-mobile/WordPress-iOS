@@ -20,4 +20,4 @@ warn("Core Data: Do not edit an existing model in a release branch unless it has
 
 # Podfile: no references to commit hashes
 ### (except for Gutenberg)
-warn("Podfile: reference to a commit hash") if File.readlines('Podfile').any? { |l| l[/^[^#]*:commit/] && !l.include?("Gutenberg") && !l.include?("RNTAztecView")}
+warn("Podfile: reference to a commit hash") if File.readlines('Podfile').any? { |l| l[/^[^#]*:commit/] && !l.include?("Gutenberg") && !l.include?("RNTAztecView") && !l.include?("gutenberg")}
