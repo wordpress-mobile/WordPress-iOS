@@ -15,10 +15,8 @@ class SiteStatsDetailTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
 
     private var statSection: StatSection?
-    private let tabbedSections = [StatSection.insightsCommentsAuthors,
-                                  .insightsCommentsPosts,
-                                  .insightsFollowersWordPress,
-                                  .insightsFollowersEmail]
+    private let tabbedSectionComments = [StatSection.insightsCommentsAuthors, .insightsCommentsPosts]
+    private let tabbedSectionFollowers = [StatSection.insightsFollowersWordPress, .insightsFollowersEmail]
 
     // MARK: - Configure
 
@@ -49,11 +47,11 @@ private extension SiteStatsDetailTableHeaderView {
         }
 
         countryMapView.isHidden = statSection != .periodCountries
-        let showFilterTabBar = tabbedSections.contains(statSection)
+        let showFilterTabBar = tabbedSectionComments.contains(statSection) || tabbedSectionFollowers.contains(statSection)
         filterTabBar.isHidden = !showFilterTabBar
 
         if showFilterTabBar {
-            setupFilterTabBar()
+            setupFilterTabBarFor(statSection)
         }
     }
 }
@@ -62,12 +60,19 @@ private extension SiteStatsDetailTableHeaderView {
 
 private extension SiteStatsDetailTableHeaderView {
 
-    func setupFilterTabBar() {
+    func setupFilterTabBarFor(_ statSection: StatSection) {
+
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
-        filterTabBar.items = ["One", "Two"]
+        filterTabBar.items = filterTabBarTitlesFor(statSection)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+    }
+
+    func filterTabBarTitlesFor(_ statSection: StatSection) -> [String] {
+        return tabbedSectionComments.contains(statSection) ?
+            tabbedSectionComments.map { $0.tabTitle } :
+            tabbedSectionFollowers.map { $0.tabTitle }
     }
 }
