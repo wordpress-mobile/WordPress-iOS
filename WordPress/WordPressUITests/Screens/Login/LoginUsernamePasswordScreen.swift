@@ -1,6 +1,14 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let navBar = "WordPressAuthenticator.LoginSelfHostedView"
+    static let navBackButton = "Back"
+    static let usernameTextField = "Username"
+    static let passwordTextField = "passwordField"
+    static let nextButton = "submitButton"
+}
+
 class LoginUsernamePasswordScreen: BaseScreen {
     let navBar: XCUIElement
     let navBackButton: XCUIElement
@@ -10,11 +18,11 @@ class LoginUsernamePasswordScreen: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars["WordPressAuthenticator.LoginSelfHostedView"]
-        navBackButton = navBar.buttons["Back"]
-        usernameTextField = app.textFields["Username"]
-        passwordTextField = app.secureTextFields["passwordField"]
-        nextButton = app.buttons["submitButton"]
+        navBar = app.navigationBars[ElementStringIDs.navBar]
+        navBackButton = navBar.buttons[ElementStringIDs.navBackButton]
+        usernameTextField = app.textFields[ElementStringIDs.usernameTextField]
+        passwordTextField = app.secureTextFields[ElementStringIDs.passwordTextField]
+        nextButton = app.buttons[ElementStringIDs.nextButton]
 
         super.init(element: passwordTextField)
     }
@@ -30,6 +38,6 @@ class LoginUsernamePasswordScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["submitButton"].exists
+        return XCUIApplication().buttons[ElementStringIDs.nextButton].exists
     }
 }

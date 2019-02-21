@@ -1,6 +1,12 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let headerText = "LOGGED IN AS"
+    static let connectSiteButton = "connectSite"
+    static let continueButton = "Continue"
+}
+
 class LoginEpilogueScreen: BaseScreen {
     let continueButton: XCUIElement
     let connectSiteButton: XCUIElement
@@ -8,9 +14,9 @@ class LoginEpilogueScreen: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        headerText = app.otherElements["LOGGED IN AS"]
-        connectSiteButton = app.buttons["connectSite"]
-        continueButton = app.buttons["Continue"]
+        headerText = app.otherElements[ElementStringIDs.headerText]
+        connectSiteButton = app.buttons[ElementStringIDs.connectSiteButton]
+        continueButton = app.buttons[ElementStringIDs.continueButton]
 
         super.init(element: headerText)
     }

@@ -1,13 +1,19 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let passwordTextField = "Password"
+    static let loginButton = "Password Next Button"
+    static let errorLabel = "pswdErrorLabel"
+}
+
 class LoginPasswordScreen: BaseScreen {
     let passwordTextField: XCUIElement
     let loginButton: XCUIElement
 
     init() {
-        passwordTextField = XCUIApplication().secureTextFields["Password"]
-        loginButton = XCUIApplication().buttons["Password Next Button"]
+        passwordTextField = XCUIApplication().secureTextFields[ElementStringIDs.passwordTextField]
+        loginButton = XCUIApplication().buttons[ElementStringIDs.loginButton]
         super.init(element: passwordTextField)
     }
 
@@ -28,7 +34,7 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     func verifyLoginError() -> LoginPasswordScreen {
-        let errorLabel = app.staticTexts["pswdErrorLabel"]
+        let errorLabel = app.staticTexts[ElementStringIDs.errorLabel]
         _ = errorLabel.waitForExistence(timeout: 2)
 
         XCTAssertTrue(errorLabel.exists)
@@ -36,6 +42,6 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["Password Next Button"].exists
+        return XCUIApplication().buttons[ElementStringIDs.passwordTextField].exists
     }
 }

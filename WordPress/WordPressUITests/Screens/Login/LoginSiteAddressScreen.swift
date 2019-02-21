@@ -1,6 +1,13 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let navBar = "WordPressAuthenticator.LoginSiteAddressView"
+    static let navBackButton = "Back"
+    static let siteAddressTextField = "usernameField"
+    static let nextButton = "Site Address Next Button"
+}
+
 class LoginSiteAddressScreen: BaseScreen {
     let navBar: XCUIElement
     let navBackButton: XCUIElement
@@ -9,10 +16,10 @@ class LoginSiteAddressScreen: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars["WordPressAuthenticator.LoginSiteAddressView"]
-        navBackButton = navBar.buttons["Back"]
-        siteAddressTextField = app.textFields["usernameField"]
-        nextButton = app.buttons["Site Address Next Button"]
+        navBar = app.navigationBars[ElementStringIDs.navBar]
+        navBackButton = navBar.buttons[ElementStringIDs.navBackButton]
+        siteAddressTextField = app.textFields[ElementStringIDs.siteAddressTextField]
+        nextButton = app.buttons[ElementStringIDs.nextButton]
 
         super.init(element: siteAddressTextField)
     }
@@ -26,6 +33,6 @@ class LoginSiteAddressScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["Site Address Next Button"].exists
+        return XCUIApplication().buttons[ElementStringIDs.nextButton].exists
     }
 }
