@@ -27,3 +27,8 @@ extension XCTest {
         return app.windows.element(boundBy: 0).horizontalSizeClass == .compact || app.windows.element(boundBy: 0).verticalSizeClass == .compact
     }
 }
+
+func isIpad() -> Bool {
+    let app = XCUIApplication()
+    return app.windows.element(boundBy: 0).horizontalSizeClass == .regular && app.windows.element(boundBy: 0).verticalSizeClass == .regular
+}
