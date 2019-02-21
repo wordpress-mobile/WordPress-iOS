@@ -230,7 +230,7 @@ private extension LatestPostSummaryCell {
         resetChartView()
 
         let stubbedData = LatestPostSummaryDataStub()
-        
+
         let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
         let styling = LatestPostSummaryStubStyling(initialDateInterval: firstStubbedDateInterval)
 

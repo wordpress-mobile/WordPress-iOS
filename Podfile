@@ -99,7 +99,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '0059847a66d319bb1c766b3b80b150bb5d3b771e'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'a2c18b88c87d4fb64fb7850f33efbf36734cd594'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'

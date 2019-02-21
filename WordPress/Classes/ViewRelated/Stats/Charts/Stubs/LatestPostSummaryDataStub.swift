@@ -191,7 +191,7 @@ extension LatestPostSummaryStubStyling {
     init(initialDateInterval: TimeInterval) {
         let xAxisFormatter = LatestPostSummaryStubHorizontalAxisFormatter(initialDateInterval: initialDateInterval)
         let yAxisFormatter = LatestPostSummaryStubVerticalAxisFormatter()
-        
+
         self.init(xAxisFormatter: xAxisFormatter, yAxisFormatter: yAxisFormatter)
     }
 }
