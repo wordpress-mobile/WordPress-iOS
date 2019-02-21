@@ -4,14 +4,16 @@ import XCTest
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
     let removeSiteButton: XCUIElement
-    let removeSiteConfirmation: XCUIElement
+    let removeSiteSheet: XCUIElement
+    let removeSiteAlert: XCUIElement
 
     init() {
         let app = XCUIApplication()
         let blogTable = app.tables["Blog Details Table"]
         tabBar = TabNavComponent()
         removeSiteButton = app.cells["BlogDetailsRemoveSiteCell"]
-        removeSiteConfirmation = app.sheets.buttons["Remove Site"]
+        removeSiteSheet = app.sheets.buttons["Remove Site"]
+        removeSiteAlert = app.alerts.buttons["Remove Site"]
 
         super.init(element: blogTable)
     }
@@ -31,7 +33,12 @@ class MySiteScreen: BaseScreen {
 
     func removeSelfHostedSite() {
         removeSiteButton.tap()
-        _ = waitFor(element: removeSiteConfirmation, predicate: "isHittable == true")
-        removeSiteConfirmation.tap()
+        if isIpad() {
+            _ = waitFor(element: removeSiteAlert, predicate: "isHittable == true")
+            removeSiteAlert.tap()
+        } else {
+            _ = waitFor(element: removeSiteSheet, predicate: "isHittable == true")
+            removeSiteSheet.tap()
+        }
     }
 }
