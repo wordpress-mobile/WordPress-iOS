@@ -98,6 +98,10 @@ class GutenbergMediaInserterHelper: NSObject {
         mediaCoordinator.retryMedia(media)
     }
 
+    func hasFailedMedia() -> Bool {
+        return mediaCoordinator.hasFailedMedia(for: post)
+    }
+
     private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
         switch exportableAsset.assetMediaType {
         case .image:

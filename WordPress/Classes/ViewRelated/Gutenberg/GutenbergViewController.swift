@@ -67,7 +67,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     func removeFailedMedia() {
-        // TODO
+        // TODO: we can only implement this when GB bridge allows removal of blocks
     }
 
     var shouldRemovePostOnDismiss: Bool = false
@@ -120,7 +120,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }()
 
     var hasFailedMedia: Bool {
-        return false
+        return mediaInserterHelper.hasFailedMedia()
     }
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
