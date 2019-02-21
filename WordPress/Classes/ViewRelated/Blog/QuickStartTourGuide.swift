@@ -18,6 +18,10 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func setup(for blog: Blog) {
+        if Feature.enabled(.quickStartV2) {
+            didShowUpgradeToV2Notice(for: blog)
+        }
+
         let createTour = QuickStartCreateTour()
         completed(tour: createTour, for: blog)
     }
@@ -47,6 +51,20 @@ open class QuickStartTourGuide: NSObject {
 
             return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
         }
+    }
+
+    func shouldShowUpgradeToV2Notice(for blog: Blog) -> Bool {
+        guard isQuickStartEnabled(for: blog), !allOriginalToursCompleted(for: blog) else {
+            return false
+        }
+
+        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
+        return !completedIDs.contains(QuickStartUpgradeToV2Tour().key)
+    }
+
+    func didShowUpgradeToV2Notice(for blog: Blog) {
+        let v2tour = QuickStartUpgradeToV2Tour()
+        blog.completeTour(v2tour.key)
     }
 
     /// Note: this is only used for QS v1, and can be removed once the feature flag
@@ -331,14 +349,27 @@ private extension QuickStartTourGuide {
         }
     }
 
+    /// Check if all the tours have been completed
+    ///
+    /// - Parameter blog: blog to check
+    /// - Returns: boolean, true if all tours have been completed
     func allToursCompleted(for blog: Blog) -> Bool {
-        let list: [QuickStartTour]
-        if Feature.enabled(.quickStartV2) {
-            list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
-        } else {
-            list = QuickStartTourGuide.checklistTours
+        guard Feature.enabled(.quickStartV2) else {
+            return allOriginalToursCompleted(for: blog)
         }
 
+        let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        return countChecklistCompleted(in: list, for: blog) >= list.count
+    }
+
+    /// Check if all the original (V1) tours have been completed
+    ///
+    /// - Parameter blog: a Blog to check
+    /// - Returns: boolean, true if all the tours have been completed
+    /// - Note: This method is needed for upgrade/migration to V2 and should not
+    ///         be removed when the V2 feature flag is removed.
+    func allOriginalToursCompleted(for blog: Blog) -> Bool {
+        let list = QuickStartTourGuide.checklistTours
         return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 

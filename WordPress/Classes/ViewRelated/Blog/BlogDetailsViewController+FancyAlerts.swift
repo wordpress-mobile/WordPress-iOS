@@ -43,8 +43,16 @@ extension BlogDetailsViewController {
     }
 
     private func showNoticeOrAlertAsNeeded() {
-        if let tourGuide = QuickStartTourGuide.find(),
-            let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
+        guard let tourGuide = QuickStartTourGuide.find() else {
+            showNotificationPrimerAlert()
+            return
+        }
+
+        if tourGuide.shouldShowUpgradeToV2Notice(for:blog) {
+            showUpgradeToV2Alert(for: blog)
+
+            tourGuide.didShowUpgradeToV2Notice(for: blog)
+        } else if let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
             tourGuide.suggest(tourToSuggest, for: blog)
         } else {
             showNotificationPrimerAlert()
@@ -147,5 +155,16 @@ extension BlogDetailsViewController {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
+    }
+
+    private func showUpgradeToV2Alert(for blog: Blog) {
+        guard noPresentedViewControllers else {
+            return
+        }
+
+        let alert = FancyAlertViewController.makeQuickStartUpgradeToV2AlertController(blog: blog)
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        tabBarController?.present(alert, animated: true)
     }
 }

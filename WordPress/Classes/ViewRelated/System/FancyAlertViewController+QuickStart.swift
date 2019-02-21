@@ -6,6 +6,12 @@ extension FancyAlertViewController {
         static let notNowText = NSLocalizedString("Not This Time", comment: "Not this time button title shown in alert asking if users want to try out the quick start checklist.")
     }
 
+    private struct UpgradeStrings {
+        static let titleText = NSLocalizedString("We’ve made some changes to your checklist", comment: "Title of alert letting users know we've upgraded the quick start checklist.")
+        static let bodyText = NSLocalizedString("We’ve added more tasks to help you grow your audience.", comment: "Body text of alert letting users know we've upgraded the quick start checklist.")
+        static let okButtonText = NSLocalizedString("OK", comment: "Dismiss button of alert letting users know we've upgraded the quick start checklist")
+    }
+
     // MARK: TODO: delete these when the .quickStartV2 feature flag is removed
     private struct StringsV1 {
         static let titleText = NSLocalizedString("Want a little help getting started?", comment: "Title of alert asking if users want to try out the quick start checklist.")
@@ -20,10 +26,9 @@ extension FancyAlertViewController {
         static let alertKey = "alert"
     }
 
-    /// Create the fancy alert controller for the notification primer
+    /// Create the fancy alert controller for the Quick Start request
     ///
-    /// - Parameter approveAction: block to call when approve is tapped
-    /// - Returns: FancyAlertViewController of the primer
+    /// - Returns: FancyAlertViewController of the request
     @objc static func makeQuickStartAlertController(blog: Blog) -> FancyAlertViewController {
         guard Feature.enabled(.quickStartV2) else {
             return makeQuickStartAlertControllerV1(blog: blog)
@@ -57,6 +62,29 @@ extension FancyAlertViewController {
                                                      dividerPosition: .bottom,
                                                      defaultButton: allowButton,
                                                      cancelButton: notNowButton,
+                                                     appearAction: {},
+                                                     dismissAction: {})
+
+        let controller = FancyAlertViewController.controllerWithConfiguration(configuration: config)
+        return controller
+    }
+
+    /// Create the fancy alert controller for the Quick Start upgrade notification
+    ///
+    /// - Returns: FancyAlertViewController of the notice
+    @objc static func makeQuickStartUpgradeToV2AlertController(blog: Blog) -> FancyAlertViewController {
+        let okButton = ButtonConfig(UpgradeStrings.okButtonText) { controller, _ in
+            controller.dismiss(animated: true)
+        }
+
+        let image = UIImage(named: "wp-illustration-big-checkmark")
+
+        let config = FancyAlertViewController.Config(titleText: Strings.titleText,
+                                                     bodyText: Strings.bodyText,
+                                                     headerImage: image,
+                                                     dividerPosition: .bottom,
+                                                     defaultButton: okButton,
+                                                     cancelButton: nil,
                                                      appearAction: {},
                                                      dismissAction: {})
 
