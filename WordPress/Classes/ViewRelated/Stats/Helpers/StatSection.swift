@@ -78,6 +78,22 @@ enum StatSection: Int {
             return InsightsHeaders.postingActivity
         case .insightsPublicize:
             return InsightsHeaders.publicize
+        case .periodPostsAndPages:
+            return PeriodHeaders.postsAndPages
+        case .periodReferrers:
+            return PeriodHeaders.referrers
+        case .periodClicks:
+            return PeriodHeaders.clicks
+        case .periodAuthors:
+            return PeriodHeaders.authors
+        case .periodCountries:
+            return PeriodHeaders.countries
+        case .periodSearchTerms:
+            return PeriodHeaders.searchTerms
+        case .periodPublished:
+            return PeriodHeaders.published
+        case .periodVideos:
+            return PeriodHeaders.videos
         default:
             return ""
         }
@@ -85,14 +101,27 @@ enum StatSection: Int {
 
     var itemSubtitle: String {
         switch self {
-        case .insightsCommentsPosts, .insightsTagsAndCategories:
+        case .insightsCommentsPosts,
+             .insightsTagsAndCategories,
+             .periodPostsAndPages,
+             .periodVideos:
             return ItemSubtitles.title
-        case .insightsCommentsAuthors:
+        case .insightsCommentsAuthors,
+             .periodAuthors:
             return ItemSubtitles.author
         case .insightsPublicize:
             return ItemSubtitles.service
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
+        case .insightsFollowersWordPress,
+             .insightsFollowersEmail:
             return ItemSubtitles.follower
+        case .periodReferrers:
+            return ItemSubtitles.referrer
+        case .periodClicks:
+            return ItemSubtitles.link
+        case .periodCountries:
+            return ItemSubtitles.country
+        case .periodSearchTerms:
+            return ItemSubtitles.searchTerm
         default:
             return ""
         }
@@ -100,14 +129,24 @@ enum StatSection: Int {
 
     var dataSubtitle: String {
         switch self {
-        case .insightsCommentsAuthors, .insightsCommentsPosts:
+        case .insightsCommentsAuthors,
+             .insightsCommentsPosts:
             return DataSubtitles.comments
-        case .insightsTagsAndCategories:
+        case .insightsTagsAndCategories,
+             .periodPostsAndPages,
+             .periodReferrers,
+             .periodAuthors,
+             .periodCountries,
+             .periodSearchTerms,
+             .periodVideos:
             return DataSubtitles.views
         case .insightsPublicize:
             return DataSubtitles.followers
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
+        case .insightsFollowersWordPress,
+             .insightsFollowersEmail:
             return DataSubtitles.since
+        case .periodClicks:
+            return DataSubtitles.clicks
         default:
             return ""
         }
@@ -155,11 +194,26 @@ enum StatSection: Int {
         static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
     }
 
+    struct PeriodHeaders {
+        static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
+        static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
+        static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
+        static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
+        static let countries = NSLocalizedString("Countries", comment: "Period Stats 'Countries' header")
+        static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
+        static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
+        static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
+    }
+
     struct ItemSubtitles {
         static let author = NSLocalizedString("Author", comment: "Author label for list of commenters.")
         static let title = NSLocalizedString("Title", comment: "Title label for list of posts.")
         static let service = NSLocalizedString("Service", comment: "Publicize label for connected service")
         static let follower = NSLocalizedString("Follower", comment: "Followers label for list of followers.")
+        static let referrer = NSLocalizedString("Referrer", comment: "Referrers label for link title")
+        static let link = NSLocalizedString("Link", comment: "Clicks label for link title")
+        static let country = NSLocalizedString("Country", comment: "Countries label for country")
+        static let searchTerm = NSLocalizedString("Search Term", comment: "Search Terms label for search term")
     }
 
     struct DataSubtitles {
@@ -167,6 +221,7 @@ enum StatSection: Int {
         static let views = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
         static let followers = NSLocalizedString("Followers", comment: "Publicize label for number of followers")
         static let since = NSLocalizedString("Since", comment: "Followers label for time period in list of follower.")
+        static let clicks = NSLocalizedString("Clicks", comment: "Clicks label for number of clicks")
     }
 
     struct TabTitles {

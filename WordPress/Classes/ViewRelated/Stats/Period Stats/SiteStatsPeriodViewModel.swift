@@ -65,61 +65,13 @@ class SiteStatsPeriodViewModel: Observable {
 
 private extension SiteStatsPeriodViewModel {
 
-    // MARK: - Period Stats strings
-
-    struct PeriodHeaders {
-        static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
-        static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
-        static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
-        static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
-        static let countries = NSLocalizedString("Countries", comment: "Period Stats 'Countries' header")
-        static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
-        static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
-        static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
-    }
-
-    struct PostsAndPages {
-        static let itemSubtitle = NSLocalizedString("Title", comment: "Posts and Pages label for post/page title")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Posts and Pages label for number of views")
-    }
-
-    struct Referrers {
-        static let itemSubtitle = NSLocalizedString("Referrer", comment: "Referrers label for link title")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Referrers label for number of views")
-    }
-
-    struct Clicks {
-        static let itemSubtitle = NSLocalizedString("Link", comment: "Clicks label for link title")
-        static let dataSubtitle = NSLocalizedString("Clicks", comment: "Clicks label for number of clicks")
-    }
-
-    struct Authors {
-        static let itemSubtitle = NSLocalizedString("Author", comment: "Authors label for post author")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Authors label for number of views")
-    }
-
-    struct Countries {
-        static let itemSubtitle = NSLocalizedString("Country", comment: "Countries label for country")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Countries label for number of views")
-    }
-
-    struct SearchTerms {
-        static let itemSubtitle = NSLocalizedString("Search Term", comment: "Search Terms label for search term")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Search Terms label for number of views")
-    }
-
-    struct Videos {
-        static let itemSubtitle = NSLocalizedString("Title", comment: "Videos label for post/page title")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "Videos label for number of views")
-    }
-
     // MARK: - Create Table Rows
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.postsAndPages))
-        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: PostsAndPages.itemSubtitle,
-                                           dataSubtitle: PostsAndPages.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodPostsAndPages.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                           dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                            dataRows: postsAndPagesDataRows(),
                                            siteStatsPeriodDelegate: periodDelegate))
 
@@ -151,9 +103,9 @@ private extension SiteStatsPeriodViewModel {
 
     func referrersTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.referrers))
-        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Referrers.itemSubtitle,
-                                                 dataSubtitle: Referrers.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodReferrers.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                 dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
                                                  siteStatsPeriodDelegate: periodDelegate))
 
@@ -201,9 +153,9 @@ private extension SiteStatsPeriodViewModel {
 
     func clicksTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.clicks))
-        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Clicks.itemSubtitle,
-                                                 dataSubtitle: Clicks.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodClicks.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
+                                                 dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                  dataRows: clicksDataRows(),
                                                  siteStatsPeriodDelegate: periodDelegate))
 
@@ -234,9 +186,9 @@ private extension SiteStatsPeriodViewModel {
 
     func authorsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.authors))
-        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Authors.itemSubtitle,
-                                                 dataSubtitle: Authors.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodAuthors.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
+                                                 dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                  dataRows: authorsDataRows(),
                                                  siteStatsPeriodDelegate: periodDelegate))
 
@@ -267,9 +219,9 @@ private extension SiteStatsPeriodViewModel {
 
     func countriesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.countries))
-        tableRows.append(CountriesStatsRow(itemSubtitle: Countries.itemSubtitle,
-                                           dataSubtitle: Countries.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodCountries.title))
+        tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
+                                           dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                            dataRows: countriesDataRows()))
         return tableRows
     }
@@ -283,9 +235,9 @@ private extension SiteStatsPeriodViewModel {
 
     func searchTermsTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.searchTerms))
-        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: SearchTerms.itemSubtitle,
-                                                 dataSubtitle: SearchTerms.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodSearchTerms.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
+                                                 dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
                                                  dataRows: searchTermsDataRows(),
                                                  siteStatsPeriodDelegate: periodDelegate))
 
@@ -299,7 +251,7 @@ private extension SiteStatsPeriodViewModel {
 
     func publishedTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.published))
+        tableRows.append(CellHeaderRow(title: StatSection.periodPublished.title))
         tableRows.append(TopTotalsNoSubtitlesPeriodStatsRow(dataRows: publishedDataRows(),
                                                             siteStatsPeriodDelegate: periodDelegate))
 
@@ -316,9 +268,9 @@ private extension SiteStatsPeriodViewModel {
 
     func videosTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: PeriodHeaders.videos))
-        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: Videos.itemSubtitle,
-                                                 dataSubtitle: Videos.dataSubtitle,
+        tableRows.append(CellHeaderRow(title: StatSection.periodVideos.title))
+        tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
+                                                 dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                  dataRows: videosDataRows(),
                                                  siteStatsPeriodDelegate: periodDelegate))
 
