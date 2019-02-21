@@ -524,6 +524,11 @@
 		73F6DD44212C714F00CE447D /* RichNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD43212C714F00CE447D /* RichNotificationViewModel.swift */; };
 		73F6DD45212C714F00CE447D /* RichNotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F6DD43212C714F00CE447D /* RichNotificationViewModel.swift */; };
 		73FEC871220B358500CEF791 /* WPAccount+RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FEC870220B358500CEF791 /* WPAccount+RestApi.swift */; };
+		73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FF702F221F43CD00541798 /* StatsBarChartView.swift */; };
+		73FF7032221F469100541798 /* Charts+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FF7031221F469100541798 /* Charts+Support.swift */; };
+		73FF7034221F4AE200541798 /* Charts+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FF7033221F4AE200541798 /* Charts+Styling.swift */; };
+		73FF7038221F4C9500541798 /* lps_withData.json in Resources */ = {isa = PBXBuildFile; fileRef = 73FF7036221F4C9400541798 /* lps_withData.json */; };
+		73FF7039221F4C9500541798 /* LatestPostSummaryDataStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FF7037221F4C9400541798 /* LatestPostSummaryDataStub.swift */; };
 		740219FE202E12F4006CC39F /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
@@ -2401,6 +2406,11 @@
 		73F6DD43212C714F00CE447D /* RichNotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichNotificationViewModel.swift; sourceTree = "<group>"; };
 		73FEC870220B358500CEF791 /* WPAccount+RestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPAccount+RestApi.swift"; sourceTree = "<group>"; };
 		73FEFF1991AE9912FB2DA9BC /* Pods-WordPressNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		73FF702F221F43CD00541798 /* StatsBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsBarChartView.swift; sourceTree = "<group>"; };
+		73FF7031221F469100541798 /* Charts+Support.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Charts+Support.swift"; sourceTree = "<group>"; };
+		73FF7033221F4AE200541798 /* Charts+Styling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Charts+Styling.swift"; sourceTree = "<group>"; };
+		73FF7036221F4C9400541798 /* lps_withData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lps_withData.json; sourceTree = "<group>"; };
+		73FF7037221F4C9400541798 /* LatestPostSummaryDataStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestPostSummaryDataStub.swift; sourceTree = "<group>"; };
 		740516882087B73400252FD0 /* SearchableActivityConvertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableActivityConvertable.swift; sourceTree = "<group>"; };
 		740BD8331A0D4C3600F04D18 /* WPUploadStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusButton.h; sourceTree = "<group>"; };
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
@@ -4559,6 +4569,7 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				73FF702D221F43BB00541798 /* Charts */,
 				98747670219638990080967F /* Extensions */,
 				98747674219644E40080967F /* Helpers */,
 				98747671219638BF0080967F /* Insights */,
@@ -5276,6 +5287,26 @@
 				73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */,
 			);
 			path = Tracks;
+			sourceTree = "<group>";
+		};
+		73FF702D221F43BB00541798 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				73FF7035221F4C9400541798 /* Stubs */,
+				73FF7033221F4AE200541798 /* Charts+Styling.swift */,
+				73FF7031221F469100541798 /* Charts+Support.swift */,
+				73FF702F221F43CD00541798 /* StatsBarChartView.swift */,
+			);
+			path = Charts;
+			sourceTree = "<group>";
+		};
+		73FF7035221F4C9400541798 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				73FF7037221F4C9400541798 /* LatestPostSummaryDataStub.swift */,
+				73FF7036221F4C9400541798 /* lps_withData.json */,
+			);
+			path = Stubs;
 			sourceTree = "<group>";
 		};
 		740C7C51202F50A3001C31B0 /* Shared UI */ = {
@@ -8596,6 +8627,7 @@
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
+				73FF7038221F4C9500541798 /* lps_withData.json in Resources */,
 				B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
@@ -9688,6 +9720,7 @@
 				FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				D82253ED219A8A960014D0E2 /* SiteInformationWizardContent.swift in Sources */,
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
+				73FF7039221F4C9500541798 /* LatestPostSummaryDataStub.swift in Sources */,
 				9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */,
 				1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */,
 				9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */,
@@ -10018,6 +10051,7 @@
 				B57273611B66CCEF000D1C4F /* AlertView.swift in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
+				73FF7030221F43CD00541798 /* StatsBarChartView.swift in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
@@ -10124,6 +10158,7 @@
 				177B4C2B2123185300CF8084 /* GiphyMediaGroup.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
+				73FF7034221F4AE200541798 /* Charts+Styling.swift in Sources */,
 				98D60B9B1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
 				D8AEA54D21C2216300AB4DCB /* SiteVerticalPresenter.swift in Sources */,
@@ -10241,6 +10276,7 @@
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
+				73FF7032221F469100541798 /* Charts+Support.swift in Sources */,
 				E1CECE021E6EC7A8009C6695 /* FakePreviewBuilder.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
 				173F6DFC21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift in Sources */,
