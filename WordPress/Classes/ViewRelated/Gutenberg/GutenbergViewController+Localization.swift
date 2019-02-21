@@ -3,7 +3,7 @@ import Foundation
 extension GutenbergViewController {
 
     enum Localization {
-        static let fileName = "InfoPlist"
+        static let fileName = "Localizable"
     }
 
     func parseGutenbergTranslations(in bundle: Bundle = Bundle.main) -> [String: [String]]? {

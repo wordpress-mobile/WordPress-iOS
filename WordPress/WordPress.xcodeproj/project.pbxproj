@@ -1493,6 +1493,7 @@
 		E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E1D86E681B2B414300DD2192 /* WordPress-32-33.xcmappingmodel */; };
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
+		E1DAC8FA221F1C8D00833FFC /* GutenbergTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DAC8F8221F1C0500833FFC /* GutenbergTranslator.swift */; };
 		E1DB326C1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DB326B1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift */; };
 		E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */; };
 		E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */; };
@@ -3569,6 +3570,7 @@
 		E1D91457134A854A0089019C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1D95EB617A28F5E00A3E9F3 /* WPActivityDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPActivityDefaults.h; sourceTree = "<group>"; };
 		E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPActivityDefaults.m; sourceTree = "<group>"; };
+		E1DAC8F8221F1C0500833FFC /* GutenbergTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergTranslator.swift; sourceTree = "<group>"; };
 		E1DB326B1D9ACD4A00C8FEBC /* ReaderTeamTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTeamTopic.swift; sourceTree = "<group>"; };
 		E1DB326D1D9AE60900C8FEBC /* WordPress 52.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 52.xcdatamodel"; sourceTree = "<group>"; };
 		E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PagedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -5828,6 +5830,7 @@
 				594DB2941AB891A200E2E456 /* WPUserAgent.m */,
 				FF28B3EF1AEB251200E11AAE /* InfoPListTranslator.h */,
 				FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */,
+				E1DAC8F8221F1C0500833FFC /* GutenbergTranslator.swift */,
 				85B125431B02937E008A3D95 /* UIAlertControllerProxy.h */,
 				85B125441B02937E008A3D95 /* UIAlertControllerProxy.m */,
 				7E846FF020FD0A0500881F5A /* ContentCoordinator.swift */,
@@ -9955,6 +9958,7 @@
 				E17FEADA221494B2006E1D2D /* Blog+Analytics.swift in Sources */,
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
+				E1DAC8FA221F1C8D00833FFC /* GutenbergTranslator.swift in Sources */,
 				E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */,
 				D816C1F220E0894D00C4D82F /* ReplyToComment.swift in Sources */,
 				E1BB92321FDAAFFA00F2D817 /* TextWithAccessoryButtonCell.swift in Sources */,
