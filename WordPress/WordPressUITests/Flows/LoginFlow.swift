@@ -20,13 +20,13 @@ class LoginFlow {
             if meScreen.isLoggedInToWpcom() {
                 _ = meScreen.logout()
             } else {
-                _ = TabNavComponent().gotoMySitesScreen()
+                _ = TabNavComponent().gotoMySiteScreen()
                 .removeSelfHostedSite()
             }
             return
         }
 
-        while LoginPasswordScreen.isLoaded() || LoginEmailScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() {
+        while LoginPasswordScreen.isLoaded() || LoginEmailScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() || LoginCheckMagicLinkScreen.isLoaded() {
             if LoginEmailScreen.isLoaded() && LoginEmailScreen.isEmailEntered() {
                 LoginEmailScreen().emailTextField.clearAndEnterText(text: "")
             }

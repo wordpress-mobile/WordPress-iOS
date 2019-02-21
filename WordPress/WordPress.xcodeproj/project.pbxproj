@@ -1166,6 +1166,7 @@
 		CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
 		CCE911BC221D8497007E1D4E /* LoginSiteAddressScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */; };
 		CCE911BE221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */; };
+		CCF6ACE7221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6ACE6221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift */; };
 		CE1CCB2D204DDD18000EE3AC /* MyProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1CCB2C204DDD18000EE3AC /* MyProfileHeaderView.swift */; };
 		CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */; };
 		CE39E17220CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */; };
@@ -3145,6 +3146,7 @@
 		CC94FC692214532D002E5825 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
 		CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSiteAddressScreen.swift; sourceTree = "<group>"; };
 		CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUsernamePasswordScreen.swift; sourceTree = "<group>"; };
+		CCF6ACE6221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckMagicLinkScreen.swift; sourceTree = "<group>"; };
 		CDF46FFC7F78DB8FEB56E6F9 /* Pods-WordPressShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		CE1CCB2C204DDD18000EE3AC /* MyProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileHeaderView.swift; sourceTree = "<group>"; };
 		CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileHeaderView.xib; sourceTree = "<group>"; };
@@ -7244,6 +7246,7 @@
 				BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */,
 				BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */,
 				BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */,
+				CCF6ACE6221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift */,
 				CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */,
 				CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */,
 				BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */,
@@ -10687,6 +10690,7 @@
 				BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */,
 				BE8707172006B774004FB5A4 /* MySiteScreen.swift in Sources */,
 				BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */,
+				CCF6ACE7221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift in Sources */,
 				FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */,
 				BED4D8391FF137FD00A11345 /* EditorTests.swift in Sources */,
 				BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */,

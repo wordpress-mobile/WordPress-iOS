@@ -33,6 +33,15 @@ class LoginTests: XCTestCase {
         XCTAssert(welcomeScreen.isLoaded())
     }
 
+    func testEmailMagicLinkLogin() {
+        _ = WelcomeScreen().login()
+        .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+        .proceedWithLink()
+        .checkMagicLink()
+
+        XCTAssert(LoginCheckMagicLinkScreen().isLoaded())
+    }
+
     func testWpcomUsernamePasswordLogin() {
         _ = WelcomeScreen().login()
             .goToSiteAddressLogin()
@@ -44,6 +53,9 @@ class LoginTests: XCTestCase {
         XCTAssert(MySiteScreen().isLoaded())
     }
 
+    /*
+     This test is currently disabled pending resolution of this crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/11094
+     */
     func testSelfHostedUsernamePasswordLoginLogout() {
         _ = WelcomeScreen().login()
             .goToSiteAddressLogin()
