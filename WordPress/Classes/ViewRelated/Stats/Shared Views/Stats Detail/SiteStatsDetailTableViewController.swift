@@ -8,6 +8,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - Properties
 
+    var statSection: StatSection?
     private typealias Style = WPStyleGuide.Stats
 
     private lazy var tableHandler: ImmuTableViewHandler = {
@@ -19,9 +20,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTable()
-
-        title = "This Be The Deets"
-//        title = NSLocalizedString("title", comment: "Title for stats detail view.")
+        title = statSection?.title
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
