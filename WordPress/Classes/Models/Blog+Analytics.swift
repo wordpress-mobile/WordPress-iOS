@@ -2,7 +2,7 @@ import Foundation
 
 extension Blog {
     enum AnalyticsType: String {
-        case dotcom
+        case wpcom
         case jetpack
         case core
     }
@@ -10,7 +10,7 @@ extension Blog {
     var analyticsType: AnalyticsType {
         if let dotComID = dotComID, dotComID.intValue > 0 {
             if isHostedAtWPcom {
-                return .dotcom
+                return .wpcom
             } else {
                 return .jetpack
             }
