@@ -82,7 +82,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func isUploadingMedia() -> Bool {
-        return mediaCoordinator.isUploadingMedia(for: post)        
+        return mediaCoordinator.isUploadingMedia(for: post)
     }
 
     func cancelUploadOfAllMedia() {
