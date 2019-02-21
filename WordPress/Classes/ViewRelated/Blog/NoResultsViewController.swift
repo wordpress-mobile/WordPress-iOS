@@ -15,6 +15,7 @@ import Reachability
 ///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
+/// If this view is presented as a result of connectivity issue we will override the title, subtitle and image to default values defined in the NoConnection struct
 ///
 @objc class NoResultsViewController: UIViewController {
 
@@ -31,29 +32,9 @@ import Reachability
     @IBOutlet weak var accessoryStackView: UIStackView!
 
     // To allow storing values until view is loaded.
-    // If the view is diplayed due to connectivity issue we set the title and subtitle to their defined values in NoConnectionMessages.
-    private var titleText: String? {
-        didSet {
-            if isConnectionAvailable == false {
-                titleText = NoConnectionMessages.title
-            }
-        }
-    }
-    private var subtitleText: String? {
-        didSet {
-            if isConnectionAvailable == false {
-                subtitleText = NoConnectionMessages.subTitle
-            }
-        }
-    }
-    private var attributedSubtitleText: NSAttributedString? {
-        didSet {
-            if isConnectionAvailable == false {
-                attributedSubtitleText = NSAttributedString(string: NoConnectionMessages.subTitle)
-            }
-        }
-    }
-
+    private var titleText: String?
+    private var subtitleText: String?
+    private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
     private var imageName: String?
     private var subtitleImageName: String?
@@ -70,7 +51,7 @@ import Reachability
     private var titleLabelTopConstraint: NSLayoutConstraint?
 
     //For No results on connection issue
-    private var reachability = Reachability.forInternetConnection()
+    private let reachability = Reachability.forInternetConnection()
     private var isConnectionAvailable: Bool? {
         return reachability?.isReachable()
     }
@@ -135,13 +116,7 @@ import Reachability
                                     subtitleImage: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
-        controller.titleText = title
-        controller.subtitleText = subtitle
-        controller.attributedSubtitleText = attributedSubtitle
-        controller.buttonText = buttonTitle
-        controller.imageName = image
-        controller.subtitleImageName = subtitleImage
-        controller.accessorySubview = accessoryView
+        controller.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, attributedSubtitle: attributedSubtitle, image: image, subtitleImage: subtitleImage, accessoryView: accessoryView)
         return controller
     }
 
@@ -173,11 +148,12 @@ import Reachability
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
-        titleText = title
-        subtitleText = subtitle
-        attributedSubtitleText = attributedSubtitle
+        let isReachable = reachability?.isReachable()
+        titleText = isReachable == false ? NoConnection.title : title
+        subtitleText = isReachable == false ? NoConnection.subTitle : subtitle
+        attributedSubtitleText = isReachable == false ? NSAttributedString(string: NoConnection.subTitle) : attributedSubtitle
         buttonText = buttonTitle
-        imageName = image
+        imageName = isReachable == false ? NoConnection.imageName : image
         subtitleImageName = subtitleImage
         accessorySubview = accessoryView
         displayTitleViewOnly = false
@@ -545,8 +521,9 @@ private extension NoResultsViewController {
         stopAnimatingViewIfNeeded(accessorySubview)
     }
 
-    struct NoConnectionMessages {
+    struct NoConnection {
         static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
         static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
+        static let imageName = "cloud"
     }
 }
