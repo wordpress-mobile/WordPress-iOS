@@ -48,7 +48,7 @@ extension BlogDetailsViewController {
             return
         }
 
-        if tourGuide.shouldShowUpgradeToV2Notice(for:blog) {
+        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
             showUpgradeToV2Alert(for: blog)
 
             tourGuide.didShowUpgradeToV2Notice(for: blog)
