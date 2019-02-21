@@ -15,7 +15,7 @@ import Reachability
 ///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
-/// If this view is presented as a result of connectivity issue we will override the title, subtitle and image to default values defined in the NoConnection struct
+/// If this view is presented as a result of connectivity issue we will override the title, subtitle, image and accessorySubview (if it was set) to default values defined in the NoConnection struct
 ///
 @objc class NoResultsViewController: UIViewController {
 
