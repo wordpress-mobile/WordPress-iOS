@@ -52,9 +52,6 @@ import Reachability
 
     //For No results on connection issue
     private let reachability = Reachability.forInternetConnection()
-    private var isConnectionAvailable: Bool? {
-        return reachability?.isReachable()
-    }
 
     // MARK: - View
 
