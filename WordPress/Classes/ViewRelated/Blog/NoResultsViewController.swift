@@ -152,7 +152,7 @@ import Reachability
         buttonText = buttonTitle
         imageName = isReachable == false ? NoConnection.imageName : image
         subtitleImageName = subtitleImage
-        accessorySubview = accessoryView
+        accessorySubview = isReachable == false ? nil : accessoryView
         displayTitleViewOnly = false
     }
 
