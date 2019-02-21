@@ -76,9 +76,9 @@ extension UIImageView {
         setImageWith(request, placeholderImage: placeholderImage, success: { [weak self] (_, _, image) in
             self?.image = image
             self?.removePlaceholderBorder()
-        }) { [weak self] (_, _, _) in
+        }, failure: { [weak self] (_, _, _) in
             self?.applyPlaceholderBorder()
-        }
+        })
     }
 }
 
