@@ -12,15 +12,20 @@ class SiteStatsDetailTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     @IBOutlet weak var dataLabel: UILabel!
 
     static let identifier = "SiteStatsDetailTableHeaderView"
-    private var showFilter = false
-    private var showMap = false
     private typealias Style = WPStyleGuide.Stats
+
+    private var statSection: StatSection?
+    private let tabbedSections = [StatSection.insightsCommentsAuthors,
+                                  .insightsCommentsPosts,
+                                  .insightsFollowersWordPress,
+                                  .insightsFollowersEmail]
 
     // MARK: - Configure
 
-    func configure(showFilter: Bool = false, showMap: Bool = false) {
-        self.showFilter = showFilter
-        self.showMap = showMap
+    func configure(statSection: StatSection?) {
+        self.statSection = statSection
+        self.itemLabel.text = statSection?.itemSubtitle
+        self.dataLabel.text = statSection?.dataSubtitle
 
         setAccessoryVisibility()
         applyStyles()
@@ -37,10 +42,17 @@ private extension SiteStatsDetailTableHeaderView {
     }
 
     func setAccessoryVisibility() {
-        countryMapView.isHidden = !showMap
-        filterTabBar.isHidden = !showFilter
+        guard let statSection = statSection else {
+            countryMapView.isHidden = true
+            filterTabBar.isHidden = true
+            return
+        }
 
-        if showFilter {
+        countryMapView.isHidden = statSection != .periodCountries
+        let showFilterTabBar = tabbedSections.contains(statSection)
+        filterTabBar.isHidden = !showFilterTabBar
+
+        if showFilterTabBar {
             setupFilterTabBar()
         }
     }

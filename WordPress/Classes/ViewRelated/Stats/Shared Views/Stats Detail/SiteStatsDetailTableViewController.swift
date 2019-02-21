@@ -31,7 +31,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                 return nil
         }
 
-        headerView.configure()
+        headerView.configure(statSection: statSection)
         return headerView
     }
 
