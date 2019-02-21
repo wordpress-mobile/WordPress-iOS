@@ -18,8 +18,7 @@ class LoginEmailScreen: BaseScreen {
     }
 
     func proceedWith(email: String) -> LinkOrPasswordScreen {
-        emailTextField.tap()
-        emailTextField.typeText(email)
+        emailTextField.clearAndEnterText(text: email)
         nextButton.tap()
 
         return LinkOrPasswordScreen()

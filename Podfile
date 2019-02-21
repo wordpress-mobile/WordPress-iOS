@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.1-beta.1'
+    pod 'WordPressShared', '1.7.1-beta.1'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -82,6 +82,11 @@ def gutenberg_pod(name, branch=nil)
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
+def gutenberg(options)
+    pod 'Gutenberg', options
+    pod 'RNTAztecView', options
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -94,8 +99,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '3aca8d421f234dc7d52790297619322454cdcb03'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '3aca8d421f234dc7d52790297619322454cdcb03'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '6ea31e4f1d2c79fcbcafe9085f7950cd4981f776'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'

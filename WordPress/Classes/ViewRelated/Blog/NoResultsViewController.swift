@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import Reachability
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
@@ -14,6 +15,7 @@ import WordPressShared
 ///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
+/// If this view is presented as a result of connectivity issue we will override the title, subtitle, image and accessorySubview (if it was set) to default values defined in the NoConnection struct
 ///
 @objc class NoResultsViewController: UIViewController {
 
@@ -48,6 +50,9 @@ import WordPressShared
     private var titleLabelMaxWidthConstraint: NSLayoutConstraint?
     private var titleLabelTopConstraint: NSLayoutConstraint?
 
+    //For No results on connection issue
+    private let reachability = Reachability.forInternetConnection()
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -57,13 +62,14 @@ import WordPressShared
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        reachability?.startNotifier()
         configureView()
         startAnimatingIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        reachability?.stopNotifier()
         stopAnimatingIfNeeded()
     }
 
@@ -107,13 +113,7 @@ import WordPressShared
                                     subtitleImage: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
-        controller.titleText = title
-        controller.subtitleText = subtitle
-        controller.attributedSubtitleText = attributedSubtitle
-        controller.buttonText = buttonTitle
-        controller.imageName = image
-        controller.subtitleImageName = subtitleImage
-        controller.accessorySubview = accessoryView
+        controller.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, attributedSubtitle: attributedSubtitle, image: image, subtitleImage: subtitleImage, accessoryView: accessoryView)
         return controller
     }
 
@@ -145,13 +145,14 @@ import WordPressShared
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
-        titleText = title
-        subtitleText = subtitle
-        attributedSubtitleText = attributedSubtitle
+        let isReachable = reachability?.isReachable()
+        titleText = isReachable == false ? NoConnection.title : title
+        subtitleText = isReachable == false ? NoConnection.subTitle : subtitle
+        attributedSubtitleText = isReachable == false ? NSAttributedString(string: NoConnection.subTitle) : attributedSubtitle
         buttonText = buttonTitle
-        imageName = image
+        imageName = isReachable == false ? NoConnection.imageName : image
         subtitleImageName = subtitleImage
-        accessorySubview = accessoryView
+        accessorySubview = isReachable == false ? nil : accessoryView
         displayTitleViewOnly = false
     }
 
@@ -515,5 +516,11 @@ private extension NoResultsViewController {
 
     func stopAnimatingIfNeeded() {
         stopAnimatingViewIfNeeded(accessorySubview)
+    }
+
+    struct NoConnection {
+        static let title: String = NSLocalizedString("Unable to load this page right now.", comment: "Title for No results full page screen displayed when there is no connection")
+        static let subTitle: String = NSLocalizedString("Check your network connection and try again.", comment: "Subtitle for No results full page screen displayed when there is no connection")
+        static let imageName = "cloud"
     }
 }

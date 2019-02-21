@@ -41,43 +41,43 @@ class SiteStatsInsightsViewModel: Observable {
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.latestPostSummary))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
                 tableRows.append(LatestPostSummaryRow(summaryData: store.getLastPostInsight(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.allTimeStats))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
             case .followersTotals:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.followerTotals))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularDayAndHour:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.mostPopularStats))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createMostPopularStatsRows()))
             case .tagsAndCategories:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.tagsAndCategories))
-                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: TagsAndCategories.itemSubtitle,
-                                                   dataSubtitle: TagsAndCategories.dataSubtitle,
+                tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
+                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                   dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
                                                    dataRows: createTagsAndCategoriesRows(),
                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.annualSiteStats))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
                 tableRows.append(createAnnualSiteStatsRow())
             case .comments:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.comments))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
                 tableRows.append(createCommentsRow())
             case .followers:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.followers))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsFollowersWordPress.title))
                 tableRows.append(createFollowersRow())
             case .todaysStats:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.todaysStats))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
             case .postingActivity:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.postingActivity))
+                tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
                 tableRows.append(createPostingActivityRow())
             case .publicize:
-                tableRows.append(CellHeaderRow(title: InsightsHeaders.publicize))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: Publicize.itemSubtitle,
-                                                               dataSubtitle: Publicize.dataSubtitle,
+                tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
+                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
+                                                               dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
                                                                dataRows: createPublicizeRows()))
             }
         }
@@ -102,20 +102,6 @@ class SiteStatsInsightsViewModel: Observable {
 
 private extension SiteStatsInsightsViewModel {
 
-    struct InsightsHeaders {
-        static let latestPostSummary = NSLocalizedString("Latest Post Summary", comment: "Insights latest post summary header")
-        static let allTimeStats = NSLocalizedString("All Time Stats", comment: "Insights 'All Time Stats' header")
-        static let mostPopularStats = NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
-        static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
-        static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
-        static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
-        static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
-        static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
-        static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
-        static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
-        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
-    }
-
     struct AllTimeStats {
         static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
         static let postsIcon = Style.imageForGridiconType(.posts)
@@ -132,78 +118,23 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct FollowerTotals {
+        static let wordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
+        static let email = NSLocalizedString("Email", comment: "Label for email followers")
+        static let social = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
         static let wordPressIcon = Style.imageForGridiconType(.mySites)
         static let emailIcon = Style.imageForGridiconType(.mail)
-        static let socialTitle = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
         static let socialIcon = Style.imageForGridiconType(.share)
-    }
-
-    struct Followers {
-        static let totalFollowers = NSLocalizedString("Total %@ Followers: %@", comment: "Label displaying total number of followers for a type. The first %@ is the type (WordPress.com or Email), the second %@ is the total.")
-        static let itemSubtitle = NSLocalizedString("Follower", comment: "Followers label for list of followers.")
-        static let dataSubtitle = NSLocalizedString("Since", comment: "Followers label for time period in list of follower.")
-    }
-
-    enum FollowerType {
-        case wordPressDotCom
-        case email
-
-        var title: String {
-            switch self {
-            case .wordPressDotCom:
-                return NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
-            case .email:
-                return NSLocalizedString("Email", comment: "Label for email followers")
-            }
-        }
-    }
-
-    struct Comments {
-        static let dataSubtitle = NSLocalizedString("Comments", comment: "Label for comment count, either by author or post.")
-    }
-
-    enum CommentType {
-        case author
-        case post
-
-        var title: String {
-            switch self {
-            case .author:
-                return NSLocalizedString("Authors", comment: "Label for comments by author")
-            case .post:
-                return NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
-            }
-        }
-
-        var itemSubtitle: String {
-            switch self {
-            case .author:
-                return NSLocalizedString("Author", comment: "Author label for list of commenters.")
-            case .post:
-                return NSLocalizedString("Title", comment: "Title label for list of posts.")
-            }
-        }
-    }
-
-    struct Publicize {
-        static let itemSubtitle = NSLocalizedString("Service", comment: "Publicize label for connected service")
-        static let dataSubtitle = NSLocalizedString("Followers", comment: "Publicize label for number of followers")
     }
 
     struct TodaysStats {
         static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
-        static let visitorsIcon = Style.imageForGridiconType(.user)
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
         static let likesIcon = Style.imageForGridiconType(.star)
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
+        static let viewsIcon = Style.imageForGridiconType(.visible)
+        static let visitorsIcon = Style.imageForGridiconType(.user)
         static let commentsIcon = Style.imageForGridiconType(.comment)
-    }
-
-    struct TagsAndCategories {
-        static let itemSubtitle = NSLocalizedString("Title", comment: "'Tags and Categories' label for the tag/category name.")
-        static let dataSubtitle = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
     }
 
     struct AnnualSiteStats {
@@ -214,6 +145,16 @@ private extension SiteStatsInsightsViewModel {
         static let commentsPerPost = NSLocalizedString("Comments Per Post", comment: "'Annual Site Stats' label for average comments per post.")
         static let likesPerPost = NSLocalizedString("Likes Per Post", comment: "'Annual Site Stats' label for average likes per post.")
         static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
+    }
+
+    enum FollowerType {
+        case wordPressDotCom
+        case email
+    }
+
+    enum CommentType {
+        case author
+        case post
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
@@ -300,14 +241,14 @@ private extension SiteStatsInsightsViewModel {
 
         if let totalDotComFollowers = store.getDotComFollowers()?.dotComFollowersCount,
             totalDotComFollowers > 0 {
-            dataRows.append(StatsTotalRowData.init(name: FollowerType.wordPressDotCom.title,
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPress,
                                                    data: totalDotComFollowers.abbreviatedString(),
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
         if let totalEmailFollowers = store.getEmailFollowers()?.emailFollowersCount,
             totalEmailFollowers > 0 {
-            dataRows.append(StatsTotalRowData.init(name: FollowerType.email.title,
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.email,
                                                    data: totalEmailFollowers.abbreviatedString(),
                                                    icon: FollowerTotals.emailIcon))
         }
@@ -315,7 +256,7 @@ private extension SiteStatsInsightsViewModel {
         if let publicize = store.getPublicize(), !publicize.publicizeServices.isEmpty {
             let publicizeSum = publicize.publicizeServices.reduce(0) { $0 + $1.followers }
 
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.socialTitle,
+            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.social,
                                                    data: publicizeSum.abbreviatedString(),
                                                    icon: FollowerTotals.socialIcon))
         }
@@ -398,8 +339,8 @@ private extension SiteStatsInsightsViewModel {
                                      icon: tagsAndCategoriesIconForKind($0.kind),
                                      showDisclosure: true,
                                      disclosureURL: $0.url,
-                                     childRows: childRowsForItems($0.children))
-
+                                     childRows: childRowsForItems($0.children),
+                                     statSection: .insightsTagsAndCategories)
         }
     }
 
@@ -475,34 +416,33 @@ private extension SiteStatsInsightsViewModel {
         switch commentType {
         case .author:
             let authors = commentsInsight?.topAuthors ?? []
-
-            tabTitle = CommentType.author.title
-            itemSubtitle = CommentType.author.itemSubtitle
+            tabTitle = StatSection.insightsCommentsAuthors.tabTitle
+            itemSubtitle = StatSection.insightsCommentsAuthors.itemSubtitle
 
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
                                   userIconURL: $0.iconURL,
-                                  showDisclosure: false)
+                                  showDisclosure: false,
+                                  statSection: .insightsCommentsAuthors)
             }
         case .post:
             let posts = commentsInsight?.topPosts ?? []
-
-            tabTitle = CommentType.post.title
-            itemSubtitle = CommentType.post.itemSubtitle
+            tabTitle = StatSection.insightsCommentsPosts.tabTitle
+            itemSubtitle = StatSection.insightsCommentsPosts.itemSubtitle
 
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
                                   showDisclosure: true,
-                                  disclosureURL: $0.postURL)
-
+                                  disclosureURL: $0.postURL,
+                                  statSection: .insightsCommentsPosts)
             }
         }
 
         return TabData(tabTitle: tabTitle,
                        itemSubtitle: itemSubtitle,
-                       dataSubtitle: Comments.dataSubtitle,
+                       dataSubtitle: StatSection.insightsCommentsPosts.dataSubtitle,
                        dataRows: rowItems)
     }
 
@@ -518,33 +458,36 @@ private extension SiteStatsInsightsViewModel {
         var tabTitle: String
         var followers: [StatsFollower]?
         var totalFollowers: Int?
+        var statSection: StatSection?
+        var totalCount: String
 
         switch followerType {
         case .wordPressDotCom:
-
-            tabTitle = FollowerType.wordPressDotCom.title
+            tabTitle = StatSection.insightsFollowersWordPress.tabTitle
             followers = store.getDotComFollowers()?.topDotComFollowers
             totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
+            statSection = .insightsFollowersWordPress
+            totalCount = String(format: StatSection.insightsFollowersWordPress.totalFollowers,
+                                (totalFollowers ?? 0).abbreviatedString())
         case .email:
-
-            tabTitle = FollowerType.email.title
+            tabTitle = StatSection.insightsFollowersEmail.tabTitle
             followers = store.getEmailFollowers()?.topEmailFollowers
             totalFollowers = store.getEmailFollowers()?.emailFollowersCount
-        }
-
-        let totalCount = String(format: Followers.totalFollowers,
-                                tabTitle,
+            statSection = .insightsFollowersEmail
+            totalCount = String(format: StatSection.insightsFollowersEmail.totalFollowers,
                                 (totalFollowers ?? 0).abbreviatedString())
+        }
 
         let followersData = followers?.compactMap {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.subscribedDate.relativeStringInPast(),
-                                     userIconURL: $0.avatarURL)
+                                     userIconURL: $0.avatarURL,
+                                     statSection: statSection)
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: Followers.itemSubtitle,
-                       dataSubtitle: Followers.dataSubtitle,
+                       itemSubtitle: StatSection.insightsFollowersWordPress.itemSubtitle,
+                       dataSubtitle: StatSection.insightsFollowersWordPress.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }
