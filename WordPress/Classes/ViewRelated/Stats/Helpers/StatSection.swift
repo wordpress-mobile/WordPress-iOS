@@ -206,22 +206,22 @@ enum StatSection: Int {
     }
 
     struct ItemSubtitles {
-        static let author = NSLocalizedString("Author", comment: "Author label for list of commenters.")
-        static let title = NSLocalizedString("Title", comment: "Title label for list of posts.")
-        static let service = NSLocalizedString("Service", comment: "Publicize label for connected service")
-        static let follower = NSLocalizedString("Follower", comment: "Followers label for list of followers.")
-        static let referrer = NSLocalizedString("Referrer", comment: "Referrers label for link title")
-        static let link = NSLocalizedString("Link", comment: "Clicks label for link title")
-        static let country = NSLocalizedString("Country", comment: "Countries label for country")
-        static let searchTerm = NSLocalizedString("Search Term", comment: "Search Terms label for search term")
+        static let author = NSLocalizedString("Author", comment: "Label for list of stats by content author.")
+        static let title = NSLocalizedString("Title", comment: "Label for list of stats by content title.")
+        static let service = NSLocalizedString("Service", comment: "Label for connected service in Publicize stat.")
+        static let follower = NSLocalizedString("Follower", comment: "Label for list of followers.")
+        static let referrer = NSLocalizedString("Referrer", comment: "Label for link title in Referrers stat.")
+        static let link = NSLocalizedString("Link", comment: "Label for link title in Clicks stat.")
+        static let country = NSLocalizedString("Country", comment: "Label for list of countries.")
+        static let searchTerm = NSLocalizedString("Search Term", comment: "Label for list of search term")
     }
 
     struct DataSubtitles {
-        static let comments = NSLocalizedString("Comments", comment: "Label for comment count, either by author or post.")
-        static let views = NSLocalizedString("Views", comment: "'Tags and Categories' label for tag/category number of views.")
-        static let followers = NSLocalizedString("Followers", comment: "Publicize label for number of followers")
-        static let since = NSLocalizedString("Since", comment: "Followers label for time period in list of follower.")
-        static let clicks = NSLocalizedString("Clicks", comment: "Clicks label for number of clicks")
+        static let comments = NSLocalizedString("Comments", comment: "Label for number of comments.")
+        static let views = NSLocalizedString("Views", comment: "Label for number of views.")
+        static let followers = NSLocalizedString("Followers", comment: "Label for number of followers.")
+        static let since = NSLocalizedString("Since", comment: "Label for time period in list of followers.")
+        static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
     }
 
     struct TabTitles {
