@@ -101,6 +101,7 @@ private extension SiteStatsPeriodTableViewController {
         return [CellHeaderRow.self,
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
+                CountriesStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -136,8 +137,13 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
+    func applyTableUpdates() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
     func clearExpandedRows() {
-        StatsDataHelper.expandedRowLabels[.period]?.removeAll()
+        StatsDataHelper.clearExpandedPeriods()
     }
 
 }
@@ -169,23 +175,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
-
-        guard let rowData = row.rowData else {
-            return
-        }
-
-        var periodExpandedRowLabels = StatsDataHelper.expandedRowLabels[.period] ?? []
-
-        // Remove from array
-        periodExpandedRowLabels = periodExpandedRowLabels.filter { $0 != rowData.name }
-
-        // If expanded, add to array.
-        if row.expanded {
-            periodExpandedRowLabels.append(rowData.name)
-        }
-
-        StatsDataHelper.expandedRowLabels[.period] = periodExpandedRowLabels
+        applyTableUpdates()
+        StatsDataHelper.updatedExpandedState(forRow: row)
     }
+
 }

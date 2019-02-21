@@ -12,9 +12,8 @@ class MySiteScreen: BaseScreen {
     }
 
     func dismissNotificationAlertIfNeeded() -> MySiteScreen {
-        let dismissAlertButton = app.buttons["cancelAlertButton"]
-        if dismissAlertButton.exists {
-            dismissAlertButton.tap()
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().cancelAlert()
         }
         return self
     }
