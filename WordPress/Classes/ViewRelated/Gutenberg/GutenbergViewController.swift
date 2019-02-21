@@ -393,7 +393,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         editorContentWasUpdated()
-
+        mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
             switch reason {
