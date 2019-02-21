@@ -13,7 +13,7 @@ public protocol NoticeStyle {
     var messageColor: UIColor { get }
     var backgroundColor: UIColor { get }
 
-    // Margins
+    /// The space between the border of the Notice and the contents (title, label, and buttons).
     var layoutMargins: UIEdgeInsets { get }
 
     // Misc
@@ -33,7 +33,7 @@ public struct NormalNoticeStyle: NoticeStyle {
     public let messageColor: UIColor = .white
     public let backgroundColor: UIColor = WPStyleGuide.grey700()
 
-    public let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+    public let layoutMargins = UIEdgeInsets(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
 
     public let isDismissable = true
 }

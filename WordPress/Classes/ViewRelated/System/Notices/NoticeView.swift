@@ -258,7 +258,8 @@ class NoticeView: UIView {
     }
 
     private enum Metrics {
-        static let cornerRadius: CGFloat = 13.0
+        /// The corner radius of the background (colored) and its shadow.
+        static let cornerRadius: CGFloat = 4.0
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
         static let labelLineSpacing: CGFloat = 18.0
     }
