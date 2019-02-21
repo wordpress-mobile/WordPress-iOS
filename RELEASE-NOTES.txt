@@ -1,3 +1,3 @@
 * Added connection error alert in Sharing screen.
 * Increased padding at the bottom of the share extension's editor, to make typing a longer post a bit more comfortable.
-* Removes the white background color applied to the site icon.
+* Removes the white background color applied to the site icon on the site details screen.
