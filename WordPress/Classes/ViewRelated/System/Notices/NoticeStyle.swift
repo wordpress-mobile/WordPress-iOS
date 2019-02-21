@@ -29,9 +29,9 @@ public struct NormalNoticeStyle: NoticeStyle {
     public let actionButtonFont: UIFont? = UIFont.systemFont(ofSize: 14.0)
     public let cancelButtonFont: UIFont? = nil
 
-    public let titleColor: UIColor = WPStyleGuide.darkGrey()
-    public let messageColor: UIColor = WPStyleGuide.darkGrey()
-    public let backgroundColor: UIColor = .clear
+    public let titleColor: UIColor = .white
+    public let messageColor: UIColor = .white
+    public let backgroundColor: UIColor = WPStyleGuide.grey700()
 
     public let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
 
