@@ -76,9 +76,7 @@ extension UIImageView {
         setImageWith(request, placeholderImage: placeholderImage, success: { [weak self] (_, _, image) in
             self?.image = image
             self?.removePlaceholderBorder()
-        }, failure: { [weak self] (_, _, _) in
-            self?.applyPlaceholderBorder()
-        })
+        }, failure: nil)
     }
 }
 
@@ -181,11 +179,6 @@ private extension UIImageView {
 
 @objc
 extension UIImageView {
-
-    func applyPlaceholderBorder() {
-        layer.borderColor = UIColor.white.cgColor
-        layer.borderWidth = CGFloat(1)
-    }
 
     func removePlaceholderBorder() {
         layer.borderColor = UIColor.clear.cgColor

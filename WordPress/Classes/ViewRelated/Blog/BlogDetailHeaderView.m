@@ -85,13 +85,20 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.blavatarImageView downloadSiteIconAt:imagePath];
 }
 
+- (void)applyPlaceholderBorder
+{
+    self.blavatarImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.blavatarImageView.layer.borderWidth = 1.0f;
+}
+
 - (void)refreshIconImage
 {
+    [self applyPlaceholderBorder];
+    
     if (self.blog.hasIcon) {
         [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
         self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
-        [self.blavatarImageView applyPlaceholderBorder];
     }
 
     if ([[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementSiteIcon]) {
