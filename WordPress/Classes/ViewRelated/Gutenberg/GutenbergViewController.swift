@@ -62,6 +62,11 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
+
+    var shouldRemovePostOnDismiss: Bool = false
+
+    // MARK: - Editor Media actions
+
     var isUploadingMedia: Bool {
         return mediaInserterHelper.isUploadingMedia()
     }
@@ -70,7 +75,9 @@ class GutenbergViewController: UIViewController, PostEditor {
         // TODO: we can only implement this when GB bridge allows removal of blocks
     }
 
-    var shouldRemovePostOnDismiss: Bool = false
+    var hasFailedMedia: Bool {
+        return mediaInserterHelper.hasFailedMedia()
+    }
 
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         return mediaInserterHelper.cancelUploadOfAllMedia()
@@ -118,10 +125,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
-
-    var hasFailedMedia: Bool {
-        return mediaInserterHelper.hasFailedMedia()
-    }
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
