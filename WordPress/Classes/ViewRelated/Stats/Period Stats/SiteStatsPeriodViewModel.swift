@@ -42,7 +42,7 @@ class SiteStatsPeriodViewModel: Observable {
         tableRows.append(contentsOf: referrersTableRows())
         tableRows.append(contentsOf: clicksTableRows())
         tableRows.append(contentsOf: authorsTableRows())
-        // TODO: add countries here
+        tableRows.append(contentsOf: countriesTableRows())
         tableRows.append(contentsOf: searchTermsTableRows())
         tableRows.append(contentsOf: publishedTableRows())
         tableRows.append(contentsOf: videosTableRows())
@@ -72,6 +72,7 @@ private extension SiteStatsPeriodViewModel {
         static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
         static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")
         static let authors = NSLocalizedString("Authors", comment: "Period Stats 'Authors' header")
+        static let countries = NSLocalizedString("Countries", comment: "Period Stats 'Countries' header")
         static let searchTerms = NSLocalizedString("Search Terms", comment: "Period Stats 'Search Terms' header")
         static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
@@ -95,6 +96,11 @@ private extension SiteStatsPeriodViewModel {
     struct Authors {
         static let itemSubtitle = NSLocalizedString("Author", comment: "Authors label for post author")
         static let dataSubtitle = NSLocalizedString("Views", comment: "Authors label for number of views")
+    }
+
+    struct Countries {
+        static let itemSubtitle = NSLocalizedString("Country", comment: "Countries label for country")
+        static let dataSubtitle = NSLocalizedString("Views", comment: "Countries label for number of views")
     }
 
     struct SearchTerms {
@@ -162,7 +168,7 @@ private extension SiteStatsPeriodViewModel {
                                                                   disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
                                                                   childRows: childRowsForReferrers($0),
                                                                   statSection: .periodReferrers) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func childRowsForReferrers(_ item: StatsItem) -> [StatsTotalRowData] {
@@ -211,7 +217,7 @@ private extension SiteStatsPeriodViewModel {
                                                      disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
                                                      childRows: childRowsForClicks($0),
                                                      statSection: .periodClicks) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func childRowsForClicks(_ item: StatsItem) -> [StatsTotalRowData] {
@@ -246,7 +252,7 @@ private extension SiteStatsPeriodViewModel {
                                                      showDisclosure: true,
                                                      childRows: childRowsForAuthor($0),
                                                      statSection: .periodAuthors) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func childRowsForAuthor(_ item: StatsItem) -> [StatsTotalRowData] {
@@ -257,6 +263,22 @@ private extension SiteStatsPeriodViewModel {
 
         return children.map { StatsTotalRowData.init(name: $0.label,
                                                      data: $0.value.displayString()) }
+    }
+
+    func countriesTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: PeriodHeaders.countries))
+        tableRows.append(CountriesStatsRow(itemSubtitle: Countries.itemSubtitle,
+                                           dataSubtitle: Countries.dataSubtitle,
+                                           dataRows: countriesDataRows()))
+        return tableRows
+    }
+
+    func countriesDataRows() -> [StatsTotalRowData] {
+        return store.getTopCountries()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                     data: $0.value.displayString(),
+                                                                     countryIconURL: $0.iconURL) }
+            ?? []
     }
 
     func searchTermsTableRows() -> [ImmuTableRow] {
@@ -272,7 +294,7 @@ private extension SiteStatsPeriodViewModel {
 
     func searchTermsDataRows() -> [StatsTotalRowData] {
         return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label, data: $0.value.displayString()) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func publishedTableRows() -> [ImmuTableRow] {
@@ -289,7 +311,7 @@ private extension SiteStatsPeriodViewModel {
                                                                      data: "",
                                                                      showDisclosure: true,
                                                                      disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
     func videosTableRows() -> [ImmuTableRow] {
@@ -309,7 +331,7 @@ private extension SiteStatsPeriodViewModel {
                                                                   mediaID: $0.itemID,
                                                                   icon: Style.imageForGridiconType(.video),
                                                                   showDisclosure: true) }
-            ?? [StatsTotalRowData]()
+            ?? []
     }
 
 }

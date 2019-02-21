@@ -244,6 +244,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         gutenberg.requestHTML()
     }
 
+    func focusTitleIfNeeded() {
+        guard !post.hasContent() else {
+            return
+        }
+        gutenberg.setFocusOnTitle()
+    }
+
     // MARK: - Event handlers
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -403,6 +410,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidLayout() {
+        defer {
+            isFirstGutenbergLayout = false
+        }
+        if isFirstGutenbergLayout {
+            focusTitleIfNeeded()
+        }
     }
 
     func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
