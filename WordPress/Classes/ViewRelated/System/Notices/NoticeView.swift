@@ -149,7 +149,7 @@ class NoticeView: UIView {
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
         actionBackgroundView.layoutMargins = notice.style.layoutMargins
-        actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
+        actionBackgroundView.backgroundColor = notice.style.backgroundColor
 
         actionBackgroundView.addSubview(actionButton)
         actionButton.translatesAutoresizingMaskIntoConstraints = false
@@ -264,7 +264,6 @@ class NoticeView: UIView {
     }
 
     private enum Appearance {
-        static let actionBackgroundColor = UIColor.white.withAlphaComponent(0.5)
         static let shadowColor: UIColor = .black
         static let shadowOpacity: Float = 0.25
         static let shadowRadius: CGFloat = 8.0
