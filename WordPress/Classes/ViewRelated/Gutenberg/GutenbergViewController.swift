@@ -63,7 +63,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     var isOpenedDirectlyForPhotoPost: Bool = false
 
     var isUploadingMedia: Bool {
-        return false
+        return mediaInserterHelper.isUploadingMedia()
     }
 
     func removeFailedMedia() {
@@ -73,7 +73,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     var shouldRemovePostOnDismiss: Bool = false
 
     func cancelUploadOfAllMedia(for post: AbstractPost) {
-        //TODO
+        return mediaInserterHelper.cancelUploadOfAllMedia()
     }
 
     func setTitle(_ title: String) {
