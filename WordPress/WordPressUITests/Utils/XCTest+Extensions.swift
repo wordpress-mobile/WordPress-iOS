@@ -29,6 +29,5 @@ extension XCTest {
 }
 
 func isIpad() -> Bool {
-    let app = XCUIApplication()
-    return app.windows.element(boundBy: 0).horizontalSizeClass == .regular && app.windows.element(boundBy: 0).verticalSizeClass == .regular
+    return UIDevice.current.userInterfaceIdiom == .pad
 }
