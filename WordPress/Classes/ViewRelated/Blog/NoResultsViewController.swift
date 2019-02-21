@@ -36,7 +36,13 @@ import Reachability
     private var subtitleText: String?
     private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
-    private var imageName: String?
+    private var imageName: String? {
+        didSet {
+            if isConnectionAvailable == false {
+                imageName = "cloud"
+            }
+        }
+    }
     private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
