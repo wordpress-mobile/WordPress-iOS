@@ -2,7 +2,7 @@ extension FancyAlertViewController {
     private struct Strings {
         static let titleText = NSLocalizedString("Want a little help getting started?", comment: "Title of alert asking if users want to try out the quick start checklist.")
         static let bodyText = NSLocalizedString("We’ll walk you through the basics of building and growing your site", comment: "Body text of alert asking if users want to try out the quick start checklist.")
-        static let allowButtonText = NSLocalizedString("Yes, help me", comment: "Allow button title shown in alert asking if users want to try out the quick start checklist.")
+        static let allowButtonText = NSLocalizedString("Yes, Help Me", comment: "Allow button title shown in alert asking if users want to try out the quick start checklist.")
         static let notNowText = NSLocalizedString("Not This Time", comment: "Not this time button title shown in alert asking if users want to try out the quick start checklist.")
     }
 
@@ -79,8 +79,8 @@ extension FancyAlertViewController {
 
         let image = UIImage(named: "wp-illustration-big-checkmark")
 
-        let config = FancyAlertViewController.Config(titleText: Strings.titleText,
-                                                     bodyText: Strings.bodyText,
+        let config = FancyAlertViewController.Config(titleText: UpgradeStrings.titleText,
+                                                     bodyText: UpgradeStrings.bodyText,
                                                      headerImage: image,
                                                      dividerPosition: .bottom,
                                                      defaultButton: okButton,

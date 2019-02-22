@@ -54,7 +54,9 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func shouldShowUpgradeToV2Notice(for blog: Blog) -> Bool {
-        guard isQuickStartEnabled(for: blog), !allOriginalToursCompleted(for: blog) else {
+        guard Feature.enabled(.quickStartV2),
+            isQuickStartEnabled(for: blog),
+            !allOriginalToursCompleted(for: blog) else {
             return false
         }
 
