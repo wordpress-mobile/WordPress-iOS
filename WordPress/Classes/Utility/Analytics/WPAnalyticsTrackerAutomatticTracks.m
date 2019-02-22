@@ -1229,7 +1229,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"quick_start_migration_dialog_viewed";
             break;
         case WPAnalyticsStatQuickStartMigrationDialogPositiveTapped:
-            eventName = @"quick_start_migration_dialog_positive_tapped";
+            eventName = @"quick_start_migration_dialog_tapped";
+            eventProperties = @{ @"type" : @"positive" };
             break;
         case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
             eventName = @"quick_start_remove_dialog_button_tapped";
