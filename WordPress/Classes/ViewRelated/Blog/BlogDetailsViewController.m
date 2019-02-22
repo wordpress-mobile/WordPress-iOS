@@ -1058,8 +1058,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
 
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
-    [removeConfirmation addCancelActionWithTitle:cancelTitle handler:nil];
+    [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
+        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonTapped withProperties:@{@"type": @"negative"}];
+    }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
+        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonTapped withProperties:@{@"type": @"positive"}];
+
         [[QuickStartTourGuide find] removeFrom:self.blog];
     }];
 
