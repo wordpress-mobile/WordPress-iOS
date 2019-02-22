@@ -222,7 +222,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.statSection = statSection
+        detailTableViewController.configure(statSection: statSection, siteStatsInsightsDelegate: self)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

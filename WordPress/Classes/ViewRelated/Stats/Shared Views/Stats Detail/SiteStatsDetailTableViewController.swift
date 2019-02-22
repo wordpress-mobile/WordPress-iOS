@@ -72,15 +72,59 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
+
+        guard let statSection = statSection else {
+            return ImmuTable(sections: [])
+        }
+
+        var tableRows = [ImmuTableRow]()
+
+        // TODO: populate table with real data.
+        // This is fake just to example the table.
+        if let siteStatsInsightsDelegate = siteStatsInsightsDelegate {
+            tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
+                                                      dataSubtitle: statSection.dataSubtitle,
+                                                      dataRows: mockRows(),
+                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+        }
+
+        if let siteStatsPeriodDelegate = siteStatsPeriodDelegate {
+            tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: statSection.itemSubtitle,
+                                     dataSubtitle: statSection.dataSubtitle,
+                                     dataRows: mockRows(),
+                                     siteStatsPeriodDelegate: siteStatsPeriodDelegate))
+        }
+
+        tableRows.append(TableFooterRow())
+
         return ImmuTable(sections: [
             ImmuTableSection(
-                rows: [
-                ])
+                rows: tableRows)
             ])
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return []
+        return [TopTotalsInsightStatsRow.self, TableFooterRow.self]
+    }
+
+
+    func mockRows() -> [StatsTotalRowData] {
+        var dataRows = [StatsTotalRowData]()
+
+            dataRows.append(StatsTotalRowData.init(name: "Row 1",
+                                                   data: 99999.abbreviatedString(),
+                                                   icon: Style.imageForGridiconType(.mySites)))
+
+
+            dataRows.append(StatsTotalRowData.init(name: "Row 2",
+                                                   data: 666.abbreviatedString(),
+                                                   icon: Style.imageForGridiconType(.mySites)))
+
+            dataRows.append(StatsTotalRowData.init(name: "Rows 3",
+                                                   data: 1010101010.abbreviatedString(),
+                                                   icon: Style.imageForGridiconType(.mySites)))
+
+        return dataRows
     }
 
 }
