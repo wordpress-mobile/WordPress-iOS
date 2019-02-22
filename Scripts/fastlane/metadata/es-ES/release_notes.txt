@@ -1,8 +1,4 @@
-Para esta versión, hemos suavizado la experiencia en algunas áreas más: 
-
-- Añadida compatibilidad con el relleno automático de contraseñas al introducir un nombre de usuario durante el inicio de sesión.
-- Añadido texto aclaratorio sobre mensajes vacíos cuando se comparten mensajes en medios sociales. Si no nos proporcionas un mensaje, usaremos el título de la entrada por defecto.
-- Ahora guardamos automáticamente tu borrador antes de mostrarte una vista previa.
-- Se ha solucionado un problema que causaba grandes espacios en la parte superior (o inferior) de algunas imágenes del lector.
-- Arreglado un error de sangría en la lista de páginas en las páginas privadas.
-- Arreglado un error visual que afectaba a la lista de entradas en textos de gran tamaño.
+- Ahora puedes compartir un sitio a través del lector.
+- Se ha corregido un error por el que la edición de una copia local de una entrada en borrador y, a continuación descartando los cambios, daba como resultado la eliminación de la entrada.
+- Se ha corregido un error en el lector que hacía que la aplicación se bloqueara al mostrar una entrada con vídeo.
+- Corregidos algunos errores de diseño de la interfaz de usuario en los que los elementos se solapaban o tenían tamaños incorrectos.

@@ -1,8 +1,4 @@
-Per questo rilascio abbiamo migliorato la nostra esperienza in alcune aree:
-
-- Aggiunta di un supporto per l'inserimento automatico della password quando viene immesso il nome utente durante l'accesso.
-- Aggiunta di un testo di chiarimento relativo ai messaggi vuoti quando vengono condivisi gli articoli sui social media. Se non fornisci un messaggio, utilizziamo il titolo dell'articolo predefinito.
-- Abbiamo automaticamente salvato la tua bozza prima di mostrarti un'anteprima.
-- Correzione di un errore che causa grandi spazi sopra (o sotto) alcune immagini nel Reader.
-- Correzione di un bug di rientro nell'elenco Pagine per pagine private.
-- Correzione di un bug visivo che influenza l'elenco Articoli con grandi dimensioni di testo.
+- Ora puoi condividere un sito tramite Reader.
+- Corretto un bug che causava l'eliminazione dell'articolo quando si modificava una copia locale di un articolo bozza e poi se ne eliminavano le modifiche.
+- Corretto un bug nel Reader che causava l'arresto anomalo dell'app quando si mostrava un articolo con un video.
+- Corretti alcuni errori di layout della UI in cui gli elementi erano sovrapposti o avevano la dimensione errata.
