@@ -112,15 +112,16 @@ target 'WordPress' do
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
-    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MRProgress', '0.8.3'
-    pod 'Reachability',    '3.2'
-    pod 'SVProgressHUD', '2.2.5'
+    pod 'Charts', '~> 3.2.2'
     pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
+    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MGSwipeTableCell', '1.6.8'
+    pod 'MRProgress', '0.8.3'
+    pod 'Reachability',    '3.2'
     pod 'Starscream', '3.0.6'
+    pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
 
 
