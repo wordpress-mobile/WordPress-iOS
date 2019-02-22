@@ -470,9 +470,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return UITableViewAutomaticDimension;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.tableSections[section].showQuickStartMenu == true) {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
+    BlogDetailsSection *section = self.tableSections[sectionNum];
+    if (section.showQuickStartMenu == true) {
         return BlogDetailQuickStartSectionHeight;
+    } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
+        // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
+        return 0.0;
     }
     return UITableViewAutomaticDimension;
 }
