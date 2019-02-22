@@ -10,7 +10,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private var showHeader = false
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
 
@@ -31,23 +30,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        showHeader = statSection == .periodCountries || StatSection.tabbedSections.contains(statSection)
         setupTable()
         title = statSection.title
-    }
-
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
-        guard showHeader,
-            let statSection = statSection,
-            let headerView = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: SiteStatsDetailTableHeaderView.identifier
-            ) as? SiteStatsDetailTableHeaderView else {
-                return nil
-        }
-
-        headerView.configure(statSection: statSection)
-        return headerView
     }
 
 }
@@ -57,16 +41,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 private extension SiteStatsDetailTableViewController {
 
     func setupTable() {
-        if showHeader {
-            tableView.estimatedSectionHeaderHeight = 300
-            tableView.sectionHeaderHeight = UITableView.automaticDimension
-
-            tableView.register(
-                UINib(nibName: SiteStatsDetailTableHeaderView.identifier, bundle: nil),
-                forHeaderFooterViewReuseIdentifier: SiteStatsDetailTableHeaderView.identifier
-            )
-        }
-
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableHandler.viewModel = tableViewModel()
     }
