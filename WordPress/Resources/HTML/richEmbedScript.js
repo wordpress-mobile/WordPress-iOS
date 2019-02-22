@@ -36,7 +36,7 @@ function listenForMetaData( videoTag ) {
 //
 function onLoadHandler( event ) {
     var videoTags = document.getElementsByTagName( "video" );
-    if videoTags.length == 0 {
+    if ( videoTags.length > 0 ) {
         listenForMetaData( videoTags[0] );
         return;
     }
