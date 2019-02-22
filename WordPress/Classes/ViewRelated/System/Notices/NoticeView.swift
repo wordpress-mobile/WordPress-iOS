@@ -267,7 +267,8 @@ class NoticeView: UIView {
     private enum Appearance {
         static let shadowColor: UIColor = .black
         static let shadowOpacity: Float = 0.25
-        static let shadowRadius: CGFloat = 8.0
+        /// The blur radius of the shadow.
+        static let shadowRadius: CGFloat = 2.0
         static let shadowOffset = CGSize(width: 0.0, height: 2.0)
         static let minMessageHeight: CGFloat = 18.0
     }
