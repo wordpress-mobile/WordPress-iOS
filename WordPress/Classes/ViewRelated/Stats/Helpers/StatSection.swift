@@ -51,7 +51,7 @@
                              .periodPublished,
                              .periodVideos
     ]
-    
+
     static let tabbedSectionComments = [StatSection.insightsCommentsAuthors, .insightsCommentsPosts]
     static let tabbedSectionFollowers = [StatSection.insightsFollowersWordPress, .insightsFollowersEmail]
     static let tabbedSections = StatSection.tabbedSectionComments + StatSection.tabbedSectionFollowers
