@@ -69,7 +69,6 @@
                 <outlet property="countryMapView" destination="LuC-hk-bLi" id="jZ7-JE-Wbh"/>
                 <outlet property="filterTabBar" destination="jVL-Fv-3iT" id="J9W-h6-8Aa"/>
                 <outlet property="mapSeparatorLine" destination="7XY-AW-Axl" id="qUy-F7-2WQ"/>
-                <outlet property="stackView" destination="ur6-S5-17A" id="0AR-Gh-xVa"/>
             </connections>
             <point key="canvasLocation" x="-236" y="-138.53073463268368"/>
         </view>

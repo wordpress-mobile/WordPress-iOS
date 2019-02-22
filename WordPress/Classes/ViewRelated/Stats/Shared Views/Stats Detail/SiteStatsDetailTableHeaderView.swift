@@ -4,7 +4,6 @@ class SiteStatsDetailTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var countryMapView: UIView!
     @IBOutlet weak var mapSeparatorLine: UIView!
     @IBOutlet weak var filterTabBar: FilterTabBar!
