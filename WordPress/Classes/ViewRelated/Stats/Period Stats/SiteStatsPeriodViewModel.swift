@@ -93,7 +93,8 @@ private extension SiteStatsPeriodViewModel {
                                              data: item.value.displayString(),
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
-                                             showDisclosure: true)
+                                             showDisclosure: true,
+                                             statSection: .periodPostsAndPages)
 
             dataRows.append(row)
         }
@@ -222,14 +223,17 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(CellHeaderRow(title: StatSection.periodCountries.title))
         tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                           dataRows: countriesDataRows()))
+                                           dataRows: countriesDataRows(),
+                                           siteStatsPeriodDelegate: periodDelegate))
+
         return tableRows
     }
 
     func countriesDataRows() -> [StatsTotalRowData] {
         return store.getTopCountries()?.map { StatsTotalRowData.init(name: $0.label,
                                                                      data: $0.value.displayString(),
-                                                                     countryIconURL: $0.iconURL) }
+                                                                     countryIconURL: $0.iconURL,
+                                                                     statSection: .periodCountries) }
             ?? []
     }
 
@@ -245,7 +249,9 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func searchTermsDataRows() -> [StatsTotalRowData] {
-        return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label, data: $0.value.displayString()) }
+        return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                       data: $0.value.displayString(),
+                                                                       statSection: .periodSearchTerms) }
             ?? []
     }
 
@@ -262,7 +268,8 @@ private extension SiteStatsPeriodViewModel {
         return store.getTopPublished()?.map { StatsTotalRowData.init(name: $0.label,
                                                                      data: "",
                                                                      showDisclosure: true,
-                                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+                                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                     statSection: .periodPublished) }
             ?? []
     }
 
@@ -282,7 +289,8 @@ private extension SiteStatsPeriodViewModel {
                                                                   data: $0.value.displayString(),
                                                                   mediaID: $0.itemID,
                                                                   icon: Style.imageForGridiconType(.video),
-                                                                  showDisclosure: true) }
+                                                                  showDisclosure: true,
+                                                                  statSection: .periodVideos) }
             ?? []
     }
 

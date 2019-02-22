@@ -1,4 +1,4 @@
-enum StatSection: Int {
+@objc enum StatSection: Int {
     case periodOverview
     case periodPostsAndPages
     case periodReferrers
