@@ -726,7 +726,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
 
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/6819
-        _ = loadMoreCounter.increment(properties: propertiesForAnalytics())
+        loadMoreCounter.increment(properties: propertiesForAnalytics())
 
         postListFooterView.showSpinner(true)
 

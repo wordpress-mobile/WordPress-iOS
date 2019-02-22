@@ -4,17 +4,24 @@ import Foundation
 /// See https://github.com/wordpress-mobile/WordPress-iOS/issues/6819
 class LoadMoreCounter {
 
-    var count: Int = 0
-    // Set dryRun to true to avoid bumping stats during tests.
-    var dryRun = false
+    private(set) var count: Int = 0
+    private var dryRun = false
 
-    init(startingCount: Int = 0) {
+    /// Initializer
+    ///
+    /// Parameters:
+    /// - startingCount - Optionally set the starting number for the counter. Default is 0.
+    /// - dryRun - pass true to avoid dispatching tracks events.  Useful for testing. Default is false.
+    ///
+    init(startingCount: Int = 0, dryRun: Bool = false) {
         self.count = startingCount
+        self.dryRun = dryRun
     }
 
     /// Increments the counter.
     /// Returns true if Analytics were bumped. False otherwise.
     ///
+    @discardableResult
     func increment(properties: [String: AnyObject]) -> Bool {
         count += 1
 
