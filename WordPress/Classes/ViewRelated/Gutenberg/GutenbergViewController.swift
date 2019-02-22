@@ -62,18 +62,25 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
-    var isUploadingMedia: Bool {
-        return false
-    }
-
-    func removeFailedMedia() {
-        // TODO
-    }
 
     var shouldRemovePostOnDismiss: Bool = false
 
+    // MARK: - Editor Media actions
+
+    var isUploadingMedia: Bool {
+        return mediaInserterHelper.isUploadingMedia()
+    }
+
+    func removeFailedMedia() {
+        // TODO: we can only implement this when GB bridge allows removal of blocks
+    }
+
+    var hasFailedMedia: Bool {
+        return mediaInserterHelper.hasFailedMedia()
+    }
+
     func cancelUploadOfAllMedia(for post: AbstractPost) {
-        //TODO
+        return mediaInserterHelper.cancelUploadOfAllMedia()
     }
 
     func setTitle(_ title: String) {
@@ -118,10 +125,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
-
-    var hasFailedMedia: Bool {
-        return false
-    }
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
@@ -242,6 +245,13 @@ class GutenbergViewController: UIViewController, PostEditor {
     func requestHTML(for reason: RequestHTMLReason) {
         requestHTMLReason = reason
         gutenberg.requestHTML()
+    }
+
+    func focusTitleIfNeeded() {
+        guard !post.hasContent() else {
+            return
+        }
+        gutenberg.setFocusOnTitle()
     }
 
     // MARK: - Event handlers
@@ -383,7 +393,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         editorContentWasUpdated()
-
+        mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
             switch reason {
@@ -403,6 +413,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidLayout() {
+        defer {
+            isFirstGutenbergLayout = false
+        }
+        if isFirstGutenbergLayout {
+            focusTitleIfNeeded()
+        }
     }
 
     func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
@@ -415,6 +431,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+
+    func gutenbergLocale() -> String? {
+        return WordPressComLanguageDatabase().deviceLanguage.slug
+    }
+
+    func gutenbergTranslations() -> [String: [String]]? {
+        return parseGutenbergTranslations()
+    }
 
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
