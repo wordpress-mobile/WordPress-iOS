@@ -46,8 +46,9 @@ extension XCUIElement {
      */
     func clearAndEnterText(text: String) -> Void {
         let app = XCUIApplication()
+        let content = self.value as! String
 
-        if (self.value as! String).count > 0 {
+        if content.count > 0 && content != self.placeholderValue {
             self.press(forDuration: 1.2)
             app.menuItems["Select All"].tap()
         } else {
@@ -135,7 +136,7 @@ extension XCTestCase {
 
         let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
         let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
-        let siteNameField = app.tables.staticTexts[ WPUITestCredentials.selfHostedSiteName ]
+        let siteNameField = app.tables.staticTexts[ WPUITestCredentials.selfHostedSiteAddress ]
 
         // Tap the My Sites button twice to be sure that we're on the All Sites list
         mySitesTabButton.tap()

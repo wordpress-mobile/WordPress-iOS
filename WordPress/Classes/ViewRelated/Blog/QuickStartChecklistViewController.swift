@@ -66,7 +66,7 @@ class QuickStartChecklistViewController: UITableViewController {
         return UIBarButtonItem(customView: cancelButton)
     }()
 
-    @objc init(blog: Blog, type: QuickStartType) {
+    init(blog: Blog, type: QuickStartType) {
         self.blog = blog
         self.type = type
         super.init(style: .plain)
@@ -87,10 +87,15 @@ class QuickStartChecklistViewController: UITableViewController {
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: configuration.tours,
-                                                 didSelectTour: { [weak self] analyticsKey in
+                                                 didSelectTour: { [weak self] tour in
             DispatchQueue.main.async {
-                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
-                self?.dismiss(animated: true, completion: nil)
+                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
+                self?.dismiss(animated: true) {
+                    if let blog = self?.blog,
+                        let tourGuide = QuickStartTourGuide.find() {
+                        tourGuide.start(tour: tour, for: blog)
+                    }
+                }
             }
         }, didTapHeader: { [unowned self] expand in
             let event: WPAnalyticsStat = expand ? .quickStartListExpanded : .quickStartListCollapsed

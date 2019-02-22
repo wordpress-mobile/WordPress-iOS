@@ -12,6 +12,7 @@ struct StatsTotalRowData {
     var showDisclosure: Bool
     var disclosureURL: URL?
     var childRows: [StatsTotalRowData]?
+    var statSection: StatSection?
 
     init(name: String,
          data: String,
@@ -23,7 +24,8 @@ struct StatsTotalRowData {
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
-         childRows: [StatsTotalRowData]? = [StatsTotalRowData]()) {
+         childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
+         statSection: StatSection? = nil) {
         self.name = name
         self.data = data
         self.mediaID = mediaID
@@ -35,6 +37,7 @@ struct StatsTotalRowData {
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
         self.childRows = childRows
+        self.statSection = statSection
     }
 }
 
@@ -50,16 +53,13 @@ class StatsTotalRow: UIView, NibLoadable {
 
     @IBOutlet weak var contentView: UIView!
 
-    // The default line shown indented at the bottom of the view.
-    // Shown by default unless otherwise specified.
+    // The default line shown indented at the bottom of the view. Shown by default.
     @IBOutlet weak var separatorLine: UIView!
 
-    // Lines shown at the top/bottom of the view, spanning the entire width.
-    // These are shown when a row is selected that has children, used to indicate
-    // the top and bottom of the expanded rows.
-    // Hidden by default unless otherwise specified.
+    // Line shown at the top of the view, spanning the entire width.
+    // It is shown when a row is selected that can expand, used to indicate
+    // the top of the expanded rows section. Hidden by default.
     @IBOutlet weak var topExpandedSeparatorLine: UIView!
-    @IBOutlet weak var bottomExpandedSeparatorLine: UIView!
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var imageWidthConstraint: NSLayoutConstraint!
@@ -83,9 +83,12 @@ class StatsTotalRow: UIView, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
 
-    // This stack view is modified by the containing cell, to show/hide
+    // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
-    var childRowsStackView: UIStackView?
+    weak var childRowsView: StatsChildRowsView?
+
+    // This is set by the containing cell when child rows are added.
+    weak var parentRow: StatsTotalRow?
 
     var showSeparator = true {
         didSet {
@@ -96,12 +99,6 @@ class StatsTotalRow: UIView, NibLoadable {
     var showTopExpandedSeparator = false {
         didSet {
             topExpandedSeparatorLine.isHidden = !showTopExpandedSeparator
-        }
-    }
-
-    var showBottomExpandedSeparator = false {
-        didSet {
-            bottomExpandedSeparatorLine.isHidden = !showBottomExpandedSeparator
         }
     }
 
@@ -119,7 +116,8 @@ class StatsTotalRow: UIView, NibLoadable {
                 return
             }
 
-            showSeparator = !expanded
+            // Don't show row separator on child rows.
+            showSeparator = (parentRow != nil) ? false : !expanded
             showTopExpandedSeparator = expanded
 
             let rotation = expanded ? (Constants.disclosureImageUp) : (Constants.disclosureImageDown)
@@ -176,19 +174,18 @@ private extension StatsTotalRow {
         Style.configureLabelAsData(dataLabel)
         Style.configureViewAsSeperator(separatorLine)
         Style.configureViewAsSeperator(topExpandedSeparatorLine)
-        Style.configureViewAsSeperator(bottomExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
     }
 
     func configureExpandedState() {
 
-        guard let name = rowData?.name else {
+        guard let name = rowData?.name,
+        let statSection = rowData?.statSection else {
             expanded = false
             return
         }
 
-        expanded = (StatsDataHelper.expandedRowLabels[.insights]?.contains(name) ?? false) ||
-            (StatsDataHelper.expandedRowLabels[.period]?.contains(name) ?? false)
+        expanded = StatsDataHelper.expandedRowLabels[statSection]?.contains(name) ?? false
     }
 
     func configureIcon() {
