@@ -45,6 +45,13 @@ private extension SiteStatsDetailTableViewController {
         tableHandler.viewModel = tableViewModel()
     }
 
+    func tableRowTypes() -> [ImmuTableRow.Type] {
+        return [TopTotalsInsightStatsRow.self,
+                TopTotalsPeriodStatsRow.self,
+                CountriesStatsRow.self,
+                TableFooterRow.self]
+    }
+
     func tableViewModel() -> ImmuTable {
 
         guard let statSection = statSection else {
@@ -53,20 +60,14 @@ private extension SiteStatsDetailTableViewController {
 
         var tableRows = [ImmuTableRow]()
 
-        // TODO: populate table with real data.
-        // This is fake just to example the table.
-        if let siteStatsInsightsDelegate = siteStatsInsightsDelegate {
-            tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                                      dataSubtitle: statSection.dataSubtitle,
-                                                      dataRows: mockRows(),
-                                                      siteStatsInsightsDelegate: siteStatsInsightsDelegate))
+        if StatSection.allInsights.contains(statSection),
+            let insightRow = insightRow() {
+            tableRows.append(insightRow)
         }
 
-        if let siteStatsPeriodDelegate = siteStatsPeriodDelegate {
-            tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                     dataSubtitle: statSection.dataSubtitle,
-                                     dataRows: mockRows(),
-                                     siteStatsPeriodDelegate: siteStatsPeriodDelegate))
+        if StatSection.allPeriods.contains(statSection),
+            let periodRow = periodRow() {
+            tableRows.append(periodRow)
         }
 
         tableRows.append(TableFooterRow())
@@ -77,10 +78,47 @@ private extension SiteStatsDetailTableViewController {
             ])
     }
 
-    func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [TopTotalsInsightStatsRow.self, TableFooterRow.self]
+    func insightRow() -> ImmuTableRow? {
+
+        guard let siteStatsInsightsDelegate = siteStatsInsightsDelegate,
+            let statSection = statSection else {
+                return nil
+        }
+
+        switch statSection {
+        default:
+            return TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
+                                           dataSubtitle: statSection.dataSubtitle,
+                                           dataRows: mockRows(),
+                                           siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        }
     }
 
+    func periodRow() -> ImmuTableRow? {
+
+        guard let siteStatsPeriodDelegate = siteStatsPeriodDelegate,
+        let statSection = statSection else {
+            return nil
+        }
+
+        switch statSection {
+        case .periodCountries:
+            return CountriesStatsRow(itemSubtitle: statSection.itemSubtitle,
+                                     dataSubtitle: statSection.dataSubtitle,
+                                     dataRows: mockRows(),
+                                     siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+        default:
+            return TopTotalsPeriodStatsRow(itemSubtitle: statSection.itemSubtitle,
+                                           dataSubtitle: statSection.dataSubtitle,
+                                           dataRows: mockRows(),
+                                           siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+        }
+
+
+    }
+
+    // TODO: populate table with real data.
+    // This is fake just to example the table.
 
     func mockRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
