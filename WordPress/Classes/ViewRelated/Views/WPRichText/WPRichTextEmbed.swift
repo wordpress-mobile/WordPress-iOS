@@ -112,7 +112,14 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     }
 
     @objc func loadHTMLString(_ html: NSString) {
-        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /><style>html, body { margin: 0; padding: 0; } video { width: 100vw; height: auto; }</style></head><body>%@</body></html>", html)
+        guard
+            let templatePath = Bundle.main.path(forResource: "richEmbedTemplate", ofType: "html"),
+            let templateString = try? String(contentsOfFile: templatePath) else {
+                DDLogError("RichTextEmbed: Failed to load template html for embed.")
+                return
+        }
+
+        let htmlString = String(format: templateString, html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
