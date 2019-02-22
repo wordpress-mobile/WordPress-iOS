@@ -13,62 +13,55 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="hnE-kf-cC7" userLabel="Table Header View" customClass="SiteStatsDetailTableHeaderView" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="234"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="264"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ur6-S5-17A" userLabel="Accessory Stack View">
-                    <rect key="frame" x="0.0" y="20" width="375" height="214"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="ur6-S5-17A">
+                    <rect key="frame" x="0.0" y="20" width="375" height="246"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LuC-hk-bLi" userLabel="Country Map View">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imagine a pretty map here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Gf-2t-gKs" userLabel="Temporary Label">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="200" id="uSf-6U-OlH"/>
-                                    </constraints>
+                                    <rect key="frame" x="87.5" y="90" width="200" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7XY-AW-Axl" userLabel="Seperator Line">
-                                    <rect key="frame" x="0.0" y="167.5" width="375" height="0.5"/>
+                                    <rect key="frame" x="0.0" y="199.5" width="375" height="0.5"/>
                                     <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="0.5" id="Rwg-sb-ih8"/>
+                                        <constraint firstAttribute="height" constant="0.5" id="36c-5P-aCD"/>
                                     </constraints>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="7XY-AW-Axl" secondAttribute="trailing" id="9Pk-Ds-U03"/>
-                                <constraint firstAttribute="bottom" secondItem="7XY-AW-Axl" secondAttribute="bottom" id="DiC-En-O9T"/>
-                                <constraint firstAttribute="bottom" secondItem="1Gf-2t-gKs" secondAttribute="bottom" id="FLk-lZ-NHI"/>
-                                <constraint firstItem="1Gf-2t-gKs" firstAttribute="leading" secondItem="LuC-hk-bLi" secondAttribute="leading" id="gUO-Cx-yRm"/>
-                                <constraint firstItem="1Gf-2t-gKs" firstAttribute="top" secondItem="LuC-hk-bLi" secondAttribute="top" id="l2W-VY-mhf"/>
-                                <constraint firstAttribute="trailing" secondItem="1Gf-2t-gKs" secondAttribute="trailing" id="myI-NU-sTd"/>
-                                <constraint firstItem="7XY-AW-Axl" firstAttribute="leading" secondItem="LuC-hk-bLi" secondAttribute="leading" id="vEX-tp-50f"/>
+                                <constraint firstItem="7XY-AW-Axl" firstAttribute="leading" secondItem="LuC-hk-bLi" secondAttribute="leading" id="6YU-3o-YIH"/>
+                                <constraint firstItem="1Gf-2t-gKs" firstAttribute="centerY" secondItem="LuC-hk-bLi" secondAttribute="centerY" id="Bc2-al-4Mm"/>
+                                <constraint firstAttribute="trailing" secondItem="7XY-AW-Axl" secondAttribute="trailing" id="GBd-KR-Jde"/>
+                                <constraint firstAttribute="bottom" secondItem="7XY-AW-Axl" secondAttribute="bottom" id="JJY-uc-1Zt"/>
+                                <constraint firstItem="1Gf-2t-gKs" firstAttribute="centerX" secondItem="LuC-hk-bLi" secondAttribute="centerX" id="Pp2-yZ-XqY"/>
+                                <constraint firstAttribute="height" constant="200" id="x05-7f-xDS"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jVL-Fv-3iT" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="168" width="375" height="46"/>
+                            <rect key="frame" x="0.0" y="200" width="375" height="46"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="46" id="U41-as-Dqr"/>
+                                <constraint firstAttribute="height" constant="46" id="UXh-xN-Okq"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="FQf-iG-Num"/>
-                    </constraints>
                 </stackView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="ur6-S5-17A" firstAttribute="top" secondItem="smE-Kl-3O1" secondAttribute="top" id="1ZF-uB-0Qy"/>
-                <constraint firstItem="ur6-S5-17A" firstAttribute="bottom" secondItem="smE-Kl-3O1" secondAttribute="bottom" id="4Ye-gl-63k"/>
-                <constraint firstItem="smE-Kl-3O1" firstAttribute="trailing" secondItem="ur6-S5-17A" secondAttribute="trailing" id="P5D-uQ-CCH"/>
-                <constraint firstItem="ur6-S5-17A" firstAttribute="leading" secondItem="smE-Kl-3O1" secondAttribute="leading" id="ixm-Zd-1Fv"/>
+                <constraint firstItem="ur6-S5-17A" firstAttribute="top" secondItem="smE-Kl-3O1" secondAttribute="top" id="0or-eL-mvq"/>
+                <constraint firstItem="smE-Kl-3O1" firstAttribute="bottom" secondItem="ur6-S5-17A" secondAttribute="bottom" priority="999" id="IJC-J1-6kE"/>
+                <constraint firstItem="ur6-S5-17A" firstAttribute="trailing" secondItem="smE-Kl-3O1" secondAttribute="trailing" id="VDN-hS-bee"/>
+                <constraint firstItem="ur6-S5-17A" firstAttribute="leading" secondItem="smE-Kl-3O1" secondAttribute="leading" id="fA6-2e-x7B"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="smE-Kl-3O1"/>
@@ -78,7 +71,7 @@
                 <outlet property="mapSeparatorLine" destination="7XY-AW-Axl" id="qUy-F7-2WQ"/>
                 <outlet property="stackView" destination="ur6-S5-17A" id="0AR-Gh-xVa"/>
             </connections>
-            <point key="canvasLocation" x="-236" y="-152"/>
+            <point key="canvasLocation" x="-236" y="-138.53073463268368"/>
         </view>
     </objects>
 </document>
