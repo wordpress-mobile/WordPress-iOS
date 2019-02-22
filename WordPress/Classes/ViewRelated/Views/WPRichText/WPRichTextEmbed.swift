@@ -112,7 +112,7 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     }
 
     @objc func loadHTMLString(_ html: NSString) {
-        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /><style>video { width: 100vw; }</style></head><body>%@</body></html>", html)
+        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /><style>html, body { margin: 0; padding: 0; } video { width: 100vw; height: auto; }</style></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
