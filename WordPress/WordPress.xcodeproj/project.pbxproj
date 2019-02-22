@@ -1536,6 +1536,8 @@
 		E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */; };
 		E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */; };
 		E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */; };
+		E61507E22220A0FE00213D33 /* richEmbedTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = E61507E12220A0FE00213D33 /* richEmbedTemplate.html */; };
+		E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */ = {isa = PBXBuildFile; fileRef = E61507E32220A13B00213D33 /* richEmbedScript.js */; };
 		E6158ACA1ECDF518005FA441 /* LoginEpilogueUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */; };
 		E616E4B31C480896002C024E /* SharingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E616E4B21C480896002C024E /* SharingService.swift */; };
 		E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62079DE1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift */; };
@@ -3638,6 +3640,8 @@
 		E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderListTopic.swift; sourceTree = "<group>"; };
 		E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteTopic.swift; sourceTree = "<group>"; };
 		E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTagTopic.swift; sourceTree = "<group>"; };
+		E61507E12220A0FE00213D33 /* richEmbedTemplate.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = richEmbedTemplate.html; path = Resources/HTML/richEmbedTemplate.html; sourceTree = "<group>"; };
+		E61507E32220A13B00213D33 /* richEmbedScript.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = richEmbedScript.js; path = Resources/HTML/richEmbedScript.js; sourceTree = "<group>"; };
 		E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueUserInfo.swift; sourceTree = "<group>"; };
 		E616E4B21C480896002C024E /* SharingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingService.swift; sourceTree = "<group>"; };
 		E62079DE1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSearchSuggestion.swift; sourceTree = "<group>"; };
@@ -7357,6 +7361,8 @@
 				2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */,
 				2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */,
 				2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */,
+				E61507E12220A0FE00213D33 /* richEmbedTemplate.html */,
+				E61507E32220A13B00213D33 /* richEmbedScript.js */,
 			);
 			name = HTML;
 			sourceTree = "<group>";
@@ -8676,6 +8682,7 @@
 				D8C31CC72188490000A33B35 /* SiteSegmentsCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */,
+				E61507E22220A0FE00213D33 /* richEmbedTemplate.html in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */,
@@ -8715,6 +8722,7 @@
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
 				4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */,
+				E61507E42220A13B00213D33 /* richEmbedScript.js in Resources */,
 				401A3D022027DBD80099A127 /* PluginListCell.xib in Resources */,
 				98812973219CF5100075FF33 /* SimpleTotalsCell.xib in Resources */,
 				981C34912183871200FC2683 /* SiteStatsDashboard.storyboard in Resources */,
