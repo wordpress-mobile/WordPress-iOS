@@ -13,6 +13,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case more
         case switchToAztec
         case switchBlog
+        case autoSave
     }
 
     // MARK: - UI
@@ -82,6 +83,10 @@ class GutenbergViewController: UIViewController, PostEditor {
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         return mediaInserterHelper.cancelUploadOfAllMedia()
     }
+
+    static let autoSaveInterval: TimeInterval = 5
+
+    var autoSaveTimer: Timer?
 
     func setTitle(_ title: String) {
         guard gutenberg.isLoaded else {
@@ -178,6 +183,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     deinit {
+        stopAutoSave()
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
@@ -393,7 +399,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         editorContentWasUpdated()
-
+        mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
             switch reason {
@@ -408,6 +414,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
+            case .autoSave:
+                break
             }
         }
     }
@@ -422,6 +430,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+        startAutoSave()
         if !editorSession.started {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
         }
@@ -431,6 +440,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+
+    func gutenbergLocale() -> String? {
+        return WordPressComLanguageDatabase().deviceLanguage.slug
+    }
+
+    func gutenbergTranslations() -> [String: [String]]? {
+        return parseGutenbergTranslations()
+    }
 
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
@@ -502,6 +519,22 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 }
 
+// MARK: - Auto Save
+
+extension GutenbergViewController {
+
+    func startAutoSave() {
+        autoSaveTimer = Timer.scheduledTimer(withTimeInterval: GutenbergViewController.autoSaveInterval, repeats: true, block: { [weak self](timer) in
+            self?.requestHTML(for: .autoSave)
+        })
+    }
+
+    func stopAutoSave() {
+        autoSaveTimer?.invalidate()
+        autoSaveTimer = nil
+    }
+}
+
 // MARK: - Constants
 
 private extension GutenbergViewController {
@@ -509,6 +542,7 @@ private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }
+
 }
 
 private extension GutenbergViewController {

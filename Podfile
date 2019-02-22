@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.7.1-beta.1'
+    pod 'WordPressShared', '1.7.1-beta.3'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -99,28 +99,29 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'a2c18b88c87d4fb64fb7850f33efbf36734cd594'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '6ea31e4f1d2c79fcbcafe9085f7950cd4981f776'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     gutenberg_pod 'react-native-safe-area'
-    gutenberg_pod 'react-native-keyboard-aware-scroll-view', 'develop'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-
+    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.5'
+    
     ## Third party libraries
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
-    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MRProgress', '0.8.3'
-    pod 'Reachability',    '3.2'
-    pod 'SVProgressHUD', '2.2.5'
+    pod 'Charts', '~> 3.2.2'
     pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
+    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MGSwipeTableCell', '1.6.8'
+    pod 'MRProgress', '0.8.3'
+    pod 'Reachability',    '3.2'
     pod 'Starscream', '3.0.6'
+    pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
 
 

@@ -1,8 +1,4 @@
-Nessa versão, nós melhoramos a experiência em mais algumas áreas:
-
-- Adicionado suporte ao preenchimento automático ao informar um nome de usuário durante o login.
-- Mensagens mais claras sobre mensagens vazias ao compartilhar posts em redes sociais. Se você não informar uma mensagem, usaremos o título do post por padrão.
-- Agora nós salvamos um rascunho automaticamente antes de exibir uma pré-visualização.
-- Correção de um erro que adicionava espaços acima ou abaixo de imagens no Leitor.
-- Corrigido da indentação na lista de páginas para páginas privadas.
-- Correção de um erro visual que afetava a lista de posts em ao exibir com fontes grandes.
+- Agora você pode compartilhar um site pelo Leitor.
+- Correção de um erro no qual, ao editar uma cópia local de um rascunho de post e descartar as edições, o post era apagado.
+- Correção de um erro no Leitor que reiniciava o aplicativo ao exibir posts com vídeos.
+- Correção de alguns erros de layout que exibiam elementos sobrepostos ou com tamanhos diferentes.

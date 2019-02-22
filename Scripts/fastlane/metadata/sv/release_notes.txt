@@ -1,8 +1,4 @@
-För denna utgåva har vi skapat en smidigare upplevelse på ytterligare några områden:
-
-- Lagt till stöd för automatisk ifyllning av lösenord när man fyller i användarnamnet vid inloggning.
-- Lagt till ett förtydligande om tomma meddelanden när man delar inlägg till sociala media. Om du inte skriver något meddelande kommer inläggets rubrik att användas som stanardval.
-- Nu sparar si automatiskt ditt utkast innan vi visar dig en förhandsvisning.
-- Korrigerat ett problem som orsakade stora tomma områden ovanför (eller nedanför) vissa bilder i Läsaren.
-- Rättat ett indenteringsfel för privata sidor i sidlistan.
-- Rättat ett visuellt fel som påverkade inläggslistan vid användning av stor textstorlek.
+- Nu kan du dela en webbplats via läsaren.
+- Rättat ett fel vid redigering av lokal kopia av ett utkast till ett inlägg. Om man därefter kastade ändringarna resulterade detta tidigare i att inlägget raderades.
+- Rättat ett fel i läsaren som fick appen att krascha när ett inlägg med ett videoklipp visades.
+- Rättat några layoutfel i användargränssnittet där olika element överlappade varandra eller hade felaktiga storlekar.
