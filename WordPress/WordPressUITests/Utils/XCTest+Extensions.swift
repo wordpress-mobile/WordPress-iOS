@@ -29,8 +29,7 @@ extension XCUIElement {
 extension XCTest {
 
     func isIPhone() -> Bool {
-        let app = XCUIApplication()
-         return UIDevice.current.userInterfaceIdiom == .phone
+        return UIDevice.current.userInterfaceIdiom == .phone
     }
 }
 

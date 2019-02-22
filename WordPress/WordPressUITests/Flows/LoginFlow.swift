@@ -28,7 +28,7 @@ class LoginFlow {
 
         while LoginPasswordScreen.isLoaded() || LoginEmailScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() || LoginSiteAddressScreen.isLoaded() || LoginUsernamePasswordScreen.isLoaded() || LoginCheckMagicLinkScreen.isLoaded() {
             if LoginEmailScreen.isLoaded() && LoginEmailScreen.isEmailEntered() {
-                LoginEmailScreen().emailTextField.clearAndEnterText(text: "")
+                LoginEmailScreen().emailTextField.clearTextIfNeeded()
             }
             XCUIApplication().buttons["Back"].tap()
         }
