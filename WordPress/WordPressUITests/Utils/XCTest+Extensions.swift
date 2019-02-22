@@ -24,7 +24,7 @@ extension XCTest {
 
     func isIPhone() -> Bool {
         let app = XCUIApplication()
-        return app.windows.element(boundBy: 0).horizontalSizeClass == .compact || app.windows.element(boundBy: 0).verticalSizeClass == .compact
+         return UIDevice.current.userInterfaceIdiom == .phone
     }
 }
 
