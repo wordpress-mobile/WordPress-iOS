@@ -1089,6 +1089,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"edit" };
             break;
+        case WPAnalyticsStatPostListExcessiveLoadMoreDetected:
+            eventName = @"post_list_excessive_load_more_detected";
+            break;
         case WPAnalyticsStatPostListLoadedMore:
             eventName = @"post_list_load_more_triggered";
             break;
@@ -1727,6 +1730,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatQuickStartMigrationDialogViewed:
+        case WPAnalyticsStatQuickStartMigrationDialogPositiveTapped:
+        case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
+        case WPAnalyticsStatQuickStartTypeDismissed:
+        case WPAnalyticsStatQuickStartListCollapsed:
+        case WPAnalyticsStatQuickStartListExpanded:
+        case WPAnalyticsStatQuickStartListItemSkipped:
+        case WPAnalyticsStatQuickStartNotificationStarted:
+        case WPAnalyticsStatQuickStartNotificationTapped:
             return nil;
     }
 
