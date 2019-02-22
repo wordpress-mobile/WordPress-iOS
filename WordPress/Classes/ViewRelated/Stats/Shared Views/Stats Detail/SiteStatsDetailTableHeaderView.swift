@@ -4,28 +4,18 @@ class SiteStatsDetailTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var countryMapView: UIView!
     @IBOutlet weak var mapSeparatorLine: UIView!
     @IBOutlet weak var filterTabBar: FilterTabBar!
 
-    @IBOutlet weak var itemLabel: UILabel!
-    @IBOutlet weak var dataLabel: UILabel!
-
     static let identifier = "SiteStatsDetailTableHeaderView"
     private typealias Style = WPStyleGuide.Stats
 
-    private var statSection: StatSection?
-    private let tabbedSectionComments = [StatSection.insightsCommentsAuthors, .insightsCommentsPosts]
-    private let tabbedSectionFollowers = [StatSection.insightsFollowersWordPress, .insightsFollowersEmail]
-
     // MARK: - Configure
 
-    func configure(statSection: StatSection?) {
-        self.statSection = statSection
-        self.itemLabel.text = statSection?.itemSubtitle
-        self.dataLabel.text = statSection?.dataSubtitle
-
-        setAccessoryVisibility()
+    func configure(statSection: StatSection) {
+        setViewVisibilityFor(statSection)
         applyStyles()
     }
 
@@ -35,19 +25,11 @@ private extension SiteStatsDetailTableHeaderView {
 
     func applyStyles() {
         Style.configureViewAsSeperator(mapSeparatorLine)
-        Style.configureLabelAsSubtitle(itemLabel)
-        Style.configureLabelAsSubtitle(dataLabel)
     }
 
-    func setAccessoryVisibility() {
-        guard let statSection = statSection else {
-            countryMapView.isHidden = true
-            filterTabBar.isHidden = true
-            return
-        }
-
+    func setViewVisibilityFor(_ statSection: StatSection) {
         countryMapView.isHidden = statSection != .periodCountries
-        let showFilterTabBar = tabbedSectionComments.contains(statSection) || tabbedSectionFollowers.contains(statSection)
+        let showFilterTabBar = StatSection.tabbedSections.contains(statSection)
         filterTabBar.isHidden = !showFilterTabBar
 
         if showFilterTabBar {
@@ -61,7 +43,6 @@ private extension SiteStatsDetailTableHeaderView {
 private extension SiteStatsDetailTableHeaderView {
 
     func setupFilterTabBarFor(_ statSection: StatSection) {
-
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
         filterTabBar.items = filterTabBarTitlesFor(statSection)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -71,8 +52,8 @@ private extension SiteStatsDetailTableHeaderView {
     }
 
     func filterTabBarTitlesFor(_ statSection: StatSection) -> [String] {
-        return tabbedSectionComments.contains(statSection) ?
-            tabbedSectionComments.map { $0.tabTitle } :
-            tabbedSectionFollowers.map { $0.tabTitle }
+        return StatSection.tabbedSectionComments.contains(statSection) ?
+            StatSection.tabbedSectionComments.map { $0.tabTitle } :
+            StatSection.tabbedSectionFollowers.map { $0.tabTitle }
     }
 }
