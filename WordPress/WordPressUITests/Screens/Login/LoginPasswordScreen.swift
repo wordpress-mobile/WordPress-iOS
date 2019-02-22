@@ -42,6 +42,6 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons[ElementStringIDs.passwordTextField].exists
+        return XCUIApplication().buttons[ElementStringIDs.loginButton].exists
     }
 }

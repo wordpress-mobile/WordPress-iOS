@@ -1,17 +1,26 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let blogTable = "Blog Details Table"
+    static let removeSiteButton = "BlogDetailsRemoveSiteCell"
+    static let removeSiteConfirmation = "Remove Site"
+    static let switchSiteButton = "Switch Site"
+}
+
 class MySiteScreen: BaseScreen {
     let tabBar: TabNavComponent
     let removeSiteButton: XCUIElement
-    let removeSiteConfirmation: XCUIElement
+    let removeSiteSheet: XCUIElement
+    let removeSiteAlert: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        let blogTable = app.tables["Blog Details Table"]
+        let blogTable = app.tables[ElementStringIDs.blogTable]
         tabBar = TabNavComponent()
-        removeSiteButton = app.cells["BlogDetailsRemoveSiteCell"]
-        removeSiteConfirmation = app.sheets.buttons["Remove Site"]
+        removeSiteButton = app.cells[ElementStringIDs.removeSiteButton]
+        removeSiteSheet = app.sheets.buttons[ElementStringIDs.removeSiteConfirmation]
+        removeSiteAlert = app.alerts.buttons[ElementStringIDs.removeSiteConfirmation]
 
         super.init(element: blogTable)
     }
@@ -24,14 +33,17 @@ class MySiteScreen: BaseScreen {
     }
 
     func switchSite() -> MySitesScreen {
-        app.buttons["Switch Site"].tap()
+        app.buttons[ElementStringIDs.switchSiteButton].tap()
 
         return MySitesScreen()
     }
 
     func removeSelfHostedSite() {
         removeSiteButton.tap()
-        _ = waitFor(element: removeSiteConfirmation, predicate: "isHittable == true")
-        removeSiteConfirmation.tap()
+        if isIpad() {
+            removeSiteAlert.tap()
+        } else {
+            removeSiteSheet.tap()
+        }
     }
 }
