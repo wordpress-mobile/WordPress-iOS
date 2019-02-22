@@ -387,7 +387,6 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
 
-        table.headerView(forSection: 0)?.isHidden = true
         performSearchIfNeeded(query: searchTerm)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
