@@ -1,8 +1,4 @@
-Für diese Version haben wir die Erfahrungen in einigen weiteren Bereichen verbessert: 
-
-- Unterstützung für das automatische Ausfüllen von Passwörtern bei der Eingabe eines Benutzernamens während der Anmeldung hinzugefügt.
-- Klarstellungstext über leere Nachrichten beim Teilen von Beiträgen in Social Media hinzugefügt. Wenn du keine Nachricht eingibst, verwenden wir standardmäßig den Titel des Beitrags.
-- Wir speichern nun automatisch deinen Entwurf, bevor wir dir eine Vorschau anzeigen.
-- Ein Problem wurde behoben, das bei einigen Bildern in Reader. Der zu großen Abständen über (oder unter) den Bildern führte.
-- Ein Einrückungsfehler in der Seitenliste für private Seiten behoben.
-- Ein visueller Fehler wurde behoben, der die Liste der Beiträge bei großen Textgrößen betraf.
+- Du kannst jetzt eine Website über Reader teilen.
+- Es wurde ein Fehler behoben, bei dem das Bearbeiten einer lokalen Kopie eines Entwurfsbeitrags und das Verwerfen von Änderungen zum Löschen des Beitrags führte. 
+- Ein Fehler in Reader wurde behoben, der dazu führte, dass die App abstürzte, wenn ein Beitrag mit einem Video angezeigt wurde.
+- Einige UI-Layoutfehler behoben, bei denen sich Elemente überschneiden oder falsche Größen hatten.

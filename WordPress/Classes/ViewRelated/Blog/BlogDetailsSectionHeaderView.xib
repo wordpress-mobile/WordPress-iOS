@@ -16,20 +16,30 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OEo-2z-Cmk">
-                    <rect key="frame" x="273" y="6" width="44" height="30"/>
+                    <rect key="frame" x="273" y="0.0" width="44" height="36"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="NQj-8B-nY9"/>
-                        <constraint firstAttribute="height" constant="30" id="j12-ha-Xlw"/>
+                        <constraint firstAttribute="height" constant="36" id="j12-ha-Xlw"/>
                     </constraints>
                     <connections>
                         <action selector="ellipsisTapped" destination="iN0-l3-epB" eventType="touchUpInside" id="39J-kD-m13"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DATE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUE-Sb-m3L">
+                    <rect key="frame" x="16" y="0.0" width="32.5" height="36"/>
+                    <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailingMargin" secondItem="OEo-2z-Cmk" secondAttribute="trailing" constant="-13" id="EWN-SE-Ilb"/>
+                <constraint firstAttribute="bottom" secondItem="eUE-Sb-m3L" secondAttribute="bottom" id="ILT-ul-3i5"/>
+                <constraint firstItem="eUE-Sb-m3L" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="LH1-C3-ah6"/>
                 <constraint firstAttribute="bottom" secondItem="OEo-2z-Cmk" secondAttribute="bottom" id="a35-Lf-TpM"/>
+                <constraint firstItem="eUE-Sb-m3L" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="oHh-OB-AWn"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -37,8 +47,9 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="ellipsisButton" destination="OEo-2z-Cmk" id="8N1-SW-wiK"/>
+                <outlet property="titleLabel" destination="eUE-Sb-m3L" id="4Cy-bo-v6v"/>
             </connections>
-            <point key="canvasLocation" x="233.59999999999999" y="186.65667166416793"/>
+            <point key="canvasLocation" x="233.59999999999999" y="186.20689655172416"/>
         </view>
     </objects>
 </document>
