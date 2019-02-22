@@ -4,7 +4,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - StoryboardLoadable Protocol
 
-    static var defaultStoryboardName = "SiteStatsDetailTableViewController"
+    static var defaultStoryboardName = defaultControllerID
 
     // MARK: - Properties
 
@@ -18,10 +18,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     }()
 
     // MARK: - View
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 
     func configure(statSection: StatSection,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
