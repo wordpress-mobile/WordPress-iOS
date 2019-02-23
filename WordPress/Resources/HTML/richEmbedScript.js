@@ -53,7 +53,7 @@ function onLoadHandler( event ) {
     reportDocumentSize();
 }
 
-window.addEventListener( 'load', onLoadHandler)
+window.addEventListener( 'load', onLoadHandler);
 
 
 
