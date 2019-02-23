@@ -224,8 +224,8 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         }
 
         embed.success = { [weak self] embedView in
-            if embedView.contentSize().height > attachment.maxSize.height {
-                attachment.maxSize.height = embedView.contentSize().height
+            if embedView.contentSize().width > attachment.maxSize.width || embedView.contentSize().height > attachment.maxSize.height {
+                attachment.maxSize = embedView.contentSize()
             }
             self?.layoutAttachmentViews()
         }
