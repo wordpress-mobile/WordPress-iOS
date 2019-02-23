@@ -16,15 +16,25 @@
 function reportDocumentSize() {
     var w = document.documentElement.scrollWidth;
     var h = document.documentElement.scrollHeight;
+    reportSize( w, h );
+}
+
+function reportSize( w, h ) {
     var msg = "" + w + "," + h;
     window.webkit.messageHandlers.observer.postMessage(msg);
 }
 
-
 function metadataLoadedHandler( event ) {
-    reportDocumentSize();
+    var video = event.target;
+    var w = video.videoWidth;
+    var h = video.videoHeight;
+    var docElement = document.documentElement;
+    if ( w > docElement.scrollWidth || h > docElement.scrollHeight ) {
+        reportSize( w, h );
+    } else {
+        reportDocumentSize();
+    }
 }
-
 
 function listenForMetaData( videoTag ) {
     videoTag.addEventListener( 'loadedmetadata', metadataLoadedHandler );
