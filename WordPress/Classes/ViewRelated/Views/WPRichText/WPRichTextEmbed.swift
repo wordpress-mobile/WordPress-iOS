@@ -7,17 +7,7 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
 
     // MARK: Properties
     private var internalDocumentSize = CGSize.zero
-    private var internalDocumentHeight: CGFloat = 0.0
-    @objc var fixedHeight: CGFloat = 0.0
-    @objc var attachmentSize = CGSize.zero
-    @objc var documentSize: CGSize {
-        get {
-            if internalDocumentSize == .zero {
-                return webView.scrollView.contentSize
-            }
-            return internalDocumentSize
-        }
-    }
+
     @objc var success: successBlock?
     var linkURL: URL?
     var contentURL: URL?
@@ -92,16 +82,11 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
             return CGSize(width: 1.0, height: 1.0)
         }
 
-        // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
-        if fixedHeight > 0 {
-            return CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedHeight)
+        if internalDocumentSize == .zero {
+            return webView.scrollView.contentSize
         }
 
-        if !attachmentSize.equalTo(CGSize.zero) {
-            return attachmentSize
-        }
-
-        return documentSize
+        return internalDocumentSize
     }
 
     @objc func loadContentURL(_ url: URL) {
