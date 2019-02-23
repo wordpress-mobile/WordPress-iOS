@@ -151,23 +151,26 @@ extension WPRichTextEmbed: WKNavigationDelegate {
 extension WPRichTextEmbed: WKScriptMessageHandler {
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        defer {
+            success?(self)
+            success = nil
+        }
 
         guard
             let str = message.body as? String else {
                 DDLogError("RichTextEmbed: Unable to read script tmessage.")
-                success?(self)
-                success = nil
-                return;
+                return
         }
 
         let arr = str.split(separator: ",")
-        let width = Int(arr[0])!
-        let height = Int(arr[1])!
-        let size = CGSize(width: width, height: height)
+        guard
+            let width = Int(arr[0]),
+            let height = Int(arr[1]) else {
+                return
+        }
 
+        let size = CGSize(width: width, height: height)
         internalDocumentSize = size
-        success?(self)
-        success = nil
     }
 
 }
