@@ -15,6 +15,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
     // If the subtitles are shown, this is active.
     @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
 
+    private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
 
@@ -22,12 +23,14 @@ class CountriesCell: UITableViewCell, NibLoadable {
 
     func configure(itemSubtitle: String,
                    dataSubtitle: String,
-                   dataRows: [StatsTotalRowData]) {
+                   dataRows: [StatsTotalRowData],
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
+        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        addRows(dataRows, toStackView: rowsStackView, forType: .period)
+        addRows(dataRows, toStackView: rowsStackView, forType: .period, viewMoreDelegate: self)
         setSubtitleVisibility()
         applyStyles()
     }
@@ -53,6 +56,16 @@ private extension CountriesCell {
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.isActive = !showSubtitles
         rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+    }
+
+}
+
+// MARK: - ViewMoreRowDelegate
+
+extension CountriesCell: ViewMoreRowDelegate {
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }
