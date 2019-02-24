@@ -6,6 +6,7 @@ import WordPressFlux
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 
@@ -101,6 +102,7 @@ private extension SiteStatsPeriodTableViewController {
         return [CellHeaderRow.self,
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
+                CountriesStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -176,6 +178,16 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
         StatsDataHelper.updatedExpandedState(forRow: row)
+    }
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allPeriods.contains(statSection) else {
+            return
+        }
+
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, siteStatsPeriodDelegate: self)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
 }

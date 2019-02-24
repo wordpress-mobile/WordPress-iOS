@@ -341,7 +341,7 @@ extension BlogListDataSource: UITableViewDataSource {
         }
 
         cell.selectionStyle = tableView.isEditing ? .none : .blue
-        cell.imageView?.downloadSiteIcon(for: blog)
+
         cell.visibilitySwitch?.accessibilityIdentifier = String(format: "Switch-Visibility-%@", blog.settings?.name ?? "")
         cell.visibilitySwitch?.isOn = blog.visible
         cell.visibilitySwitchToggled = { [visibilityChanged] cell in
@@ -357,6 +357,9 @@ extension BlogListDataSource: UITableViewDataSource {
         default:
             WPStyleGuide.configureTableViewBlogCell(cell)
         }
+
+        // Here we initiate the site icon download _after_ setting the border used in conjunction with the placeholder
+        cell.imageView?.downloadSiteIcon(for: blog)
 
         return cell
     }

@@ -108,6 +108,7 @@ private extension LatestPostSummaryCell {
         switch actionType {
         case .viewMore:
             toggleDataViews(hide: false)
+            configureChartView()
             actionLabel.text = CellStrings.viewMore
         case .sharePost:
             toggleDataViews(hide: true)
@@ -219,4 +220,28 @@ private extension LatestPostSummaryCell {
         alertController.presentFromRootViewController()
     }
 
+    // MARK: - Chart support
+
+    func resetChartView() {
+        chartStackView.removeAllSubviews()
+    }
+
+    func configureChartView() {
+        resetChartView()
+
+        let stubbedData = LatestPostSummaryDataStub()
+
+        let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
+        let styling = LatestPostSummaryStubStyling(initialDateInterval: firstStubbedDateInterval)
+
+        let chartView = StatsBarChartView(data: stubbedData, styling: styling)
+        chartStackView.addArrangedSubview(chartView)
+
+        NSLayoutConstraint.activate([
+            chartView.leadingAnchor.constraint(equalTo: chartStackView.leadingAnchor),
+            chartView.trailingAnchor.constraint(equalTo: chartStackView.trailingAnchor),
+            chartView.topAnchor.constraint(equalTo: chartStackView.topAnchor),
+            chartView.bottomAnchor.constraint(equalTo: chartStackView.bottomAnchor)
+        ])
+    }
 }

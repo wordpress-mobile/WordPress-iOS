@@ -35,7 +35,7 @@ NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedInde
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
-CGFloat const BlogDetailQuickStartSectionHeight = 26.0;
+CGFloat const BlogDetailQuickStartSectionHeight = 35.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -470,9 +470,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return UITableViewAutomaticDimension;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.tableSections[section].showQuickStartMenu == true) {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)sectionNum {
+    BlogDetailsSection *section = self.tableSections[sectionNum];
+    if (section.showQuickStartMenu == true) {
         return BlogDetailQuickStartSectionHeight;
+    } else if (([section.title isEmpty] || section.title == nil) && sectionNum == 0) {
+        // because tableView:viewForHeaderInSection: is implemented, this must explicitly be 0
+        return 0.0;
     }
     return UITableViewAutomaticDimension;
 }
@@ -1038,19 +1042,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
+    if (detailSection.showQuickStartMenu) {
+        return nil;
+    }
     return detailSection.title;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)sectionNum {
     BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionNum];
     if (section.showQuickStartMenu) {
-        return [self quickStartHeader];
+        return [self quickStartHeaderWithTitle:section.title];
     } else {
         return [super tableView:tableView viewForHeaderInSection:sectionNum];
     }
 }
 
-- (UIView *)quickStartHeader
+- (UIView *)quickStartHeaderWithTitle:(NSString *)title
 {
     NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
     NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
@@ -1074,6 +1081,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
 
     BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
+    [view setTitle:title];
     view.callback = ^{
         [self presentViewController:removeSheet animated:YES completion:nil];
     };

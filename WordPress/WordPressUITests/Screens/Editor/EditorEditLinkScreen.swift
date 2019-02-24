@@ -24,13 +24,13 @@ class EditorEditLinkScreen: BaseScreen {
 
     func updateURL(url: String) -> EditorEditLinkScreen {
         urlTextField.tap()
-        urlTextField.replaceText(text: url)
+        urlTextField.clearAndEnterText(text: url)
         return self
     }
 
     func updateName(text: String) -> EditorEditLinkScreen {
         nameTextField.tap()
-        nameTextField.replaceText(text: text)
+        nameTextField.clearAndEnterText(text: text)
         return self
     }
 

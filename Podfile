@@ -24,7 +24,7 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.1-beta.2'
+    pod 'WordPressShared', '1.7.1-beta.3'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -39,7 +39,7 @@ def aztec
     ##
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    pod 'WordPress-Editor-iOS', '1.4.2'
+    pod 'WordPress-Editor-iOS', '1.4.3'
 end
 
 def wordpress_ui
@@ -99,28 +99,29 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '0059847a66d319bb1c766b3b80b150bb5d3b771e'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v1.0.0'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     gutenberg_pod 'react-native-safe-area'
-    gutenberg_pod 'react-native-keyboard-aware-scroll-view', 'develop'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-
+    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.5'
+    
     ## Third party libraries
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
-    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MRProgress', '0.8.3'
-    pod 'Reachability',    '3.2'
-    pod 'SVProgressHUD', '2.2.5'
+    pod 'Charts', '~> 3.2.2'
     pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
+    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MGSwipeTableCell', '1.6.8'
+    pod 'MRProgress', '0.8.3'
+    pod 'Reachability',    '3.2'
     pod 'Starscream', '3.0.6'
+    pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
 
 

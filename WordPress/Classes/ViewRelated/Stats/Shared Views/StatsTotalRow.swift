@@ -8,6 +8,7 @@ struct StatsTotalRowData {
     var icon: UIImage?
     var socialIconURL: URL?
     var userIconURL: URL?
+    var countryIconURL: URL?
     var nameDetail: String?
     var showDisclosure: Bool
     var disclosureURL: URL?
@@ -21,6 +22,7 @@ struct StatsTotalRowData {
          icon: UIImage? = nil,
          socialIconURL: URL? = nil,
          userIconURL: URL? = nil,
+         countryIconURL: URL? = nil,
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
@@ -34,6 +36,7 @@ struct StatsTotalRowData {
         self.icon = icon
         self.socialIconURL = socialIconURL
         self.userIconURL = userIconURL
+        self.countryIconURL = countryIconURL
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
         self.childRows = childRows
@@ -131,7 +134,7 @@ class StatsTotalRow: UIView, NibLoadable {
         guard let rowData = rowData else {
             return false
         }
-        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
+        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil || rowData.countryIconURL != nil
     }
 
     // MARK: - Configure
@@ -214,6 +217,11 @@ private extension StatsTotalRow {
             // Use placeholder image until real image is loaded.
             imageView.image = Style.gravatarPlaceholderImage()
 
+            downloadImageFrom(iconURL)
+        }
+
+        if let iconURL = rowData.countryIconURL {
+            imageWidthConstraint.constant = Constants.defaultImageSize
             downloadImageFrom(iconURL)
         }
     }
