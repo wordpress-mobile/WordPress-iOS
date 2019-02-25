@@ -337,6 +337,37 @@ extension PushNotificationsManager {
 
         return true
     }
+}
+
+// MARK: - Nested Types
+//
+extension PushNotificationsManager {
+
+    enum Device {
+        static let tokenKey = "apnsDeviceToken"
+        static let idKey = "notification_device_id"
+    }
+
+    enum Notification {
+        static let badgePath = "aps.badge"
+        static let identifierKey = "note_id"
+        static let typeKey = "type"
+        static let originKey = "origin"
+        static let badgeResetValue = "badge-reset"
+        static let local = "qs-local-notification"
+    }
+
+    enum Tracking {
+        static let identifierKey = "push_notification_note_id"
+        static let typeKey = "push_notification_type"
+        static let tokenKey = "push_notification_token"
+        static let taskNameKey = "push_notification_token"
+    }
+}
+
+// MARK: - Quick Start notifications
+
+extension PushNotificationsManager {
 
     /// Handles a Quick Start Local Notification
     ///
@@ -368,9 +399,7 @@ extension PushNotificationsManager {
 
         return true
     }
-}
 
-extension PushNotificationsManager {
     func postNotification(for tour: QuickStartTour) {
         deletePendingLocalNotifications()
 
@@ -384,7 +413,7 @@ extension PushNotificationsManager {
         guard let futureDate = Calendar.current.date(byAdding: .day,
                                                      value: Constants.localNotificationIntervalInDays,
                                                      to: Date()) else {
-            return
+                                                        return
         }
         let trigger = UNCalendarNotificationTrigger(dateMatching: futureDate.components, repeats: false)
         let request = UNNotificationRequest(identifier: Constants.localNotificationIdentifier,
@@ -413,28 +442,3 @@ private extension Date {
     }
 }
 
-// MARK: - Nested Types
-//
-private extension PushNotificationsManager {
-
-    enum Device {
-        static let tokenKey = "apnsDeviceToken"
-        static let idKey = "notification_device_id"
-    }
-
-    enum Notification {
-        static let badgePath = "aps.badge"
-        static let identifierKey = "note_id"
-        static let typeKey = "type"
-        static let originKey = "origin"
-        static let badgeResetValue = "badge-reset"
-        static let local = "qs-local-notification"
-    }
-
-    enum Tracking {
-        static let identifierKey = "push_notification_note_id"
-        static let typeKey = "push_notification_type"
-        static let tokenKey = "push_notification_token"
-        static let taskNameKey = "push_notification_token"
-    }
-}
