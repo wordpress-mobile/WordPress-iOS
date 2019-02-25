@@ -391,7 +391,7 @@ extension PushNotificationsManager {
 
         if let taskName = userInfo.string(forKey: QuickStartTracking.taskNameKey) {
             WPAnalytics.track(.quickStartNotificationTapped,
-                              withProperties: [Tracking.taskNameKey: taskName])
+                              withProperties: [QuickStartTracking.taskNameKey: taskName])
         }
 
         completionHandler?(.newData)
