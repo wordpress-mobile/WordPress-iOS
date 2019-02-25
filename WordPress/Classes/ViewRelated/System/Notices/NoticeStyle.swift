@@ -26,7 +26,7 @@ public struct NormalNoticeStyle: NoticeStyle {
 
     public let titleLabelFont = UIFont.boldSystemFont(ofSize: 14.0)
     public let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
-    public let actionButtonFont: UIFont? = UIFont.systemFont(ofSize: 14.0)
+    public let actionButtonFont: UIFont? = UIFont.systemFont(ofSize: 14.0, weight: .medium)
     public let cancelButtonFont: UIFont? = nil
 
     public let titleColor: UIColor = .white

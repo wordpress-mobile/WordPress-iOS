@@ -258,7 +258,6 @@ class NoticeView: UIView {
     }
 
     private enum Metrics {
-        /// The corner radius of the background (colored) and its shadow.
         static let cornerRadius: CGFloat = 4.0
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
         static let labelLineSpacing: CGFloat = 18.0
@@ -267,7 +266,6 @@ class NoticeView: UIView {
     private enum Appearance {
         static let shadowColor: UIColor = .black
         static let shadowOpacity: Float = 0.25
-        /// The blur radius of the shadow.
         static let shadowRadius: CGFloat = 2.0
         static let shadowOffset = CGSize(width: 0.0, height: 2.0)
         static let minMessageHeight: CGFloat = 18.0
