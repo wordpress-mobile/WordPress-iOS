@@ -89,16 +89,7 @@ extension SiteCreationSitePreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         siteLoaded = true
-        hideGetStartedBar()
+        webView.prepareWPComPreview()
         showSite()
     }
-
-    func hideGetStartedBar() {
-        let javascript = """
-        document.querySelector('html').style.cssText += '; margin-top: 0 !important;';\n
-        document.getElementById('wpadminbar').style.display = 'none';\n
-        """
-        webView?.evaluateJavaScript(javascript, completionHandler: nil)
-    }
-
 }

@@ -225,14 +225,6 @@ function updateGlotPressKey() {
         showErrorMessage "Can't find $dmFile."
         stopOnError
     fi
-
-    assFile="../WordPress/Resources/AppStoreStrings.po"
-    if [ -f $assFile ]; then
-        sed -i '' "s#.*whats-new\"#msgctxt \"v$newMainVer-whats-new\"#"  $assFile >> $logFile 2>&1 || stopOnError
-    else
-        showErrorMessage "Can't find $assFile."
-        stopOnError
-    fi
 }
 
 # Updates the app version in Fastlane Deliver file

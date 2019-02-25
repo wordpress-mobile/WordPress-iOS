@@ -10,7 +10,6 @@ enum FeatureFlag: Int {
     case enhancedSiteCreation
     case revisions
     case statsRefresh
-    case bottomSheetDemo
     case gutenberg
     case quickStartV2
 
@@ -32,8 +31,6 @@ enum FeatureFlag: Int {
         case .revisions:
             return true
         case .statsRefresh:
-            return BuildConfiguration.current == .localDeveloper
-        case .bottomSheetDemo:
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]

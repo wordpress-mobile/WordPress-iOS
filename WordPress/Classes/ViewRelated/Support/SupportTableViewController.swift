@@ -11,15 +11,13 @@ class SupportTableViewController: UITableViewController {
     // Specifically for Me > Help & Support on the iPad.
     var showHelpFromViewController: UIViewController?
 
-    private var tableHandler: ImmuTableViewHandler!
+    private var tableHandler: ImmuTableViewHandler?
     private let userDefaults = UserDefaults.standard
 
     // MARK: - Init
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -77,6 +75,11 @@ class SupportTableViewController: UITableViewController {
 
 private extension SupportTableViewController {
 
+    func registerObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
+    }
+
     func setupNavBar() {
         title = LocalizedText.viewTitle
 
@@ -100,6 +103,8 @@ private extension SupportTableViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         // remove empty cells
         tableView.tableFooterView = UIView()
+
+        registerObservers()
     }
 
     // MARK: - Table Model
@@ -146,7 +151,7 @@ private extension SupportTableViewController {
     }
 
     func reloadViewModel() {
-        tableHandler.viewModel = tableViewModel()
+        tableHandler?.viewModel = tableViewModel()
     }
 
     // MARK: - Row Handlers

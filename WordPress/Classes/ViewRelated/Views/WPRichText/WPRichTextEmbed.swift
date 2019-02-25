@@ -1,29 +1,28 @@
 import Foundation
 import CocoaLumberjack
+import WebKit
 
-class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
+class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     typealias successBlock = ((WPRichTextEmbed)->Void)
 
 
     // MARK: Properties
-
+    private var internalDocumentHeight: CGFloat = 0.0
     @objc var fixedHeight: CGFloat = 0.0
     @objc var attachmentSize = CGSize.zero
     @objc var documentSize: CGSize {
         get {
-            var contentSize = webView.scrollView.contentSize
-            if let heightStr = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight") {
-                if let height = NumberFormatter().number(from: heightStr) as? CGFloat {
-                    contentSize.height = height
-                }
+            var size = webView.scrollView.contentSize
+            if internalDocumentHeight > 0.0 {
+                size.height = internalDocumentHeight
             }
-            return contentSize
+            return size
         }
     }
     @objc var success: successBlock?
     var linkURL: URL?
     var contentURL: URL?
-    @objc var webView: UIWebView
+    @objc var webView: WKWebView
 
     override var frame: CGRect {
         didSet {
@@ -40,7 +39,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
 
     override init(frame: CGRect) {
         // A small starting frame to avoid being sized too tall
-        webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
+        webView = WKWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
 
         super.init(frame: frame)
 
@@ -49,10 +48,10 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        if let decodedWebView = aDecoder.decodeObject(forKey: "webView") as? UIWebView {
+        if let decodedWebView = aDecoder.decodeObject(forKey: "webView") as? WKWebView {
             webView = decodedWebView
         } else {
-            webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
+            webView = WKWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
         }
 
         super.init(coder: aDecoder)
@@ -72,8 +71,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
     @objc func configureWebView() {
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.scrollView.isScrollEnabled = false
-        webView.scalesPageToFit = true
-        webView.delegate = self
+        webView.navigationDelegate = self
     }
 
 
@@ -110,56 +108,79 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
 
         contentURL = url
         let request = URLRequest(url: url)
-        webView.loadRequest(request)
+        webView.load(request)
     }
 
     @objc func loadHTMLString(_ html: NSString) {
-        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
+        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /><style>html, body { margin: 0; padding: 0; } video { width: 100vw; height: auto; }</style></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
-
-    @objc func checkIfDoneLoading() {
-        if webView.isLoading {
-            return
-        }
-
-        if let callback = success {
-            callback(self)
-        }
-        success = nil
-        webView.delegate = nil
-    }
-
-    // MARK: WebView delegate methods
-
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        // Add the webView as a subview if it hasn't been already.
-        if webView.superview == nil {
-            // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
-            let viewport =  "var tid = setInterval( function () {" +
-                "if ( document.readyState !== 'complete' ) return;" +
-                "   clearInterval( tid );" +
-                "   viewport = document.querySelector('meta[name=viewport]'); " +
-                "   if (viewport) {" +
-                "       viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
-                "   }" +
-                "}, 100 );"
-            webView.stringByEvaluatingJavaScript(from: viewport)
-
-            webView.frame = bounds
-            addSubview(webView)
-        }
-
-        // The webViewDidFinishLoad method can be called many times for a single
-        // web page. Wait a brief moment then check if the webview is done loading content.
-        let delayTime = DispatchTime.now() + Double(Int64(0.3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) { [weak self] in
-            self?.checkIfDoneLoading()
+    /// Query the webView for its internal document's scrollHeight and pass the
+    /// value to the supplied completion block.
+    ///
+    private func fetchInternalDocumentHeight(_ completionHandler: @escaping ((CGFloat)->Void)) {
+        webView.evaluateJavaScript("document.documentElement.scrollHeight") { (result, _) in
+            guard let height = result as? CGFloat else {
+                completionHandler(0)
+                return
+            }
+            completionHandler(height)
         }
     }
 
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+    /// Called when loading is finished and the viewport should be updated.
+    /// Adds the webView to the view hierarchy so its visible. Fetches the
+    /// internal document height now that content is fully loaded.
+    /// Finally, call our success block.
+    ///
+    private func onLoadingComplete() {
+        webView.frame = bounds
+        addSubview(webView)
+
+        fetchInternalDocumentHeight { [weak self] height in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.internalDocumentHeight = height
+            if let callback = strongSelf.success {
+                callback(strongSelf)
+            }
+            strongSelf.success = nil
+        }
+    }
+
+    /// Override the viewport settings of the loaded content so we're sure to render correctly.
+    ///
+    private func updateDocumentViewPortIfNeeded(_ completionHandler: @escaping (()->Void)) {
+        // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
+        let viewport =  "var tid = setInterval( function () {" +
+            "if ( document.readyState !== 'complete' ) return;" +
+            "   clearInterval( tid );" +
+            "   viewport = document.querySelector('meta[name=viewport]'); " +
+            "   if (viewport) {" +
+            "       viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
+            "   }" +
+        "}, 100 );"
+        webView.evaluateJavaScript(viewport) {(_, _) in
+            completionHandler()
+        }
+    }
+
+}
+
+// MARK: WebView delegate methods
+extension WPRichTextEmbed: WKNavigationDelegate {
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // We're fully loaded so we can unassign the delegate.
+        webView.navigationDelegate = nil
+        updateDocumentViewPortIfNeeded {[weak self] in
+            self?.onLoadingComplete()
+        }
+    }
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         if let url = contentURL {
             DDLogError("RichTextEmbed failed to load content URL: \(url).")
         }

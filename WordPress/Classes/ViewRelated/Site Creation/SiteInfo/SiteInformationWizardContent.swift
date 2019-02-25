@@ -22,6 +22,8 @@ final class SiteInformationWizardContent: UIViewController {
         static let footerHeight: CGFloat = 42.0
         static let footerVerticalMargin: CGFloat = 6.0
         static let footerHorizontalMargin: CGFloat = 16.0
+        static let rowHeight: CGFloat = 44.0
+        static let separatorInset = UIEdgeInsets(top: 0, left: 64.0, bottom: 0, right: 0)
     }
 
     private let completion: SiteInformationCompletion
@@ -55,6 +57,7 @@ final class SiteInformationWizardContent: UIViewController {
         setupTable()
         setupButtonWrapper()
         setupNextButton()
+        WPAnalytics.track(.enhancedSiteCreationBasicInformationViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +87,7 @@ final class SiteInformationWizardContent: UIViewController {
         setupTableBackground()
         setupTableSeparator()
         registerCell()
+        setupCellHeight()
         setupHeader()
         setupFooter()
         setupConstraints()
@@ -104,6 +108,12 @@ final class SiteInformationWizardContent: UIViewController {
             InlineEditableNameValueCell.defaultNib,
             forCellReuseIdentifier: InlineEditableNameValueCell.defaultReuseID
         )
+    }
+
+    private func setupCellHeight() {
+        table.rowHeight = UITableView.automaticDimension
+        table.estimatedRowHeight = Constants.rowHeight
+        table.separatorInset = Constants.separatorInset
     }
 
     private func setupButtonWrapper() {
@@ -140,6 +150,8 @@ final class SiteInformationWizardContent: UIViewController {
         header.setTitle(headerData.title)
         header.setSubtitle(headerData.subtitle)
 
+        header.accessibilityTraits = .header
+
         table.tableHeaderView = header
 
         NSLayoutConstraint.activate([
@@ -158,11 +170,11 @@ final class SiteInformationWizardContent: UIViewController {
         title.textColor = WPStyleGuide.greyDarken20()
         title.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular)
         title.text = TableStrings.footer
+        title.adjustsFontForContentSizeCategory = true
 
         footer.addSubview(title)
 
         NSLayoutConstraint.activate([
-            title.heightAnchor.constraint(equalTo: footer.heightAnchor),
             title.leadingAnchor.constraint(equalTo: footer.leadingAnchor, constant: Constants.footerHorizontalMargin),
             title.trailingAnchor.constraint(equalTo: footer.trailingAnchor, constant: -1 * Constants.footerHorizontalMargin),
             title.topAnchor.constraint(equalTo: footer.topAnchor, constant: Constants.footerVerticalMargin)
@@ -184,6 +196,20 @@ final class SiteInformationWizardContent: UIViewController {
     private func goNext() {
         let collectedData = SiteInformation(title: titleString(), tagLine: taglineString())
         completion(collectedData)
+        trackBasicInformationNextStep()
+    }
+
+    private func trackBasicInformationNextStep() {
+        if nextStep.isPrimary {
+            let basicInformationProperties: [String: AnyObject] = [
+                "site_title": titleString() as AnyObject,
+                "tagline": taglineString() as AnyObject
+            ]
+
+            WPAnalytics.track(.enhancedSiteCreationBasicInformationCompleted, withProperties: basicInformationProperties)
+        } else {
+            WPAnalytics.track(.enhancedSiteCreationBasicInformationSkipped)
+        }
     }
 
     private func titleString() -> String {

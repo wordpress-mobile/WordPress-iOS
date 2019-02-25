@@ -368,40 +368,42 @@ private extension SiteStatsInsightsViewModel {
 
     func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
         let tagsAndCategories = store.getTopTagsAndCategories()
-        var dataRows = [StatsTotalRowData]()
+        return tagsAndCategories?.map { StatsTotalRowData.init(name: $0.label,
+                                                               data: $0.value.displayString(),
+                                                               dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: tagsAndCategories?.first),
+                                                               icon: tagsAndCategoriesIconForItem($0),
+                                                               showDisclosure: true,
+                                                               disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                               childRows: childRowsForItem($0)) }
+            ?? [StatsTotalRowData]()
+    }
 
-        tagsAndCategories?.forEach { item in
+    func tagsAndCategoriesIconForItem(_ item: StatsItem) -> UIImage? {
 
-            let disclosureURL: URL? = {
-                if let actions = item.actions,
-                    let action = actions.first as? StatsItemAction {
-                    return action.url
-                }
-                return nil
-            }()
-
-            let icon: UIImage? = {
-                switch item.alternateIconValue {
-                case "category":
-                    return Style.imageForGridiconType(.folder)
-               default:
-                    return Style.imageForGridiconType(.tag)
-                }
-            }()
-
-            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: tagsAndCategories?.first)
-
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             dataBarPercent: dataBarPercent,
-                                             icon: icon,
-                                             showDisclosure: true,
-                                             disclosureURL: disclosureURL)
-
-            dataRows.append(row)
+        if let children = item.children,
+            children.count > 0 {
+            return Style.imageForGridiconType(.folderMultiple)
         }
 
-        return dataRows
+        switch item.alternateIconValue {
+        case "category":
+            return Style.imageForGridiconType(.folder)
+        default:
+            return Style.imageForGridiconType(.tag)
+        }
+    }
+
+    func childRowsForItem(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        guard let children = item.children as? [StatsItem] else {
+            return [StatsTotalRowData]()
+        }
+
+        return children.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: ($0.value != nil) ? $0.value.displayString() : "",
+                                                     icon: tagsAndCategoriesIconForItem($0),
+                                                     showDisclosure: true,
+                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
     }
 
     func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
@@ -522,13 +524,7 @@ private extension SiteStatsInsightsViewModel {
 
         rowData?.forEach { row in
             let dataBarPercent = showDataBar ? StatsDataHelper.dataBarPercentForRow(row, relativeToRow: rowData?.first) : nil
-
-            let disclosureURL: URL? = {
-                if showDisclosure, let action = row.actions.first as? StatsItemAction {
-                    return action.url
-                }
-                return nil
-            }()
+            let disclosureURL = showDisclosure ? StatsDataHelper.disclosureUrlForItem(row) : nil
 
             rows.append(StatsTotalRowData.init(name: row.label,
                                                data: row.value.displayString(),

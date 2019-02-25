@@ -4,17 +4,55 @@ import WordPressKit
 
 
 /// Abstracts the service to obtain site types
-typealias SiteSegmentsServiceCompletion = (Result<[SiteSegment]>) -> Void
+typealias SiteSegmentsServiceCompletion = (SiteSegmentsResult) -> Void
 
 protocol SiteSegmentsService {
-    func siteSegments(for: Locale, completion: @escaping SiteSegmentsServiceCompletion)
+    func siteSegments(completion: @escaping SiteSegmentsServiceCompletion)
+}
+
+// MARK: - SiteSegmentsService
+final class SiteCreationSegmentsService: LocalCoreDataService, SiteSegmentsService {
+
+    // MARK: Properties
+
+    /// A service for interacting with WordPress accounts.
+    private let accountService: AccountService
+
+    /// A facade for WPCOM services.
+    private let remoteService: WordPressComServiceRemote
+
+    // MARK: LocalCoreDataService
+
+    override init(managedObjectContext context: NSManagedObjectContext) {
+        self.accountService = AccountService(managedObjectContext: context)
+
+        let api: WordPressComRestApi
+        if let account = accountService.defaultWordPressComAccount() {
+            api = account.wordPressComRestV2Api
+        } else {
+            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
+        }
+
+        self.remoteService = WordPressComServiceRemote(wordPressComRestApi: api)
+
+        super.init(managedObjectContext: context)
+    }
+
+    // MARK: SiteSegmentsService
+    func siteSegments(completion: @escaping SiteSegmentsServiceCompletion) {
+        remoteService.retrieveSegments(completion: { result in
+                completion(result)
+        })
+    }
 }
 
 
-/// Mock implementation so that we can start developing
+// MARK: - Mock
+
+/// Mock implementation of the SeiteSegmentsService
 final class MockSiteSegmentsService: SiteSegmentsService {
-    func siteSegments(for: Locale = .current, completion: @escaping SiteSegmentsServiceCompletion) {
-        let result = Result.success(mockSiteTypes)
+    func siteSegments(completion: @escaping SiteSegmentsServiceCompletion) {
+        let result = SiteSegmentsResult.success(mockSiteTypes)
 
         completion(result)
     }
@@ -35,7 +73,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Blogger",
                            subtitle: "Publish a collection of posts",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: "FFFFFF",
+                           iconColor: "#FF0000",
                            mobile: true)
     }
 
@@ -44,7 +82,7 @@ final class MockSiteSegmentsService: SiteSegmentsService {
                            title: "Professional",
                            subtitle: "Showcase your portfolio, skills or work. Expand this to two rows",
                            icon: URL(string: "https://s.w.org/style/images/about/WordPress-logotype-standard.png")!,
-                           iconColor: "FFFFFF",
+                           iconColor: "#0000FF",
                            mobile: true)
     }
 }

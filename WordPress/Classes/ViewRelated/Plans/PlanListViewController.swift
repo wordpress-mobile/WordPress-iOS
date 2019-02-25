@@ -46,14 +46,19 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         plansService.getWpcomPlans({ [weak self] in
             self?.updateViewModel()
 
-        }, failure: { [weak self] error in
-            self?.viewModel = .error(String(describing: error))
+        }, failure: { error in
+            DDLogInfo(error.debugDescription)
         })
     }
 
     func updateViewModel() {
         let service = PlanService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        viewModel = .ready(service.allPlans(), service.allPlanFeatures())
+        let allPlans = service.allPlans()
+        guard allPlans.count > 0 else {
+            viewModel = .error
+            return
+        }
+        viewModel = .ready(allPlans, service.allPlanFeatures())
     }
 
 

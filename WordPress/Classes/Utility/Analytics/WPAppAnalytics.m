@@ -220,7 +220,13 @@ static NSString * const WPAppAnalyticsKeyTimeInApp                  = @"time_in_
  *  @brief      Tracks stats with the blog_id when available
  */
 + (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber *)blogID {
-    [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
+    if (NSThread.isMainThread) {
+        [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
+        });
+    }
 }
 
 /**

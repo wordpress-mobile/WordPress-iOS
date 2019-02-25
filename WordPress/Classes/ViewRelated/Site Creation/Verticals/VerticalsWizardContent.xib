@@ -12,6 +12,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VerticalsWizardContent" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="bottomConstraint" destination="ria-80-fCh" id="wP7-0S-2PK"/>
+                <outlet property="buttonWrapper" destination="Mdo-gg-Eog" id="vum-89-NMY"/>
+                <outlet property="nextStep" destination="vaK-ii-Amu" id="JL2-Bi-rcm"/>
                 <outlet property="table" destination="Jv5-Jv-7RH" id="goA-6i-FkD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -22,16 +25,39 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jv5-Jv-7RH">
-                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="360"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="360" id="tef-ie-JGy"/>
+                    </constraints>
                 </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mdo-gg-Eog" customClass="ShadowView" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="593" width="375" height="74"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vaK-ii-Amu" customClass="NUXButton" customModule="WordPressAuthenticator">
+                            <rect key="frame" x="309" y="16" width="46" height="42"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="42" id="Xwj-pA-YCa"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="vaK-ii-Amu" firstAttribute="centerY" secondItem="Mdo-gg-Eog" secondAttribute="centerY" id="1WC-LA-fEG"/>
+                        <constraint firstAttribute="height" constant="74" id="mdY-Un-69w"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Jv5-Jv-7RH" secondAttribute="bottom" placeholder="YES" id="Anm-7T-nWt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Jv5-Jv-7RH" secondAttribute="trailing" placeholder="YES" id="Lid-Mv-VpV"/>
                 <constraint firstItem="Jv5-Jv-7RH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" placeholder="YES" id="SoU-PK-Kee"/>
+                <constraint firstItem="vaK-ii-Amu" firstAttribute="trailing" secondItem="Jv5-Jv-7RH" secondAttribute="trailing" constant="-20" id="efs-6e-k4Q"/>
                 <constraint firstItem="Jv5-Jv-7RH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" placeholder="YES" id="fne-pl-RTQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Mdo-gg-Eog" secondAttribute="trailing" id="kbJ-bJ-076"/>
+                <constraint firstItem="Mdo-gg-Eog" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="lGF-i3-nbx"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Mdo-gg-Eog" secondAttribute="bottom" id="ria-80-fCh"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="138.40000000000001" y="119.1904047976012"/>

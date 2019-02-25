@@ -17,10 +17,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - UI
 
-    private var titleTextField: UITextField {
-        return containerView.titleTextField
-    }
-
     private var containerView = GutenbergContainerView.loadFromNib()
 
     // MARK: - Aztec
@@ -39,11 +35,12 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     var postTitle: String {
-        get {
-            return titleTextField.text ?? ""
-        }
         set {
-            titleTextField.text = newValue
+            post.postTitle = newValue
+        }
+
+        get {
+            return post.postTitle ?? ""
         }
     }
 
@@ -77,6 +74,14 @@ class GutenbergViewController: UIViewController, PostEditor {
         //TODO
     }
 
+    func setTitle(_ title: String) {
+        guard gutenberg.isLoaded else {
+            return
+        }
+
+        gutenberg.setTitle(title)
+    }
+
     func setHTML(_ html: String) {
         guard gutenberg.isLoaded else {
             return
@@ -95,6 +100,7 @@ class GutenbergViewController: UIViewController, PostEditor {
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
+            mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
             refreshInterface()
         }
     }
@@ -105,6 +111,10 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
+    }()
+
+    lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
+        return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
 
     var hasFailedMedia: Bool {
@@ -137,12 +147,13 @@ class GutenbergViewController: UIViewController, PostEditor {
         switchToAztec: @escaping (EditorViewController) -> ()) {
 
         self.post = post
+
         self.switchToAztec = switchToAztec
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
+        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
         super.init(nibName: nil, bundle: nil)
-        postTitle = post.postTitle ?? ""
+
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         navigationBarManager.delegate = self
     }
@@ -162,7 +173,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         super.viewDidLoad()
         setupContainerView()
         setupGutenbergView()
-        registerEventListeners()
         createRevisionOfPost()
         configureNavigationBar()
         refreshInterface()
@@ -176,10 +186,6 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     // MARK: - Functions
-
-    private func registerEventListeners() {
-        titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(_:)), for: .editingChanged)
-    }
 
     private func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
@@ -200,7 +206,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private func reloadEditorContents() {
         let content = post.content ?? String()
 
-        titleTextField.text = post.postTitle
+        setTitle(post.postTitle ?? "")
         setHTML(content)
     }
 
@@ -228,11 +234,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
-    }
-
-    @objc func titleTextFieldDidChange(_ textField: UITextField) {
-        mapUIContentToPostAndSave()
-        editorContentWasUpdated()
     }
 
     // MARK: - Switch to Aztec
@@ -274,15 +275,97 @@ extension GutenbergViewController {
 // MARK: - GutenbergBridgeDelegate
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
-    func gutenbergDidRequestMediaPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
-                                                       dataSourceType: .mediaLibrary,
-                                                       callback: callback)
+
+    func gutenbergDidRequestMedia(from source: MediaPickerSource, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        switch source {
+        case .mediaLibrary:
+            gutenbergDidRequestMediaFromSiteMediaLibrary(with: callback)
+        case .deviceLibrary:
+            gutenbergDidRequestMediaFromDevicePicker(with: callback)
+        case .deviceCamera:
+            gutenbergDidRequestMediaFromCameraPicker(with: callback)
+        }
     }
 
-    func gutenbergDidProvideHTML(_ html: String, changed: Bool) {
+
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       dataSourceType: .mediaLibrary,
+                                                       callback: {(asset) in
+                                                        guard let media = asset as? Media else {
+                                                            callback(nil, nil)
+                                                            return
+                                                        }
+                                                        self.mediaInserterHelper.insertFromSiteMediaLibrary(media: media, callback: callback)
+        })
+    }
+
+    func gutenbergDidRequestMediaFromDevicePicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       dataSourceType: .device,
+                                                       callback: {(asset) in
+                                                        guard let phAsset = asset as? PHAsset else {
+                                                            callback(nil, nil)
+                                                            return
+                                                        }
+                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
+        })
+    }
+
+    func gutenbergDidRequestMediaFromCameraPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
+                                                         callback: {(asset) in
+                                                            guard let phAsset = asset as? PHAsset else {
+                                                                callback(nil, nil)
+                                                                return
+                                                            }
+                                                            self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
+        })
+    }
+
+    func gutenbergDidRequestMediaUploadSync() {
+        self.mediaInserterHelper.syncUploads()
+    }
+
+    func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
+
+        guard let media = mediaInserterHelper.mediaFor(uploadID: mediaID) else {
+            return
+        }
+
+        let title: String = MediaAttachmentActionSheet.title
+        var message: String? = nil
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
+
+        }
+        alertController.addAction(dismissAction)
+
+        if media.remoteStatus == .pushing || media.remoteStatus == .processing {
+            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { (action) in
+                self.mediaInserterHelper.cancelUploadOf(media: media)
+            }
+            alertController.addAction(cancelUploadAction)
+        } else if media.remoteStatus == .failed, let error = media.error {
+            message = error.localizedDescription
+            let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                self.mediaInserterHelper.retryUploadOf(media: media)
+            }
+            alertController.addAction(retryUploadAction)
+        }
+
+        alertController.title = title
+        alertController.message = message
+        alertController.popoverPresentationController?.sourceView = view
+        alertController.popoverPresentationController?.sourceRect = view.frame
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func gutenbergDidProvideHTML(title: String, html: String, changed: Bool) {
         if changed {
             self.html = html
+            self.postTitle = title
         }
 
         editorContentWasUpdated()
@@ -305,28 +388,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidLayout() {
-        defer {
-            isFirstGutenbergLayout = false
-        }
-        focusTitleIfNeeded()
-    }
-
-    private func focusTitleIfNeeded() {
-        if shouldFocusTitleAutomatically {
-            titleTextField.becomeFirstResponder()
-        }
-    }
-
-    private var shouldFocusTitleAutomatically: Bool {
-        return !post.hasContent() && !titleTextField.isFirstResponder && isFirstGutenbergLayout
     }
 }
 
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
+    }
+
+    func gutenbergInitialTitle() -> String? {
+        return post.postTitle ?? ""
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
@@ -397,5 +471,15 @@ private extension GutenbergViewController {
 
     enum Analytics {
         static let editorSource = "gutenberg"
+    }
+}
+
+private extension GutenbergViewController {
+    struct MediaAttachmentActionSheet {
+        static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
+        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
+        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
     }
 }

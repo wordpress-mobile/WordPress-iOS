@@ -79,6 +79,11 @@ class WPRichTextFormatter {
         for attachment in attachments {
             let str = attrString.string as NSString
             let range = str.range(of: attachment.identifier)
+
+            guard range.location != NSNotFound else {
+                continue
+            }
+
             let attributes = attrString.attributes(at: range.location, effectiveRange: nil)
 
             let attachmentString = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))

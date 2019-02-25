@@ -125,10 +125,6 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
 
-#ifdef BUDDYBUILD_ENABLED
-#import <BuddyBuildSDK/BuddyBuildSDK.h>
-#endif
-
 #import <WPMediaPicker/WPMediaPicker.h>
 
 #import <WordPressShared/WPDeviceIdentification.h>

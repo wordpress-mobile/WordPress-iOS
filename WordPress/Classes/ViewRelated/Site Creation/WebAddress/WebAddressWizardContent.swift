@@ -1,4 +1,5 @@
 import UIKit
+import WordPressAuthenticator
 
 /// Contains the UI corresponding to the list of Domain suggestions.
 ///
@@ -18,8 +19,20 @@ final class WebAddressWizardContent: UIViewController {
 
     private let selection: (DomainSuggestion) -> Void
 
-    @IBOutlet
-    private weak var table: UITableView!
+    /// Tracks the site address selected by users
+    private var selectedDomain: DomainSuggestion?
+
+    /// The table view renders our server content
+    @IBOutlet private weak var table: UITableView!
+
+    /// The view wrapping the skip button
+    @IBOutlet private weak var buttonWrapper: ShadowView!
+
+    /// The Create Site button
+    @IBOutlet private weak var createSite: NUXButton!
+
+    /// The constraint between the bottom of the buttonWrapper and this view controller's view
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
 
     /// Serves as both the data source & delegate of the table view
     private(set) var tableViewProvider: TableViewProvider?
@@ -89,11 +102,16 @@ final class WebAddressWizardContent: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table)
+        self.tableViewOffsetCoordinator = TableViewOffsetCoordinator(coordinated: table, footerControlContainer: view, footerControl: buttonWrapper, toolbarBottomConstraint: bottomConstraint)
+
+        tableViewOffsetCoordinator?.hideBottomToolbar()
 
         applyTitle()
         setupBackground()
+        setupButtonWrapper()
+        setupCreateSiteButton()
         setupTable()
+        WPAnalytics.track(.enhancedSiteCreationDomainsAccessed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -129,6 +147,8 @@ final class WebAddressWizardContent: UIViewController {
     private func clearContent() {
         throttle.cancel()
 
+        tableViewOffsetCoordinator?.hideBottomToolbar()
+
         guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
             setupTableDataProvider()
             return
@@ -138,12 +158,8 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        let suggestionType: DomainsServiceRemote.DomainSuggestionType
-        if let segmentID = siteCreator.segment?.identifier, segmentID == SiteSegment.blogSegmentIdentifier {
-            suggestionType = .wordPressDotComAndDotBlogSubdomains
-        } else {
-            suggestionType = .onlyWordPressDotCom
-        }
+        // NB : We hard-code the domain suggestions until we have a solution for .blog subdomains `paCBwp-F-p2`
+        let suggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
 
         service.addresses(for: searchTerm, domainSuggestionType: suggestionType) { [weak self] results in
             switch results {
@@ -198,6 +214,31 @@ final class WebAddressWizardContent: UIViewController {
         view.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
+    private func setupButtonWrapper() {
+        buttonWrapper.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func setupCreateSiteButton() {
+        createSite.addTarget(self, action: #selector(commitSelection), for: .touchUpInside)
+
+        let buttonTitle = NSLocalizedString("Create Site", comment: "Button to progress to the next step")
+        createSite.setTitle(buttonTitle, for: .normal)
+        createSite.accessibilityLabel = buttonTitle
+        createSite.accessibilityHint = NSLocalizedString("Creates a new Site", comment: "Site creation. Navigates to the next step")
+
+        createSite.isPrimary = true
+    }
+
+    @objc
+    private func commitSelection() {
+        guard let selectedDomain = selectedDomain else {
+            return
+        }
+
+        selection(selectedDomain)
+        trackDomainsSelection(selectedDomain)
+    }
+
     private func setupCells() {
         let cellName = AddressCell.cellReuseIdentifier()
         let nib = UINib(nibName: cellName, bundle: nil)
@@ -207,7 +248,7 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func resignTextFieldResponderIfNeeded() {
-        guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
             return
         }
 
@@ -266,6 +307,8 @@ final class WebAddressWizardContent: UIViewController {
         header.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         header.textField.delegate = self
 
+        header.accessibilityTraits = .header
+
         let placeholderText = NSLocalizedString("Search Domains", comment: "Site creation. Seelect a domain, search field placeholder")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
@@ -323,7 +366,9 @@ final class WebAddressWizardContent: UIViewController {
             }
 
             let domainSuggestion = provider.data[selectedIndexPath.row]
-            self.selection(domainSuggestion)
+            self.selectedDomain = domainSuggestion
+            self.resignTextFieldResponderIfNeeded()
+            self.tableViewOffsetCoordinator?.showBottomToolbar()
         }
 
         self.tableViewProvider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
@@ -338,6 +383,21 @@ final class WebAddressWizardContent: UIViewController {
 
         performSearchIfNeeded(query: searchTerm)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+    }
+
+    private func clearSelectionAndCreateSiteButton() {
+        selectedDomain = nil
+        table.deselectSelectedRowWithAnimation(true)
+        tableViewOffsetCoordinator?.hideBottomToolbar()
+    }
+
+    private func trackDomainsSelection(_ domainSuggestion: DomainSuggestion) {
+        let domainSuggestionProperties: [String: AnyObject] = [
+            "chosen_domain": domainSuggestion.domainName as AnyObject,
+            "search_term": lastSearchQuery as AnyObject
+        ]
+
+        WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
     }
 }
 
@@ -355,5 +415,23 @@ extension WebAddressWizardContent: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
         return true
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        clearSelectionAndCreateSiteButton()
+        return true
+    }
+}
+
+extension WebAddressWizardContent {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }

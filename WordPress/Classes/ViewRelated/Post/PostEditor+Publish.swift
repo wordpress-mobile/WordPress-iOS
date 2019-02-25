@@ -199,11 +199,33 @@ extension PostEditor where Self: UIViewController {
 
         WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
+        let shouldCreateDummyRevision: Bool
+
+        if post.isLocalRevision {
+            // This is basically a reverse of logic in `createRevisionOfPost()` about locally made drafts.
+            // Please read that one for context.
+            //
+            // We're creating an empty revision here to make sure we accurately depict the status of a
+            // locally-made-draft-that-was-later-also-locally-revised post.
+            //
+            // Without this, the app would treat such post just like a regular post — there would be
+            // no visible indication in the UI that this is something that only lives locally on users
+            // devices — but it wouldn't sync back to your WP blog. That's bad!
+            //
+            // Doing this silly little dance gives us a neat, useful "Local" indicator displayed next to the
+            // post. That's exactly what we want.
+            shouldCreateDummyRevision = true
+        } else {
+            shouldCreateDummyRevision = false
+        }
+
         post = originalPost
         post.deleteRevision()
 
         if shouldRemovePostOnDismiss {
             post.remove()
+        } else if shouldCreateDummyRevision {
+            post.createRevision()
         }
 
         cancelUploadOfAllMedia(for: post)
@@ -366,6 +388,33 @@ extension PostEditor where Self: UIViewController {
 
     // TODO: Rip this out and put it into the PostService
     func createRevisionOfPost() {
+
+        if post.isLocalRevision, post.original?.postTitle == nil, post.original?.content == nil {
+            // Editing a locally made revision has bit of weirdness in how autosave and
+            // revisions interact.
+            //
+            // Autosave basically is calling `managedObjectContext.save()` every time
+            // some time interval ticks (500ms as of me writing this) — but because we're usually in the middle of editing then,
+            // the object getting modified is _a revision_ — not the underlying, "base", post itself — that one remains empty/blank.
+            //
+            // This has some interesting implications when a user comes back to edit that draft later —
+            // because the post they're ostensibly editing was just a revision, any subsequent edits made in a later
+            // editing sessions also only apply to a revision.
+            //
+            // If a user then decides that they are unhappy with the changes they made and want to discard them,
+            // tapping on "discard changes" then just tosses away the revision and everything should be good.
+            //
+            // Alas! As I mentioned before, the underlying post _never got saved_ because of the autosave!
+            // This means we're removing the "revision" that had all the contents in it and are left with a "shell"
+            // of a post with no content in it. Not good!
+            //
+            // This little dance below, while _very_ counterintuitive, gives us the behavior we want —
+            // now when a `revision` is discarded after a second/third/etc/ editing session, there always
+            // exists an underlying post with the content users would expect.
+            post.original?.applyRevision()
+            return
+        }
+
         guard let managedObjectContext = post.managedObjectContext else {
             return
         }
