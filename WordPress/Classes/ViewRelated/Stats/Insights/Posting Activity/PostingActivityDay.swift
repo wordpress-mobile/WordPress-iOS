@@ -1,6 +1,6 @@
 import UIKit
 
-protocol PostingActivityDayDelegate {
+protocol PostingActivityDayDelegate: class {
     func daySelected(_ day: PostingActivityDay)
 }
 
@@ -16,7 +16,7 @@ class PostingActivityDay: UIView, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var dayButton: UIButton!
-    private var delegate: PostingActivityDayDelegate?
+    private weak var delegate: PostingActivityDayDelegate?
 
     private var visible = true
     private var active = true

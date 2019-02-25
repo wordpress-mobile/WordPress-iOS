@@ -100,9 +100,11 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @objc func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
-        let count = numberFormatter.string(from: topic.subscriberCount)
+
+        let count = numberFormatter.string(from: topic.subscriberCount) ?? "0"
         let pattern = NSLocalizedString("%@ followers", comment: "The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers`")
-        let str = String(format: pattern, count!)
+        let str = String(format: pattern, count)
+
         return str
     }
 

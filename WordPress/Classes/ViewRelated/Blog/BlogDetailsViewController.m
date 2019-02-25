@@ -24,6 +24,7 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
+static NSString *const QuickStartListTitleCellNibName = @"QuickStartListTitleCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -43,21 +44,6 @@ NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark - Helper Classes for Blog Details view model.
-
-@interface BlogDetailsRow : NSObject
-
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic, strong) NSString *accessibilityIdentifier;
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIView *accessoryView;
-@property (nonatomic, strong) NSString *detail;
-@property (nonatomic) BOOL showsSelectionState;
-@property (nonatomic) BOOL forDestructiveAction;
-@property (nonatomic, copy) void (^callback)(void);
-@property (nonatomic) QuickStartTourElement quickStartIdentifier;
-
-@end
 
 @implementation BlogDetailsRow
 
@@ -112,13 +98,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     return self;
 }
-
-@end
-
-@interface BlogDetailsSection : NSObject
-
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSArray *rows;
 
 @end
 
@@ -248,6 +227,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
+    UINib *qsTitleCellNib = [UINib nibWithNibName:QuickStartListTitleCellNibName bundle:[NSBundle bundleForClass:[QuickStartListTitleCell class]]];
+    [self.tableView registerNib:qsTitleCellNib forCellReuseIdentifier:[QuickStartListTitleCell reuseIdentifier]];
 
     self.clearsSelectionOnViewWillAppear = NO;
 
@@ -419,6 +400,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
+// MARK: Todo: this needs to adjust based on the existence of the QSv2 section
 - (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)section
 {
     switch (section) {
@@ -544,37 +526,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.tableSections = [NSArray arrayWithArray:marr];
 }
 
-- (BlogDetailsSection *)quickStartSectionViewModel
-{
-    __weak __typeof(self) weakSelf = self;
-    NSMutableArray *rows = [NSMutableArray array];
-
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Customize Your Site", @"Name of the Quick Start list that guides users through a few tasks to customize their new website.")
-                                                     identifier:BlogDetailsPlanCellIdentifier
-                                                          image:[Gridicon iconOfType:GridiconTypeListCheckmark]
-                                                       callback:^{
-                                                           [weakSelf showQuickStartCustomize];
-                                                       }];
-    row.quickStartIdentifier = QuickStartTourElementChecklist;
-
-    row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
-    [rows addObject:row];
-
-    BlogDetailsRow *row2 = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Grow Your Audience", @"Name of the Quick Start feature that guides users through a few tasks to grow the audience of their new website.")
-                                                      identifier:BlogDetailsPlanCellIdentifier
-                                                           image:[Gridicon iconOfType:GridiconTypeListCheckmark]
-                                                        callback:^{
-                                                            [weakSelf showQuickStartGrow];
-                                                        }];
-    row2.quickStartIdentifier = QuickStartTourElementChecklist;
-
-    row2.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
-    [rows addObject:row2];
-
-    NSString *sectionTitle = NSLocalizedString(@"Quick Start", @"Table view title for the quick start section.");
-    return [[BlogDetailsSection alloc] initWithTitle:sectionTitle andRows:rows];
-}
-
 - (BlogDetailsSection *)generalSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
@@ -593,12 +544,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:row];
     }
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+    BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                   accessibilityIdentifier:@"Stats Row"
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                  callback:^{
                                                      [weakSelf showStats];
-                                                 }]];
+                                                 }];
+    statsRow.quickStartIdentifier = QuickStartTourElementStats;
+    [rows addObject:statsRow];
 
     if ([self.blog supports:BlogFeatureActivity]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
@@ -609,16 +562,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     if ([self.blog supports:BlogFeaturePlans]) {
-        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+        BlogDetailsRow *plansRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
                                                          identifier:BlogDetailsPlanCellIdentifier
                                                               image:[Gridicon iconOfType:GridiconTypePlans]
                                                            callback:^{
                                                                [weakSelf showPlans];
                                                            }];
 
-        row.detail = self.blog.planTitle;
-
-        [rows addObject:row];
+        plansRow.detail = self.blog.planTitle;
+        plansRow.quickStartIdentifier = QuickStartTourElementPlans;
+        [rows addObject:plansRow];
     }
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
@@ -628,11 +581,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+    BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
                                                     image:[Gridicon iconOfType:GridiconTypePages]
                                                  callback:^{
                                                      [weakSelf showPageList];
-                                                 }]];
+                                                 }];
+    pagesRow.quickStartIdentifier = QuickStartTourElementPages;
+    [rows addObject:pagesRow];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                   accessibilityIdentifier:@"Blog Post Row"
@@ -1020,6 +975,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (row.accessoryView) {
         cell.accessoryView = row.accessoryView;
     }
+    if ([cell isKindOfClass:[QuickStartListTitleCell class]]) {
+        ((QuickStartListTitleCell *) cell).state = row.quickStartTitleState;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1237,7 +1195,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide find] visited:QuickStartTourElementPages];
 }
 
 - (void)showMediaLibrary
@@ -1273,7 +1231,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     PlanListViewController *controller = [[PlanListViewController alloc] initWithStyle:UITableViewStyleGrouped];
     [self showDetailViewController:controller sender:self];
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide find] visited:QuickStartTourElementPlans];
 }
 
 - (void)showSettings
@@ -1320,7 +1278,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self showDetailViewController:statsView sender:self];
     }
 
-    [[QuickStartTourGuide find] visited:QuickStartTourElementBlogDetailNavigation];
+    [[QuickStartTourGuide find] visited:QuickStartTourElementStats];
 }
 
 - (void)showActivity
@@ -1479,7 +1437,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
     if ([self shouldShowQuickStartChecklist]) {
-        QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
+        QuickStartChecklistViewControllerV1 *checklist = [[QuickStartChecklistViewControllerV1 alloc] initWithBlog:self.blog];
         return checklist;
     }
     StatsViewController *statsView = [StatsViewController new];

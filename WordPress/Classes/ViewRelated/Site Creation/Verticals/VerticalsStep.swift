@@ -17,7 +17,7 @@ final class VerticalsStep: WizardStep {
         self.verticalsService = verticalsService
     }
 
-    private func didSelect(_ vertical: SiteVertical) {
+    private func didSelect(_ vertical: SiteVertical?) {
         creator.vertical = vertical
         delegate?.nextStep()
     }

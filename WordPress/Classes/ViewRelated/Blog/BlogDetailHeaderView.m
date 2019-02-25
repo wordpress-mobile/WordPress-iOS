@@ -14,6 +14,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UIView *blavatarDropTarget;
+@property (nonatomic, strong) UIView *spotlightView;
 
 @end
 
@@ -91,6 +92,27 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     } else {
         self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
     }
+
+    if ([[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementSiteIcon]) {
+        [self addQuickStartSpotlight];
+    }
+}
+
+- (void)addQuickStartSpotlight
+{
+    self.spotlightView = [QuickStartSpotlightView new];
+    [self addSubview:self.spotlightView];
+
+    self.spotlightView.translatesAutoresizingMaskIntoConstraints = false;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.blavatarImageView.trailingAnchor constraintEqualToAnchor:self.spotlightView.trailingAnchor constant:-8.0],
+                                              [self.blavatarImageView.bottomAnchor constraintEqualToAnchor:self.spotlightView.bottomAnchor constant:-8.0]
+                                              ]];
+}
+
+- (void)removeQuickStartSpotlight
+{
+    [self.spotlightView removeFromSuperview];
 }
 
 #pragma mark - Subview setup
@@ -163,6 +185,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 -(void)blavatarImageTapped
 {
+    [[QuickStartTourGuide find] visited:QuickStartTourElementSiteIcon];
+    [self removeQuickStartSpotlight];
+
     [self.delegate siteIconTapped];
 }
 

@@ -12,7 +12,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private typealias Style = WPStyleGuide.Stats
-    private var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - Init
 

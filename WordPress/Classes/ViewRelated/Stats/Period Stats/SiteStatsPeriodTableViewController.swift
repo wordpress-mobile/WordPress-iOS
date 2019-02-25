@@ -4,12 +4,27 @@ import WordPressFlux
 
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
+    @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
 
 
 class SiteStatsPeriodTableViewController: UITableViewController {
 
     // MARK: - Properties
+
+    private let siteID = SiteStatsInformation.sharedInstance.siteID
+
+    private lazy var mainContext: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().mainContext
+    }()
+
+    private lazy var mediaService: MediaService = {
+        return MediaService(managedObjectContext: mainContext)
+    }()
+
+    private lazy var blogService: BlogService = {
+        return BlogService(managedObjectContext: mainContext)
+    }()
 
     var selectedDate: Date?
     var selectedPeriod: StatsPeriodUnit? {
@@ -79,7 +94,7 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self, TopTotalsPeriodStatsRow.self]
+        return [CellHeaderRow.self, TopTotalsPeriodStatsRow.self, TopTotalsNoSubtitlesPeriodStatsRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -121,4 +136,19 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         present(navController, animated: true, completion: nil)
     }
 
+    func displayMediaWithID(_ mediaID: NSNumber) {
+
+        guard let siteID = siteID,
+            let blog = blogService.blog(byBlogId: siteID) else {
+                DDLogInfo("Unable to get blog when trying to show media from Stats.")
+                return
+        }
+
+        mediaService.getMediaWithID(mediaID, in: blog, success: { (media) in
+            let viewController = MediaItemViewController(media: media)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }, failure: { (error) in
+            DDLogInfo("Unable to get media when trying to show from Stats: \(error.localizedDescription)")
+        })
+    }
 }

@@ -1,3 +1,5 @@
+import Gridicons
+
 private var alertWorkItem: DispatchWorkItem?
 private var observer: NSObjectProtocol?
 
@@ -49,25 +51,59 @@ extension BlogDetailsViewController {
     }
 
     @objc func showQuickStartV1() {
-        let tours = QuickStartTourGuide.checklistTours
-        showQuickStart(list: tours)
+        showQuickStart()
     }
 
     @objc func showQuickStartCustomize() {
-        let tours = QuickStartTourGuide.customizeListTours
-        showQuickStart(list: tours)
+        showQuickStart(with: .customize)
     }
 
     @objc func showQuickStartGrow() {
-        let tours = QuickStartTourGuide.growListTours
-        showQuickStart(list: tours)
+        showQuickStart(with: .grow)
     }
 
-    private func showQuickStart(list: [QuickStartTour]) {
-        let checklist = QuickStartChecklistViewController(blog: blog, list: list)
-        navigationController?.showDetailViewController(checklist, sender: self)
+    private func showQuickStart(with type: QuickStartType? = nil) {
+        if let type = type, Feature.enabled(.quickStartV2) {
+            let checklist = QuickStartChecklistViewController(blog: blog, type: type)
+            let navigationViewController = UINavigationController(rootViewController: checklist)
+            present(navigationViewController, animated: true, completion: nil)
+        } else {
+            let checklist = QuickStartChecklistViewControllerV1(blog: blog)
+            navigationController?.showDetailViewController(checklist, sender: self)
+        }
 
         QuickStartTourGuide.find()?.visited(.checklist)
+    }
+
+    @objc func quickStartSectionViewModel() -> BlogDetailsSection {
+        let detailFormatStr = NSLocalizedString("%1$d of %2$d completed", comment: "Format string for displaying number of compelted quickstart tutorials. %1$d is number completed, %2$d is total number of tutorials available.")
+
+        let customizeRow = BlogDetailsRow(title: NSLocalizedString("Customize Your Site", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
+                                          identifier: QuickStartListTitleCell.reuseIdentifier,
+                                          accessibilityIdentifier: "Customize Your Site Row",
+                                          image: Gridicon.iconOfType(.customize)) { [weak self] in
+                                            self?.showQuickStartCustomize()
+        }
+        customizeRow.quickStartIdentifier = .checklist
+        if let customizeDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.customizeListTours, for: blog) {
+            customizeRow.detail = String(format: detailFormatStr, customizeDetailCounts.complete, customizeDetailCounts.total)
+            customizeRow.quickStartTitleState = customizeDetailCounts.complete == customizeDetailCounts.total ? .completed : .customizeIncomplete
+        }
+
+        let growRow = BlogDetailsRow(title: NSLocalizedString("Grow Your Audience", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
+                                        identifier: QuickStartListTitleCell.reuseIdentifier,
+                                        accessibilityIdentifier: "Grow Your Audience Row",
+                                        image: Gridicon.iconOfType(.multipleUsers)) { [weak self] in
+                                            self?.showQuickStartGrow()
+                                        }
+        growRow.quickStartIdentifier = .checklist
+        if let growDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.growListTours, for: blog) {
+            growRow.detail = String(format: detailFormatStr, growDetailCounts.complete, growDetailCounts.total)
+            growRow.quickStartTitleState = growDetailCounts.complete == growDetailCounts.total ? .completed : .growIncomplete
+        }
+
+        let sectionTitle = NSLocalizedString("Quick Start", comment: "Table view title for the quick start section.")
+        return BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
     }
 
     private func showNotificationPrimerAlert() {

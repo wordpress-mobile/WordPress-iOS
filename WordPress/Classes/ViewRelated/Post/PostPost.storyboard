@@ -126,7 +126,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="J1M-dU-b8B"/>
                                                         </constraints>
-                                                        <state key="normal" title="Share" image="icon-posts-share">
+                                                        <state key="normal" title="Share">
                                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
@@ -239,7 +239,4 @@
             <point key="canvasLocation" x="2836.2318840579715" y="309.78260869565219"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="icon-posts-share" width="44" height="44"/>
-    </resources>
 </document>

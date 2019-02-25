@@ -66,14 +66,43 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
     private func styleTitle() {
         title.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         title.textColor = WPStyleGuide.darkGrey()
+        title.adjustsFontForContentSizeCategory = true
     }
 
     private func styleSubtitle() {
         subtitle.font = WPStyleGuide.fontForTextStyle(.callout, fontWeight: .regular)
         subtitle.textColor = WPStyleGuide.darkGrey()
+        subtitle.adjustsFontForContentSizeCategory = true
     }
 
     private func styleAccessoryView() {
         accessoryType = .disclosureIndicator
+    }
+}
+
+extension SiteSegmentsCell {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    func preferredContentSizeDidChange() {
+        // Title needs to be forced to reset its style, otherwise the types do not change
+        styleTitle()
+    }
+}
+
+extension SiteSegmentsCell: Accessible {
+    func prepareForVoiceOver() {
+        prepareIconForVoiceOver()
+    }
+
+    private func prepareIconForVoiceOver() {
+        let format = NSLocalizedString("Icon representing %@", comment: "Accessibility description for Site Segment icon. The %@ is a placeholder for the name of the kind of site. If the kind of site is unknown the phrase 'kind of site' is used.")
+        let site = model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site.")
+        icon.accessibilityLabel =  String(format: format, site )
+        icon.accessibilityTraits = .image
     }
 }

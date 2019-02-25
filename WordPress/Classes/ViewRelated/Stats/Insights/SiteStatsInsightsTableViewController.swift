@@ -25,6 +25,7 @@ enum InsightType: Int {
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -62,6 +63,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -117,7 +119,17 @@ private extension SiteStatsInsightsTableViewController {
 
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
+        clearExpandedRows()
         viewModel?.refreshInsights()
+    }
+
+    func applyTableUpdates() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
+    func clearExpandedRows() {
+        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
     }
 
     // MARK: User Defaults
@@ -183,8 +195,29 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func tabbedTotalsCellUpdated() {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        applyTableUpdates()
+    }
+
+    func expandedRowUpdated(_ row: StatsTotalRow) {
+        // Go ahead an update the table. The remaining logic just updates
+        // the array that tracks the expanded rows.
+        applyTableUpdates()
+
+        guard let rowData = row.rowData else {
+            return
+        }
+
+        var insightsExpandedRowLabels = StatsDataHelper.expandedRowLabels[.insights] ?? []
+
+        // Remove from array
+        insightsExpandedRowLabels = insightsExpandedRowLabels.filter { $0 != rowData.name }
+
+        // If expanded, add to array.
+        if row.expanded {
+            insightsExpandedRowLabels.append(rowData.name)
+        }
+
+        StatsDataHelper.expandedRowLabels[.insights] = insightsExpandedRowLabels
     }
 
 }

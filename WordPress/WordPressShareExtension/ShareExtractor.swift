@@ -121,6 +121,7 @@ private extension ShareExtractor {
     var supportedTextExtractors: [ExtensionContentExtractor] {
         return [
             SharePostExtractor(),
+            ShareBlogExtractor(),
             PropertyListExtractor(),
             URLExtractor(),
             PlainTextExtractor()
@@ -332,6 +333,31 @@ private struct SharePostExtractor: TypeBasedExtensionContentExtractor {
         returnedItem.selectedText = post.content
         returnedItem.url = post.url
         returnedItem.description = post.summary
+        return returnedItem
+    }
+}
+
+private struct ShareBlogExtractor: TypeBasedExtensionContentExtractor {
+    typealias Payload = Data
+    let acceptedType = ShareBlog.typeIdentifier
+    func convert(payload: Data) -> ExtractedItem? {
+        guard let post = SharePost(data: payload) else {
+            return nil
+        }
+
+        var returnedItem = ExtractedItem()
+        returnedItem.title = post.title
+        returnedItem.url = post.url
+        returnedItem.description = post.summary
+
+        let content: String
+        if let summary = post.summary {
+            content = "\(summary)\n\n"
+        } else {
+            content = ""
+        }
+        returnedItem.selectedText = content
+
         return returnedItem
     }
 }

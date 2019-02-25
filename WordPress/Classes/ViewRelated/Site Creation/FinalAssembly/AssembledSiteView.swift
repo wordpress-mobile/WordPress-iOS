@@ -39,6 +39,9 @@ final class AssembledSiteView: UIView {
     /// The web view that renders our newly assembled site
     private let webView: WKWebView
 
+    /// The request formulated to present the site to the user for first time.
+    private var initialSiteRequest: URLRequest?
+
     /// This interacts with our `WKNavigationDelegate` to influence the policy behavior before & after site loading.
     /// After the site has been loaded, we want to disable user interaction with the rendered site.
     private var webViewHasLoadedContent: Bool = false
@@ -125,12 +128,17 @@ final class AssembledSiteView: UIView {
 
     // MARK: Internal behavior
 
-    /// Triggers the new site to load for the first time.
-    func loadSite() {
-        generator.prepare()
+    /// Triggers the new site to load, once, and only once.
+    ///
+    func loadSiteIfNeeded() {
+        guard initialSiteRequest == nil, let siteURL = URL(string: siteURLString) else {
+            return
+        }
 
-        let siteURL = URL(string: siteURLString)!
         let siteRequest = URLRequest(url: siteURL)
+        self.initialSiteRequest = siteRequest
+
+        generator.prepare()
 
         webView.load(siteRequest)
     }
@@ -163,12 +171,30 @@ final class AssembledSiteView: UIView {
         layer.shadowOffset = Parameters.shadowOffset
         layer.shadowOpacity = Parameters.shadowOpacity
         layer.shadowRadius = Parameters.shadowRadius
+
+        // Used to prevent touch highlights on the webview
+        let tapRecognizer = UITapGestureRecognizer(target: nil, action: nil)
+        tapRecognizer.delegate = self
+        webView.addGestureRecognizer(tapRecognizer)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension AssembledSiteView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // This prevents WKWebView's touch highlighting from activating
+        return true
     }
 }
 
 // MARK: - WKNavigationDelegate
 
 extension AssembledSiteView: WKNavigationDelegate {
+
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewViewed)
+    }
 
     func webView(_ webView: WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
         guard webViewHasLoadedContent else {
@@ -181,7 +207,9 @@ extension AssembledSiteView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webViewHasLoadedContent = true
         activityIndicator.stopAnimating()
+        webView.prepareWPComPreview()
         generator.notificationOccurred(.success)
+        WPAnalytics.track(.enhancedSiteCreationSuccessPreviewLoaded)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
