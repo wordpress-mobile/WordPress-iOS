@@ -1232,7 +1232,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"quick_start_migration_dialog_viewed";
             break;
         case WPAnalyticsStatQuickStartMigrationDialogPositiveTapped:
-            eventName = @"quick_start_migration_dialog_tapped";
+            eventName = @"quick_start_migration_dialog_button_tapped";
             eventProperties = @{ @"type" : @"positive" };
             break;
         case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
@@ -1251,7 +1251,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"quick_start_list_item_skipped";
             break;
         case WPAnalyticsStatQuickStartNotificationStarted:
-            eventName = @"quick_start_notification_started";
+            eventName = @"quick_start_notification_sent";
             break;
         case WPAnalyticsStatQuickStartNotificationTapped:
             eventName = @"quick_start_notification_tapped";
