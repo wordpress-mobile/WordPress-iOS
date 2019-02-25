@@ -66,12 +66,6 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     return appDelegate.connectionAvailable;
 }
 
-+ (void)showAlertNoInternetConnection
-{
-    ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:nil];
-    [alert show];
-}
-
 + (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock
 {
     ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:retryBlock];

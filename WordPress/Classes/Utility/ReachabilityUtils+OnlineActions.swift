@@ -8,11 +8,7 @@ extension ReachabilityUtils {
     ///
     @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
-            let title = NSLocalizedString("No Connection",
-                                          comment: "Title of error prompt when no internet connection is available.")
-            let message = NSLocalizedString("The Internet connection appears to be offline",
-                                            comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
+            showAlertNoInternetConnection()
             return
         }
         action()
@@ -35,5 +31,16 @@ extension ReachabilityUtils {
             filter: { (notification) in
                 return notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true
         })
+    }
+
+    /// Shows a generic error message to the user.
+    ///
+    /// We use a Snackbar instead of a literal Alert because, for internet connection errors, Alerts can be disruptive.
+    @objc class func showAlertNoInternetConnection() {
+        let title = NSLocalizedString("No Connection",
+                comment: "Title of error prompt when no internet connection is available.")
+        let message = NSLocalizedString("The Internet connection appears to be offline",
+                comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
     }
 }

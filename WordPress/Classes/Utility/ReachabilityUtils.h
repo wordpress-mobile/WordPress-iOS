@@ -6,8 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (BOOL)isInternetReachable;
 
-+ (void)showAlertNoInternetConnection;
-
 + (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock;
 
 + (NSString *)noConnectionMessage;

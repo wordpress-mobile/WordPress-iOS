@@ -8,11 +8,6 @@
     return [ReachabilityUtils isInternetReachable];
 }
 
-- (void)showAlertNoInternetConnection
-{
-    [ReachabilityUtils showAlertNoInternetConnection];
-}
-
 - (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock
 {
     [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:retryBlock];
