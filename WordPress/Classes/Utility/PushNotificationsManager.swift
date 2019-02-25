@@ -434,7 +434,7 @@ extension PushNotificationsManager {
     }
 
     private enum QuickStartTracking {
-        static let taskNameKey = "push_notification_quick_start_task_name"
+        static let taskNameKey = "task_name"
     }
 }
 
