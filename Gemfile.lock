@@ -1,11 +1,13 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: 7fcf0cf76e7fe1ab6fd06cd478c355c08f08f395
-  tag: 0.1.5
+  revision: 1cfb99dcb2d7284165a6ee4fa149f1c9374db312
+  tag: 0.1.8
   specs:
-    fastlane-plugin-wpmreleasetoolkit (0.1.5)
+    fastlane-plugin-wpmreleasetoolkit (0.1.8)
       diffy
+      git
       nokogiri
+      octokit
 
 GEM
   remote: https://rubygems.org/
@@ -117,6 +119,7 @@ GEM
     fourflusher (2.0.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
+    git (1.5.0)
     google-api-client (0.23.9)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.5, < 0.7.0)
@@ -155,7 +158,7 @@ GEM
     nap (1.1.0)
     naturally (2.2.0)
     netrc (0.11.0)
-    nokogiri (1.10.0)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     octokit (4.12.0)
       sawyer (~> 0.8.0, >= 0.5.3)

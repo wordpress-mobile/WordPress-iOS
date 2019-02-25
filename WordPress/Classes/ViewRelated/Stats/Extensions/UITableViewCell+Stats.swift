@@ -13,7 +13,8 @@ extension UITableViewCell {
                  toStackView rowsStackView: UIStackView,
                  forType statType: StatType,
                  limitRowsDisplayed: Bool = true,
-                 rowDelegate: StatsTotalRowDelegate? = nil) {
+                 rowDelegate: StatsTotalRowDelegate? = nil,
+                 viewMoreDelegate: ViewMoreRowDelegate? = nil) {
 
         let numberOfDataRows = dataRows.count
 
@@ -49,7 +50,7 @@ extension UITableViewCell {
 
         // If there are more data rows, show 'View more'.
         if limitRowsDisplayed && numberOfDataRows > maxRows {
-            addViewMoreToStackView(rowsStackView)
+            addViewMoreToStackView(rowsStackView, forStatSection: dataRows.first?.statSection, withDelegate: viewMoreDelegate)
         }
     }
 
@@ -60,8 +61,11 @@ extension UITableViewCell {
         }
     }
 
-    func addViewMoreToStackView(_ rowsStackView: UIStackView) {
+    func addViewMoreToStackView(_ rowsStackView: UIStackView,
+                                forStatSection statSection: StatSection?,
+                                withDelegate delegate: ViewMoreRowDelegate?) {
         let row = ViewMoreRow.loadFromNib()
+        row.configure(statSection: statSection, delegate: delegate)
         rowsStackView.addArrangedSubview(row)
     }
 

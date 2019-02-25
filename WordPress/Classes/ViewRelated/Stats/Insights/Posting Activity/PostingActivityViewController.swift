@@ -4,7 +4,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
 
-    static var defaultStoryboardName = "PostingActivityViewController"
+    static var defaultStoryboardName = defaultControllerID
 
     // MARK: - Properties
 
