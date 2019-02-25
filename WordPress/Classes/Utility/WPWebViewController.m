@@ -206,10 +206,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)loadWebViewRequest
 {
-    if ([ReachabilityUtils alertIsShowing]) {
-        [self dismissViewControllerAnimated:false completion:nil];
-    }
-
     if (self.authenticator == nil) {
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
         [self loadRequest:request];

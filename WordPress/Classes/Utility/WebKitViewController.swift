@@ -123,10 +123,6 @@ class WebKitViewController: UIViewController {
     }
 
     @objc func loadWebViewRequest() {
-        if ReachabilityUtils.alertIsShowing() {
-            self.dismiss(animated: false)
-        }
-
         guard let authenticator = authenticator,
             #available(iOS 11, *) else {
                 load(request: URLRequest(url: url))
