@@ -5,59 +5,6 @@
 @import WordPressUI;
 
 
-@interface ReachabilityAlert : NSObject
-@property (nonatomic, copy) void (^retryBlock)(void);
-
-- (instancetype)initWithRetryBlock:(void (^)(void))retryBlock;
-
-- (void)show;
-@end
-
-static ReachabilityAlert *__currentReachabilityAlert = nil;
-
-@implementation ReachabilityAlert
-
-- (instancetype)initWithRetryBlock:(void (^)(void))retryBlock
-{
-    self = [super init];
-    if (self) {
-        self.retryBlock = retryBlock;
-    }
-    return self;
-}
-
-- (void)show
-{
-    if (__currentReachabilityAlert) {
-        return;
-    }
-    
-    NSString *title = NSLocalizedString(@"No Connection", @"");
-    NSString *message = [ReachabilityUtils noConnectionMessage];
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
-        __currentReachabilityAlert = nil;
-    }];
-    
-    if (self.retryBlock) {
-        [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
-            self.retryBlock();
-            __currentReachabilityAlert = nil;
-        }];
-    }
-    
-    // Note: This viewController might not be visible anymore
-    [alertController presentFromRootViewController];
-
-    __currentReachabilityAlert = self;
-}
-
-@end
-
 @implementation ReachabilityUtils
 
 + (BOOL)isInternetReachable
@@ -66,19 +13,9 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     return appDelegate.connectionAvailable;
 }
 
-+ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock
-{
-    ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:retryBlock];
-    [alert show];
-}
-
 + (NSString *)noConnectionMessage
 {
     return NSLocalizedString(@"The Internet connection appears to be offline.", @"");
 }
 
-+ (BOOL)alertIsShowing
-{
-    return __currentReachabilityAlert != nil;
-}
 @end
