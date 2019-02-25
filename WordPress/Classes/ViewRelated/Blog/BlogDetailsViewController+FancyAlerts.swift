@@ -166,5 +166,7 @@ extension BlogDetailsViewController {
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
         tabBarController?.present(alert, animated: true)
+
+        WPAnalytics.track(.quickStartMigrationDialogViewed)
     }
 }
