@@ -74,6 +74,8 @@ extension FancyAlertViewController {
     /// - Returns: FancyAlertViewController of the notice
     @objc static func makeQuickStartUpgradeToV2AlertController(blog: Blog) -> FancyAlertViewController {
         let okButton = ButtonConfig(UpgradeStrings.okButtonText) { controller, _ in
+            WPAnalytics.track(.quickStartMigrationDialogPositiveTapped)
+
             controller.dismiss(animated: true)
         }
 
