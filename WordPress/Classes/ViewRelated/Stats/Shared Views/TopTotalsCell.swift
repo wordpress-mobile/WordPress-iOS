@@ -46,7 +46,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
-        addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self)
+        addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self, viewMoreDelegate: self)
         setSubtitleVisibility()
         initChildRows()
 
@@ -262,6 +262,17 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         toggleSeparatorsAroundRow(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
+    }
+
+}
+
+// MARK: - ViewMoreRowDelegate
+
+extension TopTotalsCell: ViewMoreRowDelegate {
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
+        siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }

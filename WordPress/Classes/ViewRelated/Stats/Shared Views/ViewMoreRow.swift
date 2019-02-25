@@ -1,15 +1,23 @@
 import UIKit
 
+protocol ViewMoreRowDelegate: class {
+    func viewMoreSelectedForStatSection(_ statSection: StatSection)
+}
+
 class ViewMoreRow: UIView, NibLoadable {
 
     // MARK: - Properties
 
     @IBOutlet weak var viewMoreLabel: UILabel!
 
-    // MARK: - Init
+    private var statSection: StatSection?
+    private weak var delegate: ViewMoreRowDelegate?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    // MARK: - Configure
+
+    func configure(statSection: StatSection?, delegate: ViewMoreRowDelegate?) {
+        self.statSection = statSection
+        self.delegate = delegate
         applyStyles()
     }
 
@@ -25,11 +33,11 @@ private extension ViewMoreRow {
     }
 
     @IBAction func didTapViewMoreButton(_ sender: UIButton) {
-        let alertController =  UIAlertController(title: "More will be shown here.",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        guard let statSection = statSection else {
+            return
+        }
+
+        delegate?.viewMoreSelectedForStatSection(statSection)
     }
 
 }
