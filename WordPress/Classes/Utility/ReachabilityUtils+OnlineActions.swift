@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 extension ReachabilityUtils {
 
@@ -11,7 +12,7 @@ extension ReachabilityUtils {
                                           comment: "Title of error prompt when no internet connection is available.")
             let message = NSLocalizedString("The Internet connection appears to be offline",
                                             comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
-            WPError.showAlert(withTitle: title, message: message)
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
             return
         }
         action()

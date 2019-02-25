@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
+import WordPressFlux
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -625,7 +626,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         if shouldPresentAlert() {
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-            WPError.showAlert(withTitle: title, message: message)
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
         }
     }
 
