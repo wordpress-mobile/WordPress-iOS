@@ -361,7 +361,6 @@ extension PushNotificationsManager {
         static let identifierKey = "push_notification_note_id"
         static let typeKey = "push_notification_type"
         static let tokenKey = "push_notification_token"
-        static let taskNameKey = "push_notification_token"
     }
 }
 
@@ -390,7 +389,7 @@ extension PushNotificationsManager {
         }
         WPTabBarController.sharedInstance()?.showMySitesTab()
 
-        if let taskName = userInfo.string(forKey: Tracking.taskNameKey) {
+        if let taskName = userInfo.string(forKey: QuickStartTracking.taskNameKey) {
             WPAnalytics.track(.quickStartNotificationTapped,
                               withProperties: [Tracking.taskNameKey: taskName])
         }
@@ -408,7 +407,7 @@ extension PushNotificationsManager {
         content.body = tour.description
         content.sound = UNNotificationSound.default
         content.userInfo = [Notification.typeKey: Notification.local,
-                            Tracking.taskNameKey: tour.analyticsKey]
+                            QuickStartTracking.taskNameKey: tour.analyticsKey]
 
         guard let futureDate = Calendar.current.date(byAdding: .day,
                                                      value: Constants.localNotificationIntervalInDays,
@@ -422,7 +421,7 @@ extension PushNotificationsManager {
         UNUserNotificationCenter.current().add(request)
 
         WPAnalytics.track(.quickStartNotificationStarted,
-                          withProperties: [Tracking.taskNameKey: tour.analyticsKey])
+                          withProperties: [QuickStartTracking.taskNameKey: tour.analyticsKey])
     }
 
     @objc func deletePendingLocalNotifications() {
@@ -432,6 +431,10 @@ extension PushNotificationsManager {
     private enum Constants {
         static let localNotificationIntervalInDays = 2
         static let localNotificationIdentifier = "QuickStartTourNotificationIdentifier"
+    }
+
+    private enum QuickStartTracking {
+        static let taskNameKey = "push_notification_quick_start_task_name"
     }
 }
 
