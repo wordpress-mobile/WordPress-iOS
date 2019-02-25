@@ -249,7 +249,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.4.3)
   - WordPressAuthenticator (~> 1.1.9)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `ccf4322`)
+  - WordPressKit (~> 2.1.1-beta.1)
   - WordPressShared (= 1.7.1-beta.3)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
@@ -291,6 +291,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -318,9 +319,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.0.0
-  WordPressKit:
-    :commit: ccf4322
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -343,9 +341,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.0.0
-  WordPressKit:
-    :commit: ccf4322
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -400,6 +395,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 8409360a2cb7de74651003078a3c6d11f4465d33
+PODFILE CHECKSUM: fbb623be2ecc342f93beff2bbcb81f9bfc46dd86
 
 COCOAPODS: 1.5.3
