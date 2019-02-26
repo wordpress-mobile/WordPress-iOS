@@ -24,13 +24,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.1-beta.1'
+    pod 'WordPressShared', '1.7.1'
 
     ## for development:
     ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    ##pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '76335ba41b1cc57057b8372dfcd866681f70a13c'
+#    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07'
 end
 
 def aztec
@@ -39,7 +39,7 @@ def aztec
     ##
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    pod 'WordPress-Editor-iOS', '1.4.2'
+    pod 'WordPress-Editor-iOS', '1.4.3'
 end
 
 def wordpress_ui
@@ -52,7 +52,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 2.1.0-beta.1'
+    pod 'WordPressKit', '~> 2.1.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '3886f1d'
     #pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
@@ -82,6 +82,11 @@ def gutenberg_pod(name, branch=nil)
     pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
 end
 
+def gutenberg(options)
+    pod 'Gutenberg', options
+    pod 'RNTAztecView', options
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -94,36 +99,36 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    pod 'Gutenberg', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '3aca8d421f234dc7d52790297619322454cdcb03'
-    pod 'RNTAztecView', :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '3aca8d421f234dc7d52790297619322454cdcb03'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v1.0.1'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
     gutenberg_pod 'Folly'
     gutenberg_pod 'react-native-safe-area'
-    gutenberg_pod 'react-native-keyboard-aware-scroll-view', 'develop'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-
+    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.5'
+    
     ## Third party libraries
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
-    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'MRProgress', '0.8.3'
-    pod 'Reachability',    '3.2'
-    pod 'SVProgressHUD', '2.2.5'
+    pod 'Charts', '~> 3.2.2'
     pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
+    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MGSwipeTableCell', '1.6.8'
+    pod 'MRProgress', '0.8.3'
+    pod 'Reachability',    '3.2'
     pod 'Starscream', '3.0.6'
+    pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
 
 
     ## Automattic libraries
     ## ====================
     ##
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3.2-beta.1'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
     pod 'Gridicons', '~> 0.16'

@@ -6,6 +6,7 @@ import WordPressFlux
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 
@@ -101,6 +102,7 @@ private extension SiteStatsPeriodTableViewController {
         return [CellHeaderRow.self,
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
+                CountriesStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -136,8 +138,13 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
+    func applyTableUpdates() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
     func clearExpandedRows() {
-        StatsDataHelper.expandedRowLabels[.period]?.removeAll()
+        StatsDataHelper.clearExpandedPeriods()
     }
 
 }
@@ -169,23 +176,18 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        applyTableUpdates()
+        StatsDataHelper.updatedExpandedState(forRow: row)
+    }
 
-        guard let rowData = row.rowData else {
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allPeriods.contains(statSection) else {
             return
         }
 
-        var periodExpandedRowLabels = StatsDataHelper.expandedRowLabels[.period] ?? []
-
-        // Remove from array
-        periodExpandedRowLabels = periodExpandedRowLabels.filter { $0 != rowData.name }
-
-        // If expanded, add to array.
-        if row.expanded {
-            periodExpandedRowLabels.append(rowData.name)
-        }
-
-        StatsDataHelper.expandedRowLabels[.period] = periodExpandedRowLabels
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, siteStatsPeriodDelegate: self)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
+
 }

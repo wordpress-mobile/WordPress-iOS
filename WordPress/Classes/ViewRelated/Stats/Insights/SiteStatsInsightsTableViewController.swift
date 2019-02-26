@@ -37,6 +37,7 @@ enum InsightType: Int {
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -141,7 +142,7 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func clearExpandedRows() {
-        StatsDataHelper.expandedRowLabels[.insights]?.removeAll()
+        StatsDataHelper.clearExpandedInsights()
     }
 
     // MARK: User Defaults
@@ -211,25 +212,18 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
-        // Go ahead an update the table. The remaining logic just updates
-        // the array that tracks the expanded rows.
         applyTableUpdates()
+        StatsDataHelper.updatedExpandedState(forRow: row)
+    }
 
-        guard let rowData = row.rowData else {
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allInsights.contains(statSection) else {
             return
         }
 
-        var insightsExpandedRowLabels = StatsDataHelper.expandedRowLabels[.insights] ?? []
-
-        // Remove from array
-        insightsExpandedRowLabels = insightsExpandedRowLabels.filter { $0 != rowData.name }
-
-        // If expanded, add to array.
-        if row.expanded {
-            insightsExpandedRowLabels.append(rowData.name)
-        }
-
-        StatsDataHelper.expandedRowLabels[.insights] = insightsExpandedRowLabels
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, siteStatsInsightsDelegate: self)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
 }

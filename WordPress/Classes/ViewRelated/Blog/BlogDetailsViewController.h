@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nonnull) NSArray *rows;
+@property (nonatomic) BOOL showQuickStartMenu;
 
 - (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title andRows:(NSArray * __nonnull)rows;
 

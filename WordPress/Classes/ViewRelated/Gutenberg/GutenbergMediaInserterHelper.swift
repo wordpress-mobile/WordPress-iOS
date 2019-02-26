@@ -66,6 +66,7 @@ class GutenbergMediaInserterHelper: NSObject {
         }
         for media in post.media {
             if media.remoteStatus == .failed {
+                gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .uploading, progress: 0, url: media.absoluteThumbnailLocalURL, serverID: nil)
                 gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
             }
         }
@@ -80,6 +81,14 @@ class GutenbergMediaInserterHelper: NSObject {
         return nil
     }
 
+    func isUploadingMedia() -> Bool {
+        return mediaCoordinator.isUploadingMedia(for: post)
+    }
+
+    func cancelUploadOfAllMedia() {
+        mediaCoordinator.cancelUploadOfAllMedia(for: post)
+    }
+
     func cancelUploadOf(media: Media) {
         mediaCoordinator.cancelUpload(of: media)
         gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
@@ -87,6 +96,10 @@ class GutenbergMediaInserterHelper: NSObject {
 
     func retryUploadOf(media: Media) {
         mediaCoordinator.retryMedia(media)
+    }
+
+    func hasFailedMedia() -> Bool {
+        return mediaCoordinator.hasFailedMedia(for: post)
     }
 
     private func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media {
@@ -125,7 +138,8 @@ class GutenbergMediaInserterHelper: NSObject {
         switch state {
         case .processing:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
-        case .thumbnailReady:
+        case .thumbnailReady(let url):
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.20, url: url, serverID: nil)
             break
         case .uploading:
             break

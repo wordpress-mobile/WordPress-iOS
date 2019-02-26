@@ -10,6 +10,7 @@ final class TableViewOffsetCoordinator {
     private struct Constants {
         static let headerAnimationDuration  = Double(0.25)  // matches current system keyboard transition duration
         static let topMargin                = CGFloat(36)
+        static let domainHeaderSection      = 0
     }
 
     /// The table view to coordinate
@@ -84,6 +85,7 @@ final class TableViewOffsetCoordinator {
             tableView.scrollIndicatorInsets = targetInsets
             if WPDeviceIdentification.isiPhone(), let header = tableView.tableHeaderView as? TitleSubtitleTextfieldHeader {
                 header.titleSubtitle.alpha = 0.0
+                tableView.headerView(forSection: Constants.domainHeaderSection)?.isHidden = true
             }
         }, completion: { [weak self] _ in
             self?.tableViewHasBeenAdjusted = true

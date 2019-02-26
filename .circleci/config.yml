@@ -2,17 +2,10 @@ version: 2.1
 
 orbs:
   ios: wordpress-mobile/ios@0.0.20
-  danger: wordpress-mobile/danger@0.0.20
 
 workflows:
   wordpress_ios:
     jobs:
-      - danger/danger-ruby:
-          name: danger
-          filters:
-            branches:
-              # Disable Danger on develop
-              ignore: develop
       - ios/test:
           name: build_and_test
           workspace: WordPress.xcworkspace

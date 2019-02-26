@@ -5,20 +5,9 @@ import WebKit
 class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     typealias successBlock = ((WPRichTextEmbed)->Void)
 
-
     // MARK: Properties
-    private var internalDocumentHeight: CGFloat = 0.0
-    @objc var fixedHeight: CGFloat = 0.0
-    @objc var attachmentSize = CGSize.zero
-    @objc var documentSize: CGSize {
-        get {
-            var size = webView.scrollView.contentSize
-            if internalDocumentHeight > 0.0 {
-                size.height = internalDocumentHeight
-            }
-            return size
-        }
-    }
+    private var internalDocumentSize = CGSize.zero
+
     @objc var success: successBlock?
     var linkURL: URL?
     var contentURL: URL?
@@ -72,6 +61,17 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.scrollView.isScrollEnabled = false
         webView.navigationDelegate = self
+
+        guard
+            let scriptPath = Bundle.main.path(forResource: "richEmbedScript", ofType: "js"),
+            let scriptText = try? String(contentsOfFile: scriptPath) else {
+                return
+        }
+
+        let contentController = webView.configuration.userContentController
+        contentController.add(self, name: "observer")
+        let script = WKUserScript(source: scriptText, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        contentController.addUserScript(script)
     }
 
 
@@ -82,16 +82,11 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
             return CGSize(width: 1.0, height: 1.0)
         }
 
-        // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
-        if fixedHeight > 0 {
-            return CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedHeight)
+        if internalDocumentSize == .zero {
+            return webView.scrollView.contentSize
         }
 
-        if !attachmentSize.equalTo(CGSize.zero) {
-            return attachmentSize
-        }
-
-        return documentSize
+        return internalDocumentSize
     }
 
     @objc func loadContentURL(_ url: URL) {
@@ -112,21 +107,15 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     }
 
     @objc func loadHTMLString(_ html: NSString) {
-        let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /><style>video { width: 100vw; }</style></head><body>%@</body></html>", html)
-        webView.loadHTMLString(htmlString, baseURL: nil)
-    }
-
-    /// Query the webView for its internal document's scrollHeight and pass the
-    /// value to the supplied completion block.
-    ///
-    private func fetchInternalDocumentHeight(_ completionHandler: @escaping ((CGFloat)->Void)) {
-        webView.evaluateJavaScript("document.documentElement.scrollHeight") { (result, _) in
-            guard let height = result as? CGFloat else {
-                completionHandler(0)
+        guard
+            let templatePath = Bundle.main.path(forResource: "richEmbedTemplate", ofType: "html"),
+            let templateString = try? String(contentsOfFile: templatePath) else {
+                DDLogError("RichTextEmbed: Failed to load template html for embed.")
                 return
-            }
-            completionHandler(height)
         }
+
+        let htmlString = String(format: templateString, html)
+        webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
     /// Called when loading is finished and the viewport should be updated.
@@ -137,34 +126,6 @@ class WPRichTextEmbed: UIView, WPRichTextMediaAttachment {
     private func onLoadingComplete() {
         webView.frame = bounds
         addSubview(webView)
-
-        fetchInternalDocumentHeight { [weak self] height in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.internalDocumentHeight = height
-            if let callback = strongSelf.success {
-                callback(strongSelf)
-            }
-            strongSelf.success = nil
-        }
-    }
-
-    /// Override the viewport settings of the loaded content so we're sure to render correctly.
-    ///
-    private func updateDocumentViewPortIfNeeded(_ completionHandler: @escaping (()->Void)) {
-        // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
-        let viewport =  "var tid = setInterval( function () {" +
-            "if ( document.readyState !== 'complete' ) return;" +
-            "   clearInterval( tid );" +
-            "   viewport = document.querySelector('meta[name=viewport]'); " +
-            "   if (viewport) {" +
-            "       viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
-            "   }" +
-        "}, 100 );"
-        webView.evaluateJavaScript(viewport) {(_, _) in
-            completionHandler()
-        }
     }
 
 }
@@ -175,9 +136,7 @@ extension WPRichTextEmbed: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // We're fully loaded so we can unassign the delegate.
         webView.navigationDelegate = nil
-        updateDocumentViewPortIfNeeded {[weak self] in
-            self?.onLoadingComplete()
-        }
+        onLoadingComplete()
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -185,6 +144,33 @@ extension WPRichTextEmbed: WKNavigationDelegate {
             DDLogError("RichTextEmbed failed to load content URL: \(url).")
         }
         DDLogError("Error: \(error.localizedDescription)")
+    }
+
+}
+
+extension WPRichTextEmbed: WKScriptMessageHandler {
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        defer {
+            success?(self)
+            success = nil
+        }
+
+        guard
+            let str = message.body as? String else {
+                DDLogError("RichTextEmbed: Unable to read script tmessage.")
+                return
+        }
+
+        let arr = str.split(separator: ",")
+        guard
+            let width = Int(arr[0]),
+            let height = Int(arr[1]) else {
+                return
+        }
+
+        let size = CGSize(width: width, height: height)
+        internalDocumentSize = size
     }
 
 }
