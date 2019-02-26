@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 import UIKit
 import WebKit
+import WordPressFlux
 
 class WebKitViewController: UIViewController {
     @objc let webView: WKWebView
@@ -411,7 +412,7 @@ extension WebKitViewController: WKUIDelegate {
             ReachabilityUtils.showAlertNoInternetConnection()
             reloadWhenConnectionRestored()
         } else {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
+            ReachabilityUtils.showNetworkingErrorNotice(message: error.localizedDescription)
         }
     }
 }

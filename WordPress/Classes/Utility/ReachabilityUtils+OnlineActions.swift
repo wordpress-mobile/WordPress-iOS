@@ -33,14 +33,20 @@ extension ReachabilityUtils {
         })
     }
 
-    /// Shows a generic error message to the user.
+    /// Shows a generic "no internet connection" Notice to the user.
     ///
-    /// We use a Snackbar instead of a literal Alert because, for internet connection errors, Alerts can be disruptive.
-    @objc class func showAlertNoInternetConnection() {
+    /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
+    /// Alerts can be disruptive.
+    @objc static func showAlertNoInternetConnection() {
         let title = NSLocalizedString("No Connection",
                 comment: "Title of error prompt when no internet connection is available.")
-        let message = NSLocalizedString("The Internet connection appears to be offline",
-                comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
+        let message = noConnectionMessage()
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
+    }
+    
+    /// Shows a generic Notice for a networking error message to the user.
+    @objc static func showNetworkingErrorNotice(message: String) {
+        let title = NSLocalizedString("Error", comment: "Generic error alert title")
         ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
     }
 }
