@@ -1,11 +1,19 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let passwordOption = "Use Password"
+    static let linkButton = "Send Link"
+}
+
 class LinkOrPasswordScreen: BaseScreen {
     let passwordOption: XCUIElement
+    let linkButton: XCUIElement
 
     init() {
-        passwordOption = XCUIApplication().buttons["Use Password"]
+        passwordOption = XCUIApplication().buttons[ElementStringIDs.passwordOption]
+        linkButton = XCUIApplication().buttons[ElementStringIDs.linkButton]
+
         super.init(element: passwordOption)
     }
 
@@ -15,7 +23,13 @@ class LinkOrPasswordScreen: BaseScreen {
         return LoginPasswordScreen()
     }
 
+    func proceedWithLink() -> LoginCheckMagicLinkScreen {
+        linkButton.tap()
+
+        return LoginCheckMagicLinkScreen()
+    }
+
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["Use Password"].exists
+        return XCUIApplication().buttons[ElementStringIDs.passwordOption].exists
     }
 }

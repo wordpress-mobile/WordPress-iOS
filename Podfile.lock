@@ -179,7 +179,7 @@ PODS:
   - WordPress-Aztec-iOS (1.4.3)
   - WordPress-Editor-iOS (1.4.3):
     - WordPress-Aztec-iOS (= 1.4.3)
-  - WordPressAuthenticator (1.1.9):
+  - WordPressAuthenticator (1.1.10-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -188,10 +188,10 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 2.0-beta)
+    - WordPressKit (~> 3.0.0-beta.1)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
-  - WordPressKit (2.1.0):
+  - WordPressKit (3.0.0-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -248,8 +248,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.4.3)
-  - WordPressAuthenticator (~> 1.1.9)
-  - WordPressKit (~> 2.1.0)
+  - WordPressAuthenticator (~> 1.1.10-beta.1)
+  - WordPressKit (~> 3.0.0-beta.1)
   - WordPressShared (= 1.7.1)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
@@ -386,8 +386,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 0062ba96c3ea77186590c74b761427c461f89a06
   WordPress-Editor-iOS: cfaa780c3ee64ea781fe6f52ca1561667a3f3707
-  WordPressAuthenticator: 9559bc45373f1b6c2f58d664d34f564bcf73111f
-  WordPressKit: 1296ce8f8b85423ddf0d993deac918e75c5b6896
+  WordPressAuthenticator: 80cda36379dfee8772ad1b2e9c7f4541ccba0500
+  WordPressKit: 843906cb26fb8a92dddefd9a324a821555bf2b94
   WordPressShared: 2018257df3fe1de423f31a3ba50ac8d6bd24941c
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
@@ -395,6 +395,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 2c1688ad9f328bb556211b9739772c7300173c1f
+PODFILE CHECKSUM: 50d2adfc9635737d9a969d6584dc4cffada48828
 
 COCOAPODS: 1.5.3

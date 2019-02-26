@@ -8,7 +8,8 @@ open class PlanService: LocalCoreDataService {
     @objc public func getWpcomPlans(_ success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
 
-        let remote = PlanServiceRemote(wordPressComRestApi: WordPressComRestApi())
+        let wpcomAPI = WordPressComRestApi(localeKey: WordPressComRestApi.LocaleKeyDefault) // locale, not _locale
+        let remote = PlanServiceRemote(wordPressComRestApi: wpcomAPI)
         remote.getWpcomPlans({ plans in
 
             self.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: {
