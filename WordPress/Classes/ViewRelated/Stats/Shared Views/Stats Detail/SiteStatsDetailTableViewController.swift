@@ -1,4 +1,5 @@
 import UIKit
+import WordPressFlux
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
 
@@ -13,6 +14,10 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
 
+    private var viewModel: SiteStatsDetailsViewModel?
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsChangeReceipt: Receipt?
+
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
@@ -26,8 +31,9 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        setupTable()
         title = statSection.title
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        initViewModel()
     }
 
 }
@@ -36,103 +42,47 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
 private extension SiteStatsDetailTableViewController {
 
-    func setupTable() {
-        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        tableHandler.viewModel = tableViewModel()
+    func initViewModel() {
+        viewModel = SiteStatsDetailsViewModel(insightsDelegate: siteStatsInsightsDelegate)
+
+        guard let statSection = statSection else {
+            return
+        }
+
+        viewModel?.fetchDataFor(statSection: statSection)
+
+        insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            guard self?.storeIsFetching(statSection: statSection) == false else {
+                return
+            }
+            self?.refreshTableView()
+        }
+    }
+
+    func storeIsFetching(statSection: StatSection) -> Bool {
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return insightsStore.isFetchingFollowers
+        default:
+            return false
+        }
+    }
+
+
+    func refreshTableView() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.viewModel = viewModel.tableViewModel()
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [TopTotalsInsightStatsRow.self,
+                TabbedTotalsStatsRow.self,
                 TopTotalsPeriodStatsRow.self,
                 CountriesStatsRow.self,
                 TableFooterRow.self]
-    }
-
-    func tableViewModel() -> ImmuTable {
-
-        guard let statSection = statSection else {
-            return ImmuTable(sections: [])
-        }
-
-        var tableRows = [ImmuTableRow]()
-
-        if StatSection.allInsights.contains(statSection),
-            let insightRow = insightRow() {
-            tableRows.append(insightRow)
-        }
-
-        if StatSection.allPeriods.contains(statSection),
-            let periodRow = periodRow() {
-            tableRows.append(periodRow)
-        }
-
-        tableRows.append(TableFooterRow())
-
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
-    }
-
-    func insightRow() -> ImmuTableRow? {
-
-        guard let siteStatsInsightsDelegate = siteStatsInsightsDelegate,
-            let statSection = statSection else {
-                return nil
-        }
-
-        switch statSection {
-        default:
-            return TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                           dataSubtitle: statSection.dataSubtitle,
-                                           dataRows: mockRows(),
-                                           siteStatsInsightsDelegate: siteStatsInsightsDelegate)
-        }
-    }
-
-    func periodRow() -> ImmuTableRow? {
-
-        guard let siteStatsPeriodDelegate = siteStatsPeriodDelegate,
-        let statSection = statSection else {
-            return nil
-        }
-
-        switch statSection {
-        case .periodCountries:
-            return CountriesStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                     dataSubtitle: statSection.dataSubtitle,
-                                     dataRows: mockRows(),
-                                     siteStatsPeriodDelegate: siteStatsPeriodDelegate)
-        default:
-            return TopTotalsPeriodStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                           dataSubtitle: statSection.dataSubtitle,
-                                           dataRows: mockRows(),
-                                           siteStatsPeriodDelegate: siteStatsPeriodDelegate)
-        }
-
-
-    }
-
-    // TODO: populate table with real data.
-    // This is fake just to example the table.
-
-    func mockRows() -> [StatsTotalRowData] {
-        var dataRows = [StatsTotalRowData]()
-
-            dataRows.append(StatsTotalRowData.init(name: "Row 1",
-                                                   data: 99999.abbreviatedString(),
-                                                   icon: Style.imageForGridiconType(.mySites)))
-
-
-            dataRows.append(StatsTotalRowData.init(name: "Row 2",
-                                                   data: 666.abbreviatedString(),
-                                                   icon: Style.imageForGridiconType(.mySites)))
-
-            dataRows.append(StatsTotalRowData.init(name: "Rows 3",
-                                                   data: 1010101010.abbreviatedString(),
-                                                   icon: Style.imageForGridiconType(.mySites)))
-
-        return dataRows
     }
 
 }

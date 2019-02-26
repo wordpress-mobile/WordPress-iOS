@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComStatsiOS
 import WordPressFlux
 
 enum InsightType: Int {
@@ -100,7 +99,7 @@ private extension SiteStatsInsightsTableViewController {
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
-                !store.isFetching else {
+                !store.isFetchingOverview else {
                 return
             }
             self?.refreshTableView()
