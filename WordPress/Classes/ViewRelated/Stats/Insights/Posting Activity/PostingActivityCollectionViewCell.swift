@@ -8,7 +8,7 @@ class PostingActivityCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Configure
 
-    func configure(withData monthData: [PostingActivityDayData], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
+    func configure(withData monthData: [PostingStreakEvent], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
         let monthView = PostingActivityMonth.loadFromNib()
         monthView.configure(monthData: monthData, postingActivityDayDelegate: postingActivityDayDelegate)
         monthView.frame.size = frame.size

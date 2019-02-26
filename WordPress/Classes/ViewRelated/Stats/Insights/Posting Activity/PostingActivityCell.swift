@@ -22,7 +22,7 @@ class PostingActivityCell: UITableViewCell, NibLoadable {
         addLegend()
     }
 
-    func configure(withData monthsData: [[PostingActivityDayData]], andDelegate delegate: SiteStatsInsightsDelegate) {
+    func configure(withData monthsData: [[PostingStreakEvent]], andDelegate delegate: SiteStatsInsightsDelegate) {
         siteStatsInsightsDelegate = delegate
         addMonths(monthsData: monthsData)
     }
@@ -49,7 +49,7 @@ private extension PostingActivityCell {
         legendView.addSubview(legend)
     }
 
-    func addMonths(monthsData: [[PostingActivityDayData]]) {
+    func addMonths(monthsData: [[PostingStreakEvent]]) {
         for monthData in monthsData {
             let monthView = PostingActivityMonth.loadFromNib()
             monthView.configure(monthData: monthData)
