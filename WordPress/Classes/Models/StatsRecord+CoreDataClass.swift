@@ -164,3 +164,35 @@ extension NSManagedObject {
         }
     }
 }
+
+extension StatsRecord {
+    static func record<InsightType: StatsInsightData & StatsRecordValueConvertible>(from remoteInsight: InsightType, for blog: Blog) -> StatsRecord {
+        let recordType = InsightType.recordType
+        let managedObjectContext = blog.managedObjectContext!
+
+        let recordRequest = self.fetchRequest(for: recordType)
+        recordRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [recordRequest.predicate!,
+                                                                                      NSPredicate(format: "\(#keyPath(StatsRecord.blog)) ==  %@", blog)])
+
+        let fetchResults = try? managedObjectContext.fetch(recordRequest)
+
+        let parentRecord: StatsRecord
+
+        if let results = fetchResults, let record = results.first {
+            parentRecord = record
+        } else {
+            parentRecord = StatsRecord(context: managedObjectContext)
+            parentRecord.blog = blog
+            parentRecord.period = StatsRecordPeriodType.notApplicable.rawValue
+            parentRecord.type = recordType.rawValue
+        }
+
+        parentRecord.values?.forEach {
+            managedObjectContext.deleteObject($0 as! StatsRecordValue)
+        }
+
+        parentRecord.addToValues(remoteInsight.statsRecordValue(in: managedObjectContext))
+
+        return parentRecord
+    }
+}

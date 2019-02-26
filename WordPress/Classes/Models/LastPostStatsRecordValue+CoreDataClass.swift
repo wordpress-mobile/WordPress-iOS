@@ -15,3 +15,28 @@ public class LastPostStatsRecordValue: StatsRecordValue {
         try singleEntryTypeValidation()
     }
 }
+
+extension StatsLastPostInsight: StatsRecordValueConvertible {
+    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue {
+        let value = LastPostStatsRecordValue(context: context)
+
+        value.commentsCount = Int64(self.commentsCount)
+        value.likesCount = Int64(self.likesCount)
+        value.publishedDate = self.publishedDate as NSDate
+        value.title = self.title
+        value.urlString = self.url.absoluteString
+        value.viewsCount = Int64(self.viewsCount)
+
+        return value
+    }
+
+    init(statsRecordValue: StatsRecordValue) {
+        // We won't be needing those until later. I added them to protocol to show the intended design
+        // but it doesn't make sense to implement it yet.
+        fatalError()
+    }
+
+    static var recordType: StatsRecordType {
+        return .lastPostInsight
+    }
+}
