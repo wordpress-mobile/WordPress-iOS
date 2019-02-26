@@ -33,6 +33,7 @@ public enum StatsRecordType: Int16 {
     case tagsAndCategories
     case topCommentAuthors
     case topCommentedPosts
+    case annualAndMostPopularTimes
 
 
     case blogVisitsSummary
@@ -59,7 +60,8 @@ public enum StatsRecordType: Int16 {
               .streakInsight,
               .tagsAndCategories,
               .topCommentAuthors,
-              .topCommentedPosts:
+              .topCommentedPosts,
+              .annualAndMostPopularTimes:
 
             return false
         case  .blogVisitsSummary,
