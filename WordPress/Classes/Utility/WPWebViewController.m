@@ -436,7 +436,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)displayLoadError:(NSError *)error
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNotice];
         [self reloadWhenConnectionRestored];
     } else {
         [ReachabilityUtils showNetworkingErrorNoticeWithMessage:error.localizedDescription];

@@ -1388,7 +1388,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showViewAdmin
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNotice];
         return;
     }
 

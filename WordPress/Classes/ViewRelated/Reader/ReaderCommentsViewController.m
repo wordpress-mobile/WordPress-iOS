@@ -1060,7 +1060,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNotice];
         return;
     }
 

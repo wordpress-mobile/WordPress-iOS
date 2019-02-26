@@ -157,7 +157,7 @@ import WordPressShared.WPStyleGuide
 
         // We can't reply without an internet connection
         if !ReachabilityUtils.isInternetReachable() {
-            ReachabilityUtils.showAlertNoInternetConnection()
+            ReachabilityUtils.showNoInternetConnectionNotice()
             textView.resignFirstResponder()
             return
         }

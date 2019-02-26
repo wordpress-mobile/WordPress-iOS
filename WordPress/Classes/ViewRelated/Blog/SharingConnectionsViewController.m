@@ -224,7 +224,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)handleConnectTapped:(NSIndexPath *)indexPath
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNotice];
         return;
     }
 

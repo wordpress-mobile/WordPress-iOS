@@ -409,7 +409,7 @@ extension WebKitViewController: WKUIDelegate {
         }
 
         if !ReachabilityUtils.isInternetReachable() {
-            ReachabilityUtils.showAlertNoInternetConnection()
+            ReachabilityUtils.showNoInternetConnectionNotice()
             reloadWhenConnectionRestored()
         } else {
             ReachabilityUtils.showNetworkingErrorNotice(message: error.localizedDescription)

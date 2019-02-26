@@ -466,7 +466,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         dismiss(animated: true)
 
         guard ReachabilityUtils.isInternetReachable() else {
-            ReachabilityUtils.showAlertNoInternetConnection()
+            ReachabilityUtils.showNoInternetConnectionNotice()
             return
         }
 

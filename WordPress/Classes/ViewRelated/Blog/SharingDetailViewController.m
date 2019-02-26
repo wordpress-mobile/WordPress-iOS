@@ -227,7 +227,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)reconnectPublicizeConnection
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNotice];
         return;
     }
 
@@ -262,7 +262,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)promptToConfirmDisconnect
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNotice];
         return;
     }
 

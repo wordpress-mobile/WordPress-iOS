@@ -261,7 +261,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 -(void)showConnectionError
 {
-    [ReachabilityUtils showAlertNoInternetConnection];
+    [ReachabilityUtils showNoInternetConnectionNotice];
 }
 
 - (void)syncPublicizeServices

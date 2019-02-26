@@ -8,7 +8,7 @@ extension ReachabilityUtils {
     ///
     @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
-            showAlertNoInternetConnection()
+            showNoInternetConnectionNotice()
             return
         }
         action()
@@ -37,7 +37,7 @@ extension ReachabilityUtils {
     ///
     /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
     /// Alerts can be disruptive.
-    @objc static func showAlertNoInternetConnection() {
+    @objc static func showNoInternetConnectionNotice() {
         let title = NSLocalizedString("No Connection",
                 comment: "Title of error prompt when no internet connection is available.")
         let message = noConnectionMessage()
