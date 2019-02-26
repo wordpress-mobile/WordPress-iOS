@@ -80,10 +80,12 @@ class SiteStatsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
+            let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
             return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
                                                    tabDataForFollowerType(.insightsFollowersEmail)],
                                         siteStatsInsightsDelegate: insightsDelegate,
-                                        showTotalCount: true)
+                                        showTotalCount: true,
+                                        selectedIndex: selectedIndex)
         default:
             return TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
                                             dataSubtitle: statSection.dataSubtitle,

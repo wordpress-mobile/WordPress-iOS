@@ -44,11 +44,14 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate, showTotalCount: Bool = false) {
+    func configure(tabsData: [TabData],
+                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate,
+                   showTotalCount: Bool = false,
+                   selectedIndex: Int) {
         self.tabsData = tabsData
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.showTotalCount = showTotalCount
-        setupFilterBar()
+        setupFilterBar(selectedIndex: selectedIndex)
         addRowsForSelectedFilter()
         configureSubtitles()
         applyStyles()
@@ -64,9 +67,10 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
 private extension TabbedTotalsCell {
 
-    func setupFilterBar() {
+    func setupFilterBar(selectedIndex: Int) {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
         filterTabBar.items = tabsData.map { $0.tabTitle }
+        filterTabBar.setSelectedIndex(selectedIndex)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         toggleFilterTabBar()
     }
