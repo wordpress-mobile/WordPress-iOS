@@ -3,9 +3,9 @@
 class StatsRecordTests: StatsTestCase {
 
     func testCreatingAndSaving() {
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, period: .day, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, period: .day, date: Date())
+        createStatsRecord(in: mainContext, type: .blogVisitsSummary, period: .day, date: Date())
 
         XCTAssertNoThrow(try mainContext.save())
     }

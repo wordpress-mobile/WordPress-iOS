@@ -54,12 +54,12 @@ public enum StatsRecordType: Int16 {
         switch self {
         case  .allTimeStatsInsight,
               .followers,
+              .lastPostInsight,
               .publicizeConnection,
               .streakInsight,
               .tagsAndCategories,
               .topCommentAuthors,
-              .topCommentedPosts,
-              .lastPostInsight:
+              .topCommentedPosts:
 
             return false
         case  .blogVisitsSummary,
@@ -77,6 +77,14 @@ public enum StatsRecordType: Int16 {
             return true
         }
     }
+}
+
+public enum StatsRecordPeriodType: Int16 {
+    case day
+    case week
+    case month
+    case year
+    case notApplicable // this doesn't apply to Insights.
 }
 
 
@@ -117,8 +125,15 @@ public class StatsRecord: NSManagedObject {
             guard date != nil else {
                 throw StatsCoreDataValidationError.noDate
             }
+            guard period != StatsRecordPeriodType.notApplicable.rawValue else {
+                throw StatsCoreDataValidationError.invalidPeriod
+            }
         } else {
             try singleEntryTypeValidation()
+
+            guard period == StatsRecordPeriodType.notApplicable.rawValue else {
+                throw StatsCoreDataValidationError.invalidPeriod
+            }
         }
     }
 }
@@ -128,6 +143,7 @@ public enum StatsCoreDataValidationError: Error {
     case incorrectRecordType
     case noManagedObjectContext
     case noDate
+    case invalidPeriod
     case invalidEnumValue
 
     /// Thrown when trying to insert a second instance of a type that only supports

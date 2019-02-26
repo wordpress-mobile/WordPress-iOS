@@ -19,10 +19,14 @@ class StatsTestCase: XCTestCase {
         mainContext.reset()
     }
 
-    @discardableResult func createStatsRecord(in context: NSManagedObjectContext, type: StatsRecordType, date: Date) -> StatsRecord {
+    @discardableResult func createStatsRecord(in context: NSManagedObjectContext,
+                                              type: StatsRecordType,
+                                              period: StatsRecordPeriodType = .notApplicable,
+                                              date: Date) -> StatsRecord {
         let newRecord = StatsRecord(context: context)
         newRecord.type = type.rawValue
         newRecord.date = date as NSDate
+        newRecord.period = period.rawValue
 
         return newRecord
     }

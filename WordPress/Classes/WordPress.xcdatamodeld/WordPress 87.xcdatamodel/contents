@@ -791,6 +791,7 @@
     <entity name="StatsRecord" representedClassName="WordPress.StatsRecord" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fetchedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="period" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="type" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="statsRecords" inverseEntity="Blog" syncable="YES"/>
         <relationship name="values" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="StatsRecordValue" inverseName="statsRecord" inverseEntity="StatsRecordValue" syncable="YES"/>
@@ -887,7 +888,9 @@
         <element name="BlogAuthor" positionX="36" positionY="162" width="128" height="165"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="ClicksStatsRecordValue" positionX="63" positionY="189" width="128" height="135"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
+        <element name="CountryStatsRecordValue" positionX="54" positionY="180" width="128" height="90"/>
         <element name="DiffAbstractValue" positionX="45" positionY="171" width="128" height="105"/>
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
@@ -924,26 +927,24 @@
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="240"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
+        <element name="ReferrerStatsRecordValue" positionX="81" positionY="198" width="128" height="135"/>
         <element name="Revision" positionX="27" positionY="153" width="128" height="195"/>
         <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
         <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
         <element name="SearchResultsStatsRecordValue" positionX="27" positionY="153" width="128" height="75"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="StatsRecord" positionX="27" positionY="486" width="128" height="120"/>
+        <element name="StatsRecord" positionX="27" positionY="486" width="128" height="135"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
         <element name="StreakInsightStatsRecordValue" positionX="54" positionY="180" width="128" height="135"/>
         <element name="StreakStatsRecordValue" positionX="72" positionY="198" width="128" height="60"/>
         <element name="TagsCategoriesStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
-        <element name="TopViewedAuthorStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
-        <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
+        <element name="TopViewedAuthorStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
-        <element name="CountryStatsRecordValue" positionX="54" positionY="180" width="128" height="90"/>
-        <element name="ClicksStatsRecordValue" positionX="63" positionY="189" width="128" height="135"/>
-        <element name="ReferrerStatsRecordValue" positionX="81" positionY="198" width="128" height="135"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
     </elements>
 </model>

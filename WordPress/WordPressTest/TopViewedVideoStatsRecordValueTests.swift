@@ -2,7 +2,7 @@
 class TopViewedVideoStatsTests: StatsTestCase {
 
     func testCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .videos, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .videos, period: .day, date: Date())
 
         let video = TopViewedVideoStatsRecordValue(parent: parent)
         video.playsCount = 900000001
@@ -26,10 +26,12 @@ class TopViewedVideoStatsTests: StatsTestCase {
     }
 
     func testURLConversionWorks() {
-        let parent = createStatsRecord(in: mainContext, type: .videos, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .videos, period: .day, date: Date())
 
         let video = TopViewedVideoStatsRecordValue(parent: parent)
         video.postURLString = "www.wordpress.com"
+
+        XCTAssertNoThrow(try mainContext.save())
 
         let fetchRequest = StatsRecord.fetchRequest(for: .videos)
         let result = try! mainContext.fetch(fetchRequest)

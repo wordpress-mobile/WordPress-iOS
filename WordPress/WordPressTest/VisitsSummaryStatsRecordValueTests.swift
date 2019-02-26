@@ -2,7 +2,7 @@
 class VisitsSummaryStatsRecordValueTests: StatsTestCase {
 
     func testCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .blogVisitsSummary, period: .week, date: Date())
 
         let visits = VisitsSummaryStatsRecordValue(parent: parent)
         visits.viewsCount = 1
