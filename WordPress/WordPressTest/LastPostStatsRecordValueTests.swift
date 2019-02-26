@@ -103,7 +103,7 @@ class LastPostStatsRecordValueTests: StatsTestCase {
                                            viewsCount: 3,
                                            postID: 4)
 
-        let blog = discardableBlog()
+        let blog = defaultBlog()
 
         _ = StatsRecord.record(from: insight, for: blog)
 
@@ -124,10 +124,6 @@ class LastPostStatsRecordValueTests: StatsTestCase {
         XCTAssertEqual(castedResults.commentsCount, 2)
         XCTAssertEqual(castedResults.viewsCount, 3)
         XCTAssertEqual(castedResults.url, URL(string: "google.com") )
-    }
-
-    private func discardableBlog() -> Blog {
-        return ModelTestHelper.insertDotComBlog(context: mainContext)
     }
 
     @discardableResult func createLastPostStatsRecordValue(parent: StatsRecord) -> LastPostStatsRecordValue {

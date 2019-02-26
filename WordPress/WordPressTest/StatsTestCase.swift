@@ -31,4 +31,9 @@ class StatsTestCase: XCTestCase {
         return newRecord
     }
 
+    func defaultBlog() -> Blog {
+        return ModelTestHelper.insertDotComBlog(context: mainContext)
+    }
+
+
 }
