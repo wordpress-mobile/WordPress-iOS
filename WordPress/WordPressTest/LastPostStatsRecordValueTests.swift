@@ -1,4 +1,5 @@
 @testable import WordPress
+@testable import WordPressKit
 
 // Note: This also tests a bunch of behavior that is actually provided by `StatsRecordValue` —
 // but that's an a abstract entity and we can't instantiate it directly, so I put it together here.
@@ -89,6 +90,44 @@ class LastPostStatsRecordValueTests: StatsTestCase {
 
         let fetchedValue = result.first!.values!.firstObject as! LastPostStatsRecordValue
         XCTAssertNotNil(fetchedValue.url)
+    }
+
+    func testCoreDataConversion() {
+        let date = Calendar.autoupdatingCurrent.date(from: DateComponents(year: 2018, month: 1, day: 1))!
+
+        let insight = StatsLastPostInsight(title: "test",
+                                           url: URL(string: "google.com")!,
+                                           publishedDate: date,
+                                           likesCount: 1,
+                                           commentsCount: 2,
+                                           viewsCount: 3,
+                                           postID: 4)
+
+        let blog = discardableBlog()
+
+        _ = StatsRecord.record(from: insight, for: blog)
+
+        XCTAssertNoThrow(try mainContext.save())
+
+        let fetchRequest = StatsRecord.fetchRequest(for: .lastPostInsight)
+        let result = try! mainContext.fetch(fetchRequest)
+        let statsRecord = result.first!
+
+        XCTAssertEqual(statsRecord.blog, blog)
+        XCTAssertEqual(statsRecord.period, StatsRecordPeriodType.notApplicable.rawValue)
+
+        let castedResults = statsRecord.values?.array.first! as! LastPostStatsRecordValue
+
+        XCTAssertEqual(castedResults.title, "test")
+        XCTAssertEqual(castedResults.publishedDate, date as NSDate)
+        XCTAssertEqual(castedResults.likesCount, 1)
+        XCTAssertEqual(castedResults.commentsCount, 2)
+        XCTAssertEqual(castedResults.viewsCount, 3)
+        XCTAssertEqual(castedResults.url, URL(string: "google.com") )
+    }
+
+    private func discardableBlog() -> Blog {
+        return ModelTestHelper.insertDotComBlog(context: mainContext)
     }
 
     @discardableResult func createLastPostStatsRecordValue(parent: StatsRecord) -> LastPostStatsRecordValue {
