@@ -114,6 +114,36 @@ public class StatsRecord: NSManagedObject {
         return fr
     }
 
+    public class func insightFetchRequest(for blog: Blog, type: StatsRecordType) -> NSFetchRequest<StatsRecord> {
+        precondition(type.requiresDate == false, "This can only by used with StatsRecords that don't require date")
+
+        let fr: NSFetchRequest<StatsRecord> = self.fetchRequest()
+
+        let blogPredicate = NSPredicate(format: "\(#keyPath(StatsRecord.blog)) =  %@", blog)
+        let typePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.type)) = %i", type.rawValue)
+
+        let compoundPredicate =  NSCompoundPredicate(andPredicateWithSubpredicates: [
+            blogPredicate,
+            typePredicate
+        ])
+
+        fr.predicate = compoundPredicate
+
+        return fr
+    }
+
+    public class func insight(for blog: Blog, type: StatsRecordType) -> StatsRecord? {
+        guard let moc = blog.managedObjectContext else {
+            DDLogDebug("`Blog` with no `NSManagedObjectContext` attatched was passed to `StatsRecord.insight(blog:_type:_) -> StatsRecord`. This is probably an error.")
+            return nil
+        }
+
+        let fetchRequest = self.insightFetchRequest(for: blog, type: type)
+        let fetchResults = try? moc.fetch(fetchRequest)
+
+        return fetchResults?.first
+    }
+
     public override func validateForInsert() throws {
         try super.validateForInsert()
 
@@ -167,18 +197,14 @@ extension NSManagedObject {
 
 extension StatsRecord {
     static func record<InsightType: StatsInsightData & StatsRecordValueConvertible>(from remoteInsight: InsightType, for blog: Blog) -> StatsRecord {
+        guard let managedObjectContext = blog.managedObjectContext else {
+            preconditionFailure("Blog` with no `NSManagedObjectContext` attatched was passed to `StatsRecord.record(from:_for:_)`. This is an error.")
+        }
+
         let recordType = InsightType.recordType
-        let managedObjectContext = blog.managedObjectContext!
-
-        let recordRequest = self.fetchRequest(for: recordType)
-        recordRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [recordRequest.predicate!,
-                                                                                      NSPredicate(format: "\(#keyPath(StatsRecord.blog)) ==  %@", blog)])
-
-        let fetchResults = try? managedObjectContext.fetch(recordRequest)
-
         let parentRecord: StatsRecord
 
-        if let results = fetchResults, let record = results.first {
+        if let record = self.insight(for: blog, type: recordType) {
             parentRecord = record
         } else {
             parentRecord = StatsRecord(context: managedObjectContext)
