@@ -114,8 +114,11 @@ private extension StatsInsightsStore {
     func fetchInsights() {
 
         setAllAsFetching()
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
 
-        let api = apiService(for: SiteStatsInformation.sharedInstance.siteID!.intValue)
+        let api = apiService(for: siteID)
 
         api.getInsight { (lastPost: StatsLastPostInsight?, error) in
             if error != nil {

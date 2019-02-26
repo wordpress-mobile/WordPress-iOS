@@ -17,10 +17,6 @@ import WordPressComStatsiOS
 
     // MARK: - Instance Methods
 
-    @objc static func resetSharedInstance() {
-        sharedInstance = SiteStatsInformation()
-    }
-
     static func statsService() -> WPStatsService? {
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID,
