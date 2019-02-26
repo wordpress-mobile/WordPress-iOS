@@ -43,7 +43,7 @@ extension ReachabilityUtils {
         let message = noConnectionMessage()
         ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
     }
-    
+
     /// Shows a generic Notice for a networking error message to the user.
     @objc static func showNetworkingErrorNotice(message: String) {
         let title = NSLocalizedString("Error", comment: "Generic error alert title")
