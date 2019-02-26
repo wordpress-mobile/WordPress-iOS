@@ -79,6 +79,14 @@ public enum StatsRecordType: Int16 {
     }
 }
 
+public enum StatsRecordPeriodType: Int16 {
+    case day
+    case week
+    case month
+    case year
+    case notApplicable // this doesn't apply to Insights.
+}
+
 
 public class StatsRecord: NSManagedObject {
 
