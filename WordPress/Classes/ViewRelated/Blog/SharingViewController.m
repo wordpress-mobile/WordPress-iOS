@@ -261,11 +261,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 -(void)showConnectionError
 {
-    NSString *title = NSLocalizedString(@"No Connection", @"Title of error prompt when no internet connection is available.");
-    NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [WPError showAlertWithTitle:title message:message];
-    });
+    [ReachabilityUtils showAlertNoInternetConnection];
 }
 
 - (void)syncPublicizeServices

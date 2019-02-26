@@ -1,6 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
+import WordPressFlux
 
 /// Manages which sharing button are displayed, their order, and other settings
 /// related to sharing.
@@ -676,12 +677,9 @@ import WordPressShared
         if let error = error {
             message.append(error.localizedDescription)
         }
-        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        controller.addCancelActionWithTitle(NSLocalizedString("OK", comment: "A button title."), handler: nil)
 
-        controller.presentFromRootViewController()
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title, message: message)))
     }
-
 
     // MARK: - Actions
 
