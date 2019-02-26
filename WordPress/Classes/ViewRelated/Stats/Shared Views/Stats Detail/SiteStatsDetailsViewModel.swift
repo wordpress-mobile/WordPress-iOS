@@ -85,7 +85,8 @@ class SiteStatsDetailsViewModel: Observable {
                                                    tabDataForFollowerType(.insightsFollowersEmail)],
                                         siteStatsInsightsDelegate: insightsDelegate,
                                         showTotalCount: true,
-                                        selectedIndex: selectedIndex)
+                                        selectedIndex: selectedIndex,
+                                        limitRowsDisplayed: false)
         default:
             return TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
                                             dataSubtitle: statSection.dataSubtitle,

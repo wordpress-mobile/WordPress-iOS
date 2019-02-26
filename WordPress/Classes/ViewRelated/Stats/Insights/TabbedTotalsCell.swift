@@ -41,16 +41,20 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private var showTotalCount = false
+    private var limitRowsDisplayed = true
 
     // MARK: - Configure
 
     func configure(tabsData: [TabData],
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate,
-                   showTotalCount: Bool = false,
-                   selectedIndex: Int) {
+                   showTotalCount: Bool,
+                   selectedIndex: Int,
+                   limitRowsDisplayed: Bool) {
         self.tabsData = tabsData
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.showTotalCount = showTotalCount
+        self.limitRowsDisplayed = limitRowsDisplayed
+        bottomSeparatorLine.isHidden = !limitRowsDisplayed
         setupFilterBar(selectedIndex: selectedIndex)
         addRowsForSelectedFilter()
         configureSubtitles()
@@ -92,6 +96,7 @@ private extension TabbedTotalsCell {
         addRows(tabsData[filterTabBar.selectedIndex].dataRows,
                 toStackView: rowsStackView,
                 forType: .insights,
+                limitRowsDisplayed: limitRowsDisplayed,
                 rowDelegate: self,
                 viewMoreDelegate: self)
     }

@@ -399,7 +399,8 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForCommentType(.post)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: false,
-                                    selectedIndex: 0)
+                                    selectedIndex: 0,
+                                    limitRowsDisplayed: true)
     }
 
     func tabDataForCommentType(_ commentType: CommentType) -> TabData {
@@ -448,7 +449,8 @@ private extension SiteStatsInsightsViewModel {
                                                tabDataForFollowerType(.insightsFollowersEmail)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: true,
-                                    selectedIndex: 0)
+                                    selectedIndex: 0,
+                                    limitRowsDisplayed: true)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
