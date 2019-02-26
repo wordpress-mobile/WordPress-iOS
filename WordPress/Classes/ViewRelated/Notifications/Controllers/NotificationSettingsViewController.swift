@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
+import WordPressFlux
 
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com
@@ -153,22 +154,13 @@ open class NotificationSettingsViewController: UIViewController {
         let title       = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
         let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
                                             comment: "Displayed after Notification Settings failed to load")
-        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
         let retryText   = NSLocalizedString("Try Again", comment: "Try Again. Action")
 
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(cancelText) { (action: UIAlertAction) in
-            _ = self.navigationController?.popViewController(animated: true)
-        }
-
-        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
+        let notice = Notice(title: title, message: message, actionTitle: retryText) { _ in
             self.reloadSettings()
         }
-
-        present(alertController, animated: true)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
-
 
     // MARK: - UITableView Datasource Methods
 
