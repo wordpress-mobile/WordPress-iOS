@@ -54,6 +54,20 @@ struct QuickStartCreateTour: QuickStartTour {
     let waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
 }
 
+/// This is used to track when users from v1 are shown the v2 upgrade notice
+/// This should also be created when a site is setup for v2
+struct QuickStartUpgradeToV2Tour: QuickStartTour {
+    let key = "quick-start-upgrade-to-v2"
+    let analyticsKey = "upgrade_to_v2"
+    let title = ""
+    let description = ""
+    let icon = Gridicon.iconOfType(.plus)
+    let suggestionNoText = Strings.notNow
+    let suggestionYesText = Strings.yesShowMe
+
+    let waypoints: [QuickStartTour.WayPoint] = []
+}
+
 struct QuickStartViewTour: QuickStartTour {
     let key = "quick-start-view-tour"
     let analyticsKey = "view_site"

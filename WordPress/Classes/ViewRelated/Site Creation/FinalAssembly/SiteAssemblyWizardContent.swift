@@ -207,12 +207,29 @@ extension SiteAssemblyWizardContent: NetworkStatusDelegate {
 
 extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        dismissTapped(viaDone: true) { [createdBlog] in
+        dismissTapped(viaDone: true) { [createdBlog, weak self] in
             guard let blog = createdBlog else {
                 return
             }
             WPAnalytics.track(.enhancedSiteCreationCompleted)
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+
+            self?.showQuickStartAlert(for: blog)
         }
+    }
+
+    private func showQuickStartAlert(for blog: Blog) {
+        guard !UserDefaults.standard.quickStartWasDismissedPermanently else {
+            return
+        }
+
+        guard let tabBar = WPTabBarController.sharedInstance() else {
+            return
+        }
+
+        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController(blog: blog)
+        fancyAlert.modalPresentationStyle = .custom
+        fancyAlert.transitioningDelegate = tabBar
+        tabBar.present(fancyAlert, animated: true)
     }
 }

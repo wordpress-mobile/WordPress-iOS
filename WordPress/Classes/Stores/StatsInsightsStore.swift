@@ -12,7 +12,7 @@ enum InsightAction: Action {
     case receivedPublicize(_ publicizeStats: StatsPublicizeInsight?)
     case receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?)
     case receivedTodaysStats(_ todaysStats: StatsTodayInsight?)
-    case receivedPostingActivity(_ postingActivity: StatsStreak?)
+    case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?)
     case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?)
     case refreshInsights()
 }
@@ -46,7 +46,7 @@ struct InsightStoreState {
     var todaysStats: StatsTodayInsight?
     var fetchingTodaysStats = false
 
-    var postingActivity: StatsStreak?
+    var postingActivity: StatsPostingStreakInsight?
     var fetchingPostingActivity = false
 
     var topTagsAndCategories: StatsTagsAndCategoriesInsight?
@@ -182,27 +182,13 @@ private extension StatsInsightsStore {
             self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight))
         }
 
-        SiteStatsInformation.statsService()?.retrieveInsightsStats(
-        allTimeStatsCompletionHandler: nil,
-        insightsCompletionHandler: nil,
-        todaySummaryCompletionHandler: nil,
-        latestPostSummaryCompletionHandler: nil,
-        commentsAuthorCompletionHandler: nil,
-        commentsPostsCompletionHandler: nil,
-        tagsCategoriesCompletionHandler: nil,
-        followersDotComCompletionHandler: nil,
-        followersEmailCompletionHandler: nil,
-        publicizeCompletionHandler: nil,
-        streakCompletionHandler: { (statsStreak, error) in
+        api.getInsight { (streak: StatsPostingStreakInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching stats streak: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(statsStreak))
-        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
-        }, andOverallCompletionHandler: {
-
-        })
+            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak))
+        }
     }
 
     func refreshInsights() {
@@ -270,7 +256,7 @@ private extension StatsInsightsStore {
         }
     }
 
-    func receivedPostingActivity(_ postingActivity: StatsStreak?) {
+    func receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?) {
         transaction { state in
             state.postingActivity = postingActivity
             state.fetchingPostingActivity = false
@@ -343,57 +329,64 @@ extension StatsInsightsStore {
         return state.topTagsAndCategories
     }
 
+    func getPostingActivity() -> StatsPostingStreakInsight? {
+        return state.postingActivity
+    }
     /// Summarizes the daily posting count for the month in the given date.
     /// Returns an array containing every day of the month and associated post count.
     ///
-    func getMonthlyPostingActivityFor(date: Date) -> [PostingActivityDayData] {
+    func getMonthlyPostingActivityFor(date: Date) -> [PostingStreakEvent] {
 
-        var monthData = [PostingActivityDayData]()
-        let dateComponents = Calendar.current.dateComponents([.year, .month], from: date.normalizedDate())
-
-        // Add every day in the month to the array, seeding with 0 counts.
-        guard let dayRange = Calendar.current.range(of: .day, in: .month, for: date) else {
-            return monthData
+        guard
+            let postingEvents = state.postingActivity?.postingEvents,
+            postingEvents.count > 0
+            else {
+                return []
         }
 
-        dayRange.forEach { day in
-            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: day)
-            guard let date = Calendar.current.date(from: components) else {
-                return
+        let calendar = Calendar.autoupdatingCurrent
+        let components = calendar.dateComponents([.month, .year], from: date)
+
+        guard
+            let month = components.month,
+            let year = components.year
+            else {
+                return []
+        }
+
+        // This gives a range of how many days there are in a given month...
+        let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
+
+        let mappedMonth = rangeOfMonth
+            // then we create a `Date` representing each of those days
+            .compactMap {
+                return calendar.date(from: DateComponents(year: year, month: month, day: $0))
             }
-
-            monthData.append(PostingActivityDayData(date: date, count: 0))
+            // and pick out a relevant `PostingStreakEvent` from data we have or return
+            // an empty one.
+            .map { (date: Date) -> PostingStreakEvent in
+                if let postingEvent = postingEvents.first(where: { event in return event.date == date }) {
+                    return postingEvent
+                }
+                return PostingStreakEvent(date: date, postCount: 0)
         }
 
-        // If there is no posting activity at all, return.
-        guard let allPostingActivity = state.postingActivity?.items else {
-            return monthData
-        }
+        return mappedMonth
 
-        // If the posting occurred in the requested month, increment the count for that day.
-        allPostingActivity.forEach { postingActivity in
-            let postDate = postingActivity.date.normalizedDate()
-            if let dayIndex = monthData.index(where: { $0.date == postDate }) {
-                monthData[dayIndex].count += 1
-            }
-        }
-
-        return monthData
     }
 
-    func getYearlyPostingActivityFrom(date: Date) -> [[PostingActivityDayData]] {
-        var monthsData = [[PostingActivityDayData]]()
-
-        // Get last 12 months, in ascending order.
-        for month in (0...11).reversed() {
-            if let monthDate = Calendar.current.date(byAdding: .month, value: -month, to: Date()) {
-                monthsData.append(getMonthlyPostingActivityFor(date: monthDate))
+    func getYearlyPostingActivityFrom(date: Date) -> [[PostingStreakEvent]] {
+        // We operate on a "reversed" range since we want least-recent months first.
+        return (0...11).reversed().compactMap {
+            guard
+                let monthDate = Calendar.current.date(byAdding: .month, value: -$0, to: date)
+                else {
+                    return nil
             }
+
+            return getMonthlyPostingActivityFor(date: monthDate)
         }
-
-        return monthsData
     }
-
     var isFetching: Bool {
         return
             state.fetchingLastPostInsight ||

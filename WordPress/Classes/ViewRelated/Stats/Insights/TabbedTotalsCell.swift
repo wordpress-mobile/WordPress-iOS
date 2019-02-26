@@ -49,7 +49,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.showTotalCount = showTotalCount
         setupFilterBar()
-        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, forType: .insights, rowDelegate: self)
+        addRowsForSelectedFilter()
         configureSubtitles()
         applyStyles()
     }
@@ -79,9 +79,17 @@ private extension TabbedTotalsCell {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         removeRowsFromStackView(rowsStackView)
-        addRows(tabsData[filterTabBar.selectedIndex].dataRows, toStackView: rowsStackView, forType: .insights, rowDelegate: self)
+        addRowsForSelectedFilter()
         configureSubtitles()
         siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
+    }
+
+    func addRowsForSelectedFilter() {
+        addRows(tabsData[filterTabBar.selectedIndex].dataRows,
+                toStackView: rowsStackView,
+                forType: .insights,
+                rowDelegate: self,
+                viewMoreDelegate: self)
     }
 
 }
@@ -119,6 +127,16 @@ extension TabbedTotalsCell: StatsTotalRowDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
+    }
+
+}
+
+// MARK: - ViewMoreRowDelegate
+
+extension TabbedTotalsCell: ViewMoreRowDelegate {
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }

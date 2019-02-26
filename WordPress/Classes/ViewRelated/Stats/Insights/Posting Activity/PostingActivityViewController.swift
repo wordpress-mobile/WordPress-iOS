@@ -4,7 +4,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
 
-    static var defaultStoryboardName = "PostingActivityViewController"
+    static var defaultStoryboardName = defaultControllerID
 
     // MARK: - Properties
 
@@ -15,7 +15,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
-    var yearData = [[PostingActivityDayData]]()
+    var yearData = [[PostingStreakEvent]]()
 
     private var selectedDay: PostingActivityDay?
     private typealias Style = WPStyleGuide.Stats
@@ -82,7 +82,7 @@ extension PostingActivityViewController: PostingActivityDayDelegate {
 
         dayDataView.isHidden = false
         dateLabel.text = formattedDate(dayData.date)
-        postCountLabel.text = formattedPostCount(dayData.count)
+        postCountLabel.text = formattedPostCount(dayData.postCount)
     }
 
 }
