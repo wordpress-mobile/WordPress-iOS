@@ -33,6 +33,10 @@ class LoginTests: XCTestCase {
         XCTAssert(welcomeScreen.isLoaded())
     }
 
+    /**
+     This test currently stops after requesting the magic link.
+     The rest of the flow should be tested after we set up network mocking.
+     */
     func testEmailMagicLinkLogin() {
         _ = WelcomeScreen().login()
         .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
