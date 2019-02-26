@@ -147,11 +147,6 @@ private extension SiteStatsInsightsViewModel {
         static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
-    enum FollowerType {
-        case wordPressDotCom
-        case email
-    }
-
     enum CommentType {
         case author
         case post
@@ -447,47 +442,41 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
-        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.wordPressDotCom),
-                                               tabDataForFollowerType(.email)],
+
+        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
+                                               tabDataForFollowerType(.insightsFollowersEmail)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: true)
     }
 
-    func tabDataForFollowerType(_ followerType: FollowerType) -> TabData {
-
-        var tabTitle: String
+    func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
+        let tabTitle = followerType.tabTitle
         var followers: [StatsFollower]?
         var totalFollowers: Int?
-        var statSection: StatSection?
-        var totalCount: String
 
         switch followerType {
-        case .wordPressDotCom:
-            tabTitle = StatSection.insightsFollowersWordPress.tabTitle
+        case .insightsFollowersWordPress:
             followers = store.getDotComFollowers()?.topDotComFollowers
             totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
-            statSection = .insightsFollowersWordPress
-            totalCount = String(format: StatSection.insightsFollowersWordPress.totalFollowers,
-                                (totalFollowers ?? 0).abbreviatedString())
-        case .email:
-            tabTitle = StatSection.insightsFollowersEmail.tabTitle
+        case .insightsFollowersEmail:
             followers = store.getEmailFollowers()?.topEmailFollowers
             totalFollowers = store.getEmailFollowers()?.emailFollowersCount
-            statSection = .insightsFollowersEmail
-            totalCount = String(format: StatSection.insightsFollowersEmail.totalFollowers,
-                                (totalFollowers ?? 0).abbreviatedString())
+        default:
+            break
         }
+
+        let totalCount = String(format: followerType.totalFollowers, (totalFollowers ?? 0).abbreviatedString())
 
         let followersData = followers?.compactMap {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.subscribedDate.relativeStringInPast(),
                                      userIconURL: $0.avatarURL,
-                                     statSection: statSection)
+                                     statSection: followerType)
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: StatSection.insightsFollowersWordPress.itemSubtitle,
-                       dataSubtitle: StatSection.insightsFollowersWordPress.dataSubtitle,
+                       itemSubtitle: followerType.itemSubtitle,
+                       dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }
