@@ -9,7 +9,7 @@ class PostingActivityMonth: UIView, NibLoadable {
     @IBOutlet weak var viewWidthConstraint: NSLayoutConstraint!
 
     private var month: Date?
-    private var monthData: [PostingActivityDayData]?
+    private var monthData: [PostingStreakEvent]?
     private weak var postingActivityDayDelegate: PostingActivityDayDelegate?
 
     // 14 = day width (12) + column margin (2).
@@ -18,7 +18,7 @@ class PostingActivityMonth: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(monthData: [PostingActivityDayData], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
+    func configure(monthData: [PostingStreakEvent], postingActivityDayDelegate: PostingActivityDayDelegate? = nil) {
         self.monthData = monthData
         self.postingActivityDayDelegate = postingActivityDayDelegate
         getMonth()
@@ -97,7 +97,7 @@ private extension PostingActivityMonth {
         toggleLastStackView(lastStackViewUsed: weekIndex - 1)
     }
 
-    func addDayToStackView(stackView: UIStackView, dayData: PostingActivityDayData? = nil) {
+    func addDayToStackView(stackView: UIStackView, dayData: PostingStreakEvent? = nil) {
         let dayView = PostingActivityDay.loadFromNib()
         dayView.configure(dayData: dayData, delegate: postingActivityDayDelegate)
         stackView.addArrangedSubview(dayView)

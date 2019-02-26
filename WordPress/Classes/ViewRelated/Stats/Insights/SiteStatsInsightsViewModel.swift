@@ -310,7 +310,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createPostingActivityRow() -> PostingActivityRow {
-        var monthsData = [[PostingActivityDayData]]()
+        var monthsData = [[PostingStreakEvent]]()
 
         if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
             monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
