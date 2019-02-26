@@ -3,7 +3,7 @@
 class ClicksStatsRecordValueTests: StatsTestCase {
 
     func testCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .clicks, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .clicks, period: .month, date: Date())
 
         let clicks = ClicksStatsRecordValue(parent: parent)
         clicks.label = "test"
@@ -25,7 +25,7 @@ class ClicksStatsRecordValueTests: StatsTestCase {
     }
 
     func testChildrenRelationships() {
-        let parent = createStatsRecord(in: mainContext, type: .clicks, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .clicks, period: .month, date: Date())
 
         let clicks = ClicksStatsRecordValue(parent: parent)
         clicks.label = "parent"
@@ -40,6 +40,8 @@ class ClicksStatsRecordValueTests: StatsTestCase {
         child2.clicksCount = 1
 
         clicks.addToChildren([child, child2])
+
+        XCTAssertNoThrow(try mainContext.save())
 
         let fr = StatsRecord.fetchRequest(for: .clicks)
 

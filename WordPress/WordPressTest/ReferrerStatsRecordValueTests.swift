@@ -2,7 +2,7 @@
 class ReferrerStatsRecordValueTests: StatsTestCase {
 
     func testCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .referrers, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .referrers, period: .week, date: Date())
 
         let referrer = ReferrerStatsRecordValue(parent: parent)
         referrer.label = "test"
@@ -24,7 +24,7 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
     }
 
     func testChildrenRelationships() {
-        let parent = createStatsRecord(in: mainContext, type: .referrers, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .referrers, period: .week, date: Date())
 
         let referer = ReferrerStatsRecordValue(parent: parent)
         referer.label = "parent"
@@ -39,6 +39,8 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
         child2.viewsCount = 1
 
         referer.addToChildren([child, child2])
+
+        XCTAssertNoThrow(try mainContext.save())
 
         let fr = StatsRecord.fetchRequest(for: .referrers)
 
@@ -63,10 +65,16 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
 
 
     func testURLConversionWorks() {
-        let parent = createStatsRecord(in: mainContext, type: .referrers, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .referrers, period: .week, date: Date())
 
-        let tag = ReferrerStatsRecordValue(parent: parent)
-        tag.urlString = "www.wordpress.com"
+        let referer = ReferrerStatsRecordValue(parent: parent)
+        referer.label = "test"
+        referer.viewsCount = 5000
+        referer.urlString = "www.wordpress.com"
+
+        parent.addToValues(referer)
+
+        XCTAssertNoThrow(try mainContext.save())
 
         let fetchRequest = StatsRecord.fetchRequest(for: .referrers)
         let result = try! mainContext.fetch(fetchRequest)
@@ -76,10 +84,16 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
     }
 
     func testIconURLConversionWorks() {
-        let parent = createStatsRecord(in: mainContext, type: .referrers, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .referrers, period: .week, date: Date())
 
-        let tag = ReferrerStatsRecordValue(parent: parent)
-        tag.iconURLString = "www.wordpress.com"
+        let referer = ReferrerStatsRecordValue(parent: parent)
+        referer.label = "test"
+        referer.viewsCount = 5000
+        referer.iconURLString = "www.wordpress.com"
+
+        parent.addToValues(referer)
+
+        XCTAssertNoThrow(try mainContext.save())
 
         let fetchRequest = StatsRecord.fetchRequest(for: .referrers)
         let result = try! mainContext.fetch(fetchRequest)

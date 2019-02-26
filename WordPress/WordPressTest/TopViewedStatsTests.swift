@@ -3,7 +3,7 @@
 class TopViewedStatsTests: StatsTestCase {
 
     func testAuthorCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .topViewedAuthor, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .topViewedAuthor, period: .year, date: Date())
 
         let author = TopViewedAuthorStatsRecordValue(parent: parent)
         author.viewsCount = 22
@@ -25,7 +25,7 @@ class TopViewedStatsTests: StatsTestCase {
     }
 
     func testPostCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .topViewedPost, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .topViewedPost, period: .year, date: Date())
 
         let post = TopViewedPostStatsRecordValue(parent: parent)
         post.viewsCount = 1989
@@ -47,7 +47,7 @@ class TopViewedStatsTests: StatsTestCase {
     }
 
     func testRelationshipCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .topViewedAuthor, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .topViewedAuthor, period: .year, date: Date())
 
         let author = TopViewedAuthorStatsRecordValue(parent: parent)
         author.viewsCount = 22

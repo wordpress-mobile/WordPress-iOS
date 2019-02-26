@@ -3,7 +3,7 @@
 class CountryStatsRecordValueTests: StatsTestCase {
 
     func testCreation() {
-        let parent = createStatsRecord(in: mainContext, type: .countryViews, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .countryViews, period: .year, date: Date())
 
         let country = CountryStatsRecordValue(parent: parent)
         country.viewsCount = 9001
