@@ -21,6 +21,7 @@ enum InsightAction: Action {
     // Insights details
     case receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?)
     case receivedAllEmailFollowers(_ allDotComFollowers: StatsGroup?)
+    case refreshFollowers()
 }
 
 enum InsightQuery {
@@ -110,6 +111,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllDotComFollowers(allDotComFollowers)
         case .receivedAllEmailFollowers(let allEmailFollowers):
             receivedAllEmailFollowers(allEmailFollowers)
+        case .refreshFollowers:
+            refreshFollowers()
         }
     }
 
@@ -137,8 +140,7 @@ private extension StatsInsightsStore {
                     fetchInsights()
                 }
             case .allFollowers:
-                // todo: make method
-                if !isFetchingFollowers {
+                if shouldFetchFollowers() {
                     fetchAllFollowers()
                 }
             }
@@ -368,6 +370,18 @@ private extension StatsInsightsStore {
         }
     }
 
+    func refreshFollowers() {
+        guard shouldFetchFollowers() else {
+            DDLogInfo("Stats Insights Followers refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllFollowers()
+    }
+
+    func shouldFetchFollowers() -> Bool {
+        return !isFetchingFollowers
+    }
 }
 
 // MARK: - Public Accessors
@@ -494,7 +508,7 @@ extension StatsInsightsStore {
     var isFetchingFollowers: Bool {
         return
             state.fetchingAllDotComFollowers ||
-                state.fetchingAllEmailFollowers
+            state.fetchingAllEmailFollowers
     }
 
 }

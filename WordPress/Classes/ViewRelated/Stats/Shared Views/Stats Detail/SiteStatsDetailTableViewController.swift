@@ -1,6 +1,10 @@
 import UIKit
 import WordPressFlux
 
+@objc protocol SiteStatsDetailsDelegate {
+    @objc optional func tabbedTotalsCellUpdated()
+}
+
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
@@ -11,8 +15,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
 
     private var viewModel: SiteStatsDetailsViewModel?
     private let insightsStore = StoreContainer.shared.statsInsights
@@ -24,14 +26,12 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - View
 
-    func configure(statSection: StatSection,
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
+    func configure(statSection: StatSection) {
         self.statSection = statSection
-        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
-        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         title = statSection.title
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
     }
@@ -43,7 +43,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsDetailsViewModel(insightsDelegate: siteStatsInsightsDelegate)
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self)
 
         guard let statSection = statSection else {
             return
@@ -59,6 +59,11 @@ private extension SiteStatsDetailTableViewController {
         }
     }
 
+    func tableRowTypes() -> [ImmuTableRow.Type] {
+        return [TabbedTotalsDetailStatsRow.self,
+                TableFooterRow.self]
+    }
+
     func storeIsFetching(statSection: StatSection) -> Bool {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
@@ -68,6 +73,7 @@ private extension SiteStatsDetailTableViewController {
         }
     }
 
+    // MARK: - Table Refreshing
 
     func refreshTableView() {
         guard let viewModel = viewModel else {
@@ -75,14 +81,33 @@ private extension SiteStatsDetailTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
+        refreshControl?.endRefreshing()
     }
 
-    func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [TopTotalsInsightStatsRow.self,
-                TabbedTotalsStatsRow.self,
-                TopTotalsPeriodStatsRow.self,
-                CountriesStatsRow.self,
-                TableFooterRow.self]
+    @objc func refreshData() {
+        refreshControl?.beginRefreshing()
+        viewModel?.refreshFollowers()
+    }
+
+    func applyTableUpdates() {
+        tableView.beginUpdates()
+        updateStatSectionForFilterChange()
+        tableView.endUpdates()
+    }
+
+    func updateStatSectionForFilterChange() {
+        statSection = (statSection == .insightsFollowersWordPress) ? .insightsFollowersEmail : .insightsFollowersWordPress
+        initViewModel()
+    }
+
+}
+
+// MARK: - SiteStatsDetailsDelegate Methods
+
+extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
+
+    func tabbedTotalsCellUpdated() {
+        applyTableUpdates()
     }
 
 }

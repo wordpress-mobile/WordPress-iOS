@@ -13,22 +13,19 @@ class SiteStatsDetailsViewModel: Observable {
     private typealias Style = WPStyleGuide.Stats
 
     private var statSection: StatSection?
+    private weak var detailsDelegate: SiteStatsDetailsDelegate?
+
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private weak var insightsDelegate: SiteStatsInsightsDelegate?
-    private weak var periodDelegate: SiteStatsPeriodDelegate?
-
-    init(insightsDelegate: SiteStatsInsightsDelegate? = nil,
-         periodDelegate: SiteStatsPeriodDelegate? = nil) {
-        self.insightsDelegate = insightsDelegate
-        self.periodDelegate = periodDelegate
+    init(detailsDelegate: SiteStatsDetailsDelegate) {
+        self.detailsDelegate = detailsDelegate
     }
 
     func fetchDataFor(statSection: StatSection) {
         self.statSection = statSection
-        guard let storeQuery = queryForStatSection(statSection) else {
+        guard let storeQuery = queryForInsightStatSection(statSection) else {
             return
         }
 
@@ -38,7 +35,7 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
-    func queryForStatSection(_ statSection: StatSection) -> InsightQuery? {
+    func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return .allFollowers
@@ -48,20 +45,23 @@ class SiteStatsDetailsViewModel: Observable {
     }
 
     func tableViewModel() -> ImmuTable {
-        guard let statSection = statSection else {
-            return ImmuTable(sections: [])
+        guard let statSection = statSection,
+            let detailsDelegate = detailsDelegate else {
+                return ImmuTable(sections: [])
         }
 
         var tableRows = [ImmuTableRow]()
 
-        if StatSection.allInsights.contains(statSection),
-            let insightRow = insightRow() {
-            tableRows.append(insightRow)
-        }
-
-        if StatSection.allPeriods.contains(statSection),
-            let periodRow = periodRow() {
-            tableRows.append(periodRow)
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
+            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
+                                                                   tabDataForFollowerType(.insightsFollowersEmail)],
+                                                        siteStatsDetailsDelegate: detailsDelegate,
+                                                        showTotalCount: true,
+                                                        selectedIndex: selectedIndex))
+        default:
+            break
         }
 
         tableRows.append(TableFooterRow())
@@ -72,28 +72,17 @@ class SiteStatsDetailsViewModel: Observable {
             ])
     }
 
-    func insightRow() -> ImmuTableRow? {
-        guard let insightsDelegate = insightsDelegate,
-            let statSection = statSection else {
-                return nil
-        }
+    // MARK: - Refresh Data
 
-        switch statSection {
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
-            let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
-            return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
-                                                   tabDataForFollowerType(.insightsFollowersEmail)],
-                                        siteStatsInsightsDelegate: insightsDelegate,
-                                        showTotalCount: true,
-                                        selectedIndex: selectedIndex,
-                                        limitRowsDisplayed: false)
-        default:
-            return TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                            dataSubtitle: statSection.dataSubtitle,
-                                            dataRows: mockRows(),
-                                            siteStatsInsightsDelegate: insightsDelegate)
-        }
+    func refreshFollowers() {
+        ActionDispatcher.dispatch(InsightAction.refreshFollowers())
     }
+
+}
+
+// MARK: - Private Extension
+
+private extension SiteStatsDetailsViewModel {
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
@@ -127,48 +116,4 @@ class SiteStatsDetailsViewModel: Observable {
                        dataRows: followersData ?? [])
     }
 
-    func periodRow() -> ImmuTableRow? {
-
-        guard let periodDelegate = periodDelegate,
-            let statSection = statSection else {
-                return nil
-        }
-
-        switch statSection {
-        case .periodCountries:
-            return CountriesStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                     dataSubtitle: statSection.dataSubtitle,
-                                     dataRows: mockRows(),
-                                     siteStatsPeriodDelegate: periodDelegate)
-        default:
-            return TopTotalsPeriodStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                           dataSubtitle: statSection.dataSubtitle,
-                                           dataRows: mockRows(),
-                                           siteStatsPeriodDelegate: periodDelegate)
-        }
-
-
-    }
-
-    // TODO: populate table with real data.
-    // This is fake just to example the table.
-
-    func mockRows() -> [StatsTotalRowData] {
-        var dataRows = [StatsTotalRowData]()
-
-        dataRows.append(StatsTotalRowData.init(name: "Row 1",
-                                               data: 99999.abbreviatedString(),
-                                               icon: Style.imageForGridiconType(.mySites)))
-
-
-        dataRows.append(StatsTotalRowData.init(name: "Row 2",
-                                               data: 666.abbreviatedString(),
-                                               icon: Style.imageForGridiconType(.mySites)))
-
-        dataRows.append(StatsTotalRowData.init(name: "Rows 3",
-                                               data: 1010101010.abbreviatedString(),
-                                               icon: Style.imageForGridiconType(.mySites)))
-
-        return dataRows
-    }
 }
