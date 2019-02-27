@@ -4,13 +4,6 @@ protocol PostingActivityDayDelegate: class {
     func daySelected(_ day: PostingActivityDay)
 }
 
-/// Convenience struct to contain information about a single day displayed in Posting Activity.
-///
-struct PostingActivityDayData {
-    var date: Date
-    var count: Int
-}
-
 class PostingActivityDay: UIView, NibLoadable {
 
     // MARK: - Properties
@@ -20,11 +13,11 @@ class PostingActivityDay: UIView, NibLoadable {
 
     private var visible = true
     private var active = true
-    private(set) var dayData: PostingActivityDayData?
+    private(set) var dayData: PostingStreakEvent?
 
     // MARK: - Configure
 
-    func configure(dayData: PostingActivityDayData? = nil, delegate: PostingActivityDayDelegate? = nil) {
+    func configure(dayData: PostingStreakEvent? = nil, delegate: PostingActivityDayDelegate? = nil) {
         self.dayData = dayData
         visible = dayData != nil
         active = delegate != nil
@@ -51,7 +44,7 @@ private extension PostingActivityDay {
             return .clear
         }
 
-        return PostingActivityLegend.colorForCount(dayData.count)
+        return PostingActivityLegend.colorForCount(dayData.postCount)
     }
 
     @IBAction func dayButtonPressed(_ sender: UIButton) {

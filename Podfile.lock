@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - Alamofire (4.7.3)
-  - Automattic-Tracks-iOS (0.3.2-beta.1):
+  - Automattic-Tracks-iOS (0.3.2):
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 1.1.4)
@@ -179,7 +179,7 @@ PODS:
   - WordPress-Aztec-iOS (1.4.3)
   - WordPress-Editor-iOS (1.4.3):
     - WordPress-Aztec-iOS (= 1.4.3)
-  - WordPressAuthenticator (1.1.9):
+  - WordPressAuthenticator (1.1.10-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (= 3.4.2)
@@ -188,17 +188,17 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 2.0-beta)
+    - WordPressKit (~> 3.0.0-beta.1)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
-  - WordPressKit (2.1.0-beta.2):
+  - WordPressKit (3.0.0-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.7.1-beta.3):
+  - WordPressShared (1.7.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.2.0)
@@ -219,7 +219,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.2-beta.1`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.2`)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
@@ -248,9 +248,9 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.4.3)
-  - WordPressAuthenticator (~> 1.1.9)
-  - WordPressKit (~> 2.1.0-beta.1)
-  - WordPressShared (= 1.7.1-beta.3)
+  - WordPressAuthenticator (~> 1.1.10-beta.1)
+  - WordPressKit (~> 3.0.0-beta.1)
+  - WordPressShared (= 1.7.1)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -300,7 +300,7 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.3.2-beta.1
+    :tag: 0.3.2
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/master/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
@@ -328,7 +328,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.3.2-beta.1
+    :tag: 0.3.2
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.0.1
@@ -349,7 +349,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  Automattic-Tracks-iOS: 7678d30a5e2dfe75ff93e6496024790eefcf441d
+  Automattic-Tracks-iOS: cedc19fcfc1e5b3be48dbc313a548d2e38565265
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
@@ -386,15 +386,15 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 0062ba96c3ea77186590c74b761427c461f89a06
   WordPress-Editor-iOS: cfaa780c3ee64ea781fe6f52ca1561667a3f3707
-  WordPressAuthenticator: 9559bc45373f1b6c2f58d664d34f564bcf73111f
-  WordPressKit: 7d4e523fe984ecb913342a456d458f50844f416b
-  WordPressShared: 9aa275b9970e80136f30d5d0611f890a6dd68c65
+  WordPressAuthenticator: 80cda36379dfee8772ad1b2e9c7f4541ccba0500
+  WordPressKit: 843906cb26fb8a92dddefd9a324a821555bf2b94
+  WordPressShared: 2018257df3fe1de423f31a3ba50ac8d6bd24941c
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 74237658c33a06e8c6487f448c941c701aad4ac1
+PODFILE CHECKSUM: 50d2adfc9635737d9a969d6584dc4cffada48828
 
 COCOAPODS: 1.5.3

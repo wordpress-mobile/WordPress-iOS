@@ -1228,6 +1228,34 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatQuickStartTourCompleted:
             eventName = @"quick_start_task_completed";
             break;
+        case WPAnalyticsStatQuickStartMigrationDialogViewed:
+            eventName = @"quick_start_migration_dialog_viewed";
+            break;
+        case WPAnalyticsStatQuickStartMigrationDialogPositiveTapped:
+            eventName = @"quick_start_migration_dialog_button_tapped";
+            eventProperties = @{ @"type" : @"positive" };
+            break;
+        case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
+            eventName = @"quick_start_remove_dialog_button_tapped";
+            break;
+        case WPAnalyticsStatQuickStartTypeDismissed:
+            eventName = @"quick_start_type_dismissed";
+            break;
+        case WPAnalyticsStatQuickStartListCollapsed:
+            eventName = @"quick_start_list_collapsed";
+            break;
+        case WPAnalyticsStatQuickStartListExpanded:
+            eventName = @"quick_start_list_expanded";
+            break;
+        case WPAnalyticsStatQuickStartListItemSkipped:
+            eventName = @"quick_start_list_item_skipped";
+            break;
+        case WPAnalyticsStatQuickStartNotificationStarted:
+            eventName = @"quick_start_notification_sent";
+            break;
+        case WPAnalyticsStatQuickStartNotificationTapped:
+            eventName = @"quick_start_notification_tapped";
+            break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
@@ -1735,15 +1763,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
-        case WPAnalyticsStatQuickStartMigrationDialogViewed:
-        case WPAnalyticsStatQuickStartMigrationDialogPositiveTapped:
-        case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
-        case WPAnalyticsStatQuickStartTypeDismissed:
-        case WPAnalyticsStatQuickStartListCollapsed:
-        case WPAnalyticsStatQuickStartListExpanded:
-        case WPAnalyticsStatQuickStartListItemSkipped:
-        case WPAnalyticsStatQuickStartNotificationStarted:
-        case WPAnalyticsStatQuickStartNotificationTapped:
             return nil;
     }
 

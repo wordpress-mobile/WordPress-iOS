@@ -35,7 +35,7 @@ enum FeatureFlag: Int {
         case .gutenberg:
             return true
         case .quickStartV2:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }

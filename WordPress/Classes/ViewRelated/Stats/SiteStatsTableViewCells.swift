@@ -82,7 +82,7 @@ struct PostingActivityRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let monthsData: [[PostingActivityDayData]]
+    let monthsData: [[PostingStreakEvent]]
     let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 

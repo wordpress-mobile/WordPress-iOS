@@ -213,7 +213,8 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
         let embed = WPRichTextEmbed(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
 
-        attachment.maxSize = CGSize(width: width, height: height)
+        // Set an inital max size for the attachment, but the attachment will modify this when its loaded.
+        attachment.maxSize = embed.frame.size
 
         if attachment.tagName == "iframe", let url = URL(string: attachment.src.stringByDecodingXMLCharacters()) {
             embed.loadContentURL(url)
@@ -223,8 +224,8 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         }
 
         embed.success = { [weak self] embedView in
-            if embedView.documentSize.height > attachment.maxSize.height {
-                attachment.maxSize.height = embedView.documentSize.height
+            if embedView.contentSize().width > attachment.maxSize.width || embedView.contentSize().height > attachment.maxSize.height {
+                attachment.maxSize = embedView.contentSize()
             }
             self?.layoutAttachmentViews()
         }
