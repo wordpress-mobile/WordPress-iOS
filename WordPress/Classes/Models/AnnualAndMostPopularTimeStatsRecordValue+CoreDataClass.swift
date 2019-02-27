@@ -39,7 +39,9 @@ extension StatsAnnualAndMostPopularTimeInsight: StatsRecordValueConvertible {
     }
 
     init(statsRecordValue: StatsRecordValue) {
-        fatalError()
+        // We won't be needing those until later. I added them to protocol to show the intended design
+        // but it doesn't make sense to implement it yet.
+        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
     }
 
     static var recordType: StatsRecordType {
