@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComStatsiOS
 import WordPressFlux
 
 enum InsightType: Int {
@@ -100,7 +99,7 @@ private extension SiteStatsInsightsTableViewController {
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
-                !store.isFetching else {
+                !store.isFetchingOverview else {
                 return
             }
             self?.refreshTableView()
@@ -137,8 +136,13 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        if #available(iOS 11.0, *) {
+            tableView.performBatchUpdates({
+            })
+        } else {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
 
     func clearExpandedRows() {
@@ -222,7 +226,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection, siteStatsInsightsDelegate: self)
+        detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

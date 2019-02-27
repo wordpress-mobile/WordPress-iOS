@@ -40,8 +40,8 @@ private extension PostingActivityCell {
     func applyStyles() {
         viewMoreLabel.text = NSLocalizedString("View more", comment: "Label for viewing more posting activity.")
         viewMoreLabel.textColor = Style.actionTextColor
-        Style.configureViewAsSeperator(topSeparatorLine)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     func addLegend() {

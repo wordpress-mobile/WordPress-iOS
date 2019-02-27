@@ -34,21 +34,30 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var rowsStackView: UIStackView!
 
-    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private var showTotalCount = false
+    private var limitRowsDisplayed = true
 
     // MARK: - Configure
 
-    func configure(tabsData: [TabData], siteStatsInsightsDelegate: SiteStatsInsightsDelegate, showTotalCount: Bool = false) {
+    func configure(tabsData: [TabData],
+                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
+                   siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+                   showTotalCount: Bool,
+                   selectedIndex: Int = 0,
+                   limitRowsDisplayed: Bool = true) {
         self.tabsData = tabsData
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
+        self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.showTotalCount = showTotalCount
-        setupFilterBar()
+        self.limitRowsDisplayed = limitRowsDisplayed
+        bottomSeparatorLine.isHidden = !limitRowsDisplayed
+        setupFilterBar(selectedIndex: selectedIndex)
         addRowsForSelectedFilter()
         configureSubtitles()
         applyStyles()
@@ -64,9 +73,10 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
 private extension TabbedTotalsCell {
 
-    func setupFilterBar() {
+    func setupFilterBar(selectedIndex: Int) {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
         filterTabBar.items = tabsData.map { $0.tabTitle }
+        filterTabBar.setSelectedIndex(selectedIndex)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         toggleFilterTabBar()
     }
@@ -82,12 +92,14 @@ private extension TabbedTotalsCell {
         addRowsForSelectedFilter()
         configureSubtitles()
         siteStatsInsightsDelegate?.tabbedTotalsCellUpdated?()
+        siteStatsDetailsDelegate?.tabbedTotalsCellUpdated?()
     }
 
     func addRowsForSelectedFilter() {
         addRows(tabsData[filterTabBar.selectedIndex].dataRows,
                 toStackView: rowsStackView,
                 forType: .insights,
+                limitRowsDisplayed: limitRowsDisplayed,
                 rowDelegate: self,
                 viewMoreDelegate: self)
     }
@@ -101,8 +113,7 @@ private extension TabbedTotalsCell {
     func applyStyles() {
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
-        Style.configureViewAsSeperator(topSeparatorLine)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     func configureSubtitles() {

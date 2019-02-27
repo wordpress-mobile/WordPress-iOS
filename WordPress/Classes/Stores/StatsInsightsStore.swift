@@ -4,6 +4,8 @@ import WordPressFlux
 import WordPressComStatsiOS
 
 enum InsightAction: Action {
+
+    // Insights overview
     case receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?)
     case receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?)
     case receivedAnnualAndMostPopularTimeStats(_ annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?)
@@ -15,13 +17,22 @@ enum InsightAction: Action {
     case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?)
     case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?)
     case refreshInsights()
+
+    // Insights details
+    case receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?)
+    case receivedAllEmailFollowers(_ allDotComFollowers: StatsGroup?)
+    case refreshFollowers()
 }
 
 enum InsightQuery {
     case insights
+    case allFollowers
 }
 
 struct InsightStoreState {
+
+    // Insights overview
+
     var lastPostInsight: StatsLastPostInsight?
     var fetchingLastPostInsight = false
 
@@ -51,6 +62,14 @@ struct InsightStoreState {
 
     var topTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingTagsAndCategories = false
+
+    // Insights details
+
+    var allDotComFollowers: [StatsItem]?
+    var fetchingAllDotComFollowers = false
+
+    var allEmailFollowers: [StatsItem]?
+    var fetchingAllEmailFollowers = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -88,6 +107,12 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedTagsAndCategories(tagsAndCategories)
         case .refreshInsights:
             refreshInsights()
+        case .receivedAllDotComFollowers(let allDotComFollowers):
+            receivedAllDotComFollowers(allDotComFollowers)
+        case .receivedAllEmailFollowers(let allEmailFollowers):
+            receivedAllEmailFollowers(allEmailFollowers)
+        case .refreshFollowers:
+            refreshFollowers()
         }
     }
 
@@ -104,18 +129,35 @@ private extension StatsInsightsStore {
 
     func processQueries() {
 
-        guard !activeQueries.isEmpty && shouldFetch() else {
+        guard !activeQueries.isEmpty else {
             return
         }
 
-        fetchInsights()
+        activeQueries.forEach { query in
+            switch query {
+            case .insights:
+                if shouldFetchOverview() {
+                    fetchInsights()
+                }
+            case .allFollowers:
+                if shouldFetchFollowers() {
+                    fetchAllFollowers()
+                }
+            }
+        }
     }
+
+    // MARK: - Insights Overview
 
     func fetchInsights() {
 
-        setAllAsFetching()
+        setAllAsFetchingOverview()
 
-        let api = apiService(for: SiteStatsInformation.sharedInstance.siteID!.intValue)
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
+
+        let api = apiService(for: siteID)
 
         api.getInsight { (lastPost: StatsLastPostInsight?, error) in
             if error != nil {
@@ -191,9 +233,15 @@ private extension StatsInsightsStore {
         }
     }
 
+    func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
+        let api = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+
+        return StatsServiceRemoteV2(wordPressComRestApi: api, siteID: site, siteTimezone: SiteStatsInformation.sharedInstance.siteTimeZone!)
+    }
+
     func refreshInsights() {
-        guard shouldFetch() else {
-            DDLogInfo("Stats Insights refresh triggered while one was in progress.")
+        guard shouldFetchOverview() else {
+            DDLogInfo("Stats Insights Overview refresh triggered while one was in progress.")
             return
         }
 
@@ -270,11 +318,7 @@ private extension StatsInsightsStore {
         }
     }
 
-    func shouldFetch() -> Bool {
-        return !isFetching
-    }
-
-    func setAllAsFetching() {
+    func setAllAsFetchingOverview() {
         state.fetchingLastPostInsight = true
         state.fetchingAllTimeStats = true
         state.fetchingAnnualAndMostPopularTime = true
@@ -287,6 +331,57 @@ private extension StatsInsightsStore {
         state.fetchingTagsAndCategories = true
     }
 
+    func shouldFetchOverview() -> Bool {
+        return !isFetchingOverview
+    }
+
+    // MARK: - Insights Details
+
+    func fetchAllFollowers() {
+        state.fetchingAllDotComFollowers = true
+        state.fetchingAllEmailFollowers = true
+
+        SiteStatsInformation.statsService()?.retrieveFollowers(of: .dotCom, withCompletionHandler: { (dotComFollowers, error) in
+            if error != nil {
+                DDLogInfo("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers))
+        })
+
+        SiteStatsInformation.statsService()?.retrieveFollowers(of: .email, withCompletionHandler: { (emailFollowers, error) in
+            if error != nil {
+                DDLogInfo("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllEmailFollowers(emailFollowers))
+        })
+    }
+
+    func receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?) {
+        transaction { state in
+            state.allDotComFollowers = allDotComFollowers?.items as? [StatsItem]
+            state.fetchingAllDotComFollowers = false
+        }
+    }
+
+    func receivedAllEmailFollowers(_ allEmailFollowers: StatsGroup?) {
+        transaction { state in
+            state.allEmailFollowers = allEmailFollowers?.items as? [StatsItem]
+            state.fetchingAllEmailFollowers = false
+        }
+    }
+
+    func refreshFollowers() {
+        guard shouldFetchFollowers() else {
+            DDLogInfo("Stats Insights Followers refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllFollowers()
+    }
+
+    func shouldFetchFollowers() -> Bool {
+        return !isFetchingFollowers
+    }
 }
 
 // MARK: - Public Accessors
@@ -387,7 +482,16 @@ extension StatsInsightsStore {
             return getMonthlyPostingActivityFor(date: monthDate)
         }
     }
-    var isFetching: Bool {
+
+    func getAllDotComFollowers() -> [StatsItem]? {
+        return state.allDotComFollowers
+    }
+
+    func getAllEmailFollowers() -> [StatsItem]? {
+        return state.allEmailFollowers
+    }
+
+    var isFetchingOverview: Bool {
         return
             state.fetchingLastPostInsight ||
             state.fetchingAllTimeStats ||
@@ -401,10 +505,10 @@ extension StatsInsightsStore {
             state.fetchingTagsAndCategories
     }
 
-    private func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
-        let api = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
-
-        return StatsServiceRemoteV2(wordPressComRestApi: api, siteID: site, siteTimezone: SiteStatsInformation.sharedInstance.siteTimeZone!)
+    var isFetchingFollowers: Bool {
+        return
+            state.fetchingAllDotComFollowers ||
+            state.fetchingAllEmailFollowers
     }
 
 }

@@ -24,13 +24,13 @@ end
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.7.1'
+    pod 'WordPressShared', '1.7.2-beta.1'
 
     ## for development:
-    ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-#    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c37c645aaa4e000eb53e8a9537798162c072a321'
 end
 
 def aztec

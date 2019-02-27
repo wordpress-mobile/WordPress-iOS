@@ -55,8 +55,8 @@ private extension AnnualSiteStatsCell {
         averageLabel.text = NSLocalizedString("Average", comment: "'Annual Site Stats' label for the averages section.")
         Style.configureLabelAsSubtitle(totalLabel)
         Style.configureLabelAsSubtitle(averageLabel)
-        Style.configureViewAsSeperator(topSeparatorLine)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     func addRowsToStackView(totalPostsRow: StatsTotalRowData?,
