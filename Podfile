@@ -67,6 +67,7 @@ end
 def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
+    pod 'Reachability', '3.2'
 
 	wordpress_kit
 end
@@ -119,7 +120,6 @@ target 'WordPress' do
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MGSwipeTableCell', '1.6.8'
     pod 'MRProgress', '0.8.3'
-    pod 'Reachability',    '3.2'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
@@ -156,9 +156,9 @@ target 'WordPress' do
     target 'WordPressShareExtension' do
         inherit! :search_paths
 
+        aztec
         shared_with_all_pods
         shared_with_networking_pods
-        aztec
         wordpress_ui
     end
 
@@ -169,9 +169,9 @@ target 'WordPress' do
     target 'WordPressDraftActionExtension' do
         inherit! :search_paths
 
+        aztec
         shared_with_all_pods
         shared_with_networking_pods
-        aztec
         wordpress_ui
     end
 
