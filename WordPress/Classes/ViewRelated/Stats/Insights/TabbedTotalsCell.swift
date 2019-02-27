@@ -113,7 +113,7 @@ private extension TabbedTotalsCell {
     func applyStyles() {
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     func configureSubtitles() {
