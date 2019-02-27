@@ -9,3 +9,10 @@ public class StatsRecordValue: NSManagedObject {
         parent.addToValues(self)
     }
 }
+
+protocol StatsRecordValueConvertible {
+    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue
+    init(statsRecordValue: StatsRecordValue)
+
+    static var recordType: StatsRecordType { get }
+}
