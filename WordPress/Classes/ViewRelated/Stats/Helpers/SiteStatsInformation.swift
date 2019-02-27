@@ -8,6 +8,7 @@ import WordPressComStatsiOS
     // MARK: - Properties
 
     @objc static var sharedInstance: SiteStatsInformation = SiteStatsInformation()
+    private override init() {}
 
     @objc var siteID: NSNumber?
     @objc var siteTimeZone: TimeZone?
