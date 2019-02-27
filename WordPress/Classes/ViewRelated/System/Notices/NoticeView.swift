@@ -149,7 +149,7 @@ class NoticeView: UIView {
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
         actionBackgroundView.layoutMargins = notice.style.layoutMargins
-        actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
+        actionBackgroundView.backgroundColor = notice.style.backgroundColor
 
         actionBackgroundView.addSubview(actionButton)
         actionButton.translatesAutoresizingMaskIntoConstraints = false
@@ -258,16 +258,15 @@ class NoticeView: UIView {
     }
 
     private enum Metrics {
-        static let cornerRadius: CGFloat = 13.0
+        static let cornerRadius: CGFloat = 4.0
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
         static let labelLineSpacing: CGFloat = 18.0
     }
 
     private enum Appearance {
-        static let actionBackgroundColor = UIColor.white.withAlphaComponent(0.5)
         static let shadowColor: UIColor = .black
         static let shadowOpacity: Float = 0.25
-        static let shadowRadius: CGFloat = 8.0
+        static let shadowRadius: CGFloat = 2.0
         static let shadowOffset = CGSize(width: 0.0, height: 2.0)
         static let minMessageHeight: CGFloat = 18.0
     }
