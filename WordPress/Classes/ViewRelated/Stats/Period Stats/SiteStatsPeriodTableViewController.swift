@@ -139,8 +139,13 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        if #available(iOS 11.0, *) {
+            tableView.performBatchUpdates({
+            })
+        } else {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
 
     func clearExpandedRows() {
