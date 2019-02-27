@@ -15,6 +15,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
+    private var statType: StatType = .period
 
     private var viewModel: SiteStatsDetailsViewModel?
     private let insightsStore = StoreContainer.shared.statsInsights
@@ -28,6 +29,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     func configure(statSection: StatSection) {
         self.statSection = statSection
+        statType = StatSection.allInsights.contains(statSection) ? .insights : .period
 
         title = statSection.title
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
@@ -51,11 +53,15 @@ private extension SiteStatsDetailTableViewController {
 
         viewModel?.fetchDataFor(statSection: statSection)
 
-        insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            guard self?.storeIsFetching(statSection: statSection) == false else {
-                return
+        if statType == .insights {
+            insightsChangeReceipt = viewModel?.onChange { [weak self] in
+                guard self?.storeIsFetching(statSection: statSection) == true else {
+                    return
+                }
+                self?.refreshTableView()
             }
-            self?.refreshTableView()
+        } else {
+            // TODO: add period receipt here
         }
     }
 
@@ -85,8 +91,19 @@ private extension SiteStatsDetailTableViewController {
     }
 
     @objc func refreshData() {
+        guard let statSection = statSection else {
+            return
+        }
+
         refreshControl?.beginRefreshing()
-        viewModel?.refreshFollowers()
+
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            viewModel?.refreshFollowers()
+        default:
+            refreshControl?.endRefreshing()
+        }
+
     }
 
     func applyTableUpdates() {

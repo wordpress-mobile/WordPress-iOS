@@ -25,22 +25,18 @@ class SiteStatsDetailsViewModel: Observable {
 
     func fetchDataFor(statSection: StatSection) {
         self.statSection = statSection
-        guard let storeQuery = queryForInsightStatSection(statSection) else {
-            return
-        }
 
-        insightsReceipt = insightsStore.query(storeQuery)
-        insightsChangeReceipt = insightsStore.onChange { [weak self] in
-            self?.emitChange()
-        }
-    }
+        if StatSection.allInsights.contains(statSection) {
+            guard let storeQuery = queryForInsightStatSection(statSection) else {
+                return
+            }
 
-    func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
-        switch statSection {
-        case .insightsFollowersWordPress, .insightsFollowersEmail:
-            return .allFollowers
-        default:
-            return nil
+            insightsReceipt = insightsStore.query(storeQuery)
+            insightsChangeReceipt = insightsStore.onChange { [weak self] in
+                self?.emitChange()
+            }
+        } else {
+
         }
     }
 
@@ -83,6 +79,15 @@ class SiteStatsDetailsViewModel: Observable {
 // MARK: - Private Extension
 
 private extension SiteStatsDetailsViewModel {
+
+    func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return .allFollowers
+        default:
+            return nil
+        }
+    }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
