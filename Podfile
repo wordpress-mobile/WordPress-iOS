@@ -156,9 +156,9 @@ target 'WordPress' do
     target 'WordPressShareExtension' do
         inherit! :search_paths
 
+        aztec
         shared_with_all_pods
         shared_with_networking_pods
-        aztec
         wordpress_ui
     end
 
@@ -169,9 +169,9 @@ target 'WordPress' do
     target 'WordPressDraftActionExtension' do
         inherit! :search_paths
 
+        aztec
         shared_with_all_pods
         shared_with_networking_pods
-        aztec
         wordpress_ui
     end
 
