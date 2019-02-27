@@ -22,7 +22,7 @@ struct LatestPostSummaryDatum: Decodable {
 ///
 class LatestPostSummaryDataStub {
 
-    private static let jsonFileName        = "lps_withData"
+    private static let jsonFileName        = "latestPost_data"
     private static let jsonFileExtension   = "json"
 
     private(set) var data: [LatestPostSummaryDatum]
