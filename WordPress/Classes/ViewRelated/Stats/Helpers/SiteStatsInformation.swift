@@ -8,6 +8,7 @@ import WordPressComStatsiOS
     // MARK: - Properties
 
     @objc static var sharedInstance: SiteStatsInformation = SiteStatsInformation()
+    private override init() {}
 
     @objc var siteID: NSNumber?
     @objc var siteTimeZone: TimeZone?
@@ -16,10 +17,6 @@ import WordPressComStatsiOS
     static let cacheExpirationInterval = Double(300)
 
     // MARK: - Instance Methods
-
-    @objc static func resetSharedInstance() {
-        sharedInstance = SiteStatsInformation()
-    }
 
     static func statsService() -> WPStatsService? {
 

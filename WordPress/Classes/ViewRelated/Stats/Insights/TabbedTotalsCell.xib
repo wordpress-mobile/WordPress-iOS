@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -83,13 +83,6 @@
                             </stackView>
                         </subviews>
                     </stackView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDk-Vs-rUU" userLabel="Top Seperator Line">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
-                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="8tx-At-sgi"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrX-mq-7oM" userLabel="Bottom Seperator Line">
                         <rect key="frame" x="0.0" y="198" width="320" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -108,11 +101,6 @@
                     <constraint firstItem="mrX-mq-7oM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Vay-Je-2h0"/>
                 </constraints>
             </tableViewCellContentView>
-            <constraints>
-                <constraint firstItem="vDk-Vs-rUU" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" id="5jJ-wu-cgj"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="leading" secondItem="vDk-Vs-rUU" secondAttribute="leading" id="NoI-Xv-Sp5"/>
-                <constraint firstItem="vDk-Vs-rUU" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" id="e85-Mm-8f4"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="mrX-mq-7oM" id="cFA-Af-6Bx"/>
@@ -121,7 +109,6 @@
                 <outlet property="itemSubtitleLabel" destination="ABk-vW-HsC" id="BRR-gC-H8q"/>
                 <outlet property="labelsStackView" destination="lNV-f4-WuQ" id="4Gk-Jp-fLW"/>
                 <outlet property="rowsStackView" destination="EG5-87-rU0" id="pEz-Ra-CwP"/>
-                <outlet property="topSeparatorLine" destination="vDk-Vs-rUU" id="WYH-Xa-6K1"/>
                 <outlet property="totalCountLabel" destination="6MP-vc-NUk" id="CUM-kV-Ce1"/>
                 <outlet property="totalCountView" destination="rbk-YO-aQi" id="e58-g5-qcx"/>
             </connections>

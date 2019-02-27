@@ -80,8 +80,8 @@ private extension LatestPostSummaryCell {
         Style.configureCell(self)
 
         Style.configureLabelAsSummary(summaryLabel)
-        Style.configureViewAsSeperator(topSeparatorLine)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
 
         viewsLabel.text = CellStrings.views
         viewsLabel.textColor = Style.defaultTextColor

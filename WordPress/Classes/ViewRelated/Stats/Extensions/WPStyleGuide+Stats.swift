@@ -34,12 +34,12 @@ extension WPStyleGuide {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
-        static func configureViewAsSeperator(_ seperatorView: UIView) {
-            seperatorView.backgroundColor = seperatorColor
+        static func configureViewAsSeparator(_ separatorView: UIView) {
+            separatorView.backgroundColor = separatorColor
         }
 
         static func configureViewAsDataBar(_ dataBar: UIView) {
-            dataBar.backgroundColor = seperatorColor
+            dataBar.backgroundColor = separatorColor
             dataBar.layer.cornerRadius = dataBar.frame.height * 0.5
         }
 
@@ -152,7 +152,7 @@ extension WPStyleGuide {
 
         static let tableBackgroundColor = WPStyleGuide.greyLighten30()
         static let cellBackgroundColor = UIColor.white
-        static let seperatorColor = WPStyleGuide.greyLighten20()
+        static let separatorColor = WPStyleGuide.greyLighten20()
 
         static let defaultFilterTintColor = WPStyleGuide.wordPressBlue()
         static let tabbedCardFilterTintColor = WPStyleGuide.greyLighten20()
