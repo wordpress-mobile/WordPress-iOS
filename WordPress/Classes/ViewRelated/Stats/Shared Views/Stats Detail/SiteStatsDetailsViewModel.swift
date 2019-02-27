@@ -36,7 +36,7 @@ class SiteStatsDetailsViewModel: Observable {
                 self?.emitChange()
             }
         } else {
-
+            // TODO: add period query here
         }
     }
 
