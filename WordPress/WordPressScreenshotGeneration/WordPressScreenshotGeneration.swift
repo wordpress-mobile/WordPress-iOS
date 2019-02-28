@@ -131,7 +131,9 @@ class WordPressScreenshotGeneration: XCTestCase {
         screenshotPost(withSlug: "ideas", called: "2-DraftEditor")
 
         // Get a screenshot of the full-screen editor
-        screenshotPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
+        if isIpad(){
+            screenshotPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
+        }
 
         // Tap the back button if on an iPhone screen
         if UIDevice.current.userInterfaceIdiom == .phone {
