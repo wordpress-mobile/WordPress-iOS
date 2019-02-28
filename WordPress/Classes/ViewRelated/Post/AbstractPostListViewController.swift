@@ -239,6 +239,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         if searchController.isActive {
             searchController.isActive = false
         }
+        
+        dismissAllNetworkErrorNotices()
 
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         unregisterForKeyboardNotifications()
@@ -604,6 +606,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()
+            dismissAllNetworkErrorNotices()
             presentNoNetworkAlert()
             return
         }
@@ -779,6 +782,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             promptForPassword()
             return
         }
+        
+        dismissAllNetworkErrorNotices()
         
         let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
         WPError.showNetworkingNotice(title: title, error: error)
@@ -1044,6 +1049,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
         assert(false, "You should implement this method in the subclass")
+    }
+    
+    private func dismissAllNetworkErrorNotices() {
+        dismissNoNetworkAlert()
+        WPError.dismissNetworkingNotice()
     }
 
     // MARK: - Post Actions

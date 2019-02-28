@@ -2,10 +2,11 @@ import Foundation
 import WordPressFlux
 
 extension ReachabilityUtils {
-    private enum NoConnectionMessages {
+    private enum NoConnectionMessage {
         static let title = NSLocalizedString("No Connection",
                 comment: "Title of error prompt when no internet connection is available.")
         static let message = noConnectionMessage()
+        static let tag = "ReachabilityUtils.NoConnection"
     }
 
     /// Performs the action when an internet connection is available
@@ -13,7 +14,7 @@ extension ReachabilityUtils {
     ///
     @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
-            WPError.showAlert(withTitle: NoConnectionMessages.title, message: NoConnectionMessages.message)
+            WPError.showAlert(withTitle: NoConnectionMessage.title, message: NoConnectionMessage.message)
             return
         }
         action()
@@ -42,8 +43,21 @@ extension ReachabilityUtils {
     ///
     /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
     /// Alerts can be disruptive.
-    @objc class func showNoInternetConnectionNotice() {
-        let notice = Notice(title: NoConnectionMessages.title, message: NoConnectionMessages.message)
+    @objc static func showNoInternetConnectionNotice() {
+        let notice = Notice(title: NoConnectionMessage.title,
+                            message: NoConnectionMessage.message,
+                            tag: NoConnectionMessage.tag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+    
+    /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
+    @objc static func dismissNoInternetConnectionNotice() {
+        if StoreContainer.shared.notice.state.notice?.tag == NoConnectionMessage.tag {
+            noticePresenter?.dismissCurrentNotice()
+        }
+    }
+    
+    private static var noticePresenter: NoticePresenter? {
+        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
     }
 }

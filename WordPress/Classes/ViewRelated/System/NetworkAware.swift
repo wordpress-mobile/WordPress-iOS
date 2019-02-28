@@ -10,6 +10,7 @@ protocol NetworkAwareUI: NetworkAware {
     func shouldPresentAlert() -> Bool
     func contentIsEmpty() -> Bool
     func presentNoNetworkAlert()
+    func dismissNoNetworkAlert()
     func noConnectionMessage() -> String
 }
 
@@ -32,6 +33,10 @@ extension NetworkAwareUI {
 
     func presentNoNetworkAlert() {
         ReachabilityUtils.showNoInternetConnectionNotice()
+    }
+    
+    func dismissNoNetworkAlert() {
+        ReachabilityUtils.dismissNoInternetConnectionNotice()
     }
 
     func noConnectionMessage() -> String {

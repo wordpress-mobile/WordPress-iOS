@@ -167,6 +167,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
+        
+        dismissNoNetworkAlert()
 
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none

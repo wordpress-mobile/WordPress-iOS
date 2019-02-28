@@ -78,6 +78,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshAndSyncIfNeeded];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self dismissConnectionErrorNotice];
+}
+
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];

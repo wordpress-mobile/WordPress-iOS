@@ -3,6 +3,8 @@ import Foundation
 import WordPressFlux
 
 extension WPError {
+    private static let noticeTag = "WPError.Networking"
+    
     /// Show a Notice with the message taken from the given `error`
     ///
     /// This is similar to `showNetworkingAlertWithError` except this uses a Notice instead of
@@ -16,7 +18,20 @@ extension WPError {
         
         let titleAndMessage = self.titleAndMessage(fromNetworkingError: error, desiredTitle: title)
 
-        let notice = Notice(title: titleAndMessage["title"] ?? "", message: titleAndMessage["message"])
+        let notice = Notice(title: titleAndMessage["title"] ?? "",
+                            message: titleAndMessage["message"],
+                            tag: noticeTag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+    
+    /// Dismiss the currently shown Notice if it was created using showNetworkingNotice()
+    static func dismissNetworkingNotice() {
+        if StoreContainer.shared.notice.state.notice?.tag == noticeTag {
+            noticePresenter?.dismissCurrentNotice()
+        }
+    }
+    
+    private static var noticePresenter: NoticePresenter? {
+        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
     }
 }
