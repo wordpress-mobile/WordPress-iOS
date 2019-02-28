@@ -105,7 +105,7 @@ enum NoticeAction: Action {
 
 
 struct NoticeStoreState {
-    fileprivate(set) var notice: Notice?
+    fileprivate var notice: Notice?
 }
 
 /// NoticeStore queues notices for display to the user.

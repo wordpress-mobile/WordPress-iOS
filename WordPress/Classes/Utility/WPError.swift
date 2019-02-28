@@ -26,9 +26,7 @@ extension WPError {
 
     /// Dismiss the currently shown Notice if it was created using showNetworkingNotice()
     static func dismissNetworkingNotice() {
-        if StoreContainer.shared.notice.state.notice?.tag == noticeTag {
-            noticePresenter?.dismissCurrentNotice()
-        }
+        noticePresenter?.dismissCurrentNotice(tagged: noticeTag)
     }
 
     private static var noticePresenter: NoticePresenter? {

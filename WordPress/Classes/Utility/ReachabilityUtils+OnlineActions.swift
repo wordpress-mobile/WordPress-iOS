@@ -52,9 +52,7 @@ extension ReachabilityUtils {
 
     /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
     @objc static func dismissNoInternetConnectionNotice() {
-        if StoreContainer.shared.notice.state.notice?.tag == NoConnectionMessage.tag {
-            noticePresenter?.dismissCurrentNotice()
-        }
+        noticePresenter?.dismissCurrentNotice(tagged: NoConnectionMessage.tag)
     }
 
     private static var noticePresenter: NoticePresenter? {
