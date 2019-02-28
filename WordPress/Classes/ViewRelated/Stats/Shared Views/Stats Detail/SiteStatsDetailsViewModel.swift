@@ -41,6 +41,7 @@ class SiteStatsDetailsViewModel: Observable {
     }
 
     func tableViewModel() -> ImmuTable {
+
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
                 return ImmuTable(sections: [])
@@ -55,6 +56,13 @@ class SiteStatsDetailsViewModel: Observable {
                                                                    tabDataForFollowerType(.insightsFollowersEmail)],
                                                         siteStatsDetailsDelegate: detailsDelegate,
                                                         showTotalCount: true,
+                                                        selectedIndex: selectedIndex))
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
+            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
+                                                                   tabDataForCommentType(.insightsCommentsPosts)],
+                                                        siteStatsDetailsDelegate: detailsDelegate,
+                                                        showTotalCount: false,
                                                         selectedIndex: selectedIndex))
         default:
             break
@@ -74,6 +82,10 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshFollowers())
     }
 
+    func refreshComments() {
+        ActionDispatcher.dispatch(InsightAction.refreshComments())
+    }
+
 }
 
 // MARK: - Private Extension
@@ -84,6 +96,8 @@ private extension SiteStatsDetailsViewModel {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return .allFollowers
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return .allComments
         default:
             return nil
         }
@@ -119,6 +133,43 @@ private extension SiteStatsDetailsViewModel {
                        dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
+    }
+
+    func tabDataForCommentType(_ commentType: StatSection) -> TabData {
+
+        // TODO: replace this Store call to get actual Authors and Posts comments
+        // when the api supports it.
+        let commentsInsight = insightsStore.getTopCommentsInsight()
+
+        var rowItems: [StatsTotalRowData] = []
+
+        switch commentType {
+        case .insightsCommentsAuthors:
+            let authors = commentsInsight?.topAuthors ?? []
+            rowItems = authors.map {
+                StatsTotalRowData(name: $0.name,
+                                  data: $0.commentCount.abbreviatedString(),
+                                  userIconURL: $0.iconURL,
+                                  showDisclosure: false,
+                                  statSection: .insightsCommentsAuthors)
+            }
+        case .insightsCommentsPosts:
+            let posts = commentsInsight?.topPosts ?? []
+            rowItems = posts.map {
+                StatsTotalRowData(name: $0.name,
+                                  data: $0.commentCount.abbreviatedString(),
+                                  showDisclosure: true,
+                                  disclosureURL: $0.postURL,
+                                  statSection: .insightsCommentsPosts)
+            }
+        default:
+            break
+        }
+
+        return TabData(tabTitle: commentType.tabTitle,
+                       itemSubtitle: commentType.itemSubtitle,
+                       dataSubtitle: commentType.dataSubtitle,
+                       dataRows: rowItems)
     }
 
 }
