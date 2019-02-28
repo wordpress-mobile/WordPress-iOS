@@ -248,7 +248,9 @@ import WordPressFlux
         didSetupView = true
 
         if readerTopic != nil {
-            configureControllerForTopic()
+            // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
+            // prevents a possible internet connection error being shown twice.
+            configureControllerForTopic(synchronize: false)
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
@@ -450,7 +452,7 @@ import WordPressFlux
 
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
-    private func configureControllerForTopic() {
+    private func configureControllerForTopic(synchronize: Bool = true) {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded, "The controller's view must be loaded before displaying the topic")
 
@@ -479,7 +481,10 @@ import WordPressFlux
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()
-        syncIfAppropriate()
+
+        if synchronize {
+            syncIfAppropriate()
+        }
 
         bumpStats()
 
