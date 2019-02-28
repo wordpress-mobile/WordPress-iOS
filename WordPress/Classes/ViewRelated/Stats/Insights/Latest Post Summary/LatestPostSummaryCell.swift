@@ -230,14 +230,9 @@ private extension LatestPostSummaryCell {
         resetChartView()
 
         // Introduced via #11061, to be replaced with real data via #11067
-//        let stubbedData = LatestPostSummaryDataStub()
-//        let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
-//        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
-
-        // Introduced (temporarily) via #11062
-        let stubbedData = SelectedPostSummaryDataStub()
+        let stubbedData = LatestPostSummaryDataStub()
         let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
-        let styling = SelectedPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
+        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
 
         let chartView = StatsBarChartView(data: stubbedData, styling: styling)
         chartStackView.addArrangedSubview(chartView)

@@ -141,7 +141,7 @@ class StatsBarChartView: BarChartView {
 private typealias StatsBarChartMarker = MarkerView
 
 extension StatsBarChartView: ChartViewDelegate {
-    
+
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         let (markerRect, markerOffset) = calculateHighlightFrameAndOffset(for: entry)
         let marker = StatsBarChartMarker(frame: markerRect)
