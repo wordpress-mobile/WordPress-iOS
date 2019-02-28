@@ -80,7 +80,8 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 
 + (NSString *)noConnectionMessage
 {
-    return NSLocalizedString(@"The Internet connection appears to be offline.", @"");
+    return NSLocalizedString(@"The Internet connection appears to be offline.",
+            @"Message of error prompt shown when a user tries to perform an action without an internet connection.");
 }
 
 + (BOOL)alertIsShowing
