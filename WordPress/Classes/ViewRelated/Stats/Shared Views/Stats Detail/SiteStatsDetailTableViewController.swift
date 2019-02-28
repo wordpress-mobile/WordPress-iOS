@@ -3,6 +3,7 @@ import WordPressFlux
 
 @objc protocol SiteStatsDetailsDelegate {
     @objc optional func tabbedTotalsCellUpdated()
+    @objc optional func displayWebViewWithURL(_ url: URL)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -151,6 +152,12 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func tabbedTotalsCellUpdated() {
         applyTableUpdates()
+    }
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
     }
 
 }
