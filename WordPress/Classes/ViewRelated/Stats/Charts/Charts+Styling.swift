@@ -3,14 +3,18 @@ import Foundation
 
 import Charts
 
-// MARK: - LatestPostSummaryStyling
+// MARK: - PostSummaryStyling
 
-struct LatestPostSummaryStyling: BarChartStyling {
+struct PostSummaryStyling: BarChartStyling {
     let adornmentColor: UIColor
     let barColor: UIColor
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter
 }
+
+// MARK: - LatestPostSummaryStyling
+
+typealias LatestPostSummaryStyling = PostSummaryStyling
 
 extension LatestPostSummaryStyling {
     init(xAxisFormatter: IAxisValueFormatter, yAxisFormatter: IAxisValueFormatter) {

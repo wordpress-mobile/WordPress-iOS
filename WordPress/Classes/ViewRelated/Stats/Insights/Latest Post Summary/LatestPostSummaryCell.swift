@@ -232,7 +232,7 @@ private extension LatestPostSummaryCell {
         let stubbedData = LatestPostSummaryDataStub()
 
         let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
-        let styling = LatestPostSummaryStubStyling(initialDateInterval: firstStubbedDateInterval)
+        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
 
         let chartView = StatsBarChartView(data: stubbedData, styling: styling)
         chartStackView.addArrangedSubview(chartView)
