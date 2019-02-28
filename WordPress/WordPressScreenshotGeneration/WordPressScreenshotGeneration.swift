@@ -130,6 +130,9 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get a screenshot of the drafts feature
         screenshotPost(withSlug: "ideas", called: "2-DraftEditor")
 
+        // Get a screenshot of the full-screen editor
+        screenshotPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
+
         // Tap the back button if on an iPhone screen
         if UIDevice.current.userInterfaceIdiom == .phone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
@@ -168,7 +171,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         snapshot("5-Notifications")
     }
 
-    private func screenshotPost(withSlug slug: String, called screenshotName: String) {
+    private func screenshotPost(withSlug slug: String, called screenshotName: String, withKeyboard: Bool = false) {
 
         let app = XCUIApplication()
 
@@ -176,6 +179,10 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
         waitForElementToExist(element: editorNavigationBar)
+
+        if !withKeyboard {
+            app.textViews["aztec-editor-title"].tap(withNumberOfTaps: 1, numberOfTouches: 5)
+        }
 
         sleep(imagesWaitTime) // wait for post images to load
         // The title field gets focus automatically
