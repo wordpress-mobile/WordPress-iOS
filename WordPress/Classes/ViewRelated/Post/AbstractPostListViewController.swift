@@ -302,7 +302,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
-    fileprivate func refreshResults(forcingNetworkAlerts: Bool = false) {
+    private func refreshResults() {
         guard isViewLoaded == true else {
             return
         }
@@ -312,11 +312,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
 
         hideNoResultsView()
-        if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
-            if forcingNetworkAlerts {
-                presentNoNetworkAlert()
-            }
-        } else {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             showNoResultsView()
         }
     }
@@ -621,21 +617,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    func presentNoNetworkAlert() {
-        if shouldPresentAlert() {
-            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-            WPError.showAlert(withTitle: title, message: message)
-        }
-    }
-
     func shouldPresentAlert() -> Bool {
         return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        refreshResults(forcingNetworkAlerts: userInteraction)
+        refreshResults()
     }
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
