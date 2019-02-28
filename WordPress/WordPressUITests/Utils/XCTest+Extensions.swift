@@ -26,15 +26,11 @@ extension XCUIElement {
     }
 }
 
-extension XCTest {
-
-    func isIPhone() -> Bool {
-        return UIDevice.current.userInterfaceIdiom == .phone
-    }
+var isIPhone: Bool {
+    return UIDevice.current.userInterfaceIdiom == .phone
 }
 
-func isIpad() -> Bool {
-    debugPrint(UIDevice.current.userInterfaceIdiom)
+var isIpad: Bool {
     return UIDevice.current.userInterfaceIdiom == .pad
 }
 
