@@ -154,6 +154,9 @@ class WordPressScreenshotGeneration: XCTestCase {
         blogDetailsTable.cells["Stats Row"].tap() // tap Stats
         app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
 
+        // This line is for stats v2
+        // app.buttons["insights"].tap()
+
         // Wait for stats to be loaded
         waitForElementToExist(element: app.otherElements["visitorsViewsGraph"])
         waitForElementToNotExist(element: app.progressIndicators.firstMatch)
