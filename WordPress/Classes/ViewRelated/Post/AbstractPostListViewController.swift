@@ -779,8 +779,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             promptForPassword()
             return
         }
-
-        WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+        
+        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        WPError.showNetworkingNotice(title: title, error: error)
     }
 
     @objc func promptForPassword() {
