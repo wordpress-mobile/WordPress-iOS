@@ -127,13 +127,27 @@ private class PostSummaryDateFormatter: DateFormatter {
 
 // MARK: - PostSummaryStubStyling
 
-typealias PostSummaryStubStyling = PostSummaryStyling
-
-extension PostSummaryStubStyling {
-    init(initialDateInterval: TimeInterval) {
+extension PostSummaryStyling {
+    convenience init(initialDateInterval: TimeInterval, highlightColor: UIColor? = nil) {
         let xAxisFormatter = PostSummaryHorizontalAxisFormatter(initialDateInterval: initialDateInterval)
-        let yAxisFormatter = PostSummaryVerticalAxisFormatter()
 
-        self.init(xAxisFormatter: xAxisFormatter, yAxisFormatter: yAxisFormatter)
+        self.init(
+            adornmentColor: NSUIColor.chartColor,
+            barColor: WPStyleGuide.wordPressBlue(),
+            highlightColor: highlightColor,
+            xAxisValueFormatter: xAxisFormatter,
+            yAxisValueFormatter: PostSummaryVerticalAxisFormatter())
+    }
+}
+
+// MARK: - LatestPostSummaryStyling
+
+class LatestPostSummaryStyling: PostSummaryStyling {}
+
+// MARK: - SelectedPostSummaryStyling
+
+class SelectedPostSummaryStyling: PostSummaryStyling {
+    convenience init(initialDateInterval: TimeInterval) {
+        self.init(initialDateInterval: initialDateInterval, highlightColor: NSUIColor.highlightColor)
     }
 }

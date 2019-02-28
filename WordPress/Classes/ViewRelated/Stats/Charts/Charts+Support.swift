@@ -18,6 +18,8 @@ extension BarChartDataSet {
 
 extension NSUIColor {
     static let chartColor = UIColor(red: 135/255.0, green: 166/255.0, blue: 188/255.0, alpha: 255.0/255.0)
+
+    static let highlightColor = UIColor(red: 245/255.0, green: 131/255.0, blue: 53/255.0, alpha: 255.0/255.0)
 }
 
 // MARK: - Charts protocols
@@ -26,12 +28,19 @@ extension NSUIColor {
 ///
 protocol BarChartStyling {
 
+    /// This corresponds to the color of other chart "chrome" (i.e., axes, labels, etc.)
     var adornmentColor: UIColor { get }
 
+    /// This corresponds to the bar color
     var barColor: UIColor { get }
 
+    /// This corresponds to the color of a selected bar
+    var highlightColor: UIColor? { get }
+
+    /// Formatter for x-axis values
     var xAxisValueFormatter: IAxisValueFormatter { get }
 
+    /// Formatter for y-axis values
     var yAxisValueFormatter: IAxisValueFormatter { get }
 }
 

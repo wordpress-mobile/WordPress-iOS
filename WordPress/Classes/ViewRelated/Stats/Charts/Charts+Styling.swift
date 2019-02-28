@@ -5,23 +5,24 @@ import Charts
 
 // MARK: - PostSummaryStyling
 
-struct PostSummaryStyling: BarChartStyling {
+class PostSummaryStyling: BarChartStyling {
     let adornmentColor: UIColor
     let barColor: UIColor
+    let highlightColor: UIColor?
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter
-}
 
-// MARK: - LatestPostSummaryStyling
-
-typealias LatestPostSummaryStyling = PostSummaryStyling
-
-extension LatestPostSummaryStyling {
-    init(xAxisFormatter: IAxisValueFormatter, yAxisFormatter: IAxisValueFormatter) {
-        self.init(
-            adornmentColor: NSUIColor.chartColor,
-            barColor: WPStyleGuide.wordPressBlue(),
-            xAxisValueFormatter: xAxisFormatter,
-            yAxisValueFormatter: yAxisFormatter)
+    init(
+        adornmentColor: UIColor,
+        barColor: UIColor,
+        highlightColor: UIColor?,
+        xAxisValueFormatter: IAxisValueFormatter,
+        yAxisValueFormatter: IAxisValueFormatter)
+    {
+        self.adornmentColor         = adornmentColor
+        self.barColor               = barColor
+        self.highlightColor         = highlightColor
+        self.xAxisValueFormatter    = xAxisValueFormatter
+        self.yAxisValueFormatter    = yAxisValueFormatter
     }
 }
