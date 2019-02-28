@@ -29,7 +29,7 @@ msgid ""
 "\n"
 "WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites running WordPress 4.0 or higher.\n"
 "\n"
-"Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.\n"
+"Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.\n\n"
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
@@ -38,12 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.8-whats-new"
+msgctxt "v11.9-whats-new"
 msgid ""
-"- You can now share a site via Reader.\n"
-"- Fixed a bug in which editing a local copy of a draft post, then discarding changes, would result in deleting the post.\n"
-"- Fixed a bug in Reader that caused the app to crash when showing a post with a video.\n"
-"- Fixed some UI layout errors where elements overlapped or had wrong sizes.\n"
+"- You’ll go from “initial signup” to “complete website” faster with a smart site-creation process that starts you off with a personalized, already-customized website. You might need to push up your launch schedule now, sorry about that! What a nice problem to have.\n"
+"- Once you create your new site, there are more tutorials available than ever to help you shape and grow it, including tips on building your audience. We’ll suggest them where it makes sense, and you find them all on the My Sites screen at any time. Because launching is beginning, not an ending.\n"
+"- In our ongoing quest to make the app a joy to use — or at least more pleasant — we’ve increased the padding of the editor window so typing longer posts is more comfortable, and given some error pages layouts and illustration that are more consistent with the rest of the app so they’re easier to understand.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -67,7 +66,7 @@ msgctxt "standard-whats-new-4"
 msgid ""
 "It may look the same,\n"
 "but we shined and buffed the code.\n"
-"Small changes add up!"
+"Small changes add up!\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
@@ -75,7 +74,7 @@ msgstr ""
 msgctxt "app_store_screenshot-1"
 msgid ""
 "Enjoy your\n"
-"favorite sites"
+"favorite sites\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
@@ -83,7 +82,7 @@ msgstr ""
 msgctxt "app_store_screenshot-2"
 msgid ""
 "Get notified\n"
-"in real-time"
+"in real-time\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
@@ -91,7 +90,7 @@ msgstr ""
 msgctxt "app_store_screenshot-3"
 msgid ""
 "Manage your site\n"
-"everywhere you go"
+"everywhere you go\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
@@ -99,7 +98,7 @@ msgstr ""
 msgctxt "app_store_screenshot-4"
 msgid ""
 "Share your ideas\n"
-"with the world"
+"with the world\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
