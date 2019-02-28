@@ -106,46 +106,6 @@ msgstr ""
 msgctxt "app_store_screenshot-5"
 msgid ""
 "All the stats\n"
-"in your hand\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-1"
-msgid "<strong>Create </strong>beautiful<br />posts and pages"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-2"
-msgid "<strong>Track </strong><span>what your<br />visitors love</span>
-"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-3"
-msgid "<strong>Check </strong><span>what's<br />happening in real time</span>
-"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-4"
-msgid "<strong>Share </strong> from<br />anywhere
-"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-5"
-msgid "<strong>Capture </strong>ideas<br />on the go
-"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-6"
-msgid "<strong>Write</strong> without compromises"
+"in your hand"
 msgstr ""
 
