@@ -12,13 +12,7 @@ class PostSummaryStyling: BarChartStyling {
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter
 
-    init(
-        adornmentColor: UIColor,
-        barColor: UIColor,
-        highlightColor: UIColor?,
-        xAxisValueFormatter: IAxisValueFormatter,
-        yAxisValueFormatter: IAxisValueFormatter)
-    {
+    init(adornmentColor: UIColor, barColor: UIColor, highlightColor: UIColor?, xAxisValueFormatter: IAxisValueFormatter, yAxisValueFormatter: IAxisValueFormatter) {
         self.adornmentColor         = adornmentColor
         self.barColor               = barColor
         self.highlightColor         = highlightColor
