@@ -18,7 +18,7 @@ extension CommentsViewController: NetworkAwareUI {
             presentNoNetworkAlert()
         }
     }
-    
+
     @objc func dismissConnectionErrorNotice() {
         dismissNoNetworkAlert()
     }

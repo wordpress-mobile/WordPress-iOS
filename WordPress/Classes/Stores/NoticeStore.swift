@@ -33,7 +33,7 @@ struct Notice {
     /// A title for an optional cancel button that can be displayed as part of a notice
     ///
     let cancelTitle: String?
-    
+
     /// An optional value that can be used as a reference by consumers.
     ///
     /// This is not used in the Notice system at all.

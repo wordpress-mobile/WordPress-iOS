@@ -49,14 +49,14 @@ extension ReachabilityUtils {
                             tag: NoConnectionMessage.tag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
-    
+
     /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
     @objc static func dismissNoInternetConnectionNotice() {
         if StoreContainer.shared.notice.state.notice?.tag == NoConnectionMessage.tag {
             noticePresenter?.dismissCurrentNotice()
         }
     }
-    
+
     private static var noticePresenter: NoticePresenter? {
         return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
     }
