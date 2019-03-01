@@ -113,8 +113,8 @@ class StatsBarChartView: BarChartView {
 
                 dataSet.drawValuesEnabled = false
 
-                if let barHilightColor = styling.highlightColor {
-                    dataSet.highlightColor = barHilightColor
+                if let barHighlightColor = styling.highlightColor {
+                    dataSet.highlightColor = barHighlightColor
                     dataSet.highlightEnabled = true
                     dataSet.highlightAlpha = CGFloat(1)
                 } else {
