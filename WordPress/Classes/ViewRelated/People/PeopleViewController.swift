@@ -510,7 +510,7 @@ private extension PeopleViewController {
         filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        filterBar.tabBarItems = filtersAvailableForBlog(blog)
+        filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
         // By default, let's display the Blog's Users

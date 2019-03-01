@@ -92,7 +92,7 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.tabBarItems = StatsPeriodType.allPeriods
+        filterTabBar.items = StatsPeriodType.allPeriods
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 

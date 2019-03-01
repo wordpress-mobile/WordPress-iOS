@@ -83,7 +83,7 @@ private extension TabbedTotalsCell {
 
     func setupFilterBar(selectedIndex: Int) {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
-        filterTabBar.tabBarItems = tabsData
+        filterTabBar.items = tabsData
         filterTabBar.setSelectedIndex(selectedIndex)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         toggleFilterTabBar()

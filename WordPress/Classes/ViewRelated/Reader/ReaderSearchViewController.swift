@@ -176,7 +176,7 @@ import Gridicons
         filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterBar.dividerColor = WPStyleGuide.greyLighten20()
         filterBar.tabSizingStyle = .equalWidths
-        filterBar.tabBarItems = sections
+        filterBar.items = sections
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }

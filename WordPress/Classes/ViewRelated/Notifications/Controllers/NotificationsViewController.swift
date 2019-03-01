@@ -427,7 +427,7 @@ private extension NotificationsViewController {
         filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        filterTabBar.tabBarItems = Filter.allFilters
+        filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }

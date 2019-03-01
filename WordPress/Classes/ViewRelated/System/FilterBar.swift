@@ -42,7 +42,7 @@ class FilterTabBar: UIControl {
         return divider
     }()
 
-    var tabBarItems: [FilterTabBarItem] = [] {
+    var items: [FilterTabBarItem] = [] {
         didSet {
             refreshTabs()
         }
@@ -200,7 +200,7 @@ class FilterTabBar: UIControl {
 
     private func refreshTabs() {
         tabs.forEach({ $0.removeFromSuperview() })
-        tabs = tabBarItems.map(makeTab)
+        tabs = items.map(makeTab)
         stackView.addArrangedSubviews(tabs)
 
         layoutIfNeeded()
