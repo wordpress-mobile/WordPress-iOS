@@ -51,7 +51,7 @@ private extension SiteStatsDashboardViewController {
 
         static let allPeriods = [StatsPeriodType.insights, .days, .weeks, .months, .years]
 
-        var filterTitle: String {
+        var title: String {
             switch self {
             case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
             case .days: return NSLocalizedString("Days", comment: "Title of Days stats filter.")

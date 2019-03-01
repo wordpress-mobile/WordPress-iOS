@@ -19,7 +19,7 @@ struct TabData: FilterTabBarItem {
         self.dataRows = dataRows
     }
 
-    var filterTitle: String {
+    var title: String {
         return self.tabTitle
     }
 

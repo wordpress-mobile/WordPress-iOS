@@ -5,7 +5,7 @@ import UIKit
 ///
 
 protocol FilterTabBarItem {
-    var filterTitle: String { get }
+    var title: String { get }
     var accessibilityIdentifier: String { get }
 }
 
@@ -211,7 +211,7 @@ class FilterTabBar: UIControl {
     private func makeTab(_ item: FilterTabBarItem) -> UIButton {
 
         let tab = TabBarButton(type: .custom)
-        tab.setTitle(item.filterTitle, for: .normal)
+        tab.setTitle(item.title, for: .normal)
         tab.setTitleColor(titleColorForSelected, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor

@@ -1,6 +1,6 @@
 import Foundation
 
-@objc class PostListFilter: NSObject {
+@objc class PostListFilter: NSObject, FilterTabBarItem {
 
     enum Status: UInt {
         case published
@@ -115,12 +115,5 @@ import Foundation
         filter.accessibilityIdentifier = "trashed"
 
         return filter
-    }
-}
-
-extension PostListFilter: FilterTabBarItem {
-
-    var filterTitle: String {
-        return self.title
     }
 }

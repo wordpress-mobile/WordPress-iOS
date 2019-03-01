@@ -21,10 +21,6 @@ import Gridicons
             }
         }
 
-        var filterTitle: String {
-            return self.title
-        }
-
         var accessibilityIdentifier: String {
             return "\(self)"
         }

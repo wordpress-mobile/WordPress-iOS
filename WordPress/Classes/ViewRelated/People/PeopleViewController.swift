@@ -291,10 +291,6 @@ private extension PeopleViewController {
             }
         }
 
-        var filterTitle: String {
-            return self.title
-        }
-
         var accessibilityIdentifier: String {
             return self.rawValue
         }
