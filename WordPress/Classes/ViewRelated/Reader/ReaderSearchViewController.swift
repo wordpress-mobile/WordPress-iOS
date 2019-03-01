@@ -20,10 +20,6 @@ import Gridicons
             case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
             }
         }
-
-        var accessibilityIdentifier: String {
-            return "\(self)"
-        }
     }
 
     // MARK: - Properties

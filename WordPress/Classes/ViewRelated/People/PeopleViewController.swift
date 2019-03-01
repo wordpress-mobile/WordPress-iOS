@@ -290,10 +290,6 @@ private extension PeopleViewController {
                 return .viewer
             }
         }
-
-        var accessibilityIdentifier: String {
-            return self.rawValue
-        }
     }
 
     enum RestorationKeys {

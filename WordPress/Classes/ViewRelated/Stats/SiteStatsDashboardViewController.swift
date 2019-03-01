@@ -60,10 +60,6 @@ private extension SiteStatsDashboardViewController {
             case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
             }
         }
-
-        var accessibilityIdentifier: String {
-            return "\(self)"
-        }
     }
 
     var currentSelectedPeriod: StatsPeriodType {

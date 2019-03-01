@@ -9,6 +9,13 @@ protocol FilterTabBarItem {
     var accessibilityIdentifier: String { get }
 }
 
+extension FilterTabBarItem where Self: RawRepresentable {
+
+    var accessibilityIdentifier: String {
+        return "\(self)"
+    }
+}
+
 class FilterTabBar: UIControl {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()

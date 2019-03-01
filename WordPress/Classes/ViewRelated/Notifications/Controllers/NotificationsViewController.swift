@@ -1525,10 +1525,6 @@ private extension NotificationsViewController {
 
         static let sortKey = "timestamp"
         static let allFilters = [Filter.none, .unread, .comment, .follow, .like]
-
-        var accessibilityIdentifier: String {
-            return "\(self)"
-        }
     }
 
     enum Settings {
