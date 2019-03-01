@@ -132,7 +132,7 @@ extension PostSummaryStyling {
         let xAxisFormatter = PostSummaryHorizontalAxisFormatter(initialDateInterval: initialDateInterval)
 
         self.init(
-            adornmentColor: NSUIColor.chartColor,
+            adornmentColor: WPStyleGuide.greyLighten30(),
             barColor: WPStyleGuide.wordPressBlue(),
             highlightColor: highlightColor,
             xAxisValueFormatter: xAxisFormatter,
@@ -148,6 +148,6 @@ class LatestPostSummaryStyling: PostSummaryStyling {}
 
 class SelectedPostSummaryStyling: PostSummaryStyling {
     convenience init(initialDateInterval: TimeInterval) {
-        self.init(initialDateInterval: initialDateInterval, highlightColor: NSUIColor.highlightColor)
+        self.init(initialDateInterval: initialDateInterval, highlightColor: WPStyleGuide.jazzyOrange())
     }
 }

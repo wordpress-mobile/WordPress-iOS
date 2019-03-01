@@ -16,12 +16,6 @@ extension BarChartDataSet {
     }
 }
 
-extension NSUIColor {
-    static let chartColor = UIColor(red: 135/255.0, green: 166/255.0, blue: 188/255.0, alpha: 255.0/255.0)
-
-    static let highlightColor = UIColor(red: 245/255.0, green: 131/255.0, blue: 53/255.0, alpha: 255.0/255.0)
-}
-
 // MARK: - Charts protocols
 
 /// Describes the visual appearance of a BarChartView. Implementation TBD.
