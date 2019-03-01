@@ -201,7 +201,7 @@ class FilterTabBar: UIControl {
     private func refreshTabs() {
         tabs.forEach({ $0.removeFromSuperview() })
         tabs = tabBarItems.map(makeTab)
-        tabs.forEach(stackView.addArrangedSubview)
+        stackView.addArrangedSubviews(tabs)
 
         layoutIfNeeded()
 
