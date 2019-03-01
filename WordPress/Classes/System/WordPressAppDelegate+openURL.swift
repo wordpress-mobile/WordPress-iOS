@@ -33,6 +33,8 @@ private func ~=(pattern: String, value: URL) -> Bool {
 
         // this works with our custom ~=
         switch url {
+        case "newpost":
+            returnValue = handleNewPost(url: url)
         case "magic-login":
             returnValue = handleMagicLogin(url: url)
         case "viewpost":
@@ -114,5 +116,47 @@ private func ~=(pattern: String, value: URL) -> Bool {
         if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
             Crashlytics.sharedInstance().crash()
         }
+    }
+
+    /// Handle a call of wordpress://newpost?…
+    ///
+    /// This is partially a return of the old functionality: https://github.com/wordpress-mobile/WordPress-iOS/blob/d89b7ec712be1f2e11fb1228089771a25f5587c5/WordPress/Classes/ViewRelated/System/WPTabBarController.m#L388
+    private func handleNewPost(url: URL) -> Bool {
+        guard let query = url.query,
+            let params = query.dictionaryFromQueryString() else {
+                return false
+        }
+
+        let title = params.string(forKey: NewPostKey.title)
+        let content = params.string(forKey: NewPostKey.content)
+        let tags = params.string(forKey: NewPostKey.tags)
+
+        // TODO: add ability to attach and image
+        //let image = params.string(forKey: NewPostKey.image)
+
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.lastUsedOrFirstBlog() else {
+            return false
+        }
+        let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
+        post.postTitle = title
+        post.setPostFormatText(content ?? "no")
+        post.content = content
+        post.tags = tags
+
+        let postVC = EditPostViewController(post: post)
+        postVC.modalPresentationStyle = .fullScreen
+
+        WPTabBarController.sharedInstance()?.present(postVC, animated: true, completion: nil)
+
+        return true
+    }
+
+    private enum NewPostKey {
+        static let title = "title"
+        static let content = "content"
+        static let tags = "tags"
+        static let image = "image"
     }
 }
