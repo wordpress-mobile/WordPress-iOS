@@ -152,8 +152,8 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Stats screenshot
         blogDetailsTable.cells["Stats Row"].tap() // tap Stats
-//        app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
-        app.buttons["insights"].tap()
+        app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
+//        app.buttons["insights"].tap()
 
         // Wait for stats to be loaded
         waitForElementToExist(element: app.otherElements["visitorsViewsGraph"])
