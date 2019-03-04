@@ -27,7 +27,7 @@ private func ~=(pattern: String, value: URL) -> Bool {
         }
 
         // 3. let's see if it's our wpcom scheme
-        guard url.absoluteString.hasPrefix(WPComScheme) else {
+        guard url.scheme == WPComScheme else {
             return returnValue
         }
 
