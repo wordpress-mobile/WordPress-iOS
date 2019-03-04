@@ -20,6 +20,12 @@ class StatsBarChartView: BarChartView {
 
     // MARK: StatsBarChartView
 
+    override var bounds: CGRect {
+        didSet {
+            redrawChartMarkersIfNeeded()
+        }
+    }
+
     init(data: BarChartDataConvertible, styling: BarChartStyling) {
         self.barChartData = data
         self.styling = styling
@@ -46,6 +52,28 @@ class StatsBarChartView: BarChartView {
 
         configureXAxis()
         configureYAxis()
+    }
+
+    /// Unfortunately the framework doesn't offer much in the way of Auto Layout support,
+    /// so here we manually calculate geometry.
+    ///
+    /// - Parameter entry: the selected entry for which to determine highlight information
+    /// - Returns: the frame & offset from the bar that should be used to render the marker
+    ///
+    private func calculateHighlightFrameAndOffset(for entry: ChartDataEntry) -> (CGRect, CGPoint) {
+        guard let barChartDataEntry = entry as? BarChartDataEntry else {
+            return (.zero, .zero)
+        }
+
+        let barBounds = getBarBounds(entry: barChartDataEntry)
+        let highlightOrigin = CGPoint(x: barBounds.origin.x, y: 0)
+        let rect = CGRect(origin: highlightOrigin, size: barBounds.size)
+
+        let offsetWidth = -(barBounds.width / 2)
+        let offsetHeight = -barBounds.height
+        let offset = CGPoint(x: offsetWidth, y: offsetHeight)
+
+        return (rect, offset)
     }
 
     private func configureBarChartViewProperties() {
@@ -127,6 +155,21 @@ class StatsBarChartView: BarChartView {
         data = barChartData
     }
 
+    private func drawChartMarker(for entry: ChartDataEntry, triggerRedraw: Bool = false) {
+        let (markerRect, markerOffset) = calculateHighlightFrameAndOffset(for: entry)
+        let marker = StatsBarChartMarker(frame: markerRect)
+        marker.offset = markerOffset
+
+        let markerColor = (styling.highlightColor ?? UIColor.clear).withAlphaComponent(Constants.highlightAlpha)
+        marker.backgroundColor = markerColor
+
+        self.marker = marker
+
+        if triggerRedraw {
+            setNeedsDisplay()
+        }
+    }
+
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
 
@@ -134,6 +177,19 @@ class StatsBarChartView: BarChartView {
 
         applyStyling()
         configureAndPopulateData()
+    }
+
+    private func redrawChartMarkersIfNeeded() {
+        guard marker != nil, let highlight = lastHighlighted, let entry = barData?.entryForHighlight(highlight) else {
+            return
+        }
+
+        notifyDataSetChanged()
+
+        let postRotationDelay = DispatchTime.now() + TimeInterval(0.3)
+        DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
+            self.drawChartMarker(for: entry, triggerRedraw: true)
+        }
     }
 }
 
@@ -144,35 +200,6 @@ private typealias StatsBarChartMarker = MarkerView
 extension StatsBarChartView: ChartViewDelegate {
 
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        let (markerRect, markerOffset) = calculateHighlightFrameAndOffset(for: entry)
-        let marker = StatsBarChartMarker(frame: markerRect)
-        marker.offset = markerOffset
-
-        let markerColor = (styling.highlightColor ?? UIColor.clear).withAlphaComponent(Constants.highlightAlpha)
-        marker.backgroundColor = markerColor
-
-        self.marker = marker
-    }
-
-    /// Unfortunately the framework doesn't offer much in the way of Auto Layout support,
-    /// so here we manually calculate geometry.
-    ///
-    /// - Parameter entry: the selected entry for which to determine highlight information
-    /// - Returns: the frame & offset from the bar that should be used to render the marker
-    ///
-    private func calculateHighlightFrameAndOffset(for entry: ChartDataEntry) -> (CGRect, CGPoint) {
-        guard let barChartDataEntry = entry as? BarChartDataEntry else {
-            return (.zero, .zero)
-        }
-
-        let barBounds = getBarBounds(entry: barChartDataEntry)
-        let highlightOrigin = CGPoint(x: barBounds.origin.x, y: 0)
-        let rect = CGRect(origin: highlightOrigin, size: barBounds.size)
-
-        let offsetWidth = -(barBounds.width / 2)
-        let offsetHeight = -barBounds.height
-        let offset = CGPoint(x: offsetWidth, y: offsetHeight)
-
-        return (rect, offset)
+        drawChartMarker(for: entry)
     }
 }
