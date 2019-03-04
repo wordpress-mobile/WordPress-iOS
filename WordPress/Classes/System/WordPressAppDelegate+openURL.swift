@@ -6,8 +6,8 @@ private func ~=(pattern: String, value: URL) -> Bool {
 }
 
 @objc extension WordPressAppDelegate {
-    internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        DDLogInfo("Application launched with URL: \(url)");
+    internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        DDLogInfo("Application launched with URL: \(url)")
         var returnValue = false
 
         // 1. check if hockey can open this URL
