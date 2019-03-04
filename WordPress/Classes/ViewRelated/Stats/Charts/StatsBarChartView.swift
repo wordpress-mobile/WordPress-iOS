@@ -83,12 +83,12 @@ class StatsBarChartView: BarChartView {
     }
 
     private func configureXAxis() {
-        xAxis.axisLineColor = styling.adornmentColor
+        xAxis.axisLineColor = styling.lineColor
         xAxis.drawAxisLineEnabled = true
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
-        xAxis.labelTextColor = styling.adornmentColor
+        xAxis.labelTextColor = styling.labelColor
         xAxis.setLabelCount(2, force: true)
         xAxis.valueFormatter = styling.xAxisValueFormatter
     }
@@ -96,11 +96,12 @@ class StatsBarChartView: BarChartView {
     private func configureYAxis() {
         let yAxis = leftAxis
 
-        yAxis.gridColor = styling.adornmentColor
+        xAxis.axisLineColor = styling.lineColor
+        yAxis.gridColor = styling.lineColor
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
-        yAxis.labelTextColor = styling.adornmentColor
+        yAxis.labelTextColor = styling.labelColor
         yAxis.valueFormatter = styling.yAxisValueFormatter
     }
 

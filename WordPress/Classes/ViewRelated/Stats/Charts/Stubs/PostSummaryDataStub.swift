@@ -132,9 +132,10 @@ extension PostSummaryStyling {
         let xAxisFormatter = PostSummaryHorizontalAxisFormatter(initialDateInterval: initialDateInterval)
 
         self.init(
-            adornmentColor: WPStyleGuide.greyLighten30(),
             barColor: WPStyleGuide.wordPressBlue(),
             highlightColor: highlightColor,
+            labelColor: WPStyleGuide.grey(),
+            lineColor: WPStyleGuide.greyLighten30(),
             xAxisValueFormatter: xAxisFormatter,
             yAxisValueFormatter: PostSummaryVerticalAxisFormatter())
     }

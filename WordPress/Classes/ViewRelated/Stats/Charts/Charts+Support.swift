@@ -22,14 +22,17 @@ extension BarChartDataSet {
 ///
 protocol BarChartStyling {
 
-    /// This corresponds to the color of other chart "chrome" (i.e., axes, labels, etc.)
-    var adornmentColor: UIColor { get }
-
     /// This corresponds to the bar color
     var barColor: UIColor { get }
 
     /// This corresponds to the color of a selected bar
     var highlightColor: UIColor? { get }
+
+    /// This corresponds to the color of labels on the chart
+    var labelColor: UIColor { get }
+
+    /// This corresponds to the color of lines on the chart
+    var lineColor: UIColor { get }
 
     /// Formatter for x-axis values
     var xAxisValueFormatter: IAxisValueFormatter { get }
