@@ -19,9 +19,12 @@ extension UITableViewCell {
         let numberOfDataRows = dataRows.count
 
         guard numberOfDataRows > 0 else {
-            let row = StatsNoDataRow.loadFromNib()
-            row.configure(forType: statType)
-            rowsStackView.addArrangedSubview(row)
+            if limitRowsDisplayed {
+                let row = StatsNoDataRow.loadFromNib()
+                row.configure(forType: statType)
+                rowsStackView.addArrangedSubview(row)
+            }
+
             return
         }
 
