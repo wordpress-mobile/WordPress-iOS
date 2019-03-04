@@ -28,14 +28,18 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        Style.configureTable(tableView)
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+    }
+
     func configure(statSection: StatSection) {
         self.statSection = statSection
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
-
         title = statSection.title
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-
-        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
     }
 
