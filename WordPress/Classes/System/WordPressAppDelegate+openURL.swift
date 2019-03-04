@@ -5,6 +5,29 @@ private func ~=(pattern: String, value: URL) -> Bool {
     return value.absoluteString.contains(pattern)
 }
 
+private extension Array where Element == URLQueryItem {
+    func value(of key: String) -> String? {
+        return self.first(where: { $0.name == key })?.value
+    }
+    func intValue(of key: String) -> Int? {
+        guard let value = value(of: key) else {
+            return nil
+        }
+        return Int(value)
+    }
+}
+
+private extension URL {
+    func queryParams() -> [URLQueryItem]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+            let queryItems = components.queryItems,
+            queryItems.count > 0 else {
+                return nil
+        }
+        return queryItems
+    }
+}
+
 @objc extension WordPressAppDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DDLogInfo("Application launched with URL: \(url)")
@@ -60,31 +83,23 @@ private func ~=(pattern: String, value: URL) -> Bool {
     }
 
     private func handleViewPost(url: URL) -> Bool {
-        guard let query = url.query,
-            let params = query.dictionaryFromQueryString(),
-            params.count > 0 else {
-                return false
+        guard let params = url.queryParams(),
+            let blogId = params.intValue(of: "blogId"),
+            let postId = params.intValue(of: "postId") else {
+            return false
         }
 
-        let blogId = params.number(forKey: "blogId")
-        let postId = params.number(forKey: "postId")
-
-        WPTabBarController.sharedInstance()?.showReaderTab(forPost: postId, onBlog: blogId)
+        WPTabBarController.sharedInstance()?.showReaderTab(forPost: NSNumber(value: postId), onBlog: NSNumber(value: blogId))
 
         return true
     }
 
     private func handleViewStats(url: URL) -> Bool {
-        guard let query = url.query,
-            let params = query.dictionaryFromQueryString(),
-            params.count > 0 else {
-                return false
-        }
-
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        guard let siteId = params.number(forKey: "siteId"),
-            let blog = blogService.blog(byBlogId: siteId) else {
+        guard let params = url.queryParams(),
+            let siteId = params.intValue(of: "siteId"),
+            let blog = blogService.blog(byBlogId: NSNumber(value: siteId)) else {
             return false
         }
 
@@ -104,11 +119,10 @@ private func ~=(pattern: String, value: URL) -> Bool {
     }
 
     @nonobjc private func handleDebugging(url: URL) {
-        guard let query = url.query,
-            let params = query.dictionaryFromQueryString(),
-            let debugType = params.string(forKey: "type"),
-            let debugKey = params.string(forKey: "key") else {
-                return
+        guard let params = url.queryParams(),
+            let debugType = params.value(of: "type"),
+            let debugKey = params.value(of: "key") else {
+            return
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
