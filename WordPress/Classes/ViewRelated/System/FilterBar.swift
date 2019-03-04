@@ -3,6 +3,19 @@ import UIKit
 /// Filter Tab Bar is a tabbed control (much like a segmented control), but
 /// has an appearance similar to Android tabs.
 ///
+
+protocol FilterTabBarItem {
+    var title: String { get }
+    var accessibilityIdentifier: String { get }
+}
+
+extension FilterTabBarItem where Self: RawRepresentable {
+
+    var accessibilityIdentifier: String {
+        return "\(self)"
+    }
+}
+
 class FilterTabBar: UIControl {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -36,9 +49,7 @@ class FilterTabBar: UIControl {
         return divider
     }()
 
-    /// Titles of tabs to display.
-    ///
-    @IBInspectable var items: [String] = [] {
+    var items: [FilterTabBarItem] = [] {
         didSet {
             refreshTabs()
         }
@@ -143,15 +154,6 @@ class FilterTabBar: UIControl {
     }
 
     // MARK: - Initialization
-
-    init(items: [String]) {
-        self.items = items
-
-        super.init(frame: .zero)
-
-        refreshTabs()
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -205,20 +207,23 @@ class FilterTabBar: UIControl {
 
     private func refreshTabs() {
         tabs.forEach({ $0.removeFromSuperview() })
-        tabs = items.map(makeTab(_:))
-        tabs.forEach(stackView.addArrangedSubview(_:))
+        tabs = items.map(makeTab)
+        stackView.addArrangedSubviews(tabs)
 
         layoutIfNeeded()
 
         setSelectedIndex(selectedIndex, animated: false)
     }
 
-    private func makeTab(_ title: String) -> UIButton {
+    private func makeTab(_ item: FilterTabBarItem) -> UIButton {
+
         let tab = TabBarButton(type: .custom)
-        tab.setTitle(title, for: .normal)
+        tab.setTitle(item.title, for: .normal)
         tab.setTitleColor(titleColorForSelected, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
+
+        tab.accessibilityIdentifier = item.accessibilityIdentifier
 
         tab.contentEdgeInsets = AppearanceMetrics.buttonInsets
         tab.sizeToFit()

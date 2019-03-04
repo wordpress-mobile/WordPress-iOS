@@ -1,6 +1,6 @@
 import UIKit
 
-struct TabData {
+struct TabData: FilterTabBarItem {
     var tabTitle: String
     var itemSubtitle: String
     var dataSubtitle: String
@@ -17,6 +17,14 @@ struct TabData {
         self.dataSubtitle = dataSubtitle
         self.totalCount = totalCount
         self.dataRows = dataRows
+    }
+
+    var title: String {
+        return self.tabTitle
+    }
+
+    var accessibilityIdentifier: String {
+        return self.tabTitle.localizedLowercase
     }
 }
 
@@ -75,7 +83,7 @@ private extension TabbedTotalsCell {
 
     func setupFilterBar(selectedIndex: Int) {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forTabbedCard: true)
-        filterTabBar.items = tabsData.map { $0.tabTitle }
+        filterTabBar.items = tabsData
         filterTabBar.setSelectedIndex(selectedIndex)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         toggleFilterTabBar()
