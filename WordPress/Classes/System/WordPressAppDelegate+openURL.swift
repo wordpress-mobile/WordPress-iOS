@@ -1,33 +1,5 @@
 import WordPressAuthenticator
 
-/// Custom pattern matcher used for our URL scheme
-private func ~=(pattern: String, value: URL) -> Bool {
-    return value.absoluteString.contains(pattern)
-}
-
-private extension Array where Element == URLQueryItem {
-    func value(of key: String) -> String? {
-        return self.first(where: { $0.name == key })?.value
-    }
-    func intValue(of key: String) -> Int? {
-        guard let value = value(of: key) else {
-            return nil
-        }
-        return Int(value)
-    }
-}
-
-private extension URL {
-    func queryParams() -> [URLQueryItem]? {
-        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-            let queryItems = components.queryItems,
-            queryItems.count > 0 else {
-                return nil
-        }
-        return queryItems
-    }
-}
-
 @objc extension WordPressAppDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DDLogInfo("Application launched with URL: \(url)")
@@ -83,7 +55,7 @@ private extension URL {
     }
 
     private func handleViewPost(url: URL) -> Bool {
-        guard let params = url.queryParams(),
+        guard let params = url.queryItems,
             let blogId = params.intValue(of: "blogId"),
             let postId = params.intValue(of: "postId") else {
             return false
@@ -97,7 +69,7 @@ private extension URL {
     private func handleViewStats(url: URL) -> Bool {
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        guard let params = url.queryParams(),
+        guard let params = url.queryItems,
             let siteId = params.intValue(of: "siteId"),
             let blog = blogService.blog(byBlogId: NSNumber(value: siteId)) else {
             return false
@@ -118,8 +90,8 @@ private extension URL {
         return true
     }
 
-    @nonobjc private func handleDebugging(url: URL) {
-        guard let params = url.queryParams(),
+    private func handleDebugging(url: URL) {
+        guard let params = url.queryItems,
             let debugType = params.value(of: "type"),
             let debugKey = params.value(of: "key") else {
             return
@@ -128,5 +100,34 @@ private extension URL {
         if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
             Crashlytics.sharedInstance().crash()
         }
+    }
+}
+
+/// Custom pattern matcher used for our URL scheme
+private func ~=(pattern: String, value: URL) -> Bool {
+    return value.absoluteString.contains(pattern)
+}
+
+private extension Array where Element == URLQueryItem {
+    func value(of key: String) -> String? {
+        return self.first(where: { $0.name == key })?.value
+    }
+    
+    func intValue(of key: String) -> Int? {
+        guard let value = value(of: key) else {
+            return nil
+        }
+        return Int(value)
+    }
+}
+
+private extension URL {
+    var queryItems: [URLQueryItem]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+            let queryItems = components.queryItems,
+            queryItems.count > 0 else {
+                return nil
+        }
+        return queryItems
     }
 }
