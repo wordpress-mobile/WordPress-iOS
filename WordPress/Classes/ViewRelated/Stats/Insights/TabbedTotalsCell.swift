@@ -146,6 +146,7 @@ extension TabbedTotalsCell: StatsTotalRowDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
+        siteStatsDetailsDelegate?.displayWebViewWithURL?(url)
     }
 
 }
