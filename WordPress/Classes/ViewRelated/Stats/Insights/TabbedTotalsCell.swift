@@ -41,8 +41,15 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
     @IBOutlet weak var rowsStackView: UIStackView!
-
     @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet weak var noResultsView: UIView!
+
+    private lazy var noResultsViewController: NoResultsViewController = {
+       let controller = NoResultsViewController.controller()
+        controller.configure(title: NSLocalizedString("No data yet", comment: "Text shown when there is no data to display in the stats list view."))
+        controller.hideImageView(true)
+        return controller
+    }()
 
     private var tabsData = [TabData]()
     private typealias Style = WPStyleGuide.Stats
@@ -69,6 +76,11 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
         addRowsForSelectedFilter()
         configureSubtitles()
         applyStyles()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // Re-add no results view so it's sized correctly.
+        toggleNoResults()
     }
 
     override func prepareForReuse() {
@@ -103,7 +115,30 @@ private extension TabbedTotalsCell {
         siteStatsDetailsDelegate?.tabbedTotalsCellUpdated?()
     }
 
+    func toggleNoResults() {
+        noResultsViewController.removeFromView()
+
+        let showNoResults = tabsData[filterTabBar.selectedIndex].dataRows.isEmpty && !limitRowsDisplayed
+        noResultsView.isHidden = !showNoResults
+
+        guard showNoResults,
+            let superview = superview else {
+                return
+        }
+
+        noResultsViewController.view.frame = noResultsView.frame
+        noResultsViewController.view.frame.origin.y = 0
+        noResultsViewController.view.frame.size.height = superview.frame.height - filterTabBar.frame.height
+        noResultsView.addSubview(noResultsViewController.view)
+    }
+
     func addRowsForSelectedFilter() {
+        toggleNoResults()
+
+        guard noResultsView.isHidden else {
+            return
+        }
+
         addRows(tabsData[filterTabBar.selectedIndex].dataRows,
                 toStackView: rowsStackView,
                 forType: .insights,
