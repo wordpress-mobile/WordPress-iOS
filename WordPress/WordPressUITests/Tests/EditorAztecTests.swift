@@ -32,7 +32,7 @@ class EditorAztecTests: XCTestCase {
         let titleLineHeight = titleTextView.frame.height - 16.5
         let oneLineTitleHeight = titleTextView.frame.height
 
-        let repeatTimes = isIPhone() ? 6 : 20
+        let repeatTimes = isIPhone ? 6 : 20
         _ = editorScreen.enterTextInTitle(text: String(repeating: "very ", count: repeatTimes) + longTitle)
 
         let twoLineTitleHeight = titleTextView.frame.height
