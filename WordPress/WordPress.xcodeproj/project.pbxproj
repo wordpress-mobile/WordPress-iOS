@@ -169,6 +169,7 @@
 		177E7DAD1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */; };
 		1782BE841E70063100A91E7D /* MediaItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1782BE831E70063100A91E7D /* MediaItemViewController.swift */; };
 		1789192A222EABD1008E207E /* NotificationRemindersHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17891929222EABD1008E207E /* NotificationRemindersHelper.swift */; };
+		178B079C222E898000C61624 /* NotificationRemindersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178B079B222E898000C61624 /* NotificationRemindersViewController.swift */; };
 		1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */; };
 		1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1797373620EBAA4100377B4E /* RouteMatcherTests.swift */; };
 		17A28DC3205001A900EA6D9E /* FilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A28DC2205001A900EA6D9E /* FilterBar.swift */; };
@@ -1976,6 +1977,7 @@
 		177E7DAC1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+SplitViewFullscreen.swift"; sourceTree = "<group>"; };
 		1782BE831E70063100A91E7D /* MediaItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemViewController.swift; sourceTree = "<group>"; };
 		17891929222EABD1008E207E /* NotificationRemindersHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRemindersHelper.swift; sourceTree = "<group>"; };
+		178B079B222E898000C61624 /* NotificationRemindersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRemindersViewController.swift; sourceTree = "<group>"; };
 		1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Helpers.swift"; sourceTree = "<group>"; };
 		1797373620EBAA4100377B4E /* RouteMatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteMatcherTests.swift; sourceTree = "<group>"; };
 		17A28DC2205001A900EA6D9E /* FilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBar.swift; sourceTree = "<group>"; };
@@ -7192,6 +7194,7 @@
 				B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */,
 				8236EB4F2024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift */,
 				4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */,
+				178B079B222E898000C61624 /* NotificationRemindersViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -10135,6 +10138,7 @@
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
 				E1CECE051E6F01CE009C6695 /* PostPreviewGenerator.swift in Sources */,
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
+				178B079C222E898000C61624 /* NotificationRemindersViewController.swift in Sources */,
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				D816B8CD2112D4AA0052CE4D /* NewsManager.swift in Sources */,

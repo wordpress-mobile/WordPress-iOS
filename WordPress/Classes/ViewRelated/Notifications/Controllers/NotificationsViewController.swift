@@ -4,6 +4,7 @@ import CocoaLumberjack
 import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
+import Gridicons
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -138,6 +139,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         startListeningToNotifications()
         resetApplicationBadge()
         updateLastSeenTime()
+        updateNotificationRemindersButton()
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
@@ -429,6 +431,18 @@ private extension NotificationsViewController {
 
         filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func updateNotificationRemindersButton() {
+        let remindersButton = UIBarButtonItem(image: Gridicon.iconOfType(.time), style: .plain, target: self, action: #selector(didTapRemindersButton))
+
+        let helper = NotificationRemindersHelper()
+        helper.hasPendingReminders { hasReminders in
+            DispatchQueue.main.async { [weak self] in
+                let button = hasReminders ? remindersButton : nil
+                self?.navigationItem.setLeftBarButton(button, animated: true)
+            }
+        }
     }
 }
 
