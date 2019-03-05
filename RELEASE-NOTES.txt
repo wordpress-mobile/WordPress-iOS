@@ -1,6 +1,7 @@
 12.0
 -----
 * Redesigned Notices
+* Changed offline error messages to be less disruptive.
  
 11.9
 ------
