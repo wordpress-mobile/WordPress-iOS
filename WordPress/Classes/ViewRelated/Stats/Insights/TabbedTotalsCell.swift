@@ -78,11 +78,6 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        // Re-add no results view so it's sized correctly.
-        toggleNoResults()
-    }
-
     override func prepareForReuse() {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)

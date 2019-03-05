@@ -43,6 +43,15 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         initViewModel()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // This is primarily to resize the NoResultsView in a TabbedTotalsCell on rotation.
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
+    }
+
 }
 
 // MARK: - Table Methods
