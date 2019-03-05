@@ -136,14 +136,13 @@ private extension URL {
     ///
     /// This is partially a return of the old functionality: https://github.com/wordpress-mobile/WordPress-iOS/blob/d89b7ec712be1f2e11fb1228089771a25f5587c5/WordPress/Classes/ViewRelated/System/WPTabBarController.m#L388
     private func handleNewPost(url: URL) -> Bool {
-        guard let query = url.query,
-            let params = query.dictionaryFromQueryString() else {
-                return false
+        guard let params = url.queryParams() else {
+            return false
         }
 
-        let title = params.string(forKey: NewPostKey.title)
-        let content = params.string(forKey: NewPostKey.content)
-        let tags = params.string(forKey: NewPostKey.tags)
+        let title = params.value(of: NewPostKey.title)
+        let content = params.value(of: NewPostKey.content)
+        let tags = params.value(of: NewPostKey.tags)
 
         // TODO: add ability to attach and image
         //let image = params.string(forKey: NewPostKey.image)
