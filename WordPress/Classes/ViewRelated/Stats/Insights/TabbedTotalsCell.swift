@@ -81,6 +81,9 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     override func prepareForReuse() {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)
+        totalCountView.isHidden = false
+        labelsStackView.isHidden = false
+        noResultsView.isHidden = true
     }
 }
 
