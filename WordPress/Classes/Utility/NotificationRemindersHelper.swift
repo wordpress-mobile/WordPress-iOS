@@ -7,13 +7,20 @@ struct NotificationRemindersHelper {
     /// - returns: The Notification title for the specified reminder request.
     ///
     func reminderTitle(for request: UNNotificationRequest) -> String {
-        guard let noteId = request.content.userInfo[RequestUserInfoKeys.notificationId.rawValue] as? String,
+        guard let noteId = reminderNotificationId(from: request.content.userInfo),
             let note = loadNotification(with: noteId),
             let subject = note.renderSubject()?.string else {
                 return ""
         }
 
         return subject
+    }
+
+    /// - returns: A Notification identifier contained within the provided userInfo,
+    ///   if one is present.
+    ///
+    func reminderNotificationId(from userInfo: [AnyHashable: Any]) -> String? {
+        return userInfo[RequestUserInfoKeys.notificationId.rawValue] as? String
     }
 
     /// - returns: The trigger date for the specified reminder request.

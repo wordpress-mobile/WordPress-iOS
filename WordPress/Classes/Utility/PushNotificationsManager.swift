@@ -171,7 +171,8 @@ final public class PushNotificationsManager: NSObject {
                         handleAuthenticationNotification,
                         handleInactiveNotification,
                         handleBackgroundNotification,
-                        handleQuickStartLocalNotification]
+                        handleQuickStartLocalNotification,
+                        handleNotificationReminderNotification]
 
         for handler in handlers {
             if handler(userInfo, completionHandler) {
@@ -394,6 +395,20 @@ extension PushNotificationsManager {
                               withProperties: [QuickStartTracking.taskNameKey: taskName])
         }
 
+        completionHandler?(.newData)
+
+        return true
+    }
+
+    @objc func handleNotificationReminderNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+            type == Notification.local,
+            let info = userInfo as? [AnyHashable: Any] else {
+                return false
+        }
+
+        let noteId = NotificationRemindersHelper().reminderNotificationId(from: info)
+        WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: noteId)
         completionHandler?(.newData)
 
         return true
