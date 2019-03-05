@@ -141,7 +141,7 @@ private extension TabbedTotalsCell {
                 toStackView: rowsStackView,
                 forType: .insights,
                 limitRowsDisplayed: limitRowsDisplayed,
-                forDetailsList: true,
+                forDetailsList: !limitRowsDisplayed,
                 rowDelegate: self,
                 viewMoreDelegate: self)
     }
