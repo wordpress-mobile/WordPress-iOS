@@ -124,8 +124,7 @@ private extension TabbedTotalsCell {
                 return
         }
 
-        noResultsViewController.view.frame = noResultsView.frame
-        noResultsViewController.view.frame.origin.y = 0
+        noResultsViewController.view.frame = noResultsView.bounds
         noResultsViewController.view.frame.size.height = superview.frame.height - filterTabBar.frame.height
         noResultsView.addSubview(noResultsViewController.view)
     }
