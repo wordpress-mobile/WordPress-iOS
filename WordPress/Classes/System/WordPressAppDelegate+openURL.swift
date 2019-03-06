@@ -26,7 +26,7 @@ import WordPressAuthenticator
         case "viewstats":
             return handleViewStats(url: url)
         case "debugging":
-            handleDebugging(url: url)
+            return handleDebugging(url: url)
             fallthrough
         default:
             return false
@@ -102,16 +102,18 @@ import WordPressAuthenticator
         return true
     }
 
-    private func handleDebugging(url: URL) {
+    private func handleDebugging(url: URL) -> Bool {
         guard let params = url.queryItems,
             let debugType = params.value(of: "type"),
             let debugKey = params.value(of: "key") else {
-            return
+            return false
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
             Crashlytics.sharedInstance().crash()
         }
+        
+        return true
     }
 }
 
