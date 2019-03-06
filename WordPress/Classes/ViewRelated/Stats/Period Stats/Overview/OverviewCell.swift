@@ -3,10 +3,14 @@ import UIKit
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
+    var difference: Int
+    var differencePercent: Int
 
-    init(tabTitle: String, tabData: Int) {
+    init(tabTitle: String, tabData: Int, difference: Int, differencePercent: Int) {
         self.tabTitle = tabTitle
         self.tabData = tabData
+        self.difference = difference
+        self.differencePercent = differencePercent
     }
 
     var attributedTitle: NSAttributedString? {
@@ -23,6 +27,18 @@ struct OverviewTabData: FilterTabBarItem {
         attributedTitle.append(attributedData)
 
         return attributedTitle
+    }
+
+    var differenceLabel: String {
+        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%)")
+        return String.localizedStringWithFormat(stringFormat,
+                                                difference < 0 ? "" : "+",
+                                                difference.abbreviatedString(),
+                                                differencePercent.abbreviatedString())
+    }
+
+    var differenceTextColor: UIColor {
+        return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
     var title: String {
@@ -42,6 +58,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var selectedLabel: UILabel!
     @IBOutlet weak var selectedData: UILabel!
+    @IBOutlet weak var differenceLabel: UILabel!
 
     private var tabsData = [OverviewTabData]()
 
@@ -50,7 +67,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
     func configure(tabsData: [OverviewTabData]) {
         self.tabsData = tabsData
         setupFilterBar()
-        setSelectedLabels()
+        updateLabels()
     }
 
 }
@@ -69,12 +86,14 @@ private extension OverviewCell {
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         // TODO: update chart
-        setSelectedLabels()
+        updateLabels()
     }
 
-    func setSelectedLabels() {
+    func updateLabels() {
         let tabData = tabsData[filterTabBar.selectedIndex]
         selectedLabel.text = tabData.tabTitle
         selectedData.text = tabData.tabData.abbreviatedString(forHeroNumber: true)
+        differenceLabel.text = tabData.differenceLabel
+        differenceLabel.textColor = tabData.differenceTextColor
     }
 }

@@ -172,6 +172,9 @@ extension WPStyleGuide {
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
 
+        static let positiveColor = WPStyleGuide.validGreen()
+        static let negativeColor = WPStyleGuide.errorRed()
+
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {

@@ -31,7 +31,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2,500 (5%)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mh8-GY-DEC" userLabel="Change Data">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2,500 (5%)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mh8-GY-DEC" userLabel="Difference Label">
                         <rect key="frame" x="342" y="34.5" width="96" height="20.5"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="textColor"/>
@@ -77,6 +77,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="differenceLabel" destination="mh8-GY-DEC" id="G27-Xv-ACi"/>
                 <outlet property="filterTabBar" destination="0aY-pl-E5I" id="Mwy-fv-SNw"/>
                 <outlet property="selectedData" destination="gKw-lF-4O8" id="aKK-1U-o6H"/>
                 <outlet property="selectedLabel" destination="jZK-cD-I2s" id="rTe-0x-iDM"/>

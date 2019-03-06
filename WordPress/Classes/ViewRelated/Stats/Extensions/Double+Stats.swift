@@ -25,9 +25,9 @@ extension Double {
         let sign = num < 0 ? "-" : ""
         num = fabs(num)
 
-        let shortenLimit = forHeroNumber ? 100000.0 : 10000.0
+        let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
 
-        if num < shortenLimit {
+        if num < abbreviationLimit {
             // Add commas to non-abbreviated values
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal
