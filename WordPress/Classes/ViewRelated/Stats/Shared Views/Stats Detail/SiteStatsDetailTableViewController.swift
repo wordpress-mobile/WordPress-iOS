@@ -28,15 +28,28 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        Style.configureTable(tableView)
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+    }
+
     func configure(statSection: StatSection) {
         self.statSection = statSection
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
-
         title = statSection.title
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-
-        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // This is primarily to resize the NoResultsView in a TabbedTotalsCell on rotation.
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
     }
 
 }
