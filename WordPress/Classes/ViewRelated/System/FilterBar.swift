@@ -60,6 +60,15 @@ class FilterTabBar: UIControl {
         }
     }
 
+    private var tabBarHeightConstraint: NSLayoutConstraint?
+    var tabBarHeight = AppearanceMetrics.height {
+        didSet {
+            tabBarHeightConstraint?.isActive = false
+            tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
+            tabBarHeightConstraint?.isActive = true
+        }
+    }
+
     // MARK: - Appearance
 
     /// Tint color will be applied to the floating selection indicator.
@@ -171,7 +180,8 @@ class FilterTabBar: UIControl {
     }
 
     private func commonInit() {
-        heightAnchor.constraint(equalToConstant: AppearanceMetrics.height).isActive = true
+        tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
+        tabBarHeightConstraint?.isActive = true
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
