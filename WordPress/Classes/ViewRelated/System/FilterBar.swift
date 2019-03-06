@@ -6,7 +6,12 @@ import UIKit
 
 protocol FilterTabBarItem {
     var title: String { get }
+    var attributedTitle: NSAttributedString? { get }
     var accessibilityIdentifier: String { get }
+}
+
+extension FilterTabBarItem {
+    var attributedTitle: NSAttributedString? { return nil }
 }
 
 extension FilterTabBarItem where Self: RawRepresentable {
@@ -67,6 +72,11 @@ class FilterTabBar: UIControl {
                 $0.tintColor = tintColor
                 $0.setTitleColor(titleColorForSelected, for: .selected)
                 $0.setTitleColor(titleColorForSelected, for: .highlighted)
+
+                $0.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
+                                      for: .selected)
+                $0.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
+                                      for: .highlighted)
             })
             selectionIndicator.backgroundColor = tintColor
         }
@@ -223,6 +233,11 @@ class FilterTabBar: UIControl {
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
 
+        tab.setAttributedTitle(item.attributedTitle, for: .normal)
+        tab.titleLabel?.lineBreakMode = .byWordWrapping
+        tab.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: item.attributedTitle), for: .selected)
+        tab.setAttributedTitle(addColor(deselectedTabColor, toAttributedString: item.attributedTitle), for: .normal)
+
         tab.accessibilityIdentifier = item.accessibilityIdentifier
 
         tab.contentEdgeInsets = AppearanceMetrics.buttonInsets
@@ -231,6 +246,18 @@ class FilterTabBar: UIControl {
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
 
         return tab
+    }
+
+    private func addColor(_ color: UIColor, toAttributedString attributedString: NSAttributedString?) -> NSAttributedString? {
+
+        guard let attributedString = attributedString else {
+            return nil
+        }
+
+        let mutableString = NSMutableAttributedString(attributedString: attributedString)
+        mutableString.addAttributes([.foregroundColor: color], range: NSMakeRange(0, mutableString.string.count))
+
+        return mutableString
     }
 
     private func updateTabSizingConstraints() {
