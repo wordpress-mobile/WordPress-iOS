@@ -240,7 +240,10 @@ class FilterTabBar: UIControl {
 
         tab.accessibilityIdentifier = item.accessibilityIdentifier
 
-        tab.contentEdgeInsets = AppearanceMetrics.buttonInsets
+        tab.contentEdgeInsets = item.attributedTitle != nil ?
+            AppearanceMetrics.buttonInsetsAttributedTitle :
+            AppearanceMetrics.buttonInsets
+
         tab.sizeToFit()
 
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
@@ -389,8 +392,12 @@ class FilterTabBar: UIControl {
         selectionIndicatorLeadingConstraint?.isActive = false
         selectionIndicatorTrailingConstraint?.isActive = false
 
-        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - AppearanceMetrics.buttonInsets.left)
-        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + AppearanceMetrics.buttonInsets.right)
+        let buttonInsets = tab.currentAttributedTitle != nil ?
+            AppearanceMetrics.buttonInsetsAttributedTitle :
+            AppearanceMetrics.buttonInsets
+
+        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - buttonInsets.left)
+        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + buttonInsets.right)
 
         selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant)
         selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant)
@@ -405,6 +412,7 @@ class FilterTabBar: UIControl {
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
+        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
     }
 
     private enum SelectionAnimation {
