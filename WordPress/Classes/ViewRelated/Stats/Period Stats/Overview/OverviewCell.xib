@@ -19,20 +19,20 @@
                 <rect key="frame" x="0.0" y="0.0" width="454" height="303.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKw-lF-4O8" userLabel="Selection Data">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKw-lF-4O8" userLabel="Selected Data">
                         <rect key="frame" x="16" y="24" width="100.5" height="36"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZK-cD-I2s" userLabel="Selection Label">
-                        <rect key="frame" x="124.5" y="39.5" width="45.5" height="20.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZK-cD-I2s" userLabel="Selected Label">
+                        <rect key="frame" x="124.5" y="34.5" width="45.5" height="20.5"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2,500 (5%)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mh8-GY-DEC" userLabel="Change Data">
-                        <rect key="frame" x="342" y="39.5" width="96" height="20.5"/>
+                        <rect key="frame" x="342" y="34.5" width="96" height="20.5"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -63,12 +63,12 @@
                     <constraint firstAttribute="trailing" secondItem="LXK-k6-Sxa" secondAttribute="trailing" constant="16" id="454-qg-2dp"/>
                     <constraint firstItem="0aY-pl-E5I" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="5cX-TG-kxs"/>
                     <constraint firstItem="gKw-lF-4O8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="24" id="9FM-On-UC6"/>
+                    <constraint firstItem="mh8-GY-DEC" firstAttribute="bottom" secondItem="jZK-cD-I2s" secondAttribute="bottom" id="B5Q-FJ-CHg"/>
                     <constraint firstAttribute="trailing" secondItem="mh8-GY-DEC" secondAttribute="trailing" constant="16" id="DHi-ub-ILb"/>
                     <constraint firstItem="LXK-k6-Sxa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="HS3-PH-hEI"/>
                     <constraint firstAttribute="trailing" secondItem="0aY-pl-E5I" secondAttribute="trailing" id="SLP-II-oop"/>
                     <constraint firstItem="jZK-cD-I2s" firstAttribute="leading" secondItem="gKw-lF-4O8" secondAttribute="trailing" constant="8" id="dru-cE-A0o"/>
-                    <constraint firstItem="jZK-cD-I2s" firstAttribute="bottom" secondItem="gKw-lF-4O8" secondAttribute="bottom" id="dwL-lH-n2U"/>
-                    <constraint firstItem="mh8-GY-DEC" firstAttribute="bottom" secondItem="gKw-lF-4O8" secondAttribute="bottom" id="lH9-88-SO8"/>
+                    <constraint firstItem="jZK-cD-I2s" firstAttribute="bottom" secondItem="gKw-lF-4O8" secondAttribute="bottom" constant="-5" id="dwL-lH-n2U"/>
                     <constraint firstItem="gKw-lF-4O8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="pOA-dn-Yoy"/>
                     <constraint firstItem="LXK-k6-Sxa" firstAttribute="top" secondItem="gKw-lF-4O8" secondAttribute="bottom" constant="16" id="pZe-NH-yiM"/>
                     <constraint firstAttribute="bottom" secondItem="0aY-pl-E5I" secondAttribute="bottom" id="udu-TY-7zo"/>
@@ -78,6 +78,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="filterTabBar" destination="0aY-pl-E5I" id="Mwy-fv-SNw"/>
+                <outlet property="selectedData" destination="gKw-lF-4O8" id="aKK-1U-o6H"/>
+                <outlet property="selectedLabel" destination="jZK-cD-I2s" id="rTe-0x-iDM"/>
             </connections>
             <point key="canvasLocation" x="-433.60000000000002" y="143.02848575712144"/>
         </tableViewCell>

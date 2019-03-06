@@ -72,10 +72,10 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(CellHeaderRow(title: ""))
 
         // TODO: replace with real data
-        let one = OverviewTabData(tabTitle: "Views", tabData: 85296.abbreviatedString())
-        let two = OverviewTabData(tabTitle: "Visitors", tabData: 741.abbreviatedString())
-        let three = OverviewTabData(tabTitle: "Likes", tabData: 123456.abbreviatedString())
-        let four = OverviewTabData(tabTitle: "Comments", tabData: 987654321.abbreviatedString())
+        let one = OverviewTabData(tabTitle: "Views", tabData: 85296)
+        let two = OverviewTabData(tabTitle: "Visitors", tabData: 741)
+        let three = OverviewTabData(tabTitle: "Likes", tabData: 12345)
+        let four = OverviewTabData(tabTitle: "Comments", tabData: 987654321)
         tableRows.append(OverviewRow(tabsData: [one, two, three, four]))
 
         return tableRows

@@ -2,9 +2,9 @@ import UIKit
 
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
-    var tabData: String
+    var tabData: Int
 
-    init(tabTitle: String, tabData: String) {
+    init(tabTitle: String, tabData: Int) {
         self.tabTitle = tabTitle
         self.tabData = tabData
     }
@@ -15,7 +15,7 @@ struct OverviewTabData: FilterTabBarItem {
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
-        let attributedData = NSMutableAttributedString(string: tabData)
+        let attributedData = NSMutableAttributedString(string: tabData.abbreviatedString())
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
                                        range: NSMakeRange(0, attributedData.string.count))
 
@@ -40,6 +40,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var selectedLabel: UILabel!
+    @IBOutlet weak var selectedData: UILabel!
 
     private var tabsData = [OverviewTabData]()
 
@@ -48,11 +50,12 @@ class OverviewCell: UITableViewCell, NibLoadable {
     func configure(tabsData: [OverviewTabData]) {
         self.tabsData = tabsData
         setupFilterBar()
+        setSelectedLabels()
     }
 
 }
 
-// MARK: - FilterTabBar Support
+// MARK: - Private Extension
 
 private extension OverviewCell {
 
@@ -65,7 +68,13 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        // TODO: update chart and labels
+        // TODO: update chart
+        setSelectedLabels()
     }
 
+    func setSelectedLabels() {
+        let tabData = tabsData[filterTabBar.selectedIndex]
+        selectedLabel.text = tabData.tabTitle
+        selectedData.text = tabData.tabData.abbreviatedString(forHeroNumber: true)
+    }
 }
