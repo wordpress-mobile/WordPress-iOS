@@ -682,6 +682,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     BlogDetailsRow *pagesRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                             accessibilityIdentifier:@"Site Pages Row"
                                                     image:[Gridicon iconOfType:GridiconTypePages]
                                                  callback:^{
                                                      [weakSelf showPageList];

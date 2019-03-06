@@ -140,6 +140,8 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
 
+        gutenScreenshot()
+
         blogDetailsTable.cells["Media Row"].tap() // Tap Media
         sleep(imagesWaitTime) // wait for post images to load
 
@@ -198,6 +200,32 @@ class WordPressScreenshotGeneration: XCTestCase {
         if app.sheets.element(boundBy: 0).exists {
             // Tap discard
             app.sheets.element(boundBy: 0).buttons.element(boundBy: 1).tap()
+        }
+    }
+
+    private func gutenScreenshot() {
+
+        let app = XCUIApplication()
+
+        app.tables["Blog Details Table"]
+            .cells["Site Pages Row"].tap() // tap Site Pages
+        waitForElementToExist(element: app.tables["PagesTable"])
+
+        // Switch the filter to drafts
+        app.buttons["drafts"].tap()
+
+        app.tables.cells["gutenpage"].tap()
+        sleep(10)
+        snapshot("7-gutenpage")
+
+//        app.buttons["editor-close-button"].tap()
+
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            // Tap the Gutenberg close button
+            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
+
+            // Tap the nav bar back button
+            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
     }
 }
