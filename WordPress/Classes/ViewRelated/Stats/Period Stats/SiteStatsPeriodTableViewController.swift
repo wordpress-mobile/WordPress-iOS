@@ -66,6 +66,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.estimatedRowHeight = 500
     }
 
 }
