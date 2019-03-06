@@ -284,6 +284,7 @@ struct OverviewRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
+    let tabsData: [OverviewTabData]
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -292,7 +293,7 @@ struct OverviewRow: ImmuTableRow {
             return
         }
 
-        cell.configure()
+        cell.configure(tabsData: tabsData)
     }
 }
 

@@ -70,7 +70,13 @@ private extension SiteStatsPeriodViewModel {
     func overviewTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: ""))
-        tableRows.append(OverviewRow())
+
+        // TODO: replace with real data
+        let one = OverviewTabData(tabTitle: "Views", tabData: 85296.abbreviatedString())
+        let two = OverviewTabData(tabTitle: "Visitors", tabData: 741.abbreviatedString())
+        let three = OverviewTabData(tabTitle: "Likes", tabData: 123456.abbreviatedString())
+        let four = OverviewTabData(tabTitle: "Comments", tabData: 987654321.abbreviatedString())
+        tableRows.append(OverviewRow(tabsData: [one, two, three, four]))
 
         return tableRows
     }
