@@ -9325,6 +9325,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Credentials/gencredentials.rb",
+				"$(WPCOM_CONFIG)",
 			);
 			name = "Generate API credentials";
 			outputPaths = (

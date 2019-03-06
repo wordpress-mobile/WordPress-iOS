@@ -2,6 +2,8 @@
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 
+@import Gridicons;
+
 
 static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
 static CGFloat const FeaturedImageSize = 120.0;
@@ -112,6 +114,7 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.timestampLabel.textColor = [WPStyleGuide grey];
     self.badgesLabel.textColor = [WPStyleGuide darkYellow];
     self.menuButton.tintColor = [WPStyleGuide greyLighten10];
+    [self.menuButton setImage:[Gridicon iconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.contentView.backgroundColor = [WPStyleGuide greyLighten30];

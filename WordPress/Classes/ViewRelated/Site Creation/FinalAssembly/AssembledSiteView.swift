@@ -85,6 +85,7 @@ final class AssembledSiteView: UIView {
 
             textField.backgroundColor = WPStyleGuide.greyLighten30()
             textField.font = WPStyleGuide.fontForTextStyle(.footnote)
+            textField.isEnabled = false
             textField.textAlignment = .center
             textField.textColor = WPStyleGuide.darkGrey()
             textField.text = domainName
