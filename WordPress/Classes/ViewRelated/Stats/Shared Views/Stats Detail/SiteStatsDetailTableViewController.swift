@@ -3,6 +3,7 @@ import WordPressFlux
 
 @objc protocol SiteStatsDetailsDelegate {
     @objc optional func tabbedTotalsCellUpdated()
+    @objc optional func displayWebViewWithURL(_ url: URL)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -27,15 +28,28 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        Style.configureTable(tableView)
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+    }
+
     func configure(statSection: StatSection) {
         self.statSection = statSection
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
-
         title = statSection.title
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-
-        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // This is primarily to resize the NoResultsView in a TabbedTotalsCell on rotation.
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
     }
 
 }
@@ -55,7 +69,7 @@ private extension SiteStatsDetailTableViewController {
 
         if statType == .insights {
             insightsChangeReceipt = viewModel?.onChange { [weak self] in
-                guard self?.storeIsFetching(statSection: statSection) == true else {
+                guard self?.storeIsFetching(statSection: statSection) == false else {
                     return
                 }
                 self?.refreshTableView()
@@ -74,6 +88,8 @@ private extension SiteStatsDetailTableViewController {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return insightsStore.isFetchingFollowers
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return insightsStore.isFetchingComments
         default:
             return false
         }
@@ -100,6 +116,8 @@ private extension SiteStatsDetailTableViewController {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             viewModel?.refreshFollowers()
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            viewModel?.refreshComments()
         default:
             refreshControl?.endRefreshing()
         }
@@ -119,7 +137,23 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func updateStatSectionForFilterChange() {
-        statSection = (statSection == .insightsFollowersWordPress) ? .insightsFollowersEmail : .insightsFollowersWordPress
+        guard let oldStatSection = statSection else {
+            return
+        }
+
+        switch oldStatSection {
+        case .insightsFollowersWordPress:
+            statSection = .insightsFollowersEmail
+        case .insightsFollowersEmail:
+            statSection = .insightsFollowersWordPress
+        case .insightsCommentsAuthors:
+            statSection = .insightsCommentsPosts
+        case .insightsCommentsPosts:
+            statSection = .insightsCommentsAuthors
+        default:
+            break
+        }
+
         initViewModel()
     }
 
@@ -131,6 +165,12 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func tabbedTotalsCellUpdated() {
         applyTableUpdates()
+    }
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
     }
 
 }
