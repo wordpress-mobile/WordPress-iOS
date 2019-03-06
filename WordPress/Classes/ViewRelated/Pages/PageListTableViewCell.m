@@ -169,11 +169,20 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.labelsContainerTrailing.active = !hideFeaturedImage;
     
     if (!hideFeaturedImage) {
-        [self.featuredImageLoader loadImageFromMedia:page.featuredImage
-                                       preferredSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
-                                         placeholder:nil
-                                             success:nil
-                                               error:nil];
+        [self.featuredImageView startLoadingAnimation];
+
+        __weak __typeof(self) weakSelf = self;
+
+        [page.featuredImage imageWithSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
+                        completionHandler:^(UIImage * _Nullable result, NSError * _Nullable error) {
+                            __strong __typeof(weakSelf) strongSelf = weakSelf;
+                            [strongSelf.featuredImageView stopLoadingAnimation];
+                            
+                            if (error == nil) {
+                                [strongSelf.featuredImageView setImage:result];
+                            }
+                        }];
+        
     }
 }
 
