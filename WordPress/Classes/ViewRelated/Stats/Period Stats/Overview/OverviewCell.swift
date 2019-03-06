@@ -80,7 +80,6 @@ private extension OverviewCell {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forOverviewCard: true)
         filterTabBar.items = tabsData
         filterTabBar.tabBarHeight = 60.0
-        filterTabBar.equalWidthFill = .fillProportionally
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 

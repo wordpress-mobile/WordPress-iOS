@@ -60,18 +60,17 @@ class FilterTabBar: UIControl {
         }
     }
 
-    private var tabBarHeightConstraint: NSLayoutConstraint?
-    var tabBarHeight = AppearanceMetrics.height {
+    private var tabBarHeightConstraint: NSLayoutConstraint! {
         didSet {
-            tabBarHeightConstraint?.isActive = false
-            tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
-            tabBarHeightConstraint?.isActive = true
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate([oldValue])
+            }
         }
     }
 
-    var equalWidthFill: UIStackView.Distribution = .fillEqually {
+    var tabBarHeight = AppearanceMetrics.height {
         didSet {
-            stackView.distribution = equalWidthFill
+            tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
         }
     }
 
@@ -293,7 +292,7 @@ class FilterTabBar: UIControl {
 
         switch tabSizingStyle {
         case .equalWidths:
-            stackView.distribution = equalWidthFill
+            stackView.distribution = .fillEqually
             NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
             stackView.distribution = .fill
@@ -428,7 +427,7 @@ class FilterTabBar: UIControl {
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
-        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
+        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 5.0, bottom: 10.0, right: 5.0)
     }
 
     private enum SelectionAnimation {
