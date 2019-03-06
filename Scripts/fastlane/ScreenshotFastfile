@@ -149,6 +149,13 @@ platform :ios do
       "app_store_screenshot-3" => {desc: "app_store_screenshot_3.txt"},
       "app_store_screenshot-4" => {desc: "app_store_screenshot_1.txt"},
       "app_store_screenshot-5" => {desc: "app_store_screenshot_4.txt"},
+
+      "enhanced_app_store_screenshot-1" => {desc: "app_store_screenshot_1.html"},
+      "enhanced_app_store_screenshot-2" => {desc: "app_store_screenshot_2.html"},
+      "enhanced_app_store_screenshot-3" => {desc: "app_store_screenshot_3.html"},
+      "enhanced_app_store_screenshot-4" => {desc: "app_store_screenshot_4.html"},
+      "enhanced_app_store_screenshot-5" => {desc: "app_store_screenshot_5.html"},
+      "enhanced_app_store_screenshot-6" => {desc: "app_store_screenshot_6.html"}
     }
 
     metadata_locales = [
