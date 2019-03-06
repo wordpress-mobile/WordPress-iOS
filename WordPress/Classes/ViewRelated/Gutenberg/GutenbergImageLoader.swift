@@ -24,7 +24,7 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
             completionHandler(error, nil)
         })
 
-        return { () in task.cancel() }
+        return { task.cancel() }
     }
 
     static func moduleName() -> String! {

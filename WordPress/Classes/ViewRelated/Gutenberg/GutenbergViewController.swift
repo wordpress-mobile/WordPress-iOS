@@ -148,11 +148,11 @@ class GutenbergViewController: UIViewController, PostEditor {
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
-        return GutenbergImageLoader(post: self.post)
+        return GutenbergImageLoader(post: post)
     }()
 
     private lazy var gutenberg: Gutenberg = {
-        return Gutenberg(dataSource: self, extraModules: [self.gutenbergImageLoader])
+        return Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader])
     }()
 
     private var requestHTMLReason: RequestHTMLReason?
