@@ -16,7 +16,6 @@ static CGFloat const FeaturedImageSize = 120.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *labelsContainerTrailing;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *leadingContentConstraint;
 
-@property (nonatomic, strong) ImageLoader *featuredImageLoader;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
@@ -38,17 +37,7 @@ static CGFloat const FeaturedImageSize = 120.0;
     [super prepareForReuse];
     
     [self applyStyles];
-    [self.featuredImageLoader prepareForReuse];
     [self setNeedsDisplay];
-}
-
-- (ImageLoader *)featuredImageLoader
-{
-    if (_featuredImageLoader == nil) {
-        _featuredImageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView
-                                                          gifStrategy:GIFStrategyLargeGIFs];
-    }
-    return _featuredImageLoader;
 }
 
 - (NSDateFormatter *)dateFormatter
