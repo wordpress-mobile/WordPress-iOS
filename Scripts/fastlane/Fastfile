@@ -73,13 +73,6 @@ import "./ScreenshotFastfile"
       "app_store_screenshot-3" => File.join(source_metadata_folder, "promo_screenshot_3.txt"),
       "app_store_screenshot-4" => File.join(source_metadata_folder, "promo_screenshot_4.txt"),
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt"),
-
-      "enhanced_app_store_screenshot-1" => File.join(source_metadata_folder, "screenshot_1.html"),
-      "enhanced_app_store_screenshot-2" => File.join(source_metadata_folder, "screenshot_2.html"),
-      "enhanced_app_store_screenshot-3" => File.join(source_metadata_folder, "screenshot_3.html"),
-      "enhanced_app_store_screenshot-4" => File.join(source_metadata_folder, "screenshot_4.html"),
-      "enhanced_app_store_screenshot-5" => File.join(source_metadata_folder, "screenshot_5.html"),
-      "enhanced_app_store_screenshot-6" => File.join(source_metadata_folder, "screenshot_6.html"),
     }
 
     ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 

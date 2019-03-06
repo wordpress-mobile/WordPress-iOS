@@ -17,7 +17,7 @@ class StatsChildRowsView: UIView, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        WPStyleGuide.Stats.configureViewAsSeperator(bottomSeperatorLine)
+        WPStyleGuide.Stats.configureViewAsSeparator(bottomSeperatorLine)
     }
 
 

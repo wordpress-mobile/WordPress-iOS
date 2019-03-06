@@ -1,5 +1,7 @@
 12.0
 -----
+* Redesigned Notices
+* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
  
 11.9
 ------

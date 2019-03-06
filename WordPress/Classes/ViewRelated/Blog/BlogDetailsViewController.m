@@ -1066,10 +1066,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
-        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonTapped withProperties:@{@"type": @"negative"}];
+        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
-        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonTapped withProperties:@{@"type": @"positive"}];
+        [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
 
         [[QuickStartTourGuide find] removeFrom:self.blog];
     }];
