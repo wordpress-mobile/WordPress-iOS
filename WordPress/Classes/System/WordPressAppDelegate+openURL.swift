@@ -112,7 +112,7 @@ import WordPressAuthenticator
         if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
             Crashlytics.sharedInstance().crash()
         }
-        
+
         return true
     }
 }
