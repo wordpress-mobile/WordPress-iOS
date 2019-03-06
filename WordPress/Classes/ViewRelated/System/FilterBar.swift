@@ -69,6 +69,12 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var equalWidthFill: UIStackView.Distribution = .fillEqually {
+        didSet {
+            stackView.distribution = equalWidthFill
+        }
+    }
+
     // MARK: - Appearance
 
     /// Tint color will be applied to the floating selection indicator.
@@ -287,7 +293,7 @@ class FilterTabBar: UIControl {
 
         switch tabSizingStyle {
         case .equalWidths:
-            stackView.distribution = .fillEqually
+            stackView.distribution = equalWidthFill
             NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
             stackView.distribution = .fill
