@@ -123,8 +123,10 @@ extension WPStyleGuide {
             return UIImage(named: "gravatar")
         }
 
-        static func configureFilterTabBar(_ filterTabBar: FilterTabBar, forTabbedCard: Bool = false) {
-            filterTabBar.dividerColor =  filterDividerColor
+        static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
+                                          forTabbedCard: Bool = false,
+                                          forOverviewCard: Bool = false) {
+            filterTabBar.dividerColor = filterDividerColor
             filterTabBar.deselectedTabColor = filterDeselectedColor
             filterTabBar.tintColor = defaultFilterTintColor
 
@@ -132,6 +134,13 @@ extension WPStyleGuide {
             if forTabbedCard {
                 filterTabBar.tabSizingStyle = .equalWidths
                 filterTabBar.tintColor = tabbedCardFilterTintColor
+                filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
+            }
+
+            // For FilterTabBar on OverviewCell
+            if forOverviewCard {
+                filterTabBar.tabSizingStyle = .equalWidths
+                filterTabBar.tintColor = defaultFilterTintColor
                 filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
             }
         }
@@ -159,6 +168,9 @@ extension WPStyleGuide {
         static let tabbedCardFilterSelectedTitleColor = WPStyleGuide.darkGrey()
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()
         static let filterDividerColor = WPStyleGuide.greyLighten20()
+
+        static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 
