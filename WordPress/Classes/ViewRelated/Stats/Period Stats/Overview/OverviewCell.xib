@@ -39,19 +39,9 @@
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXK-k6-Sxa" userLabel="Chart View">
                         <rect key="frame" x="16" y="76" width="422" height="150"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imagine a pretty chart here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bY0-nr-zux">
-                                <rect key="frame" x="107.5" y="65" width="207" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="bY0-nr-zux" firstAttribute="centerY" secondItem="LXK-k6-Sxa" secondAttribute="centerY" id="Iqw-5R-DLi"/>
                             <constraint firstAttribute="height" constant="150" id="SdW-hH-eUG"/>
-                            <constraint firstItem="bY0-nr-zux" firstAttribute="centerX" secondItem="LXK-k6-Sxa" secondAttribute="centerX" id="c6X-i6-Q4z"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aY-pl-E5I" customClass="FilterTabBar" customModule="WordPress">
@@ -78,6 +68,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="chartContainerView" destination="LXK-k6-Sxa" id="0yE-3G-QlU"/>
                 <outlet property="differenceLabel" destination="mh8-GY-DEC" id="G27-Xv-ACi"/>
                 <outlet property="filterTabBar" destination="0aY-pl-E5I" id="Mwy-fv-SNw"/>
                 <outlet property="selectedData" destination="gKw-lF-4O8" id="aKK-1U-o6H"/>

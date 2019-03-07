@@ -220,7 +220,7 @@ class StatsBarChartView: BarChartView {
 
         notifyDataSetChanged()
 
-        let postRotationDelay = DispatchTime.now() + TimeInterval(0.3)
+        let postRotationDelay = DispatchTime.now() + TimeInterval(0.35)
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
             self.drawChartMarker(for: entry, triggerRedraw: true)
         }
