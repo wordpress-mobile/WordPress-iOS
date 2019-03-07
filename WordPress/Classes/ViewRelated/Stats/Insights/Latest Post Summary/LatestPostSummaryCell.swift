@@ -40,7 +40,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     // Introduced via #11061, to be replaced with real data via #11067
     private lazy var latestPostSummaryStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
         let stubbedData = LatestPostSummaryDataStub()
-        let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
+        let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
         let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
 
         return (stubbedData, styling)
