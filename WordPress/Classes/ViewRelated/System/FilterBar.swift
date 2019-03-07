@@ -74,6 +74,18 @@ class FilterTabBar: UIControl {
         }
     }
 
+    var equalWidthFill: UIStackView.Distribution = .fillEqually {
+        didSet {
+            stackView.distribution = equalWidthFill
+        }
+    }
+
+    var equalWidthSpacing: CGFloat = 0 {
+        didSet {
+            stackView.spacing = equalWidthSpacing
+        }
+    }
+
     // MARK: - Appearance
 
     /// Tint color will be applied to the floating selection indicator.
@@ -292,7 +304,8 @@ class FilterTabBar: UIControl {
 
         switch tabSizingStyle {
         case .equalWidths:
-            stackView.distribution = .fillEqually
+            stackView.distribution = equalWidthFill
+            stackView.spacing = equalWidthSpacing
             NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
             stackView.distribution = .fill
@@ -427,7 +440,7 @@ class FilterTabBar: UIControl {
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
-        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 5.0, bottom: 10.0, right: 5.0)
+        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
     }
 
     private enum SelectionAnimation {
