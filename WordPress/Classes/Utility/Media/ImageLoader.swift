@@ -131,10 +131,7 @@ import MobileCoreServices
         let request: URLRequest
         if url.isFileURL {
             request = URLRequest(url: url)
-        } else if let source = source,
-            source.isPrivateOnWPCom,
-            PrivateSiteURLProtocol.urlGoes(toWPComSite: url)
-        {
+        } else if let source = source, source.isPrivateOnWPCom, PrivateSiteURLProtocol.urlGoes(toWPComSite: url) {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
             if let photonUrl = getPhotonUrl(for: url, size: size),
@@ -153,7 +150,7 @@ import MobileCoreServices
         if url.isFileURL {
             downloadImage(from: url)
         } else if let source = source {
-            if source.isPrivateOnWPCom {
+            if source.isPrivateOnWPCom && PrivateSiteURLProtocol.urlGoes(toWPComSite: url) {
                 loadPrivateImage(with: url, from: source, preferredSize: size)
             } else if source.isSelfHostedWithCredentials {
                 downloadImage(from: url)
