@@ -9,6 +9,11 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     // MARK: - Properties
 
     private typealias Style = WPStyleGuide.Stats
+    private var viewModel: PostStatsViewModel?
+
+    private lazy var tableHandler: ImmuTableViewHandler = {
+        return ImmuTableViewHandler(takeOver: self)
+    }()
 
     // MARK: - View
 
@@ -16,27 +21,34 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Stats", comment: "Window title for Post Stats view.")
         Style.configureTable(tableView)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        initViewModel()
     }
 
-    // MARK: - Table view data source
+}
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+// MARK: - Table Methods
+
+private extension PostStatsTableViewController {
+
+    func initViewModel() {
+        viewModel = PostStatsViewModel()
+        refreshTableView()
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    func tableRowTypes() -> [ImmuTableRow.Type] {
+        return [CellHeaderRow.self,
+                TableFooterRow.self]
     }
 
+    // MARK: - Table Refreshing
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        let cell = UITableViewCell()
+    func refreshTableView() {
+        guard let viewModel = viewModel else {
+            return
+        }
 
-
-        // Configure the cell...
-
-        return cell
+        tableHandler.viewModel = viewModel.tableViewModel()
     }
 
 }
