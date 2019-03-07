@@ -200,8 +200,7 @@ private extension LatestPostSummaryCell {
 
         switch actionType {
         case .viewMore:
-            // TODO: show Post Details
-            showAlertWithTitle("Post Details will be shown here.")
+            siteStatsInsightsDelegate?.showPostStats?()
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 return
@@ -210,14 +209,6 @@ private extension LatestPostSummaryCell {
         case .createPost:
             siteStatsInsightsDelegate?.showCreatePost?()
         }
-    }
-
-    func showAlertWithTitle(_ title: String) {
-        let alertController =  UIAlertController(title: title,
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
     }
 
     // MARK: - Chart support
