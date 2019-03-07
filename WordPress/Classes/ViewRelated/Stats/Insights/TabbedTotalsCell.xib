@@ -81,6 +81,10 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EG5-87-rU0">
                                 <rect key="frame" x="0.0" y="148.5" width="320" height="50"/>
                             </stackView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq8-nV-ybk">
+                                <rect key="frame" x="0.0" y="198.5" width="320" height="0.0"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrX-mq-7oM" userLabel="Bottom Seperator Line">
@@ -108,6 +112,7 @@
                 <outlet property="filterTabBar" destination="0D1-nR-ode" id="vHL-h2-cY0"/>
                 <outlet property="itemSubtitleLabel" destination="ABk-vW-HsC" id="BRR-gC-H8q"/>
                 <outlet property="labelsStackView" destination="lNV-f4-WuQ" id="4Gk-Jp-fLW"/>
+                <outlet property="noResultsView" destination="Rq8-nV-ybk" id="h9y-ph-Bba"/>
                 <outlet property="rowsStackView" destination="EG5-87-rU0" id="pEz-Ra-CwP"/>
                 <outlet property="totalCountLabel" destination="6MP-vc-NUk" id="CUM-kV-Ce1"/>
                 <outlet property="totalCountView" destination="rbk-YO-aQi" id="e58-g5-qcx"/>
