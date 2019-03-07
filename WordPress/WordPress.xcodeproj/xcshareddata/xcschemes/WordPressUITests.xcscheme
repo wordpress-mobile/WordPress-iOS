@@ -79,11 +79,6 @@
                BlueprintName = "WordPressUITests"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "LoginTests/testSelfHostedUsernamePasswordLoginLogout()">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
