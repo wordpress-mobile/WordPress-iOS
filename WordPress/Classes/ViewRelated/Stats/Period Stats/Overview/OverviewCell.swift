@@ -74,6 +74,11 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     // MARK: - Configure
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        configureFonts()
+    }
+
     func configure(tabsData: [OverviewTabData]) {
         self.tabsData = tabsData
         setupFilterBar()
@@ -85,6 +90,25 @@ class OverviewCell: UITableViewCell, NibLoadable {
 // MARK: - Private Extension
 
 private extension OverviewCell {
+
+    /// This method squelches two Xcode warnings that I encountered:
+    /// 1. Attribute Unavailable: Large Title font text style before iOS 11.0
+    /// 2. Automatically Adjusts Font requires using a Dynamic Type text style
+    /// The second emerged as part of my attempt to resolve the first.
+    ///
+    func configureFonts() {
+
+        let prevailingFont: UIFont
+        if #available(iOS 11.0, *) {
+            prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
+        } else {
+            let fontSize = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1).pointSize
+            prevailingFont = WPFontManager.systemRegularFont(ofSize: fontSize)
+        }
+        selectedData.font = prevailingFont
+
+        selectedData.adjustsFontForContentSizeCategory = true   // iOS 10
+    }
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forOverviewCard: true)
