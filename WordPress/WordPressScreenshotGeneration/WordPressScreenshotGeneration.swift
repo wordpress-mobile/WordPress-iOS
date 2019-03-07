@@ -128,7 +128,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         screenshotPost(withSlug: "summer-band-jam", called: "1-PostEditor")
 
         // Get a screenshot of the drafts feature
-        screenshotPost(withSlug: "ideas", called: "2-DraftEditor")
+        screenshotPost(withSlug: "ideas", called: "5-DraftEditor")
 
         // Get a screenshot of the full-screen editor
         if isIpad(){
@@ -140,12 +140,12 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
 
-        gutenScreenshot()
+//        gutenScreenshot()
 
         blogDetailsTable.cells["Media Row"].tap() // Tap Media
         sleep(imagesWaitTime) // wait for post images to load
 
-        snapshot("3-Media")
+        snapshot("4-Media")
 
         // Tap the back button if on an iPhone screen
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -163,7 +163,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         waitForElementToExist(element: app.otherElements["visitorsViewsGraph"])
         waitForElementToNotExist(element: app.progressIndicators.firstMatch)
 
-        snapshot("4-Stats")
+        snapshot("2-Stats")
 
         // Get Notifications screenshot
         app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
@@ -175,7 +175,7 @@ class WordPressScreenshotGeneration: XCTestCase {
             notNowButton.tap()
         }
 
-        snapshot("5-Notifications")
+        snapshot("3-Notifications")
     }
 
     private func screenshotPost(withSlug slug: String, called screenshotName: String, withKeyboard: Bool = false) {
