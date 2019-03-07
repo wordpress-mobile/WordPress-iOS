@@ -54,6 +54,7 @@
             <connections>
                 <outlet property="headerLabel" destination="fZv-YC-hoV" id="iNM-se-RIs"/>
                 <outlet property="manageInsightButton" destination="Pmt-5q-3Mg" id="y2o-B3-h7B"/>
+                <outlet property="stackViewTopConstraint" destination="RWL-Fv-z9B" id="ywF-XN-ZM2"/>
             </connections>
             <point key="canvasLocation" x="336.80000000000001" y="-442.12893553223392"/>
         </tableViewCell>

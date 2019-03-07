@@ -37,7 +37,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        // TODO: add overview chart here
+        tableRows.append(contentsOf: overviewTableRows())
         tableRows.append(contentsOf: postsAndPagesTableRows())
         tableRows.append(contentsOf: referrersTableRows())
         tableRows.append(contentsOf: clicksTableRows())
@@ -66,6 +66,20 @@ class SiteStatsPeriodViewModel: Observable {
 private extension SiteStatsPeriodViewModel {
 
     // MARK: - Create Table Rows
+
+    func overviewTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: ""))
+
+        // TODO: replace with real data
+        let one = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle, tabData: 85296, difference: -987, differencePercent: 5)
+        let two = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle, tabData: 741, difference: 22222, differencePercent: 50)
+        let three = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle, tabData: 12345, difference: 75324, differencePercent: 27)
+        let four = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle, tabData: 987654321, difference: -258547987, differencePercent: -125999)
+        tableRows.append(OverviewRow(tabsData: [one, two, three, four]))
+
+        return tableRows
+    }
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
