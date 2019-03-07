@@ -98,7 +98,12 @@ static NSString *cachedToken;
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
 {
-    if ([request.URL.scheme isEqualToString:@"https"] && [request.URL.host hasSuffix:@".wordpress.com"]) {
+    return [self urlGoesToWPComSite:request.URL];
+}
+
++ (BOOL)urlGoesToWPComSite:(NSURL *)url
+{
+    if ([url.scheme isEqualToString:@"https"] && [url.host hasSuffix:@".wordpress.com"]) {
         return YES;
     }
 

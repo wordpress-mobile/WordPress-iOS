@@ -131,7 +131,10 @@ import MobileCoreServices
         let request: URLRequest
         if url.isFileURL {
             request = URLRequest(url: url)
-        } else if let source = source, source.isPrivateOnWPCom {
+        } else if let source = source,
+            source.isPrivateOnWPCom,
+            PrivateSiteURLProtocol.urlGoes(toWPComSite: url)
+        {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
             if let photonUrl = getPhotonUrl(for: url, size: size),
