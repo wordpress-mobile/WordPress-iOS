@@ -108,6 +108,7 @@ private extension SiteStatsPeriodViewModel {
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
+                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
                                              statSection: .periodPostsAndPages)
 
             dataRows.append(row)

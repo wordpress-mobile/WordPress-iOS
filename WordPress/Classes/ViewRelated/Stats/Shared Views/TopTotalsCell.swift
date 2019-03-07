@@ -264,6 +264,10 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
     }
 
+    func showPostStats() {
+        siteStatsPeriodDelegate?.showPostStats?()
+    }
+
 }
 
 // MARK: - ViewMoreRowDelegate
