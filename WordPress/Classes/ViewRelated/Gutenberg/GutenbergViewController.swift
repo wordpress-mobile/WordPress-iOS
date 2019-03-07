@@ -115,6 +115,7 @@ class GutenbergViewController: UIViewController, PostEditor {
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
             mediaInserterHelper = GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+            gutenbergImageLoader.post = post
             refreshInterface()
         }
     }
@@ -146,7 +147,14 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Private variables
 
-    private lazy var gutenberg = Gutenberg(dataSource: self)
+    private lazy var gutenbergImageLoader: GutenbergImageLoader = {
+        return GutenbergImageLoader(post: post)
+    }()
+
+    private lazy var gutenberg: Gutenberg = {
+        return Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader])
+    }()
+
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
     private var analyticsEditor: PostEditorAnalyticsSession.Editor {
