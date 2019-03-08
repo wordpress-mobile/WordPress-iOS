@@ -297,6 +297,27 @@ struct OverviewRow: ImmuTableRow {
     }
 }
 
+struct PostStatsTitleRow: ImmuTableRow {
+
+    typealias CellType = PostStatsTitleCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let postTitle: String
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(postTitle: postTitle)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader

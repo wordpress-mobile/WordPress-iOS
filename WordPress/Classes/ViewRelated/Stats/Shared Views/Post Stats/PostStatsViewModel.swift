@@ -15,7 +15,7 @@ class PostStatsViewModel: Observable {
     func tableViewModel() -> ImmuTable {
         var tableRows = [ImmuTableRow]()
 
-        // TODO: add rows
+        tableRows.append(titleTableRow())
 
         tableRows.append(TableFooterRow())
 
@@ -32,5 +32,12 @@ class PostStatsViewModel: Observable {
 private extension PostStatsViewModel {
 
     // MARK: - Create Table Rows
+
+    func titleTableRow() -> ImmuTableRow {
+
+        let row = PostStatsTitleRow(postTitle: "Test Post Title")
+
+        return row
+    }
 
 }

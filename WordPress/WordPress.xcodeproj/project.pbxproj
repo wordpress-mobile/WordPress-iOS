@@ -956,6 +956,8 @@
 		98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */; };
 		98F1B12A2111017A00139493 /* NoResultsStockPhotosConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F1B1292111017900139493 /* NoResultsStockPhotosConfiguration.swift */; };
 		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
+		98FCFC232231DF43006ECDD4 /* PostStatsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FCFC212231DF43006ECDD4 /* PostStatsTitleCell.swift */; };
+		98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98FCFC222231DF43006ECDD4 /* PostStatsTitleCell.xib */; };
 		9A162F2321C26D7500FDC035 /* RevisionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */; };
 		9A162F2521C26F5F00FDC035 /* UIViewController+ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */; };
 		9A162F2921C271D300FDC035 /* RevisionBrowserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2821C271D300FDC035 /* RevisionBrowserState.swift */; };
@@ -2909,6 +2911,8 @@
 		98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationCreateSiteViewController.swift; sourceTree = "<group>"; };
 		98F1B1292111017900139493 /* NoResultsStockPhotosConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsStockPhotosConfiguration.swift; sourceTree = "<group>"; };
 		98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationSitePreviewViewController.swift; sourceTree = "<group>"; };
+		98FCFC212231DF43006ECDD4 /* PostStatsTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStatsTitleCell.swift; sourceTree = "<group>"; };
+		98FCFC222231DF43006ECDD4 /* PostStatsTitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostStatsTitleCell.xib; sourceTree = "<group>"; };
 		99D675225C3282AC88B89F04 /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
 		9A162F2221C26D7500FDC035 /* RevisionPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionPreviewViewController.swift; sourceTree = "<group>"; };
 		9A162F2421C26F5F00FDC035 /* UIViewController+ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ChildViewController.swift"; sourceTree = "<group>"; };
@@ -6274,9 +6278,11 @@
 		986C908222319ECF00FC31E1 /* Post Stats */ = {
 			isa = PBXGroup;
 			children = (
-				986C908322319EFF00FC31E1 /* PostStatsTableViewController.swift */,
 				986C908522319F2600FC31E1 /* PostStatsTableViewController.storyboard */,
+				986C908322319EFF00FC31E1 /* PostStatsTableViewController.swift */,
 				986C90872231AD6200FC31E1 /* PostStatsViewModel.swift */,
+				98FCFC212231DF43006ECDD4 /* PostStatsTitleCell.swift */,
+				98FCFC222231DF43006ECDD4 /* PostStatsTitleCell.xib */,
 			);
 			path = "Post Stats";
 			sourceTree = "<group>";
@@ -8712,6 +8718,7 @@
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
 				B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */,
+				98FCFC242231DF43006ECDD4 /* PostStatsTitleCell.xib in Resources */,
 				4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
@@ -10280,6 +10287,7 @@
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
 				B54C02241F38F50100574572 /* String+RegEx.swift in Sources */,
 				FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */,
+				98FCFC232231DF43006ECDD4 /* PostStatsTitleCell.swift in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				D80BC7A22074739400614A59 /* MediaLibraryStrings.swift in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
