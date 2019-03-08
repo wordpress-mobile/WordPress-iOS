@@ -288,6 +288,37 @@ extension ImageLoader {
         }
     }
 
+    @objc(loadImageForMedia:size:placeholder:success:error:)
+
+    func loadImage(for media: Media, size: CGSize = .zero, placeholder: UIImage? = nil, success: (() -> Void)? = nil, error: ((Error?) -> Void)? = nil) {
+        guard let mediaId = media.mediaID?.stringValue else {
+            return
+        }
+
+        guard let url = url(from: media) else {
+            MediaThumbnailCoordinator.shared.fetchStubMedia(for: media) { [weak self] (fetchedMedia, _) in
+                if let fetchedMedia = fetchedMedia,
+                    let fetchedMediaId = fetchedMedia.mediaID?.stringValue, fetchedMediaId == mediaId {
+                    DispatchQueue.main.async {
+                        self?.loadImage(for: fetchedMedia, size: size, placeholder: placeholder, success: success, error: error)
+                    }
+                }
+            }
+            return
+        }
+
+        self.placeholder = placeholder
+        successHandler = success
+        errorHandler = error
+
+        if url.isGif {
+            loadGif(with: url, from: media.blog, preferredSize: size)
+        } else {
+            imageView.clean()
+            loadImage(from: media, preferredSize: size)
+        }
+    }
+
     private func loadImage(from media: Media, preferredSize size: CGSize) {
         imageView.image = placeholder
         imageView.startLoadingAnimation()
