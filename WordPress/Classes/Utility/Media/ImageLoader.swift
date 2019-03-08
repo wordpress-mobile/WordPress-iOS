@@ -305,15 +305,19 @@ extension ImageLoader {
 
             case .fetchAndLoad:
                 guard let mediaId = media.mediaID?.stringValue else {
+                    let error = createError(description: "The Media id doesn't exist")
+                    callErrorHandler(with: error)
                     return
                 }
 
-                MediaThumbnailCoordinator.shared.fetchStubMedia(for: media) { [weak self] (fetchedMedia, _) in
+                MediaThumbnailCoordinator.shared.fetchStubMedia(for: media) { [weak self] (fetchedMedia, fetchedMediaError) in
                     if let fetchedMedia = fetchedMedia,
                         let fetchedMediaId = fetchedMedia.mediaID?.stringValue, fetchedMediaId == mediaId {
                         DispatchQueue.main.async {
                             self?.fetchAndLoadImage(for: fetchedMedia, size: size, placeholder: placeholder, success: success, error: error)
                         }
+                    } else {
+                        self?.callErrorHandler(with: fetchedMediaError)
                     }
                 }
             }
