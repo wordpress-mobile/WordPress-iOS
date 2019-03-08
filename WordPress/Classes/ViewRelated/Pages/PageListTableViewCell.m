@@ -177,11 +177,13 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.labelsContainerTrailing.active = !hideFeaturedImage;
     
     if (!hideFeaturedImage) {
-        [self.featuredImageLoader loadImageForMedia:page.featuredImage
-                                               size:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
-                                        placeholder:nil
-                                            success:nil
-                                              error:nil]; //Add here Log for error
+        [self.featuredImageLoader fetchAndLoadImageForMedia:page.featuredImage
+                                                       size:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
+                                                placeholder:nil
+                                                    success:nil
+                                                      error:^(NSError *error) {
+                                                          DDLogError(@"Failed to load the media: %@", account, error);
+                                                      }];
         
     }
 }
