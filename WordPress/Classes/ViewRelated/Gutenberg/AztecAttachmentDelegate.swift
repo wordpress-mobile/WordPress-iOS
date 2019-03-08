@@ -61,7 +61,7 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: failure)
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { (_) in failure()})
         activeMediaRequests.append(receipt)
     }
 }

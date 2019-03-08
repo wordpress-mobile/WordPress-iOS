@@ -2,6 +2,8 @@
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 
+@import Gridicons;
+
 
 static CGFloat const PageListTableViewCellTagLabelRadius = 2.0;
 static CGFloat const FeaturedImageSize = 120.0;
@@ -102,11 +104,17 @@ static CGFloat const FeaturedImageSize = 120.0;
 - (void)applyStyles
 {
     [WPStyleGuide configureTableViewCell:self];
+    [WPStyleGuide configureLabel:self.timestampLabel textStyle:UIFontTextStyleSubheadline];
+    [WPStyleGuide configureLabel:self.badgesLabel textStyle:UIFontTextStyleSubheadline];
+
+    self.titleLabel.font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
+    self.titleLabel.adjustsFontForContentSizeCategory = YES;
     
     self.titleLabel.textColor = [WPStyleGuide darkGrey];
     self.timestampLabel.textColor = [WPStyleGuide grey];
     self.badgesLabel.textColor = [WPStyleGuide darkYellow];
     self.menuButton.tintColor = [WPStyleGuide greyLighten10];
+    [self.menuButton setImage:[Gridicon iconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.contentView.backgroundColor = [WPStyleGuide greyLighten30];

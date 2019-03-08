@@ -22,11 +22,16 @@ enum InsightAction: Action {
     case receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?)
     case receivedAllEmailFollowers(_ allDotComFollowers: StatsGroup?)
     case refreshFollowers()
+
+    case receivedAllAuthorsComments()
+    case receivedAllPostsComments()
+    case refreshComments()
 }
 
 enum InsightQuery {
     case insights
     case allFollowers
+    case allComments
 }
 
 struct InsightStoreState {
@@ -70,6 +75,13 @@ struct InsightStoreState {
 
     var allEmailFollowers: [StatsItem]?
     var fetchingAllEmailFollowers = false
+
+    var allAuthorsComments: StatsCommentsInsight?
+    var fetchingAllAuthorsComments = false
+
+
+    var allPostsComments: StatsCommentsInsight?
+    var fetchingAllPostsComments = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -113,6 +125,12 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllEmailFollowers(allEmailFollowers)
         case .refreshFollowers:
             refreshFollowers()
+        case .receivedAllAuthorsComments:
+            receivedAllAuthorsComments()
+        case .receivedAllPostsComments:
+            receivedAllPostsComments()
+        case .refreshComments:
+            refreshComments()
         }
     }
 
@@ -142,6 +160,10 @@ private extension StatsInsightsStore {
             case .allFollowers:
                 if shouldFetchFollowers() {
                     fetchAllFollowers()
+                }
+            case .allComments:
+                if shouldFetchComments() {
+                    fetchAllComments()
                 }
             }
         }
@@ -356,6 +378,15 @@ private extension StatsInsightsStore {
         })
     }
 
+    func fetchAllComments() {
+        state.fetchingAllAuthorsComments = true
+        state.fetchingAllPostsComments = true
+
+        // TODO: replace with api call when fetch all author and post comments is supported.
+        actionDispatcher.dispatch(InsightAction.receivedAllAuthorsComments())
+        actionDispatcher.dispatch(InsightAction.receivedAllPostsComments())
+    }
+
     func receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?) {
         transaction { state in
             state.allDotComFollowers = allDotComFollowers?.items as? [StatsItem]
@@ -382,6 +413,36 @@ private extension StatsInsightsStore {
     func shouldFetchFollowers() -> Bool {
         return !isFetchingFollowers
     }
+
+    func receivedAllAuthorsComments() {
+        transaction { state in
+            // TODO: replace with real allAuthorsComments when API supports it.
+            state.allAuthorsComments = state.topCommentsInsight
+            state.fetchingAllAuthorsComments = false
+        }
+    }
+
+    func receivedAllPostsComments() {
+        transaction { state in
+            // TODO: replace with real allPostsComments when API supports it.
+            state.allPostsComments = state.topCommentsInsight
+            state.fetchingAllPostsComments = false
+        }
+    }
+
+    func refreshComments() {
+        guard shouldFetchComments() else {
+            DDLogInfo("Stats Insights Comments refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllComments()
+    }
+
+    func shouldFetchComments() -> Bool {
+        return !isFetchingComments
+    }
+
 }
 
 // MARK: - Public Accessors
@@ -491,6 +552,14 @@ extension StatsInsightsStore {
         return state.allEmailFollowers
     }
 
+    func getAllAuthorsComments() -> StatsCommentsInsight? {
+        return state.allAuthorsComments
+    }
+
+    func getAllPostsComments() -> StatsCommentsInsight? {
+        return state.allPostsComments
+    }
+
     var isFetchingOverview: Bool {
         return
             state.fetchingLastPostInsight ||
@@ -509,6 +578,12 @@ extension StatsInsightsStore {
         return
             state.fetchingAllDotComFollowers ||
             state.fetchingAllEmailFollowers
+    }
+
+    var isFetchingComments: Bool {
+        return
+            state.fetchingAllAuthorsComments ||
+            state.fetchingAllPostsComments
     }
 
 }
