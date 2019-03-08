@@ -8,17 +8,6 @@ workspace 'WordPress.xcworkspace'
 
 plugin 'cocoapods-repo-update'
 
-post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        if ['WordPress-Aztec-iOS', 'WordPress-Editor-iOS'].include? target.name
-            target.build_configurations.each do |config|
-                config.build_settings['SWIFT_VERSION'] = '4.0'
-            end
-        end
-    end
-end
-
-
 ## Pods shared between all the targets
 ## ===================================
 ##
@@ -37,9 +26,9 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    pod 'WordPress-Editor-iOS', '1.4.3'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a61fb769c1e0c8cabd0ff46234f0f1c72740faac'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a61fb769c1e0c8cabd0ff46234f0f1c72740faac'
+    pod 'WordPress-Editor-iOS', '1.4.4'
 end
 
 def wordpress_ui
@@ -100,7 +89,7 @@ target 'WordPress' do
     ## React Native
     ## =====================
     ##
-    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'a7af71c0398d0a3901583ba26a91ecbed56bf2d2'
+    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => '8ba8b195b024809a3de545f34f8d777e5c76dba1'
 
     gutenberg_pod 'React'
     gutenberg_pod 'yoga'
