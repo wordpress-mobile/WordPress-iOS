@@ -169,7 +169,7 @@ PODS:
     - React/RCTBlob
   - RNSVG (8.0.9):
     - React
-  - RNTAztecView (1.0.2):
+  - RNTAztecView (1.0.1):
     - React
     - WordPress-Aztec-iOS
   - SimulatorStatusMagic (2.4.1)
