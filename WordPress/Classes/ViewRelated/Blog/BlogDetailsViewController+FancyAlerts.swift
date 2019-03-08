@@ -6,6 +6,9 @@ private var observer: NSObjectProtocol?
 extension BlogDetailsViewController {
     @objc func startObservingQuickStart() {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
+            guard self?.blog.managedObjectContext != nil else {
+                return
+            }
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
             if let index = QuickStartTourGuide.find()?.currentElementInt(),
