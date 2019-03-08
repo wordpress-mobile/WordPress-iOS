@@ -8,6 +8,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     // MARK: - Properties
 
+    private var postTitle: String?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
 
@@ -25,6 +26,9 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         initViewModel()
     }
 
+    func configure(postTitle: String?) {
+        self.postTitle = postTitle
+    }
 }
 
 // MARK: - Table Methods
@@ -32,7 +36,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 private extension PostStatsTableViewController {
 
     func initViewModel() {
-        viewModel = PostStatsViewModel()
+        viewModel = PostStatsViewModel(postTitle: postTitle)
         refreshTableView()
     }
 

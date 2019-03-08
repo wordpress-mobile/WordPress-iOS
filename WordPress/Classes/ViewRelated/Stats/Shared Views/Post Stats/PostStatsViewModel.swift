@@ -9,6 +9,13 @@ class PostStatsViewModel: Observable {
     // MARK: - Properties
 
     let changeDispatcher = Dispatcher<Void>()
+    private var postTitle: String?
+
+    // MARK: - Init
+
+    init(postTitle: String?) {
+        self.postTitle = postTitle
+    }
 
     // MARK: - Table View
 
@@ -34,10 +41,7 @@ private extension PostStatsViewModel {
     // MARK: - Create Table Rows
 
     func titleTableRow() -> ImmuTableRow {
-
-        let row = PostStatsTitleRow(postTitle: "Test Post Title")
-
-        return row
+        return PostStatsTitleRow(postTitle: postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title"))
     }
 
 }

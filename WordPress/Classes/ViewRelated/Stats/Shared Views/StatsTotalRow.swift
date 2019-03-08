@@ -48,7 +48,7 @@ struct StatsTotalRowData {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
-    @objc optional func showPostStats()
+    @objc optional func showPostStats(withPostTitle postTitle: String?)
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -287,7 +287,7 @@ private extension StatsTotalRow {
         if let disclosureURL = rowData?.disclosureURL {
             if let statSection = rowData?.statSection,
                 statSection == .periodPostsAndPages {
-                delegate?.showPostStats?()
+                delegate?.showPostStats?(withPostTitle: rowData?.name)
             } else {
                 delegate?.displayWebViewWithURL?(disclosureURL)
             }
