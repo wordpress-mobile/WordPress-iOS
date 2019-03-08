@@ -56,7 +56,7 @@ class LoginTests: XCTestCase {
 
         XCTAssert(MySiteScreen().isLoaded())
     }
-    
+
     func testSelfHostedUsernamePasswordLoginLogout() {
         _ = WelcomeScreen().login()
             .goToSiteAddressLogin()
