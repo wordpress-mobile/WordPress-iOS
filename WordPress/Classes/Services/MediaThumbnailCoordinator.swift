@@ -18,6 +18,7 @@ class MediaThumbnailCoordinator: NSObject {
     private let queue = DispatchQueue(label: "org.wordpress.media_thumbnail_coordinator", qos: .default)
 
     typealias ThumbnailBlock = (UIImage?, Error?) -> Void
+    typealias LoadStubMediaCompletionBlock = (Media?, Error?) -> Void
 
     private lazy var mediaThumbnailService: MediaThumbnailService = {
         let mediaThumbnailService = MediaThumbnailService(managedObjectContext: backgroundContext)
@@ -66,15 +67,24 @@ class MediaThumbnailCoordinator: NSObject {
     ///   - size: the size of the thumbnail
     ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
     func fetchThumbnailForMediaStub(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
+        fetchStubMedia(for: media) { [weak self] (fetchedMedia, error) in
+            if let fetchedMedia = fetchedMedia {
+                self?.thumbnail(for: fetchedMedia, with: size, onCompletion: onCompletion)
+            }
+        }
+    }
+
+
+    func fetchStubMedia(for media: Media, onCompletion: @escaping LoadStubMediaCompletionBlock) {
         guard let mediaID = media.mediaID else {
             onCompletion(nil, MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
             return
         }
-        mediaService.getMediaWithID(mediaID, in: media.blog, success: { (media) in
-            self.thumbnail(for: media, with: size, onCompletion: onCompletion)
+
+        mediaService.getMediaWithID(mediaID, in: media.blog, success: { (loadedMedia) in
+            onCompletion(loadedMedia, nil)
         }, failure: { (error) in
             onCompletion(nil, error)
         })
     }
-
 }
