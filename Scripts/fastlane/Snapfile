@@ -12,7 +12,8 @@ end
 devices([
   "iPhone XS Max",
   "iPhone 8 Plus",
-  "iPad Pro (12.9-inch)"
+  "iPad Pro (12.9-inch) (2nd generation)",
+  "iPad Pro (12.9-inch) (3rd generation)",
 ])
 
 languages("da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" "))
