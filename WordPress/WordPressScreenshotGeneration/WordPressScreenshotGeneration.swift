@@ -182,7 +182,11 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let app = XCUIApplication()
 
-        app.tables.cells[slug].tap()
+        let cell = app.tables.cells[slug]
+        waitForElementToExist(element: cell)
+
+        scrollElementIntoView(element: cell, within: app.tables["PostsTable"])
+        cell.tap()
 
         let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
         waitForElementToExist(element: editorNavigationBar)
