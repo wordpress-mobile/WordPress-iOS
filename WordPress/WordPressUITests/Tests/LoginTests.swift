@@ -57,9 +57,6 @@ class LoginTests: XCTestCase {
         XCTAssert(MySiteScreen().isLoaded())
     }
 
-    /*
-     This test is currently disabled pending resolution of this crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/11094
-     */
     func testSelfHostedUsernamePasswordLoginLogout() {
         _ = WelcomeScreen().login()
             .goToSiteAddressLogin()
