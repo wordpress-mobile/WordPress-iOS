@@ -56,7 +56,7 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
   - Gridicons (0.18)
-  - Gutenberg (1.0.1):
+  - Gutenberg (1.0.2):
     - React/Core (= 0.57.5)
     - React/CxxBridge (= 0.57.5)
     - React/DevSupport (= 0.57.5)
@@ -169,7 +169,7 @@ PODS:
     - React/RCTBlob
   - RNSVG (8.0.9):
     - React
-  - RNTAztecView (1.0.1):
+  - RNTAztecView (1.0.2):
     - React
     - WordPress-Aztec-iOS
   - SimulatorStatusMagic (2.4.1)
@@ -364,7 +364,7 @@ SPEC CHECKSUMS:
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   Gridicons: 04261236382e9c62c62c9a104f2f532c1bdf6a78
-  Gutenberg: c20715ac4f167b104c18b4fc5eb66dc3fbed926b
+  Gutenberg: d2f8805fde5415bf36b3c06f67cc328a33eb03a5
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MGSwipeTableCell: dc4eca3212ed38a563b27d6aa7b3c01ce656c1e2
@@ -379,7 +379,7 @@ SPEC CHECKSUMS:
   react-native-keyboard-aware-scroll-view: 10f0da6653e67ed77ec55e409c9b21cd2aa3a5f8
   react-native-safe-area: 7dc92953fce43bf36ab5ecae2fb4ffa2bda9a203
   RNSVG: 6d5813dd9c6a8e041e142abf1372faf012ce5759
-  RNTAztecView: 9bc897bc47c02957d3a77a9ff09ffc6983f2a0f1
+  RNTAztecView: 2c97171cf3714f1212e592b26e81a33e60232c8f
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6

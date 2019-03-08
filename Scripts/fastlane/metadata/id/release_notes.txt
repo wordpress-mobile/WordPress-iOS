@@ -1,4 +1,3 @@
-- Sekarang Anda dapat berbagi situs melalui Pembaca.
-- Memperbaiki bug yang menyunting salinan lokal dari konsep pos, kemudian membuang perubahan, yang mengakibatkan pos dihapus.
-- Memperbaiki bug di Pembaca yang menyebabkan terjadinya crash di aplikasi saat menampilkan pos bersamaan dengan video.
-- Memperbaiki beberapa error terkait tata letak UI yang elemennya tumpang tindih atau salah ukuran.
+- Proses Anda dari “pendaftaran awal” hingga “situs web selesai” akan berlangsung lebih cepat dengan pembuatan situs cerdas yang membantu Anda memulai dengan situs web personal yang sudah disesuaikan. Maaf, Anda sepertinya perlu memajukan jadwal peluncuran sekarang. Ini masalah yang menyenangkan.
+- Setelah Anda membuat situs baru, ada begitu banyak tutorial yang tersedia untuk membantu Anda membentuk dan menumbuhkannya, termasuk tips mengenai cara menumbuhkan audiens. Kami akan memberikan saran yang sesuai, dan Anda dapat menemukannya di layar Situs Saya kapan pun. Karena peluncuran adalah awal, bukan akhir.
+- Kami terus berupaya membuat aplikasi ini menyenangkan untuk digunakan — atau setidaknya lebih menyenangkan — dan salah satunya adalah dengan menambah margin jendela penyunting sehingga mengetik pos yang panjang menjadi lebih nyaman, dan memberikan tata letak serta ilustrasi halaman error yang lebih konsisten di seluruh bagian aplikasi sehingga lebih mudah dipahami.
