@@ -182,7 +182,7 @@ static CGFloat const FeaturedImageSize = 120.0;
                                                 placeholder:nil
                                                     success:nil
                                                       error:^(NSError *error) {
-                                                          DDLogError(@"Failed to load the media: %@", account, error);
+                                                          DDLogError(@"Failed to load the media: %@", error);
                                                       }];
         
     }
