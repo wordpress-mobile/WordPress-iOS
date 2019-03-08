@@ -21,6 +21,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Stats", comment: "Window title for Post Stats view.")
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
@@ -54,6 +55,15 @@ private extension PostStatsTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
+        refreshControl?.endRefreshing()
+    }
+
+    @objc func refreshData() {
+        refreshControl?.beginRefreshing()
+
+        // TODO: data fetching
+
+        refreshControl?.endRefreshing()
     }
 
 }
