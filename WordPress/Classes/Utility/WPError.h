@@ -28,6 +28,27 @@
  */
 + (void)showXMLRPCErrorAlert:(NSError *)error;
 
+/**
+ * Create a suggested title and message based on the given `error`
+ *
+ * @param error Assumed to be an error from a networking call
+ * @param desiredTitle If given, this will be the title that will be returned.
+ *
+ * @return A dictionary with keys "title" and "message". Both values are not null.
+ */
++ (nonnull NSDictionary<NSString *, NSString *> *)titleAndMessageFromNetworkingError:(nonnull NSError *)error
+                                                                        desiredTitle:(nullable NSString *)desiredTitle;
+
+/**
+ * Shows a sign-in page if the `error`'s cause requires an authentication or authorization.
+ *
+ * This is meant to be a helper method for the other methods in this class and is only publicly
+ * exposed so it can be accessed in WPError.swift.
+ *
+ * @param error Assumed to be an error from a networking call.
+ * @returns YES if a sign-in page was shown.
+ */
++ (BOOL)showWPComSigninIfErrorIsInvalidAuth:(nonnull NSError *)error;
 
 ///---------------------
 /// @name General alerts

@@ -189,6 +189,14 @@ class NoticePresenter: NSObject {
         dismiss(container: container)
     }
 
+    /// Dismiss the currently shown `Notice` if its `tag` is equal to the given `tag`.
+    public func dismissCurrentNotice(tagged tag: String) {
+        // It's named _nextNotice_ but it really is the _current_ Notice in NoticeStore.state
+        if store.nextNotice?.tag == tag {
+            dismissCurrentNotice()
+        }
+    }
+
     private func dismiss(container: NoticeContainerView) {
         guard container.superview != nil else {
             return
