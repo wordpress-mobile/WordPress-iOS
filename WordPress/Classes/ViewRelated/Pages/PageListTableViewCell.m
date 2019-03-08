@@ -18,6 +18,7 @@ static CGFloat const FeaturedImageSize = 120.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *labelsContainerTrailing;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *leadingContentConstraint;
 
+@property (nonatomic, strong) ImageLoader *featuredImageLoader;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
@@ -39,7 +40,17 @@ static CGFloat const FeaturedImageSize = 120.0;
     [super prepareForReuse];
     
     [self applyStyles];
+    [self.featuredImageLoader prepareForReuse];
     [self setNeedsDisplay];
+}
+
+- (ImageLoader *)featuredImageLoader
+{
+    if (_featuredImageLoader == nil) {
+        _featuredImageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView
+                                                          gifStrategy:GIFStrategyLargeGIFs];
+    }
+    return _featuredImageLoader;
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -166,19 +177,11 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.labelsContainerTrailing.active = !hideFeaturedImage;
     
     if (!hideFeaturedImage) {
-        [self.featuredImageView startLoadingAnimation];
-
-        __weak __typeof(self) weakSelf = self;
-
-        [page.featuredImage imageWithSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
-                        completionHandler:^(UIImage * _Nullable result, NSError * _Nullable error) {
-                            __strong __typeof(weakSelf) strongSelf = weakSelf;
-                            [strongSelf.featuredImageView stopLoadingAnimation];
-                            
-                            if (error == nil) {
-                                [strongSelf.featuredImageView setImage:result];
-                            }
-                        }];
+        [self.featuredImageLoader loadImageForMedia:page.featuredImage
+                                               size:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
+                                        placeholder:nil
+                                            success:nil
+                                              error:nil]; //Add here Log for error
         
     }
 }
