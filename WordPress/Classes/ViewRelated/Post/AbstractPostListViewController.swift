@@ -969,7 +969,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
             if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
-            } else {
+            } else if let error = error {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
@@ -1039,7 +1039,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
             if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
-            } else {
+            } else if let error = error {
                 WPError.showXMLRPCErrorAlert(error)
             }
 
