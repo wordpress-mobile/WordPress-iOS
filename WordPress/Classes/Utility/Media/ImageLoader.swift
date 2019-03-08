@@ -297,6 +297,7 @@ extension ImageLoader {
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
+
         guard let url = url(from: media) else {
             switch action {
             case .load:
