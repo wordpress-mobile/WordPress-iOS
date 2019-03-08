@@ -279,7 +279,7 @@ extension ImageLoader {
     }
 
     @objc(fetchAndLoadImageForMedia:size:placeholder:success:error:)
-    /// Load an image from the given Media object, fetching first if the Media remote status is stub.
+    /// Load an image from the given Media object, fetching it first if the Media remote status is stub.
     /// If it's a gif, it will animate it.
     /// For any other type of media, this will load the corresponding static image.
     ///
