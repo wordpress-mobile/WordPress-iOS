@@ -136,7 +136,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Tap the back button if on an iPhone screen
-        if UIDevice.current.userInterfaceIdiom == .phone {
+        if isIPhone() {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
 
