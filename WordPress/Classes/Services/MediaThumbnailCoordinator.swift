@@ -74,7 +74,11 @@ class MediaThumbnailCoordinator: NSObject {
         }
     }
 
-
+    /// Fetch a media from a stub media
+    ///
+    /// - Parameters:
+    ///   - media: the media object to fetch
+    ///   - onCompletion: a block that is invoked when the media is loaded and fetched with success or failure.
     func fetchStubMedia(for media: Media, onCompletion: @escaping LoadStubMediaCompletionBlock) {
         guard let mediaID = media.mediaID else {
             onCompletion(nil, MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
