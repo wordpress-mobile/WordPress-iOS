@@ -18,6 +18,8 @@ import MobileCoreServices
 /// still images and animated gifs.
 ///
 @objc class ImageLoader: NSObject {
+    typealias ImageLoaderSuccessBlock = () -> Void
+    typealias ImageLoaderFailureBlock = (Error?) -> Void
 
     // MARK: Public Fields
 
@@ -35,8 +37,8 @@ import MobileCoreServices
     private unowned let imageView: CachedAnimatedImageView
     private let loadingIndicator: CircularProgressView
 
-    private var successHandler: (() -> Void)?
-    private var errorHandler: ((Error?) -> Void)?
+    private var successHandler: ImageLoaderSuccessBlock?
+    private var errorHandler: ImageLoaderFailureBlock?
     private var placeholder: UIImage?
     private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
 
@@ -92,7 +94,7 @@ import MobileCoreServices
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
-    func loadImage(with url: URL, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(with url: URL, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
         successHandler = success
         errorHandler = error
 
@@ -114,7 +116,7 @@ import MobileCoreServices
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
-    func loadImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
 
         self.placeholder = placeholder
         successHandler = success
@@ -256,6 +258,10 @@ import MobileCoreServices
 // MARK: - Loading Media object
 
 extension ImageLoader {
+    private enum LoadingAction {
+        case load
+        case fetchAndLoad
+    }
 
     @objc(loadImageFromMedia:preferredSize:placeholder:success:error:)
     /// Load an image from the given Media object. If it's a gif, it will animate it.
@@ -268,52 +274,55 @@ extension ImageLoader {
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
-    func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
+        load(media: media, for: .load, with: size, placeholder: placeholder, success: success, error: error)
+    }
 
+    @objc(fetchAndLoadImageForMedia:size:placeholder:success:error:)
+    /// Load an image from the given Media object, fetching first if the Media remote status is stub.
+    /// If it's a gif, it will animate it.
+    /// For any other type of media, this will load the corresponding static image.
+    ///
+    /// - Parameters:
+    ///   - media: The media object
+    ///   - size: The preferred size of the image to load.
+    ///   - placeholder: A placeholder to show while the image is loading.
+    ///   - success: A closure to be called if the image was loaded successfully.
+    ///   - error: A closure to be called if there was an error loading the image.
+    func fetchAndLoadImage(for media: Media, size: CGSize = .zero, placeholder: UIImage? = nil, success: ImageLoaderSuccessBlock? = nil, error: ImageLoaderFailureBlock? = nil) {
+        load(media: media, for: .fetchAndLoad, with: size, placeholder: placeholder, success: success, error: error)
+    }
+
+    private func load(media: Media, for action: LoadingAction, with size: CGSize, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
-
         guard let url = url(from: media) else {
-            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
-            callErrorHandler(with: error)
-            return
-        }
+            switch action {
+            case .load:
+                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
+                callErrorHandler(with: error)
 
-        if url.isGif {
-            loadGif(with: url, from: media.blog, preferredSize: size)
-        } else if imageView.image == nil {
-            imageView.clean()
-            loadImage(from: media, preferredSize: size)
-        }
-    }
+            case .fetchAndLoad:
+                guard let mediaId = media.mediaID?.stringValue else {
+                    return
+                }
 
-    @objc(loadImageForMedia:size:placeholder:success:error:)
-
-    func loadImage(for media: Media, size: CGSize = .zero, placeholder: UIImage? = nil, success: (() -> Void)? = nil, error: ((Error?) -> Void)? = nil) {
-        guard let mediaId = media.mediaID?.stringValue else {
-            return
-        }
-
-        guard let url = url(from: media) else {
-            MediaThumbnailCoordinator.shared.fetchStubMedia(for: media) { [weak self] (fetchedMedia, _) in
-                if let fetchedMedia = fetchedMedia,
-                    let fetchedMediaId = fetchedMedia.mediaID?.stringValue, fetchedMediaId == mediaId {
-                    DispatchQueue.main.async {
-                        self?.loadImage(for: fetchedMedia, size: size, placeholder: placeholder, success: success, error: error)
+                MediaThumbnailCoordinator.shared.fetchStubMedia(for: media) { [weak self] (fetchedMedia, _) in
+                    if let fetchedMedia = fetchedMedia,
+                        let fetchedMediaId = fetchedMedia.mediaID?.stringValue, fetchedMediaId == mediaId {
+                        DispatchQueue.main.async {
+                            self?.fetchAndLoadImage(for: fetchedMedia, size: size, placeholder: placeholder, success: success, error: error)
+                        }
                     }
                 }
             }
             return
         }
 
-        self.placeholder = placeholder
-        successHandler = success
-        errorHandler = error
-
         if url.isGif {
             loadGif(with: url, from: media.blog, preferredSize: size)
-        } else {
+        } else if imageView.image == nil {
             imageView.clean()
             loadImage(from: media, preferredSize: size)
         }
@@ -370,7 +379,7 @@ extension ImageLoader {
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
-    func loadImage(asset: PHAsset, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(asset: PHAsset, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
