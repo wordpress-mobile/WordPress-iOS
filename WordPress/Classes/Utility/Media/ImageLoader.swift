@@ -258,11 +258,6 @@ import MobileCoreServices
 // MARK: - Loading Media object
 
 extension ImageLoader {
-    private enum LoadingAction {
-        case load
-        case fetchAndLoad
-    }
-
     @objc(loadImageFromMedia:preferredSize:placeholder:success:error:)
     /// Load an image from the given Media object. If it's a gif, it will animate it.
     /// For any other type of media, this will load the corresponding static image.
@@ -275,53 +270,33 @@ extension ImageLoader {
     ///   - error: A closure to be called if there was an error loading the image.
     ///
     func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
-        load(media: media, for: .load, with: size, placeholder: placeholder, success: success, error: error)
-    }
+        guard let mediaId = media.mediaID?.stringValue else {
+            let error = createError(description: "The Media id doesn't exist")
+            callErrorHandler(with: error)
+            return
+        }
 
-    @objc(fetchAndLoadImageForMedia:size:placeholder:success:error:)
-    /// Load an image from the given Media object, fetching it first if the Media remote status is stub.
-    /// If it's a gif, it will animate it.
-    /// For any other type of media, this will load the corresponding static image.
-    ///
-    /// - Parameters:
-    ///   - media: The media object
-    ///   - size: The preferred size of the image to load.
-    ///   - placeholder: A placeholder to show while the image is loading.
-    ///   - success: A closure to be called if the image was loaded successfully.
-    ///   - error: A closure to be called if there was an error loading the image.
-    func fetchAndLoadImage(for media: Media, size: CGSize = .zero, placeholder: UIImage? = nil, success: ImageLoaderSuccessBlock? = nil, error: ImageLoaderFailureBlock? = nil) {
-        load(media: media, for: .fetchAndLoad, with: size, placeholder: placeholder, success: success, error: error)
-    }
-
-    private func load(media: Media, for action: LoadingAction, with size: CGSize, placeholder: UIImage?, success: ImageLoaderSuccessBlock?, error: ImageLoaderFailureBlock?) {
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
 
         guard let url = url(from: media) else {
-            switch action {
-            case .load:
-                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
-                callErrorHandler(with: error)
-
-            case .fetchAndLoad:
-                guard let mediaId = media.mediaID?.stringValue else {
-                    let error = createError(description: "The Media id doesn't exist")
-                    callErrorHandler(with: error)
-                    return
-                }
-
+            if media.remoteStatus == .stub {
                 MediaThumbnailCoordinator.shared.fetchStubMedia(for: media) { [weak self] (fetchedMedia, fetchedMediaError) in
                     if let fetchedMedia = fetchedMedia,
                         let fetchedMediaId = fetchedMedia.mediaID?.stringValue, fetchedMediaId == mediaId {
                         DispatchQueue.main.async {
-                            self?.fetchAndLoadImage(for: fetchedMedia, size: size, placeholder: placeholder, success: success, error: error)
+                            self?.loadImage(media: fetchedMedia, preferredSize: size, placeholder: placeholder, success: success, error: error)
                         }
                     } else {
                         self?.callErrorHandler(with: fetchedMediaError)
                     }
                 }
+            } else {
+                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
+                callErrorHandler(with: error)
             }
+
             return
         }
 
