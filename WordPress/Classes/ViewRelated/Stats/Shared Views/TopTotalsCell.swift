@@ -254,6 +254,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
     func displayWebViewWithURL(_ url: URL) {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
         siteStatsPeriodDelegate?.displayWebViewWithURL?(url)
+        siteStatsDetailsDelegate?.displayWebViewWithURL?(url)
     }
 
     func displayMediaWithID(_ mediaID: NSNumber) {
