@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import UserNotifications
 import CocoaLumberjack
+import UserNotifications
 
 
 
@@ -166,10 +167,11 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Handling!
-        let handlers = [ handleSupportNotification,
-                         handleAuthenticationNotification,
-                         handleInactiveNotification,
-                         handleBackgroundNotification ]
+        let handlers = [handleSupportNotification,
+                        handleAuthenticationNotification,
+                        handleInactiveNotification,
+                        handleBackgroundNotification,
+                        handleQuickStartLocalNotification]
 
         for handler in handlers {
             if handler(userInfo, completionHandler) {
@@ -337,10 +339,9 @@ extension PushNotificationsManager {
     }
 }
 
-
 // MARK: - Nested Types
 //
-private extension PushNotificationsManager {
+extension PushNotificationsManager {
 
     enum Device {
         static let tokenKey = "apnsDeviceToken"
@@ -353,11 +354,93 @@ private extension PushNotificationsManager {
         static let typeKey = "type"
         static let originKey = "origin"
         static let badgeResetValue = "badge-reset"
+        static let local = "qs-local-notification"
     }
 
     enum Tracking {
         static let identifierKey = "push_notification_note_id"
         static let typeKey = "push_notification_type"
         static let tokenKey = "push_notification_token"
+    }
+}
+
+// MARK: - Quick Start notifications
+
+extension PushNotificationsManager {
+
+    /// Handles a Quick Start Local Notification
+    ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    @objc func handleQuickStartLocalNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+            type == Notification.local else {
+                return false
+        }
+
+        if WPTabBarController.sharedInstance()?.presentedViewController != nil {
+            WPTabBarController.sharedInstance()?.dismiss(animated: false)
+        }
+        WPTabBarController.sharedInstance()?.showMySitesTab()
+
+        if let taskName = userInfo.string(forKey: QuickStartTracking.taskNameKey) {
+            WPAnalytics.track(.quickStartNotificationTapped,
+                              withProperties: [QuickStartTracking.taskNameKey: taskName])
+        }
+
+        completionHandler?(.newData)
+
+        return true
+    }
+
+    func postNotification(for tour: QuickStartTour) {
+        deletePendingLocalNotifications()
+
+        let content = UNMutableNotificationContent()
+        content.title = tour.title
+        content.body = tour.description
+        content.sound = UNNotificationSound.default
+        content.userInfo = [Notification.typeKey: Notification.local,
+                            QuickStartTracking.taskNameKey: tour.analyticsKey]
+
+        guard let futureDate = Calendar.current.date(byAdding: .day,
+                                                     value: Constants.localNotificationIntervalInDays,
+                                                     to: Date()) else {
+                                                        return
+        }
+        let trigger = UNCalendarNotificationTrigger(dateMatching: futureDate.components, repeats: false)
+        let request = UNNotificationRequest(identifier: Constants.localNotificationIdentifier,
+                                            content: content,
+                                            trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+
+        WPAnalytics.track(.quickStartNotificationStarted,
+                          withProperties: [QuickStartTracking.taskNameKey: tour.analyticsKey])
+    }
+
+    @objc func deletePendingLocalNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Constants.localNotificationIdentifier])
+    }
+
+    private enum Constants {
+        static let localNotificationIntervalInDays = 2
+        static let localNotificationIdentifier = "QuickStartTourNotificationIdentifier"
+    }
+
+    private enum QuickStartTracking {
+        static let taskNameKey = "task_name"
+    }
+}
+
+private extension Date {
+    var components: DateComponents {
+        return Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                               from: self)
     }
 }

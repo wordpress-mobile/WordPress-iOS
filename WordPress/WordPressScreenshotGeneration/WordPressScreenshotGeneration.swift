@@ -38,7 +38,7 @@ class WordPressScreenshotGeneration: XCTestCase {
     func login() {
         let app = XCUIApplication()
 
-        let loginButton = app.buttons["Log In Button"]
+        let loginButton = app.buttons["Prologue Log In Button"]
 
         // Logout first if needed
         if !loginButton.waitForExistence(timeout: 3.0) {
@@ -54,7 +54,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         waitForElementToExist(element: selfHostedUsernameField)
         selfHostedUsernameField.tap()
         selfHostedUsernameField.typeText("WordPress.com")
-        app.buttons["Next Button"].tap()
+        app.buttons["Site Address Next Button"].tap()
 
         let usernameField = app.textFields["usernameField"]
         let passwordField = app.secureTextFields["passwordField"]
@@ -82,7 +82,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         let app = XCUIApplication()
         app.tabBars["Main Navigation"].buttons["meTabButton"].tap()
 
-        let loginButton = app.buttons["Log In Button"]
+        let loginButton = app.buttons["Prologue Log In Button"]
         let logoutButton = app.tables.element(boundBy: 0).cells.element(boundBy: 5)
         let logoutAlert = app.alerts.element(boundBy: 0)
 

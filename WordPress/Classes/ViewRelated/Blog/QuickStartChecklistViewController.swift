@@ -5,6 +5,17 @@ import Gridicons
     case grow
 }
 
+private extension QuickStartType {
+    var analyticsKey: String {
+        switch self {
+        case .customize:
+            return "customize"
+        case .grow:
+            return "grow"
+        }
+    }
+}
+
 class QuickStartChecklistViewController: UITableViewController {
     private var blog: Blog
     private var type: QuickStartType
@@ -55,7 +66,7 @@ class QuickStartChecklistViewController: UITableViewController {
         return UIBarButtonItem(customView: cancelButton)
     }()
 
-    @objc init(blog: Blog, type: QuickStartType) {
+    init(blog: Blog, type: QuickStartType) {
         self.blog = blog
         self.type = type
         super.init(style: .plain)
@@ -76,13 +87,20 @@ class QuickStartChecklistViewController: UITableViewController {
 
         dataManager = QuickStartChecklistManager(blog: blog,
                                                  tours: configuration.tours,
-                                                 didSelectTour: { [weak self] analyticsKey in
+                                                 didSelectTour: { [weak self] tour in
             DispatchQueue.main.async {
-                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": analyticsKey])
-                self?.dismiss(animated: true, completion: nil)
+                WPAnalytics.track(.quickStartChecklistItemTapped, withProperties: ["task_name": tour.analyticsKey])
+                self?.dismiss(animated: true) {
+                    if let blog = self?.blog,
+                        let tourGuide = QuickStartTourGuide.find() {
+                        tourGuide.start(tour: tour, for: blog)
+                    }
+                }
             }
-        }, didTapHeader: { [weak self] collapse in
-            self?.checkForSuccessScreen(collapse)
+        }, didTapHeader: { [unowned self] expand in
+            let event: WPAnalyticsStat = expand ? .quickStartListExpanded : .quickStartListCollapsed
+            WPAnalytics.track(event, withProperties: [Constants.analyticsTypeKey: self.type.analyticsKey])
+            self.checkForSuccessScreen(expand)
         })
 
         checkForSuccessScreen()
@@ -93,7 +111,8 @@ class QuickStartChecklistViewController: UITableViewController {
 
         // should display bg and trigger qs notification
 
-        WPAnalytics.track(.quickStartChecklistViewed)
+        WPAnalytics.track(.quickStartChecklistViewed,
+                          withProperties: [Constants.analyticsTypeKey: type.analyticsKey])
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -141,7 +160,7 @@ private extension QuickStartChecklistViewController {
         tableView.reloadData()
     }
 
-    func checkForSuccessScreen(_ collapse: Bool = false) {
+    func checkForSuccessScreen(_ expand: Bool = false) {
         if let dataManager = dataManager,
             !dataManager.shouldShowCompleteTasksScreen() {
             self.tableView.backgroundView?.alpha = 0
@@ -149,11 +168,13 @@ private extension QuickStartChecklistViewController {
         }
 
         UIView.animate(withDuration: Constants.successScreenFadeAnimationDuration) {
-            self.tableView.backgroundView?.alpha = collapse ? 0.0 : 1.0
+            self.tableView.backgroundView?.alpha = expand ? 0.0 : 1.0
         }
     }
 
     @objc private func closeWasPressed(sender: UIButton) {
+        WPAnalytics.track(.quickStartTypeDismissed,
+                          withProperties: [Constants.analyticsTypeKey: type.analyticsKey])
         dismiss(animated: true, completion: nil)
     }
 }
@@ -170,6 +191,7 @@ private struct QuickStartChecklistConfiguration {
 }
 
 private enum Constants {
+    static let analyticsTypeKey = "type"
     static let cancelButtonPadding = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
     static let closeButtonModalImage = Gridicon.iconOfType(.cross)
     static let estimatedRowHeight: CGFloat = 90.0

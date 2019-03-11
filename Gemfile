@@ -2,9 +2,7 @@ source 'https://rubygems.org' do
   gem 'rake'
   gem 'cocoapods', '1.5.3'
   gem 'cocoapods-repo-update', '~> 0.0.3'
-  gem 'cocoapods-check'
   gem 'xcpretty-travis-formatter'
-  gem 'danger'
   gem 'octokit', "~> 4.0"
   gem 'fastlane', "2.103.1"
   gem 'dotenv'

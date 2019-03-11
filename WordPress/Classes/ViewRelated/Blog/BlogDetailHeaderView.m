@@ -85,8 +85,16 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.blavatarImageView downloadSiteIconAt:imagePath];
 }
 
+- (void)applyPlaceholderBorder
+{
+    self.blavatarImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.blavatarImageView.layer.borderWidth = 1.0f;
+}
+
 - (void)refreshIconImage
 {
+    [self applyPlaceholderBorder];
+    
     if (self.blog.hasIcon) {
         [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
@@ -141,10 +149,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     NSAssert(_stackView != nil, @"stackView was nil");
 
     UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.backgroundColor = [UIColor whiteColor];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    imageView.layer.borderWidth = 1.0;
 
     [_stackView addArrangedSubview:imageView];
 

@@ -11,7 +11,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let summaryData: StatsLatestPostSummary?
+    let summaryData: StatsLastPostInsight?
     let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
@@ -219,6 +219,33 @@ struct AnnualSiteStatsRow: ImmuTableRow {
     }
 }
 
+struct CountriesStatsRow: ImmuTableRow {
+
+    typealias CellType = CountriesCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let siteStatsPeriodDelegate: SiteStatsPeriodDelegate
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+    }
+}
+
 struct CellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
@@ -237,5 +264,21 @@ struct CellHeaderRow: ImmuTableRow {
         }
 
         cell.configure(withTitle: title)
+    }
+}
+
+struct TableFooterRow: ImmuTableRow {
+
+    typealias CellType = StatsTableFooter
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        // No configuration needed.
+        // This method is needed to satisfy ImmuTableRow protocol requirements.
     }
 }

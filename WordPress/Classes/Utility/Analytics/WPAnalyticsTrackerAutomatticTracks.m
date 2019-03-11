@@ -4,6 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "WordPress-Swift.h"
 @import AutomatticTracks;
 
 @interface  TracksEventPair : NSObject
@@ -118,6 +119,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }];
     
     BOOL dotcom_user = (accountPresent && username.length > 0);
+    BOOL gutenbergEnabled = [GutenbergSettings isGutenbergEnabled];
     
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
@@ -126,6 +128,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
+    userProperties[@"gutenberg_enabled"] = @(gutenbergEnabled);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
@@ -276,6 +279,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
             eventName = @"app_settings_video_optimization_changed";
+            break;
+        case WPAnalyticsStatAppSettingsGutenbergEnabled:
+            eventName = @"gutenberg_setting_enabled";
+            break;
+        case WPAnalyticsStatAppSettingsGutenbergDisabled:
+            eventName = @"gutenberg_setting_disabled";
             break;
         case WPAnalyticsStatAutomatedTransferCustomDomainDialogShown:
             eventName = @"automated_transfer_custom_domain_dialog_shown";
@@ -462,6 +471,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEditorScheduledPost:
             eventName = @"editor_post_scheduled";
+            break;
+        case WPAnalyticsStatEditorSessionStart:
+            eventName = @"editor_session_start";
+            break;
+        case WPAnalyticsStatEditorSessionSwitchEditor:
+            eventName = @"editor_session_switch_editor";
+            break;
+        case WPAnalyticsStatEditorSessionEnd:
+            eventName = @"editor_session_end";
             break;
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
@@ -1071,6 +1089,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"edit" };
             break;
+        case WPAnalyticsStatPostListExcessiveLoadMoreDetected:
+            eventName = @"post_list_excessive_load_more_detected";
+            break;
         case WPAnalyticsStatPostListLoadedMore:
             eventName = @"post_list_load_more_triggered";
             break;
@@ -1206,6 +1227,34 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatQuickStartTourCompleted:
             eventName = @"quick_start_task_completed";
+            break;
+        case WPAnalyticsStatQuickStartMigrationDialogViewed:
+            eventName = @"quick_start_migration_dialog_viewed";
+            break;
+        case WPAnalyticsStatQuickStartMigrationDialogPositiveTapped:
+            eventName = @"quick_start_migration_dialog_button_tapped";
+            eventProperties = @{ @"type" : @"positive" };
+            break;
+        case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
+            eventName = @"quick_start_remove_dialog_button_tapped";
+            break;
+        case WPAnalyticsStatQuickStartTypeDismissed:
+            eventName = @"quick_start_type_dismissed";
+            break;
+        case WPAnalyticsStatQuickStartListCollapsed:
+            eventName = @"quick_start_list_collapsed";
+            break;
+        case WPAnalyticsStatQuickStartListExpanded:
+            eventName = @"quick_start_list_expanded";
+            break;
+        case WPAnalyticsStatQuickStartListItemSkipped:
+            eventName = @"quick_start_list_item_skipped";
+            break;
+        case WPAnalyticsStatQuickStartNotificationStarted:
+            eventName = @"quick_start_notification_sent";
+            break;
+        case WPAnalyticsStatQuickStartNotificationTapped:
+            eventName = @"quick_start_notification_tapped";
             break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";

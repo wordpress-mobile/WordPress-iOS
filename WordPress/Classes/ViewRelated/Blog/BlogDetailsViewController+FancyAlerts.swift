@@ -8,6 +8,11 @@ extension BlogDetailsViewController {
         observer = NotificationCenter.default.addObserver(forName: .QuickStartTourElementChangedNotification, object: nil, queue: nil) { [weak self] (notification) in
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
+            if let index = QuickStartTourGuide.find()?.currentElementInt(),
+                let element = QuickStartTourElement(rawValue: index),
+                Feature.enabled(.quickStartV2) {
+                self?.scroll(to: element)
+            }
         }
     }
 
@@ -38,8 +43,16 @@ extension BlogDetailsViewController {
     }
 
     private func showNoticeOrAlertAsNeeded() {
-        if let tourGuide = QuickStartTourGuide.find(),
-            let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
+        guard let tourGuide = QuickStartTourGuide.find() else {
+            showNotificationPrimerAlert()
+            return
+        }
+
+        if tourGuide.shouldShowUpgradeToV2Notice(for: blog) {
+            showUpgradeToV2Alert(for: blog)
+
+            tourGuide.didShowUpgradeToV2Notice(for: blog)
+        } else if let tourToSuggest = tourGuide.tourToSuggest(for: blog) {
             tourGuide.suggest(tourToSuggest, for: blog)
         } else {
             showNotificationPrimerAlert()
@@ -85,9 +98,10 @@ extension BlogDetailsViewController {
                                             self?.showQuickStartCustomize()
         }
         customizeRow.quickStartIdentifier = .checklist
-        if let customizeDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.customizeListTours, for: blog) {
-            customizeRow.detail = String(format: detailFormatStr, customizeDetailCounts.complete, customizeDetailCounts.total)
-            customizeRow.quickStartTitleState = customizeDetailCounts.complete == customizeDetailCounts.total ? .completed : .customizeIncomplete
+        customizeRow.showsSelectionState = false
+         if let customizeDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.customizeListTours, for: blog) {
+             customizeRow.detail = String(format: detailFormatStr, customizeDetailCount, QuickStartTourGuide.customizeListTours.count)
+             customizeRow.quickStartTitleState = customizeDetailCount == QuickStartTourGuide.customizeListTours.count ? .completed : .customizeIncomplete
         }
 
         let growRow = BlogDetailsRow(title: NSLocalizedString("Grow Your Audience", comment: "Name of the Quick Start list that guides users through a few tasks to customize their new website."),
@@ -97,13 +111,16 @@ extension BlogDetailsViewController {
                                             self?.showQuickStartGrow()
                                         }
         growRow.quickStartIdentifier = .checklist
-        if let growDetailCounts = QuickStartTourGuide.find()?.completionCount(of: QuickStartTourGuide.growListTours, for: blog) {
-            growRow.detail = String(format: detailFormatStr, growDetailCounts.complete, growDetailCounts.total)
-            growRow.quickStartTitleState = growDetailCounts.complete == growDetailCounts.total ? .completed : .growIncomplete
+        growRow.showsSelectionState = false
+         if let growDetailCount = QuickStartTourGuide.find()?.countChecklistCompleted(in: QuickStartTourGuide.growListTours, for: blog) {
+             growRow.detail = String(format: detailFormatStr, growDetailCount, QuickStartTourGuide.growListTours.count)
+             growRow.quickStartTitleState = growDetailCount == QuickStartTourGuide.growListTours.count ? .completed : .growIncomplete
         }
 
-        let sectionTitle = NSLocalizedString("Quick Start", comment: "Table view title for the quick start section.")
-        return BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
+        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        section.showQuickStartMenu = true
+        return section
     }
 
     private func showNotificationPrimerAlert() {
@@ -138,5 +155,18 @@ extension BlogDetailsViewController {
             alert.transitioningDelegate = self
             self?.tabBarController?.present(alert, animated: true)
         }
+    }
+
+    private func showUpgradeToV2Alert(for blog: Blog) {
+        guard noPresentedViewControllers else {
+            return
+        }
+
+        let alert = FancyAlertViewController.makeQuickStartUpgradeToV2AlertController(blog: blog)
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        tabBarController?.present(alert, animated: true)
+
+        WPAnalytics.track(.quickStartMigrationDialogViewed)
     }
 }

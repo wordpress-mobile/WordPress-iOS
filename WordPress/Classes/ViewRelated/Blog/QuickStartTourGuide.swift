@@ -18,22 +18,55 @@ open class QuickStartTourGuide: NSObject {
     }
 
     func setup(for blog: Blog) {
+        if Feature.enabled(.quickStartV2) {
+            didShowUpgradeToV2Notice(for: blog)
+        }
+
         let createTour = QuickStartCreateTour()
         completed(tour: createTour, for: blog)
     }
 
+    @objc func remove(from blog: Blog) {
+        blog.removeAllTours()
+    }
+
     @objc static func shouldShowChecklist(for blog: Blog) -> Bool {
-        // TODO: this needs to become a argument to deal with multiple lists
-        let list = checklistTours
+        let list: [QuickStartTour]
+        if Feature.enabled(.quickStartV2) {
+            list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        } else {
+            list = QuickStartTourGuide.checklistTours
+        }
 
         let checklistCompletedCount = countChecklistCompleted(in: list, for: blog)
         let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
-
         let quickStartIsEnabled = checklistCompletedCount > 0
-        let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
-        let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
 
-        return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
+        if Feature.enabled(.quickStartV2) {
+            // in QSv2 the checklists appear even after completion
+            return quickStartIsEnabled
+        } else {
+            let checklistIsUnfinished = checklistCompletedCount < QuickStartTourGuide.checklistTours.count
+            let congratulationsShown = completedIDs.contains(QuickStartCongratulationsTour().key)
+
+            return quickStartIsEnabled && (checklistIsUnfinished || !congratulationsShown)
+        }
+    }
+
+    func shouldShowUpgradeToV2Notice(for blog: Blog) -> Bool {
+        guard Feature.enabled(.quickStartV2),
+            isQuickStartEnabled(for: blog),
+            !allOriginalToursCompleted(for: blog) else {
+            return false
+        }
+
+        let completedIDs = blog.completedQuickStartTours?.map { $0.tourID } ?? []
+        return !completedIDs.contains(QuickStartUpgradeToV2Tour().key)
+    }
+
+    func didShowUpgradeToV2Notice(for blog: Blog) {
+        let v2tour = QuickStartUpgradeToV2Tour()
+        blog.completeTour(v2tour.key)
     }
 
     /// Note: this is only used for QS v1, and can be removed once the feature flag
@@ -42,12 +75,6 @@ open class QuickStartTourGuide: NSObject {
         let completedCount = countChecklistCompleted(in: QuickStartTourGuide.checklistTours, for: blog)
         let totalCount = QuickStartTourGuide.checklistTours.count
         return "\(completedCount)/\(totalCount)"
-    }
-
-    func completionCount(of list: [QuickStartTour], for blog: Blog) -> (complete: Int, total: Int) {
-        let completedCount = countChecklistCompleted(in: list, for: blog)
-        let totalCount = list.count
-        return (complete: completedCount, total: totalCount)
     }
 
     /// Provides a tour to suggest to the user
@@ -301,10 +328,13 @@ private extension QuickStartTourGuide {
         }
 
         blog.completeTour(tour.key)
-        recentlyTouredBlog = blog
 
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+            WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+            recentlyTouredBlog = blog
+        } else {
+            recentlyTouredBlog = nil
         }
 
         guard !(tour is QuickStartCongratulationsTour) else {
@@ -312,19 +342,38 @@ private extension QuickStartTourGuide {
             return
         }
 
-        WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
-
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
             grantCongratulationsAward(for: blog)
+        } else if Feature.enabled(.quickStartV2) {
+            if let nextTour = tourToSuggest(for: blog) {
+                PushNotificationsManager.shared.postNotification(for: nextTour)
+            }
         }
     }
 
+    /// Check if all the tours have been completed
+    ///
+    /// - Parameter blog: blog to check
+    /// - Returns: boolean, true if all tours have been completed
     func allToursCompleted(for blog: Blog) -> Bool {
-        // TODO: this needs to become a argument to deal with multiple lists
-        let list = QuickStartTourGuide.checklistTours
+        guard Feature.enabled(.quickStartV2) else {
+            return allOriginalToursCompleted(for: blog)
+        }
 
-        return countChecklistCompleted(in: list, for: blog) >= QuickStartTourGuide.checklistTours.count
+        let list = QuickStartTourGuide.customizeListTours + QuickStartTourGuide.growListTours
+        return countChecklistCompleted(in: list, for: blog) >= list.count
+    }
+
+    /// Check if all the original (V1) tours have been completed
+    ///
+    /// - Parameter blog: a Blog to check
+    /// - Returns: boolean, true if all the tours have been completed
+    /// - Note: This method is needed for upgrade/migration to V2 and should not
+    ///         be removed when the V2 feature flag is removed.
+    func allOriginalToursCompleted(for blog: Blog) -> Bool {
+        let list = QuickStartTourGuide.checklistTours
+        return countChecklistCompleted(in: list, for: blog) >= list.count
     }
 
     func showCurrentStep() {
@@ -375,6 +424,7 @@ private extension QuickStartTourGuide {
 
     func skipped(_ tour: QuickStartTour, for blog: Blog) {
         blog.skipTour(tour.key)
+        recentlyTouredBlog = nil
     }
 
     func findNoticePresenter() -> NoticePresenter? {

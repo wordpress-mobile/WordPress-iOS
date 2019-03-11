@@ -10,6 +10,7 @@ class LoginFlow {
             .proceedWithPassword()
             .proceedWith(password: password)
             .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
     }
 
     static func logoutIfNeeded() {

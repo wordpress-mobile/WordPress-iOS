@@ -1,6 +1,5 @@
 import Gridicons
 
-
 class QuickStartChecklistHeader: UIView {
     var collapseListener: ((Bool) -> Void)?
     var collapse: Bool = false {
@@ -24,23 +23,41 @@ class QuickStartChecklistHeader: UIView {
         }
     }
 
-    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel! {
+        didSet {
+            WPStyleGuide.configureLabel(titleLabel, textStyle: .body)
+            titleLabel.textColor = WPStyleGuide.grey()
+        }
+    }
+    @IBOutlet private var chevronView: UIImageView! {
+        didSet {
+            chevronView.image = Gridicon.iconOfType(.chevronDown)
+            chevronView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
+        }
+    }
     @IBOutlet private var bottomStroke: UIView!
-    @IBOutlet private var chevronView: UIImageView!
-
-    private let animator = Animator()
-
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        WPStyleGuide.configureLabel(titleLabel, textStyle: .body)
-        titleLabel.textColor = WPStyleGuide.grey()
-        chevronView.image = Gridicon.iconOfType(.chevronDown)
-        chevronView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
+    @IBOutlet private var contentView: UIView! {
+        didSet {
+            contentView.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor).isActive = true
+            contentView.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+        }
     }
 
-    @IBAction func headerDidTouch(_ sender: UIButton) {
+    private let animator = Animator()
+    private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return WPDeviceIdentification.isiPhone() ? safeAreaLayoutGuide.leadingAnchor : layoutMarginsGuide.leadingAnchor
+        }
+        return WPDeviceIdentification.isiPhone() ? leadingAnchor : layoutMarginsGuide.leadingAnchor
+    }
+    private var contentViewTrailingAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return WPDeviceIdentification.isiPhone() ? safeAreaLayoutGuide.trailingAnchor : layoutMarginsGuide.trailingAnchor
+        }
+        return WPDeviceIdentification.isiPhone() ? trailingAnchor : layoutMarginsGuide.trailingAnchor
+    }
+
+    @IBAction private func headerDidTouch(_ sender: UIButton) {
         collapse.toggle()
     }
 }

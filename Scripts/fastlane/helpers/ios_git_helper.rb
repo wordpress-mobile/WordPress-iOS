@@ -31,9 +31,6 @@ module Fastlane
         Action.sh("git add fastlane/Deliverfile")
         Action.sh("git add fastlane/download_metadata.swift")
         Action.sh("git add ../WordPress/Resources/AppStoreStrings.po")
-        Action.sh("cp ../RELEASE-NOTES.txt ../WordPress/Resources/release_notes.txt ")
-        Action.sh("echo > ../RELEASE-NOTES.txt")
-        Action.sh("git add ../RELEASE-NOTES.txt ../WordPress/Resources/release_notes.txt")
         Action.sh("git commit -m \"Bump version number\"")
         Action.sh("git push")
       end
@@ -78,6 +75,15 @@ module Fastlane
         Action.sh("cd .. && ./Scripts/localize.py")
         Action.sh("git add ../WordPress/*.lproj/Localizable.strings")
         Action.sh("git commit -m \"Updates strings for localization\"")
+        Action.sh("git push")
+      end
+
+      def self.update_release_notes(new_version)
+        Action.sh("cp ../RELEASE-NOTES.txt ../WordPress/Resources/release_notes.txt ")
+        Action.sh("echo \"#{new_version}\n-----\n \" > ../RELEASE-NOTES.txt")
+        Action.sh("cat ../WordPress/Resources/release_notes.txt >> ../RELEASE-NOTES.txt")
+        Action.sh("git add ../RELEASE-NOTES.txt ../WordPress/Resources/release_notes.txt")
+        Action.sh("git commit -m \"Update release notes.\"")
         Action.sh("git push")
       end
 

@@ -1,10 +1,27 @@
 import Gridicons
 
 class QuickStartChecklistCell: UITableViewCell {
-    @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var descriptionLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel! {
+        didSet {
+            WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
+        }
+    }
+    @IBOutlet private var descriptionLabel: UILabel! {
+        didSet {
+            WPStyleGuide.configureLabel(descriptionLabel, textStyle: .subheadline)
+        }
+    }
     @IBOutlet private var iconView: UIImageView?
-    @IBOutlet private var bottomStrokeLeading: NSLayoutConstraint?
+    @IBOutlet private var stroke: UIView?
+    @IBOutlet private var topSeparator: UIView?
+
+    private var bottomStrokeLeading: NSLayoutConstraint?
+    private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
+        return WPDeviceIdentification.isiPhone() ? contentView.leadingAnchor : contentView.readableContentGuide.leadingAnchor
+    }
+    private var contentViewTrailingAnchor: NSLayoutXAxisAnchor {
+        return WPDeviceIdentification.isiPhone() ? contentView.trailingAnchor : contentView.readableContentGuide.trailingAnchor
+    }
 
     public var completed = false {
         didSet {
@@ -32,16 +49,13 @@ class QuickStartChecklistCell: UITableViewCell {
             }
         }
     }
-
     public var tour: QuickStartTour? {
         didSet {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
+            iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
 
-            if Feature.enabled(.quickStartV2) {
-                imageView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-            } else {
-                iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+            if !Feature.enabled(.quickStartV2) {
                 accessoryType = .disclosureIndicator
             }
         }
@@ -53,15 +67,38 @@ class QuickStartChecklistCell: UITableViewCell {
         }
     }
 
+    public var topSeparatorIsHidden: Bool = false {
+        didSet {
+            topSeparator?.isHidden = topSeparatorIsHidden
+        }
+    }
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
         if Feature.enabled(.quickStartV2) {
-            WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
-            WPStyleGuide.configureLabel(descriptionLabel, textStyle: .subheadline)
+            setupConstraints()
         }
     }
 
     static let reuseIdentifier = "QuickStartChecklistCell"
+}
+
+private extension QuickStartChecklistCell {
+    func setupConstraints() {
+        guard let stroke = stroke,
+            let topSeparator = topSeparator else {
+            return
+        }
+
+        bottomStrokeLeading = stroke.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor)
+        bottomStrokeLeading?.isActive = true
+        let strokeSuperviewLeading = stroke.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor)
+        strokeSuperviewLeading.priority = UILayoutPriority(999.0)
+        strokeSuperviewLeading.isActive = true
+        stroke.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+        topSeparator.leadingAnchor.constraint(equalTo: contentViewLeadingAnchor).isActive = true
+        topSeparator.trailingAnchor.constraint(equalTo: contentViewTrailingAnchor).isActive = true
+    }
 }

@@ -11,6 +11,13 @@ class MySiteScreen: BaseScreen {
         super.init(element: blogTable)
     }
 
+    func dismissNotificationAlertIfNeeded() -> MySiteScreen {
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().cancelAlert()
+        }
+        return self
+    }
+
     func switchSite() -> MySitesScreen {
         app.buttons["Switch Site"].tap()
 

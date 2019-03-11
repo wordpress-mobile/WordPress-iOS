@@ -7,17 +7,12 @@ class LoginPasswordScreen: BaseScreen {
 
     init() {
         passwordTextField = XCUIApplication().secureTextFields["Password"]
-        loginButton = XCUIApplication().buttons["Log In Button"]
+        loginButton = XCUIApplication().buttons["Password Next Button"]
         super.init(element: passwordTextField)
     }
 
     func proceedWith(password: String) -> LoginEpilogueScreen {
         _ = tryProceed(password: password)
-
-        let alertModal = XCUIApplication().alerts["“WordPress” Would Like to Send You Notifications"]
-        if alertModal.waitForExistence(timeout: 3) {
-            alertModal.buttons["Don’t Allow"].tap()
-        }
 
         return LoginEpilogueScreen()
     }
@@ -41,6 +36,6 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["Log In Button"].exists
+        return XCUIApplication().buttons["Password Next Button"].exists
     }
 }

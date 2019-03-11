@@ -7,3 +7,4 @@ WordPress für iOS ist ein OpenSource-Projekt, an dessen Entwicklung du dich bet
 WordPress für iOS unterstützt WordPress.com und selbst gehostete WordPress.org-Websites ab WordPress-Version 4.0.
 
 Wenn du Hilfe zur App brauchst, findest du Informationen im den Foren unter https://ios.forums.wordpress.org/. Du kannst aber auch einen Tweet an us @WordPressiOS schicken.
+

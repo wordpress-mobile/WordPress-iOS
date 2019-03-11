@@ -13,6 +13,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         case more
         case switchToAztec
         case switchBlog
+        case autoSave
     }
 
     // MARK: - UI
@@ -21,7 +22,7 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     // MARK: - Aztec
 
-    private let switchToAztec: (EditorViewController) -> ()
+    internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
 
     // MARK: - PostEditor
 
@@ -56,23 +57,36 @@ class GutenbergViewController: UIViewController, PostEditor {
         return Analytics.editorSource
     }
 
+    var editorSession: PostEditorAnalyticsSession
+
     var onClose: ((Bool, Bool) -> Void)?
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
-    var isUploadingMedia: Bool {
-        return false
-    }
-
-    func removeFailedMedia() {
-        // TODO
-    }
 
     var shouldRemovePostOnDismiss: Bool = false
 
-    func cancelUploadOfAllMedia(for post: AbstractPost) {
-        //TODO
+    // MARK: - Editor Media actions
+
+    var isUploadingMedia: Bool {
+        return mediaInserterHelper.isUploadingMedia()
     }
+
+    func removeFailedMedia() {
+        // TODO: we can only implement this when GB bridge allows removal of blocks
+    }
+
+    var hasFailedMedia: Bool {
+        return mediaInserterHelper.hasFailedMedia()
+    }
+
+    func cancelUploadOfAllMedia(for post: AbstractPost) {
+        return mediaInserterHelper.cancelUploadOfAllMedia()
+    }
+
+    static let autoSaveInterval: TimeInterval = 5
+
+    var autoSaveTimer: Timer?
 
     func setTitle(_ title: String) {
         guard gutenberg.isLoaded else {
@@ -117,10 +131,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
 
-    var hasFailedMedia: Bool {
-        return false
-    }
-
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
     ///
@@ -139,18 +149,28 @@ class GutenbergViewController: UIViewController, PostEditor {
     private lazy var gutenberg = Gutenberg(dataSource: self)
     private var requestHTMLReason: RequestHTMLReason?
     private(set) var mode: EditMode = .richText
+    private var analyticsEditor: PostEditorAnalyticsSession.Editor {
+        switch mode {
+        case .richText:
+            return .gutenberg
+        case .html:
+            return .html
+        }
+    }
     private var isFirstGutenbergLayout = true
 
     // MARK: - Initializers
     required init(
         post: AbstractPost,
-        switchToAztec: @escaping (EditorViewController) -> ()) {
+        replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
+        editorSession: PostEditorAnalyticsSession? = nil) {
 
         self.post = post
 
-        self.switchToAztec = switchToAztec
+        self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
+        self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -163,6 +183,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     deinit {
+        stopAutoSave()
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
@@ -178,6 +199,7 @@ class GutenbergViewController: UIViewController, PostEditor {
         refreshInterface()
 
         gutenberg.delegate = self
+        showInformativeDialogIfNecessary()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -223,11 +245,19 @@ class GutenbergViewController: UIViewController, PostEditor {
     func toggleEditingMode() {
         gutenberg.toggleHTMLMode()
         mode.toggle()
+        editorSession.switch(editor: analyticsEditor)
     }
 
     func requestHTML(for reason: RequestHTMLReason) {
         requestHTMLReason = reason
         gutenberg.requestHTML()
+    }
+
+    func focusTitleIfNeeded() {
+        guard !post.hasContent() else {
+            return
+        }
+        gutenberg.setFocusOnTitle()
     }
 
     // MARK: - Event handlers
@@ -369,7 +399,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
 
         editorContentWasUpdated()
-
+        mapUIContentToPostAndSave(immediate: true)
         if let reason = requestHTMLReason {
             requestHTMLReason = nil // clear the reason
             switch reason {
@@ -380,20 +410,44 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             case .more:
                 displayMoreSheet()
             case .switchToAztec:
-                switchToAztec(self)
+                editorSession.switch(editor: .classic)
+                EditorFactory().switchToAztec(from: self)
             case .switchBlog:
                 blogPickerWasPressed()
+            case .autoSave:
+                break
             }
         }
     }
 
     func gutenbergDidLayout() {
+        defer {
+            isFirstGutenbergLayout = false
+        }
+        if isFirstGutenbergLayout {
+            focusTitleIfNeeded()
+        }
+    }
+
+    func gutenbergDidMount(hasUnsupportedBlocks: Bool) {
+        startAutoSave()
+        if !editorSession.started {
+            editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+        }
     }
 }
 
 // MARK: - GutenbergBridgeDataSource
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
+
+    func gutenbergLocale() -> String? {
+        return WordPressComLanguageDatabase().deviceLanguage.slug
+    }
+
+    func gutenbergTranslations() -> [String: [String]]? {
+        return parseGutenbergTranslations()
+    }
 
     func gutenbergInitialContent() -> String? {
         return post.content ?? ""
@@ -465,6 +519,22 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 }
 
+// MARK: - Auto Save
+
+extension GutenbergViewController {
+
+    func startAutoSave() {
+        autoSaveTimer = Timer.scheduledTimer(withTimeInterval: GutenbergViewController.autoSaveInterval, repeats: true, block: { [weak self](timer) in
+            self?.requestHTML(for: .autoSave)
+        })
+    }
+
+    func stopAutoSave() {
+        autoSaveTimer?.invalidate()
+        autoSaveTimer = nil
+    }
+}
+
 // MARK: - Constants
 
 private extension GutenbergViewController {
@@ -472,6 +542,7 @@ private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }
+
 }
 
 private extension GutenbergViewController {
