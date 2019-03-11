@@ -7,15 +7,27 @@ import Foundation
     /// Threadsafe Helper that indicates whether a Default Dotcom Account is available, or not
     ///
     @objc static func isDotcomAvailable() -> Bool {
+        return isDotcomAvailable(withValidToken: false)
+    }
+
+    @objc static func isDotcomAvailable(withValidToken: Bool = false) -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        var available = false
+        var defaultAccount: WPAccount? = nil
 
         context.performAndWait {
-            available = service.defaultWordPressComAccount() != nil
+            defaultAccount = service.defaultWordPressComAccount()
         }
 
-        return available
+        guard let account = defaultAccount else {
+            return false
+        }
+
+        if withValidToken {
+            return account.authToken != nil
+        } else {
+            return true
+        }
     }
 
     @objc static var isLoggedIn: Bool {

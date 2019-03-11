@@ -93,7 +93,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
-        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+        return AccountHelper.isDotcomAvailable(withValidToken: true) || blogService.blogCountForAllAccounts() > 0
     }
 
     /// Indicates whether if the Support Action should be enabled, or not.
