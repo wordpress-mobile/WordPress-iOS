@@ -30,7 +30,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
-    private var postTitle: String?
+    private var postTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
 
     private var actionType: ActionType? {
         didSet {
@@ -147,13 +147,16 @@ private extension LatestPostSummaryCell {
         }
 
         let postAge = lastPostInsight?.publishedDate.relativeStringInPast() ?? ""
-        postTitle = lastPostInsight?.title.nonEmptyString() ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
 
-        var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle!)
+        if let title = lastPostInsight?.title, !title.isEmpty {
+            postTitle = title
+        }
+
+        var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
         summaryString.append(summaryToAppend)
 
-        return Style.highlightString(postTitle!, inString: summaryString)
+        return Style.highlightString(postTitle, inString: summaryString)
     }
 
     // MARK: - Properties
