@@ -55,13 +55,16 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var selectedLabel: UILabel!
     @IBOutlet weak var selectedData: UILabel!
     @IBOutlet weak var differenceLabel: UILabel!
     @IBOutlet weak var chartContainerView: UIView!
     @IBOutlet weak var chartBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
     // Introduced via #11063, to be replaced with real data via #11069
@@ -77,7 +80,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        configureFonts()
+        applyStyles()
     }
 
     func configure(tabsData: [OverviewTabData]) {
@@ -91,6 +94,12 @@ class OverviewCell: UITableViewCell, NibLoadable {
 // MARK: - Private Extension
 
 private extension OverviewCell {
+
+    func applyStyles() {
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
+        configureFonts()
+    }
 
     /// This method squelches two Xcode warnings that I encountered:
     /// 1. Attribute Unavailable: Large Title font text style before iOS 11.0
@@ -121,7 +130,7 @@ private extension OverviewCell {
             ChartBottomMargin.filterTabBarHidden :
             ChartBottomMargin.filterTabBarShown
 
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forOverviewCard: true)
+        Style.configureFilterTabBar(filterTabBar, forOverviewCard: true)
         filterTabBar.items = tabsData
         filterTabBar.tabBarHeight = 60.0
         filterTabBar.equalWidthFill = .fillProportionally
