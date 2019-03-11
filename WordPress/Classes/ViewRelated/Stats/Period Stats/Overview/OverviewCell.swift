@@ -83,7 +83,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
         self.tabsData = tabsData
         setupFilterBar()
         updateLabels()
-        configureChartViewIfNeeded()
+        configureChartView()
     }
 }
 
@@ -120,7 +120,7 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        // TODO: update chart - configureChartViewIfNeeded() - via #11064
+        // TODO: update chart - configureChartView() - via #11064
         updateLabels()
     }
 
@@ -140,7 +140,7 @@ private extension OverviewCell {
         }
     }
 
-    func configureChartViewIfNeeded() {
+    func configureChartView() {
         resetChartView()
 
         let chartView = StatsBarChartView(data: periodDataStub.data, styling: periodDataStub.styling)
