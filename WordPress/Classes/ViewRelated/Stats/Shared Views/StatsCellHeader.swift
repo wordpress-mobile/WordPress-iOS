@@ -3,10 +3,20 @@ import Gridicons
 
 class StatsCellHeader: UITableViewCell, NibLoadable {
 
+    // MARK: - Properties
+
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var manageInsightButton: UIButton!
+    @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
+    private var defaultStackViewTopConstraint: CGFloat = 0
+
+    // MARK: - Configure
+
+    override func awakeFromNib() {
+        defaultStackViewTopConstraint = stackViewTopConstraint.constant
+    }
 
     func configure(withTitle title: String) {
         headerLabel.text = title
@@ -22,6 +32,12 @@ private extension StatsCellHeader {
     func applyStyles() {
         Style.configureLabelAsHeader(headerLabel)
         configureManageInsightButton()
+        updateStackView()
+    }
+
+    func updateStackView() {
+        // Only show the top padding if there is actually a label.
+        stackViewTopConstraint.constant = headerLabel.text == "" ? 0 : defaultStackViewTopConstraint
     }
 
     func configureManageInsightButton() {

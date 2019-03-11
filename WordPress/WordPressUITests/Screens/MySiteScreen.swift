@@ -40,7 +40,7 @@ class MySiteScreen: BaseScreen {
 
     func removeSelfHostedSite() {
         removeSiteButton.tap()
-        if isIpad() {
+        if isIpad {
             removeSiteAlert.tap()
         } else {
             removeSiteSheet.tap()

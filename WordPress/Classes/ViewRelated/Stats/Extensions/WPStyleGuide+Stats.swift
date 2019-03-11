@@ -34,12 +34,12 @@ extension WPStyleGuide {
             cell.contentView.backgroundColor = cellBackgroundColor
         }
 
-        static func configureViewAsSeperator(_ seperatorView: UIView) {
-            seperatorView.backgroundColor = seperatorColor
+        static func configureViewAsSeparator(_ separatorView: UIView) {
+            separatorView.backgroundColor = separatorColor
         }
 
         static func configureViewAsDataBar(_ dataBar: UIView) {
-            dataBar.backgroundColor = seperatorColor
+            dataBar.backgroundColor = separatorColor
             dataBar.layer.cornerRadius = dataBar.frame.height * 0.5
         }
 
@@ -100,6 +100,15 @@ extension WPStyleGuide {
             label.textColor = defaultTextColor
         }
 
+        static func configureLabelAsPostStatsTitle(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
+        static func configureLabelAsPostTitle(_ label: UILabel) {
+            label.textColor = defaultTextColor
+            label.font = postTitleFont
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
@@ -123,8 +132,10 @@ extension WPStyleGuide {
             return UIImage(named: "gravatar")
         }
 
-        static func configureFilterTabBar(_ filterTabBar: FilterTabBar, forTabbedCard: Bool = false) {
-            filterTabBar.dividerColor =  filterDividerColor
+        static func configureFilterTabBar(_ filterTabBar: FilterTabBar,
+                                          forTabbedCard: Bool = false,
+                                          forOverviewCard: Bool = false) {
+            filterTabBar.dividerColor = filterDividerColor
             filterTabBar.deselectedTabColor = filterDeselectedColor
             filterTabBar.tintColor = defaultFilterTintColor
 
@@ -132,6 +143,13 @@ extension WPStyleGuide {
             if forTabbedCard {
                 filterTabBar.tabSizingStyle = .equalWidths
                 filterTabBar.tintColor = tabbedCardFilterTintColor
+                filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
+            }
+
+            // For FilterTabBar on OverviewCell
+            if forOverviewCard {
+                filterTabBar.tabSizingStyle = .equalWidths
+                filterTabBar.tintColor = defaultFilterTintColor
                 filterTabBar.selectedTitleColor = tabbedCardFilterSelectedTitleColor
             }
         }
@@ -152,13 +170,21 @@ extension WPStyleGuide {
 
         static let tableBackgroundColor = WPStyleGuide.greyLighten30()
         static let cellBackgroundColor = UIColor.white
-        static let seperatorColor = WPStyleGuide.greyLighten20()
+        static let separatorColor = WPStyleGuide.greyLighten20()
 
         static let defaultFilterTintColor = WPStyleGuide.wordPressBlue()
         static let tabbedCardFilterTintColor = WPStyleGuide.greyLighten20()
         static let tabbedCardFilterSelectedTitleColor = WPStyleGuide.darkGrey()
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()
         static let filterDividerColor = WPStyleGuide.greyLighten20()
+
+        static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+
+        static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
+
+        static let positiveColor = WPStyleGuide.validGreen()
+        static let negativeColor = WPStyleGuide.errorRed()
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 

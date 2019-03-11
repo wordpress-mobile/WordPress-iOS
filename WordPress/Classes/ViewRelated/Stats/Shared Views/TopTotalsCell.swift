@@ -82,8 +82,8 @@ private extension TopTotalsCell {
         Style.configureCell(self)
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
-        Style.configureViewAsSeperator(topSeparatorLine)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     /// Hide the subtitles if there is no data or Subtitles.
@@ -262,6 +262,10 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         toggleSeparatorsAroundRow(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
+    }
+
+    func showPostStats(withPostTitle postTitle: String?) {
+        siteStatsPeriodDelegate?.showPostStats?(withPostTitle: postTitle)
     }
 
 }

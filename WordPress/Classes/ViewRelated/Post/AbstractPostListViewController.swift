@@ -240,6 +240,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             searchController.isActive = false
         }
 
+        dismissAllNetworkErrorNotices()
+
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         unregisterForKeyboardNotifications()
     }
@@ -271,7 +273,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        filterTabBar.items = filterSettings.availablePostListFilters().map({ $0.title })
+        filterTabBar.items = filterSettings.availablePostListFilters()
 
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
@@ -302,7 +304,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
-    fileprivate func refreshResults(forcingNetworkAlerts: Bool = false) {
+    private func refreshResults() {
         guard isViewLoaded == true else {
             return
         }
@@ -312,11 +314,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
 
         hideNoResultsView()
-        if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
-            if forcingNetworkAlerts {
-                presentNoNetworkAlert()
-            }
-        } else {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             showNoResultsView()
         }
     }
@@ -608,6 +606,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()
+            dismissAllNetworkErrorNotices()
             presentNoNetworkAlert()
             return
         }
@@ -621,21 +620,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    func presentNoNetworkAlert() {
-        if shouldPresentAlert() {
-            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-            WPError.showAlert(withTitle: title, message: message)
-        }
-    }
-
     func shouldPresentAlert() -> Bool {
         return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        refreshResults(forcingNetworkAlerts: userInteraction)
+        refreshResults()
     }
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
@@ -792,7 +783,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
-        WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+        dismissAllNetworkErrorNotices()
+
+        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        WPError.showNetworkingNotice(title: title, error: error)
     }
 
     @objc func promptForPassword() {
@@ -1055,6 +1049,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
         assert(false, "You should implement this method in the subclass")
+    }
+
+    private func dismissAllNetworkErrorNotices() {
+        dismissNoNetworkAlert()
+        WPError.dismissNetworkingNotice()
     }
 
     // MARK: - Post Actions

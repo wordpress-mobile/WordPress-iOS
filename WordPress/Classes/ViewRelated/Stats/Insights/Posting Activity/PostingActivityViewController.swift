@@ -99,7 +99,7 @@ private extension PostingActivityViewController {
     func applyStyles() {
         Style.configureLabelAsPostingDate(dateLabel)
         Style.configureLabelAsPostingCount(postCountLabel)
-        Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsSeparator(separatorLine)
     }
 
     func formattedDate(_ date: Date) -> String {

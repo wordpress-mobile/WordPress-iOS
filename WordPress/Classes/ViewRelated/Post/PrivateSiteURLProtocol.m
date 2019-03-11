@@ -98,7 +98,12 @@ static NSString *cachedToken;
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
 {
-    if ([request.URL.scheme isEqualToString:@"https"] && [request.URL.host hasSuffix:@".wordpress.com"]) {
+    return [self urlGoesToWPComSite:request.URL];
+}
+
++ (BOOL)urlGoesToWPComSite:(NSURL *)url
+{
+    if ([url.scheme isEqualToString:@"https"] && [url.host hasSuffix:@".wordpress.com"]) {
         return YES;
     }
 
@@ -107,6 +112,9 @@ static NSString *cachedToken;
 
 + (NSURLRequest *)requestForPrivateSiteFromURL:(NSURL *)url
 {
+    if (![self urlGoesToWPComSite:url]) {
+        return [NSURLRequest requestWithURL:url];
+    }
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
     //make sure the scheme used is https
     [urlComponents setScheme:@"https"];

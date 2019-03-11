@@ -1,4 +1,10 @@
 import UIKit
+import WordPressFlux
+
+@objc protocol SiteStatsDetailsDelegate {
+    @objc optional func tabbedTotalsCellUpdated()
+    @objc optional func displayWebViewWithURL(_ url: URL)
+}
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
 
@@ -10,8 +16,11 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private var statType: StatType = .period
+
+    private var viewModel: SiteStatsDetailsViewModel?
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsChangeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -19,15 +28,28 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - View
 
-    func configure(statSection: StatSection,
-                   siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
-        self.statSection = statSection
-        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
-        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        setupTable()
+        Style.configureTable(tableView)
+        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+    }
+
+    func configure(statSection: StatSection) {
+        self.statSection = statSection
+        statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.title
+        initViewModel()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        // This is primarily to resize the NoResultsView in a TabbedTotalsCell on rotation.
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
     }
 
 }
@@ -36,103 +58,119 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
 private extension SiteStatsDetailTableViewController {
 
-    func setupTable() {
-        ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
-        tableHandler.viewModel = tableViewModel()
+    func initViewModel() {
+        viewModel = SiteStatsDetailsViewModel(detailsDelegate: self)
+
+        guard let statSection = statSection else {
+            return
+        }
+
+        viewModel?.fetchDataFor(statSection: statSection)
+
+        if statType == .insights {
+            insightsChangeReceipt = viewModel?.onChange { [weak self] in
+                guard self?.storeIsFetching(statSection: statSection) == false else {
+                    return
+                }
+                self?.refreshTableView()
+            }
+        } else {
+            // TODO: add period receipt here
+        }
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [TopTotalsInsightStatsRow.self,
-                TopTotalsPeriodStatsRow.self,
-                CountriesStatsRow.self,
+        return [TabbedTotalsDetailStatsRow.self,
                 TableFooterRow.self]
     }
 
-    func tableViewModel() -> ImmuTable {
+    func storeIsFetching(statSection: StatSection) -> Bool {
+        switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            return insightsStore.isFetchingFollowers
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return insightsStore.isFetchingComments
+        default:
+            return false
+        }
+    }
 
+    // MARK: - Table Refreshing
+
+    func refreshTableView() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.viewModel = viewModel.tableViewModel()
+        refreshControl?.endRefreshing()
+    }
+
+    @objc func refreshData() {
         guard let statSection = statSection else {
-            return ImmuTable(sections: [])
+            return
         }
 
-        var tableRows = [ImmuTableRow]()
-
-        if StatSection.allInsights.contains(statSection),
-            let insightRow = insightRow() {
-            tableRows.append(insightRow)
-        }
-
-        if StatSection.allPeriods.contains(statSection),
-            let periodRow = periodRow() {
-            tableRows.append(periodRow)
-        }
-
-        tableRows.append(TableFooterRow())
-
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: tableRows)
-            ])
-    }
-
-    func insightRow() -> ImmuTableRow? {
-
-        guard let siteStatsInsightsDelegate = siteStatsInsightsDelegate,
-            let statSection = statSection else {
-                return nil
-        }
+        refreshControl?.beginRefreshing()
 
         switch statSection {
+        case .insightsFollowersWordPress, .insightsFollowersEmail:
+            viewModel?.refreshFollowers()
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            viewModel?.refreshComments()
         default:
-            return TopTotalsInsightStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                           dataSubtitle: statSection.dataSubtitle,
-                                           dataRows: mockRows(),
-                                           siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+            refreshControl?.endRefreshing()
         }
-    }
-
-    func periodRow() -> ImmuTableRow? {
-
-        guard let siteStatsPeriodDelegate = siteStatsPeriodDelegate,
-        let statSection = statSection else {
-            return nil
-        }
-
-        switch statSection {
-        case .periodCountries:
-            return CountriesStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                     dataSubtitle: statSection.dataSubtitle,
-                                     dataRows: mockRows(),
-                                     siteStatsPeriodDelegate: siteStatsPeriodDelegate)
-        default:
-            return TopTotalsPeriodStatsRow(itemSubtitle: statSection.itemSubtitle,
-                                           dataSubtitle: statSection.dataSubtitle,
-                                           dataRows: mockRows(),
-                                           siteStatsPeriodDelegate: siteStatsPeriodDelegate)
-        }
-
 
     }
 
-    // TODO: populate table with real data.
-    // This is fake just to example the table.
+    func applyTableUpdates() {
+        if #available(iOS 11.0, *) {
+            tableView.performBatchUpdates({
+                updateStatSectionForFilterChange()
+            })
+        } else {
+            tableView.beginUpdates()
+            updateStatSectionForFilterChange()
+            tableView.endUpdates()
+        }
+    }
 
-    func mockRows() -> [StatsTotalRowData] {
-        var dataRows = [StatsTotalRowData]()
+    func updateStatSectionForFilterChange() {
+        guard let oldStatSection = statSection else {
+            return
+        }
 
-            dataRows.append(StatsTotalRowData.init(name: "Row 1",
-                                                   data: 99999.abbreviatedString(),
-                                                   icon: Style.imageForGridiconType(.mySites)))
+        switch oldStatSection {
+        case .insightsFollowersWordPress:
+            statSection = .insightsFollowersEmail
+        case .insightsFollowersEmail:
+            statSection = .insightsFollowersWordPress
+        case .insightsCommentsAuthors:
+            statSection = .insightsCommentsPosts
+        case .insightsCommentsPosts:
+            statSection = .insightsCommentsAuthors
+        default:
+            break
+        }
 
+        initViewModel()
+    }
 
-            dataRows.append(StatsTotalRowData.init(name: "Row 2",
-                                                   data: 666.abbreviatedString(),
-                                                   icon: Style.imageForGridiconType(.mySites)))
+}
 
-            dataRows.append(StatsTotalRowData.init(name: "Rows 3",
-                                                   data: 1010101010.abbreviatedString(),
-                                                   icon: Style.imageForGridiconType(.mySites)))
+// MARK: - SiteStatsDetailsDelegate Methods
 
-        return dataRows
+extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
+
+    func tabbedTotalsCellUpdated() {
+        applyTableUpdates()
+    }
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true, completion: nil)
     }
 
 }
