@@ -23,6 +23,7 @@ class PostStatsViewModel: Observable {
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(titleTableRow())
+        tableRows.append(contentsOf: overviewTableRows())
 
         tableRows.append(TableFooterRow())
 
@@ -42,6 +43,18 @@ private extension PostStatsViewModel {
 
     func titleTableRow() -> ImmuTableRow {
         return PostStatsTitleRow(postTitle: postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title"))
+    }
+
+    func overviewTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+        tableRows.append(CellHeaderRow(title: ""))
+
+        // TODO: replace with real data
+        let data = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle, tabData: 741, difference: 22222, differencePercent: 50)
+
+        tableRows.append(OverviewRow(tabsData: [data]))
+
+        return tableRows
     }
 
 }

@@ -109,6 +109,10 @@ extension WPStyleGuide {
             label.font = postTitleFont
         }
 
+        static func configureLabelForOverview(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
