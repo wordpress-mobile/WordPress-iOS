@@ -1,3 +1,15 @@
-- You’ll go from “initial signup” to “complete website” faster with a smart site-creation process that starts you off with a personalized, already-customized website. You might need to push up your launch schedule now, sorry about that! What a nice problem to have.
-- Once you create your new site, there are more tutorials available than ever to help you shape and grow it, including tips on building your audience. We’ll suggest them where it makes sense, and you find them all on the My Sites screen at any time. Because launching is beginning, not an ending.
-- In our ongoing quest to make the app a joy to use — or at least more pleasant — we’ve increased the padding of the editor window so typing longer posts is more comfortable, and given some error pages layouts and illustration that are more consistent with the rest of the app so they’re easier to understand.
+12.0
+-----
+* Redesigned Notices
+* Changed offline error messages to be less disruptive.
+* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
+ 
+11.9
+------
+* Quick Start v2: After creating a new site with WordPress.com there are more tutorials available, now including tips to improve growth.
+* Quick Start will also be suggested less often, but when it's more likely to be helpful.
+* Added connection error alert in Sharing screen.
+* Increased padding at the bottom of the share extension's editor, to make typing a longer post a bit more comfortable.
+* Removes the white background color applied to the site icon on the site details screen.
+* Updated No Results View illustration and copy displayed on connectivity issue.
+* Enhanced Site Creation flow for smarter, more personalized sites.
