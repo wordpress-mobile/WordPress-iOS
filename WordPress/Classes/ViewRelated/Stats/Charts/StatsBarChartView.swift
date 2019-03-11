@@ -120,6 +120,7 @@ class StatsBarChartView: BarChartView {
 
     private func configureLegendIfNeeded() {
         guard let legendTitle = styling.legendTitle, let legendColor = styling.secondaryBarColor else {
+            legend.enabled = false
             return
         }
 
