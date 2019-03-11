@@ -29,6 +29,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -37,13 +38,15 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+                   siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+        self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
 
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
         addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self, viewMoreDelegate: self)

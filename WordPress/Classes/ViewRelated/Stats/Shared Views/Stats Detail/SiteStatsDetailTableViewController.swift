@@ -81,6 +81,7 @@ private extension SiteStatsDetailTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [TabbedTotalsDetailStatsRow.self,
+                TopTotalsDetailStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -90,6 +91,8 @@ private extension SiteStatsDetailTableViewController {
             return insightsStore.isFetchingFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             return insightsStore.isFetchingComments
+        case .insightsTagsAndCategories:
+            return insightsStore.isFetchingTagsAndCategories
         default:
             return false
         }
@@ -118,6 +121,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshFollowers()
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             viewModel?.refreshComments()
+        case .insightsTagsAndCategories:
+            viewModel?.refreshTagsAndCategories()
         default:
             refreshControl?.endRefreshing()
         }
