@@ -37,6 +37,15 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         }
     }
 
+    // Introduced via #11061, to be replaced with real data via #11067
+    private lazy var latestPostSummaryStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
+        let stubbedData = LatestPostSummaryDataStub()
+        let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
+        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
+
+        return (stubbedData, styling)
+    }()
+
     // MARK: - View
 
     override func awakeFromNib() {
@@ -229,12 +238,7 @@ private extension LatestPostSummaryCell {
     func configureChartView() {
         resetChartView()
 
-        // Introduced via #11061, to be replaced with real data via #11067
-        let stubbedData = LatestPostSummaryDataStub()
-        let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
-        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
-
-        let chartView = StatsBarChartView(data: stubbedData, styling: styling)
+        let chartView = StatsBarChartView(data: latestPostSummaryStub.data, styling: latestPostSummaryStub.styling)
         chartStackView.addArrangedSubview(chartView)
 
         NSLayoutConstraint.activate([

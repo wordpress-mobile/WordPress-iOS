@@ -497,6 +497,9 @@
 		738B9A5C21B85EB00005062B /* UIView+ContentLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A5B21B85EB00005062B /* UIView+ContentLayout.swift */; };
 		738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738B9A5D21B8632E0005062B /* UITableView+Header.swift */; };
 		7396FE66210F730600496D0D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
+		73AC468722319CB4002F7F39 /* period_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 73AC468422319CB3002F7F39 /* period_data.json */; };
+		73AC468822319CB4002F7F39 /* PeriodDataStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AC468522319CB3002F7F39 /* PeriodDataStub.swift */; };
+		73AC468922319CB4002F7F39 /* Stub+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AC468622319CB4002F7F39 /* Stub+Shared.swift */; };
 		73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */; };
 		73ACDF9C2118AF7000233AD4 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		73ACDF9D2118AF7D00233AD4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
@@ -2405,6 +2408,9 @@
 		738B9A5B21B85EB00005062B /* UIView+ContentLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ContentLayout.swift"; sourceTree = "<group>"; };
 		738B9A5D21B8632E0005062B /* UITableView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Header.swift"; sourceTree = "<group>"; };
 		7396FE65210F730600496D0D /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		73AC468422319CB3002F7F39 /* period_data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = period_data.json; sourceTree = "<group>"; };
+		73AC468522319CB3002F7F39 /* PeriodDataStub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodDataStub.swift; sourceTree = "<group>"; };
+		73AC468622319CB4002F7F39 /* Stub+Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Stub+Shared.swift"; sourceTree = "<group>"; };
 		73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSupportService.swift; sourceTree = "<group>"; };
 		73ACDF9F2118B03700233AD4 /* WordPressNotificationServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		73B05D2A21374FE50073ECAA /* WordPressNotificationContentExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WordPressNotificationContentExtension-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -5342,8 +5348,11 @@
 		73FF7035221F4C9400541798 /* Stubs */ = {
 			isa = PBXGroup;
 			children = (
+				73AC468522319CB3002F7F39 /* PeriodDataStub.swift */,
 				73FF7037221F4C9400541798 /* PostSummaryDataStub.swift */,
+				73AC468622319CB4002F7F39 /* Stub+Shared.swift */,
 				73F76E1A222754AE00FDDAD2 /* latestPost_data.json */,
+				73AC468422319CB3002F7F39 /* period_data.json */,
 				73F76E19222754AD00FDDAD2 /* selectedPost_data.json */,
 			);
 			path = Stubs;
@@ -8698,6 +8707,7 @@
 				430693741DD25F31009398A2 /* PostPost.storyboard in Resources */,
 				98563DDE21BF30C40006F5E9 /* TabbedTotalsCell.xib in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
+				73AC468722319CB4002F7F39 /* period_data.json in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				B59F34A1207678480069992D /* SignupEpilogue.storyboard in Resources */,
 				B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */,
@@ -9974,6 +9984,7 @@
 				B58C4ECA207C5E1A00E32E4D /* UIImage+Assets.swift in Sources */,
 				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
 				E684383E221F535900752258 /* LoadMoreCounter.swift in Sources */,
+				73AC468922319CB4002F7F39 /* Stub+Shared.swift in Sources */,
 				E6158ACA1ECDF518005FA441 /* LoginEpilogueUserInfo.swift in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				983DBBAB22125DD500753988 /* StatsTableFooter.swift in Sources */,
@@ -10306,6 +10317,7 @@
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
 				912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */,
+				73AC468822319CB4002F7F39 /* PeriodDataStub.swift in Sources */,
 				D816C1F420E0895E00C4D82F /* MarkAsSpam.swift in Sources */,
 				4349BFF7221205740084F200 /* BlogDetailsSectionHeaderView.swift in Sources */,
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
