@@ -120,7 +120,7 @@ class AccountSettingsService {
                 DDLogError("Error reverting change \(error)")
             }
             DDLogError("Error saving account settings change \(error)")
-            
+
             NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: self, userInfo: [NSUnderlyingErrorKey: error])
 
             finished?(false)
