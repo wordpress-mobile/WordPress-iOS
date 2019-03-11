@@ -34,6 +34,7 @@ public enum StatsRecordType: Int16 {
     case topCommentAuthors
     case topCommentedPosts
     case annualAndMostPopularTimes
+    case today
 
 
     case blogVisitsSummary
@@ -59,6 +60,7 @@ public enum StatsRecordType: Int16 {
               .publicizeConnection,
               .streakInsight,
               .tagsAndCategories,
+              .today,
               .topCommentAuthors,
               .topCommentedPosts,
               .annualAndMostPopularTimes:

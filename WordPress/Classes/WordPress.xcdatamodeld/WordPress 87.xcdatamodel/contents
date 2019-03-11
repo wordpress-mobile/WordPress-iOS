@@ -841,6 +841,12 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
+    <entity name="TodayStatsRecordValue" representedClassName=".TodayStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="commentsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="likesCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="visitorsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="TopCommentedPostStatsRecordValue" representedClassName=".TopCommentedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
@@ -946,5 +952,6 @@
         <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
+        <element name="TodayStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
     </elements>
 </model>
