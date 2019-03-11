@@ -96,6 +96,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
 private extension OverviewCell {
 
     func applyStyles() {
+        Style.configureLabelForOverview(selectedLabel)
+        Style.configureLabelForOverview(selectedData)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
         configureFonts()
