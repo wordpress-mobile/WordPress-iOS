@@ -12,9 +12,11 @@ class NoticePresenter: NSObject {
         }
         return view
     }
+
+    private var currentNotice: Notice?
     private var currentContainer: NoticeContainerView?
 
-    let generator = UINotificationFeedbackGenerator()
+    private let generator = UINotificationFeedbackGenerator()
 
     private var storeReceipt: Receipt?
 
@@ -98,6 +100,9 @@ class NoticePresenter: NSObject {
             return
         }
 
+        currentNotice = notice
+        currentContainer = nil
+
         let content = UNMutableNotificationContent(notice: notice)
         let request = UNNotificationRequest(identifier: notificationInfo.identifier,
                                             content: content,
@@ -118,8 +123,6 @@ class NoticePresenter: NSObject {
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
         addNoticeContainerToPresentingViewController(noticeContainerView)
-        currentContainer = noticeContainerView
-
         addBottomConstraintToNoticeContainer(noticeContainerView)
 
         NSLayoutConstraint.activate([
@@ -127,15 +130,13 @@ class NoticePresenter: NSObject {
             noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
 
-        let fromState = offscreenState(for: noticeContainerView)
-
-        let toState = onscreenState(for: noticeContainerView)
-
         let dismiss = {
             self.dismiss(container: noticeContainerView)
         }
-
         noticeView.dismissHandler = dismiss
+
+        currentNotice = notice
+        currentContainer = noticeContainerView
 
         if let feedbackType = notice.feedbackType {
             generator.notificationOccurred(feedbackType)
@@ -143,6 +144,8 @@ class NoticePresenter: NSObject {
 
         window.isHidden = false
 
+        let fromState = offscreenState(for: noticeContainerView)
+        let toState = onscreenState(for: noticeContainerView)
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
@@ -202,7 +205,9 @@ class NoticePresenter: NSObject {
             return
         }
 
+        currentNotice = nil
         currentContainer = nil
+
         self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
             container.removeFromSuperview()
             self?.window.isHidden = true
