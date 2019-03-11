@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200px" height="2268px" viewBox="0 0 1200 2268" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>Devices/iPhone 8</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Devices/iPhone-8" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iOS/Devices/iPhone-8" transform="translate(69.000000, 66.000000)">
+            <path d="M22.0024507,157.633867 C22.0031344,82.7453697 55.7716208,2.82675317e-15 180.994874,2.49104933e-16 C306.218128,-2.32854331e-15 832.58428,1.62576572e-14 885.453614,2.82675317e-15 C969.593474,-1.0061488e-14 1042.00001,43.6018217 1042,157.633867 C1041.99993,760.489694 1042,1935.21062 1042,1978.36613 C1042,2021.52165 1029.23235,2136 883.007576,2136 L182.217893,2136 C44.2090783,2136 22.0024507,2036.34756 22.0024507,1977.14416 C22.0024507,1917.94077 21.9969366,761.605057 22.0024507,157.633867 Z" id="Body" fill="#204A69" fill-rule="nonzero"></path>
+            <circle id="Home" fill="#23354B" cx="532" cy="2012" r="83"></circle>
+            <rect id="iOS/Devices/iPhone-X/Home-Indicator-Black" fill="#23354B" x="440" y="109" width="183" height="17" rx="8.5"></rect>
+            <circle id="Camera" fill="#23354B" cx="365" cy="118" r="18"></circle>
+            <circle id="Sensor" fill="#23354B" cx="532" cy="51" r="13"></circle>
+            <g id="Screen" transform="translate(74.000000, 255.000000)"></g>
+        </g>
+    </g>
+</svg>

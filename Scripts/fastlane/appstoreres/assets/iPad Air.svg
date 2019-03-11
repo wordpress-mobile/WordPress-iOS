@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2589px" height="1816px" viewBox="0 0 2589 1816" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Devices/ipad Air - Landscape</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Devices/ipad-Air---Landscape" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Ipad-Air---Landscape" transform="translate(0.600000, 0.600000)">
+            <rect id="Body" fill="#204A69" x="0" y="0" width="2587.2" height="1814.4" rx="88.2"></rect>
+            <rect id="Mask" fill-rule="nonzero" x="218.4" y="100.8" width="2150.4" height="1612.8"></rect>
+            <circle id="Home" fill="#23354B" cx="2478" cy="907.2" r="58.8"></circle>
+            <circle id="Camera" fill="#23354B" cx="109.2" cy="907.2" r="14.7"></circle>
+        </g>
+    </g>
+</svg>
