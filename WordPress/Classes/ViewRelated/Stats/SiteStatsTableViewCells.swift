@@ -149,6 +149,35 @@ struct TabbedTotalsDetailStatsRow: ImmuTableRow {
     }
 }
 
+struct TopTotalsDetailStatsRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let siteStatsDetailsDelegate: SiteStatsDetailsDelegate
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsInsightsDelegate: nil,
+                       siteStatsPeriodDelegate: nil,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate)
+    }
+}
+
 struct TopTotalsInsightStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
