@@ -6,7 +6,7 @@ class WelcomeScreen: BaseScreen {
     let createNewSiteButton: XCUIElement
 
     init() {
-        logInButton = XCUIApplication().buttons["Log In"]
+        logInButton = XCUIApplication().buttons["Prologue Log In Button"]
         createNewSiteButton = XCUIApplication().buttons["nextButton"]
         super.init(element: logInButton)
     }

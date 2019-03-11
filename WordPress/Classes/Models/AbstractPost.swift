@@ -26,4 +26,15 @@ extension AbstractPost {
     @objc func containsGutenbergBlocks() -> Bool {
         return content?.contains("<!-- wp:") ?? false
     }
+
+    var analyticsPostType: String? {
+        switch self {
+        case is Post:
+            return "post"
+        case is Page:
+            return "page"
+        default:
+            return nil
+        }
+    }
 }

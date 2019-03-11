@@ -5,6 +5,8 @@ import WordPressFlux
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 
@@ -34,6 +36,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
                 return
             }
 
+            clearExpandedRows()
+
             // If this is the first time setting the Period, need to initialize the view model.
             // Otherwise, just refresh the data.
             if oldValue == nil {
@@ -58,6 +62,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        clearExpandedRows()
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -94,7 +99,11 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self, TopTotalsPeriodStatsRow.self, TopTotalsNoSubtitlesPeriodStatsRow.self]
+        return [CellHeaderRow.self,
+                TopTotalsPeriodStatsRow.self,
+                TopTotalsNoSubtitlesPeriodStatsRow.self,
+                CountriesStatsRow.self,
+                TableFooterRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -106,9 +115,14 @@ private extension SiteStatsPeriodTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
+
+        // Scroll to the top of the table.
+        // TODO: look at removing this when loading view is added.
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 
     @objc func userInitiatedRefresh() {
+        clearExpandedRows()
         refreshControl?.beginRefreshing()
         refreshData()
     }
@@ -122,6 +136,15 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
+    }
+
+    func applyTableUpdates() {
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+
+    func clearExpandedRows() {
+        StatsDataHelper.clearExpandedPeriods()
     }
 
 }
@@ -151,4 +174,20 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
             DDLogInfo("Unable to get media when trying to show from Stats: \(error.localizedDescription)")
         })
     }
+
+    func expandedRowUpdated(_ row: StatsTotalRow) {
+        applyTableUpdates()
+        StatsDataHelper.updatedExpandedState(forRow: row)
+    }
+
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allPeriods.contains(statSection) else {
+            return
+        }
+
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, siteStatsPeriodDelegate: self)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
 }

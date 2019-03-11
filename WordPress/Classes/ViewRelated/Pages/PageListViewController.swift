@@ -53,10 +53,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
-    // MARK: - Gutenberg Support
-
-    private let gutenbergAlertPresenter = GutenbergAlertPresenter()
-
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
@@ -370,7 +366,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
 
         if let sectionInfo = sectionInfo {
-            headerView.setTite(sectionInfo.name)
+            headerView.setTitle(sectionInfo.name)
         }
 
         return headerView
@@ -385,11 +381,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        gutenbergAlertPresenter.presentIfNecessary(for: page, from: self) { [unowned self] edit in
-            if edit {
-                self.editPage(page)
-            }
-        }
+        editPage(page)
     }
 
     @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -475,8 +467,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let postViewController = editorFactory.instantiateEditor(
             for: post,
-            switchToAztec: switchToAztec,
-            switchToGutenberg: switchToGutenberg)
+            replaceEditor: { [weak self] (editor, replacement) in
+                self?.replaceEditor(editor: editor, replacement: replacement)
+        })
 
         show(postViewController)
     }
@@ -506,31 +499,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         })
     }
 
-    // MARK: - Opening Specific Editors
-
-    private func showAztec(loading post: AbstractPost) {
-        let editor = AztecPostViewController(post: post, switchToGutenberg: switchToGutenberg)
-
-        show(editor)
-    }
-
-    private func showGutenberg(loading post: AbstractPost) {
-        let editor = GutenbergViewController(post: post, switchToAztec: switchToAztec)
-
-        show(editor)
-    }
-
-    // MARK: - Switching Editors
-
-    private func switchToAztec(dismissing editor: EditorViewController) {
-        editor.dismiss(animated: true) { [unowned self] in
-            self.showAztec(loading: editor.post)
-        }
-    }
-
-    private func switchToGutenberg(dismissing editor: EditorViewController) {
-        editor.dismiss(animated: true) { [unowned self] in
-            self.showGutenberg(loading: editor.post)
+    func replaceEditor(editor: EditorViewController, replacement: EditorViewController) {
+        editor.dismiss(animated: true) { [weak self] in
+            self?.show(replacement)
         }
     }
 

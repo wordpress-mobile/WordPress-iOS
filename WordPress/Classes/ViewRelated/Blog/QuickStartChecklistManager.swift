@@ -1,5 +1,5 @@
 class QuickStartChecklistManager: NSObject {
-    typealias QuickStartChecklistDidSelectTour = (String) -> Void
+    typealias QuickStartChecklistDidSelectTour = (QuickStartTour) -> Void
     typealias QuickStartChecklistDidTapHeader = (Bool) -> Void
 
     private var blog: Blog
@@ -53,6 +53,7 @@ extension QuickStartChecklistManager: UITableViewDataSource {
             let tour = self.tour(at: indexPath)
             cell.tour = tour
             cell.completed = isCompleted(tour: tour)
+            cell.topSeparatorIsHidden = hideTopSeparator(at: indexPath)
             cell.lastRow = isLastTour(at: indexPath)
             return cell
         }
@@ -69,13 +70,8 @@ extension QuickStartChecklistManager: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let tourGuide = QuickStartTourGuide.find() else {
-                return
-        }
-
         let tour = self.tour(at: indexPath)
-        tourGuide.start(tour: tour, for: blog)
-        didSelectTour(tour.analyticsKey)
+        didSelectTour(tour)
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -108,7 +104,7 @@ extension QuickStartChecklistManager: UITableViewDelegate {
             }
             return headerView
         }
-        return nil
+        return WPDeviceIdentification.isiPhone() ? nil : UIView()
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -116,7 +112,14 @@ extension QuickStartChecklistManager: UITableViewDelegate {
             !completedTours.isEmpty {
             return Sections.headerHeight
         }
-        return 0.0
+        return WPDeviceIdentification.isiPhone() ? 0.0 : Sections.iPadTopInset
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        guard let section = Sections(rawValue: indexPath.section), section == .todo else {
+            return .none
+        }
+        return .delete
     }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -137,6 +140,19 @@ private extension QuickStartChecklistManager {
     func isLastTour(at indexPath: IndexPath) -> Bool {
         let tours = self.tours(at: indexPath.section)
         return (tours.count - 1) == indexPath.row
+    }
+
+    func hideTopSeparator(at indexPath: IndexPath) -> Bool {
+        guard let section = Sections(rawValue: indexPath.section) else {
+            return true
+        }
+
+        switch section {
+        case .todo:
+            return !(WPDeviceIdentification.isiPad() && !todoTours.isEmpty && indexPath.row == 0)
+        case .completed:
+            return true
+        }
     }
 
     func tours(at section: Int) -> [QuickStartTour] {
@@ -181,6 +197,9 @@ private extension QuickStartChecklistManager {
         todoTours.remove(at: indexPath.row)
         completedTours.append(tour)
         completedToursKeys.insert(tour.key)
+
+        WPAnalytics.track(.quickStartListItemSkipped,
+                          withProperties: ["task_name": tour.analyticsKey])
 
         tableView.perform(update: { tableView in
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -231,6 +250,7 @@ private extension UITableView {
 private enum Sections: Int, CaseIterable {
     static let footerHeight: CGFloat = 20.0
     static let headerHeight: CGFloat = 44.0
+    static let iPadTopInset: CGFloat = 36.0
 
     case todo
     case completed

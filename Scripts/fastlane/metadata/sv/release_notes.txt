@@ -1,4 +1,3 @@
-- Nu kan du dela en webbplats via läsaren.
-- Rättat ett fel vid redigering av lokal kopia av ett utkast till ett inlägg. Om man därefter kastade ändringarna resulterade detta tidigare i att inlägget raderades.
-- Rättat ett fel i läsaren som fick appen att krascha när ett inlägg med ett videoklipp visades.
-- Rättat några layoutfel i användargränssnittet där olika element överlappade varandra eller hade felaktiga storlekar.
+- Med en smartare process för att skapa en webbplats kommer du snabbare från ”ursprunglig registrering” till ”färdig webbplats” där du börjar med en webbplats som redan är personlig och anpassad. Nu kanske du tvingas tidigarelägga din lansering. Förlåt oss i så fall. Men det är ju ett positivt problem!
+- När du skapar din nya webbplats finns det nu fler vägledningar än någonsin att välja mellan för att hjälpa dig forma och utvidga den, inklusive olika tips på hur du får fler läsare. Vi lämnar våra förslag när de kan vara till nytta, och du kan närsomhelst hitta dem alla på skärmen ”Mina webbplatser”. Lanseringen är inte slutpunkten, det är bara början.
+- I våra fortstta ansträngningar att göra appen härlig att använda – eller åtminstone trevligare – har vi breddat marginalerna i redigeringsfönstret för att göra det bekvämare när man redigerar längre inlägg. Vissa sidor med felmeddelanden har fått layout och illustrationer som stämmer bättre överens med resten av appen så att de blir lättare att förstå.

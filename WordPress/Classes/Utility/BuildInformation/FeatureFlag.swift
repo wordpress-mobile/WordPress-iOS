@@ -27,15 +27,15 @@ enum FeatureFlag: Int {
         case .giphy:
             return true
         case .enhancedSiteCreation:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .revisions:
             return true
         case .statsRefresh:
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
+            return true
         case .quickStartV2:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }

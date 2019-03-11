@@ -252,9 +252,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         let referenceView: UITextView = richTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
 
-        var contentInset = referenceView.contentInset
-        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
-        referenceView.contentInset = contentInset
+        updateContentInset(for: referenceView)
 
         textPlaceholderTopConstraint.constant = referenceView.textContainerInset.top + referenceView.contentInset.top
     }
@@ -276,10 +274,16 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
         textPlaceholderTopConstraint.constant = referenceView.textContainerInset.top + referenceView.contentInset.top
 
+        updateContentInset(for: referenceView)
+
+        referenceView.setContentOffset(CGPoint(x: 0, y: -referenceView.contentInset.top), animated: false)
+    }
+
+    private func updateContentInset(for referenceView: UITextView) {
         var contentInset = referenceView.contentInset
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
+        contentInset.bottom = Constants.editorBottomInset
         referenceView.contentInset = contentInset
-        referenceView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
     }
 
     /// Sanitizes an input for insertion in the title text view.
@@ -1263,6 +1267,7 @@ fileprivate extension ShareExtensionEditorViewController {
     struct Constants {
         static let placeholderPadding           = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let insetBottomPadding           = CGFloat(50.0)
+        static let editorBottomInset            = CGFloat(18.0)
         static let headers                      = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                        = [TextList.Style.unordered, .ordered]
         static let toolbarHeight                = CGFloat(44.0)

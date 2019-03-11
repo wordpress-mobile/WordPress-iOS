@@ -730,6 +730,10 @@ static NSInteger HideSearchMinSites = 3;
         RecentSitesService *recentSites = [RecentSitesService new];
         [recentSites touchBlog:blog];
 
+        if (![blog isEqual:self.selectedBlog] && [Feature enabled:FeatureFlagQuickStartV2]) {
+            [[PushNotificationsManager shared] deletePendingLocalNotifications];
+        }
+
         self.selectedBlog = blog;
     }
 }
@@ -861,19 +865,9 @@ static NSInteger HideSearchMinSites = 3;
         UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
                                                                         style:UIAlertActionStyleDefault
                                                                       handler:^(UIAlertAction *action) {
-                                                                          [self showAddNewWordPressController];
+                                                                          [self launchSiteCreation];
                                                                       }];
         [addSiteAlertController addAction:addNewWordPressAction];
-
-        if ([Feature enabled: FeatureFlagEnhancedSiteCreation]) {
-            UIAlertAction *enhancedSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Enhanced site creation", @"Enhanced site creation")
-                                                                         style:UIAlertActionStyleDefault
-                                                                       handler:^(UIAlertAction *action) {
-                                                                           [self enhancedSiteCreation];
-                                                                       }];
-
-            [addSiteAlertController addAction:enhancedSiteAction];
-        }
     }
 
     UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add self-hosted site", @"Add self-hosted site button")

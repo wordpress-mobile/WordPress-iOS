@@ -29,7 +29,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
-    private var summaryData: StatsLatestPostSummary?
+    private var lastPostInsight: StatsLastPostInsight?
 
     private var actionType: ActionType? {
         didSet {
@@ -44,23 +44,23 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(withData summaryData: StatsLatestPostSummary?, andDelegate delegate: SiteStatsInsightsDelegate) {
+    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate) {
 
         siteStatsInsightsDelegate = delegate
 
         // If there is no summary data, there is no post. Show Create Post option.
-        guard let summaryData = summaryData else {
+        guard let lastPostInsight = lastPostInsight else {
             actionType = .createPost
             return
         }
 
-        self.summaryData = summaryData
-        viewsDataLabel.text = summaryData.viewsValue.abbreviatedString()
-        likesDataLabel.text = summaryData.likesValue.abbreviatedString()
-        commentsDataLabel.text = summaryData.commentsValue.abbreviatedString()
+        self.lastPostInsight = lastPostInsight
+        viewsDataLabel.text = lastPostInsight.viewsCount.abbreviatedString()
+        likesDataLabel.text = lastPostInsight.likesCount.abbreviatedString()
+        commentsDataLabel.text = lastPostInsight.commentsCount.abbreviatedString()
 
         // If there is a post but 0 data, show Share Post option.
-        if summaryData.viewsValue == 0 && summaryData.likesValue == 0 && summaryData.commentsValue == 0 {
+        if lastPostInsight.likesCount == 0 && lastPostInsight.viewsCount == 0 && lastPostInsight.commentsCount == 0 {
             actionType = .sharePost
             return
         }
@@ -108,6 +108,7 @@ private extension LatestPostSummaryCell {
         switch actionType {
         case .viewMore:
             toggleDataViews(hide: false)
+            configureChartView()
             actionLabel.text = CellStrings.viewMore
         case .sharePost:
             toggleDataViews(hide: true)
@@ -144,8 +145,8 @@ private extension LatestPostSummaryCell {
             return NSAttributedString(string: CellStrings.summaryNoPosts)
         }
 
-        let postAge = summaryData?.postAge ?? ""
-        let postTitle = summaryData?.postTitle ?? ""
+        let postAge = lastPostInsight?.publishedDate.relativeStringInPast() ?? ""
+        let postTitle = lastPostInsight?.title.nonEmptyString() ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
 
         var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
@@ -184,7 +185,7 @@ private extension LatestPostSummaryCell {
 
     @IBAction func didTapSummaryButton(_ sender: UIButton) {
 
-        guard let postURL = summaryData?.postURL else {
+        guard let postURL = lastPostInsight?.url else {
             return
         }
 
@@ -202,10 +203,10 @@ private extension LatestPostSummaryCell {
             // TODO: show Post Details
             showAlertWithTitle("Post Details will be shown here.")
         case .sharePost:
-            guard let postID = summaryData?.postID else {
+            guard let postID = lastPostInsight?.postID else {
                 return
             }
-            siteStatsInsightsDelegate?.showShareForPost?(postID: postID, fromView: actionStackView)
+            siteStatsInsightsDelegate?.showShareForPost?(postID: postID as NSNumber, fromView: actionStackView)
         case .createPost:
             siteStatsInsightsDelegate?.showCreatePost?()
         }
@@ -219,4 +220,28 @@ private extension LatestPostSummaryCell {
         alertController.presentFromRootViewController()
     }
 
+    // MARK: - Chart support
+
+    func resetChartView() {
+        chartStackView.removeAllSubviews()
+    }
+
+    func configureChartView() {
+        resetChartView()
+
+        let stubbedData = LatestPostSummaryDataStub()
+
+        let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
+        let styling = LatestPostSummaryStubStyling(initialDateInterval: firstStubbedDateInterval)
+
+        let chartView = StatsBarChartView(data: stubbedData, styling: styling)
+        chartStackView.addArrangedSubview(chartView)
+
+        NSLayoutConstraint.activate([
+            chartView.leadingAnchor.constraint(equalTo: chartStackView.leadingAnchor),
+            chartView.trailingAnchor.constraint(equalTo: chartStackView.trailingAnchor),
+            chartView.topAnchor.constraint(equalTo: chartStackView.topAnchor),
+            chartView.bottomAnchor.constraint(equalTo: chartStackView.bottomAnchor)
+        ])
+    }
 }

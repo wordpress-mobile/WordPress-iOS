@@ -1,4 +1,3 @@
-- Artık Okuyucu ile bir site paylaşabilirsiniz.
-- Taslak gönderinin yerel bir kopyasını düzenlerken, yapılan değişiklikleri göz ardı etmenin gönderinin silinmesine neden olmasıyla ilgili bir hata giderildi.
-- Okuyucu’da video içerikli bir gönderi gösterilirken uygulamanın çökmesine neden olan bir hata düzeltildi.
-- Öğelerin çakıştığı veya yanlış boyutta olduğu bir takım kullanıcı arayüzü düzen hataları düzeltildi.
+- Sizi kişiselleştirilmiş, halihazırda özelleştirilmiş bir web sitesiyle başlatan akıllı site oluşturma işlemiyle "ilk kayıttan" "web sitesi tamamlamaya" daha hızlı ilerlersiniz. Artık yayın tarihinizi öne çekmeniz gerekebilir, bunun için üzgünüz! Ne kadar güzel bir sorun.
+- Yeni sitenizi oluşturduğunuzda, kitlenizi oluşturmaya ilişkin ipuçları dahil, sitenizi şekillendirmek ve büyütmekle ilgili hiç olmadığı kadar fazla sayıda eğitim mevcut. İşinize yarayacağı zaman bunları önereceğiz ve tümünü istediğiniz zaman Sitelerim ekranında bulabilirsiniz. Çünkü yayımlamak bir bitiş değil başlangıçtır.
+- Uygulamayı kullanmayı eğlenceli -en azından daha keyifli- kılmaya yönelik yolculuğumuzda düzenleyici penceresinin içeriğini artırdık. Böylece, daha uzun yazılar yazmak daha rahat hale geldi ve anlamalarını kolaylaştırmak için bazı hata sayfası düzenleri ve illüstrasyonları uygulamanın geri kalanıyla daha tutarlı olarak sağlandı.

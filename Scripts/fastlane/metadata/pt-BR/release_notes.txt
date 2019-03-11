@@ -1,4 +1,3 @@
-- Agora você pode compartilhar um site pelo Leitor.
-- Correção de um erro no qual, ao editar uma cópia local de um rascunho de post e descartar as edições, o post era apagado.
-- Correção de um erro no Leitor que reiniciava o aplicativo ao exibir posts com vídeos.
-- Correção de alguns erros de layout que exibiam elementos sobrepostos ou com tamanhos diferentes.
+- Você criará o seu site mais rapidamente com um processo que iniciará seu site já personalizado. Assim você poderá lançar seu site o quanto antes.
+- Assim que você criar um novo site, exibiremos dicas de como melhorar o site e aumentar sua audiência. As sugestões aparecerão quando forem necessárias e você poderá vê-las na tela "Meu site" a qualquer momento.
+- Para continuar a melhor o aplicativo, nós aumentamos a margem no editor para que seja mais confortável escrever posts longos e adicionamos ilustrações em telas de erros consistentes com as outras telas do aplicativo para que seja mais simples de entendê-los.

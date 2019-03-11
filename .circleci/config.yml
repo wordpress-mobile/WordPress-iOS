@@ -1,34 +1,16 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.12
-  danger: wordpress-mobile/danger@0.0.12
-
-jobs:
-  build_and_test:
-    macos:
-      xcode: "10.1.0"
-    steps:
-      - checkout
-      - ios/cached-pod-install:
-          # If you want to reset the CircleCI cache, increment the number in the cache prefix below
-          cache-prefix: cocoapods-cache-v1
-      - run:
-          name: Build
-          command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -sdk iphonesimulator build-for-testing | bundle exec xcpretty
-      - run:
-          name: Test
-          command: xcodebuild -scheme "WordPress" -configuration "Debug" -workspace "WordPress.xcworkspace" -destination 'platform=iOS Simulator,name=iPhone XS,OS=latest' test-without-building | bundle exec xcpretty -r junit
-      - store_test_results:
-          path: build/reports
+  ios: wordpress-mobile/ios@0.0.20
 
 workflows:
   wordpress_ios:
     jobs:
-      - danger/danger-ruby:
-          name: danger
-          filters:
-            branches:
-              # Disable Danger on develop
-              ignore: develop
-      - build_and_test
+      - ios/test:
+          name: build_and_test
+          workspace: WordPress.xcworkspace
+          scheme: WordPress
+          device: iPhone XS
+          ios-version: "12.1"
+          # If you want to reset the CircleCI cache, increment the number in the cache prefix below
+          cache-prefix: dependency-cache-v1

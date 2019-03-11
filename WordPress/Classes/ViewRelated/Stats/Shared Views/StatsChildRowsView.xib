@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="StatsChildRowsView" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="219"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="EKr-3x-noM" userLabel="Rows Stack View">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="218.5"/>
+                </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aRH-KY-BdX" userLabel="Bottom Seperator Line">
+                    <rect key="frame" x="0.0" y="218.5" width="375" height="0.5"/>
+                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="tCp-C8-gYB"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aRH-KY-BdX" secondAttribute="bottom" priority="999" id="AeW-OQ-A7m"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aRH-KY-BdX" secondAttribute="trailing" id="Fhj-J1-F3c"/>
+                <constraint firstItem="aRH-KY-BdX" firstAttribute="top" secondItem="EKr-3x-noM" secondAttribute="bottom" id="ZqI-uC-B8y"/>
+                <constraint firstItem="EKr-3x-noM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="iLe-eX-vYg"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="leading" secondItem="aRH-KY-BdX" secondAttribute="leading" id="zNN-g6-8dQ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EKr-3x-noM" secondAttribute="trailing" id="zja-nD-Ywd"/>
+                <constraint firstItem="EKr-3x-noM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="zoO-jN-vJt"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="bottomSeperatorLine" destination="aRH-KY-BdX" id="UfI-xX-ayH"/>
+                <outlet property="rowsStackView" destination="EKr-3x-noM" id="5ea-qU-zAF"/>
+            </connections>
+            <point key="canvasLocation" x="-724" y="104.7976011994003"/>
+        </view>
+    </objects>
+</document>
