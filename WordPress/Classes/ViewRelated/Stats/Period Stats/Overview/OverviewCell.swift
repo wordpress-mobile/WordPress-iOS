@@ -60,6 +60,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var selectedData: UILabel!
     @IBOutlet weak var differenceLabel: UILabel!
     @IBOutlet weak var chartContainerView: UIView!
+    @IBOutlet weak var chartBottomConstraint: NSLayoutConstraint!
 
     private var tabsData = [OverviewTabData]()
 
@@ -111,6 +112,15 @@ private extension OverviewCell {
     }
 
     func setupFilterBar() {
+
+        // If there is only one tab data, this is being displayed on the
+        // Post Stats view, which does not have a filterTabBar.
+        filterTabBar.isHidden = tabsData.count == 1
+
+        chartBottomConstraint.constant = filterTabBar.isHidden ?
+            ChartBottomMargin.filterTabBarHidden :
+            ChartBottomMargin.filterTabBarShown
+
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forOverviewCard: true)
         filterTabBar.items = tabsData
         filterTabBar.tabBarHeight = 60.0
@@ -153,4 +163,10 @@ private extension OverviewCell {
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
     }
+
+    private enum ChartBottomMargin {
+        static let filterTabBarShown = CGFloat(16)
+        static let filterTabBarHidden = CGFloat(24)
+    }
+
 }
