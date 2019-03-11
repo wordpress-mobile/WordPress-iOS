@@ -87,6 +87,23 @@ class StatsBarChartView: BarChartView {
         return (rect, offset)
     }
 
+    private func configureAndPopulateData() {
+        let barChartData = self.barChartData.barChartData
+
+        guard let dataSets = barChartData.dataSets as? [BarChartDataSet], let initialDataSet = dataSets.first else {
+            return
+        }
+
+        if dataSets.count > 1 {
+            configureChartForMultipleDataSets(dataSets)
+        } else {
+            configureChartForSingleDataSet(initialDataSet)
+        }
+
+        configureLegendIfNeeded()
+        data = barChartData
+    }
+
     private func configureBarChartViewProperties() {
         drawBarShadowEnabled = false
         drawValueAboveBarEnabled = false
@@ -110,12 +127,55 @@ class StatsBarChartView: BarChartView {
         scaleYEnabled = false
     }
 
+    private func configureChartForMultipleDataSets(_ dataSets: [BarChartDataSet]) {
+        guard let initialDataSet = dataSets.first else {
+            return
+        }
+        configureDataSet(dataSet: initialDataSet, with: styling.primaryBarColor, enableHighlight: true)
+
+        guard dataSets.count > 1, let secondaryBarColor = styling.secondaryBarColor else {
+            return
+        }
+        let secondaryDataSet = dataSets[1]
+        configureDataSet(dataSet: secondaryDataSet, with: secondaryBarColor, enableHighlight: false)
+    }
+
+    private func configureChartForSingleDataSet(_ dataSet: BarChartDataSet) {
+
+        dataSet.colors = [ styling.primaryBarColor ]
+        dataSet.drawValuesEnabled = false
+
+        if let barHighlightColor = styling.highlightColor {
+            dataSet.highlightAlpha = Constants.highlightAlpha
+            dataSet.highlightColor = barHighlightColor
+            dataSet.highlightEnabled = true
+        } else {
+            dataSet.highlightEnabled = false
+            highlightPerTapEnabled = false
+        }
+    }
+
     private func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
 
         extraRightOffset = Constants.offset
 
         animate(yAxisDuration: Constants.animationDuration)
+    }
+
+    private func configureDataSet(dataSet: BarChartDataSet, with color: NSUIColor, enableHighlight: Bool) {
+        dataSet.colors = [ color ]
+
+        dataSet.drawValuesEnabled = false
+
+        guard let barHighlightColor = styling.highlightColor else {
+            highlightPerTapEnabled = false
+            return
+        }
+
+        dataSet.highlightAlpha = (styling.secondaryBarColor != nil) ? Constants.highlightAlpha : CGFloat(1)
+        dataSet.highlightColor = barHighlightColor
+        dataSet.highlightEnabled = enableHighlight
     }
 
     private func configureLegendIfNeeded() {
@@ -155,39 +215,6 @@ class StatsBarChartView: BarChartView {
         yAxis.drawZeroLineEnabled = true
         yAxis.labelTextColor = styling.labelColor
         yAxis.valueFormatter = styling.yAxisValueFormatter
-    }
-
-    private func configureDataSet(dataSet: BarChartDataSet, with color: NSUIColor, enableHighlight: Bool) {
-        dataSet.colors = [ color ]
-
-        dataSet.drawValuesEnabled = false
-
-        guard let barHighlightColor = styling.highlightColor else {
-            highlightPerTapEnabled = false
-            return
-        }
-
-        dataSet.highlightAlpha = (styling.secondaryBarColor != nil) ? Constants.highlightAlpha : CGFloat(1)
-        dataSet.highlightColor = barHighlightColor
-        dataSet.highlightEnabled = enableHighlight
-    }
-
-    private func configureAndPopulateData() {
-        let barChartData = self.barChartData.barChartData
-
-        guard let dataSets = barChartData.dataSets as? [BarChartDataSet], let initialDataSet = dataSets.first else {
-            return
-        }
-        configureDataSet(dataSet: initialDataSet, with: styling.primaryBarColor, enableHighlight: true)
-
-        if dataSets.count > 1, let secondaryBarColor = styling.secondaryBarColor {
-            let secondaryDataSet = dataSets[1]
-            configureDataSet(dataSet: secondaryDataSet, with: secondaryBarColor, enableHighlight: false)
-        }
-
-        configureLegendIfNeeded()
-
-        data = barChartData
     }
 
     private func drawChartMarker(for entry: ChartDataEntry, triggerRedraw: Bool = false) {
