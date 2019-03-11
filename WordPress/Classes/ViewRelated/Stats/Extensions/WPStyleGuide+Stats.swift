@@ -100,6 +100,15 @@ extension WPStyleGuide {
             label.textColor = defaultTextColor
         }
 
+        static func configureLabelAsPostStatsTitle(_ label: UILabel) {
+            label.textColor = defaultTextColor
+        }
+
+        static func configureLabelAsPostTitle(_ label: UILabel) {
+            label.textColor = defaultTextColor
+            label.font = postTitleFont
+        }
+
         static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
             let attributedString = NSMutableAttributedString(string: inString)
 
@@ -171,6 +180,8 @@ extension WPStyleGuide {
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
+
+        static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
 
         static let positiveColor = WPStyleGuide.validGreen()
         static let negativeColor = WPStyleGuide.errorRed()

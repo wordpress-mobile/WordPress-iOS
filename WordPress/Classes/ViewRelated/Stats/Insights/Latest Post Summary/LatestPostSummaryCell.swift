@@ -30,6 +30,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
+    private var postTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
 
     private var actionType: ActionType? {
         didSet {
@@ -155,7 +156,10 @@ private extension LatestPostSummaryCell {
         }
 
         let postAge = lastPostInsight?.publishedDate.relativeStringInPast() ?? ""
-        let postTitle = lastPostInsight?.title.nonEmptyString() ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
+
+        if let title = lastPostInsight?.title, !title.isEmpty {
+            postTitle = title
+        }
 
         var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
@@ -209,8 +213,7 @@ private extension LatestPostSummaryCell {
 
         switch actionType {
         case .viewMore:
-            // TODO: show Post Details
-            showAlertWithTitle("Post Details will be shown here.")
+            siteStatsInsightsDelegate?.showPostStats?(withPostTitle: postTitle)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 return
@@ -219,14 +222,6 @@ private extension LatestPostSummaryCell {
         case .createPost:
             siteStatsInsightsDelegate?.showCreatePost?()
         }
-    }
-
-    func showAlertWithTitle(_ title: String) {
-        let alertController =  UIAlertController(title: title,
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
     }
 
     // MARK: - Chart support
