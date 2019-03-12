@@ -115,6 +115,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories())
     }
 
+    func refreshPostsAndPages() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshPostsAndPages(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension

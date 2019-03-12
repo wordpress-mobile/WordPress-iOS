@@ -148,10 +148,11 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshComments()
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
+        case .periodPostsAndPages:
+            viewModel?.refreshPostsAndPages()
         default:
             refreshControl?.endRefreshing()
         }
-
     }
 
     func applyTableUpdates() {
