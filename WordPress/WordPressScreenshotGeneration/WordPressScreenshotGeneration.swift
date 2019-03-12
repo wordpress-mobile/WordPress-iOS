@@ -131,7 +131,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         screenshotPost(withSlug: "ideas", called: "5-DraftEditor")
 
         // Get a screenshot of the full-screen editor
-        if isIpad(){
+        if isIpad() {
             screenshotPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
         }
 
