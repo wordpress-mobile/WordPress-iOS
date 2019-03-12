@@ -56,8 +56,8 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodData(date: date, period: period))
+    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period))
     }
 }
 

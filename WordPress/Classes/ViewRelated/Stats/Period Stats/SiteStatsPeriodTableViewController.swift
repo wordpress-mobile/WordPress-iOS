@@ -92,7 +92,7 @@ private extension SiteStatsPeriodTableViewController {
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
-                !store.isFetching else {
+                !store.isFetchingOverview else {
                     return
             }
 
@@ -138,7 +138,7 @@ private extension SiteStatsPeriodTableViewController {
                 return
         }
 
-        viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
+        viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
     func applyTableUpdates() {
