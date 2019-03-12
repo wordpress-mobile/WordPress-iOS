@@ -27,7 +27,6 @@ import WordPressAuthenticator
             return handleViewStats(url: url)
         case "debugging":
             return handleDebugging(url: url)
-            fallthrough
         default:
             return false
         }
