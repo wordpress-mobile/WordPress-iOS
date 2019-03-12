@@ -21,7 +21,7 @@ class TodayStatsTests: StatsTestCase {
         child2.likesCount = 2
 
         XCTAssertThrowsError(try mainContext.save()) { error in
-            // the error is being bubbled up trough Obj-C Core Data innards, which means we can't just compare the enums.
+            // the error is being bubbled up through Obj-C Core Data innards, which means we can't just compare the enums.
             let thrownErrorAsNSError = error as NSError
             let expectedErrorAsNSErrror = StatsCoreDataValidationError.singleEntryTypeViolation as NSError
 
