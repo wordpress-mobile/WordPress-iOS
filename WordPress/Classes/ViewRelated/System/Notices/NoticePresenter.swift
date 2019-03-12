@@ -4,6 +4,11 @@ import UserNotifications
 import WordPressFlux
 
 class NoticePresenter: NSObject {
+    private struct NoticeArtifact {
+        let notice: Notice
+        let containerView: NoticeContainerView?
+    }
+
     private let store: NoticeStore
     private let window: UntouchableWindow
     private var view: UIView {
@@ -13,8 +18,7 @@ class NoticePresenter: NSObject {
         return view
     }
 
-    private var currentNotice: Notice?
-    private var currentContainer: NoticeContainerView?
+    private var currentNoticeArtifact: NoticeArtifact?
 
     private let generator = UINotificationFeedbackGenerator()
 
@@ -39,7 +43,7 @@ class NoticePresenter: NSObject {
         super.init()
 
         storeReceipt = store.onChange { [weak self] in
-            self?.presentNextNoticeIfAvailable()
+            self?.onStoreChange()
         }
 
         listenToKeyboardEvents()
@@ -52,7 +56,7 @@ class NoticePresenter: NSObject {
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentContainer,
+                let currentContainer = self.currentNoticeArtifact?.containerView,
                 let userInfo = notification.userInfo,
                 let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
@@ -68,7 +72,7 @@ class NoticePresenter: NSObject {
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentContainer,
+                let currentContainer = self.currentNoticeArtifact?.containerView,
                 let userInfo = notification.userInfo,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
                     return
@@ -81,33 +85,40 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func presentNextNoticeIfAvailable() {
-        guard currentNotice != store.nextNotice else {
+    private func onStoreChange() {
+        guard currentNoticeArtifact?.notice != store.nextNotice else {
             return
         }
 
-        dismissCurrentNotice()
+        dismissForegroundNotice()
 
-        if let notice = store.nextNotice {
-            present(notice)
+        currentNoticeArtifact = nil
+
+        guard let notice = store.nextNotice else {
+            return
         }
-    }
 
-    private func present(_ notice: Notice) {
-        if UIApplication.shared.applicationState == .background {
-            presentNoticeInBackground(notice)
+        if let artifact = present(notice) {
+            currentNoticeArtifact = artifact
         } else {
-            presentNoticeInForeground(notice)
+            ActionDispatcher.dispatch(NoticeAction.clear(notice))
         }
     }
 
-    private func presentNoticeInBackground(_ notice: Notice) {
-        guard let notificationInfo = notice.notificationInfo else {
-            return
-        }
+    // MARK: - Presentation
 
-        currentNotice = notice
-        currentContainer = nil
+    private func present(_ notice: Notice) -> NoticeArtifact? {
+        if UIApplication.shared.applicationState == .background {
+            return presentNoticeInBackground(notice)
+        } else {
+            return presentNoticeInForeground(notice)
+        }
+    }
+
+    private func presentNoticeInBackground(_ notice: Notice) -> NoticeArtifact? {
+        guard let notificationInfo = notice.notificationInfo else {
+            return nil
+        }
 
         let content = UNMutableNotificationContent(notice: notice)
         let request = UNNotificationRequest(identifier: notificationInfo.identifier,
@@ -119,9 +130,11 @@ class NoticePresenter: NSObject {
                 ActionDispatcher.dispatch(NoticeAction.clear(notice))
             }
         })
+
+        return NoticeArtifact(notice: notice, containerView: nil)
     }
 
-    private func presentNoticeInForeground(_ notice: Notice) {
+    private func presentNoticeInForeground(_ notice: Notice) -> NoticeArtifact? {
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
@@ -141,9 +154,6 @@ class NoticePresenter: NSObject {
         }
         noticeView.dismissHandler = dismiss
 
-        currentNotice = notice
-        currentContainer = noticeContainerView
-
         if let feedbackType = notice.feedbackType {
             generator.notificationOccurred(feedbackType)
         }
@@ -160,30 +170,8 @@ class NoticePresenter: NSObject {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
-    }
 
-    /// TODO Rename
-    private func dismissCurrentNotice() {
-        if let container = currentContainer {
-            dismiss(container: container)
-        }
-
-        currentNotice = nil
-        currentContainer = nil
-    }
-
-    private func dismiss(container: NoticeContainerView) {
-        guard container.superview != nil else {
-            return
-        }
-
-        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
-            container.removeFromSuperview()
-
-            if self?.currentNotice == nil {
-                self?.window.isHidden = true
-            }
-        })
+        return NoticeArtifact(notice: notice, containerView: noticeContainerView)
     }
 
     private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
@@ -194,6 +182,23 @@ class NoticePresenter: NSObject {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
+    }
+
+    // MARK: - Dismissal
+
+    private func dismissForegroundNotice() {
+        guard let container = currentNoticeArtifact?.containerView,
+            container.superview != nil else {
+                return
+        }
+
+        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
+            container.removeFromSuperview()
+
+            if self?.currentNoticeArtifact == nil {
+                self?.window.isHidden = true
+            }
+        })
     }
 
     // MARK: - Animations
