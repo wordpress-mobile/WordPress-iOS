@@ -7,6 +7,7 @@ import WordPressFlux
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
+    @objc optional func showPostStats(withPostTitle postTitle: String?)
 }
 
 
@@ -66,6 +67,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.estimatedRowHeight = 500
     }
 
 }
@@ -103,6 +105,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                OverviewRow.self,
                 TableFooterRow.self]
     }
 
@@ -193,6 +196,12 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func showPostStats(withPostTitle postTitle: String?) {
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postTitle: postTitle)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
 }

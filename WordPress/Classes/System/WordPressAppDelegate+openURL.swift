@@ -1,57 +1,20 @@
 import WordPressAuthenticator
 
-/// Custom pattern matcher used for our URL scheme
-private func ~=(pattern: String, value: URL) -> Bool {
-    return value.absoluteString.contains(pattern)
-}
-
-private extension Array where Element == URLQueryItem {
-    func value(of key: String) -> String? {
-        return self.first(where: { $0.name == key })?.value
-    }
-    func intValue(of key: String) -> Int? {
-        guard let value = value(of: key) else {
-            return nil
-        }
-        return Int(value)
-    }
-}
-
-private extension URL {
-    func queryParams() -> [URLQueryItem]? {
-        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-            let queryItems = components.queryItems,
-            queryItems.count > 0 else {
-                return nil
-        }
-        return queryItems
-    }
-}
-
 @objc extension WordPressAppDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DDLogInfo("Application launched with URL: \(url)")
-        var returnValue = false
 
-        // 1. check if hockey can open this URL
-        var hockeyOptions: [String: Any] = [:]
-        for (key, value) in options {
-            hockeyOptions[key.rawValue] = value
-        }
-        if hockey.handleOpen(url, options: hockeyOptions) {
-            returnValue = true
+        guard !handleHockey(url: url, options: options) else {
+            return true
         }
 
-        // 2. check if this is a Google login URL
-        if WordPressAuthenticator.shared.handleGoogleAuthUrl(url,
-                                                             sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-                                                             annotation: options[UIApplication.OpenURLOptionsKey.annotation]) {
-            returnValue = true
+        guard !handleGoogleAuth(url: url, options: options) else {
+            return true
         }
 
         // 3. let's see if it's our wpcom scheme
         guard url.scheme == WPComScheme else {
-            return returnValue
+            return false
         }
 
         // this works with our custom ~=
@@ -59,18 +22,38 @@ private extension URL {
         case "newpost":
             returnValue = handleNewPost(url: url)
         case "magic-login":
-            returnValue = handleMagicLogin(url: url)
+            return handleMagicLogin(url: url)
         case "viewpost":
-            returnValue = handleViewPost(url: url)
+            return handleViewPost(url: url)
         case "viewstats":
-            returnValue = handleViewStats(url: url)
+            return handleViewStats(url: url)
         case "debugging":
-            handleDebugging(url: url)
+            return handleDebugging(url: url)
         default:
-            break
+            return false
+        }
+    }
+
+    private func handleHockey(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        var hockeyOptions: [String: Any] = [:]
+        for (key, value) in options {
+            hockeyOptions[key.rawValue] = value
         }
 
-        return returnValue
+        if hockey.handleOpen(url, options: hockeyOptions) {
+            return true
+        }
+        return false
+    }
+
+    private func handleGoogleAuth(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        if WordPressAuthenticator.shared.handleGoogleAuthUrl(url,
+                                                             sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                                                             annotation: options[UIApplication.OpenURLOptionsKey.annotation]) {
+            return true
+        }
+
+        return false
     }
 
     private func handleMagicLogin(url: URL) -> Bool {
@@ -85,7 +68,7 @@ private extension URL {
     }
 
     private func handleViewPost(url: URL) -> Bool {
-        guard let params = url.queryParams(),
+        guard let params = url.queryItems,
             let blogId = params.intValue(of: "blogId"),
             let postId = params.intValue(of: "postId") else {
             return false
@@ -99,7 +82,7 @@ private extension URL {
     private func handleViewStats(url: URL) -> Bool {
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        guard let params = url.queryParams(),
+        guard let params = url.queryItems,
             let siteId = params.intValue(of: "siteId"),
             let blog = blogService.blog(byBlogId: NSNumber(value: siteId)) else {
             return false
@@ -120,16 +103,47 @@ private extension URL {
         return true
     }
 
-    @nonobjc private func handleDebugging(url: URL) {
-        guard let params = url.queryParams(),
+    private func handleDebugging(url: URL) -> Bool {
+        guard let params = url.queryItems,
             let debugType = params.value(of: "type"),
             let debugKey = params.value(of: "key") else {
-            return
+            return false
         }
 
         if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
             Crashlytics.sharedInstance().crash()
         }
+
+        return true
+    }
+}
+
+/// Custom pattern matcher used for our URL scheme
+private func ~=(pattern: String, value: URL) -> Bool {
+    return value.absoluteString.contains(pattern)
+}
+
+private extension Array where Element == URLQueryItem {
+    func value(of key: String) -> String? {
+        return self.first(where: { $0.name == key })?.value
+    }
+
+    func intValue(of key: String) -> Int? {
+        guard let value = value(of: key) else {
+            return nil
+        }
+        return Int(value)
+    }
+}
+
+private extension URL {
+    var queryItems: [URLQueryItem]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+            let queryItems = components.queryItems,
+            queryItems.count > 0 else {
+                return nil
+        }
+        return queryItems
     }
 
     /// Handle a call of wordpress://newpost?…

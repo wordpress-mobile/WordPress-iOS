@@ -1,5 +1,8 @@
 @objc enum StatSection: Int {
-    case periodOverview
+    case periodOverviewViews
+    case periodOverviewVisitors
+    case periodOverviewLikes
+    case periodOverviewComments
     case periodPostsAndPages
     case periodReferrers
     case periodClicks
@@ -41,7 +44,10 @@
                               .insightsPublicize
     ]
 
-    static let allPeriods = [StatSection.periodOverview,
+    static let allPeriods = [StatSection.periodOverviewViews,
+                             .periodOverviewVisitors,
+                             .periodOverviewLikes,
+                             .periodOverviewComments,
                              .periodPostsAndPages,
                              .periodReferrers,
                              .periodClicks,
@@ -162,6 +168,14 @@
             return TabTitles.followersWordPress
         case .insightsFollowersEmail:
             return TabTitles.followersEmail
+        case .periodOverviewViews:
+            return TabTitles.overviewViews
+        case .periodOverviewVisitors:
+            return TabTitles.overviewVisitors
+        case .periodOverviewLikes:
+            return TabTitles.overviewLikes
+        case .periodOverviewComments:
+            return TabTitles.overviewComments
         default:
             return ""
         }
@@ -229,6 +243,10 @@
         static let commentsPosts = NSLocalizedString("Posts and Pages", comment: "Label for comments by posts and pages")
         static let followersWordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let followersEmail = NSLocalizedString("Email", comment: "Label for email followers")
+        static let overviewViews = NSLocalizedString("Views", comment: "Label for Period Overview views")
+        static let overviewVisitors = NSLocalizedString("Visitors", comment: "Label for Period Overview visitors")
+        static let overviewLikes = NSLocalizedString("Likes", comment: "Label for Period Overview likes")
+        static let overviewComments = NSLocalizedString("Comments", comment: "Label for Period Overview comments")
     }
 
     struct TotalFollowers {

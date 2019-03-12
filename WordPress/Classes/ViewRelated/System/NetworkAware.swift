@@ -10,6 +10,7 @@ protocol NetworkAwareUI: NetworkAware {
     func shouldPresentAlert() -> Bool
     func contentIsEmpty() -> Bool
     func presentNoNetworkAlert()
+    func dismissNoNetworkAlert()
     func noConnectionMessage() -> String
 }
 
@@ -31,9 +32,11 @@ extension NetworkAwareUI {
     }
 
     func presentNoNetworkAlert() {
-        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-        WPError.showAlert(withTitle: title, message: message)
+        ReachabilityUtils.showNoInternetConnectionNotice()
+    }
+
+    func dismissNoNetworkAlert() {
+        ReachabilityUtils.dismissNoInternetConnectionNotice()
     }
 
     func noConnectionMessage() -> String {

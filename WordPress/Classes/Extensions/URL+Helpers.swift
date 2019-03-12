@@ -137,7 +137,7 @@ extension URL {
             return false
         }
 
-        return host.contains("wordpress.com")
+        return host.hasSuffix(".wordpress.com")
     }
 
     var isWordPressDotComPost: Bool {

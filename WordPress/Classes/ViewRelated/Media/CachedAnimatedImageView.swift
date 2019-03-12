@@ -139,7 +139,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         self.prepareForReuse()
     }
 
-    public func startLoadingAnimation() {
+    @objc public func startLoadingAnimation() {
         guard shouldShowLoadingIndicator else {
             return
         }
@@ -148,7 +148,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
     }
 
-    public func stopLoadingAnimation() {
+    @objc public func stopLoadingAnimation() {
         DispatchQueue.main.async() {
             self.loadingIndicator.stopAnimating()
         }

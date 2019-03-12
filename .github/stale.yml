@@ -5,7 +5,7 @@ daysUntilStale: 365 # 1 year
 
 # Number of days of inactivity before an Issue or Pull Request with the stale label is closed.
 # Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
-daysUntilClose: -1 # Close the issue almost immediately. See: https://github.com/probot/stale/issues/131
+daysUntilClose: false
 
 # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
 exemptLabels:
@@ -24,18 +24,14 @@ staleLabel: "[Status] Stale"
 
 # Comment to post when marking as stale. Set to `false` to disable
 markComment: >
-  <p>This issue has been marked as stale and will be automatically closed. 
-  This happened because:</p>
+  This issue has been marked as stale because:
   
-  <ul>
-    <li>It has been inactive for the past year.</li>
-    <li>It isn't in a project or a milestone.</li>
-    <li>It hasn’t been labeled `[Pri] Blocker`, `[Pri] High`, or `good first issue`.</li>
-  </ul>
+   * It has been inactive for the past year.
+   * It isn't in a project or a milestone.
+   * It hasn’t been labeled `[Pri] Blocker`, `[Pri] High`, or `good first issue`.
   
-  <p>However, discussion is still welcome! If the issue is still valid, 
-  please leave a comment with a brief explanation so the issue can
-  be reopened.</p>
+  Please comment with an update if you believe this issue is still valid or if it can be closed.
+  This issue will also be reviewed for validity and priority (cc @designsimply).
 
 # Limit the number of actions per hour, from 1-30. Default is 30
 limitPerRun: 2

@@ -4,8 +4,6 @@ import UIKit
 private struct Row: ImmuTableRow {
     static let cell = ImmuTableCell.class(CheckmarkTableViewCell.self)
 
-    let titleFont = UIFont.systemFont(ofSize: 17.0)
-
     enum RowType {
         case topLevel
         case child
@@ -28,8 +26,10 @@ private struct Row: ImmuTableRow {
     }
 
     func configureCell(_ cell: UITableViewCell) {
+        if let label = cell.textLabel {
+            WPStyleGuide.configureLabel(label, textStyle: .body)
+        }
         let cell = cell as! CheckmarkTableViewCell
-        cell.textLabel?.font = titleFont
         cell.title = title
     }
 }

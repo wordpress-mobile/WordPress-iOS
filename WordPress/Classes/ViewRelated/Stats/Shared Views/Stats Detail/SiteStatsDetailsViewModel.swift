@@ -41,6 +41,7 @@ class SiteStatsDetailsViewModel: Observable {
     }
 
     func tableViewModel() -> ImmuTable {
+
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
                 return ImmuTable(sections: [])
@@ -56,6 +57,18 @@ class SiteStatsDetailsViewModel: Observable {
                                                         siteStatsDetailsDelegate: detailsDelegate,
                                                         showTotalCount: true,
                                                         selectedIndex: selectedIndex))
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
+            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
+                                                                   tabDataForCommentType(.insightsCommentsPosts)],
+                                                        siteStatsDetailsDelegate: detailsDelegate,
+                                                        showTotalCount: false,
+                                                        selectedIndex: selectedIndex))
+        case .insightsTagsAndCategories:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                      dataRows: createTagsAndCategoriesRows(),
+                                                      siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -74,6 +87,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshFollowers())
     }
 
+    func refreshComments() {
+        ActionDispatcher.dispatch(InsightAction.refreshComments())
+    }
+
+    func refreshTagsAndCategories() {
+        ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories())
+    }
+
 }
 
 // MARK: - Private Extension
@@ -84,6 +105,10 @@ private extension SiteStatsDetailsViewModel {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             return .allFollowers
+        case .insightsCommentsAuthors, .insightsCommentsPosts:
+            return .allComments
+        case .insightsTagsAndCategories:
+            return .allTagsAndCategories
         default:
             return nil
         }
@@ -119,6 +144,62 @@ private extension SiteStatsDetailsViewModel {
                        dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
+    }
+
+    func tabDataForCommentType(_ commentType: StatSection) -> TabData {
+
+        // TODO: replace this Store call to get actual Authors and Posts comments
+        // when the api supports it.
+        let commentsInsight = insightsStore.getTopCommentsInsight()
+
+        var rowItems: [StatsTotalRowData] = []
+
+        switch commentType {
+        case .insightsCommentsAuthors:
+            let authors = commentsInsight?.topAuthors ?? []
+            rowItems = authors.map {
+                StatsTotalRowData(name: $0.name,
+                                  data: $0.commentCount.abbreviatedString(),
+                                  userIconURL: $0.iconURL,
+                                  showDisclosure: false,
+                                  statSection: .insightsCommentsAuthors)
+            }
+        case .insightsCommentsPosts:
+            let posts = commentsInsight?.topPosts ?? []
+            rowItems = posts.map {
+                StatsTotalRowData(name: $0.name,
+                                  data: $0.commentCount.abbreviatedString(),
+                                  showDisclosure: true,
+                                  disclosureURL: $0.postURL,
+                                  statSection: .insightsCommentsPosts)
+            }
+        default:
+            break
+        }
+
+        return TabData(tabTitle: commentType.tabTitle,
+                       itemSubtitle: commentType.itemSubtitle,
+                       dataSubtitle: commentType.dataSubtitle,
+                       dataRows: rowItems)
+    }
+
+    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+        guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
+            return []
+        }
+
+        return tagsAndCategories.map {
+            let viewsCount = $0.viewsCount ?? 0
+
+            return StatsTotalRowData(name: $0.name,
+                                     data: viewsCount.abbreviatedString(),
+                                     dataBarPercent: Float(viewsCount) / Float(tagsAndCategories.first?.viewsCount ?? 1),
+                                     icon: StatsDataHelper.tagsAndCategoriesIconForKind($0.kind),
+                                     showDisclosure: true,
+                                     disclosureURL: $0.url,
+                                     childRows: StatsDataHelper.childRowsForItems($0.children),
+                                     statSection: .insightsTagsAndCategories)
+        }
     }
 
 }

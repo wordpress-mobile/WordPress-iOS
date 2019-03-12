@@ -168,6 +168,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
 
+        dismissNoNetworkAlert()
+
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }
@@ -427,7 +429,7 @@ private extension NotificationsViewController {
         filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        filterTabBar.items = Filter.allFilters.map { $0.title }
+        filterTabBar.items = Filter.allFilters
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
@@ -1455,7 +1457,7 @@ private extension NotificationsViewController {
         }
     }
 
-    enum Filter: Int {
+    enum Filter: Int, FilterTabBarItem {
         case none = 0
         case unread = 1
         case comment = 2

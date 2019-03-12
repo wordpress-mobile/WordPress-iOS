@@ -16,22 +16,34 @@ extension BarChartDataSet {
     }
 }
 
-extension NSUIColor {
-    static let chartColor = UIColor(red: 135/255.0, green: 166/255.0, blue: 188/255.0, alpha: 255.0/255.0)
-}
-
 // MARK: - Charts protocols
 
 /// Describes the visual appearance of a BarChartView. Implementation TBD.
 ///
 protocol BarChartStyling {
 
-    var adornmentColor: UIColor { get }
+    /// This corresponds to the primary bar color.
+    var primaryBarColor: UIColor { get }
 
-    var barColor: UIColor { get }
+    /// This bar color is used if bars are overlayed.
+    var secondaryBarColor: UIColor? { get }
 
+    /// This corresponds to the color of a selected bar
+    var highlightColor: UIColor? { get }
+
+    /// This corresponds to the color of labels on the chart
+    var labelColor: UIColor { get }
+
+    /// If specified, a legend will be presented with this value. It maps to the secondary bar color above.
+    var legendTitle: String? { get }
+
+    /// This corresponds to the color of lines on the chart
+    var lineColor: UIColor { get }
+
+    /// Formatter for x-axis values
     var xAxisValueFormatter: IAxisValueFormatter { get }
 
+    /// Formatter for y-axis values
     var yAxisValueFormatter: IAxisValueFormatter { get }
 }
 

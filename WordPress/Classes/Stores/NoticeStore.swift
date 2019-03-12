@@ -34,6 +34,11 @@ struct Notice {
     ///
     let cancelTitle: String?
 
+    /// An optional value that can be used as a reference by consumers.
+    ///
+    /// This is not used in the Notice system at all.
+    let tag: String?
+
     /// An optional handler closure that will be called when the action button
     /// is tapped, if you've provided an action title
     let actionHandler: ActionHandlerFunction?
@@ -45,6 +50,7 @@ struct Notice {
          style: NoticeStyle = NormalNoticeStyle(),
          actionTitle: String? = nil,
          cancelTitle: String? = nil,
+         tag: String? = nil,
          actionHandler: ActionHandlerFunction? = nil) {
         self.title = title
         self.message = message
@@ -52,6 +58,7 @@ struct Notice {
         self.notificationInfo = notificationInfo
         self.actionTitle = actionTitle
         self.cancelTitle = cancelTitle
+        self.tag = tag
         self.actionHandler = actionHandler
         self.style = style
     }

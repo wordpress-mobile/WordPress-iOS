@@ -1474,20 +1474,27 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     NSUInteger generalSectionCountBefore = self.tableSections[0].rows.count;
+    BlogDetailsSection *firstSectionBefore = [self.tableSections objectAtIndex:0];
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self configureTableViewData];
         NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
+        BlogDetailsSection *firstSectionAfter = [self.tableSections objectAtIndex:0];
+
         // quick start was just enabled
-        if (generalSectionCountBefore != generalSectionCountAfter && [self shouldShowQuickStartChecklist]) {
-            if ([Feature enabled:FeatureFlagQuickStartV2]) {
+
+        if ([Feature enabled:FeatureFlagQuickStartV2]) {
+            if (!firstSectionBefore.showQuickStartMenu && firstSectionAfter.showQuickStartMenu) {
                 [self showQuickStartCustomize];
-            } else {
+            }
+        } else {
+            if (generalSectionCountBefore != generalSectionCountAfter && [self shouldShowQuickStartChecklist]) {
                 [self showQuickStartV1];
             }
         }
+
         [self reloadTableViewPreservingSelection];
     }
 }

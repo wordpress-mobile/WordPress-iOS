@@ -1,6 +1,11 @@
+12.1
+-----
+ 
 12.0
 -----
 * Redesigned Notices
+* Changed offline error messages to be less disruptive.
+* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
  
 11.9
 ------
