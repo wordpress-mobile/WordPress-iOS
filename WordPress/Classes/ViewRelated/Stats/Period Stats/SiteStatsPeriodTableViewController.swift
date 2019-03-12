@@ -112,7 +112,9 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
+
+        guard let viewModel = viewModel,
+        viewIsVisible() else {
             return
         }
 
@@ -153,6 +155,10 @@ private extension SiteStatsPeriodTableViewController {
 
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedPeriods()
+    }
+
+    func viewIsVisible() -> Bool {
+        return isViewLoaded && view.window != nil
     }
 
 }
