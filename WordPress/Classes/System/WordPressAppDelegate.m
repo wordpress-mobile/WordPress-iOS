@@ -76,9 +76,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Set the main window up
     [self.window makeKeyAndVisible];
 
-    // Local Notifications
-    [self addNotificationObservers];
-
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
     __weak __typeof(self) weakSelf = self;
@@ -338,6 +335,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
 {
+    // Local Notifications
+    [self addNotificationObservers];
+    
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
