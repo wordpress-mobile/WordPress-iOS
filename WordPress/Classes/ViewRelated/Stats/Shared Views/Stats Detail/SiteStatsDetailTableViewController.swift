@@ -5,6 +5,7 @@ import WordPressFlux
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func showPostStats(withPostTitle postTitle: String?)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -206,6 +207,12 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
         StatsDataHelper.updatedExpandedState(forRow: row)
+    }
+
+    func showPostStats(withPostTitle postTitle: String?) {
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postTitle: postTitle)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
 }
