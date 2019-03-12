@@ -134,28 +134,33 @@ private extension URL {
 
     /// Handle a call of wordpress://newpost?…
     ///
-    /// This is partially a return of the old functionality: https://github.com/wordpress-mobile/WordPress-iOS/blob/d89b7ec712be1f2e11fb1228089771a25f5587c5/WordPress/Classes/ViewRelated/System/WPTabBarController.m#L388
+    /// - Parameter url: URL of the request
+    /// - Returns: true if the url was handled
+    /// - Note: **url** should contain param for `content` to be useful. Also supports `title` and `tags`. Currently `content` is assumed to be
+    ///         text. May support other formats, such as HTML or Markdown in the future.
+    ///
+    /// This is mostly a return of the old functionality: https://github.com/wordpress-mobile/WordPress-iOS/blob/d89b7ec712be1f2e11fb1228089771a25f5587c5/WordPress/Classes/ViewRelated/System/WPTabBarController.m#L388```
     private func handleNewPost(url: URL) -> Bool {
         guard let params = url.queryParams() else {
             return false
         }
 
         let title = params.value(of: NewPostKey.title)
-        let content = params.value(of: NewPostKey.content)
+        let contentRaw = params.value(of: NewPostKey.content) ?? ""
         let tags = params.value(of: NewPostKey.tags)
-
-        // TODO: add ability to attach and image
-        //let image = params.string(forKey: NewPostKey.image)
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         guard let blog = blogService.lastUsedOrFirstBlog() else {
             return false
         }
+
+        // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
+        let contentEscaped = contentRaw.escapeHtmlNamedEntities()
+
         let post = PostService(managedObjectContext: context).createDraftPost(for: blog)
         post.postTitle = title
-        post.setPostFormatText(content ?? "no")
-        post.content = content
+        post.content = contentEscaped
         post.tags = tags
 
         let postVC = EditPostViewController(post: post)
