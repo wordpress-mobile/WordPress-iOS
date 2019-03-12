@@ -106,6 +106,7 @@ enum NoticeAction: Action {
     case post(Notice)
     /// The currently displayed notice should be removed from the notice store
     case dismiss
+    case remove(Notice)
     case empty
 }
 
@@ -130,6 +131,8 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         switch action {
         case .post(let notice):
             enqueueNotice(notice)
+        case .remove(let notice):
+            removeNotice(notice)
         case .dismiss:
             dequeueNotice()
         case .empty:
@@ -160,7 +163,15 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         state.notice = pending.pop()
     }
 
+    private func removeNotice(_ notice: Notice) {
+        pending.removeAll { $0 == notice }
+
+        if state.notice == notice {
+            state.notice = pending.pop()
+        }
+    }
+
     private func emptyQueue() {
-        pending = Queue<Notice>()
+        pending.clear()
     }
 }

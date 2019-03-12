@@ -116,7 +116,7 @@ class NoticePresenter: NSObject {
 
         UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
             DispatchQueue.main.async {
-                self.dismiss()
+                ActionDispatcher.dispatch(NoticeAction.remove(notice))
             }
         })
     }
@@ -137,7 +137,7 @@ class NoticePresenter: NSObject {
         ])
 
         let dismiss = {
-            self.dismiss()
+            ActionDispatcher.dispatch(NoticeAction.remove(notice))
         }
         noticeView.dismissHandler = dismiss
 
@@ -192,10 +192,6 @@ class NoticePresenter: NSObject {
                 self?.window.isHidden = true
             }
         })
-    }
-
-    private func dismiss() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 
     private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {

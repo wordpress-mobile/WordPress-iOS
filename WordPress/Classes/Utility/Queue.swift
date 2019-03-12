@@ -17,4 +17,12 @@ public struct Queue<Element> {
     mutating func pop() -> Element? {
         return elements.popLast()
     }
+
+    mutating func clear() {
+        elements = [Element]()
+    }
+
+    mutating func removeAll(where shouldBeRemoved: (Element) -> Bool) {
+        elements.removeAll(where: shouldBeRemoved)
+    }
 }
