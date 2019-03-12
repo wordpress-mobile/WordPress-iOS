@@ -30,12 +30,22 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
+    private var postTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
 
     private var actionType: ActionType? {
         didSet {
             configureViewForAction()
         }
     }
+
+    // Introduced via #11061, to be replaced with real data via #11067
+    private lazy var latestPostSummaryStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
+        let stubbedData = LatestPostSummaryDataStub()
+        let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
+        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
+
+        return (stubbedData, styling)
+    }()
 
     // MARK: - View
 
@@ -146,7 +156,10 @@ private extension LatestPostSummaryCell {
         }
 
         let postAge = lastPostInsight?.publishedDate.relativeStringInPast() ?? ""
-        let postTitle = lastPostInsight?.title.nonEmptyString() ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
+
+        if let title = lastPostInsight?.title, !title.isEmpty {
+            postTitle = title
+        }
 
         var summaryString = String(format: CellStrings.summaryPostInfo, postAge, postTitle)
         let summaryToAppend = actionType == .viewMore ? CellStrings.summaryPerformance : CellStrings.summaryNoData
@@ -200,8 +213,7 @@ private extension LatestPostSummaryCell {
 
         switch actionType {
         case .viewMore:
-            // TODO: show Post Details
-            showAlertWithTitle("Post Details will be shown here.")
+            siteStatsInsightsDelegate?.showPostStats?(withPostTitle: postTitle)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 return
@@ -210,14 +222,6 @@ private extension LatestPostSummaryCell {
         case .createPost:
             siteStatsInsightsDelegate?.showCreatePost?()
         }
-    }
-
-    func showAlertWithTitle(_ title: String) {
-        let alertController =  UIAlertController(title: title,
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
     }
 
     // MARK: - Chart support
@@ -229,12 +233,7 @@ private extension LatestPostSummaryCell {
     func configureChartView() {
         resetChartView()
 
-        // Introduced via #11061, to be replaced with real data via #11067
-        let stubbedData = LatestPostSummaryDataStub()
-        let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
-        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
-
-        let chartView = StatsBarChartView(data: stubbedData, styling: styling)
+        let chartView = StatsBarChartView(data: latestPostSummaryStub.data, styling: latestPostSummaryStub.styling)
         chartStackView.addArrangedSubview(chartView)
 
         NSLayoutConstraint.activate([

@@ -55,29 +55,81 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var selectedLabel: UILabel!
     @IBOutlet weak var selectedData: UILabel!
     @IBOutlet weak var differenceLabel: UILabel!
+    @IBOutlet weak var chartContainerView: UIView!
+    @IBOutlet weak var chartBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
+
+    private(set) var chartData: BarChartDataConvertible?
+    private(set) var chartStyling: BarChartStyling?
 
     // MARK: - Configure
 
-    func configure(tabsData: [OverviewTabData]) {
-        self.tabsData = tabsData
-        setupFilterBar()
-        updateLabels()
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        applyStyles()
     }
 
+    func configure(tabsData: [OverviewTabData], barChartData: BarChartDataConvertible? = nil, barChartStyling: BarChartStyling? = nil) {
+        self.tabsData = tabsData
+        self.chartData = barChartData
+        self.chartStyling = barChartStyling
+
+        setupFilterBar()
+        updateLabels()
+        configureChartView()
+    }
 }
 
 // MARK: - Private Extension
 
 private extension OverviewCell {
 
+    func applyStyles() {
+        Style.configureLabelForOverview(selectedLabel)
+        Style.configureLabelForOverview(selectedData)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
+        configureFonts()
+    }
+
+    /// This method squelches two Xcode warnings that I encountered:
+    /// 1. Attribute Unavailable: Large Title font text style before iOS 11.0
+    /// 2. Automatically Adjusts Font requires using a Dynamic Type text style
+    /// The second emerged as part of my attempt to resolve the first.
+    ///
+    func configureFonts() {
+
+        let prevailingFont: UIFont
+        if #available(iOS 11.0, *) {
+            prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
+        } else {
+            let fontSize = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1).pointSize
+            prevailingFont = WPFontManager.systemRegularFont(ofSize: fontSize)
+        }
+        selectedData.font = prevailingFont
+
+        selectedData.adjustsFontForContentSizeCategory = true   // iOS 10
+    }
+
     func setupFilterBar() {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forOverviewCard: true)
+
+        // If there is only one tab data, this is being displayed on the
+        // Post Stats view, which does not have a filterTabBar.
+        filterTabBar.isHidden = tabsData.count == 1
+
+        chartBottomConstraint.constant = filterTabBar.isHidden ?
+            ChartBottomMargin.filterTabBarHidden :
+            ChartBottomMargin.filterTabBarShown
+
+        Style.configureFilterTabBar(filterTabBar, forOverviewCard: true)
         filterTabBar.items = tabsData
         filterTabBar.tabBarHeight = 60.0
         filterTabBar.equalWidthFill = .fillProportionally
@@ -86,7 +138,7 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        // TODO: update chart
+        // TODO: update chart - configureChartView() - via #11064
         updateLabels()
     }
 
@@ -97,4 +149,36 @@ private extension OverviewCell {
         differenceLabel.text = tabData.differenceLabel
         differenceLabel.textColor = tabData.differenceTextColor
     }
+
+    // MARK: Chart support
+
+    func resetChartView() {
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
+        }
+    }
+
+    func configureChartView() {
+        resetChartView()
+
+        guard let barChartData = chartData, let barChartStyling = chartStyling else {
+            return
+        }
+
+        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling)
+        chartContainerView.addSubview(chartView)
+
+        NSLayoutConstraint.activate([
+            chartView.leadingAnchor.constraint(equalTo: chartContainerView.leadingAnchor),
+            chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
+            chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
+            chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
+        ])
+    }
+
+    private enum ChartBottomMargin {
+        static let filterTabBarShown = CGFloat(16)
+        static let filterTabBarHidden = CGFloat(24)
+    }
+
 }

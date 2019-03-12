@@ -3,7 +3,7 @@ import Foundation
 
 import Charts
 
-// MARK: - PostSummaryHorizontalAxisFormatter
+// MARK: - HorizontalAxisFormatter
 
 /// This formatter requires some explanation. The framework does not necessarily respond well to large values, and/or
 /// large ranges of values as originally encountered using the naive TimeInterval representation of current dates.
@@ -18,7 +18,7 @@ import Charts
 /// The workaround employed here (recommended in 2410 above) relies on the time series data being ordered, and simply
 /// transforms the adjusted values by the time interval associated with the first date in the series.
 ///
-class PostSummaryHorizontalAxisFormatter: IAxisValueFormatter {
+class HorizontalAxisFormatter: IAxisValueFormatter {
 
     // MARK: Properties
 
@@ -31,7 +31,7 @@ class PostSummaryHorizontalAxisFormatter: IAxisValueFormatter {
         return formatter
     }()
 
-    // MARK: PostSummaryHorizontalAxisFormatter
+    // MARK: HorizontalAxisFormatter
 
     init(initialDateInterval: TimeInterval) {
         self.initialDateInterval = initialDateInterval
@@ -48,9 +48,9 @@ class PostSummaryHorizontalAxisFormatter: IAxisValueFormatter {
     }
 }
 
-// MARK: - PostSummaryVerticalAxisFormatter
+// MARK: - VerticalAxisFormatter
 
-class PostSummaryVerticalAxisFormatter: IAxisValueFormatter {
+class VerticalAxisFormatter: IAxisValueFormatter {
 
     // MARK: Properties
 

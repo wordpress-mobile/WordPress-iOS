@@ -76,7 +76,14 @@ private extension SiteStatsPeriodViewModel {
         let two = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle, tabData: 741, difference: 22222, differencePercent: 50)
         let three = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle, tabData: 12345, difference: 75324, differencePercent: 27)
         let four = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle, tabData: 987654321, difference: -258547987, differencePercent: -125999)
-        tableRows.append(OverviewRow(tabsData: [one, two, three, four]))
+
+        // Introduced via #11063, to be replaced with real data via #11069
+        let stubbedData = PeriodDataStub()
+        let firstStubbedDateInterval = stubbedData.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let styling = PeriodPerformanceStyling(initialDateInterval: firstStubbedDateInterval)
+
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: stubbedData, chartStyling: styling)
+        tableRows.append(row)
 
         return tableRows
     }
@@ -108,6 +115,7 @@ private extension SiteStatsPeriodViewModel {
                                              dataBarPercent: dataBarPercent,
                                              icon: icon,
                                              showDisclosure: true,
+                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
                                              statSection: .periodPostsAndPages)
 
             dataRows.append(row)

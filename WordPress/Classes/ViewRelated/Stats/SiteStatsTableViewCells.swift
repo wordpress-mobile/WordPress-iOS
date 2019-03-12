@@ -149,6 +149,36 @@ struct TabbedTotalsDetailStatsRow: ImmuTableRow {
     }
 }
 
+struct TopTotalsDetailStatsRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let siteStatsDetailsDelegate: SiteStatsDetailsDelegate
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsInsightsDelegate: nil,
+                       siteStatsPeriodDelegate: nil,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
+                       limitRowsDisplayed: false)
+    }
+}
+
 struct TopTotalsInsightStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
@@ -286,6 +316,8 @@ struct OverviewRow: ImmuTableRow {
 
     let tabsData: [OverviewTabData]
     let action: ImmuTableAction? = nil
+    let chartData: BarChartDataConvertible
+    let chartStyling: BarChartStyling
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -293,7 +325,28 @@ struct OverviewRow: ImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData)
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling)
+    }
+}
+
+struct PostStatsTitleRow: ImmuTableRow {
+
+    typealias CellType = PostStatsTitleCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let postTitle: String
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(postTitle: postTitle)
     }
 }
 

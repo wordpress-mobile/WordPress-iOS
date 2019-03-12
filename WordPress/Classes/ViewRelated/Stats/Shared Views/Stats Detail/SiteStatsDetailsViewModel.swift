@@ -64,6 +64,11 @@ class SiteStatsDetailsViewModel: Observable {
                                                         siteStatsDetailsDelegate: detailsDelegate,
                                                         showTotalCount: false,
                                                         selectedIndex: selectedIndex))
+        case .insightsTagsAndCategories:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                      dataRows: createTagsAndCategoriesRows(),
+                                                      siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -86,6 +91,10 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshComments())
     }
 
+    func refreshTagsAndCategories() {
+        ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories())
+    }
+
 }
 
 // MARK: - Private Extension
@@ -98,6 +107,8 @@ private extension SiteStatsDetailsViewModel {
             return .allFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             return .allComments
+        case .insightsTagsAndCategories:
+            return .allTagsAndCategories
         default:
             return nil
         }
@@ -170,6 +181,25 @@ private extension SiteStatsDetailsViewModel {
                        itemSubtitle: commentType.itemSubtitle,
                        dataSubtitle: commentType.dataSubtitle,
                        dataRows: rowItems)
+    }
+
+    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+        guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
+            return []
+        }
+
+        return tagsAndCategories.map {
+            let viewsCount = $0.viewsCount ?? 0
+
+            return StatsTotalRowData(name: $0.name,
+                                     data: viewsCount.abbreviatedString(),
+                                     dataBarPercent: Float(viewsCount) / Float(tagsAndCategories.first?.viewsCount ?? 1),
+                                     icon: StatsDataHelper.tagsAndCategoriesIconForKind($0.kind),
+                                     showDisclosure: true,
+                                     disclosureURL: $0.url,
+                                     childRows: StatsDataHelper.childRowsForItems($0.children),
+                                     statSection: .insightsTagsAndCategories)
+        }
     }
 
 }
