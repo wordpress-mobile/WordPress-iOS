@@ -106,8 +106,24 @@ enum NoticeAction: Action {
     /// The specified notice will be queued for display to the user
     case post(Notice)
     /// The currently displayed notice should be removed from the notice store
+    ///
+    /// Prefer to use `clear` or `clearWithTag` whenever possible to make sure the correct
+    /// `Notice` is being dismissed. Here is an example fake scenario that may make `dismiss`
+    /// not ideal:
+    ///
+    /// 1. MediaBrowser posts NoticeA. NoticeA is displayed.
+    /// 2. Editor posts NoticeB.
+    /// 3. Eventually, NoticeB is displayed.
+    /// 4. MediaBrowser dispatches `dismiss` which dismisses NoticeB.
+    ///
+    /// If MediaBrowser used `clear` or `clearWithTag`, the NoticeB should not have been dismissed
+    /// prematurely. 
     case dismiss
+    /// Removes the given `Notice` from the Store.
     case clear(Notice)
+    /// Removes all Notices that have the given tag.
+    ///
+    /// - SeeAlso: `Notice.tag`
     case clearWithTag(Notice.Tag)
     case empty
 }

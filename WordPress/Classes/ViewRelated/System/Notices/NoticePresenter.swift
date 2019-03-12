@@ -19,11 +19,10 @@ class NoticePresenter: NSObject {
         return view
     }
 
-    private var currentNoticeArtifact: NoticeArtifact?
-
     private let generator = UINotificationFeedbackGenerator()
-
     private var storeReceipt: Receipt?
+
+    private var currentNoticeArtifact: NoticeArtifact?
 
     private init(store: NoticeStore) {
         self.store = store
@@ -87,6 +86,10 @@ class NoticePresenter: NSObject {
         }
     }
 
+    /// Handle all changes in the `NoticeStore`.
+    ///
+    /// In here, we determine whether to show a Notice or dismiss the currently shown Notice based
+    /// on the value of `NoticeStore.currenNotice`.
     private func onStoreChange() {
         guard currentNoticeArtifact?.notice != store.currentNotice else {
             return
@@ -103,12 +106,18 @@ class NoticePresenter: NSObject {
         if let artifact = present(notice) {
             currentNoticeArtifact = artifact
         } else {
+            // We were not able to show the `notice` so we will dispatch a .clear action. This
+            // should prevent us from getting in a stuck state where `NoticeStore` thinks its
+            // `currentNotice` is still being presented.
             ActionDispatcher.dispatch(NoticeAction.clear(notice))
         }
     }
 
     // MARK: - Presentation
 
+    /// Present the `notice` in the UI (foreground) or as a push notification (background).
+    ///
+    /// - Returns: A `NoticeArtifact` if the `notice` was presented, otherwise `nil`.
     private func present(_ notice: Notice) -> NoticeArtifact? {
         if UIApplication.shared.applicationState == .background {
             return presentNoticeInBackground(notice)
@@ -194,9 +203,11 @@ class NoticePresenter: NSObject {
                 return
         }
 
-        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
+        animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
             container.removeFromSuperview()
 
+            // It is possible that when the dismiss animation finished, another Notice was already
+            // being shown. Hiding the window would cause that new Notice to be invisible.
             if self?.currentNoticeArtifact == nil {
                 self?.window.isHidden = true
             }
@@ -207,7 +218,7 @@ class NoticePresenter: NSObject {
 
     typealias AnimationBlock = () -> Void
 
-    private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
+    private func offscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
         return { [weak self] in
             guard let self = self else {
                 return
@@ -220,7 +231,7 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func onscreenState(for noticeContainer: NoticeContainerView)  -> (() -> ()) {
+    private func onscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
         return { [weak self] in
             guard let self = self else {
                 return
@@ -233,7 +244,9 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
+    private func animatePresentation(fromState: AnimationBlock,
+                                     toState: @escaping AnimationBlock,
+                                     completion: @escaping AnimationBlock) {
         fromState()
 
         // this delay avoids affecting other transitions like navigation pushes
