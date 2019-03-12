@@ -174,7 +174,8 @@ struct TopTotalsDetailStatsRow: ImmuTableRow {
                        dataRows: dataRows,
                        siteStatsInsightsDelegate: nil,
                        siteStatsPeriodDelegate: nil,
-                       siteStatsDetailsDelegate: siteStatsDetailsDelegate)
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
+                       limitRowsDisplayed: false)
     }
 }
 
