@@ -67,14 +67,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
-    // Introduced via #11063, to be replaced with real data via #11069
-    private lazy var periodDataStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
-        let stubbedData = PeriodDataStub()
-        let firstStubbedDateInterval = stubbedData.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = PeriodPerformanceStyling(initialDateInterval: firstStubbedDateInterval)
-
-        return (stubbedData, styling)
-    }()
+    private(set) var chartData: BarChartDataConvertible?
+    private(set) var chartStyling: BarChartStyling?
 
     // MARK: - Configure
 
@@ -83,8 +77,11 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData]) {
+    func configure(tabsData: [OverviewTabData], barChartData: BarChartDataConvertible? = nil, barChartStyling: BarChartStyling? = nil) {
         self.tabsData = tabsData
+        self.chartData = barChartData
+        self.chartStyling = barChartStyling
+
         setupFilterBar()
         updateLabels()
         configureChartView()
@@ -164,7 +161,11 @@ private extension OverviewCell {
     func configureChartView() {
         resetChartView()
 
-        let chartView = StatsBarChartView(data: periodDataStub.data, styling: periodDataStub.styling)
+        guard let barChartData = chartData, let barChartStyling = chartStyling else {
+            return
+        }
+
+        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling)
         chartContainerView.addSubview(chartView)
 
         NSLayoutConstraint.activate([

@@ -286,6 +286,8 @@ struct OverviewRow: ImmuTableRow {
 
     let tabsData: [OverviewTabData]
     let action: ImmuTableAction? = nil
+    let chartData: BarChartDataConvertible
+    let chartStyling: BarChartStyling
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -293,7 +295,7 @@ struct OverviewRow: ImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData)
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling)
     }
 }
 
