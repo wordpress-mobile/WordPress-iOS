@@ -4,6 +4,7 @@ import WordPressFlux
 @objc protocol SiteStatsDetailsDelegate {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -52,6 +53,16 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         })
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        guard let statSection = statSection else {
+            return
+        }
+        StatsDataHelper.clearExpandedRowsFor(statSection: statSection)
+    }
+
+
 }
 
 // MARK: - Table Methods
@@ -81,6 +92,7 @@ private extension SiteStatsDetailTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [TabbedTotalsDetailStatsRow.self,
+                TopTotalsDetailStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -90,6 +102,8 @@ private extension SiteStatsDetailTableViewController {
             return insightsStore.isFetchingFollowers
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             return insightsStore.isFetchingComments
+        case .insightsTagsAndCategories:
+            return insightsStore.isFetchingTagsAndCategories
         default:
             return false
         }
@@ -118,6 +132,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshFollowers()
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             viewModel?.refreshComments()
+        case .insightsTagsAndCategories:
+            viewModel?.refreshTagsAndCategories()
         default:
             refreshControl?.endRefreshing()
         }
@@ -151,7 +167,8 @@ private extension SiteStatsDetailTableViewController {
         case .insightsCommentsPosts:
             statSection = .insightsCommentsAuthors
         default:
-            break
+            // Return here as `initViewModel` is only needed for filtered cards.
+            return
         }
 
         initViewModel()
@@ -171,6 +188,11 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true, completion: nil)
+    }
+
+    func expandedRowUpdated(_ row: StatsTotalRow) {
+        applyTableUpdates()
+        StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
 }

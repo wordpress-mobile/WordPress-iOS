@@ -226,6 +226,8 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
+        StatsDataHelper.clearExpandedRowsFor(statSection: statSection)
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)

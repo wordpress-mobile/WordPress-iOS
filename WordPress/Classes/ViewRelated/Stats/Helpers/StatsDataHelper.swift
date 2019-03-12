@@ -4,6 +4,8 @@ import Foundation
 ///
 class StatsDataHelper {
 
+    private typealias Style = WPStyleGuide.Stats
+
     // MARK: - Expanded Row Handling
 
     // This stores the labels for expanded rows.
@@ -48,6 +50,10 @@ class StatsDataHelper {
         }
     }
 
+    class func clearExpandedRowsFor(statSection: StatSection) {
+        StatsDataHelper.expandedRowLabels[statSection]?.removeAll()
+    }
+
     // MARK: - Data Bar Percent
 
     class func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {
@@ -82,6 +88,30 @@ class StatsDataHelper {
 
         return disclosureURL
     }
+
+    // MARK: - Tags and Categories Support
+
+    class func tagsAndCategoriesIconForKind(_ kind: StatsTagAndCategory.Kind) -> UIImage? {
+        switch kind {
+        case .folder:
+            return Style.imageForGridiconType(.folderMultiple)
+        case .category:
+            return Style.imageForGridiconType(.folder)
+        case .tag:
+            return Style.imageForGridiconType(.tag)
+        }
+    }
+
+    class func childRowsForItems(_ children: [StatsTagAndCategory]) -> [StatsTotalRowData] {
+        return children.map {
+            StatsTotalRowData.init(name: $0.name,
+                                   data: "",
+                                   icon: StatsDataHelper.tagsAndCategoriesIconForKind($0.kind),
+                                   showDisclosure: true,
+                                   disclosureURL: $0.url)
+        }
+    }
+
 }
 
 /// These methods format stat Strings for display and usage.
