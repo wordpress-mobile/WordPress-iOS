@@ -1,15 +1,4 @@
-12.0
------
-* Redesigned Notices
-* Changed offline error messages to be less disruptive.
-* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
- 
-11.9
-------
-* Quick Start v2: After creating a new site with WordPress.com there are more tutorials available, now including tips to improve growth.
-* Quick Start will also be suggested less often, but when it's more likely to be helpful.
-* Added connection error alert in Sharing screen.
-* Increased padding at the bottom of the share extension's editor, to make typing a longer post a bit more comfortable.
-* Removes the white background color applied to the site icon on the site details screen.
-* Updated No Results View illustration and copy displayed on connectivity issue.
-* Enhanced Site Creation flow for smarter, more personalized sites.
+- Dictation now works in the block editor.
+- Offline error messages will now display in smaller popup dialogs on the bottom of the page.
+- Fixed a bug where the site preview address bar could be edited in the Site Creation flow.
+- Fixed an issue in the block editor where images could not be uploaded to private sites.
