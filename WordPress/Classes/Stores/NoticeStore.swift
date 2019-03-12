@@ -146,10 +146,8 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
 
     // MARK: - Accessors
 
-    /// Returns the next notice that should be displayed to the user, if
-    /// one is available
-    ///
-    var nextNotice: Notice? {
+    /// Returns the notice that should be displayed to the user, if one is available.
+    var currentNotice: Notice? {
         return state.notice
     }
 

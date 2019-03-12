@@ -4,6 +4,7 @@ import UserNotifications
 import WordPressFlux
 
 class NoticePresenter: NSObject {
+    /// Used for tracking the currently displayed Notice and its corresponding view.
     private struct NoticeArtifact {
         let notice: Notice
         let containerView: NoticeContainerView?
@@ -42,6 +43,7 @@ class NoticePresenter: NSObject {
 
         super.init()
 
+        // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
             self?.onStoreChange()
         }
@@ -86,7 +88,7 @@ class NoticePresenter: NSObject {
     }
 
     private func onStoreChange() {
-        guard currentNoticeArtifact?.notice != store.nextNotice else {
+        guard currentNoticeArtifact?.notice != store.currentNotice else {
             return
         }
 
@@ -94,7 +96,7 @@ class NoticePresenter: NSObject {
 
         currentNoticeArtifact = nil
 
-        guard let notice = store.nextNotice else {
+        guard let notice = store.currentNotice else {
             return
         }
 
