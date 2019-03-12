@@ -24,6 +24,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private var viewModel: SiteStatsDetailsViewModel?
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsChangeReceipt: Receipt?
+    private let periodStore = StoreContainer.shared.statsPeriod
+    private var periodChangeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -90,7 +92,12 @@ private extension SiteStatsDetailTableViewController {
                 self?.refreshTableView()
             }
         } else {
-            // TODO: add period receipt here
+            periodChangeReceipt = viewModel?.onChange { [weak self] in
+                guard self?.storeIsFetching(statSection: statSection) == false else {
+                    return
+                }
+                self?.refreshTableView()
+            }
         }
     }
 
@@ -108,6 +115,8 @@ private extension SiteStatsDetailTableViewController {
             return insightsStore.isFetchingComments
         case .insightsTagsAndCategories:
             return insightsStore.isFetchingTagsAndCategories
+        case .periodPostsAndPages:
+            return periodStore.isFetchingPostsAndPages
         default:
             return false
         }
