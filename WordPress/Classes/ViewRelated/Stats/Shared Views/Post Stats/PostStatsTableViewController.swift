@@ -44,6 +44,7 @@ private extension PostStatsTableViewController {
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [CellHeaderRow.self,
                 PostStatsTitleRow.self,
+                OverviewRow.self,
                 TableFooterRow.self]
     }
 
