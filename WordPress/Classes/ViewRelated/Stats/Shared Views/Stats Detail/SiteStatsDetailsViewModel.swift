@@ -82,8 +82,13 @@ class SiteStatsDetailsViewModel: Observable {
         case .insightsTagsAndCategories:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                      dataRows: createTagsAndCategoriesRows(),
+                                                      dataRows: tagsAndCategoriesRows(),
                                                       siteStatsDetailsDelegate: detailsDelegate))
+        case .periodPostsAndPages:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
+                                                     dataRows: postsAndPagesRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -211,7 +216,7 @@ private extension SiteStatsDetailsViewModel {
                        dataRows: rowItems)
     }
 
-    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+    func tagsAndCategoriesRows() -> [StatsTotalRowData] {
         guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
             return []
         }
@@ -228,6 +233,31 @@ private extension SiteStatsDetailsViewModel {
                                      childRows: StatsDataHelper.childRowsForItems($0.children),
                                      statSection: .insightsTagsAndCategories)
         }
+    }
+
+    func postsAndPagesRows() -> [StatsTotalRowData] {
+        let postsAndPages = periodStore.getAllPostsAndPages()
+        var dataRows = [StatsTotalRowData]()
+
+        postsAndPages?.forEach { item in
+
+            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
+            let icon = Style.imageForGridiconType(.posts)
+
+            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
+                                             dataBarPercent: dataBarPercent,
+                                             icon: icon,
+                                             showDisclosure: true,
+                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
+                                             statSection: .periodPostsAndPages)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
     }
 
 }

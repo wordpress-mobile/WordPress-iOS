@@ -232,6 +232,7 @@ private extension StatsPeriodStore {
             if error != nil {
                 DDLogInfo("Error fetching all Posts and Pages: \(String(describing: error?.localizedDescription))")
             }
+            DDLogInfo("Stats: Finished fetching all Posts and Pages.")
             self.actionDispatcher.dispatch(PeriodAction.receivedAllPostsAndPages(postsAndPages))
         })
     }
