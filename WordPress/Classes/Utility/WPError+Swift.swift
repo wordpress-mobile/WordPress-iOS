@@ -3,7 +3,7 @@ import Foundation
 import WordPressFlux
 
 extension WPError {
-    private static let noticeTag = "WPError.Networking"
+    private static let noticeTag: Notice.Tag = "WPError.Networking"
 
     /// Show a Notice with the message taken from the given `error`
     ///
@@ -26,6 +26,6 @@ extension WPError {
 
     /// Dismiss the currently shown Notice if it was created using showNetworkingNotice()
     static func dismissNetworkingNotice() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
     }
 }

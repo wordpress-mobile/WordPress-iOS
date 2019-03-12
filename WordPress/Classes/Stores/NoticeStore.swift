@@ -7,6 +7,7 @@ import WordPressFlux
 ///
 struct Notice: Equatable {
     typealias ActionHandlerFunction = ((_ accepted: Bool) -> Void)
+    typealias Tag = String
 
     private let identifier = UUID().uuidString
 
@@ -39,7 +40,7 @@ struct Notice: Equatable {
     /// An optional value that can be used as a reference by consumers.
     ///
     /// This is not used in the Notice system at all.
-    let tag: String?
+    let tag: Tag?
 
     /// An optional handler closure that will be called when the action button
     /// is tapped, if you've provided an action title
@@ -106,7 +107,8 @@ enum NoticeAction: Action {
     case post(Notice)
     /// The currently displayed notice should be removed from the notice store
     case dismiss
-    case remove(Notice)
+    case clear(Notice)
+    case clearWithTag(Notice.Tag)
     case empty
 }
 
@@ -131,8 +133,10 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         switch action {
         case .post(let notice):
             enqueueNotice(notice)
-        case .remove(let notice):
-            removeNotice(notice)
+        case .clear(let notice):
+            clearNotice(notice)
+        case .clearWithTag(let tag):
+            clearNoticesWithTag(tag)
         case .dismiss:
             dequeueNotice()
         case .empty:
@@ -163,10 +167,18 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         state.notice = pending.pop()
     }
 
-    private func removeNotice(_ notice: Notice) {
+    private func clearNotice(_ notice: Notice) {
         pending.removeAll { $0 == notice }
 
         if state.notice == notice {
+            state.notice = pending.pop()
+        }
+    }
+
+    private func clearNoticesWithTag(_ tag: Notice.Tag) {
+        pending.removeAll { $0.tag == tag }
+
+        if state.notice?.tag == tag {
             state.notice = pending.pop()
         }
     }

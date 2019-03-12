@@ -116,7 +116,7 @@ class NoticePresenter: NSObject {
 
         UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
             DispatchQueue.main.async {
-                ActionDispatcher.dispatch(NoticeAction.remove(notice))
+                ActionDispatcher.dispatch(NoticeAction.clear(notice))
             }
         })
     }
@@ -137,7 +137,7 @@ class NoticePresenter: NSObject {
         ])
 
         let dismiss = {
-            ActionDispatcher.dispatch(NoticeAction.remove(notice))
+            ActionDispatcher.dispatch(NoticeAction.clear(notice))
         }
         noticeView.dismissHandler = dismiss
 
@@ -170,14 +170,6 @@ class NoticePresenter: NSObject {
 
         currentNotice = nil
         currentContainer = nil
-    }
-
-    /// Dismiss the currently shown `Notice` if its `tag` is equal to the given `tag`.
-    private func dismissCurrentNotice(tagged tag: String) {
-        // It's named _nextNotice_ but it really is the _current_ Notice in NoticeStore.state
-        if store.nextNotice?.tag == tag {
-            dismissCurrentNotice()
-        }
     }
 
     private func dismiss(container: NoticeContainerView) {

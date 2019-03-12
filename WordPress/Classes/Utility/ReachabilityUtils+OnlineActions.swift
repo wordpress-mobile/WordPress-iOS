@@ -6,7 +6,7 @@ extension ReachabilityUtils {
         static let title = NSLocalizedString("No Connection",
                 comment: "Title of error prompt when no internet connection is available.")
         static let message = noConnectionMessage()
-        static let tag = "ReachabilityUtils.NoConnection"
+        static let tag: Notice.Tag = "ReachabilityUtils.NoConnection"
     }
 
     /// Performs the action when an internet connection is available
@@ -52,6 +52,6 @@ extension ReachabilityUtils {
 
     /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
     static func dismissNoInternetConnectionNotice() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(NoConnectionMessage.tag))
     }
 }
