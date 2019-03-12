@@ -19,12 +19,20 @@ class SiteStatsDetailsViewModel: Observable {
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
+    private let periodStore = StoreContainer.shared.statsPeriod
+    private var periodReceipt: Receipt?
+    private var periodChangeReceipt: Receipt?
+    private var selectedDate: Date?
+    private var selectedPeriod: StatsPeriodUnit?
+
     init(detailsDelegate: SiteStatsDetailsDelegate) {
         self.detailsDelegate = detailsDelegate
     }
 
-    func fetchDataFor(statSection: StatSection) {
+    func fetchDataFor(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
         self.statSection = statSection
+        self.selectedDate = selectedDate
+        self.selectedPeriod = selectedPeriod
 
         if StatSection.allInsights.contains(statSection) {
             guard let storeQuery = queryForInsightStatSection(statSection) else {
@@ -36,7 +44,14 @@ class SiteStatsDetailsViewModel: Observable {
                 self?.emitChange()
             }
         } else {
-            // TODO: add period query here
+            guard let storeQuery = queryForPeriodStatSection(statSection) else {
+                return
+            }
+
+            periodReceipt = periodStore.query(storeQuery)
+            periodChangeReceipt = periodStore.onChange { [weak self] in
+                self?.emitChange()
+            }
         }
     }
 
@@ -109,6 +124,19 @@ private extension SiteStatsDetailsViewModel {
             return .allComments
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
+        default:
+            return nil
+        }
+    }
+
+    func queryForPeriodStatSection(_ statSection: StatSection) -> PeriodQuery? {
+        switch statSection {
+        case .periodPostsAndPages:
+            guard let selectedDate = selectedDate,
+                let selectedPeriod = selectedPeriod else {
+                    return nil
+            }
+            return .allPostsAndPages(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }

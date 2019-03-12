@@ -18,6 +18,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
+    private var selectedDate: Date?
+    private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
     private let insightsStore = StoreContainer.shared.statsInsights
@@ -37,8 +39,10 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
     }
 
-    func configure(statSection: StatSection) {
+    func configure(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
         self.statSection = statSection
+        self.selectedDate = selectedDate
+        self.selectedPeriod = selectedPeriod
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.title
         initViewModel()
@@ -76,7 +80,7 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
-        viewModel?.fetchDataFor(statSection: statSection)
+        viewModel?.fetchDataFor(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
 
         if statType == .insights {
             insightsChangeReceipt = viewModel?.onChange { [weak self] in

@@ -24,13 +24,13 @@ enum PeriodAction: Action {
 
 enum PeriodQuery {
     case periods(date: Date, period: StatsPeriodUnit)
-    case allPostAndPages(date: Date, period: StatsPeriodUnit)
+    case allPostsAndPages(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
         case .periods(let date, _):
             return date
-        case .allPostAndPages(let date, _):
+        case .allPostsAndPages(let date, _):
             return date
         }
     }
@@ -39,7 +39,7 @@ enum PeriodQuery {
         switch self {
         case .periods( _, let period):
             return period
-        case .allPostAndPages( _, let period):
+        case .allPostsAndPages( _, let period):
             return period
         }
     }
@@ -75,7 +75,7 @@ struct PeriodStoreState {
 
     // Period details
 
-    var allPostAndPages: [StatsItem]?
+    var allPostsAndPages: [StatsItem]?
     var fetchingAllPostsAndPages = false
 }
 
@@ -142,7 +142,7 @@ private extension StatsPeriodStore {
                 if shouldFetchOverview() {
                     fetchPeriodOverviewData(date: query.date, period: query.period)
                 }
-            case .allPostAndPages:
+            case .allPostsAndPages:
                 if shouldFetchPostsAndPages() {
                     fetchAllPostsAndPages(date: query.date, period: query.period)
                 }
@@ -305,7 +305,7 @@ private extension StatsPeriodStore {
 
     func receivedAllPostsAndPages(_ postsAndPages: StatsGroup?) {
         transaction { state in
-            state.allPostAndPages = postsAndPages?.items as? [StatsItem]
+            state.allPostsAndPages = postsAndPages?.items as? [StatsItem]
             state.fetchingAllPostsAndPages = false
         }
     }
@@ -403,7 +403,7 @@ extension StatsPeriodStore {
     }
 
     func getAllPostsAndPages() -> [StatsItem]? {
-        return state.allPostAndPages
+        return state.allPostsAndPages
     }
 
     var isFetchingOverview: Bool {

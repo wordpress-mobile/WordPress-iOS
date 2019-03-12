@@ -194,7 +194,9 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection,
+                                            selectedDate: selectedDate,
+                                            selectedPeriod: selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
