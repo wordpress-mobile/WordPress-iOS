@@ -82,6 +82,12 @@ class NoticePresenter: NSObject {
     }
 
     private func presentNextNoticeIfAvailable() {
+        guard currentNotice != store.nextNotice else {
+            return
+        }
+
+        dismissCurrentNotice()
+
         if let notice = store.nextNotice {
             present(notice)
         }
@@ -131,7 +137,7 @@ class NoticePresenter: NSObject {
         ])
 
         let dismiss = {
-            self.dismiss(container: noticeContainerView)
+            self.dismiss()
         }
         noticeView.dismissHandler = dismiss
 
@@ -156,6 +162,56 @@ class NoticePresenter: NSObject {
         })
     }
 
+    /// TODO Rename
+    private func dismissCurrentNotice() {
+        if let container = currentContainer {
+            dismiss(container: container)
+        }
+
+        currentNotice = nil
+        currentContainer = nil
+    }
+
+    /// Dismiss the currently shown `Notice` if its `tag` is equal to the given `tag`.
+    private func dismissCurrentNotice(tagged tag: String) {
+        // It's named _nextNotice_ but it really is the _current_ Notice in NoticeStore.state
+        if store.nextNotice?.tag == tag {
+            dismissCurrentNotice()
+        }
+    }
+
+    private func dismiss(container: NoticeContainerView) {
+        guard container.superview != nil else {
+            return
+        }
+
+        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
+            container.removeFromSuperview()
+
+            if self?.currentNotice == nil {
+                self?.window.isHidden = true
+            }
+        })
+    }
+
+    private func dismiss() {
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
+    }
+
+    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
+        view.addSubview(noticeContainer)
+    }
+
+    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
+        let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        container.bottomConstraint = constraint
+        constraint.isActive = true
+    }
+
+    // MARK: - Animations
+
+    typealias AnimationBlock = () -> Void
+
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
         return { [weak self] in
             guard let self = self else {
@@ -178,58 +234,9 @@ class NoticePresenter: NSObject {
             noticeContainer.noticeView.alpha = WPAlphaFull
             noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
 
-            self.window.isHidden = false
-
             self.view.layoutIfNeeded()
         }
     }
-
-    public func dismissCurrentNotice() {
-        guard let container = currentContainer else {
-            return
-        }
-
-        dismiss(container: container)
-    }
-
-    /// Dismiss the currently shown `Notice` if its `tag` is equal to the given `tag`.
-    public func dismissCurrentNotice(tagged tag: String) {
-        // It's named _nextNotice_ but it really is the _current_ Notice in NoticeStore.state
-        if store.nextNotice?.tag == tag {
-            dismissCurrentNotice()
-        }
-    }
-
-    private func dismiss(container: NoticeContainerView) {
-        guard container.superview != nil else {
-            return
-        }
-
-        currentNotice = nil
-        currentContainer = nil
-
-        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
-            container.removeFromSuperview()
-            self?.window.isHidden = true
-            self?.dismiss()
-        })
-    }
-
-    private func dismiss() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
-    }
-
-    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
-        view.addSubview(noticeContainer)
-    }
-
-    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
-        let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        container.bottomConstraint = constraint
-        constraint.isActive = true
-    }
-
-    typealias AnimationBlock = () -> Void
 
     private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
         fromState()

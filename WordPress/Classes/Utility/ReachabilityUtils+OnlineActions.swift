@@ -52,10 +52,6 @@ extension ReachabilityUtils {
 
     /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
     static func dismissNoInternetConnectionNotice() {
-        noticePresenter?.dismissCurrentNotice(tagged: NoConnectionMessage.tag)
-    }
-
-    private static var noticePresenter: NoticePresenter? {
-        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 }

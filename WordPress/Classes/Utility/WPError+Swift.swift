@@ -26,10 +26,6 @@ extension WPError {
 
     /// Dismiss the currently shown Notice if it was created using showNetworkingNotice()
     static func dismissNetworkingNotice() {
-        noticePresenter?.dismissCurrentNotice(tagged: noticeTag)
-    }
-
-    private static var noticePresenter: NoticePresenter? {
-        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 }
