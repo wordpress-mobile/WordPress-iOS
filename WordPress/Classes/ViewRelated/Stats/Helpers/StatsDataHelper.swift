@@ -50,6 +50,10 @@ class StatsDataHelper {
         }
     }
 
+    class func clearExpandedRowsFor(statSection: StatSection) {
+        StatsDataHelper.expandedRowLabels[statSection]?.removeAll()
+    }
+
     // MARK: - Data Bar Percent
 
     class func dataBarPercentForRow(_ row: StatsItem, relativeToRow maxValueRow: StatsItem?) -> Float? {

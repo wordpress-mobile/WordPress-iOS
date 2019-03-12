@@ -53,6 +53,16 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         })
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        guard let statSection = statSection else {
+            return
+        }
+        StatsDataHelper.clearExpandedRowsFor(statSection: statSection)
+    }
+
+
 }
 
 // MARK: - Table Methods
