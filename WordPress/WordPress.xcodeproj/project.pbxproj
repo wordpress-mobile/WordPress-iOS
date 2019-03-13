@@ -261,7 +261,6 @@
 		4054F43E221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */; };
 		4054F4422213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4402213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift */; };
 		4054F4432213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4412213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift */; };
-		4054F445221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F444221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift */; };
 		4054F4562214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4542214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataClass.swift */; };
 		4054F4572214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4552214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataProperties.swift */; };
 		4054F4592214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F4582214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift */; };
@@ -2171,7 +2170,6 @@
 		4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommentedPostStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		4054F4402213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentsAuthorStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4054F4412213635000D261AB /* TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentsAuthorStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		4054F444221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopCommentsAuthorStatsRecordValueTests.swift; sourceTree = "<group>"; };
 		4054F4542214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagsCategoriesStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4054F4552214E3C800D261AB /* TagsCategoriesStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TagsCategoriesStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4054F4582214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsCategoriesStatsRecordValueTests.swift; sourceTree = "<group>"; };
@@ -4840,7 +4838,6 @@
 				4054F4582214E6FE00D261AB /* TagsCategoriesStatsRecordValueTests.swift */,
 				40EE948122132F5800CD264F /* PublicizeConectionStatsRecordValueTests.swift */,
 				4054F43D221357B600D261AB /* TopCommentedPostStatsRecordValueTests.swift */,
-				4054F444221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift */,
 				40F50B7F221310D400CBBB73 /* FollowersStatsRecordValueTests.swift */,
 				40E7FEC42211DF790032834E /* StatsRecordTests.swift */,
 				40E7FEC72211EEC00032834E /* LastPostStatsRecordValueTests.swift */,
@@ -11106,7 +11103,6 @@
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				400A2C932217B463000A8A59 /* ReferrerStatsRecordValueTests.swift in Sources */,
 				E1928B2E1F8369F100E076C8 /* WebViewAuthenticatorTests.swift in Sources */,
-				4054F445221363D300D261AB /* TopCommentsAuthorStatsRecordValueTests.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
 				08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */,
 				400A2C912217B308000A8A59 /* CountryStatsRecordValueTests.swift in Sources */,
