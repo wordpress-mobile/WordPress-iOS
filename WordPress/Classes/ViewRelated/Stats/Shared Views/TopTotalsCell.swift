@@ -269,6 +269,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
         siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
+        siteStatsDetailsDelegate?.displayMediaWithID?(mediaID)
     }
 
     func toggleChildRowsForRow(_ row: StatsTotalRow) {

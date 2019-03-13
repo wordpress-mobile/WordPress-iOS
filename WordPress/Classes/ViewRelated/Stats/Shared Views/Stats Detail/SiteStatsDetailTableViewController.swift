@@ -6,6 +6,7 @@ import WordPressFlux
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func showPostStats(withPostTitle postTitle: String?)
+    @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -30,6 +31,20 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
+    }()
+
+    private let siteID = SiteStatsInformation.sharedInstance.siteID
+
+    private lazy var mainContext: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().mainContext
+    }()
+
+    private lazy var mediaService: MediaService = {
+        return MediaService(managedObjectContext: mainContext)
+    }()
+
+    private lazy var blogService: BlogService = {
+        return BlogService(managedObjectContext: mainContext)
     }()
 
     // MARK: - View
@@ -221,6 +236,22 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postTitle: postTitle)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+
+    func displayMediaWithID(_ mediaID: NSNumber) {
+
+        guard let siteID = siteID,
+            let blog = blogService.blog(byBlogId: siteID) else {
+                DDLogInfo("Unable to get blog when trying to show media from Stats details.")
+                return
+        }
+
+        mediaService.getMediaWithID(mediaID, in: blog, success: { (media) in
+            let viewController = MediaItemViewController(media: media)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }, failure: { (error) in
+            DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
+        })
     }
 
 }
