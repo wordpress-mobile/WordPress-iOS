@@ -174,7 +174,7 @@ class TagsCategoriesStatsRecordValueTests: StatsTestCase {
         XCTAssertEqual(tag?.type, TagsCategoriesType.tag.rawValue)
         XCTAssertEqual(tag?.viewsCount, 0)
         XCTAssertEqual(tag?.linkURL, URL(string: "wp.com/tags/tag"))
-        XCTAssertEqual(tag?.children?.count, 2)
+        XCTAssertEqual(tag?.children?.count, 0)
 
         let folder = castedResults.first { $0.type == TagsCategoriesType.folder.rawValue }
 
