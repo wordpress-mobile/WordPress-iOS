@@ -18,13 +18,17 @@
     if ([self hasAuthTokenIssues]) {
         UIViewController *controller = [WordPressAuthenticationManager signinForWPComFixingAuthToken:^(BOOL cancelled) {
             if (cancelled) {
-                [self showCancelReAuthenticationAlertAndOnOK:^{
-                    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-                    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+                // We present asynchronously to prevent an issue where the Login VC would dismiss the
+                // alert instead of itself.
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showCancelReAuthenticationAlertAndOnOK:^{
+                        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+                        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
 
-                    [accountService removeDefaultWordPressComAccount];
-                    onComplete();
-                }];
+                        [accountService removeDefaultWordPressComAccount];
+                        onComplete();
+                    }];
+                });
             } else {
                 onComplete();
             }
