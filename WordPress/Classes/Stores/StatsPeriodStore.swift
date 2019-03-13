@@ -23,12 +23,16 @@ enum PeriodAction: Action {
 
     case receivedAllSearchTerms(_ searchTerms: StatsGroup?)
     case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllVideos(_ videos: StatsGroup?)
+    case refreshVideos(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
     case periods(date: Date, period: StatsPeriodUnit)
     case allPostsAndPages(date: Date, period: StatsPeriodUnit)
     case allSearchTerms(date: Date, period: StatsPeriodUnit)
+    case allVideos(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
@@ -37,6 +41,8 @@ enum PeriodQuery {
         case .allPostsAndPages(let date, _):
             return date
         case .allSearchTerms(let date, _):
+            return date
+        case .allVideos(let date, _):
             return date
         }
     }
@@ -48,6 +54,8 @@ enum PeriodQuery {
         case .allPostsAndPages( _, let period):
             return period
         case .allSearchTerms( _, let period):
+            return period
+        case .allVideos( _, let period):
             return period
         }
     }
@@ -88,6 +96,9 @@ struct PeriodStoreState {
 
     var allSearchTerms: [StatsItem]?
     var fetchingAllSearchTerms = false
+
+    var allVideos: [StatsItem]?
+    var fetchingAllVideos = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -129,6 +140,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllSearchTerms(searchTerms)
         case .refreshSearchTerms(let date, let period):
             refreshSearchTerms(date: date, period: period)
+        case .receivedAllVideos(let videos):
+            receivedAllVideos(videos)
+        case .refreshVideos(let date, let period):
+            refreshVideos(date: date, period: period)
         }
     }
 
@@ -164,6 +179,10 @@ private extension StatsPeriodStore {
             case .allSearchTerms:
                 if shouldFetchSearchTerms() {
                     fetchAllSearchTerms(date: query.date, period: query.period)
+                }
+            case .allVideos:
+                if shouldFetchVideos() {
+                    fetchAllVideos(date: query.date, period: query.period)
                 }
             }
         }
@@ -286,6 +305,27 @@ private extension StatsPeriodStore {
         fetchAllSearchTerms(date: date, period: period)
     }
 
+    func fetchAllVideos(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllVideos = true
+
+        SiteStatsInformation.statsService()?.retrieveVideos(for: date, andUnit: period, withCompletionHandler: { (videos, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Videos: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all videos.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllVideos(videos))
+        })
+    }
+
+    func refreshVideos(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchVideos() else {
+            DDLogInfo("Stats Period Videos refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllVideos(date: date, period: period)
+    }
+
     // MARK: - Receive data methods
 
     func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
@@ -358,6 +398,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedAllVideos(_ videos: StatsGroup?) {
+        transaction { state in
+            state.allVideos = videos?.items as? [StatsItem]
+            state.fetchingAllVideos = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetchOverview() -> Bool {
@@ -381,6 +428,10 @@ private extension StatsPeriodStore {
 
     func shouldFetchSearchTerms() -> Bool {
         return !isFetchingSearchTerms
+    }
+
+    func shouldFetchVideos() -> Bool {
+        return !isFetchingVideos
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -462,6 +513,10 @@ extension StatsPeriodStore {
         return state.allSearchTerms
     }
 
+    func getAllVideos() -> [StatsItem]? {
+        return state.allVideos
+    }
+
     var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -479,6 +534,10 @@ extension StatsPeriodStore {
 
     var isFetchingSearchTerms: Bool {
         return state.fetchingAllSearchTerms
+    }
+
+    var isFetchingVideos: Bool {
+        return state.fetchingAllVideos
     }
 
 }
