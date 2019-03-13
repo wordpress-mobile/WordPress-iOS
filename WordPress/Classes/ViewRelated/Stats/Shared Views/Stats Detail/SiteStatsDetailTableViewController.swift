@@ -5,6 +5,7 @@ import WordPressFlux
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func showPostStats(withPostTitle postTitle: String?)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -18,10 +19,14 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
+    private var selectedDate: Date?
+    private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsChangeReceipt: Receipt?
+    private let periodStore = StoreContainer.shared.statsPeriod
+    private var periodChangeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -37,8 +42,10 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
     }
 
-    func configure(statSection: StatSection) {
+    func configure(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
         self.statSection = statSection
+        self.selectedDate = selectedDate
+        self.selectedPeriod = selectedPeriod
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.title
         initViewModel()
@@ -76,7 +83,7 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
-        viewModel?.fetchDataFor(statSection: statSection)
+        viewModel?.fetchDataFor(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
 
         if statType == .insights {
             insightsChangeReceipt = viewModel?.onChange { [weak self] in
@@ -86,7 +93,12 @@ private extension SiteStatsDetailTableViewController {
                 self?.refreshTableView()
             }
         } else {
-            // TODO: add period receipt here
+            periodChangeReceipt = viewModel?.onChange { [weak self] in
+                guard self?.storeIsFetching(statSection: statSection) == false else {
+                    return
+                }
+                self?.refreshTableView()
+            }
         }
     }
 
@@ -104,6 +116,8 @@ private extension SiteStatsDetailTableViewController {
             return insightsStore.isFetchingComments
         case .insightsTagsAndCategories:
             return insightsStore.isFetchingTagsAndCategories
+        case .periodPostsAndPages:
+            return periodStore.isFetchingPostsAndPages
         default:
             return false
         }
@@ -134,10 +148,11 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshComments()
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
+        case .periodPostsAndPages:
+            viewModel?.refreshPostsAndPages()
         default:
             refreshControl?.endRefreshing()
         }
-
     }
 
     func applyTableUpdates() {
@@ -193,6 +208,12 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
         StatsDataHelper.updatedExpandedState(forRow: row)
+    }
+
+    func showPostStats(withPostTitle postTitle: String?) {
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postTitle: postTitle)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
 }

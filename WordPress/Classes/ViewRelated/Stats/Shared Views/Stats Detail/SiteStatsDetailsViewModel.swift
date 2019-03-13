@@ -19,12 +19,20 @@ class SiteStatsDetailsViewModel: Observable {
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
+    private let periodStore = StoreContainer.shared.statsPeriod
+    private var periodReceipt: Receipt?
+    private var periodChangeReceipt: Receipt?
+    private var selectedDate: Date?
+    private var selectedPeriod: StatsPeriodUnit?
+
     init(detailsDelegate: SiteStatsDetailsDelegate) {
         self.detailsDelegate = detailsDelegate
     }
 
-    func fetchDataFor(statSection: StatSection) {
+    func fetchDataFor(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
         self.statSection = statSection
+        self.selectedDate = selectedDate
+        self.selectedPeriod = selectedPeriod
 
         if StatSection.allInsights.contains(statSection) {
             guard let storeQuery = queryForInsightStatSection(statSection) else {
@@ -36,7 +44,14 @@ class SiteStatsDetailsViewModel: Observable {
                 self?.emitChange()
             }
         } else {
-            // TODO: add period query here
+            guard let storeQuery = queryForPeriodStatSection(statSection) else {
+                return
+            }
+
+            periodReceipt = periodStore.query(storeQuery)
+            periodChangeReceipt = periodStore.onChange { [weak self] in
+                self?.emitChange()
+            }
         }
     }
 
@@ -67,8 +82,13 @@ class SiteStatsDetailsViewModel: Observable {
         case .insightsTagsAndCategories:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                      dataRows: createTagsAndCategoriesRows(),
+                                                      dataRows: tagsAndCategoriesRows(),
                                                       siteStatsDetailsDelegate: detailsDelegate))
+        case .periodPostsAndPages:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
+                                                     dataRows: postsAndPagesRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -95,6 +115,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories())
     }
 
+    func refreshPostsAndPages() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshPostsAndPages(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -109,6 +137,19 @@ private extension SiteStatsDetailsViewModel {
             return .allComments
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
+        default:
+            return nil
+        }
+    }
+
+    func queryForPeriodStatSection(_ statSection: StatSection) -> PeriodQuery? {
+        switch statSection {
+        case .periodPostsAndPages:
+            guard let selectedDate = selectedDate,
+                let selectedPeriod = selectedPeriod else {
+                    return nil
+            }
+            return .allPostsAndPages(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -183,7 +224,7 @@ private extension SiteStatsDetailsViewModel {
                        dataRows: rowItems)
     }
 
-    func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
+    func tagsAndCategoriesRows() -> [StatsTotalRowData] {
         guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
             return []
         }
@@ -200,6 +241,31 @@ private extension SiteStatsDetailsViewModel {
                                      childRows: StatsDataHelper.childRowsForItems($0.children),
                                      statSection: .insightsTagsAndCategories)
         }
+    }
+
+    func postsAndPagesRows() -> [StatsTotalRowData] {
+        let postsAndPages = periodStore.getAllPostsAndPages()
+        var dataRows = [StatsTotalRowData]()
+
+        postsAndPages?.forEach { item in
+
+            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
+            let icon = Style.imageForGridiconType(.posts)
+
+            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
+
+            let row = StatsTotalRowData.init(name: item.label,
+                                             data: item.value.displayString(),
+                                             dataBarPercent: dataBarPercent,
+                                             icon: icon,
+                                             showDisclosure: true,
+                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
+                                             statSection: .periodPostsAndPages)
+
+            dataRows.append(row)
+        }
+
+        return dataRows
     }
 
 }

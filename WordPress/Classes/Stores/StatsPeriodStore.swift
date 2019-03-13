@@ -3,6 +3,9 @@ import WordPressFlux
 import WordPressComStatsiOS
 
 enum PeriodAction: Action {
+
+    // Period overview
+
     case receivedPostsAndPages(_ postsAndPages: StatsGroup?)
     case receivedPublished(_ published: StatsGroup?)
     case receivedReferrers(_ referrers: StatsGroup?)
@@ -11,15 +14,23 @@ enum PeriodAction: Action {
     case receivedSearchTerms(_ searchTerms: StatsGroup?)
     case receivedVideos(_ videos: StatsGroup?)
     case receivedCountries(_ countries: StatsGroup?)
-    case refreshPeriodData(date: Date, period: StatsPeriodUnit)
+    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit)
+
+    // Period details
+
+    case receivedAllPostsAndPages(_ postsAndPages: StatsGroup?)
+    case refreshPostsAndPages(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
     case periods(date: Date, period: StatsPeriodUnit)
+    case allPostsAndPages(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
         case .periods(let date, _):
+            return date
+        case .allPostsAndPages(let date, _):
             return date
         }
     }
@@ -28,11 +39,16 @@ enum PeriodQuery {
         switch self {
         case .periods( _, let period):
             return period
+        case .allPostsAndPages( _, let period):
+            return period
         }
     }
 }
 
 struct PeriodStoreState {
+
+    // Period overview
+
     var topPostsAndPages: [StatsItem]?
     var fetchingPostsAndPages = false
 
@@ -56,6 +72,11 @@ struct PeriodStoreState {
 
     var topVideos: [StatsItem]?
     var fetchingVideos = false
+
+    // Period details
+
+    var allPostsAndPages: [StatsItem]?
+    var fetchingAllPostsAndPages = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -87,8 +108,12 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedVideos(videos)
         case .receivedCountries(let countries):
             receivedCountries(countries)
-        case .refreshPeriodData(let date, let period):
-            refreshPeriodData(date: date, period: period)
+        case .refreshPeriodOverviewData(let date, let period):
+            refreshPeriodOverviewData(date: date, period: period)
+        case .receivedAllPostsAndPages(let postsAndPages):
+            receivedAllPostsAndPages(postsAndPages)
+        case .refreshPostsAndPages(let date, let period):
+            refreshPostsAndPages(date: date, period: period)
         }
     }
 
@@ -107,31 +132,27 @@ private extension StatsPeriodStore {
 
     func processQueries() {
 
-        guard !activeQueries.isEmpty && shouldFetch() else {
+        guard !activeQueries.isEmpty else {
             return
         }
 
-        runPeriodsQuery()
-    }
-
-    func runPeriodsQuery() {
-        let periodsQuery = activeQueries
-            .filter {
-                if case .periods = $0 {
-                    return true
-                } else {
-                    return false
+        activeQueries.forEach { query in
+            switch query {
+            case .periods:
+                if shouldFetchOverview() {
+                    fetchPeriodOverviewData(date: query.date, period: query.period)
                 }
-            }.first
-
-        if let periodsQuery = periodsQuery {
-            fetchPeriodData(date: periodsQuery.date, period: periodsQuery.period)
+            case .allPostsAndPages:
+                if shouldFetchPostsAndPages() {
+                    fetchAllPostsAndPages(date: query.date, period: query.period)
+                }
+            }
         }
     }
 
-    func fetchPeriodData(date: Date, period: StatsPeriodUnit) {
+    func fetchPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
 
-        setAllAsFetching()
+        setAllAsFetchingOverview()
 
         SiteStatsInformation.statsService()?.retrieveAllStats(for: date, unit: period, withVisitsCompletionHandler: { (visits, error) in
             if error != nil {
@@ -195,13 +216,34 @@ private extension StatsPeriodStore {
 
     }
 
-    func refreshPeriodData(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetch() else {
-            DDLogInfo("Stats Period refresh triggered while one was in progress.")
+    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchOverview() else {
+            DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
             return
         }
 
-        fetchPeriodData(date: date, period: period)
+        fetchPeriodOverviewData(date: date, period: period)
+    }
+
+    func fetchAllPostsAndPages(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllPostsAndPages = true
+
+        SiteStatsInformation.statsService()?.retrievePosts(for: date, andUnit: period, withCompletionHandler: { (postsAndPages, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Posts and Pages: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all posts and pages.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllPostsAndPages(postsAndPages))
+        })
+    }
+
+    func refreshPostsAndPages(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchPostsAndPages() else {
+            DDLogInfo("Stats Period Posts And Pages refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllPostsAndPages(date: date, period: period)
     }
 
     // MARK: - Receive data methods
@@ -262,13 +304,20 @@ private extension StatsPeriodStore {
         }
     }
 
-    // MARK: - Helpers
-
-    func shouldFetch() -> Bool {
-        return !isFetching
+    func receivedAllPostsAndPages(_ postsAndPages: StatsGroup?) {
+        transaction { state in
+            state.allPostsAndPages = postsAndPages?.items as? [StatsItem]
+            state.fetchingAllPostsAndPages = false
+        }
     }
 
-    func setAllAsFetching() {
+    // MARK: - Helpers
+
+    func shouldFetchOverview() -> Bool {
+        return !isFetchingOverview
+    }
+
+    func setAllAsFetchingOverview() {
         state.fetchingPostsAndPages = true
         state.fetchingReferrers = true
         state.fetchingClicks = true
@@ -277,6 +326,10 @@ private extension StatsPeriodStore {
         state.fetchingSearchTerms = true
         state.fetchingVideos = true
         state.fetchingCountries = true
+    }
+
+    func shouldFetchPostsAndPages() -> Bool {
+        return !isFetchingPostsAndPages
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -350,7 +403,11 @@ extension StatsPeriodStore {
         return state.topCountries
     }
 
-    var isFetching: Bool {
+    func getAllPostsAndPages() -> [StatsItem]? {
+        return state.allPostsAndPages
+    }
+
+    var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
             state.fetchingClicks ||
@@ -359,6 +416,10 @@ extension StatsPeriodStore {
             state.fetchingSearchTerms ||
             state.fetchingVideos ||
             state.fetchingCountries
+    }
+
+    var isFetchingPostsAndPages: Bool {
+        return state.fetchingAllPostsAndPages
     }
 
 }

@@ -122,8 +122,10 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
-            return
+
+        guard let viewModel = viewModel,
+            viewIsVisible() else {
+                return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
@@ -148,6 +150,10 @@ private extension SiteStatsInsightsTableViewController {
 
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedInsights()
+    }
+
+    func viewIsVisible() -> Bool {
+        return isViewLoaded && view.window != nil
     }
 
     // MARK: User Defaults
