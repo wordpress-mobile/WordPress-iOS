@@ -132,7 +132,7 @@ class StatsBarChartView: BarChartView {
         primaryDataSet.drawValuesEnabled = false
 
         primaryDataSet.highlightAlpha = Constants.highlightAlpha
-        if let initialHighlightColor = styling.highlightColor {
+        if let initialHighlightColor = styling.primaryHighlightColor {
             primaryDataSet.highlightColor = initialHighlightColor
         }
 
@@ -146,8 +146,9 @@ class StatsBarChartView: BarChartView {
         secondaryDataSet.drawValuesEnabled = false
 
         secondaryDataSet.highlightAlpha = Constants.highlightAlpha
-        let secondaryHighlightColor = WPStyleGuide.fireOrange()
-        secondaryDataSet.highlightColor = secondaryHighlightColor
+        if let secondaryHighlightColor = styling.secondaryHighlightColor {
+            secondaryDataSet.highlightColor = secondaryHighlightColor
+        }
     }
 
     private func configureChartForSingleDataSet(_ dataSet: BarChartDataSet) {
@@ -155,7 +156,7 @@ class StatsBarChartView: BarChartView {
         dataSet.colors = [ styling.primaryBarColor ]
         dataSet.drawValuesEnabled = false
 
-        if let barHighlightColor = styling.highlightColor {
+        if let barHighlightColor = styling.primaryHighlightColor {
             dataSet.highlightAlpha = Constants.highlightAlpha
             dataSet.highlightColor = barHighlightColor
             dataSet.highlightEnabled = true
@@ -218,7 +219,7 @@ class StatsBarChartView: BarChartView {
         marker.offset = markerOffset
 
         let markerColor: NSUIColor
-        if let primaryHighlightColor = styling.highlightColor {
+        if let primaryHighlightColor = styling.primaryHighlightColor {
             markerColor = primaryHighlightColor
         } else {
             markerColor = WPStyleGuide.jazzyOrange()
