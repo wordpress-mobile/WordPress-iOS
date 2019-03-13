@@ -84,7 +84,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
         setupFilterBar()
         updateLabels()
-        configureChartView()
+        configureChartViewIfNeeded()
     }
 }
 
@@ -152,16 +152,8 @@ private extension OverviewCell {
 
     // MARK: Chart support
 
-    func resetChartView() {
-        for subview in chartContainerView.subviews {
-            subview.removeFromSuperview()
-        }
-    }
-
-    func configureChartView() {
-        resetChartView()
-
-        guard let barChartData = chartData, let barChartStyling = chartStyling else {
+    func configureChartViewIfNeeded() {
+        guard chartContainerView.subviews.isEmpty, let barChartData = chartData, let barChartStyling = chartStyling else {
             return
         }
 
