@@ -69,7 +69,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         StatsDataHelper.clearExpandedRowsFor(statSection: statSection)
     }
 
-
 }
 
 // MARK: - Table Methods
@@ -120,6 +119,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingPostsAndPages
         case .periodSearchTerms:
             return periodStore.isFetchingSearchTerms
+        case .periodVideos:
+            return periodStore.isFetchingVideos
         default:
             return false
         }
@@ -154,6 +155,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshPostsAndPages()
         case .periodSearchTerms:
             viewModel?.refreshSearchTerms()
+        case .periodVideos:
+            viewModel?.refreshVideos()
         default:
             refreshControl?.endRefreshing()
         }
