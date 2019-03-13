@@ -1,4 +1,5 @@
 @testable import WordPress
+@testable import WordPressKit
 
 
 class StreakStatsRecordValueTests: StatsTestCase {
@@ -24,49 +25,101 @@ class StreakStatsRecordValueTests: StatsTestCase {
     }
 
     func testStreakCreation() {
+        let parent = createStatsRecord(in: mainContext, type: .streakInsight, date: Date())
+        let streakInsight = StreakInsightStatsRecordValue(parent: parent)
+        streakInsight.longestStreakLength = 9001
+
         let now = Date()
 
-        let streakItem1 = createStatsRecord(in: mainContext, type: .postingStreak, date: now)
-        let streakValue1 = StreakStatsRecordValue(parent: streakItem1)
+        let streakValue1 = StreakStatsRecordValue(context: mainContext)
         streakValue1.postCount = 9001
+        streakValue1.date = now as NSDate
 
         let weekAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -7, to: now)
 
-        let streakItem2 = createStatsRecord(in: mainContext, type: .postingStreak, date: weekAgo!)
-        let streakValue2 = StreakStatsRecordValue(parent: streakItem2)
+        let streakValue2 = StreakStatsRecordValue(context: mainContext)
         streakValue2.postCount = 9002
+        streakValue2.date = weekAgo! as NSDate
 
-        let fr = StatsRecord.fetchRequest(for: .postingStreak)
+        streakInsight.addToStreakData(NSOrderedSet(array: [streakValue1, streakValue2]))
+
+        let fr = StatsRecord.fetchRequest(for: .streakInsight)
 
         let results = try! mainContext.fetch(fr)
 
         XCTAssertEqual(results.count, 1)
 
-        let firstItem = results.first!
-        XCTAssertEqual(firstItem.values!.count, 1)
+        let firstItem = results.first?.values?.firstObject! as? StreakInsightStatsRecordValue
 
-        let firstValue = firstItem.values?.firstObject! as! StreakStatsRecordValue
+        XCTAssertEqual(firstItem?.streakData?.count, 2)
+
+        let firstValue = firstItem?.streakData?.firstObject! as! StreakStatsRecordValue
         XCTAssertNotNil(firstValue)
 
         XCTAssertEqual(firstValue.postCount, streakValue1.postCount)
 
-        // this might get potentially flaky for... seven seconds around midnight each day.
-        // hopefully this won't be a problem, but I wanted to test that fetching by dates
-        // that aren't exact matches still works.
-        let fewSecondsAfterAWeekAgo = Calendar.autoupdatingCurrent.date(byAdding: .second, value: 7, to: weekAgo!)!
-
-        let fr2 = StatsRecord.fetchRequest(for: .postingStreak, on: fewSecondsAfterAWeekAgo)
-        let results2 = try! mainContext.fetch(fr2)
-
-        XCTAssertEqual(results2.count, 1)
-
-        let secondItem = results2.first!
-        XCTAssertEqual(secondItem.values!.count, 1)
-
-        let secondValue = secondItem.values?.firstObject! as! StreakStatsRecordValue
+        let secondValue = firstItem?.streakData?[1] as! StreakStatsRecordValue
         XCTAssertNotNil(secondValue)
 
         XCTAssertEqual(secondValue.postCount, streakValue2.postCount)
+    }
+
+    func testCoreDataConversion() {
+        let now = Date()
+        let weekAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -7, to: now)
+
+        let postingEventToday = PostingStreakEvent(date: now, postCount: 2)
+        let postingEventWeekAgo = PostingStreakEvent(date: weekAgo!, postCount: 16)
+
+
+        let streakInsight = StatsPostingStreakInsight(currentStreakStart: now,
+                                                      currentStreakEnd: now,
+                                                      currentStreakLength: 1,
+                                                      longestStreakStart: weekAgo!,
+                                                      longestStreakEnd: weekAgo!,
+                                                      longestStreakLength: 15,
+                                                      postingEvents: [postingEventWeekAgo, postingEventToday])
+
+        let blog = defaultBlog()
+
+        _ = StatsRecord.record(from: streakInsight, for: blog)
+
+        XCTAssertNoThrow(try mainContext.save())
+
+        let fetchRequest = StatsRecord.fetchRequest(for: .streakInsight)
+
+        let result = try! mainContext.fetch(fetchRequest)
+        let statsRecord = result.first!
+
+        XCTAssertEqual(statsRecord.blog, blog)
+        XCTAssertEqual(statsRecord.period, StatsRecordPeriodType.notApplicable.rawValue)
+
+        let castedResults = statsRecord.values?.array as! [StreakInsightStatsRecordValue]
+
+        XCTAssertEqual(castedResults.count, 1)
+
+        let insight = castedResults.first!
+
+        XCTAssertEqual(insight.currentStreakStart, now as NSDate)
+        XCTAssertEqual(insight.currentStreakEnd, now as NSDate)
+        XCTAssertEqual(insight.currentStreakLength, 1)
+        XCTAssertEqual(insight.longestStreakStart, weekAgo! as NSDate)
+        XCTAssertEqual(insight.longestStreakEnd, weekAgo! as NSDate)
+        XCTAssertEqual(insight.longestStreakLength, 15)
+
+        XCTAssertEqual(insight.streakData?.count, 2)
+
+        let firstData = insight.streakData?.firstObject as? StreakStatsRecordValue
+        let secondData = insight.streakData?[1] as? StreakStatsRecordValue
+
+        XCTAssertNotNil(firstData)
+        XCTAssertNotNil(secondData)
+
+        XCTAssertEqual(firstData?.postCount, 16)
+        XCTAssertEqual(firstData?.date, weekAgo! as NSDate)
+
+        XCTAssertEqual(secondData?.postCount, 2)
+        XCTAssertEqual(secondData?.date, now as NSDate)
     }
 
 }

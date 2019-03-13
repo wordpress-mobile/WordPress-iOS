@@ -1,4 +1,5 @@
 @testable import WordPress
+@testable import WordPressKit
 
 class PublicizeConectionStatsRecordValueTests: StatsTestCase {
     func testMultiplePublicizeServices() {
@@ -44,5 +45,50 @@ class PublicizeConectionStatsRecordValueTests: StatsTestCase {
 
         let fetchedValue = result.first!.values!.firstObject as! PublicizeConnectionStatsRecordValue
         XCTAssertNotNil(fetchedValue.iconURL)
+    }
+
+    func testCoreDataConversion() {
+        let connection1 = StatsPublicizeService(name: "test 1",
+                                                followers: 9001,
+                                                iconURL: URL(string: "https://wordpress.com"))
+
+        let connection2 = StatsPublicizeService(name: "bird site",
+                                                followers: 0,
+                                                iconURL: nil)
+
+        let insight = StatsPublicizeInsight(publicizeServices: [connection1, connection2])
+
+        let blog = defaultBlog()
+
+        _ = StatsRecord.record(from: insight, for: blog)
+
+        XCTAssertNoThrow(try mainContext.save())
+
+        let fetchRequest = StatsRecord.fetchRequest(for: .publicizeConnection)
+
+        let result = try! mainContext.fetch(fetchRequest)
+        let statsRecord = result.first!
+
+        XCTAssertEqual(statsRecord.blog, blog)
+        XCTAssertEqual(statsRecord.period, StatsRecordPeriodType.notApplicable.rawValue)
+
+        let castedResults = statsRecord.values?.array as! [PublicizeConnectionStatsRecordValue]
+
+        XCTAssertEqual(castedResults.count, 2)
+
+        let firstResult = castedResults.first
+        let secondResult = castedResults[1]
+
+        XCTAssertNotNil(firstResult)
+        XCTAssertNotNil(secondResult)
+
+        XCTAssertEqual(firstResult?.name, "test 1")
+        XCTAssertEqual(firstResult?.followersCount, 9001)
+        XCTAssertEqual(firstResult?.iconURL, URL(string: "https://wordpress.com"))
+
+
+        XCTAssertEqual(secondResult.name, "bird site")
+        XCTAssertEqual(secondResult.followersCount, 0)
+        XCTAssertNil(secondResult.iconURL)
     }
 }

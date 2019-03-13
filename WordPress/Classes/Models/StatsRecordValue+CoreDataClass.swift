@@ -11,7 +11,7 @@ public class StatsRecordValue: NSManagedObject {
 }
 
 protocol StatsRecordValueConvertible {
-    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue
+    func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue]
     init(statsRecordValue: StatsRecordValue)
 
     static var recordType: StatsRecordType { get }
