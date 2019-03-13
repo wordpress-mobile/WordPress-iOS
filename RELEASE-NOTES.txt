@@ -1,6 +1,7 @@
 12.1
 -----
- 
+* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
+
 12.0
 -----
 * Redesigned Notices
