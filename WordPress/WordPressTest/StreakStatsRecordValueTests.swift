@@ -64,7 +64,7 @@ class StreakStatsRecordValueTests: StatsTestCase {
         XCTAssertEqual(secondValue.postCount, streakValue2.postCount)
     }
 
-    func testCoreDatConversion() {
+    func testCoreDataConversion() {
         let now = Date()
         let weekAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -7, to: now)
 
