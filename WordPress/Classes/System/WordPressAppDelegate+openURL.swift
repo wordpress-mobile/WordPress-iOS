@@ -18,9 +18,9 @@ import WordPressAuthenticator
         }
 
         // this works with our custom ~=
-        switch url {
+        switch url.host {
         case "newpost":
-            returnValue = handleNewPost(url: url)
+            return handleNewPost(url: url)
         case "magic-login":
             return handleMagicLogin(url: url)
         case "viewpost":
@@ -116,51 +116,22 @@ import WordPressAuthenticator
 
         return true
     }
-}
-
-/// Custom pattern matcher used for our URL scheme
-private func ~=(pattern: String, value: URL) -> Bool {
-    return value.absoluteString.contains(pattern)
-}
-
-private extension Array where Element == URLQueryItem {
-    func value(of key: String) -> String? {
-        return self.first(where: { $0.name == key })?.value
-    }
-
-    func intValue(of key: String) -> Int? {
-        guard let value = value(of: key) else {
-            return nil
-        }
-        return Int(value)
-    }
-}
-
-private extension URL {
-    var queryItems: [URLQueryItem]? {
-        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-            let queryItems = components.queryItems,
-            queryItems.count > 0 else {
-                return nil
-        }
-        return queryItems
-    }
 
     /// Handle a call of wordpress://newpost?…
     ///
     /// - Parameter url: URL of the request
     /// - Returns: true if the url was handled
-    /// - Note: **url** should contain param for `content` to be useful. Also supports `title` and `tags`. Currently `content` is assumed to be
+    /// - Note: **url** must contain param for `content` at minimum. Also supports `title` and `tags`. Currently `content` is assumed to be
     ///         text. May support other formats, such as HTML or Markdown in the future.
     ///
     /// This is mostly a return of the old functionality: https://github.com/wordpress-mobile/WordPress-iOS/blob/d89b7ec712be1f2e11fb1228089771a25f5587c5/WordPress/Classes/ViewRelated/System/WPTabBarController.m#L388```
     private func handleNewPost(url: URL) -> Bool {
-        guard let params = url.queryParams() else {
-            return false
+        guard let params = url.queryItems,
+            let contentRaw = params.value(of: NewPostKey.content) else {
+                return false
         }
 
         let title = params.value(of: NewPostKey.title)
-        let contentRaw = params.value(of: NewPostKey.content) ?? ""
         let tags = params.value(of: NewPostKey.tags)
 
         let context = ContextManager.sharedInstance().mainContext
@@ -190,5 +161,29 @@ private extension URL {
         static let content = "content"
         static let tags = "tags"
         static let image = "image"
+    }
+}
+
+private extension Array where Element == URLQueryItem {
+    func value(of key: String) -> String? {
+        return self.first(where: { $0.name == key })?.value
+    }
+
+    func intValue(of key: String) -> Int? {
+        guard let value = value(of: key) else {
+            return nil
+        }
+        return Int(value)
+    }
+}
+
+private extension URL {
+    var queryItems: [URLQueryItem]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+            let queryItems = components.queryItems,
+            queryItems.count > 0 else {
+                return nil
+        }
+        return queryItems
     }
 }
