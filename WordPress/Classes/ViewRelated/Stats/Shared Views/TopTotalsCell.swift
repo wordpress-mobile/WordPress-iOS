@@ -115,6 +115,13 @@ private extension TopTotalsCell {
             guard let row = subview as? StatsTotalRow else {
                     return
             }
+
+            // On the Stats Detail view, do not expand rows initially.
+            guard siteStatsDetailsDelegate == nil else {
+                row.expanded = false
+                return
+            }
+
             toggleChildRowsForRow(row)
 
             row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
