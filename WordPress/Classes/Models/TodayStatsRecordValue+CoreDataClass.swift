@@ -10,7 +10,7 @@ public class TodayStatsRecordValue: StatsRecordValue {
 }
 
 extension StatsTodayInsight: StatsRecordValueConvertible {
-    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue {
+    func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue] {
         let value = TodayStatsRecordValue(context: context)
 
         value.commentsCount = Int64(self.commentsCount)
@@ -18,7 +18,7 @@ extension StatsTodayInsight: StatsRecordValueConvertible {
         value.viewsCount = Int64(self.viewsCount)
         value.visitorsCount = Int64(self.visitorsCount)
 
-        return value
+        return [value]
     }
 
     init(statsRecordValue: StatsRecordValue) {

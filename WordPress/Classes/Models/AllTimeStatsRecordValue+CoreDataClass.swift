@@ -10,7 +10,7 @@ public class AllTimeStatsRecordValue: StatsRecordValue {
 }
 
 extension StatsAllTimesInsight: StatsRecordValueConvertible {
-    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue {
+    func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue] {
         let value = AllTimeStatsRecordValue(context: context)
 
         value.postsCount = Int64(self.postsCount)
@@ -19,7 +19,7 @@ extension StatsAllTimesInsight: StatsRecordValueConvertible {
         value.bestViewsPerDayCount = Int64(self.bestViewsPerDayCount)
         value.bestViewsDay = self.bestViewsDay as NSDate
 
-        return value
+        return [value]
     }
 
     init(statsRecordValue: StatsRecordValue) {

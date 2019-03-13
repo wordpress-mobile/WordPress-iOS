@@ -221,7 +221,7 @@ extension StatsRecord {
             managedObjectContext.deleteObject($0 as! StatsRecordValue)
         }
 
-        parentRecord.addToValues(remoteInsight.statsRecordValue(in: managedObjectContext))
+        parentRecord.addToValues(NSOrderedSet(array: remoteInsight.statsRecordValues(in: managedObjectContext)))
 
         return parentRecord
     }

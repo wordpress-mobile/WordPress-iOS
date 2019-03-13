@@ -10,7 +10,7 @@ public class AnnualAndMostPopularTimeStatsRecordValue: StatsRecordValue {
 }
 
 extension StatsAnnualAndMostPopularTimeInsight: StatsRecordValueConvertible {
-    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue {
+    func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue] {
         let value = AnnualAndMostPopularTimeStatsRecordValue(context: context)
 
         value.mostPopularDayOfWeek = Int64(self.mostPopularDayOfWeek.weekday!)
@@ -35,7 +35,7 @@ extension StatsAnnualAndMostPopularTimeInsight: StatsRecordValueConvertible {
         value.totalImagesCount = Int64(self.annualInsightsTotalImagesCount)
         value.averageImagesCount = self.annualInsightsAverageImagesCount
 
-        return value
+        return [value]
     }
 
     init(statsRecordValue: StatsRecordValue) {

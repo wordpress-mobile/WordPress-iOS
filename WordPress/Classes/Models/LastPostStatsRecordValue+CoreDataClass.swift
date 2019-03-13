@@ -17,7 +17,7 @@ public class LastPostStatsRecordValue: StatsRecordValue {
 }
 
 extension StatsLastPostInsight: StatsRecordValueConvertible {
-    func statsRecordValue(in context: NSManagedObjectContext) -> StatsRecordValue {
+    func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue] {
         let value = LastPostStatsRecordValue(context: context)
 
         value.commentsCount = Int64(self.commentsCount)
@@ -27,7 +27,7 @@ extension StatsLastPostInsight: StatsRecordValueConvertible {
         value.urlString = self.url.absoluteString
         value.viewsCount = Int64(self.viewsCount)
 
-        return value
+        return [value]
     }
 
     init(statsRecordValue: StatsRecordValue) {
