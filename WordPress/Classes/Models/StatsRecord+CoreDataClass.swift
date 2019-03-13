@@ -36,12 +36,10 @@ public enum StatsRecordType: Int16 {
     case annualAndMostPopularTimes
     case today
 
-
     case blogVisitsSummary
     case clicks
     case countryViews
     case postViews
-    case postingStreak
     case publishedPosts
     case referrers
     case searchTerms
@@ -69,7 +67,6 @@ public enum StatsRecordType: Int16 {
         case  .blogVisitsSummary,
               .clicks,
               .countryViews,
-              .postingStreak,
               .publishedPosts,
               .referrers,
               .searchTerms,

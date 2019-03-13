@@ -806,9 +806,12 @@
         <attribute name="longestStreakEnd" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="longestStreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longestStreakStart" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="streakData" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="StreakStatsRecordValue" inverseName="streakInsight" inverseEntity="StreakStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="StreakStatsRecordValue" representedClassName=".StreakStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="streakInsight" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreakInsightStatsRecordValue" inverseName="streakData" inverseEntity="StreakInsightStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="TagsCategoriesStatsRecordValue" representedClassName=".TagsCategoriesStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -942,16 +945,16 @@
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="StatsRecord" positionX="27" positionY="486" width="128" height="135"/>
         <element name="StatsRecordValue" positionX="36" positionY="495" width="128" height="60"/>
-        <element name="StreakInsightStatsRecordValue" positionX="54" positionY="180" width="128" height="135"/>
-        <element name="StreakStatsRecordValue" positionX="72" positionY="198" width="128" height="60"/>
+        <element name="StreakInsightStatsRecordValue" positionX="54" positionY="180" width="128" height="150"/>
+        <element name="StreakStatsRecordValue" positionX="72" positionY="198" width="128" height="90"/>
         <element name="TagsCategoriesStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
+        <element name="TodayStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
         <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="TopViewedAuthorStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
-        <element name="TodayStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
     </elements>
 </model>

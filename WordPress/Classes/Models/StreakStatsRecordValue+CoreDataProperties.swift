@@ -9,5 +9,7 @@ extension StreakStatsRecordValue {
     }
 
     @NSManaged public var postCount: Int64
+    @NSManaged public var date: NSDate?
+    @NSManaged public var streakInsight: StreakInsightStatsRecordValue?
 
 }
