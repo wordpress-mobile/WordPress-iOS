@@ -136,6 +136,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingSearchTerms
         case .periodVideos:
             return periodStore.isFetchingVideos
+        case .periodClicks:
+            return periodStore.isFetchingClicks
         default:
             return false
         }
@@ -172,6 +174,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshSearchTerms()
         case .periodVideos:
             viewModel?.refreshVideos()
+        case .periodClicks:
+            viewModel?.refreshClicks()
         default:
             refreshControl?.endRefreshing()
         }
