@@ -89,6 +89,11 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                                      dataRows: postsAndPagesRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
+        case .periodSearchTerms:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
+                                                     dataRows: searchTermsRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -123,6 +128,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPostsAndPages(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshSearchTerms() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshSearchTerms(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -143,13 +156,17 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func queryForPeriodStatSection(_ statSection: StatSection) -> PeriodQuery? {
+
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return nil
+        }
+
         switch statSection {
         case .periodPostsAndPages:
-            guard let selectedDate = selectedDate,
-                let selectedPeriod = selectedPeriod else {
-                    return nil
-            }
             return .allPostsAndPages(date: selectedDate, period: selectedPeriod)
+        case .periodSearchTerms:
+            return .allSearchTerms(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -266,6 +283,13 @@ private extension SiteStatsDetailsViewModel {
         }
 
         return dataRows
+    }
+
+    func searchTermsRows() -> [StatsTotalRowData] {
+        return periodStore.getAllSearchTerms()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                             data: $0.value.displayString(),
+                                                                             statSection: .periodSearchTerms) }
+            ?? []
     }
 
 }

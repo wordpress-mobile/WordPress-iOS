@@ -118,6 +118,8 @@ private extension SiteStatsDetailTableViewController {
             return insightsStore.isFetchingTagsAndCategories
         case .periodPostsAndPages:
             return periodStore.isFetchingPostsAndPages
+        case .periodSearchTerms:
+            return periodStore.isFetchingSearchTerms
         default:
             return false
         }
@@ -150,6 +152,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshTagsAndCategories()
         case .periodPostsAndPages:
             viewModel?.refreshPostsAndPages()
+        case .periodSearchTerms:
+            viewModel?.refreshSearchTerms()
         default:
             refreshControl?.endRefreshing()
         }

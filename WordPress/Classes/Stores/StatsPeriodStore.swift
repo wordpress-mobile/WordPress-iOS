@@ -20,17 +20,23 @@ enum PeriodAction: Action {
 
     case receivedAllPostsAndPages(_ postsAndPages: StatsGroup?)
     case refreshPostsAndPages(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllSearchTerms(_ searchTerms: StatsGroup?)
+    case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
     case periods(date: Date, period: StatsPeriodUnit)
     case allPostsAndPages(date: Date, period: StatsPeriodUnit)
+    case allSearchTerms(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
         case .periods(let date, _):
             return date
         case .allPostsAndPages(let date, _):
+            return date
+        case .allSearchTerms(let date, _):
             return date
         }
     }
@@ -40,6 +46,8 @@ enum PeriodQuery {
         case .periods( _, let period):
             return period
         case .allPostsAndPages( _, let period):
+            return period
+        case .allSearchTerms( _, let period):
             return period
         }
     }
@@ -77,6 +85,9 @@ struct PeriodStoreState {
 
     var allPostsAndPages: [StatsItem]?
     var fetchingAllPostsAndPages = false
+
+    var allSearchTerms: [StatsItem]?
+    var fetchingAllSearchTerms = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -114,6 +125,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllPostsAndPages(postsAndPages)
         case .refreshPostsAndPages(let date, let period):
             refreshPostsAndPages(date: date, period: period)
+        case .receivedAllSearchTerms(let searchTerms):
+            receivedAllSearchTerms(searchTerms)
+        case .refreshSearchTerms(let date, let period):
+            refreshSearchTerms(date: date, period: period)
         }
     }
 
@@ -145,6 +160,10 @@ private extension StatsPeriodStore {
             case .allPostsAndPages:
                 if shouldFetchPostsAndPages() {
                     fetchAllPostsAndPages(date: query.date, period: query.period)
+                }
+            case .allSearchTerms:
+                if shouldFetchSearchTerms() {
+                    fetchAllSearchTerms(date: query.date, period: query.period)
                 }
             }
         }
@@ -246,6 +265,27 @@ private extension StatsPeriodStore {
         fetchAllPostsAndPages(date: date, period: period)
     }
 
+    func fetchAllSearchTerms(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllSearchTerms = true
+
+        SiteStatsInformation.statsService()?.retrieveSearchTerms(for: date, andUnit: period, withCompletionHandler: { (searchTerms, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Search Terms: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all search terms.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllSearchTerms(searchTerms))
+        })
+    }
+
+    func refreshSearchTerms(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchSearchTerms() else {
+            DDLogInfo("Stats Period Search Terms refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllSearchTerms(date: date, period: period)
+    }
+
     // MARK: - Receive data methods
 
     func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
@@ -311,6 +351,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedAllSearchTerms(_ searchTerms: StatsGroup?) {
+        transaction { state in
+            state.allSearchTerms = reorderSearchTerms(searchTerms)
+            state.fetchingAllSearchTerms = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetchOverview() -> Bool {
@@ -330,6 +377,10 @@ private extension StatsPeriodStore {
 
     func shouldFetchPostsAndPages() -> Bool {
         return !isFetchingPostsAndPages
+    }
+
+    func shouldFetchSearchTerms() -> Bool {
+        return !isFetchingSearchTerms
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -407,6 +458,10 @@ extension StatsPeriodStore {
         return state.allPostsAndPages
     }
 
+    func getAllSearchTerms() -> [StatsItem]? {
+        return state.allSearchTerms
+    }
+
     var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -420,6 +475,10 @@ extension StatsPeriodStore {
 
     var isFetchingPostsAndPages: Bool {
         return state.fetchingAllPostsAndPages
+    }
+
+    var isFetchingSearchTerms: Bool {
+        return state.fetchingAllSearchTerms
     }
 
 }
