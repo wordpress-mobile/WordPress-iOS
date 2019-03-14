@@ -35,6 +35,9 @@ enum PeriodAction: Action {
 
     case receivedAllReferrers(_ referrers: StatsGroup?)
     case refreshReferrers(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllCountries(_ countries: StatsGroup?)
+    case refreshCountries(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
@@ -45,6 +48,7 @@ enum PeriodQuery {
     case allClicks(date: Date, period: StatsPeriodUnit)
     case allAuthors(date: Date, period: StatsPeriodUnit)
     case allReferrers(date: Date, period: StatsPeriodUnit)
+    case allCountries(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
@@ -61,6 +65,8 @@ enum PeriodQuery {
         case .allAuthors(let date, _):
             return date
         case .allReferrers(let date, _):
+            return date
+        case .allCountries(let date, _):
             return date
         }
     }
@@ -80,6 +86,8 @@ enum PeriodQuery {
         case .allAuthors( _, let period):
             return period
         case .allReferrers( _, let period):
+            return period
+        case .allCountries( _, let period):
             return period
         }
     }
@@ -132,6 +140,9 @@ struct PeriodStoreState {
 
     var allReferrers: [StatsItem]?
     var fetchingAllReferrers = false
+
+    var allCountries: [StatsItem]?
+    var fetchingAllCountries = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -189,6 +200,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllReferrers(referrers)
         case .refreshReferrers(let date, let period):
             refreshReferrers(date: date, period: period)
+        case .receivedAllCountries(let countries):
+            receivedAllCountries(countries)
+        case .refreshCountries(let date, let period):
+            refreshCountries(date: date, period: period)
         }
     }
 
@@ -240,6 +255,10 @@ private extension StatsPeriodStore {
             case .allReferrers:
                 if shouldFetchReferrers() {
                     fetchAllReferrers(date: query.date, period: query.period)
+                }
+            case .allCountries:
+                if shouldFetchCountries() {
+                    fetchAllCountries(date: query.date, period: query.period)
                 }
             }
         }
@@ -446,6 +465,27 @@ private extension StatsPeriodStore {
         fetchAllReferrers(date: date, period: period)
     }
 
+    func fetchAllCountries(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllCountries = true
+
+        SiteStatsInformation.statsService()?.retrieveCountries(for: date, andUnit: period, withCompletionHandler: { (countries, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Countries: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all countries.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllCountries(countries))
+        })
+    }
+
+    func refreshCountries(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchCountries() else {
+            DDLogInfo("Stats Period Countries refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllCountries(date: date, period: period)
+    }
+
     // MARK: - Receive data methods
 
     func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
@@ -546,6 +586,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedAllCountries(_ countries: StatsGroup?) {
+        transaction { state in
+            state.allCountries = countries?.items as? [StatsItem]
+            state.fetchingAllCountries = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetchOverview() -> Bool {
@@ -585,6 +632,10 @@ private extension StatsPeriodStore {
 
     func shouldFetchReferrers() -> Bool {
         return !isFetchingReferrers
+    }
+
+    func shouldFetchCountries() -> Bool {
+        return !isFetchingCountries
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -682,6 +733,10 @@ extension StatsPeriodStore {
         return state.allReferrers
     }
 
+    func getAllCountries() -> [StatsItem]? {
+        return state.allCountries
+    }
+
     var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -715,6 +770,10 @@ extension StatsPeriodStore {
 
     var isFetchingReferrers: Bool {
         return state.fetchingAllReferrers
+    }
+
+    var isFetchingCountries: Bool {
+        return state.fetchingAllCountries
     }
 
 }
