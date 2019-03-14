@@ -33,7 +33,7 @@ enum PeriodAction: Action {
     case receivedAllAuthors(_ authors: StatsGroup?)
     case refreshAuthors(date: Date, period: StatsPeriodUnit)
 
-    case receivedAllReferrers(_ authors: StatsGroup?)
+    case receivedAllReferrers(_ referrers: StatsGroup?)
     case refreshReferrers(date: Date, period: StatsPeriodUnit)
 }
 
