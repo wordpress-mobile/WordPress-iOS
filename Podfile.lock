@@ -179,21 +179,21 @@ PODS:
   - WordPress-Aztec-iOS (1.4.4)
   - WordPress-Editor-iOS (1.4.4):
     - WordPress-Aztec-iOS (= 1.4.4)
-  - WordPressAuthenticator (1.1.10):
+  - WordPressAuthenticator (1.1.11):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
-    - CocoaLumberjack (= 3.4.2)
+    - CocoaLumberjack (~> 3.4)
     - GoogleSignInRepacked (= 4.1.2)
     - Gridicons (~> 0.15)
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 3.0.0-beta.1)
+    - WordPressKit (~> 3.1.1)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
-  - WordPressKit (3.0.0):
+  - WordPressKit (3.1.1):
     - Alamofire (~> 4.7.3)
-    - CocoaLumberjack (= 3.4.2)
+    - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.4)
@@ -248,8 +248,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.4.4)
-  - WordPressAuthenticator (~> 1.1.10)
-  - WordPressKit (~> 3.0.0)
+  - WordPressAuthenticator (~> 1.1.11)
+  - WordPressKit (~> 3.1.1)
   - WordPressShared (= 1.7.2)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
@@ -386,8 +386,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: b4a1fac03f617eea9882336bf64f122cbc60e727
   WordPress-Editor-iOS: 9787d07b2362457952fb74e4f09fa63bbf22cf14
-  WordPressAuthenticator: 300f81a9171072657bcf39ed5e8c791ced85f2e4
-  WordPressKit: cb235685297f99e6a6ee1d4ba35275e5bf7e63d6
+  WordPressAuthenticator: 50e1119773a78fde89c39da83d2e503eceb971b7
+  WordPressKit: 9af12361492d12c6c5512d3d7de594aa415ad670
   WordPressShared: 63d57a4a07ad9f9a1ee5e8a7162e48fbb5192014
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
@@ -395,6 +395,6 @@ SPEC CHECKSUMS:
   yoga: f37b1edbd68be803f1dc4d57d40d8a5b277d8e2c
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 65bfb786c687096b4476a4aa85d7e173badcc2b6
+PODFILE CHECKSUM: 4a950f244b24f0d59a197fcc81a05c51b4755a8d
 
 COCOAPODS: 1.5.3

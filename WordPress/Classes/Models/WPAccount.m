@@ -124,13 +124,31 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     return [visibleBlogs sortedArrayUsingDescriptors:@[descriptor]];
 }
 
+- (BOOL)isDefault {
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [service defaultWordPressComAccount];
+    return [defaultAccount isEqual:self];
+}
+
 #pragma mark - API Helpers
 
 - (WordPressComRestApi *)wordPressComRestApi
 {
-    if (!_wordPressComRestApi && self.authToken.length > 0) {
-        _wordPressComRestApi = [[WordPressComRestApi alloc] initWithOAuthToken:self.authToken
-                                                                     userAgent: [WPUserAgent wordPressUserAgent]];
+    if (!_wordPressComRestApi) {
+        if (self.authToken.length > 0) {
+            __weak __typeof(self) weakSelf = self;
+            _wordPressComRestApi = [[WordPressComRestApi alloc] initWithOAuthToken:self.authToken
+                                                                         userAgent: [WPUserAgent wordPressUserAgent]];
+            [_wordPressComRestApi setInvalidTokenHandler:^{
+                [weakSelf setAuthToken:nil];
+                [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+                if (weakSelf.isDefault) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:weakSelf];
+                }
+            }];
+        } else {
+            [WordPressAuthenticationManager showSigninForWPComFixingAuthToken];
+        }
     }
     return _wordPressComRestApi;
 
