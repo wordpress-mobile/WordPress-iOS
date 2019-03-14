@@ -201,7 +201,8 @@ struct CountriesDetailStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: nil)
+                       siteStatsPeriodDelegate: nil,
+                       limitRowsDisplayed: false)
     }
 }
 
