@@ -150,4 +150,3 @@ class NoticeStoreTests: XCTestCase {
         dispatcher.dispatch(action)
     }
 }
-

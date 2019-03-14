@@ -117,7 +117,7 @@ class NoticePresenter: NSObject {
     /// Handle all changes in the `NoticeStore`.
     ///
     /// In here, we determine whether to show a Notice or dismiss the currently shown Notice based
-    /// on the value of `NoticeStore.currenNotice`.
+    /// on the value of `NoticeStore.currentNotice`.
     private func onStoreChange() {
         guard currentNoticeArtifact?.notice != store.currentNotice else {
             return

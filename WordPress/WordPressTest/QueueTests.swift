@@ -78,4 +78,3 @@ class QueueTests: XCTestCase {
         XCTAssertNil(queue.pop())
     }
 }
-
