@@ -144,21 +144,21 @@ private extension ShareExtractor {
             return
         }
         textExtractor.extract(context: extensionContext) { extractedItems in
-            guard extractedItems.count > 0 else {
+                guard extractedItems.count > 0 else {
                 completion(nil)
-                return
-            }
-            let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
-            let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
-            let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
-            let urls = extractedItems.compactMap({ $0.url })
+                    return
+                }
+                let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
+                let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
+                let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
+                let urls = extractedItems.compactMap({ $0.url })
 
-            completion(ExtractedItem(selectedText: combinedSelectedText,
-                                     description: combinedDescription,
-                                     url: urls.first,
-                                     title: combinedTitle,
-                                     image: nil))
-        }
+                completion(ExtractedItem(selectedText: combinedSelectedText,
+                                         description: combinedDescription,
+                                         url: urls.first,
+                                         title: combinedTitle,
+                                         image: nil))
+            }
     }
 
     func extractImages(completion: @escaping ([UIImage]?) -> Void) {
@@ -195,6 +195,7 @@ private extension TypeBasedExtensionContentExtractor {
 
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
         let itemProviders = context.itemProviders(ofType: acceptedType)
+        print(acceptedType)
         var results = [ExtractedItem]()
         guard itemProviders.count > 0 else {
             DispatchQueue.main.async {
@@ -230,12 +231,23 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     let acceptedType = kUTTypeURL as String
 
     func convert(payload: URL) -> ExtractedItem? {
-        guard !payload.isFileURL else {
-            return nil
-        }
+//        guard !payload.isFileURL else {
+//            let contents = try? String(contentsOf: payload)
+//            return ExtractedItem(selectedText: contents, description: nil, url: nil, title: nil, image: nil)
+//        }
         var returnedItem = ExtractedItem()
         returnedItem.url = payload
+
+        if payload.isFileURL {
+            let html = try? String(contentsOf: payload) ?? ""
+            returnedItem.selectedText = html?.escapeHtmlNamedEntities()
+        }
+
         return returnedItem
+    }
+
+    private func extractBodyContents(html: String) {
+        let bodyParts = html.components(separatedBy: "<body")
     }
 }
 
