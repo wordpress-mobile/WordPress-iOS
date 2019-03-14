@@ -112,6 +112,7 @@ private extension SiteStatsDetailTableViewController {
         return [TabbedTotalsDetailStatsRow.self,
                 TopTotalsDetailStatsRow.self,
                 CountriesDetailStatsRow.self,
+                TopTotalsNoSubtitlesPeriodDetailStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -137,6 +138,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingReferrers
         case .periodCountries:
             return periodStore.isFetchingCountries
+        case .periodPublished:
+            return periodStore.isFetchingPublished
         default:
             return false
         }
@@ -182,6 +185,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshReferrers()
         case .periodCountries:
             viewModel?.refreshCountries()
+        case .periodPublished:
+            viewModel?.refreshPublished()
         default:
             refreshControl?.endRefreshing()
         }
