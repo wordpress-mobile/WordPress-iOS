@@ -125,6 +125,7 @@ enum NoticeAction: Action {
     ///
     /// - SeeAlso: `Notice.tag`
     case clearWithTag(Notice.Tag)
+    /// Removes all Notices except the current one.
     case empty
 }
 
@@ -198,6 +199,6 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
     }
 
     private func emptyQueue() {
-        pending.clear()
+        pending.removeAll()
     }
 }
