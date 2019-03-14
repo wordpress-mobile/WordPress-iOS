@@ -109,6 +109,11 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                      dataRows: authorsRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
+        case .periodReferrers:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodReferrers.dataSubtitle,
+                                                     dataRows: referrersRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -175,6 +180,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshAuthors(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshReferrers() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshReferrers(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -212,6 +225,8 @@ private extension SiteStatsDetailsViewModel {
             return .allClicks(date: selectedDate, period: selectedPeriod)
         case .periodAuthors:
             return .allAuthors(date: selectedDate, period: selectedPeriod)
+        case .periodReferrers:
+            return .allReferrers(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -366,6 +381,17 @@ private extension SiteStatsDetailsViewModel {
                                                      showDisclosure: true,
                                                      childRows: StatsDataHelper.childRowsForAuthor($0),
                                                      statSection: .periodAuthors) }
+            ?? []
+    }
+
+    func referrersRows() -> [StatsTotalRowData] {
+        return periodStore.getAllReferrers()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                           data: $0.value.displayString(),
+                                                                           socialIconURL: $0.iconURL,
+                                                                           showDisclosure: true,
+                                                                           disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                           childRows: StatsDataHelper.childRowsForReferrers($0),
+                                                                           statSection: .periodReferrers) }
             ?? []
     }
 

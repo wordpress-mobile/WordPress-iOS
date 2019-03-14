@@ -132,6 +132,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingClicks
         case .periodAuthors:
             return periodStore.isFetchingAuthors
+        case .periodReferrers:
+            return periodStore.isFetchingReferrers
         default:
             return false
         }
@@ -173,6 +175,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshClicks()
         case .periodAuthors:
             viewModel?.refreshAuthors()
+        case .periodReferrers:
+            viewModel?.refreshReferrers()
         default:
             refreshControl?.endRefreshing()
         }
