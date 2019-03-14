@@ -17,9 +17,17 @@ class StatsBarChartView: BarChartView {
         static let offset               = CGFloat(20)
     }
 
+    /// This adapts the data set for presentation by the Charts framework.
+    ///
     private let barChartData: BarChartDataConvertible
 
+    /// This influences the visual appearance of the chart to be rendered.
+    ///
     private let styling: BarChartStyling
+
+    /// When set, this stock `UIView` serves as a legend for the rendered chart.
+    ///
+    private var legendView: UIView?
 
     // MARK: StatsBarChartView
 
@@ -175,19 +183,16 @@ class StatsBarChartView: BarChartView {
     }
 
     private func configureLegendIfNeeded() {
-        guard let legendTitle = styling.legendTitle, let legendColor = styling.secondaryBarColor else {
-            legend.enabled = false
+        legend.enabled = false
+
+        guard let legendColor = styling.secondaryBarColor, let legendTitle = styling.legendTitle, legendView == nil else {
             return
         }
 
-        legend.enabled = true
-        legend.verticalAlignment = .top
+        let chartLegend = StatsChartLegendView(color: legendColor, title: legendTitle)
+        addSubview(chartLegend)
 
-        let entry = LegendEntry()
-        entry.label = legendTitle
-        entry.formColor = legendColor
-
-        legend.setCustom(entries: [entry])
+        self.legendView = chartLegend
     }
 
     private func configureXAxis() {
