@@ -52,6 +52,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        clearExpandedRows()
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -73,15 +74,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.reloadData()
         })
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        guard let statSection = statSection else {
-            return
-        }
-        StatsDataHelper.clearExpandedRowsFor(statSection: statSection)
     }
 
 }
@@ -136,6 +128,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingSearchTerms
         case .periodVideos:
             return periodStore.isFetchingVideos
+        case .periodClicks:
+            return periodStore.isFetchingClicks
         default:
             return false
         }
@@ -157,6 +151,7 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
+        clearExpandedRows()
         refreshControl?.beginRefreshing()
 
         switch statSection {
@@ -172,6 +167,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshSearchTerms()
         case .periodVideos:
             viewModel?.refreshVideos()
+        case .periodClicks:
+            viewModel?.refreshClicks()
         default:
             refreshControl?.endRefreshing()
         }
@@ -187,6 +184,10 @@ private extension SiteStatsDetailTableViewController {
             updateStatSectionForFilterChange()
             tableView.endUpdates()
         }
+    }
+
+    func clearExpandedRows() {
+        StatsDataHelper.clearExpandedDetails()
     }
 
     func updateStatSectionForFilterChange() {
@@ -229,7 +230,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
-        StatsDataHelper.updatedExpandedState(forRow: row)
+        StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
     }
 
     func showPostStats(withPostTitle postTitle: String?) {

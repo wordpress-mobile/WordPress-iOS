@@ -99,6 +99,11 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                      dataRows: videosRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
+        case .periodClicks:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodClicks.dataSubtitle,
+                                                     dataRows: clicksRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -149,6 +154,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshVideos(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshClicks() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshClicks(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -182,6 +195,8 @@ private extension SiteStatsDetailsViewModel {
             return .allSearchTerms(date: selectedDate, period: selectedPeriod)
         case .periodVideos:
             return .allVideos(date: selectedDate, period: selectedPeriod)
+        case .periodClicks:
+            return .allClicks(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -314,6 +329,16 @@ private extension SiteStatsDetailsViewModel {
                                                                         icon: Style.imageForGridiconType(.video),
                                                                         showDisclosure: true,
                                                                         statSection: .periodVideos) }
+            ?? []
+    }
+
+    func clicksRows() -> [StatsTotalRowData] {
+        return periodStore.getAllClicks()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                        data: $0.value.displayString(),
+                                                                        showDisclosure: true,
+                                                                        disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                        childRows: StatsDataHelper.childRowsForClicks($0),
+                                                                        statSection: .periodClicks) }
             ?? []
     }
 
