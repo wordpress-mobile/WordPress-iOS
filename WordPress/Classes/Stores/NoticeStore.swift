@@ -114,7 +114,7 @@ enum NoticeAction: Action {
     /// 1. MediaBrowser posts NoticeA. NoticeA is displayed.
     /// 2. Editor posts NoticeB.
     /// 3. Eventually, NoticeB is displayed.
-    /// 4. MediaBrowser dispatches `dismiss` which dismisses NoticeB.
+    /// 4. MediaBrowser dispatches `dismiss` which dismisses **NoticeB**!
     ///
     /// If MediaBrowser used `clear` or `clearWithTag`, the NoticeB should not have been dismissed
     /// prematurely. 
@@ -136,6 +136,15 @@ struct NoticeStoreState {
 
 /// NoticeStore queues notices for display to the user.
 ///
+/// To interact with or modify the `NoticeStore`, use `ActionDispatcher` and dispatch Actions of
+/// type `NoticeAction`. Example:
+///
+/// ```
+/// let notice = Notice(title: "Hello, my old friend!")
+/// ActionDispatcher.dispatch(NoticeAction.post(notice))
+/// ```
+///
+/// - SeeAlso: `NoticeAction`
 class NoticeStore: StatefulStore<NoticeStoreState> {
     private var pending = Queue<Notice>()
 

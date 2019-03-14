@@ -3,6 +3,34 @@ import UIKit
 import UserNotifications
 import WordPressFlux
 
+/// Presents the views of Notices emitted by `NoticeStore`.
+///
+/// Notices are displayed in 2 ways based on the `UIApplication.state`.
+///
+/// ## Foreground
+///
+/// If the app is in the foreground, the Notice is shown as a snackbar-like view inside a separate
+/// `UIWindow`. This `UIWindow` is always on top of the main app's `UIWindow`.
+///
+/// Only one Notice view is displayed at a single time. Queued Notices will be displayed after
+/// the current Notice view is dismissed.
+///
+/// If the `Notice.style.isDismissable` is `true`, the Notice view will be dismissed after a few
+/// seconds. This is done by dispatching a `NoticeAction.clear` Action.
+///
+/// ## Background
+///
+/// If the app is in the background and the Notice has a `notificationInfo`, a push notification
+/// will be sent to the device. If there is no `notificationInfo`, the Notice will be ignored.
+///
+/// # Usage
+///
+/// The `NoticePresenter` only needs to be initialized once and kept in memory. After that, it
+/// is self-sufficient. You shouldn't need to interact with it directly. In order to display
+/// Notices, use `ActionDispatcher` with `NoticeAction` Actions.
+///
+/// - SeeAlso: `NoticeStore`
+/// - SeeAlso: `NoticeAction`
 class NoticePresenter: NSObject {
     /// Used for tracking the currently displayed Notice and its corresponding view.
     private struct NoticeArtifact {
