@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param error
  */
-+ (void)showXMLRPCErrorAlert:(NSError *)error;
++ (void)showXMLRPCErrorAlert:(nullable NSError *)error;
 
 /**
  * Create a suggested title and message based on the given `error`

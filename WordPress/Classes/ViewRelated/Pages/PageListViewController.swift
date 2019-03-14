@@ -537,9 +537,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 contextManager.save(strongSelf.managedObjectContext())
             }
 
-            if let error = error {
-                WPError.showXMLRPCErrorAlert(error)
-            }
+            WPError.showXMLRPCErrorAlert(error)
         }
     }
 
