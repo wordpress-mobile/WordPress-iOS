@@ -114,6 +114,10 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                      dataRows: referrersRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
+        case .periodCountries:
+            tableRows.append(CountriesDetailStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodCountries.dataSubtitle,
+                                                     dataRows: countriesRows()))
         default:
             break
         }
@@ -188,6 +192,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshReferrers(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshCountries() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshCountries(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -227,6 +239,8 @@ private extension SiteStatsDetailsViewModel {
             return .allAuthors(date: selectedDate, period: selectedPeriod)
         case .periodReferrers:
             return .allReferrers(date: selectedDate, period: selectedPeriod)
+        case .periodCountries:
+            return .allCountries(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -392,6 +406,14 @@ private extension SiteStatsDetailsViewModel {
                                                                            disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
                                                                            childRows: StatsDataHelper.childRowsForReferrers($0),
                                                                            statSection: .periodReferrers) }
+            ?? []
+    }
+
+    func countriesRows() -> [StatsTotalRowData] {
+        return periodStore.getAllCountries()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                           data: $0.value.displayString(),
+                                                                           countryIconURL: $0.iconURL,
+                                                                           statSection: .periodCountries) }
             ?? []
     }
 
