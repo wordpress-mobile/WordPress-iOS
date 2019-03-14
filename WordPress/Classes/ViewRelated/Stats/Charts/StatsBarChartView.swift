@@ -12,7 +12,7 @@ class StatsBarChartView: BarChartView {
     private struct Constants {
         static let animationDuration    = TimeInterval(1)
         static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
-        static let highlightAlpha       = CGFloat(0.75)
+        static let highlightAlpha       = CGFloat(1)
         static let markerAlpha          = CGFloat(0.2)
         static let offset               = CGFloat(20)
     }
@@ -63,28 +63,41 @@ class StatsBarChartView: BarChartView {
     /// - Parameter entry: the selected entry for which to determine highlight information
     /// - Returns: the frame & offset from the bar that should be used to render the marker
     ///
-    private func calculateHighlightFrameAndOffset(for entry: ChartDataEntry) -> (CGRect, CGPoint) {
+    private func calculateMarkerFrameAndOffset(for entry: ChartDataEntry) -> (frame: CGRect, offset: CGPoint) {
         guard let barChartDataEntry = entry as? BarChartDataEntry else {
             return (.zero, .zero)
         }
 
         let barBounds = getBarBounds(entry: barChartDataEntry)
 
-        let highlightX = barBounds.origin.x
-        let highlightY = CGFloat(0)
-        let highlightOrigin = CGPoint(x: highlightX, y: highlightY)
+        let markerWidth = barBounds.width
+        let markerHeight = viewPortHandler.contentRect.height * 2   // 2x addresses a visual glitch with two data sets
+        let markerSize = CGSize(width: markerWidth, height: markerHeight)
 
-        let highlightWidth = barBounds.width
-        let highlightHeight = bounds.height - barBounds.height
-        let highlightSize = CGSize(width: highlightWidth, height: highlightHeight)
-
-        let rect = CGRect(origin: highlightOrigin, size: highlightSize)
+        let rect = CGRect(origin: barBounds.origin, size: markerSize)
 
         let offsetWidth = -(barBounds.width / 2)
-        let offsetHeight = -highlightHeight
+        let offsetHeight = -markerHeight
         let offset = CGPoint(x: offsetWidth, y: offsetHeight)
 
         return (rect, offset)
+    }
+
+    private func configureAndPopulateData() {
+        let barChartData = self.barChartData.barChartData
+
+        guard let dataSets = barChartData.dataSets as? [BarChartDataSet], let initialDataSet = dataSets.first else {
+            return
+        }
+
+        if dataSets.count > 1 {
+            configureChartForMultipleDataSets(dataSets)
+        } else {
+            configureChartForSingleDataSet(initialDataSet)
+        }
+
+        configureLegendIfNeeded()
+        data = barChartData
     }
 
     private func configureBarChartViewProperties() {
@@ -99,15 +112,58 @@ class StatsBarChartView: BarChartView {
         dragYEnabled = false
         pinchZoomEnabled = false
 
-        rightAxis.enabled = false
-
         drawBordersEnabled = false
         drawGridBackgroundEnabled = false
 
         minOffset = CGFloat(0)
 
+        rightAxis.enabled = false
+
         scaleXEnabled = false
         scaleYEnabled = false
+    }
+
+    private func configureChartForMultipleDataSets(_ dataSets: [BarChartDataSet]) {
+        // Primary
+        guard let primaryDataSet = dataSets.first else {
+            return
+        }
+        primaryDataSet.colors = [ styling.primaryBarColor ]
+        primaryDataSet.drawValuesEnabled = false
+
+        primaryDataSet.highlightAlpha = Constants.highlightAlpha
+        if let initialHighlightColor = styling.primaryHighlightColor {
+            primaryDataSet.highlightColor = initialHighlightColor
+        }
+
+        // Secondary
+        guard dataSets.count > 1, let secondaryBarColor = styling.secondaryBarColor else {
+            return
+        }
+        let secondaryDataSet = dataSets[1]
+
+        secondaryDataSet.colors = [ secondaryBarColor ]
+        secondaryDataSet.drawValuesEnabled = false
+
+        secondaryDataSet.highlightAlpha = Constants.highlightAlpha
+        if let secondaryHighlightColor = styling.secondaryHighlightColor {
+            secondaryDataSet.highlightColor = secondaryHighlightColor
+        }
+    }
+
+    private func configureChartForSingleDataSet(_ dataSet: BarChartDataSet) {
+
+        dataSet.colors = [ styling.primaryBarColor ]
+        dataSet.drawValuesEnabled = false
+
+        if let barHighlightColor = styling.primaryHighlightColor {
+            dataSet.highlightAlpha = Constants.highlightAlpha
+            dataSet.highlightColor = barHighlightColor
+            dataSet.highlightEnabled = true
+        } else {
+            dataSet.highlightEnabled = false
+            highlightPerTapEnabled = false
+        }
     }
 
     private func configureChartViewBaseProperties() {
@@ -157,52 +213,40 @@ class StatsBarChartView: BarChartView {
         yAxis.valueFormatter = styling.yAxisValueFormatter
     }
 
-    private func configureDataSet(dataSet: BarChartDataSet, with color: NSUIColor, enableHighlight: Bool) {
-        dataSet.colors = [ color ]
-
-        dataSet.drawValuesEnabled = false
-
-        guard let barHighlightColor = styling.highlightColor else {
-            highlightPerTapEnabled = false
-            return
-        }
-
-        dataSet.highlightAlpha = (styling.secondaryBarColor != nil) ? Constants.highlightAlpha : CGFloat(1)
-        dataSet.highlightColor = barHighlightColor
-        dataSet.highlightEnabled = enableHighlight
-    }
-
-    private func configureAndPopulateData() {
-        let barChartData = self.barChartData.barChartData
-
-        guard let dataSets = barChartData.dataSets as? [BarChartDataSet], let initialDataSet = dataSets.first else {
-            return
-        }
-        configureDataSet(dataSet: initialDataSet, with: styling.primaryBarColor, enableHighlight: true)
-
-        if dataSets.count > 1, let secondaryBarColor = styling.secondaryBarColor {
-            let secondaryDataSet = dataSets[1]
-            configureDataSet(dataSet: secondaryDataSet, with: secondaryBarColor, enableHighlight: false)
-        }
-
-        configureLegendIfNeeded()
-
-        data = barChartData
-    }
-
-    private func drawChartMarker(for entry: ChartDataEntry, triggerRedraw: Bool = false) {
-        let (markerRect, markerOffset) = calculateHighlightFrameAndOffset(for: entry)
+    private func drawChartMarker(for entry: ChartDataEntry) {
+        let (markerRect, markerOffset) = calculateMarkerFrameAndOffset(for: entry)
         let marker = StatsBarChartMarker(frame: markerRect)
         marker.offset = markerOffset
 
-        let markerColor = (styling.highlightColor ?? UIColor.clear).withAlphaComponent(Constants.markerAlpha)
-        marker.backgroundColor = markerColor
+        let markerColor: NSUIColor
+        if let primaryHighlightColor = styling.primaryHighlightColor {
+            markerColor = primaryHighlightColor
+        } else {
+            markerColor = WPStyleGuide.jazzyOrange()
+        }
+        marker.backgroundColor = markerColor.withAlphaComponent(Constants.markerAlpha)
 
         self.marker = marker
+    }
 
-        if triggerRedraw {
-            setNeedsDisplay()
+    private func drawSecondaryHighlightIfNeeded(for primaryEntry: ChartDataEntry, with primaryHighlight: Highlight) {
+        guard let chartData = data, chartData.dataSets.count > 1 else {
+            return
         }
+
+        let primaryDataSet = chartData.dataSets[0]
+        let primaryIndex = primaryDataSet.entryIndex(entry: primaryEntry)
+
+        let secondaryIndex = 1
+        let secondaryDataSet = chartData.dataSets[secondaryIndex]
+        guard let secondaryEntry = secondaryDataSet.entryForIndex(primaryIndex) as? BarChartDataEntry else {
+            return
+        }
+
+        let secondaryHighlight = Highlight(x: secondaryEntry.x, y: secondaryEntry.y, dataSetIndex: secondaryIndex)
+        let values: [Highlight] = [primaryHighlight, secondaryHighlight]
+
+        highlightValues(values)
     }
 
     private func initialize() {
@@ -223,7 +267,8 @@ class StatsBarChartView: BarChartView {
 
         let postRotationDelay = DispatchTime.now() + TimeInterval(0.35)
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
-            self.drawChartMarker(for: entry, triggerRedraw: true)
+            self.drawChartMarker(for: entry)
+            self.drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
         }
     }
 }
@@ -234,6 +279,7 @@ private typealias StatsBarChartMarker = MarkerView
 
 extension StatsBarChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
         drawChartMarker(for: entry)
     }
 }

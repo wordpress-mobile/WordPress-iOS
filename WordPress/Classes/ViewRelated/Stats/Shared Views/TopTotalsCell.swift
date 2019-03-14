@@ -115,6 +115,13 @@ private extension TopTotalsCell {
             guard let row = subview as? StatsTotalRow else {
                     return
             }
+
+            // On the Stats Detail view, do not expand rows initially.
+            guard siteStatsDetailsDelegate == nil else {
+                row.expanded = false
+                return
+            }
+
             toggleChildRowsForRow(row)
 
             row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
@@ -269,6 +276,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
         siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
+        siteStatsDetailsDelegate?.displayMediaWithID?(mediaID)
     }
 
     func toggleChildRowsForRow(_ row: StatsTotalRow) {
@@ -281,6 +289,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
 
     func showPostStats(withPostTitle postTitle: String?) {
         siteStatsPeriodDelegate?.showPostStats?(withPostTitle: postTitle)
+        siteStatsDetailsDelegate?.showPostStats?(withPostTitle: postTitle)
     }
 
 }

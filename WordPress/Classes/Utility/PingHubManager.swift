@@ -10,7 +10,6 @@ private func defaultAccountToken() -> String? {
         return nil
     }
     guard let token = account.authToken, !token.isEmpty else {
-        assertionFailure("Can't create a PingHub client if the account has no auth token")
         return nil
     }
     return token

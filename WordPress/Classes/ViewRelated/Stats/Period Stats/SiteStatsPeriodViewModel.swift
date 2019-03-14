@@ -56,8 +56,8 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodData(date: date, period: period))
+    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period))
     }
 }
 
@@ -187,24 +187,12 @@ private extension SiteStatsPeriodViewModel {
 
     func clicksDataRows() -> [StatsTotalRowData] {
         return store.getTopClicks()?.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     showDisclosure: true,
-                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                     childRows: childRowsForClicks($0),
-                                                     statSection: .periodClicks) }
+                                                                  data: $0.value.displayString(),
+                                                                  showDisclosure: true,
+                                                                  disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                  childRows: StatsDataHelper.childRowsForClicks($0),
+                                                                  statSection: .periodClicks) }
             ?? []
-    }
-
-    func childRowsForClicks(_ item: StatsItem) -> [StatsTotalRowData] {
-
-        guard let children = item.children as? [StatsItem] else {
-            return [StatsTotalRowData]()
-        }
-
-        return children.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     showDisclosure: true,
-                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
     }
 
     func authorsTableRows() -> [ImmuTableRow] {

@@ -5,6 +5,8 @@ import WordPressFlux
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func showPostStats(withPostTitle postTitle: String?)
+    @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
 
 class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoadable {
@@ -18,13 +20,31 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
+    private var selectedDate: Date?
+    private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
     private let insightsStore = StoreContainer.shared.statsInsights
     private var insightsChangeReceipt: Receipt?
+    private let periodStore = StoreContainer.shared.statsPeriod
+    private var periodChangeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
+    }()
+
+    private let siteID = SiteStatsInformation.sharedInstance.siteID
+
+    private lazy var mainContext: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().mainContext
+    }()
+
+    private lazy var mediaService: MediaService = {
+        return MediaService(managedObjectContext: mainContext)
+    }()
+
+    private lazy var blogService: BlogService = {
+        return BlogService(managedObjectContext: mainContext)
     }()
 
     // MARK: - View
@@ -32,13 +52,16 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        clearExpandedRows()
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
     }
 
-    func configure(statSection: StatSection) {
+    func configure(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
         self.statSection = statSection
+        self.selectedDate = selectedDate
+        self.selectedPeriod = selectedPeriod
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.title
         initViewModel()
@@ -53,16 +76,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         })
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        guard let statSection = statSection else {
-            return
-        }
-        StatsDataHelper.clearExpandedRowsFor(statSection: statSection)
-    }
-
-
 }
 
 // MARK: - Table Methods
@@ -76,7 +89,7 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
-        viewModel?.fetchDataFor(statSection: statSection)
+        viewModel?.fetchDataFor(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
 
         if statType == .insights {
             insightsChangeReceipt = viewModel?.onChange { [weak self] in
@@ -86,7 +99,12 @@ private extension SiteStatsDetailTableViewController {
                 self?.refreshTableView()
             }
         } else {
-            // TODO: add period receipt here
+            periodChangeReceipt = viewModel?.onChange { [weak self] in
+                guard self?.storeIsFetching(statSection: statSection) == false else {
+                    return
+                }
+                self?.refreshTableView()
+            }
         }
     }
 
@@ -104,6 +122,14 @@ private extension SiteStatsDetailTableViewController {
             return insightsStore.isFetchingComments
         case .insightsTagsAndCategories:
             return insightsStore.isFetchingTagsAndCategories
+        case .periodPostsAndPages:
+            return periodStore.isFetchingPostsAndPages
+        case .periodSearchTerms:
+            return periodStore.isFetchingSearchTerms
+        case .periodVideos:
+            return periodStore.isFetchingVideos
+        case .periodClicks:
+            return periodStore.isFetchingClicks
         default:
             return false
         }
@@ -125,6 +151,7 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
+        clearExpandedRows()
         refreshControl?.beginRefreshing()
 
         switch statSection {
@@ -134,10 +161,17 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshComments()
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
+        case .periodPostsAndPages:
+            viewModel?.refreshPostsAndPages()
+        case .periodSearchTerms:
+            viewModel?.refreshSearchTerms()
+        case .periodVideos:
+            viewModel?.refreshVideos()
+        case .periodClicks:
+            viewModel?.refreshClicks()
         default:
             refreshControl?.endRefreshing()
         }
-
     }
 
     func applyTableUpdates() {
@@ -150,6 +184,10 @@ private extension SiteStatsDetailTableViewController {
             updateStatSectionForFilterChange()
             tableView.endUpdates()
         }
+    }
+
+    func clearExpandedRows() {
+        StatsDataHelper.clearExpandedDetails()
     }
 
     func updateStatSectionForFilterChange() {
@@ -192,7 +230,29 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
-        StatsDataHelper.updatedExpandedState(forRow: row)
+        StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
+    }
+
+    func showPostStats(withPostTitle postTitle: String?) {
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postTitle: postTitle)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+
+    func displayMediaWithID(_ mediaID: NSNumber) {
+
+        guard let siteID = siteID,
+            let blog = blogService.blog(byBlogId: siteID) else {
+                DDLogInfo("Unable to get blog when trying to show media from Stats details.")
+                return
+        }
+
+        mediaService.getMediaWithID(mediaID, in: blog, success: { (media) in
+            let viewController = MediaItemViewController(media: media)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }, failure: { (error) in
+            DDLogInfo("Unable to get media when trying to show from Stats details: \(error.localizedDescription)")
+        })
     }
 
 }
