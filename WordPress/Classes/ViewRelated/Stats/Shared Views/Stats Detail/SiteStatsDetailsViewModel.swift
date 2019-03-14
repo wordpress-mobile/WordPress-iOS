@@ -104,6 +104,11 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                      dataRows: clicksRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
+        case .periodAuthors:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodAuthors.dataSubtitle,
+                                                     dataRows: authorsRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -162,6 +167,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshClicks(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshAuthors() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshAuthors(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -197,6 +210,8 @@ private extension SiteStatsDetailsViewModel {
             return .allVideos(date: selectedDate, period: selectedPeriod)
         case .periodClicks:
             return .allClicks(date: selectedDate, period: selectedPeriod)
+        case .periodAuthors:
+            return .allAuthors(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -339,6 +354,18 @@ private extension SiteStatsDetailsViewModel {
                                                                         disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
                                                                         childRows: StatsDataHelper.childRowsForClicks($0),
                                                                         statSection: .periodClicks) }
+            ?? []
+    }
+
+    func authorsRows() -> [StatsTotalRowData] {
+        let authors = periodStore.getAllAuthors()
+        return authors?.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString(),
+                                                     dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
+                                                     userIconURL: $0.iconURL,
+                                                     showDisclosure: true,
+                                                     childRows: StatsDataHelper.childRowsForAuthor($0),
+                                                     statSection: .periodAuthors) }
             ?? []
     }
 

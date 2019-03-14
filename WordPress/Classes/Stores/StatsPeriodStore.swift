@@ -29,6 +29,9 @@ enum PeriodAction: Action {
 
     case receivedAllClicks(_ clicks: StatsGroup?)
     case refreshClicks(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllAuthors(_ authors: StatsGroup?)
+    case refreshAuthors(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
@@ -37,6 +40,7 @@ enum PeriodQuery {
     case allSearchTerms(date: Date, period: StatsPeriodUnit)
     case allVideos(date: Date, period: StatsPeriodUnit)
     case allClicks(date: Date, period: StatsPeriodUnit)
+    case allAuthors(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
@@ -49,6 +53,8 @@ enum PeriodQuery {
         case .allVideos(let date, _):
             return date
         case .allClicks(let date, _):
+            return date
+        case .allAuthors(let date, _):
             return date
         }
     }
@@ -64,6 +70,8 @@ enum PeriodQuery {
         case .allVideos( _, let period):
             return period
         case .allClicks( _, let period):
+            return period
+        case .allAuthors( _, let period):
             return period
         }
     }
@@ -110,6 +118,9 @@ struct PeriodStoreState {
 
     var allClicks: [StatsItem]?
     var fetchingAllClicks = false
+
+    var allAuthors: [StatsItem]?
+    var fetchingAllAuthors = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -159,6 +170,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllClicks(clicks)
         case .refreshClicks(let date, let period):
             refreshClicks(date: date, period: period)
+        case .receivedAllAuthors(let authors):
+            receivedAllAuthors(authors)
+        case .refreshAuthors(let date, let period):
+            refreshAuthors(date: date, period: period)
         }
     }
 
@@ -202,6 +217,10 @@ private extension StatsPeriodStore {
             case .allClicks:
                 if shouldFetchClicks() {
                     fetchAllClicks(date: query.date, period: query.period)
+                }
+            case .allAuthors:
+                if shouldFetchAuthors() {
+                    fetchAllAuthors(date: query.date, period: query.period)
                 }
             }
         }
@@ -366,6 +385,27 @@ private extension StatsPeriodStore {
         fetchAllClicks(date: date, period: period)
     }
 
+    func fetchAllAuthors(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllAuthors = true
+
+        SiteStatsInformation.statsService()?.retrieveAuthors(for: date, andUnit: period, withCompletionHandler: { (authors, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Authors: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all authors.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllAuthors(authors))
+        })
+    }
+
+    func refreshAuthors(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchAuthors() else {
+            DDLogInfo("Stats Period Authors refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllAuthors(date: date, period: period)
+    }
+
     // MARK: - Receive data methods
 
     func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
@@ -452,6 +492,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedAllAuthors(_ authors: StatsGroup?) {
+        transaction { state in
+            state.allAuthors = authors?.items as? [StatsItem]
+            state.fetchingAllAuthors = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetchOverview() -> Bool {
@@ -483,6 +530,10 @@ private extension StatsPeriodStore {
 
     func shouldFetchClicks() -> Bool {
         return !isFetchingClicks
+    }
+
+    func shouldFetchAuthors() -> Bool {
+        return !isFetchingAuthors
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -572,6 +623,10 @@ extension StatsPeriodStore {
         return state.allClicks
     }
 
+    func getAllAuthors() -> [StatsItem]? {
+        return state.allAuthors
+    }
+
     var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -597,6 +652,10 @@ extension StatsPeriodStore {
 
     var isFetchingClicks: Bool {
         return state.fetchingAllClicks
+    }
+
+    var isFetchingAuthors: Bool {
+        return state.fetchingAllAuthors
     }
 
 }

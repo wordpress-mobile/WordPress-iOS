@@ -213,19 +213,9 @@ private extension SiteStatsPeriodViewModel {
                                                      dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
                                                      userIconURL: $0.iconURL,
                                                      showDisclosure: true,
-                                                     childRows: childRowsForAuthor($0),
+                                                     childRows: StatsDataHelper.childRowsForAuthor($0),
                                                      statSection: .periodAuthors) }
             ?? []
-    }
-
-    func childRowsForAuthor(_ item: StatsItem) -> [StatsTotalRowData] {
-
-        guard let children = item.children as? [StatsItem] else {
-            return [StatsTotalRowData]()
-        }
-
-        return children.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString()) }
     }
 
     func countriesTableRows() -> [ImmuTableRow] {
