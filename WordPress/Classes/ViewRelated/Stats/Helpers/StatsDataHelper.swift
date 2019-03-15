@@ -124,7 +124,7 @@ class StatsDataHelper {
         }
     }
 
-    // MARK: - Clicks Support
+    // MARK: - Child Rows Support
 
     class func childRowsForClicks(_ item: StatsItem) -> [StatsTotalRowData] {
 
@@ -136,6 +136,16 @@ class StatsDataHelper {
                                                      data: $0.value.displayString(),
                                                      showDisclosure: true,
                                                      disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
+    }
+
+    class func childRowsForAuthor(_ item: StatsItem) -> [StatsTotalRowData] {
+
+        guard let children = item.children as? [StatsItem] else {
+            return [StatsTotalRowData]()
+        }
+
+        return children.map { StatsTotalRowData.init(name: $0.label,
+                                                     data: $0.value.displayString()) }
     }
 
 }
