@@ -231,23 +231,48 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     let acceptedType = kUTTypeURL as String
 
     func convert(payload: URL) -> ExtractedItem? {
-//        guard !payload.isFileURL else {
-//            let contents = try? String(contentsOf: payload)
-//            return ExtractedItem(selectedText: contents, description: nil, url: nil, title: nil, image: nil)
-//        }
+        guard !payload.isFileURL else {
+            return processLocalFile(url: payload)
+        }
+
         var returnedItem = ExtractedItem()
         returnedItem.url = payload
-
-        if payload.isFileURL {
-            let html = try? String(contentsOf: payload) ?? ""
-            returnedItem.selectedText = html?.escapeHtmlNamedEntities()
-        }
 
         return returnedItem
     }
 
-    private func extractBodyContents(html: String) {
-        let bodyParts = html.components(separatedBy: "<body")
+    private func processLocalFile(url: URL) -> ExtractedItem? {
+        switch url.pathExtension {
+        case "textbundle":
+            return handleTextBundle(url: url)
+        case "textpack":
+            return handleCompressedTextBundle(url: url)
+        case "text", "txt":
+            return handlePlainText(url: url)
+        default:
+            return nil
+        }
+    }
+
+    private func handlePlainText(url: URL) -> ExtractedItem? {
+        var returnedItem = ExtractedItem()
+        let html = (try? String(contentsOf: url)) ?? ""
+        returnedItem.selectedText = html.escapeHtmlNamedEntities()
+        return returnedItem
+    }
+
+    private func handleCompressedTextBundle(url: URL) -> ExtractedItem? {
+        return nil
+    }
+
+    private func handleTextBundle(url: URL) -> ExtractedItem? {
+        var error: NSError?
+        let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
+
+        var returnedItem = ExtractedItem()
+        returnedItem.selectedText = bundleWrapper.text
+
+        return returnedItem
     }
 }
 
