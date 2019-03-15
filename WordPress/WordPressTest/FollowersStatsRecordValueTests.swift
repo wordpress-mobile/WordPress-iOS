@@ -74,6 +74,7 @@ class FollowersStatsRecordValueTests: StatsTestCase {
         let parent = createStatsRecord(in: mainContext, type: .followers, date: Date())
 
         let follower = FollowersStatsRecordValue(parent: parent)
+        follower.name = "Carol Mark"
         follower.type = FollowersStatsType.email.rawValue
         follower.avatarURLString = "www.wordpress.com"
 
