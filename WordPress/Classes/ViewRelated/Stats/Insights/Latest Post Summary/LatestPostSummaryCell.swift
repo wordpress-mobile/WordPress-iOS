@@ -9,17 +9,13 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var contentStackViewTopConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var summariesStackView: UIStackView!
+    @IBOutlet weak var viewsStackView: UIStackView!
     @IBOutlet weak var chartStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var actionStackView: UIStackView!
 
     @IBOutlet weak var viewsLabel: UILabel!
     @IBOutlet weak var viewsDataLabel: UILabel!
-    @IBOutlet weak var likesLabel: UILabel!
-    @IBOutlet weak var likesDataLabel: UILabel!
-    @IBOutlet weak var commentsLabel: UILabel!
-    @IBOutlet weak var commentsDataLabel: UILabel!
 
     @IBOutlet weak var actionLabel: UILabel!
     @IBOutlet weak var actionImageView: UIImageView!
@@ -66,9 +62,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         }
 
         self.lastPostInsight = lastPostInsight
-        viewsDataLabel.text = lastPostInsight.viewsCount.abbreviatedString()
-        likesDataLabel.text = lastPostInsight.likesCount.abbreviatedString()
-        commentsDataLabel.text = lastPostInsight.commentsCount.abbreviatedString()
+        viewsDataLabel.text = lastPostInsight.viewsCount.abbreviatedString(forHeroNumber: true)
 
         // If there is a post but 0 data, show Share Post option.
         if lastPostInsight.likesCount == 0 && lastPostInsight.viewsCount == 0 && lastPostInsight.commentsCount == 0 {
@@ -98,14 +92,6 @@ private extension LatestPostSummaryCell {
         viewsLabel.textColor = Style.defaultTextColor
         viewsDataLabel.textColor = Style.defaultTextColor
 
-        likesLabel.text = CellStrings.likes
-        likesLabel.textColor = Style.defaultTextColor
-        likesDataLabel.textColor = Style.defaultTextColor
-
-        commentsLabel.text = CellStrings.comments
-        commentsLabel.textColor = Style.defaultTextColor
-        commentsDataLabel.textColor = Style.defaultTextColor
-
         actionLabel.textColor = Style.actionTextColor
     }
 
@@ -134,12 +120,12 @@ private extension LatestPostSummaryCell {
     }
 
     func toggleDataViews(hide: Bool) {
-        summariesStackView.isHidden = hide
+        viewsStackView.isHidden = hide
         chartStackView.isHidden = hide
         disclosureImageView.isHidden = hide
         actionImageView.isHidden = !hide
         contentStackViewTopConstraint.constant = hide ? ContentStackViewTopConstraint.dataHidden
-                                                        : ContentStackViewTopConstraint.dataShown
+                                                      : ContentStackViewTopConstraint.dataShown
     }
 
     func setActionImageFor(action: ActionType) {
@@ -197,7 +183,7 @@ private extension LatestPostSummaryCell {
     }
 
     struct ContentStackViewTopConstraint {
-        static let dataShown = CGFloat(37)
+        static let dataShown = CGFloat(24)
         static let dataHidden = CGFloat(16)
     }
 

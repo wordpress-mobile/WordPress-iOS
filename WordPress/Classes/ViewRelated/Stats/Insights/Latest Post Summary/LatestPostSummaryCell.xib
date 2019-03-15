@@ -35,64 +35,38 @@
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="bEY-vj-O3h" userLabel="Content Stack View">
                         <rect key="frame" x="0.0" y="91" width="375" height="303.5"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="irr-i0-AM0" userLabel="Summaries Stack View">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="51.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="irr-i0-AM0" userLabel="Views Stack View">
+                                <rect key="frame" x="16" y="0.0" width="343" height="50"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="wux-rC-UyT" userLabel="Views Stack View">
-                                        <rect key="frame" x="0.0" y="0.0" width="114.5" height="51.5"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRi-20-ac2">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L5K-Wp-mW9" userLabel="Views Label">
-                                                <rect key="frame" x="0.0" y="0.0" width="36" height="16"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GLF-sc-SL2" userLabel="Views Data Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="100.5" height="50"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Efd-SW-O9K" userLabel="Views Data">
-                                                <rect key="frame" x="0.0" y="20" width="12" height="31.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ioe-GD-QRv" userLabel="Views Label">
+                                                <rect key="frame" x="108.5" y="24.5" width="45.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="5Lu-bf-dhz" userLabel="Likes Stack View">
-                                        <rect key="frame" x="130.5" y="0.0" width="114" height="51.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UBX-AB-ffn" userLabel="Likes Label">
-                                                <rect key="frame" x="41.5" y="0.0" width="31.5" height="16"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSJ-ds-3G4" userLabel="Likes Data">
-                                                <rect key="frame" x="51" y="20" width="12" height="31.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="INN-7n-UXp" userLabel="Comments Stack View">
-                                        <rect key="frame" x="260.5" y="0.0" width="114.5" height="51.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Comments" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jLy-hA-LxG" userLabel="Comments Label">
-                                                <rect key="frame" x="24.5" y="0.0" width="65.5" height="16"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ke4-L3-2a5" userLabel="Comments Data">
-                                                <rect key="frame" x="51.5" y="20" width="12" height="31.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="GLF-sc-SL2" firstAttribute="leading" secondItem="GRi-20-ac2" secondAttribute="leading" id="6DY-VA-8WB"/>
+                                            <constraint firstItem="ioe-GD-QRv" firstAttribute="leading" secondItem="GLF-sc-SL2" secondAttribute="trailing" constant="8" id="Mqa-xa-dGu"/>
+                                            <constraint firstAttribute="bottom" secondItem="GLF-sc-SL2" secondAttribute="bottom" id="UJ5-qv-ZRp"/>
+                                            <constraint firstItem="GLF-sc-SL2" firstAttribute="top" secondItem="GRi-20-ac2" secondAttribute="top" id="xFW-FO-cJS"/>
+                                            <constraint firstItem="ioe-GD-QRv" firstAttribute="bottom" secondItem="GLF-sc-SL2" secondAttribute="bottom" constant="-5" id="xZw-5T-XZI"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dVi-l5-zbj" userLabel="Chart Stack View">
-                                <rect key="frame" x="16" y="66.5" width="343" height="128"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="dVi-l5-zbj" userLabel="Chart Stack View">
+                                <rect key="frame" x="16" y="65" width="343" height="129.5"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BoB-0m-Daq" userLabel="Bottom Stack View">
                                 <rect key="frame" x="0.0" y="209.5" width="375" height="94"/>
@@ -143,8 +117,10 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="BoB-0m-Daq" secondAttribute="trailing" id="4YA-iY-eOu"/>
                             <constraint firstItem="BoB-0m-Daq" firstAttribute="leading" secondItem="bEY-vj-O3h" secondAttribute="leading" id="Ef2-Bo-VQb"/>
+                            <constraint firstAttribute="trailing" secondItem="irr-i0-AM0" secondAttribute="trailing" constant="16" id="Gyk-oi-Z6b"/>
                             <constraint firstItem="dVi-l5-zbj" firstAttribute="leading" secondItem="bEY-vj-O3h" secondAttribute="leading" constant="16" id="X70-QR-Oxz"/>
                             <constraint firstAttribute="trailing" secondItem="dVi-l5-zbj" secondAttribute="trailing" constant="16" id="kuA-hL-x7l"/>
+                            <constraint firstItem="irr-i0-AM0" firstAttribute="leading" secondItem="bEY-vj-O3h" secondAttribute="leading" constant="16" id="xpf-9u-a0Z"/>
                         </constraints>
                     </stackView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3OP-qA-To0" userLabel="Action Button">
@@ -201,18 +177,14 @@
                 <outlet property="actionStackView" destination="dj8-5c-J6O" id="gkV-Yq-6bI"/>
                 <outlet property="bottomSeparatorLine" destination="ogd-ft-cmW" id="lTW-ff-ahD"/>
                 <outlet property="chartStackView" destination="dVi-l5-zbj" id="kyV-EI-lLg"/>
-                <outlet property="commentsDataLabel" destination="Ke4-L3-2a5" id="Mi7-wx-efz"/>
-                <outlet property="commentsLabel" destination="jLy-hA-LxG" id="jxu-pA-4Xa"/>
                 <outlet property="contentStackViewTopConstraint" destination="9Vd-ny-SGg" id="60x-Z3-6cn"/>
                 <outlet property="disclosureImageView" destination="NUJ-mV-eYK" id="Feu-jf-QlE"/>
-                <outlet property="likesDataLabel" destination="eSJ-ds-3G4" id="g1g-h2-qD5"/>
-                <outlet property="likesLabel" destination="UBX-AB-ffn" id="kcJ-sh-Lsa"/>
                 <outlet property="rowsStackView" destination="SgZ-KL-6tA" id="xbT-pC-okw"/>
-                <outlet property="summariesStackView" destination="irr-i0-AM0" id="uUi-Wo-PAU"/>
                 <outlet property="summaryLabel" destination="MnQ-57-h8x" id="0Qb-wb-77F"/>
                 <outlet property="topSeparatorLine" destination="JSW-bj-szW" id="KgK-Mb-YQM"/>
-                <outlet property="viewsDataLabel" destination="Efd-SW-O9K" id="CL6-zS-XtJ"/>
-                <outlet property="viewsLabel" destination="L5K-Wp-mW9" id="gpt-1m-oBt"/>
+                <outlet property="viewsDataLabel" destination="GLF-sc-SL2" id="rcy-lz-6Jd"/>
+                <outlet property="viewsLabel" destination="ioe-GD-QRv" id="RId-CY-R6b"/>
+                <outlet property="viewsStackView" destination="irr-i0-AM0" id="m6U-vc-M7T"/>
             </connections>
             <point key="canvasLocation" x="-44" y="157.87106446776613"/>
         </tableViewCell>
