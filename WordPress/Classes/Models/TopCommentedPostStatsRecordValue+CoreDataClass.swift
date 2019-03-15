@@ -13,7 +13,7 @@ public class TopCommentedPostStatsRecordValue: StatsRecordValue {
 
 }
 
-// This could arguably live both here and in `TopCommentsAuthor` — I've arbitraily chosen this location.
+// This could arguably live both here and in `TopCommentsAuthor` — I've arbitrarily chosen this location.
 extension StatsCommentsInsight: StatsRecordValueConvertible {
     func statsRecordValues(in context: NSManagedObjectContext) -> [StatsRecordValue] {
         let posts: [StatsRecordValue] = topPosts.map {
