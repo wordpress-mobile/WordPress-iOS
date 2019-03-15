@@ -67,14 +67,26 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
-def gutenberg_pod(name, branch=nil)
-    gutenberg_branch=branch || 'master'
-    pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
-end
-
 def gutenberg(options)
+    options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
+
+    gutenberg_dependencies options
+end
+
+def gutenberg_dependencies(options)
+    dependencies = [
+        'React',
+        'yoga',
+        'Folly',
+        'react-native-safe-area',
+    ]
+    tag_or_commit = options[:tag] || options[:commit]
+
+    for pod_name in dependencies do
+        pod pod_name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
+    end
 end
 
 ## WordPress iOS
@@ -86,16 +98,12 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    ## React Native
+    ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :commit => 'da05401ab1a7bdc8c72d1afb3470fb709228c625'
+    gutenberg :commit => '08a09629cc0adb7709b86f15bb3c43e8c69efd64'
 
-    gutenberg_pod 'React'
-    gutenberg_pod 'yoga'
-    gutenberg_pod 'Folly'
-    gutenberg_pod 'react-native-safe-area'
-    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
+    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.6'
     
     ## Third party libraries
