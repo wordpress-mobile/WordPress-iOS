@@ -101,7 +101,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :commit => '3d4825c323f3628fe5f214d0a75a17416d8678ee'
+    gutenberg :commit => '11220f42665be285aad579b76ad7eb606f869c16'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.6'
