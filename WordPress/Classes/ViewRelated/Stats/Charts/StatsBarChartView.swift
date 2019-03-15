@@ -13,7 +13,6 @@ class StatsBarChartView: BarChartView {
         static let animationDuration    = TimeInterval(1)
         static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
         static let highlightAlpha       = CGFloat(1)
-        static let legendOffset         = CGFloat(16)
         static let markerAlpha          = CGFloat(0.2)
         static let trailingOffset       = CGFloat(20)
     }
