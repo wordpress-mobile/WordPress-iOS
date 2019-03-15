@@ -24,13 +24,19 @@ class CountriesCell: UITableViewCell, NibLoadable {
     func configure(itemSubtitle: String,
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+                   limitRowsDisplayed: Bool = true) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        addRows(dataRows, toStackView: rowsStackView, forType: .period, viewMoreDelegate: self)
+        addRows(dataRows,
+                toStackView: rowsStackView,
+                forType: .period,
+                limitRowsDisplayed: limitRowsDisplayed,
+                viewMoreDelegate: self)
+
         setSubtitleVisibility()
         applyStyles()
     }

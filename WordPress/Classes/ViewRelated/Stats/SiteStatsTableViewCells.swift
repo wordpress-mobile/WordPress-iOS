@@ -179,6 +179,33 @@ struct TopTotalsDetailStatsRow: ImmuTableRow {
     }
 }
 
+struct CountriesDetailStatsRow: ImmuTableRow {
+
+    typealias CellType = CountriesCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       siteStatsPeriodDelegate: nil,
+                       limitRowsDisplayed: false)
+    }
+}
+
 struct TopTotalsInsightStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell

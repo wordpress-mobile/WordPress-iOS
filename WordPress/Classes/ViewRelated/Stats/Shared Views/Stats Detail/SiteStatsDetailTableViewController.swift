@@ -111,6 +111,7 @@ private extension SiteStatsDetailTableViewController {
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [TabbedTotalsDetailStatsRow.self,
                 TopTotalsDetailStatsRow.self,
+                CountriesDetailStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -134,6 +135,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingAuthors
         case .periodReferrers:
             return periodStore.isFetchingReferrers
+        case .periodCountries:
+            return periodStore.isFetchingCountries
         default:
             return false
         }
@@ -177,6 +180,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshAuthors()
         case .periodReferrers:
             viewModel?.refreshReferrers()
+        case .periodCountries:
+            viewModel?.refreshCountries()
         default:
             refreshControl?.endRefreshing()
         }
