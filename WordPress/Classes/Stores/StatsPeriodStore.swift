@@ -32,6 +32,9 @@ enum PeriodAction: Action {
 
     case receivedAllAuthors(_ authors: StatsGroup?)
     case refreshAuthors(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllReferrers(_ referrers: StatsGroup?)
+    case refreshReferrers(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
@@ -41,6 +44,7 @@ enum PeriodQuery {
     case allVideos(date: Date, period: StatsPeriodUnit)
     case allClicks(date: Date, period: StatsPeriodUnit)
     case allAuthors(date: Date, period: StatsPeriodUnit)
+    case allReferrers(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
@@ -55,6 +59,8 @@ enum PeriodQuery {
         case .allClicks(let date, _):
             return date
         case .allAuthors(let date, _):
+            return date
+        case .allReferrers(let date, _):
             return date
         }
     }
@@ -72,6 +78,8 @@ enum PeriodQuery {
         case .allClicks( _, let period):
             return period
         case .allAuthors( _, let period):
+            return period
+        case .allReferrers( _, let period):
             return period
         }
     }
@@ -121,6 +129,9 @@ struct PeriodStoreState {
 
     var allAuthors: [StatsItem]?
     var fetchingAllAuthors = false
+
+    var allReferrers: [StatsItem]?
+    var fetchingAllReferrers = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -174,6 +185,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllAuthors(authors)
         case .refreshAuthors(let date, let period):
             refreshAuthors(date: date, period: period)
+        case .receivedAllReferrers(let referrers):
+            receivedAllReferrers(referrers)
+        case .refreshReferrers(let date, let period):
+            refreshReferrers(date: date, period: period)
         }
     }
 
@@ -221,6 +236,10 @@ private extension StatsPeriodStore {
             case .allAuthors:
                 if shouldFetchAuthors() {
                     fetchAllAuthors(date: query.date, period: query.period)
+                }
+            case .allReferrers:
+                if shouldFetchReferrers() {
+                    fetchAllReferrers(date: query.date, period: query.period)
                 }
             }
         }
@@ -406,6 +425,27 @@ private extension StatsPeriodStore {
         fetchAllAuthors(date: date, period: period)
     }
 
+    func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllReferrers = true
+
+        SiteStatsInformation.statsService()?.retrieveReferrers(for: date, andUnit: period, withCompletionHandler: { (referrers, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Referrers: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all referrers.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllReferrers(referrers))
+        })
+    }
+
+    func refreshReferrers(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchReferrers() else {
+            DDLogInfo("Stats Period Referrers refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllReferrers(date: date, period: period)
+    }
+
     // MARK: - Receive data methods
 
     func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
@@ -499,6 +539,13 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedAllReferrers(_ referrers: StatsGroup?) {
+        transaction { state in
+            state.allReferrers = referrers?.items as? [StatsItem]
+            state.fetchingAllReferrers = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetchOverview() -> Bool {
@@ -534,6 +581,10 @@ private extension StatsPeriodStore {
 
     func shouldFetchAuthors() -> Bool {
         return !isFetchingAuthors
+    }
+
+    func shouldFetchReferrers() -> Bool {
+        return !isFetchingReferrers
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -627,6 +678,10 @@ extension StatsPeriodStore {
         return state.allAuthors
     }
 
+    func getAllReferrers() -> [StatsItem]? {
+        return state.allReferrers
+    }
+
     var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -656,6 +711,10 @@ extension StatsPeriodStore {
 
     var isFetchingAuthors: Bool {
         return state.fetchingAllAuthors
+    }
+
+    var isFetchingReferrers: Bool {
+        return state.fetchingAllReferrers
     }
 
 }
