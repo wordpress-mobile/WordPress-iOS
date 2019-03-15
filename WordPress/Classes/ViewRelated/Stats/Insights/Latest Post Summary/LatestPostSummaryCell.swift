@@ -11,6 +11,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
 
     @IBOutlet weak var summariesStackView: UIStackView!
     @IBOutlet weak var chartStackView: UIStackView!
+    @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var actionStackView: UIStackView!
 
     @IBOutlet weak var viewsLabel: UILabel!
@@ -119,6 +120,7 @@ private extension LatestPostSummaryCell {
         case .viewMore:
             toggleDataViews(hide: false)
             configureChartView()
+            addRows(createDataRows(), toStackView: rowsStackView, forType: .insights, limitRowsDisplayed: false)
             actionLabel.text = CellStrings.viewMore
         case .sharePost:
             toggleDataViews(hide: true)
@@ -166,6 +168,24 @@ private extension LatestPostSummaryCell {
         summaryString.append(summaryToAppend)
 
         return Style.highlightString(postTitle, inString: summaryString)
+    }
+
+    func createDataRows() -> [StatsTotalRowData] {
+        guard let lastPostInsight = lastPostInsight else {
+            return []
+        }
+
+        var dataRows = [StatsTotalRowData]()
+
+        dataRows.append(StatsTotalRowData.init(name: CellStrings.likes,
+                                               data: lastPostInsight.likesCount.abbreviatedString(),
+                                               icon: Style.imageForGridiconType(.star)))
+
+        dataRows.append(StatsTotalRowData.init(name: CellStrings.comments,
+                                               data: lastPostInsight.commentsCount.abbreviatedString(),
+                                               icon: Style.imageForGridiconType(.comment)))
+
+        return dataRows
     }
 
     // MARK: - Properties
