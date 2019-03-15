@@ -32,6 +32,15 @@ enum PeriodAction: Action {
 
     case receivedAllAuthors(_ authors: StatsGroup?)
     case refreshAuthors(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllReferrers(_ referrers: StatsGroup?)
+    case refreshReferrers(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllCountries(_ countries: StatsGroup?)
+    case refreshCountries(date: Date, period: StatsPeriodUnit)
+
+    case receivedAllPublished()
+    case refreshPublished(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
@@ -41,6 +50,9 @@ enum PeriodQuery {
     case allVideos(date: Date, period: StatsPeriodUnit)
     case allClicks(date: Date, period: StatsPeriodUnit)
     case allAuthors(date: Date, period: StatsPeriodUnit)
+    case allReferrers(date: Date, period: StatsPeriodUnit)
+    case allCountries(date: Date, period: StatsPeriodUnit)
+    case allPublished(date: Date, period: StatsPeriodUnit)
 
     var date: Date {
         switch self {
@@ -55,6 +67,12 @@ enum PeriodQuery {
         case .allClicks(let date, _):
             return date
         case .allAuthors(let date, _):
+            return date
+        case .allReferrers(let date, _):
+            return date
+        case .allCountries(let date, _):
+            return date
+        case .allPublished(let date, _):
             return date
         }
     }
@@ -72,6 +90,12 @@ enum PeriodQuery {
         case .allClicks( _, let period):
             return period
         case .allAuthors( _, let period):
+            return period
+        case .allReferrers( _, let period):
+            return period
+        case .allCountries( _, let period):
+            return period
+        case .allPublished( _, let period):
             return period
         }
     }
@@ -121,6 +145,15 @@ struct PeriodStoreState {
 
     var allAuthors: [StatsItem]?
     var fetchingAllAuthors = false
+
+    var allReferrers: [StatsItem]?
+    var fetchingAllReferrers = false
+
+    var allCountries: [StatsItem]?
+    var fetchingAllCountries = false
+
+    var allPublished: [StatsItem]?
+    var fetchingAllPublished = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -174,6 +207,18 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllAuthors(authors)
         case .refreshAuthors(let date, let period):
             refreshAuthors(date: date, period: period)
+        case .receivedAllReferrers(let referrers):
+            receivedAllReferrers(referrers)
+        case .refreshReferrers(let date, let period):
+            refreshReferrers(date: date, period: period)
+        case .receivedAllCountries(let countries):
+            receivedAllCountries(countries)
+        case .refreshCountries(let date, let period):
+            refreshCountries(date: date, period: period)
+        case .receivedAllPublished:
+            receivedAllPublished()
+        case .refreshPublished(let date, let period):
+            refreshPublished(date: date, period: period)
         }
     }
 
@@ -222,11 +267,26 @@ private extension StatsPeriodStore {
                 if shouldFetchAuthors() {
                     fetchAllAuthors(date: query.date, period: query.period)
                 }
+            case .allReferrers:
+                if shouldFetchReferrers() {
+                    fetchAllReferrers(date: query.date, period: query.period)
+                }
+            case .allCountries:
+                if shouldFetchCountries() {
+                    fetchAllCountries(date: query.date, period: query.period)
+                }
+            case .allPublished:
+                if shouldFetchPublished() {
+                    fetchAllPublished(date: query.date, period: query.period)
+                }
             }
         }
     }
 
     func fetchPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
+
+        // remove
+        fetchAllPublished(date: date, period: period)
 
         setAllAsFetchingOverview()
 
@@ -406,6 +466,64 @@ private extension StatsPeriodStore {
         fetchAllAuthors(date: date, period: period)
     }
 
+    func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllReferrers = true
+
+        SiteStatsInformation.statsService()?.retrieveReferrers(for: date, andUnit: period, withCompletionHandler: { (referrers, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Referrers: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all referrers.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllReferrers(referrers))
+        })
+    }
+
+    func refreshReferrers(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchReferrers() else {
+            DDLogInfo("Stats Period Referrers refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllReferrers(date: date, period: period)
+    }
+
+    func fetchAllCountries(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllCountries = true
+
+        SiteStatsInformation.statsService()?.retrieveCountries(for: date, andUnit: period, withCompletionHandler: { (countries, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all Countries: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all countries.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllCountries(countries))
+        })
+    }
+
+    func refreshCountries(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchCountries() else {
+            DDLogInfo("Stats Period Countries refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllCountries(date: date, period: period)
+    }
+
+    func fetchAllPublished(date: Date, period: StatsPeriodUnit) {
+        state.fetchingAllPublished = true
+
+        // TODO: replace with api call when fetch all published is supported.
+        actionDispatcher.dispatch(PeriodAction.receivedAllPublished())
+    }
+
+    func refreshPublished(date: Date, period: StatsPeriodUnit) {
+        guard shouldFetchPublished() else {
+            DDLogInfo("Stats Period Published refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllPublished(date: date, period: period)
+    }
+
     // MARK: - Receive data methods
 
     func receivedPostsAndPages(_ postsAndPages: StatsGroup?) {
@@ -499,6 +617,28 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedAllReferrers(_ referrers: StatsGroup?) {
+        transaction { state in
+            state.allReferrers = referrers?.items as? [StatsItem]
+            state.fetchingAllReferrers = false
+        }
+    }
+
+    func receivedAllCountries(_ countries: StatsGroup?) {
+        transaction { state in
+            state.allCountries = countries?.items as? [StatsItem]
+            state.fetchingAllCountries = false
+        }
+    }
+
+    func receivedAllPublished() {
+        transaction { state in
+            // TODO: replace with real allPublished when API supports it.
+            state.allPublished = state.topPublished
+            state.fetchingAllPublished = false
+        }
+    }
+
     // MARK: - Helpers
 
     func shouldFetchOverview() -> Bool {
@@ -534,6 +674,18 @@ private extension StatsPeriodStore {
 
     func shouldFetchAuthors() -> Bool {
         return !isFetchingAuthors
+    }
+
+    func shouldFetchReferrers() -> Bool {
+        return !isFetchingReferrers
+    }
+
+    func shouldFetchCountries() -> Bool {
+        return !isFetchingCountries
+    }
+
+    func shouldFetchPublished() -> Bool {
+        return !isFetchingPublished
     }
 
     /// This method modifies the 'Unknown search terms' row and changes its location in the array.
@@ -627,6 +779,18 @@ extension StatsPeriodStore {
         return state.allAuthors
     }
 
+    func getAllReferrers() -> [StatsItem]? {
+        return state.allReferrers
+    }
+
+    func getAllCountries() -> [StatsItem]? {
+        return state.allCountries
+    }
+
+    func getAllPublished() -> [StatsItem]? {
+        return state.allPublished
+    }
+
     var isFetchingOverview: Bool {
         return state.fetchingPostsAndPages ||
             state.fetchingReferrers ||
@@ -656,6 +820,18 @@ extension StatsPeriodStore {
 
     var isFetchingAuthors: Bool {
         return state.fetchingAllAuthors
+    }
+
+    var isFetchingReferrers: Bool {
+        return state.fetchingAllReferrers
+    }
+
+    var isFetchingCountries: Bool {
+        return state.fetchingAllCountries
+    }
+
+    var isFetchingPublished: Bool {
+        return state.fetchingAllPublished
     }
 
 }
