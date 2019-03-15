@@ -17,6 +17,7 @@ import WordPressFlux
             leafViewController = leafViewController.presentedViewController!
         }
         popoverPresentationController?.sourceView = view
+        popoverPresentationController?.permittedArrowDirections = []
         leafViewController.present(self, animated: true)
     }
 }
