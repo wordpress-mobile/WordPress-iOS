@@ -118,6 +118,9 @@ class SiteStatsDetailsViewModel: Observable {
             tableRows.append(CountriesDetailStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                                      dataRows: countriesRows()))
+        case .periodPublished:
+            tableRows.append(TopTotalsNoSubtitlesPeriodDetailStatsRow(dataRows: publishedRows(),
+                                                                      siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -200,6 +203,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshCountries(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshPublished() {
+        guard let selectedDate = selectedDate,
+            let selectedPeriod = selectedPeriod else {
+                return
+        }
+        ActionDispatcher.dispatch(PeriodAction.refreshPublished(date: selectedDate, period: selectedPeriod))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -241,6 +252,8 @@ private extension SiteStatsDetailsViewModel {
             return .allReferrers(date: selectedDate, period: selectedPeriod)
         case .periodCountries:
             return .allCountries(date: selectedDate, period: selectedPeriod)
+        case .periodPublished:
+            return .allPublished(date: selectedDate, period: selectedPeriod)
         default:
             return nil
         }
@@ -414,6 +427,15 @@ private extension SiteStatsDetailsViewModel {
                                                                            data: $0.value.displayString(),
                                                                            countryIconURL: $0.iconURL,
                                                                            statSection: .periodCountries) }
+            ?? []
+    }
+
+    func publishedRows() -> [StatsTotalRowData] {
+        return periodStore.getAllPublished()?.map { StatsTotalRowData.init(name: $0.label,
+                                                                           data: "",
+                                                                           showDisclosure: true,
+                                                                           disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                           statSection: .periodPublished) }
             ?? []
     }
 
