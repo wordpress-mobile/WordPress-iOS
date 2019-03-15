@@ -28,10 +28,25 @@ struct DomainsService {
         remote.getDomainSuggestions(base: base,
                                     domainSuggestionType: domainSuggestionType,
                                     success: { suggestions in
-            success(suggestions)
+            let filteredSuggestions = self.filterSuggestions(suggestions, forBase: base)
+            success(filteredSuggestions)
         }) { error in
             failure(error)
         }
+    }
+
+    // If any of the suggestions matches the base exactly,
+    // then filter that suggestion up to the top of the list.
+    fileprivate func filterSuggestions(_ suggestions: [DomainSuggestion], forBase base: String) -> [DomainSuggestion] {
+        let normalizedBase = base.lowercased().replacingMatches(of: " ", with: "")
+
+        var filteredSuggestions = suggestions
+        if let matchedSuggestionIndex = suggestions.firstIndex(where: { $0.subdomain == base || $0.subdomain == normalizedBase }) {
+            let matchedSuggestion = filteredSuggestions.remove(at: matchedSuggestionIndex)
+            filteredSuggestions.insert(matchedSuggestion, at: 0)
+        }
+
+        return filteredSuggestions
     }
 
     fileprivate func mergeDomains(_ domains: [Domain], forSite siteID: Int) {
