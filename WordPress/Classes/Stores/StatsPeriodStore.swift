@@ -39,7 +39,7 @@ enum PeriodAction: Action {
     case receivedAllCountries(_ countries: StatsGroup?)
     case refreshCountries(date: Date, period: StatsPeriodUnit)
 
-    case receivedAllPublished()
+    case receivedAllPublished(_ published: StatsPublishedPostsTimeIntervalData?)
     case refreshPublished(date: Date, period: StatsPeriodUnit)
 }
 
@@ -152,11 +152,21 @@ struct PeriodStoreState {
     var allCountries: [StatsItem]?
     var fetchingAllCountries = false
 
-    var allPublished: [StatsItem]?
+    var allPublished: [StatsTopPost]?
     var fetchingAllPublished = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
+
+    private lazy var statsRemote: StatsServiceRemoteV2? = {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
+            let timeZone = SiteStatsInformation.sharedInstance.siteTimeZone else {
+                return nil
+        }
+
+        let wpApi = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
+    }()
 
     init() {
         super.init(initialState: PeriodStoreState())
@@ -215,8 +225,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedAllCountries(countries)
         case .refreshCountries(let date, let period):
             refreshCountries(date: date, period: period)
-        case .receivedAllPublished:
-            receivedAllPublished()
+        case .receivedAllPublished(let published):
+            receivedAllPublished(published)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
         }
@@ -284,9 +294,6 @@ private extension StatsPeriodStore {
     }
 
     func fetchPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
-
-        // remove
-        fetchAllPublished(date: date, period: period)
 
         setAllAsFetchingOverview()
 
@@ -511,8 +518,19 @@ private extension StatsPeriodStore {
     func fetchAllPublished(date: Date, period: StatsPeriodUnit) {
         state.fetchingAllPublished = true
 
-        // TODO: replace with api call when fetch all published is supported.
-        actionDispatcher.dispatch(PeriodAction.receivedAllPublished())
+        guard let statsRemote = statsRemote else {
+            state.fetchingAllPublished = false
+            return
+        }
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0, completion: {
+            (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching all Published: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching all published.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedAllPublished(published))
+        })
     }
 
     func refreshPublished(date: Date, period: StatsPeriodUnit) {
@@ -631,10 +649,9 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedAllPublished() {
+    func receivedAllPublished(_ published: StatsPublishedPostsTimeIntervalData?) {
         transaction { state in
-            // TODO: replace with real allPublished when API supports it.
-            state.allPublished = state.topPublished
+            state.allPublished = published?.publishedPosts
             state.fetchingAllPublished = false
         }
     }
@@ -787,7 +804,7 @@ extension StatsPeriodStore {
         return state.allCountries
     }
 
-    func getAllPublished() -> [StatsItem]? {
+    func getAllPublished() -> [StatsTopPost]? {
         return state.allPublished
     }
 

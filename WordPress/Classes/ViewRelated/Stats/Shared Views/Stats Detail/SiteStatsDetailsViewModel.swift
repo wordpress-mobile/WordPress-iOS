@@ -431,10 +431,10 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func publishedRows() -> [StatsTotalRowData] {
-        return periodStore.getAllPublished()?.map { StatsTotalRowData.init(name: $0.label,
+        return periodStore.getAllPublished()?.map { StatsTotalRowData.init(name: $0.title,
                                                                            data: "",
                                                                            showDisclosure: true,
-                                                                           disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
+                                                                           disclosureURL: $0.postURL,
                                                                            statSection: .periodPublished) }
             ?? []
     }
