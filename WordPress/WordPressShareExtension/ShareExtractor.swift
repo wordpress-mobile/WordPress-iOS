@@ -231,23 +231,30 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     let acceptedType = kUTTypeURL as String
 
     func convert(payload: URL) -> ExtractedItem? {
-//        guard !payload.isFileURL else {
-//            let contents = try? String(contentsOf: payload)
-//            return ExtractedItem(selectedText: contents, description: nil, url: nil, title: nil, image: nil)
-//        }
+        guard !payload.isFileURL else {
+            return processLocalFile(url: payload)
+        }
+
         var returnedItem = ExtractedItem()
         returnedItem.url = payload
 
-        if payload.isFileURL {
-            let html = try? String(contentsOf: payload) ?? ""
-            returnedItem.selectedText = html?.escapeHtmlNamedEntities()
+        return returnedItem
         }
 
-        return returnedItem
+    private func processLocalFile(url: URL) -> ExtractedItem? {
+        switch url.pathExtension {
+        case "text", "txt":
+            return handlePlainTextFile(url: url)
+        default:
+            return nil
+        }
     }
 
-    private func extractBodyContents(html: String) {
-        let bodyParts = html.components(separatedBy: "<body")
+    private func handlePlainTextFile(url: URL) -> ExtractedItem? {
+        var returnedItem = ExtractedItem()
+        let html = (try? String(contentsOf: url)) ?? ""
+        returnedItem.selectedText = html.escapeHtmlNamedEntities()
+        return returnedItem
     }
 }
 
