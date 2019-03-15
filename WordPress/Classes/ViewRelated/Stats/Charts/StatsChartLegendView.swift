@@ -11,8 +11,8 @@ class StatsChartLegendView: UIView {
         static let capsuleCornerRadius  = CGFloat(2)
         static let capsuleHeight        = CGFloat(8)
         static let capsuleWidth         = CGFloat(16)
-        static let intrinsicHeight      = CGFloat(14)
-        static let intrinsicWidth       = CGFloat(120)
+        static let intrinsicHeight      = CGFloat(16)
+        static let intrinsicWidth       = CGFloat(72)
         static let spacing              = CGFloat(8)
     }
 
@@ -86,6 +86,7 @@ class StatsChartLegendView: UIView {
             capsule.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.leadingAnchor.constraint(equalTo: capsule.trailingAnchor, constant: Constants.spacing),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         ])
     }
 }

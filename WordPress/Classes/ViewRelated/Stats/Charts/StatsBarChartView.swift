@@ -13,8 +13,9 @@ class StatsBarChartView: BarChartView {
         static let animationDuration    = TimeInterval(1)
         static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
         static let highlightAlpha       = CGFloat(1)
+        static let legendOffset         = CGFloat(16)
         static let markerAlpha          = CGFloat(0.2)
-        static let offset               = CGFloat(20)
+        static let trailingOffset       = CGFloat(20)
     }
 
     /// This adapts the data set for presentation by the Charts framework.
@@ -177,7 +178,7 @@ class StatsBarChartView: BarChartView {
     private func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
 
-        extraRightOffset = Constants.offset
+        extraRightOffset = Constants.trailingOffset
 
         animate(yAxisDuration: Constants.animationDuration)
     }
@@ -191,6 +192,11 @@ class StatsBarChartView: BarChartView {
 
         let chartLegend = StatsChartLegendView(color: legendColor, title: legendTitle)
         addSubview(chartLegend)
+
+        NSLayoutConstraint.activate([
+            chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
+        extraTopOffset += chartLegend.intrinsicContentSize.height
 
         self.legendView = chartLegend
     }
