@@ -31,8 +31,7 @@ public enum StatsRecordType: Int16 {
     case publicizeConnection
     case streakInsight
     case tagsAndCategories
-    case topCommentAuthors
-    case topCommentedPosts
+    case commentInsight
     case annualAndMostPopularTimes
     case today
 
@@ -59,8 +58,7 @@ public enum StatsRecordType: Int16 {
               .streakInsight,
               .tagsAndCategories,
               .today,
-              .topCommentAuthors,
-              .topCommentedPosts,
+              .commentInsight,
               .annualAndMostPopularTimes:
 
             return false
@@ -214,11 +212,40 @@ extension StatsRecord {
             parentRecord.type = recordType.rawValue
         }
 
-        parentRecord.values?.forEach {
+        let newValues = remoteInsight.statsRecordValues(in: managedObjectContext)
+
+        let valuesForDeletion: [NSManagedObject]
+
+        if recordType == .followers {
+
+            let followerStatsType: Int16
+
+            if InsightType.self == StatsDotComFollowersInsight.self {
+                followerStatsType = FollowersStatsType.dotCom.rawValue
+            }
+            else {
+                followerStatsType = FollowersStatsType.email.rawValue
+            }
+
+            var records: [NSManagedObject?] = (parentRecord.values?.array ?? [])
+                .compactMap { return $0 as? FollowersStatsRecordValue }
+                .filter { return $0.type == followerStatsType }
+
+            let countRecord = parentRecord.values?.first { ($0 as? FollowersCountStatsRecordValue)?.type == followerStatsType } as? NSManagedObject
+            records.append(countRecord)
+
+            valuesForDeletion = records.compactMap { $0 }
+        }
+        else {
+            valuesForDeletion = (parentRecord.values?.array as? [NSManagedObject]) ?? []
+        }
+
+        valuesForDeletion.forEach {
             managedObjectContext.deleteObject($0 as! StatsRecordValue)
         }
 
-        parentRecord.addToValues(NSOrderedSet(array: remoteInsight.statsRecordValues(in: managedObjectContext)))
+
+        parentRecord.addToValues(NSOrderedSet(array: newValues))
 
         return parentRecord
     }
