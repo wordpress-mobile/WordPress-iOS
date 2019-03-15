@@ -34,7 +34,7 @@ struct ExtractedShare {
         }
 
         guard selectedText.isEmpty else {
-            return "<blockquote><p>\(selectedText)\(readOnText)</p></blockquote>"
+            return "<blockquote><p>\(selectedText.escapeHtmlNamedEntities())\(readOnText)</p></blockquote>"
         }
 
         if !description.isEmpty {
