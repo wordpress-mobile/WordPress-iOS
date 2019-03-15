@@ -152,23 +152,23 @@ private extension ShareExtractor {
             return
         }
         textExtractor.extract(context: extensionContext) { extractedItems in
-                guard extractedItems.count > 0 else {
+            guard extractedItems.count > 0 else {
                 completion(nil)
-                    return
-                }
-                let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
-                let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
-                let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
-                let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
-                let urls = extractedItems.compactMap({ $0.url })
-
-                completion(ExtractedItem(selectedText: combinedSelectedText,
-                                         importedText: combinedImportedText,
-                                         description: combinedDescription,
-                                         url: urls.first,
-                                         title: combinedTitle,
-                                         image: nil))
+                return
             }
+            let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
+            let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
+            let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
+            let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
+            let urls = extractedItems.compactMap({ $0.url })
+
+            completion(ExtractedItem(selectedText: combinedSelectedText,
+                                     importedText: combinedImportedText,
+                                     description: combinedDescription,
+                                     url: urls.first,
+                                     title: combinedTitle,
+                                     image: nil))
+        }
     }
 
     func extractImages(completion: @escaping ([UIImage]?) -> Void) {
