@@ -30,7 +30,7 @@ struct ExtractedShare {
         //   * 4: No selected text, but we have a page title...use that.
         //   * Finally, default to a simple link if nothing else is found
         guard importedText.isEmpty else {
-            return "<p>\(importedText.escapeHtmlNamedEntities())</p>"
+            return importedText.escapeHtmlNamedEntities()
         }
 
         guard selectedText.isEmpty else {
@@ -205,7 +205,6 @@ private extension TypeBasedExtensionContentExtractor {
 
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
         let itemProviders = context.itemProviders(ofType: acceptedType)
-        print(acceptedType)
         var results = [ExtractedItem]()
         guard itemProviders.count > 0 else {
             DispatchQueue.main.async {
