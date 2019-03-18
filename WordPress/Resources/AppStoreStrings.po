@@ -1,4 +1,4 @@
-﻿# Translation of Release Notes & Apple Store Description in English (US)
+# Translation of Release Notes & Apple Store Description in English (US)
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
@@ -71,7 +71,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-1"
 msgid ""
 "Enjoy your\n"
@@ -79,7 +79,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-2"
 msgid ""
 "Get notified\n"
@@ -87,7 +87,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-3"
 msgid ""
 "Manage your site\n"
@@ -95,7 +95,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-4"
 msgid ""
 "Share your ideas\n"
@@ -103,14 +103,14 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-5"
 msgid ""
 "All the stats\n"
 "in your hand\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
+#. translators: This is a promo message that will be attached on top the first enhanced screenshot in the App Store.
 #. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
 msgctxt "enhanced_screenshot_1"
 msgid ""
@@ -118,7 +118,7 @@ msgid ""
 "posts and pages\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
+#. translators: This is a promo message that will be attached on top of the second enhanced screenshot in the App Store.
 #. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
 msgctxt "enhanced_screenshot_2"
 msgid ""
@@ -126,7 +126,7 @@ msgid ""
 "visitors love\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
+#. translators: This is a promo message that will be attached on top of the third enhanced screenshot in the App Store.
 #. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
 msgctxt "enhanced_screenshot_3"
 msgid ""
@@ -134,7 +134,7 @@ msgid ""
 "happening in real time\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
+#. translators: This is a promo message that will be attached on top of the fourth enhanced screenshot in the App Store.
 #. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
 msgctxt "enhanced_screenshot_4"
 msgid ""
@@ -142,7 +142,7 @@ msgid ""
 "from anywhere\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
+#. translators: This is a promo message that will be attached on top of the fifth enhanced screenshot in the App Store.
 #. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
 msgctxt "enhanced_screenshot_5"
 msgid ""
@@ -150,7 +150,7 @@ msgid ""
 "on the go\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
+#. translators: This is a promo message that will be attached on top of the sixth enhanced screenshot in the App Store.
 #. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
 msgctxt "enhanced_screenshot_6"
 msgid "<strong>Write</strong> without compromises"
