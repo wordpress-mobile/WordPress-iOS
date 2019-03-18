@@ -160,9 +160,9 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         case .post(let notice):
             enqueueNotice(notice)
         case .clear(let notice):
-            clearNotice(notice)
+            clear(notice: notice)
         case .clearWithTag(let tag):
-            clearNoticesWithTag(tag)
+            clear(tag: tag)
         case .dismiss:
             dequeueNotice()
         case .empty:
@@ -191,7 +191,7 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         state.notice = pending.pop()
     }
 
-    private func clearNotice(_ notice: Notice) {
+    private func clear(notice: Notice) {
         pending.removeAll { $0 == notice }
 
         if state.notice == notice {
@@ -199,7 +199,7 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         }
     }
 
-    private func clearNoticesWithTag(_ tag: Notice.Tag) {
+    private func clear(tag: Notice.Tag) {
         pending.removeAll { $0.tag == tag }
 
         if state.notice?.tag == tag {
