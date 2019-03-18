@@ -132,6 +132,7 @@ platform :ios do
     }
 
     metadata_locales = [
+      ["ar", "ar"],
       ["en-gb", "en-US"],
       ["en-gb", "en-GB"],
       ["en-ca", "en-CA"],
