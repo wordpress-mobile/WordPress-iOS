@@ -5,7 +5,7 @@ import WordPressFlux
 /// the app, much like Android toasts or snackbars.
 /// Once you've created a Notice, you can dispatch a `NoticeAction` to display it.
 ///
-struct Notice: Equatable {
+struct Notice {
     typealias ActionHandlerFunction = ((_ accepted: Bool) -> Void)
     typealias Tag = String
 
@@ -66,6 +66,9 @@ struct Notice: Equatable {
         self.style = style
     }
 
+}
+
+extension Notice: Equatable {
     static func ==(lhs: Notice, rhs: Notice) -> Bool {
         return lhs.identifier == rhs.identifier
     }
