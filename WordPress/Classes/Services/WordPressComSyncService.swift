@@ -9,16 +9,15 @@ class WordPressComSyncService {
     /// Syncs account and blog information for the authenticated wpcom user.
     ///
     /// - Parameters:
-    ///     - username: The username.
     ///     - authToken: The authentication token.
     ///     - isJetpackLogin: Indicates if this is a Jetpack Site.
     ///     - onSuccess: Closure to be executed upon success.
     ///     - onFailure: Closure to be executed upon failure.
     ///
-    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> (), onFailure: @escaping (Error) -> ()) {
+    func syncWPCom(authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (WPAccount) -> Void, onFailure: @escaping (Error) -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
-        let newAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: authToken)
+        let newAccount = accountService.createOrUpdateAccount(withAuthToken: authToken)
 
         let onFailureInternal = { (error: Error) in
             /// At this point the user is authed and there is a valid account in core data. Make a note of the error and just dismiss

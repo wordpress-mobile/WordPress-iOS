@@ -213,8 +213,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping () -> Void) {
         switch credentials {
-        case .wpcom(let username, let authToken, let isJetpackLogin, _):
-            syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
+        case .wpcom(let authToken, let isJetpackLogin, _):
+            syncWPCom(authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
         case .wporg(let username, let password, let xmlrpc, let options):
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
         }
@@ -246,10 +246,10 @@ private extension WordPressAuthenticationManager {
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
-    private func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {
+    private func syncWPCom(authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {
         let service = WordPressComSyncService()
 
-        service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
+        service.syncWPCom(authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
 
             /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
             /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
