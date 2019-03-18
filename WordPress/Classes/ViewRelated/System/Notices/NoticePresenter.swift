@@ -33,7 +33,7 @@ import WordPressFlux
 /// - SeeAlso: `NoticeAction`
 class NoticePresenter: NSObject {
     /// Used for tracking the currently displayed Notice and its corresponding view.
-    private struct NoticeArtifact {
+    private struct NoticePresentation {
         let notice: Notice
         let containerView: NoticeContainerView?
     }
@@ -50,7 +50,7 @@ class NoticePresenter: NSObject {
     private let generator = UINotificationFeedbackGenerator()
     private var storeReceipt: Receipt?
 
-    private var currentNoticeArtifact: NoticeArtifact?
+    private var currentNoticePresentation: NoticePresentation?
 
     private init(store: NoticeStore) {
         self.store = store
@@ -85,7 +85,7 @@ class NoticePresenter: NSObject {
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentNoticeArtifact?.containerView,
+                let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
                 let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
@@ -101,7 +101,7 @@ class NoticePresenter: NSObject {
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentNoticeArtifact?.containerView,
+                let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
                     return
@@ -119,20 +119,20 @@ class NoticePresenter: NSObject {
     /// In here, we determine whether to show a Notice or dismiss the currently shown Notice based
     /// on the value of `NoticeStore.currentNotice`.
     private func onStoreChange() {
-        guard currentNoticeArtifact?.notice != store.currentNotice else {
+        guard currentNoticePresentation?.notice != store.currentNotice else {
             return
         }
 
         dismissForegroundNotice()
 
-        currentNoticeArtifact = nil
+        currentNoticePresentation = nil
 
         guard let notice = store.currentNotice else {
             return
         }
 
         if let artifact = present(notice) {
-            currentNoticeArtifact = artifact
+            currentNoticePresentation = artifact
         } else {
             // We were not able to show the `notice` so we will dispatch a .clear action. This
             // should prevent us from getting in a stuck state where `NoticeStore` thinks its
@@ -145,8 +145,8 @@ class NoticePresenter: NSObject {
 
     /// Present the `notice` in the UI (foreground) or as a push notification (background).
     ///
-    /// - Returns: A `NoticeArtifact` if the `notice` was presented, otherwise `nil`.
-    private func present(_ notice: Notice) -> NoticeArtifact? {
+    /// - Returns: A `NoticePresentation` if the `notice` was presented, otherwise `nil`.
+    private func present(_ notice: Notice) -> NoticePresentation? {
         if UIApplication.shared.applicationState == .background {
             return presentNoticeInBackground(notice)
         } else {
@@ -154,7 +154,7 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func presentNoticeInBackground(_ notice: Notice) -> NoticeArtifact? {
+    private func presentNoticeInBackground(_ notice: Notice) -> NoticePresentation? {
         guard let notificationInfo = notice.notificationInfo else {
             return nil
         }
@@ -170,10 +170,10 @@ class NoticePresenter: NSObject {
             }
         })
 
-        return NoticeArtifact(notice: notice, containerView: nil)
+        return NoticePresentation(notice: notice, containerView: nil)
     }
 
-    private func presentNoticeInForeground(_ notice: Notice) -> NoticeArtifact? {
+    private func presentNoticeInForeground(_ notice: Notice) -> NoticePresentation? {
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
@@ -210,7 +210,7 @@ class NoticePresenter: NSObject {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
 
-        return NoticeArtifact(notice: notice, containerView: noticeContainerView)
+        return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
     private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
@@ -226,7 +226,7 @@ class NoticePresenter: NSObject {
     // MARK: - Dismissal
 
     private func dismissForegroundNotice() {
-        guard let container = currentNoticeArtifact?.containerView,
+        guard let container = currentNoticePresentation?.containerView,
             container.superview != nil else {
                 return
         }
@@ -236,7 +236,7 @@ class NoticePresenter: NSObject {
 
             // It is possible that when the dismiss animation finished, another Notice was already
             // being shown. Hiding the window would cause that new Notice to be invisible.
-            if self?.currentNoticeArtifact == nil {
+            if self?.currentNoticePresentation == nil {
                 self?.window.isHidden = true
             }
         })
