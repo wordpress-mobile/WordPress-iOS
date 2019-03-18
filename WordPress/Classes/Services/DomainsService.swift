@@ -28,16 +28,16 @@ struct DomainsService {
         remote.getDomainSuggestions(base: base,
                                     domainSuggestionType: domainSuggestionType,
                                     success: { suggestions in
-            let filteredSuggestions = self.filterSuggestions(suggestions, forBase: base)
-            success(filteredSuggestions)
+            let sorted = self.sortedSuggestions(suggestions, forBase: base)
+            success(sorted)
         }) { error in
             failure(error)
         }
     }
 
     // If any of the suggestions matches the base exactly,
-    // then filter that suggestion up to the top of the list.
-    fileprivate func filterSuggestions(_ suggestions: [DomainSuggestion], forBase base: String) -> [DomainSuggestion] {
+    // then sort that suggestion up to the top of the list.
+    fileprivate func sortedSuggestions(_ suggestions: [DomainSuggestion], forBase base: String) -> [DomainSuggestion] {
         let normalizedBase = base.lowercased().replacingMatches(of: " ", with: "")
 
         var filteredSuggestions = suggestions
