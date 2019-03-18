@@ -131,8 +131,8 @@ class NoticePresenter: NSObject {
             return
         }
 
-        if let artifact = present(notice) {
-            currentNoticePresentation = artifact
+        if let presentation = present(notice) {
+            currentNoticePresentation = presentation
         } else {
             // We were not able to show the `notice` so we will dispatch a .clear action. This
             // should prevent us from getting in a stuck state where `NoticeStore` thinks its
