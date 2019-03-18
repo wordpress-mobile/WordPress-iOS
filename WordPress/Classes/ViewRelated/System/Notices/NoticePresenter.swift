@@ -3,7 +3,41 @@ import UIKit
 import UserNotifications
 import WordPressFlux
 
+/// Presents the views of Notices emitted by `NoticeStore`.
+///
+/// Notices are displayed in 2 ways based on the `UIApplication.state`.
+///
+/// ## Foreground
+///
+/// If the app is in the foreground, the Notice is shown as a snackbar-like view inside a separate
+/// `UIWindow`. This `UIWindow` is always on top of the main app's `UIWindow`.
+///
+/// Only one Notice view is displayed at a single time. Queued Notices will be displayed after
+/// the current Notice view is dismissed.
+///
+/// If the `Notice.style.isDismissable` is `true`, the Notice view will be dismissed after a few
+/// seconds. This is done by dispatching a `NoticeAction.clear` Action.
+///
+/// ## Background
+///
+/// If the app is in the background and the Notice has a `notificationInfo`, a push notification
+/// will be sent to the device. If there is no `notificationInfo`, the Notice will be ignored.
+///
+/// # Usage
+///
+/// The `NoticePresenter` only needs to be initialized once and kept in memory. After that, it
+/// is self-sufficient. You shouldn't need to interact with it directly. In order to display
+/// Notices, use `ActionDispatcher` with `NoticeAction` Actions.
+///
+/// - SeeAlso: `NoticeStore`
+/// - SeeAlso: `NoticeAction`
 class NoticePresenter: NSObject {
+    /// Used for tracking the currently displayed Notice and its corresponding view.
+    private struct NoticePresentation {
+        let notice: Notice
+        let containerView: NoticeContainerView?
+    }
+
     private let store: NoticeStore
     private let window: UntouchableWindow
     private var view: UIView {
@@ -12,11 +46,11 @@ class NoticePresenter: NSObject {
         }
         return view
     }
-    private var currentContainer: NoticeContainerView?
 
-    let generator = UINotificationFeedbackGenerator()
-
+    private let generator = UINotificationFeedbackGenerator()
     private var storeReceipt: Receipt?
+
+    private var currentNoticePresentation: NoticePresentation?
 
     private init(store: NoticeStore) {
         self.store = store
@@ -36,8 +70,9 @@ class NoticePresenter: NSObject {
 
         super.init()
 
+        // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
-            self?.presentNextNoticeIfAvailable()
+            self?.onStoreChange()
         }
 
         listenToKeyboardEvents()
@@ -50,7 +85,7 @@ class NoticePresenter: NSObject {
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentContainer,
+                let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
                 let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
@@ -66,7 +101,7 @@ class NoticePresenter: NSObject {
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentContainer,
+                let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
                     return
@@ -79,23 +114,49 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func presentNextNoticeIfAvailable() {
-        if let notice = store.nextNotice {
-            present(notice)
-        }
-    }
-
-    private func present(_ notice: Notice) {
-        if UIApplication.shared.applicationState == .background {
-            presentNoticeInBackground(notice)
-        } else {
-            presentNoticeInForeground(notice)
-        }
-    }
-
-    private func presentNoticeInBackground(_ notice: Notice) {
-        guard let notificationInfo = notice.notificationInfo else {
+    /// Handle all changes in the `NoticeStore`.
+    ///
+    /// In here, we determine whether to show a Notice or dismiss the currently shown Notice based
+    /// on the value of `NoticeStore.currentNotice`.
+    private func onStoreChange() {
+        guard currentNoticePresentation?.notice != store.currentNotice else {
             return
+        }
+
+        dismissForegroundNotice()
+
+        currentNoticePresentation = nil
+
+        guard let notice = store.currentNotice else {
+            return
+        }
+
+        if let presentation = present(notice) {
+            currentNoticePresentation = presentation
+        } else {
+            // We were not able to show the `notice` so we will dispatch a .clear action. This
+            // should prevent us from getting in a stuck state where `NoticeStore` thinks its
+            // `currentNotice` is still being presented.
+            ActionDispatcher.dispatch(NoticeAction.clear(notice))
+        }
+    }
+
+    // MARK: - Presentation
+
+    /// Present the `notice` in the UI (foreground) or as a push notification (background).
+    ///
+    /// - Returns: A `NoticePresentation` if the `notice` was presented, otherwise `nil`.
+    private func present(_ notice: Notice) -> NoticePresentation? {
+        if UIApplication.shared.applicationState == .background {
+            return presentNoticeInBackground(notice)
+        } else {
+            return presentNoticeInForeground(notice)
+        }
+    }
+
+    private func presentNoticeInBackground(_ notice: Notice) -> NoticePresentation? {
+        guard let notificationInfo = notice.notificationInfo else {
+            return nil
         }
 
         let content = UNMutableNotificationContent(notice: notice)
@@ -105,12 +166,14 @@ class NoticePresenter: NSObject {
 
         UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
             DispatchQueue.main.async {
-                self.dismiss()
+                ActionDispatcher.dispatch(NoticeAction.clear(notice))
             }
         })
+
+        return NoticePresentation(notice: notice, containerView: nil)
     }
 
-    private func presentNoticeInForeground(_ notice: Notice) {
+    private func presentNoticeInForeground(_ notice: Notice) -> NoticePresentation? {
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
@@ -118,8 +181,6 @@ class NoticePresenter: NSObject {
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
         addNoticeContainerToPresentingViewController(noticeContainerView)
-        currentContainer = noticeContainerView
-
         addBottomConstraintToNoticeContainer(noticeContainerView)
 
         NSLayoutConstraint.activate([
@@ -127,14 +188,9 @@ class NoticePresenter: NSObject {
             noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
 
-        let fromState = offscreenState(for: noticeContainerView)
-
-        let toState = onscreenState(for: noticeContainerView)
-
         let dismiss = {
-            self.dismiss(container: noticeContainerView)
+            ActionDispatcher.dispatch(NoticeAction.clear(notice))
         }
-
         noticeView.dismissHandler = dismiss
 
         if let feedbackType = notice.feedbackType {
@@ -143,6 +199,8 @@ class NoticePresenter: NSObject {
 
         window.isHidden = false
 
+        let fromState = offscreenState(for: noticeContainerView)
+        let toState = onscreenState(for: noticeContainerView)
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
             guard notice.style.isDismissable else {
@@ -151,67 +209,8 @@ class NoticePresenter: NSObject {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
-    }
 
-    private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
-        return { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            noticeContainer.noticeView.alpha = WPAlphaZero
-            noticeContainer.bottomConstraint?.constant = self.window.untouchableViewController.offsetOffscreen
-
-            self.view.layoutIfNeeded()
-        }
-    }
-
-    private func onscreenState(for noticeContainer: NoticeContainerView)  -> (() -> ()) {
-        return { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            noticeContainer.noticeView.alpha = WPAlphaFull
-            noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
-
-            self.window.isHidden = false
-
-            self.view.layoutIfNeeded()
-        }
-    }
-
-    public func dismissCurrentNotice() {
-        guard let container = currentContainer else {
-            return
-        }
-
-        dismiss(container: container)
-    }
-
-    /// Dismiss the currently shown `Notice` if its `tag` is equal to the given `tag`.
-    public func dismissCurrentNotice(tagged tag: String) {
-        // It's named _nextNotice_ but it really is the _current_ Notice in NoticeStore.state
-        if store.nextNotice?.tag == tag {
-            dismissCurrentNotice()
-        }
-    }
-
-    private func dismiss(container: NoticeContainerView) {
-        guard container.superview != nil else {
-            return
-        }
-
-        currentContainer = nil
-        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
-            container.removeFromSuperview()
-            self?.window.isHidden = true
-            self?.dismiss()
-        })
-    }
-
-    private func dismiss() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
     private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
@@ -224,9 +223,58 @@ class NoticePresenter: NSObject {
         constraint.isActive = true
     }
 
+    // MARK: - Dismissal
+
+    private func dismissForegroundNotice() {
+        guard let container = currentNoticePresentation?.containerView,
+            container.superview != nil else {
+                return
+        }
+
+        animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: { [weak self] in
+            container.removeFromSuperview()
+
+            // It is possible that when the dismiss animation finished, another Notice was already
+            // being shown. Hiding the window would cause that new Notice to be invisible.
+            if self?.currentNoticePresentation == nil {
+                self?.window.isHidden = true
+            }
+        })
+    }
+
+    // MARK: - Animations
+
     typealias AnimationBlock = () -> Void
 
-    private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
+    private func offscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
+        return { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            noticeContainer.noticeView.alpha = WPAlphaZero
+            noticeContainer.bottomConstraint?.constant = self.window.untouchableViewController.offsetOffscreen
+
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    private func onscreenState(for noticeContainer: NoticeContainerView) -> AnimationBlock {
+        return { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            noticeContainer.noticeView.alpha = WPAlphaFull
+            noticeContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    private func animatePresentation(fromState: AnimationBlock,
+                                     toState: @escaping AnimationBlock,
+                                     completion: @escaping AnimationBlock) {
         fromState()
 
         // this delay avoids affecting other transitions like navigation pushes
