@@ -322,8 +322,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     if (userDetails.primaryBlogID) {
         [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
     }
-    
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 }
 
 - (void)configurePrimaryBlogWithID:(NSNumber *)primaryBlogID account:(WPAccount *)account
