@@ -165,6 +165,10 @@ public class StatsRecord: NSManagedObject {
             }
         }
     }
+
+    var recordValues: [StatsRecordValue] {
+        return values?.array as? [StatsRecordValue] ?? []
+    }
 }
 
 public enum StatsCoreDataValidationError: Error {
