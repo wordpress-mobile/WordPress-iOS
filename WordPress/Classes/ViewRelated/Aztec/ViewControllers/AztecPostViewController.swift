@@ -2555,6 +2555,8 @@ extension AztecPostViewController {
                 }
                 if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                     videoAttachment.videoPressID = videoPressGUID
+                } else {
+                    videoAttachment.isShortcode = true
                 }
                 richTextView.refresh(attachment, overlayUpdateOnly: !posterChange)
             }
