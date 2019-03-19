@@ -369,6 +369,7 @@
     <entity name="LastPostStatsRecordValue" representedClassName="WordPress.LastPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="likesCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="postID" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="publishedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
@@ -908,8 +909,9 @@
         <element name="DiffContentValue" positionX="63" positionY="189" width="128" height="60"/>
         <element name="DiffTitleValue" positionX="54" positionY="180" width="128" height="60"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="FollowersCountStatsRecordValue" positionX="45" positionY="153" width="128" height="75"/>
         <element name="FollowersStatsRecordValue" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="LastPostStatsRecordValue" positionX="45" positionY="504" width="128" height="30"/>
+        <element name="LastPostStatsRecordValue" positionX="45" positionY="504" width="128" height="150"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="420"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
         <element name="MenuItem" positionX="45" positionY="180" width="128" height="255"/>
@@ -960,6 +962,5 @@
         <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
-        <element name="FollowersCountStatsRecordValue" positionX="45" positionY="153" width="128" height="75"/>
     </elements>
 </model>
