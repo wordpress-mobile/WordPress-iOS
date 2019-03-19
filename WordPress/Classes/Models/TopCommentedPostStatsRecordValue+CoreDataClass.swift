@@ -40,26 +40,13 @@ extension StatsCommentsInsight: StatsRecordValueConvertible {
     }
 
     init?(statsRecordValues: [StatsRecordValue]) {
-        let authors: [StatsTopCommentsAuthor] = statsRecordValues
+        let authors = statsRecordValues
             .compactMap { $0 as? TopCommentsAuthorStatsRecordValue }
-            .compactMap {
-                guard let name = $0.name else {
-                    return nil
-                }
-                return StatsTopCommentsAuthor(name: name, commentCount: Int($0.commentCount), iconURL: $0.avatarURL)
-        }
+            .compactMap { StatsTopCommentsAuthor(recordValue: $0) }
 
-        let posts: [StatsTopCommentsPost] = statsRecordValues
+        let posts = statsRecordValues
             .compactMap { $0 as? TopCommentedPostStatsRecordValue }
-            .compactMap {
-                guard
-                    let name = $0.title,
-                    let postID = $0.postID
-                    else {
-                        return nil
-                }
-                return StatsTopCommentsPost(name: name, postID: postID, commentCount: Int($0.commentCount), postURL: $0.postURL)
-        }
+            .compactMap { StatsTopCommentsPost(recordValue: $0) }
 
         self = StatsCommentsInsight(topPosts: posts, topAuthors: authors)
     }
@@ -68,4 +55,31 @@ extension StatsCommentsInsight: StatsRecordValueConvertible {
         return .commentInsight
     }
 
+}
+
+fileprivate extension StatsTopCommentsPost {
+    init?(recordValue: TopCommentedPostStatsRecordValue) {
+        guard
+            let name = recordValue.title,
+            let postID = recordValue.postID
+            else {
+                return nil
+        }
+
+        self = StatsTopCommentsPost(name: name,
+                                    postID: postID,
+                                    commentCount: Int(recordValue.commentCount),
+                                    postURL: recordValue.postURL)
+    }
+}
+
+fileprivate extension StatsTopCommentsAuthor {
+    init?(recordValue: TopCommentsAuthorStatsRecordValue) {
+        guard let name = recordValue.name else {
+            return nil
+        }
+        self = StatsTopCommentsAuthor(name: name,
+                                      commentCount: Int(recordValue.commentCount),
+                                      iconURL: recordValue.avatarURL)
+    }
 }

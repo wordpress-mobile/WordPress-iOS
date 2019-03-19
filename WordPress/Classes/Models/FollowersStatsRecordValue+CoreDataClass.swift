@@ -47,26 +47,11 @@ extension StatsEmailFollowersInsight: StatsRecordValueConvertible {
     }
 
     init?(statsRecordValues: [StatsRecordValue]) {
-        let countInsights = statsRecordValues
-            .compactMap { $0 as? FollowersCountStatsRecordValue }
-            .filter { $0.type == FollowersStatsType.email.rawValue }
-
-        guard let emailCountInsight = countInsights.first else {
+        guard let emailCountInsight = countInsight(followerType: .email, from: statsRecordValues) else {
             return nil
         }
 
-        let followers: [StatsFollower] = statsRecordValues
-            .compactMap { $0 as? FollowersStatsRecordValue }
-            .filter { $0.type == FollowersStatsType.email.rawValue }
-            .compactMap {
-                guard
-                    let name = $0.name,
-                    let subscribedDate = $0.subscribedDate
-                    else {
-                    return nil
-                }
-                return StatsFollower(name: name, subscribedDate: subscribedDate as Date, avatarURL: $0.avatarURL)
-        }
+        let followers: [StatsFollower] = statsFollowers(followerType: .email, from: statsRecordValues).compactMap { StatsFollower(recordValue: $0) }
 
         self = StatsEmailFollowersInsight(emailFollowersCount: Int(emailCountInsight.count), topEmailFollowers: followers)
     }
@@ -91,31 +76,42 @@ extension StatsDotComFollowersInsight: StatsRecordValueConvertible {
     }
 
     init?(statsRecordValues: [StatsRecordValue]) {
-        let countInsights = statsRecordValues
-            .compactMap { $0 as? FollowersCountStatsRecordValue }
-            .filter { $0.type == FollowersStatsType.dotCom.rawValue }
-
-        guard let dotComCountInsight = countInsights.first else {
+        guard let dotComCountInsight = countInsight(followerType: .dotCom, from: statsRecordValues) else {
             return nil
         }
 
-        let followers: [StatsFollower] = statsRecordValues
-            .compactMap { $0 as? FollowersStatsRecordValue }
-            .filter { $0.type == FollowersStatsType.dotCom.rawValue }
-            .compactMap {
-                guard
-                    let name = $0.name,
-                    let subscribedDate = $0.subscribedDate
-                    else {
-                        return nil
-                }
-                return StatsFollower(name: name, subscribedDate: subscribedDate as Date, avatarURL: $0.avatarURL)
-        }
+        let followers = statsFollowers(followerType: .dotCom, from: statsRecordValues).compactMap { StatsFollower(recordValue: $0) }
 
         self = StatsDotComFollowersInsight(dotComFollowersCount: Int(dotComCountInsight.count), topDotComFollowers: followers)
     }
 
     static var recordType: StatsRecordType {
         return .followers
+    }
+}
+
+fileprivate func countInsight(followerType: FollowersStatsType, from recordValues: [StatsRecordValue]) -> FollowersCountStatsRecordValue? {
+    return recordValues
+        .compactMap { $0 as? FollowersCountStatsRecordValue }
+        .filter { $0.type == followerType.rawValue }
+        .first
+}
+
+fileprivate func statsFollowers(followerType: FollowersStatsType, from recordValues: [StatsRecordValue]) -> [FollowersStatsRecordValue] {
+    return recordValues
+        .compactMap { $0 as? FollowersStatsRecordValue }
+        .filter { $0.type == followerType.rawValue }
+}
+
+fileprivate extension StatsFollower {
+    init?(recordValue: FollowersStatsRecordValue) {
+        guard
+            let name = recordValue.name,
+            let subscribedDate = recordValue.subscribedDate
+            else {
+                return nil
+        }
+
+        self = StatsFollower(name: name, subscribedDate: subscribedDate as Date, avatarURL: recordValue.avatarURL)
     }
 }
