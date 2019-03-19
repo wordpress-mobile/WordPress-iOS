@@ -168,7 +168,7 @@ private extension OverviewCell {
         ])
     }
 
-    private enum ChartBottomMargin {
+    enum ChartBottomMargin {
         static let filterTabBarShown = CGFloat(16)
         static let filterTabBarHidden = CGFloat(24)
     }
