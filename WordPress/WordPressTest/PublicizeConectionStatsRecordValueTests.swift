@@ -58,7 +58,7 @@ class PublicizeConectionStatsRecordValueTests: StatsTestCase {
 
         let insight = StatsPublicizeInsight(publicizeServices: [connection1, connection2])
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 

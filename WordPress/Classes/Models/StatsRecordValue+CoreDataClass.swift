@@ -8,6 +8,17 @@ public class StatsRecordValue: NSManagedObject {
         self.statsRecord = parent
         parent.addToValues(self)
     }
+
+    func recordValueSingleValueValidation() throws {
+        guard let parent = statsRecord else {
+            throw StatsCoreDataValidationError.noParentStatsRecord
+        }
+
+        let fr: NSFetchRequest<StatsRecordValue> = StatsRecordValue.fetchRequest()
+        fr.predicate = NSPredicate(format: "\(#keyPath(StatsRecordValue.statsRecord)) = %@", parent)
+
+        try singleEntryTypeValidation(with: fr)
+    }
 }
 
 protocol StatsRecordValueConvertible {

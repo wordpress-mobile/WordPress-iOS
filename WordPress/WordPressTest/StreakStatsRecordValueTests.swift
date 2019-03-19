@@ -80,7 +80,7 @@ class StreakStatsRecordValueTests: StatsTestCase {
                                                       longestStreakLength: 15,
                                                       postingEvents: [postingEventWeekAgo, postingEventToday])
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: streakInsight, for: blog)
 

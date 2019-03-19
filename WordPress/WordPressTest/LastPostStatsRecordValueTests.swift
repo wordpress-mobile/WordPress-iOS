@@ -55,7 +55,6 @@ class LastPostStatsRecordValueTests: StatsTestCase {
         XCTAssertNoThrow(try mainContext.save())
     }
 
-    /*
     func testInsertingMultipleFails() {
         mainContext.reset()
 
@@ -76,7 +75,7 @@ class LastPostStatsRecordValueTests: StatsTestCase {
             XCTAssertEqual(underlyingErrors.first!.code, expectedErrorAsNSErrror.code)
             XCTAssert(true)
         }
-    }*/
+    }
 
     // MARK: - LastPost specific posts
 
@@ -104,7 +103,7 @@ class LastPostStatsRecordValueTests: StatsTestCase {
                                            viewsCount: 3,
                                            postID: 4)
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 
