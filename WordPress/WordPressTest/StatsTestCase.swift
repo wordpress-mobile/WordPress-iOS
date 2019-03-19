@@ -27,13 +27,14 @@ class StatsTestCase: XCTestCase {
         newRecord.type = type.rawValue
         newRecord.date = date as NSDate
         newRecord.period = period.rawValue
+        newRecord.blog = defaultBlog
 
         return newRecord
     }
 
-    func defaultBlog() -> Blog {
+    lazy var defaultBlog: Blog = {
         return ModelTestHelper.insertDotComBlog(context: mainContext)
-    }
+    }()
 
 
 }

@@ -149,7 +149,7 @@ class TagsCategoriesStatsRecordValueTests: StatsTestCase {
 
         let insight = StatsTagsAndCategoriesInsight(topTagsAndCategories: [folderInsight, standaloneTag])
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 

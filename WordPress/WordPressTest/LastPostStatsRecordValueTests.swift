@@ -103,7 +103,7 @@ class LastPostStatsRecordValueTests: StatsTestCase {
                                            viewsCount: 3,
                                            postID: 4)
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 
@@ -130,6 +130,7 @@ class LastPostStatsRecordValueTests: StatsTestCase {
         let record = LastPostStatsRecordValue(parent: parent)
         record.publishedDate = Date() as NSDate
         record.title = ""
+        record.postID = 9001
         return record
     }
 

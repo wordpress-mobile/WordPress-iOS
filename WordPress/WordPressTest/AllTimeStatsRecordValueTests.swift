@@ -12,7 +12,7 @@ class AllTimeStatsRecordValueTests: StatsTestCase {
                                            visitorsCount: 9003,
                                            bestViewsPerDayCount: 9004)
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 

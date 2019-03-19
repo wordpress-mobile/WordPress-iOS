@@ -146,6 +146,10 @@ public class StatsRecord: NSManagedObject {
     public override func validateForInsert() throws {
         try super.validateForInsert()
 
+        guard let unwrappedBlog = blog else {
+            throw StatsCoreDataValidationError.noBlog
+        }
+
         guard let recordType = StatsRecordType(rawValue: type) else {
             throw StatsCoreDataValidationError.incorrectRecordType
         }
@@ -158,7 +162,8 @@ public class StatsRecord: NSManagedObject {
                 throw StatsCoreDataValidationError.invalidPeriod
             }
         } else {
-            try singleEntryTypeValidation()
+            let insightFetchRequest = Swift.type(of: self).insightFetchRequest(for: unwrappedBlog, type: recordType)
+            try singleEntryTypeValidation(with: insightFetchRequest)
 
             guard period == StatsRecordPeriodType.notApplicable.rawValue else {
                 throw StatsCoreDataValidationError.invalidPeriod
@@ -178,6 +183,8 @@ public enum StatsCoreDataValidationError: Error {
     case noDate
     case invalidPeriod
     case invalidEnumValue
+    case noBlog
+    case noParentStatsRecord
 
     /// Thrown when trying to insert a second instance of a type that only supports
     /// a single entry being present in the Core Data store.
@@ -185,20 +192,12 @@ public enum StatsCoreDataValidationError: Error {
 }
 
 extension NSManagedObject {
-    public func singleEntryTypeValidation() throws {
-        // TODO: this needs to be rewritten to be MUCH smarter than it currently is (or removed)
-        // it needs to at the very minimum to take a `Blog` as a parameter, so we can store
-        // insights for multiple blogs.
-        // i'm leaving this here for now because fixing this is a bigger task out of scope of what I'm currently
-        // working on, and I want to unblock myself.
-        // it'll be the very next thing I'll work on.
-        return
-
+    public func singleEntryTypeValidation<T>(with fetchRequest: NSFetchRequest<T>) throws {
         guard let moc = managedObjectContext else {
             throw StatsCoreDataValidationError.noManagedObjectContext
         }
 
-        let existingObjectsCount = try moc.count(for: type(of: self).fetchRequest())
+        let existingObjectsCount = try moc.count(for: fetchRequest)
 
         guard existingObjectsCount == 1 else {
             throw StatsCoreDataValidationError.singleEntryTypeViolation

@@ -37,7 +37,7 @@ class TodayStatsTests: StatsTestCase {
     func testCoreDataConversion() {
         let insight = StatsTodayInsight(viewsCount: 9001, visitorsCount: 9002, likesCount: 9003, commentsCount: 9004)
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 

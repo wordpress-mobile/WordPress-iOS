@@ -25,7 +25,7 @@ class AnnualAndMostPopularTimeStatsRecordValueTests: StatsTestCase {
                                                            annualInsightsTotalImagesCount: 9005,
                                                            annualInsightsAverageImagesCount: 5.5)
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 
