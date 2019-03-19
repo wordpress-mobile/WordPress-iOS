@@ -186,6 +186,14 @@ public enum StatsCoreDataValidationError: Error {
 
 extension NSManagedObject {
     public func singleEntryTypeValidation() throws {
+        // TODO: this needs to be rewritten to be MUCH smarter than it currently is (or removed)
+        // it needs to at the very minimum to take a `Blog` as a parameter, so we can store
+        // insights for multiple blogs.
+        // i'm leaving this here for now because fixing this is a bigger task out of scope of what I'm currently
+        // working on, and I want to unblock myself.
+        // it'll be the very next thing I'll work on.
+        return
+
         guard let moc = managedObjectContext else {
             throw StatsCoreDataValidationError.noManagedObjectContext
         }
