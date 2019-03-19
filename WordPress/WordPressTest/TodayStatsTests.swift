@@ -3,7 +3,7 @@
 
 class TodayStatsTests: StatsTestCase {
 
-/*
+
     func testInsertingMultipleFails() {
         mainContext.reset()
 
@@ -32,7 +32,7 @@ class TodayStatsTests: StatsTestCase {
             XCTAssertEqual(underlyingErrors.first!.code, expectedErrorAsNSErrror.code)
             XCTAssert(true)
         }
-    }*/
+    }
 
     func testCoreDataConversion() {
         let insight = StatsTodayInsight(viewsCount: 9001, visitorsCount: 9002, likesCount: 9003, commentsCount: 9004)

@@ -55,7 +55,6 @@ class LastPostStatsRecordValueTests: StatsTestCase {
         XCTAssertNoThrow(try mainContext.save())
     }
 
-    /*
     func testInsertingMultipleFails() {
         mainContext.reset()
 
@@ -76,7 +75,7 @@ class LastPostStatsRecordValueTests: StatsTestCase {
             XCTAssertEqual(underlyingErrors.first!.code, expectedErrorAsNSErrror.code)
             XCTAssert(true)
         }
-    }*/
+    }
 
     // MARK: - LastPost specific posts
 
@@ -131,7 +130,6 @@ class LastPostStatsRecordValueTests: StatsTestCase {
         let record = LastPostStatsRecordValue(parent: parent)
         record.publishedDate = Date() as NSDate
         record.title = ""
-        record.postID = 9001
         return record
     }
 

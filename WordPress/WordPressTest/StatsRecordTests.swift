@@ -31,7 +31,6 @@ class StatsRecordTests: StatsTestCase {
         XCTAssertNoThrow(try mainContext.save())
     }
 
-    /*
     func testSingleElementValidation() {
         createStatsRecord(in: mainContext, type: .allTimeStatsInsight, date: Date())
         createStatsRecord(in: mainContext, type: .allTimeStatsInsight, date: Date())
@@ -50,7 +49,7 @@ class StatsRecordTests: StatsTestCase {
             XCTAssertEqual(underlyingErrors.first!.code, expectedErrorAsNSErrror.code)
             XCTAssert(true)
         }
-    }*/
+    }
 
     func testFetchingForToday() {
         createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: Date())
