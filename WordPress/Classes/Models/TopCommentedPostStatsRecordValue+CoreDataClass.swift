@@ -39,10 +39,29 @@ extension StatsCommentsInsight: StatsRecordValueConvertible {
         return [posts, authors].flatMap { $0 }
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        let authors: [StatsTopCommentsAuthor] = statsRecordValues
+            .compactMap { $0 as? TopCommentsAuthorStatsRecordValue }
+            .compactMap {
+                guard let name = $0.name else {
+                    return nil
+                }
+                return StatsTopCommentsAuthor(name: name, commentCount: Int($0.commentCount), iconURL: $0.avatarURL)
+        }
+
+        let posts: [StatsTopCommentsPost] = statsRecordValues
+            .compactMap { $0 as? TopCommentedPostStatsRecordValue }
+            .compactMap {
+                guard
+                    let name = $0.title,
+                    let postID = $0.postID
+                    else {
+                        return nil
+                }
+                return StatsTopCommentsPost(name: name, postID: postID, commentCount: Int($0.commentCount), postURL: $0.postURL)
+        }
+
+        self = StatsCommentsInsight(topPosts: posts, topAuthors: authors)
     }
 
     static var recordType: StatsRecordType {

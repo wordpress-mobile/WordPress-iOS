@@ -46,10 +46,29 @@ extension StatsEmailFollowersInsight: StatsRecordValueConvertible {
         return records
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        let countInsights = statsRecordValues
+            .compactMap { $0 as? FollowersCountStatsRecordValue }
+            .filter { $0.type == FollowersStatsType.email.rawValue }
+
+        guard let emailCountInsight = countInsights.first else {
+            return nil
+        }
+
+        let followers: [StatsFollower] = statsRecordValues
+            .compactMap { $0 as? FollowersStatsRecordValue }
+            .filter { $0.type == FollowersStatsType.email.rawValue }
+            .compactMap {
+                guard
+                    let name = $0.name,
+                    let subscribedDate = $0.subscribedDate
+                    else {
+                    return nil
+                }
+                return StatsFollower(name: name, subscribedDate: subscribedDate as Date, avatarURL: $0.avatarURL)
+        }
+
+        self = StatsEmailFollowersInsight(emailFollowersCount: Int(emailCountInsight.count), topEmailFollowers: followers)
     }
 
     static var recordType: StatsRecordType {
@@ -71,14 +90,32 @@ extension StatsDotComFollowersInsight: StatsRecordValueConvertible {
         return records
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        let countInsights = statsRecordValues
+            .compactMap { $0 as? FollowersCountStatsRecordValue }
+            .filter { $0.type == FollowersStatsType.dotCom.rawValue }
+
+        guard let dotComCountInsight = countInsights.first else {
+            return nil
+        }
+
+        let followers: [StatsFollower] = statsRecordValues
+            .compactMap { $0 as? FollowersStatsRecordValue }
+            .filter { $0.type == FollowersStatsType.dotCom.rawValue }
+            .compactMap {
+                guard
+                    let name = $0.name,
+                    let subscribedDate = $0.subscribedDate
+                    else {
+                        return nil
+                }
+                return StatsFollower(name: name, subscribedDate: subscribedDate as Date, avatarURL: $0.avatarURL)
+        }
+
+        self = StatsDotComFollowersInsight(dotComFollowersCount: Int(dotComCountInsight.count), topDotComFollowers: followers)
     }
 
     static var recordType: StatsRecordType {
         return .followers
     }
-
 }
