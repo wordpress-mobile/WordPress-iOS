@@ -84,6 +84,18 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 ///-----------------------
 
 /**
+ A convenience method for creating an Account just from an auth token.
+ A temporary username is assigned and is expected to be updated as soon as
+ the account is synced from the server.
+
+ This method makes a pass through call to `createOrUpdateAccountWithUsername:authToken:`, see it for details.
+
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
+ @return a WordPress.com `WPAccount` object
+ */
+- (WPAccount *)createOrUpdateAccountWithAuthToken:(NSString *)authToken;
+
+/**
  Creates a new WordPress.com account or updates the password if there is a matching account
  
  There can only be one WordPress.com account per username, so if one already exists for the given `username` its password is updated

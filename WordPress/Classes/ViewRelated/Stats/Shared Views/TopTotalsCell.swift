@@ -24,11 +24,13 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private var limitRowsDisplayed = true
     private let maxChildRowsToDisplay = 10
     private var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
+    private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -37,16 +39,27 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
-                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil) {
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
+                   siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+                   limitRowsDisplayed: Bool = true) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+        self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
+        self.limitRowsDisplayed = limitRowsDisplayed
 
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
-        addRows(dataRows, toStackView: rowsStackView, forType: statType, rowDelegate: self, viewMoreDelegate: self)
+
+        addRows(dataRows,
+                toStackView: rowsStackView,
+                forType: statType,
+                limitRowsDisplayed: limitRowsDisplayed,
+                rowDelegate: self,
+                viewMoreDelegate: self)
+
         setSubtitleVisibility()
         initChildRows()
 
@@ -102,6 +115,13 @@ private extension TopTotalsCell {
             guard let row = subview as? StatsTotalRow else {
                     return
             }
+
+            // On the Stats Detail view, do not expand rows initially.
+            guard siteStatsDetailsDelegate == nil else {
+                row.expanded = false
+                return
+            }
+
             toggleChildRowsForRow(row)
 
             row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
@@ -251,10 +271,12 @@ extension TopTotalsCell: StatsTotalRowDelegate {
     func displayWebViewWithURL(_ url: URL) {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
         siteStatsPeriodDelegate?.displayWebViewWithURL?(url)
+        siteStatsDetailsDelegate?.displayWebViewWithURL?(url)
     }
 
     func displayMediaWithID(_ mediaID: NSNumber) {
         siteStatsPeriodDelegate?.displayMediaWithID?(mediaID)
+        siteStatsDetailsDelegate?.displayMediaWithID?(mediaID)
     }
 
     func toggleChildRowsForRow(_ row: StatsTotalRow) {
@@ -262,10 +284,12 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         toggleSeparatorsAroundRow(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
+        siteStatsDetailsDelegate?.expandedRowUpdated?(row)
     }
 
     func showPostStats(withPostTitle postTitle: String?) {
         siteStatsPeriodDelegate?.showPostStats?(withPostTitle: postTitle)
+        siteStatsDetailsDelegate?.showPostStats?(withPostTitle: postTitle)
     }
 
 }

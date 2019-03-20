@@ -7,6 +7,9 @@ import WordPressFlux
 ///
 struct Notice {
     typealias ActionHandlerFunction = ((_ accepted: Bool) -> Void)
+    typealias Tag = String
+
+    private let identifier = UUID().uuidString
 
     /// The title of the notice
     let title: String
@@ -37,7 +40,7 @@ struct Notice {
     /// An optional value that can be used as a reference by consumers.
     ///
     /// This is not used in the Notice system at all.
-    let tag: String?
+    let tag: Tag?
 
     /// An optional handler closure that will be called when the action button
     /// is tapped, if you've provided an action title
@@ -61,6 +64,13 @@ struct Notice {
         self.tag = tag
         self.actionHandler = actionHandler
         self.style = style
+    }
+
+}
+
+extension Notice: Equatable {
+    static func ==(lhs: Notice, rhs: Notice) -> Bool {
+        return lhs.identifier == rhs.identifier
     }
 }
 
@@ -99,7 +109,26 @@ enum NoticeAction: Action {
     /// The specified notice will be queued for display to the user
     case post(Notice)
     /// The currently displayed notice should be removed from the notice store
+    ///
+    /// Prefer to use `clear` or `clearWithTag` whenever possible to make sure the correct
+    /// `Notice` is being dismissed. Here is an example fake scenario that may make `dismiss`
+    /// not ideal:
+    ///
+    /// 1. MediaBrowser posts NoticeA. NoticeA is displayed.
+    /// 2. Editor posts NoticeB.
+    /// 3. Eventually, NoticeB is displayed.
+    /// 4. MediaBrowser dispatches `dismiss` which dismisses **NoticeB**!
+    ///
+    /// If MediaBrowser used `clear` or `clearWithTag`, the NoticeB should not have been dismissed
+    /// prematurely. 
     case dismiss
+    /// Removes the given `Notice` from the Store.
+    case clear(Notice)
+    /// Removes all Notices that have the given tag.
+    ///
+    /// - SeeAlso: `Notice.tag`
+    case clearWithTag(Notice.Tag)
+    /// Removes all Notices except the current one.
     case empty
 }
 
@@ -110,6 +139,15 @@ struct NoticeStoreState {
 
 /// NoticeStore queues notices for display to the user.
 ///
+/// To interact with or modify the `NoticeStore`, use `ActionDispatcher` and dispatch Actions of
+/// type `NoticeAction`. Example:
+///
+/// ```
+/// let notice = Notice(title: "Hello, my old friend!")
+/// ActionDispatcher.dispatch(NoticeAction.post(notice))
+/// ```
+///
+/// - SeeAlso: `NoticeAction`
 class NoticeStore: StatefulStore<NoticeStoreState> {
     private var pending = Queue<Notice>()
 
@@ -124,6 +162,10 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         switch action {
         case .post(let notice):
             enqueueNotice(notice)
+        case .clear(let notice):
+            clear(notice: notice)
+        case .clearWithTag(let tag):
+            clear(tag: tag)
         case .dismiss:
             dequeueNotice()
         case .empty:
@@ -133,10 +175,8 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
 
     // MARK: - Accessors
 
-    /// Returns the next notice that should be displayed to the user, if
-    /// one is available
-    ///
-    var nextNotice: Notice? {
+    /// Returns the notice that should be displayed to the user, if one is available.
+    var currentNotice: Notice? {
         return state.notice
     }
 
@@ -154,7 +194,23 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         state.notice = pending.pop()
     }
 
+    private func clear(notice: Notice) {
+        pending.removeAll { $0 == notice }
+
+        if state.notice == notice {
+            state.notice = pending.pop()
+        }
+    }
+
+    private func clear(tag: Notice.Tag) {
+        pending.removeAll { $0.tag == tag }
+
+        if state.notice?.tag == tag {
+            state.notice = pending.pop()
+        }
+    }
+
     private func emptyQueue() {
-        pending = Queue<Notice>()
+        pending.removeAll()
     }
 }

@@ -16,6 +16,8 @@ import WordPressFlux
         while leafViewController.presentedViewController != nil && !leafViewController.presentedViewController!.isBeingDismissed {
             leafViewController = leafViewController.presentedViewController!
         }
+        popoverPresentationController?.sourceView = view
+        popoverPresentationController?.permittedArrowDirections = []
         leafViewController.present(self, animated: true)
     }
 }

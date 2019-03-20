@@ -26,9 +26,9 @@ staleLabel: "[Status] Stale"
 markComment: >
   This issue has been marked as stale because:
   
-  * It has been inactive for the past year.
-  * It isn't in a project or a milestone.
-  * It hasn’t been labeled `[Pri] Blocker`, `[Pri] High`, or `good first issue`.
+   * It has been inactive for the past year.
+   * It isn't in a project or a milestone.
+   * It hasn’t been labeled `[Pri] Blocker`, `[Pri] High`, or `good first issue`.
   
   Please comment with an update if you believe this issue is still valid or if it can be closed.
   This issue will also be reviewed for validity and priority (cc @designsimply).
