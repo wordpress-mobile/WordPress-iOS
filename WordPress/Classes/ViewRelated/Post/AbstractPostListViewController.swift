@@ -792,8 +792,12 @@ class AbstractPostListViewController: UIViewController,
 
         dismissAllNetworkErrorNotices()
 
-        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        WPError.showNetworkingNotice(title: title, error: error)
+        if connectionAvailable() {
+            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingNotice(title: title, error: error)
+        } else {
+            presentNoNetworkAlert()
+        }
     }
 
     @objc func promptForPassword() {
