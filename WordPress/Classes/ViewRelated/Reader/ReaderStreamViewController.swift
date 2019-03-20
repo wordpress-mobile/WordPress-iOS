@@ -283,6 +283,13 @@ import WordPressFlux
         NotificationCenter.default.addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { [weak self] _ in
+
+            self?.resultsStatusView.updateAccessoryViewsVisibility()
+        })
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
