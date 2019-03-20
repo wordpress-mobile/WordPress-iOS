@@ -2865,7 +2865,7 @@ extension AztecPostViewController {
     }
 
     func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = videoAttachment.url else {
+        guard let videoURL = videoAttachment.mediaURL else {
             return
         }
         guard let videoPressID = videoAttachment.videoPressID else {
@@ -2913,7 +2913,7 @@ extension AztecPostViewController {
     }
 
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
-        guard let videoSrcURL = videoAttachment.url, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil else {
+        guard let videoSrcURL = videoAttachment.mediaURL, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil else {
             onFailure()
             return
         }
