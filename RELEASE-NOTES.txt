@@ -9,6 +9,7 @@
 -----
 * Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
 * Improved text import from other apps, such as Bear or Ulysses 🥰
+* Reader: fixed issue where empty state buttons were not functional.
 
 12.0
 -----
