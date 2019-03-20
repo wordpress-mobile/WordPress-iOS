@@ -1560,17 +1560,9 @@ private extension ReaderStreamViewController {
     func displayResultsStatus() {
         resultsStatusView.removeFromView()
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        layoutNoResultsStatus()
+        resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
         footerView.isHidden = true
-    }
-
-    func layoutNoResultsStatus() {
-        resultsStatusView.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            resultsStatusView.view.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            resultsStatusView.view.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
-            ])
     }
 
     func hideResultsStatus() {
