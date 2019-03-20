@@ -1873,6 +1873,9 @@ extension AztecPostViewController {
 
         editorView.toggleEditingMode()
         editorSession.switch(editor: analyticsEditor)
+        if editorView.editingMode == .richText {
+            processMediaAttachments()
+        }
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
