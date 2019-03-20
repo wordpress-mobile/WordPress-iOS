@@ -579,11 +579,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         tableViewTopConstraint.isActive = false
         filterTabBarBottomConstraint.isActive = true
-
     }
 
     enum Animations {
         static let searchDismissDuration: TimeInterval = 0.3
+    }
+
+    // MARK: - NetworkAwareUI
+
+    override func noConnectionMessage() -> String {
+        return NSLocalizedString("No internet connection. Some posts may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Site Posts without an internet connection.")
     }
 }
 
