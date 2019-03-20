@@ -14,12 +14,20 @@ class StatsBarChartView: BarChartView {
         static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
         static let highlightAlpha       = CGFloat(1)
         static let markerAlpha          = CGFloat(0.2)
-        static let offset               = CGFloat(20)
+        static let trailingOffset       = CGFloat(20)
     }
 
+    /// This adapts the data set for presentation by the Charts framework.
+    ///
     private let barChartData: BarChartDataConvertible
 
+    /// This influences the visual appearance of the chart to be rendered.
+    ///
     private let styling: BarChartStyling
+
+    /// When set, this stock `UIView` serves as a legend for the rendered chart.
+    ///
+    private var legendView: UIView?
 
     // MARK: StatsBarChartView
 
@@ -169,25 +177,27 @@ class StatsBarChartView: BarChartView {
     private func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
 
-        extraRightOffset = Constants.offset
+        extraRightOffset = Constants.trailingOffset
 
         animate(yAxisDuration: Constants.animationDuration)
     }
 
     private func configureLegendIfNeeded() {
-        guard let legendTitle = styling.legendTitle, let legendColor = styling.secondaryBarColor else {
-            legend.enabled = false
+        legend.enabled = false
+
+        guard let legendColor = styling.secondaryBarColor, let legendTitle = styling.legendTitle, legendView == nil else {
             return
         }
 
-        legend.enabled = true
-        legend.verticalAlignment = .top
+        let chartLegend = StatsChartLegendView(color: legendColor, title: legendTitle)
+        addSubview(chartLegend)
 
-        let entry = LegendEntry()
-        entry.label = legendTitle
-        entry.formColor = legendColor
+        NSLayoutConstraint.activate([
+            chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
+        ])
+        extraTopOffset += chartLegend.intrinsicContentSize.height
 
-        legend.setCustom(entries: [entry])
+        self.legendView = chartLegend
     }
 
     private func configureXAxis() {

@@ -184,9 +184,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.4.4)
-  - WordPress-Editor-iOS (1.4.4):
-    - WordPress-Aztec-iOS (= 1.4.4)
+  - WordPress-Aztec-iOS (1.5.0.beta.2)
+  - WordPress-Editor-iOS (1.5.0.beta.2):
+    - WordPress-Aztec-iOS (= 1.5.0.beta.2)
   - WordPressAuthenticator (1.2.0-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -255,7 +255,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (= 1.4.4)
+  - WordPress-Editor-iOS (= 1.5.0.beta.2)
   - WordPressAuthenticator (~> 1.2.0-beta.1)
   - WordPressKit (~> 3.1.1)
   - WordPressShared (= 1.7.2)
@@ -392,8 +392,8 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: b4a1fac03f617eea9882336bf64f122cbc60e727
-  WordPress-Editor-iOS: 9787d07b2362457952fb74e4f09fa63bbf22cf14
+  WordPress-Aztec-iOS: a5f4702060e505c30ed8cf56fd246b9db91f3342
+  WordPress-Editor-iOS: 79825aa356194f41987d79a15436f2788ad778e0
   WordPressAuthenticator: 835ec46e30bae522929eed826eb8a997ed746a36
   WordPressKit: 9af12361492d12c6c5512d3d7de594aa415ad670
   WordPressShared: 63d57a4a07ad9f9a1ee5e8a7162e48fbb5192014
@@ -403,6 +403,6 @@ SPEC CHECKSUMS:
   yoga: 1fe535cf9b523600f42e2785b6ed56484a62b46d
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: e540ac60cc0eefd6f9f98293645ea9b36ba7d206
+PODFILE CHECKSUM: 88010f774c697935606cea0d7647fb12ac52ab1a
 
 COCOAPODS: 1.5.3
