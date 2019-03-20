@@ -207,6 +207,7 @@ import "./ScreenshotFastfile"
         ipa: "../build/WordPress Internal.ipa",
         dsym: "../build/WordPress.app.dSYM.zip")
     
+    upload_symbols_to_crashlytics(dsym_path: "../build/WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
   end
 
   #####################################################################################
