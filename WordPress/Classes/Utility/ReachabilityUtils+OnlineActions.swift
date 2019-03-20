@@ -44,6 +44,7 @@ extension ReachabilityUtils {
     /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
     /// Alerts can be disruptive.
     static func showNoInternetConnectionNotice(message: String) {
+        // An empty title is intentional to only show a single regular font message.
         let notice = Notice(title: "", message: message, tag: DefaultNoConnectionMessage.tag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
