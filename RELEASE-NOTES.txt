@@ -1,11 +1,21 @@
+12.2
+-----
+* Added support on the editor for video elements that use the source elements. For example:
+```<video alt="Another video with bunnies">
+<source src="https://videos.files.wordpress.com/kUJmAcSf/bbb_sunflower_1080p_30fps_normal.mp4" type="video/mp4">
+</video>```
+
 12.1
 -----
- 
+* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
+* Improved text import from other apps, such as Bear or Ulysses 🥰
+
 12.0
 -----
 * Redesigned Notices
 * Changed offline error messages to be less disruptive.
 * Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
+* Made it easier to find a domain for your new site, by moving the best match to the top of the search results.
  
 11.9
 ------

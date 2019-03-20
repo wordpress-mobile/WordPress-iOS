@@ -17,4 +17,14 @@ public struct Queue<Element> {
     mutating func pop() -> Element? {
         return elements.popLast()
     }
+
+    /// Removes all elements; If `where` is given, only the elements matching the
+    /// predicate will be removed.
+    mutating func removeAll(where shouldBeRemoved: ((Element) -> Bool)? = nil) {
+        if let shouldBeRemoved = shouldBeRemoved {
+            elements.removeAll(where: shouldBeRemoved)
+        } else {
+            elements.removeAll()
+        }
+    }
 }

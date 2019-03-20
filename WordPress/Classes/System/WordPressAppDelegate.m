@@ -48,6 +48,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
+@property (nonatomic, strong, readwrite) NoticePresenter                *noticePresenter;
 
 @end
 
@@ -75,9 +76,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     // Set the main window up
     [self.window makeKeyAndVisible];
-
-    // Local Notifications
-    [self addNotificationObservers];
 
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
@@ -260,6 +258,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
 {
+    // Local Notifications
+    [self addNotificationObservers];
+    
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];

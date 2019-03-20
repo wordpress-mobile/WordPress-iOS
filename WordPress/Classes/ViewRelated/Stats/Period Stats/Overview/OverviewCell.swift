@@ -55,41 +55,50 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var selectedLabel: UILabel!
     @IBOutlet weak var selectedData: UILabel!
     @IBOutlet weak var differenceLabel: UILabel!
     @IBOutlet weak var chartContainerView: UIView!
+    @IBOutlet weak var chartBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBar: FilterTabBar!
+    @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
-    // Introduced via #11063, to be replaced with real data via #11069
-    private lazy var periodDataStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
-        let stubbedData = PeriodDataStub()
-        let firstStubbedDateInterval = stubbedData.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = PeriodPerformanceStyling(initialDateInterval: firstStubbedDateInterval)
-
-        return (stubbedData, styling)
-    }()
+    private(set) var chartData: BarChartDataConvertible?
+    private(set) var chartStyling: BarChartStyling?
 
     // MARK: - Configure
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        configureFonts()
+        applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData]) {
+    func configure(tabsData: [OverviewTabData], barChartData: BarChartDataConvertible? = nil, barChartStyling: BarChartStyling? = nil) {
         self.tabsData = tabsData
+        self.chartData = barChartData
+        self.chartStyling = barChartStyling
+
         setupFilterBar()
         updateLabels()
-        configureChartView()
+        configureChartViewIfNeeded()
     }
 }
 
 // MARK: - Private Extension
 
 private extension OverviewCell {
+
+    func applyStyles() {
+        Style.configureLabelForOverview(selectedLabel)
+        Style.configureLabelForOverview(selectedData)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
+        configureFonts()
+    }
 
     /// This method squelches two Xcode warnings that I encountered:
     /// 1. Attribute Unavailable: Large Title font text style before iOS 11.0
@@ -111,7 +120,16 @@ private extension OverviewCell {
     }
 
     func setupFilterBar() {
-        WPStyleGuide.Stats.configureFilterTabBar(filterTabBar, forOverviewCard: true)
+
+        // If there is only one tab data, this is being displayed on the
+        // Post Stats view, which does not have a filterTabBar.
+        filterTabBar.isHidden = tabsData.count == 1
+
+        chartBottomConstraint.constant = filterTabBar.isHidden ?
+            ChartBottomMargin.filterTabBarHidden :
+            ChartBottomMargin.filterTabBarShown
+
+        Style.configureFilterTabBar(filterTabBar, forOverviewCard: true)
         filterTabBar.items = tabsData
         filterTabBar.tabBarHeight = 60.0
         filterTabBar.equalWidthFill = .fillProportionally
@@ -134,16 +152,12 @@ private extension OverviewCell {
 
     // MARK: Chart support
 
-    func resetChartView() {
-        for subview in chartContainerView.subviews {
-            subview.removeFromSuperview()
+    func configureChartViewIfNeeded() {
+        guard chartContainerView.subviews.isEmpty, let barChartData = chartData, let barChartStyling = chartStyling else {
+            return
         }
-    }
 
-    func configureChartView() {
-        resetChartView()
-
-        let chartView = StatsBarChartView(data: periodDataStub.data, styling: periodDataStub.styling)
+        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling)
         chartContainerView.addSubview(chartView)
 
         NSLayoutConstraint.activate([
@@ -153,4 +167,10 @@ private extension OverviewCell {
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
     }
+
+    enum ChartBottomMargin {
+        static let filterTabBarShown = CGFloat(16)
+        static let filterTabBarHidden = CGFloat(24)
+    }
+
 }

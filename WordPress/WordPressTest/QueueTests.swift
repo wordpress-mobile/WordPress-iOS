@@ -2,7 +2,7 @@ import XCTest
 @testable import WordPress
 
 class QueueTests: XCTestCase {
-    var queue = Queue<Int>()
+    private var queue = Queue<Int>()
 
     override func setUp() {
         super.setUp()
@@ -49,5 +49,32 @@ class QueueTests: XCTestCase {
         XCTAssertEqual(item3, 3)
         XCTAssertEqual(item4, 4)
         XCTAssertNil(item5)
+    }
+
+    func testRemoveAllEmptiesTheQueue() {
+        // Given
+        queue.push(1)
+        queue.push(2)
+        queue.push(3)
+
+        // When
+        queue.removeAll()
+
+        // Then
+        XCTAssertNil(queue.pop())
+    }
+
+    func testRemoveAllRemovesElementsMatchingThePredicate() {
+        // Given
+        queue.push(1)
+        queue.push(2)
+        queue.push(3)
+
+        // When
+        queue.removeAll { $0 >= 2 }
+
+        // Then
+        XCTAssertEqual(queue.pop(), 1)
+        XCTAssertNil(queue.pop())
     }
 }
