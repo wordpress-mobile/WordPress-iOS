@@ -39,6 +39,7 @@ open class Store: Observable {
     /// Subclasses should implement this and deal with the Actions relevant to
     /// them.
     ///
+    /// This is always called on the main thread.
     open func onDispatch(_ action: Action) {
         // Subclasses should override this
     }

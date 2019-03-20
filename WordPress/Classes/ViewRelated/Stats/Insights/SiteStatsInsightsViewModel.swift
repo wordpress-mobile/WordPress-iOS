@@ -147,11 +147,6 @@ private extension SiteStatsInsightsViewModel {
         static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
-    enum CommentType {
-        case author
-        case post
-    }
-
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
         guard let allTimeInsight = store.getAllTimeStats() else {
             return []
@@ -331,32 +326,11 @@ private extension SiteStatsInsightsViewModel {
             return StatsTotalRowData(name: $0.name,
                                      data: viewsCount.abbreviatedString(),
                                      dataBarPercent: Float(viewsCount) / Float(tagsAndCategories.first?.viewsCount ?? 1),
-                                     icon: tagsAndCategoriesIconForKind($0.kind),
+                                     icon: StatsDataHelper.tagsAndCategoriesIconForKind($0.kind),
                                      showDisclosure: true,
                                      disclosureURL: $0.url,
-                                     childRows: childRowsForItems($0.children),
+                                     childRows: StatsDataHelper.childRowsForItems($0.children),
                                      statSection: .insightsTagsAndCategories)
-        }
-    }
-
-    func tagsAndCategoriesIconForKind(_ kind: StatsTagAndCategory.Kind) -> UIImage? {
-        switch kind {
-        case .folder:
-            return Style.imageForGridiconType(.folderMultiple)
-        case .category:
-            return Style.imageForGridiconType(.folder)
-        case .tag:
-            return Style.imageForGridiconType(.tag)
-        }
-    }
-
-    func childRowsForItems(_ children: [StatsTagAndCategory]) -> [StatsTotalRowData] {
-        return children.map {
-            StatsTotalRowData.init(name: $0.name,
-                                   data: "",
-                                   icon: tagsAndCategoriesIconForKind($0.kind),
-                                   showDisclosure: true,
-                                   disclosureURL: $0.url)
         }
     }
 
@@ -395,25 +369,20 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {
-        return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.author),
-                                               tabDataForCommentType(.post)],
+        return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
+                                               tabDataForCommentType(.insightsCommentsPosts)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: false)
     }
 
-    func tabDataForCommentType(_ commentType: CommentType) -> TabData {
+    func tabDataForCommentType(_ commentType: StatSection) -> TabData {
         let commentsInsight = store.getTopCommentsInsight()
 
-        var tabTitle: String
-        var itemSubtitle: String
         var rowItems: [StatsTotalRowData] = []
 
         switch commentType {
-        case .author:
+        case .insightsCommentsAuthors:
             let authors = commentsInsight?.topAuthors ?? []
-            tabTitle = StatSection.insightsCommentsAuthors.tabTitle
-            itemSubtitle = StatSection.insightsCommentsAuthors.itemSubtitle
-
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -421,11 +390,8 @@ private extension SiteStatsInsightsViewModel {
                                   showDisclosure: false,
                                   statSection: .insightsCommentsAuthors)
             }
-        case .post:
+        case .insightsCommentsPosts:
             let posts = commentsInsight?.topPosts ?? []
-            tabTitle = StatSection.insightsCommentsPosts.tabTitle
-            itemSubtitle = StatSection.insightsCommentsPosts.itemSubtitle
-
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -433,11 +399,13 @@ private extension SiteStatsInsightsViewModel {
                                   disclosureURL: $0.postURL,
                                   statSection: .insightsCommentsPosts)
             }
+        default:
+            break
         }
 
-        return TabData(tabTitle: tabTitle,
-                       itemSubtitle: itemSubtitle,
-                       dataSubtitle: StatSection.insightsCommentsPosts.dataSubtitle,
+        return TabData(tabTitle: commentType.tabTitle,
+                       itemSubtitle: commentType.itemSubtitle,
+                       dataSubtitle: commentType.dataSubtitle,
                        dataRows: rowItems)
     }
 

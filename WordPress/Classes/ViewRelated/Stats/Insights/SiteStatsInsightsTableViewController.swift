@@ -37,6 +37,7 @@ enum InsightType: Int {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
+    @objc optional func showPostStats(withPostTitle postTitle: String?)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -121,8 +122,10 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
-            return
+
+        guard let viewModel = viewModel,
+            viewIsVisible() else {
+                return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
@@ -147,6 +150,10 @@ private extension SiteStatsInsightsTableViewController {
 
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedInsights()
+    }
+
+    func viewIsVisible() -> Bool {
+        return isViewLoaded && view.window != nil
     }
 
     // MARK: User Defaults
@@ -228,6 +235,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func showPostStats(withPostTitle postTitle: String?) {
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postTitle: postTitle)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
 }

@@ -170,6 +170,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
 
+        dismissNoNetworkAlert()
+
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }

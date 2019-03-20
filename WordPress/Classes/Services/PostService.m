@@ -681,8 +681,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     }
     if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
-        remotePost.format = postPost.postFormat;
-        remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
+        remotePost.format = postPost.postFormat;        
+        remotePost.tags = [[postPost.tags componentsSeparatedByString:@","] wp_map:^id(NSString *obj) {
+            return [obj stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+        }];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
 

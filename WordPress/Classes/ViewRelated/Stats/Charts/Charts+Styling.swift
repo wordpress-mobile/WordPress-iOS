@@ -3,21 +3,58 @@ import Foundation
 
 import Charts
 
-// MARK: - LatestPostSummaryStyling
+// MARK: - PeriodPerformanceStyling
 
-struct LatestPostSummaryStyling: BarChartStyling {
-    let adornmentColor: UIColor
-    let barColor: UIColor
+class PeriodPerformanceStyling: BarChartStyling {
+
+    let primaryBarColor: UIColor
+    let secondaryBarColor: UIColor?
+    let primaryHighlightColor: UIColor?
+    let secondaryHighlightColor: UIColor?
+    let labelColor: UIColor
+    let legendTitle: String?
+    let lineColor: UIColor
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter
+
+    init(initialDateInterval: TimeInterval, highlightColor: UIColor? = nil) {
+        let xAxisFormatter = HorizontalAxisFormatter(initialDateInterval: initialDateInterval)
+
+        self.primaryBarColor            = WPStyleGuide.wordPressBlue()
+        self.secondaryBarColor          = WPStyleGuide.darkBlue()
+        self.primaryHighlightColor      = WPStyleGuide.jazzyOrange()
+        self.secondaryHighlightColor    = WPStyleGuide.fireOrange()
+        self.labelColor                 = WPStyleGuide.grey()
+        self.legendTitle                = "Visitors"    // we do not localized stub data...
+        self.lineColor                  = WPStyleGuide.greyLighten30()
+        self.xAxisValueFormatter        = xAxisFormatter
+        self.yAxisValueFormatter        = VerticalAxisFormatter()
+    }
 }
 
-extension LatestPostSummaryStyling {
-    init(xAxisFormatter: IAxisValueFormatter, yAxisFormatter: IAxisValueFormatter) {
-        self.init(
-            adornmentColor: NSUIColor.chartColor,
-            barColor: WPStyleGuide.wordPressBlue(),
-            xAxisValueFormatter: xAxisFormatter,
-            yAxisValueFormatter: yAxisFormatter)
+// MARK: - PostSummaryStyling
+
+class PostSummaryStyling: BarChartStyling {
+
+    let primaryBarColor: UIColor
+    let secondaryBarColor: UIColor?
+    let primaryHighlightColor: UIColor?
+    let secondaryHighlightColor: UIColor?
+    let labelColor: UIColor
+    let legendTitle: String?
+    let lineColor: UIColor
+    let xAxisValueFormatter: IAxisValueFormatter
+    let yAxisValueFormatter: IAxisValueFormatter
+
+    init(barColor: UIColor, highlightColor: UIColor?, labelColor: UIColor, lineColor: UIColor, xAxisValueFormatter: IAxisValueFormatter, yAxisValueFormatter: IAxisValueFormatter) {
+        self.primaryBarColor            = barColor
+        self.secondaryBarColor          = nil
+        self.primaryHighlightColor      = highlightColor
+        self.secondaryHighlightColor    = nil
+        self.labelColor                 = labelColor
+        self.legendTitle                = nil
+        self.lineColor                  = lineColor
+        self.xAxisValueFormatter        = xAxisValueFormatter
+        self.yAxisValueFormatter        = yAxisValueFormatter
     }
 }

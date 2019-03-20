@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="360" id="KGk-i7-Jjw" customClass="OverviewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="304"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="454" height="303.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sij-a6-mJ5" userLabel="Top Separator Line">
+                        <rect key="frame" x="0.0" y="0.0" width="454" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="Pdm-u4-3uG"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKw-lF-4O8" userLabel="Selected Data">
+                        <rect key="frame" x="16" y="24" width="100.5" height="36"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jZK-cD-I2s" userLabel="Selected Label">
+                        <rect key="frame" x="124.5" y="34.5" width="45.5" height="20.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+2,500 (5%)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mh8-GY-DEC" userLabel="Difference Label">
+                        <rect key="frame" x="342" y="34.5" width="96" height="20.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXK-k6-Sxa" userLabel="Chart View">
+                        <rect key="frame" x="16" y="76" width="422" height="150"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="150" id="SdW-hH-eUG"/>
+                        </constraints>
+                    </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OOf-64-W6S" userLabel="Filter Bar Stack View">
+                        <rect key="frame" x="0.0" y="242" width="454" height="61.5"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aY-pl-E5I" customClass="FilterTabBar" customModule="WordPress">
+                                <rect key="frame" x="0.0" y="0.0" width="454" height="61.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JKw-M5-MmY" userLabel="Bottom Separator Line">
+                        <rect key="frame" x="0.0" y="303" width="454" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="9YE-mu-3ZR"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="sij-a6-mJ5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="0Or-8K-9tS"/>
+                    <constraint firstItem="sij-a6-mJ5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="1hn-rO-HQO"/>
+                    <constraint firstAttribute="bottom" secondItem="OOf-64-W6S" secondAttribute="bottom" id="3O1-ab-zrX"/>
+                    <constraint firstAttribute="trailing" secondItem="OOf-64-W6S" secondAttribute="trailing" id="3zN-y7-vSh"/>
+                    <constraint firstAttribute="trailing" secondItem="LXK-k6-Sxa" secondAttribute="trailing" constant="16" id="454-qg-2dp"/>
+                    <constraint firstItem="OOf-64-W6S" firstAttribute="top" secondItem="LXK-k6-Sxa" secondAttribute="bottom" priority="999" constant="16" id="45u-jA-D6l"/>
+                    <constraint firstAttribute="trailing" secondItem="sij-a6-mJ5" secondAttribute="trailing" id="4tM-Kt-WmO"/>
+                    <constraint firstAttribute="bottom" secondItem="JKw-M5-MmY" secondAttribute="bottom" id="7ie-6i-dY4"/>
+                    <constraint firstItem="gKw-lF-4O8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="24" id="9FM-On-UC6"/>
+                    <constraint firstItem="mh8-GY-DEC" firstAttribute="bottom" secondItem="jZK-cD-I2s" secondAttribute="bottom" id="B5Q-FJ-CHg"/>
+                    <constraint firstAttribute="trailing" secondItem="mh8-GY-DEC" secondAttribute="trailing" constant="16" id="DHi-ub-ILb"/>
+                    <constraint firstItem="LXK-k6-Sxa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="HS3-PH-hEI"/>
+                    <constraint firstItem="jZK-cD-I2s" firstAttribute="leading" secondItem="gKw-lF-4O8" secondAttribute="trailing" constant="8" id="dru-cE-A0o"/>
+                    <constraint firstItem="jZK-cD-I2s" firstAttribute="bottom" secondItem="gKw-lF-4O8" secondAttribute="bottom" constant="-5" id="dwL-lH-n2U"/>
+                    <constraint firstItem="mh8-GY-DEC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jZK-cD-I2s" secondAttribute="trailing" constant="5" id="lU5-Jo-nfk"/>
+                    <constraint firstAttribute="trailing" secondItem="JKw-M5-MmY" secondAttribute="trailing" id="o73-YK-rux"/>
+                    <constraint firstItem="gKw-lF-4O8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="pOA-dn-Yoy"/>
+                    <constraint firstItem="LXK-k6-Sxa" firstAttribute="top" secondItem="gKw-lF-4O8" secondAttribute="bottom" constant="16" id="pZe-NH-yiM"/>
+                    <constraint firstItem="OOf-64-W6S" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="r8Y-d5-su4"/>
+                    <constraint firstItem="JKw-M5-MmY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="tUf-r7-46a"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="bottomSeparatorLine" destination="JKw-M5-MmY" id="VUu-ZD-CdC"/>
+                <outlet property="chartBottomConstraint" destination="45u-jA-D6l" id="2z3-wy-1Su"/>
+                <outlet property="chartContainerView" destination="LXK-k6-Sxa" id="0yE-3G-QlU"/>
+                <outlet property="differenceLabel" destination="mh8-GY-DEC" id="G27-Xv-ACi"/>
+                <outlet property="filterTabBar" destination="0aY-pl-E5I" id="Mwy-fv-SNw"/>
+                <outlet property="selectedData" destination="gKw-lF-4O8" id="aKK-1U-o6H"/>
+                <outlet property="selectedLabel" destination="jZK-cD-I2s" id="rTe-0x-iDM"/>
+                <outlet property="topSeparatorLine" destination="sij-a6-mJ5" id="Rrp-Qf-xtx"/>
+            </connections>
+            <point key="canvasLocation" x="-433.60000000000002" y="143.02848575712144"/>
+        </tableViewCell>
+    </objects>
+</document>
