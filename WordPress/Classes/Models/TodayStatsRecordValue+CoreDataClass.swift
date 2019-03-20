@@ -5,7 +5,7 @@ import CoreData
 public class TodayStatsRecordValue: StatsRecordValue {
     public override func validateForInsert() throws {
         try super.validateForInsert()
-        try singleEntryTypeValidation()
+        try recordValueSingleValueValidation()
     }
 }
 
@@ -21,10 +21,17 @@ extension StatsTodayInsight: StatsRecordValueConvertible {
         return [value]
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        guard
+            let insight = statsRecordValues.first as? TodayStatsRecordValue
+            else {
+                return nil
+        }
+
+        self = StatsTodayInsight(viewsCount: Int(insight.viewsCount),
+                                 visitorsCount: Int(insight.visitorsCount),
+                                 likesCount: Int(insight.likesCount),
+                                 commentsCount: Int(insight.commentsCount))
     }
 
     static var recordType: StatsRecordType {

@@ -39,14 +39,47 @@ extension StatsCommentsInsight: StatsRecordValueConvertible {
         return [posts, authors].flatMap { $0 }
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        let authors = statsRecordValues
+            .compactMap { $0 as? TopCommentsAuthorStatsRecordValue }
+            .compactMap { StatsTopCommentsAuthor(recordValue: $0) }
+
+        let posts = statsRecordValues
+            .compactMap { $0 as? TopCommentedPostStatsRecordValue }
+            .compactMap { StatsTopCommentsPost(recordValue: $0) }
+
+        self = StatsCommentsInsight(topPosts: posts, topAuthors: authors)
     }
 
     static var recordType: StatsRecordType {
         return .commentInsight
     }
 
+}
+
+fileprivate extension StatsTopCommentsPost {
+    init?(recordValue: TopCommentedPostStatsRecordValue) {
+        guard
+            let name = recordValue.title,
+            let postID = recordValue.postID
+            else {
+                return nil
+        }
+
+        self = StatsTopCommentsPost(name: name,
+                                    postID: postID,
+                                    commentCount: Int(recordValue.commentCount),
+                                    postURL: recordValue.postURL)
+    }
+}
+
+fileprivate extension StatsTopCommentsAuthor {
+    init?(recordValue: TopCommentsAuthorStatsRecordValue) {
+        guard let name = recordValue.name else {
+            return nil
+        }
+        self = StatsTopCommentsAuthor(name: name,
+                                      commentCount: Int(recordValue.commentCount),
+                                      iconURL: recordValue.avatarURL)
+    }
 }

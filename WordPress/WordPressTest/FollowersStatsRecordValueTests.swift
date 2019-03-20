@@ -94,7 +94,7 @@ class FollowersStatsRecordValueTests: StatsTestCase {
         let dotComInsight = StatsDotComFollowersInsight(dotComFollowersCount: 1, topDotComFollowers: [follower1])
         let mailInsight = StatsEmailFollowersInsight(emailFollowersCount: 2, topEmailFollowers: [follower1, follower2])
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: mailInsight, for: blog)
         _ = StatsRecord.record(from: dotComInsight, for: blog)

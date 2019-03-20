@@ -5,7 +5,7 @@ import CoreData
 public class AllTimeStatsRecordValue: StatsRecordValue {
     public override func validateForInsert() throws {
         try super.validateForInsert()
-        try singleEntryTypeValidation()
+        try recordValueSingleValueValidation()
     }
 }
 
@@ -22,10 +22,19 @@ extension StatsAllTimesInsight: StatsRecordValueConvertible {
         return [value]
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        guard
+            let insight = statsRecordValues.first as? AllTimeStatsRecordValue,
+            let bestViewsDay = insight.bestViewsDay
+            else {
+                return nil
+        }
+
+        self = StatsAllTimesInsight(postsCount: Int(insight.postsCount),
+                                    viewsCount: Int(insight.viewsCount),
+                                    bestViewsDay: bestViewsDay as Date,
+                                    visitorsCount: Int(insight.visitorsCount),
+                                    bestViewsPerDayCount: Int(insight.bestViewsPerDayCount))
     }
 
     static var recordType: StatsRecordType {

@@ -83,7 +83,6 @@ struct InsightStoreState {
     var allAuthorsComments: StatsCommentsInsight?
     var fetchingAllAuthorsComments = false
 
-
     var allPostsComments: StatsCommentsInsight?
     var fetchingAllPostsComments = false
 
@@ -150,6 +149,27 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         processQueries()
     }
 
+    func persistToCoreData() {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID,
+            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+                return
+        }
+
+        _ = state.lastPostInsight.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.allTimeStats.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.annualAndMostPopularTime.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.dotComFollowers.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.emailFollowers.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.publicizeFollowers.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topCommentsInsight.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.todaysStats.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.postingActivity.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topTagsAndCategories.flatMap { StatsRecord.record(from: $0, for: blog) }
+
+        try? ContextManager.shared.mainContext.save()
+    }
+
 }
 
 // MARK: - Private Methods
@@ -188,6 +208,7 @@ private extension StatsInsightsStore {
 
     func fetchInsights() {
 
+        loadFromCache()
         setAllAsFetchingOverview()
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
@@ -270,6 +291,30 @@ private extension StatsInsightsStore {
         }
     }
 
+    func loadFromCache() {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID,
+            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+                return
+        }
+
+        transaction { state in
+            state.lastPostInsight = StatsRecord.insight(for: blog, type: .lastPostInsight).flatMap { StatsLastPostInsight(statsRecordValues: $0.recordValues) }
+            state.allTimeStats = StatsRecord.insight(for: blog, type: .allTimeStatsInsight).flatMap { StatsAllTimesInsight(statsRecordValues: $0.recordValues) }
+            state.annualAndMostPopularTime = StatsRecord.insight(for: blog, type: .annualAndMostPopularTimes).flatMap { StatsAnnualAndMostPopularTimeInsight(statsRecordValues: $0.recordValues) }
+            state.publicizeFollowers = StatsRecord.insight(for: blog, type: .publicizeConnection).flatMap { StatsPublicizeInsight(statsRecordValues: $0.recordValues) }
+            state.todaysStats = StatsRecord.insight(for: blog, type: .today).flatMap { StatsTodayInsight(statsRecordValues: $0.recordValues) }
+            state.postingActivity = StatsRecord.insight(for: blog, type: .streakInsight).flatMap { StatsPostingStreakInsight(statsRecordValues: $0.recordValues) }
+            state.topTagsAndCategories = StatsRecord.insight(for: blog, type: .tagsAndCategories).flatMap { StatsTagsAndCategoriesInsight(statsRecordValues: $0.recordValues) }
+            state.topCommentsInsight = StatsRecord.insight(for: blog, type: .commentInsight).flatMap { StatsCommentsInsight(statsRecordValues: $0.recordValues) }
+
+            let followersInsight = StatsRecord.insight(for: blog, type: .followers)
+
+            state.dotComFollowers = followersInsight.flatMap { StatsDotComFollowersInsight(statsRecordValues: $0.recordValues) }
+            state.emailFollowers = followersInsight.flatMap { StatsEmailFollowersInsight(statsRecordValues: $0.recordValues) }
+        }
+    }
+
     func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
         let api = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
 
@@ -287,70 +332,90 @@ private extension StatsInsightsStore {
 
     func receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?) {
         transaction { state in
-            state.lastPostInsight = lastPostInsight
+            if lastPostInsight != nil {
+                state.lastPostInsight = lastPostInsight
+            }
             state.fetchingLastPostInsight = false
         }
     }
 
     func receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?) {
         transaction { state in
-            state.allTimeStats = allTimeStats
+            if allTimeStats != nil {
+                state.allTimeStats = allTimeStats
+            }
             state.fetchingAllTimeStats = false
         }
     }
 
     func receivedAnnualAndMostPopularTimeStats(_ mostPopularStats: StatsAnnualAndMostPopularTimeInsight?) {
         transaction { state in
-            state.annualAndMostPopularTime = mostPopularStats
+            if mostPopularStats != nil {
+                state.annualAndMostPopularTime = mostPopularStats
+            }
             state.fetchingAnnualAndMostPopularTime = false
         }
     }
 
     func receivedDotComFollowers(_ followerStats: StatsDotComFollowersInsight?) {
         transaction { state in
-            state.dotComFollowers = followerStats
+            if followerStats != nil {
+                state.dotComFollowers = followerStats
+            }
             state.fetchingDotComFollowers = false
         }
     }
 
     func receivedEmailFollowers(_ followerStats: StatsEmailFollowersInsight?) {
         transaction { state in
-            state.emailFollowers = followerStats
+            if followerStats != nil {
+                state.emailFollowers = followerStats
+            }
             state.fetchingEmailFollowers = false
         }
     }
 
     func receivedPublicizeFollowers(_ followerStats: StatsPublicizeInsight?) {
         transaction { state in
-            state.publicizeFollowers = followerStats
+            if followerStats != nil {
+                state.publicizeFollowers = followerStats
+            }
             state.fetchingPublicize = false
         }
     }
 
     func receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?) {
         transaction { state in
-            state.topCommentsInsight = commentsInsight
+            if commentsInsight != nil {
+                state.topCommentsInsight = commentsInsight
+            }
             state.fetchingCommentsInsight = false
         }
     }
 
     func receivedTodaysStats(_ todaysStats: StatsTodayInsight?) {
         transaction { state in
-            state.todaysStats = todaysStats
+            if todaysStats != nil {
+                state.todaysStats = todaysStats
+            }
             state.fetchingTodaysStats = false
         }
     }
 
     func receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?) {
         transaction { state in
-            state.postingActivity = postingActivity
+            if postingActivity != nil {
+                state.postingActivity = postingActivity
+            }
             state.fetchingPostingActivity = false
         }
     }
 
     func receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?) {
         transaction { state in
-            state.topTagsAndCategories = tagsAndCategories
+            if tagsAndCategories != nil {
+                state.topTagsAndCategories = tagsAndCategories
+            }
             state.fetchingTagsAndCategories = false
         }
     }

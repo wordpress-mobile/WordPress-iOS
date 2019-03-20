@@ -39,15 +39,7 @@ fileprivate extension TagsCategoriesStatsRecordValue {
         self.name = tagCategory.name
         self.urlString = tagCategory.url?.absoluteString
         self.viewsCount = Int64(tagCategory.viewsCount ?? 0)
-
-        switch tagCategory.kind {
-        case .category:
-            self.type = TagsCategoriesType.category.rawValue
-        case .folder:
-            self.type = TagsCategoriesType.folder.rawValue
-        case .tag:
-            self.type = TagsCategoriesType.tag.rawValue
-        }
+        self.type = tagCategoryType(from: tagCategory.kind).rawValue
 
         let children = tagCategory.children.compactMap { TagsCategoriesStatsRecordValue(context: context, tagCategory: $0) }
 
@@ -62,15 +54,56 @@ extension StatsTagsAndCategoriesInsight: StatsRecordValueConvertible {
         }
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        guard
+            let categories = statsRecordValues as? [TagsCategoriesStatsRecordValue]
+            else {
+                return nil
+        }
+
+        self = StatsTagsAndCategoriesInsight(topTagsAndCategories: categories.compactMap { StatsTagAndCategory(recordValue: $0) })
     }
 
     static var recordType: StatsRecordType {
         return .tagsAndCategories
     }
+}
 
+fileprivate extension StatsTagAndCategory {
+    init?(recordValue: TagsCategoriesStatsRecordValue) {
+        guard
+            let name = recordValue.name,
+            let categoriesType = TagsCategoriesType(rawValue: recordValue.type),
+            let children = recordValue.children?.array as? [TagsCategoriesStatsRecordValue]
+            else {
+            return nil
+        }
 
+        self = StatsTagAndCategory(name: name, kind: tagAndCategoryKind(from: categoriesType),
+                                   url: recordValue.linkURL,
+                                   viewsCount: Int(recordValue.viewsCount),
+                                   children: children.compactMap { StatsTagAndCategory(recordValue: $0) })
+    }
+}
+
+fileprivate func tagAndCategoryKind(from localType: TagsCategoriesType) -> StatsTagAndCategory.Kind {
+    switch localType {
+    case .tag:
+        return .tag
+    case .category:
+        return .category
+    case .folder:
+        return .folder
+    }
+}
+
+fileprivate func tagCategoryType(from kind: StatsTagAndCategory.Kind) -> TagsCategoriesType {
+    switch kind {
+    case .category:
+        return TagsCategoriesType.category
+    case .folder:
+        return TagsCategoriesType.folder
+    case .tag:
+        return TagsCategoriesType.tag
+    }
 }

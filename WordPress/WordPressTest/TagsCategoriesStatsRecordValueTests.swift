@@ -136,20 +136,20 @@ class TagsCategoriesStatsRecordValueTests: StatsTestCase {
     }
 
     func testCoreDataConversionWorks() {
-        let standaloneTag = StatsTagAndCategory(name: "standalone", kind: .tag, url: "wp.com/tags/tag", viewsCount: 0, children: [])
+        let standaloneTag = StatsTagAndCategory(name: "standalone", kind: .tag, url: URL(string: "wp.com/tags/tag"), viewsCount: 0, children: [])
 
-        let childTag = StatsTagAndCategory(name: "tag", kind: .tag, url: "whatever", viewsCount: 9001, children: [])
-        let childCategory = StatsTagAndCategory(name: "category", kind: .category, url: "", viewsCount: 9002, children: [])
+        let childTag = StatsTagAndCategory(name: "tag", kind: .tag, url: URL(string: "whatever"), viewsCount: 9001, children: [])
+        let childCategory = StatsTagAndCategory(name: "category", kind: .category, url: nil, viewsCount: 9002, children: [])
 
         let folderInsight = StatsTagAndCategory(name: "folder",
                                                 kind: .folder,
-                                                url: "https://wordpress.com",
+                                                url: URL(string: "https://wordpress.com"),
                                                 viewsCount: 18003,
                                                 children: [childTag, childCategory])
 
         let insight = StatsTagsAndCategoriesInsight(topTagsAndCategories: [folderInsight, standaloneTag])
 
-        let blog = defaultBlog()
+        let blog = defaultBlog
 
         _ = StatsRecord.record(from: insight, for: blog)
 

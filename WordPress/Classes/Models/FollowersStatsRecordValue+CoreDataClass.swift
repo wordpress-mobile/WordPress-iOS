@@ -46,10 +46,14 @@ extension StatsEmailFollowersInsight: StatsRecordValueConvertible {
         return records
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        guard let emailCountInsight = countInsight(followerType: .email, from: statsRecordValues) else {
+            return nil
+        }
+
+        let followers: [StatsFollower] = statsFollowers(followerType: .email, from: statsRecordValues).compactMap { StatsFollower(recordValue: $0) }
+
+        self = StatsEmailFollowersInsight(emailFollowersCount: Int(emailCountInsight.count), topEmailFollowers: followers)
     }
 
     static var recordType: StatsRecordType {
@@ -71,14 +75,43 @@ extension StatsDotComFollowersInsight: StatsRecordValueConvertible {
         return records
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        guard let dotComCountInsight = countInsight(followerType: .dotCom, from: statsRecordValues) else {
+            return nil
+        }
+
+        let followers = statsFollowers(followerType: .dotCom, from: statsRecordValues).compactMap { StatsFollower(recordValue: $0) }
+
+        self = StatsDotComFollowersInsight(dotComFollowersCount: Int(dotComCountInsight.count), topDotComFollowers: followers)
     }
 
     static var recordType: StatsRecordType {
         return .followers
     }
+}
 
+fileprivate func countInsight(followerType: FollowersStatsType, from recordValues: [StatsRecordValue]) -> FollowersCountStatsRecordValue? {
+    return recordValues
+        .compactMap { $0 as? FollowersCountStatsRecordValue }
+        .filter { $0.type == followerType.rawValue }
+        .first
+}
+
+fileprivate func statsFollowers(followerType: FollowersStatsType, from recordValues: [StatsRecordValue]) -> [FollowersStatsRecordValue] {
+    return recordValues
+        .compactMap { $0 as? FollowersStatsRecordValue }
+        .filter { $0.type == followerType.rawValue }
+}
+
+fileprivate extension StatsFollower {
+    init?(recordValue: FollowersStatsRecordValue) {
+        guard
+            let name = recordValue.name,
+            let subscribedDate = recordValue.subscribedDate
+            else {
+                return nil
+        }
+
+        self = StatsFollower(name: name, subscribedDate: subscribedDate as Date, avatarURL: recordValue.avatarURL)
+    }
 }

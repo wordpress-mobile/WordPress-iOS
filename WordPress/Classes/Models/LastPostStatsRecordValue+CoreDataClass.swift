@@ -12,7 +12,7 @@ public class LastPostStatsRecordValue: StatsRecordValue {
 
     public override func validateForInsert() throws {
         try super.validateForInsert()
-        try singleEntryTypeValidation()
+        try recordValueSingleValueValidation()
     }
 }
 
@@ -26,14 +26,28 @@ extension StatsLastPostInsight: StatsRecordValueConvertible {
         value.title = self.title
         value.urlString = self.url.absoluteString
         value.viewsCount = Int64(self.viewsCount)
+        value.postID = Int64(self.postID)
 
         return [value]
     }
 
-    init(statsRecordValue: StatsRecordValue) {
-        // We won't be needing those until later. I added them to protocol to show the intended design
-        // but it doesn't make sense to implement it yet.
-        fatalError("This shouldn't be called yet — implementation of StatsRecordValueConvertible is still in progres. This method was added to illustrate intended design, but isn't ready yet.")
+    init?(statsRecordValues: [StatsRecordValue]) {
+        guard
+            let insight = statsRecordValues.first as? LastPostStatsRecordValue,
+            let title = insight.title,
+            let url = insight.url,
+            let publishedDate = insight.publishedDate
+        else {
+            return nil
+        }
+
+        self = StatsLastPostInsight(title: title,
+                                    url: url,
+                                    publishedDate: publishedDate as Date,
+                                    likesCount: Int(insight.likesCount),
+                                    commentsCount: Int(insight.commentsCount),
+                                    viewsCount: Int(insight.viewsCount),
+                                    postID: Int(insight.postID))
     }
 
     static var recordType: StatsRecordType {
