@@ -104,6 +104,24 @@ class GutenbergViewController: UIViewController, PostEditor {
         mediaToInsertOnPost = []
     }
 
+    private func showMediaSelectionOnStart() {
+        mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       dataSourceType: .device,
+                                                       callback: {(asset) in
+                                                        guard let phAsset = asset as? PHAsset else {
+                                                            return
+                                                        }
+                                                        self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: { (mediaID, mediaURL) in
+                                                            guard let mediaID = mediaID,
+                                                                let mediaURLString = mediaURL,
+                                                                let mediaURL = URL(string: mediaURLString) else {
+                                                                return
+                                                            }
+                                                            self.gutenberg.appendMedia(id: mediaID, url: mediaURL)
+                                                        })
+        })
+    }
+
     // MARK: - Auto save post
 
     static let autoSaveInterval: TimeInterval = 5
@@ -232,6 +250,9 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
+        if isOpenedDirectlyForPhotoPost {
+            showMediaSelectionOnStart()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
