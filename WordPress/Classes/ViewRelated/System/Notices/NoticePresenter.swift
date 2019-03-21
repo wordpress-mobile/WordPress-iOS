@@ -76,11 +76,14 @@ class NoticePresenter: NSObject {
         }
 
         listenToKeyboardEvents()
+        listenToOrientationChangeEvents()
     }
 
     override convenience init() {
         self.init(store: StoreContainer.shared.notice)
     }
+
+    // MARK: - Events
 
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
@@ -111,6 +114,20 @@ class NoticePresenter: NSObject {
                 currentContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
                 self.view.layoutIfNeeded()
             })
+        }
+    }
+
+    /// Adjust the current Notice so it will always be in the correct y-position after the
+    /// device is rotated.
+    private func listenToOrientationChangeEvents() {
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self,
+                let containerView = self.currentNoticePresentation?.containerView else {
+                    return
+            }
+
+            containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
         }
     }
 
