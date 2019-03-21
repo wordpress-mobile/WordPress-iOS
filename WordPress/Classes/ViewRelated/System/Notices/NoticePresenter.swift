@@ -199,6 +199,8 @@ class NoticePresenter: NSObject {
 
         window.isHidden = false
 
+        view.mask = createMaskView()
+
         let fromState = offscreenState(for: noticeContainerView)
         let toState = onscreenState(for: noticeContainerView)
         animatePresentation(fromState: fromState, toState: toState, completion: {
@@ -221,6 +223,24 @@ class NoticePresenter: NSObject {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
+    }
+
+    /// Create a mask view for `self.view`.
+    ///
+    /// The mask will prevent any `NoticeView` from showing on top of a tab bar.
+    private func createMaskView() -> UIView {
+        assert(!window.isHidden, "The window must be visible so we can get non-zero view.bounds")
+
+        let mask = UIView(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: view.bounds.width,
+            height: view.bounds.height - self.window.untouchableViewController.offsetOnscreen
+        ))
+        mask.translatesAutoresizingMaskIntoConstraints = false
+        mask.backgroundColor = .blue
+
+        return mask
     }
 
     // MARK: - Dismissal
