@@ -84,9 +84,33 @@ class GutenbergViewController: UIViewController, PostEditor {
         return mediaInserterHelper.cancelUploadOfAllMedia()
     }
 
+    var mediaToInsertOnPost = [Media]()
+
+    func prepopulateMediaItems(_ media: [Media]) {
+        mediaToInsertOnPost = media
+    }
+
+    private func insertPrePopulatedMedia() {
+        for media in mediaToInsertOnPost {
+            guard
+                media.mediaType == .image, // just images for now
+                let mediaID = media.mediaID?.int32Value,
+                let mediaURLString = media.remoteURL,
+                let mediaURL = URL(string: mediaURLString) else {
+                    continue
+            }
+            gutenberg.appendMedia(id: mediaID, url: mediaURL)
+        }
+        mediaToInsertOnPost = []
+    }
+
+    // MARK: - Auto save post
+
     static let autoSaveInterval: TimeInterval = 5
 
     var autoSaveTimer: Timer?
+
+    // MARK: - Set content
 
     func setTitle(_ title: String) {
         guard gutenberg.isLoaded else {
@@ -449,6 +473,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         if !editorSession.started {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
         }
+        insertPrePopulatedMedia()
     }
 }
 

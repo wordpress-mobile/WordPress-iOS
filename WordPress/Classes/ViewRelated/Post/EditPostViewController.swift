@@ -156,9 +156,8 @@ class EditPostViewController: UIViewController {
         postPost.present(navController, animated: !showImmediately) {
             generator.impactOccurred()
 
-            if let insertedMedia = self.insertedMedia,
-                let aztec = editor as? AztecPostViewController {
-                aztec.prepopulateMediaItems(insertedMedia)
+            if let insertedMedia = self.insertedMedia {
+                editor.prepopulateMediaItems(insertedMedia)
             }
         }
     }
