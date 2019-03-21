@@ -90,7 +90,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func cancelUploadOf(media: Media) {
-        mediaCoordinator.cancelUpload(of: media)
+        mediaCoordinator.cancelUploadAndDeleteMedia(media)
         gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
     }
 

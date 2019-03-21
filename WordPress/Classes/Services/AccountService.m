@@ -193,6 +193,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 /// @name Account creation
 ///-----------------------
 
+- (WPAccount *)createOrUpdateAccountWithAuthToken:(NSString *)authToken
+{
+    NSString *tempUsername = [[NSUUID UUID] UUIDString];
+    return [self createOrUpdateAccountWithUsername:tempUsername authToken:authToken];
+}
+
 /**
  Creates a new WordPress.com account or updates the password if there is a matching account
 
@@ -316,8 +322,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     if (userDetails.primaryBlogID) {
         [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
     }
-    
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 }
 
 - (void)configurePrimaryBlogWithID:(NSNumber *)primaryBlogID account:(WPAccount *)account
