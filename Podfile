@@ -104,7 +104,7 @@ target 'WordPress' do
     gutenberg :commit => '08a09629cc0adb7709b86f15bb3c43e8c69efd64'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :commit => '0d1637b99bf6f108d2792919bff0057e3d853677'
+    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
     
     ## Third party libraries
     ## =====================
