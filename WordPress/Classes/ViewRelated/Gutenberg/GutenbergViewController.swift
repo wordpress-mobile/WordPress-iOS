@@ -365,6 +365,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         self.mediaInserterHelper.syncUploads()
     }
 
+    func gutenbergDidRequestMediaUploadCancelation(for mediaID: Int32) {
+        guard let media = mediaInserterHelper.mediaFor(uploadID: mediaID) else {
+            return
+        }
+        mediaInserterHelper.cancelUploadOf(media: media)
+    }
+
     func gutenbergDidRequestMediaUploadActionDialog(for mediaID: Int32) {
 
         guard let media = mediaInserterHelper.mediaFor(uploadID: mediaID) else {

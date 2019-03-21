@@ -788,11 +788,14 @@ class AbstractPostListViewController: UIViewController,
 
         dismissAllNetworkErrorNotices()
 
-        if connectionAvailable() {
+        // If there is no internet connection, we'll show the specific error message defined in
+        // `noConnectionMessage()` (overridden by subclasses). For everything else, we let
+        // `WPError.showNetworkingNotice` determine the user-friendly error message.
+        if !connectionAvailable() {
+            handleConnectionError()
+        } else {
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingNotice(title: title, error: error)
-        } else {
-            handleConnectionError()
         }
     }
 

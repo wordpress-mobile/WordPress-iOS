@@ -283,6 +283,14 @@ import WordPressFlux
         NotificationCenter.default.addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { _ in
+            if self.isShowingResultStatusView {
+                self.resultsStatusView.updateAccessoryViewsVisibility()
+            }
+        })
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -1560,17 +1568,9 @@ private extension ReaderStreamViewController {
     func displayResultsStatus() {
         resultsStatusView.removeFromView()
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        layoutNoResultsStatus()
+        resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
         footerView.isHidden = true
-    }
-
-    func layoutNoResultsStatus() {
-        resultsStatusView.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            resultsStatusView.view.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            resultsStatusView.view.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
-            ])
     }
 
     func hideResultsStatus() {
