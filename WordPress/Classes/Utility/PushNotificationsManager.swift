@@ -400,20 +400,6 @@ extension PushNotificationsManager {
         return true
     }
 
-    @objc func handleNotificationReminderNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        guard let type = userInfo.string(forKey: Notification.typeKey),
-            type == Notification.local,
-            let info = userInfo as? [AnyHashable: Any] else {
-                return false
-        }
-
-        let noteId = NotificationRemindersHelper().reminderNotificationId(from: info)
-        WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: noteId)
-        completionHandler?(.newData)
-
-        return true
-    }
-
     func postNotification(for tour: QuickStartTour) {
         deletePendingLocalNotifications()
 
@@ -450,6 +436,24 @@ extension PushNotificationsManager {
 
     private enum QuickStartTracking {
         static let taskNameKey = "task_name"
+    }
+}
+
+// MARK: - Notification Reminders
+
+extension PushNotificationsManager {
+    @objc func handleNotificationReminderNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let type = userInfo.string(forKey: Notification.typeKey),
+            type == Notification.local,
+            let info = userInfo as? [AnyHashable: Any] else {
+                return false
+        }
+
+        let noteId = NotificationRemindersHelper().reminderNotificationId(from: info)
+        WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: noteId)
+        completionHandler?(.newData)
+
+        return true
     }
 }
 
