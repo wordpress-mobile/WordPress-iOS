@@ -972,8 +972,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // Let "Mark as Read / Unread" expand
         let leadingExpansionButton = 0
 
-        // Don't expand "Trash"
-        let trailingExpansionButton = -1
+        // Let "More" expand
+        let trailingExpansionButton = 0
 
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
             cell.leftButtons = leadingButtons(note: note)
@@ -1049,8 +1049,16 @@ private extension NotificationsViewController {
     func trailingButtons(note: Notification) -> [MGSwipeButton] {
         var rightButtons = [MGSwipeButton]()
 
+        let moreAction = MGSwipeButton(title: "", icon: Gridicon.iconOfType(.ellipsis).imageWithTintColor(.white), backgroundColor: WPStyleGuide.greyDarken20())
+        moreAction.callback = { [weak self] _ in
+            self?.showMoreAlertController(for: note)
+            return true
+        }
+
+        rightButtons.append(moreAction)
+
         guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-            return []
+            return rightButtons
         }
 
         // Comments: Trash
@@ -1068,22 +1076,25 @@ private extension NotificationsViewController {
             rightButtons.append(button)
         }
 
-        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
-            return rightButtons
+        if let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()),
+            approveAction.enabled == true,
+            let button = approveAction.command?.icon as? MGSwipeButton {
+            button.callback = { _ in
+                let actionContext = ActionContext(block: block)
+                approveAction.execute(context: actionContext)
+                return true
+            }
+            rightButtons.append(button)
         }
-
-        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
-        let button = approveAction?.command?.icon as? MGSwipeButton
-
-        button?.callback = { _ in
-            let actionContext = ActionContext(block: block)
-            approveAction?.execute(context: actionContext)
-            return true
-        }
-
-        rightButtons.append(button!)
 
         return rightButtons
+    }
+
+    func showMoreAlertController(for note: Notification) {
+    }
+        }
+
+
     }
 }
 
