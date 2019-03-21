@@ -199,7 +199,8 @@ class NoticePresenter: NSObject {
 
         window.isHidden = false
 
-        view.mask = createMaskView()
+        // Mask must be initialized after the window is shown or the view.frame will be zero
+        view.mask = MaskView(parent: view, untouchableViewController: self.window.untouchableViewController)
 
         let fromState = offscreenState(for: noticeContainerView)
         let toState = onscreenState(for: noticeContainerView)
@@ -223,24 +224,6 @@ class NoticePresenter: NSObject {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = true
-    }
-
-    /// Create a mask view for `self.view`.
-    ///
-    /// The mask will prevent any `NoticeView` from showing on top of a tab bar.
-    private func createMaskView() -> UIView {
-        assert(!window.isHidden, "The window must be visible so we can get non-zero view.bounds")
-
-        let mask = UIView(frame: CGRect(
-            x: 0,
-            y: 0,
-            width: view.bounds.width,
-            height: view.bounds.height - self.window.untouchableViewController.offsetOnscreen
-        ))
-        mask.translatesAutoresizingMaskIntoConstraints = false
-        mask.backgroundColor = .blue
-
-        return mask
     }
 
     // MARK: - Dismissal
@@ -399,6 +382,53 @@ private class NoticeContainerView: UIView {
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         return noticeView.point(inside: convert(point, to: noticeView), with: event)
+    }
+}
+
+private extension NoticePresenter {
+    /// A view that should be used as a mask for the `NoticePresenter.view`.
+    ///
+    /// The mask will prevent any `NoticeView` from animating on top of a tab bar.
+    class MaskView: UIView {
+        private unowned let parentView: UIView
+        private unowned let untouchableVC: UntouchableViewController
+
+        init(parent: UIView, untouchableViewController: UntouchableViewController) {
+            // We use the parent's frame to determine the size of this `MaskView`. If a parent has
+            // a zero frame, this may be that it is not visible. Check that the parent view's
+            // window is not hidden.
+            assert(parent.frame != .zero, "The parent view should have a non-zero frame. Is it visible?")
+
+            self.parentView = parent
+            self.untouchableVC = untouchableViewController
+
+            super.init(frame: MaskView.calculateFrame(parent: parent, untouchableVC: untouchableViewController))
+
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = .blue
+
+            let nc = NotificationCenter.default
+            nc.addObserver(self, selector: #selector(updateFrame(notification:)),
+                           name: UIDevice.orientationDidChangeNotification, object: nil)
+        }
+
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        @objc func updateFrame(notification: Notification) {
+            frame = MaskView.calculateFrame(parent: parentView, untouchableVC: untouchableVC)
+        }
+
+        private static func calculateFrame(parent: UIView,
+                                           untouchableVC: UntouchableViewController) -> CGRect {
+            return CGRect(
+                x: 0,
+                y: 0,
+                width: parent.bounds.width,
+                height: parent.bounds.height - untouchableVC.offsetOnscreen
+            )
+        }
     }
 }
 
