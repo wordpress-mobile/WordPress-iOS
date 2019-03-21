@@ -7,6 +7,12 @@
 <source src="https://videos.files.wordpress.com/kUJmAcSf/bbb_sunflower_1080p_30fps_normal.mp4" type="video/mp4">
 </video>```
 
+12.1
+-----
+* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
+* Improved text import from other apps, such as Bear or Ulysses 🥰
+* Reader: fixed issue where empty state buttons were not functional.
+
 12.0
 -----
 * Redesigned Notices
