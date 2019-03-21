@@ -28,7 +28,14 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
+class AbstractPostListViewController: UIViewController,
+    WPContentSyncHelperDelegate,
+    UISearchControllerDelegate,
+    UISearchResultsUpdating,
+    WPTableViewHandlerDelegate,
+    // This protocol is not in an extension so that subclasses can override noConnectionMessage()
+    NetworkAwareUI {
+
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)
     fileprivate static let postsFetchRequestBatchSize = Int(10)
@@ -785,8 +792,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         dismissAllNetworkErrorNotices()
 
-        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        WPError.showNetworkingNotice(title: title, error: error)
+        // If there is no internet connection, we'll show the specific error message defined in
+        // `noConnectionMessage()` (overridden by subclasses). For everything else, we let
+        // `WPError.showNetworkingNotice` determine the user-friendly error message.
+        if !connectionAvailable() {
+            presentNoNetworkAlert()
+        } else {
+            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingNotice(title: title, error: error)
+        }
     }
 
     @objc func promptForPassword() {
@@ -1125,11 +1139,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
     }
-}
 
-extension AbstractPostListViewController: NetworkAwareUI {
+    // MARK: - NetworkAwareUI
+
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
+    }
+
+    func noConnectionMessage() -> String {
+        return ReachabilityUtils.noConnectionMessage()
     }
 }
 

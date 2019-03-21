@@ -1632,6 +1632,11 @@ extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return content.contentCount == 0
     }
+
+    func noConnectionMessage() -> String {
+        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Reader without an internet connection.")
+    }
 }
 
 // MARK: - NetworkAwareUI NetworkStatusDelegate
