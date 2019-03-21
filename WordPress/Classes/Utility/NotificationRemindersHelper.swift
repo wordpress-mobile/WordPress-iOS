@@ -1,6 +1,52 @@
 import UserNotifications
 
+
 struct NotificationRemindersHelper {
+
+    // MARK: - Set a Reminder
+
+    /// Schedules a reminder local notification for the specified time interval in the future.
+    ///
+    /// - parameters:
+    ///     - time: A NotificationReminderPeriod after which the local notification should be displayed
+    ///     - note: The Notification that the user should be reminded about
+    ///     - completion: Called after the notification has been scheduled. Passed `true` if the
+    ///                   notification was successfully scheduled, otherwise false.
+    ///
+    func remindMe(in time: NotificationReminderPeriod, about note: Notification, completion: ((Bool) -> Void)? = nil) {
+        guard let components = time.dateComponents else {
+            completion?(false)
+            return
+        }
+
+        let content = UNMutableNotificationContent()
+        content.title = NSLocalizedString("Notification Reminder", comment: "Title of a reminder notification displayed to the user")
+        if let subject = note.renderSubject()?.string {
+            content.body = subject
+        }
+        content.categoryIdentifier = RequestKeys.category
+        content.sound = UNNotificationSound.default
+        content.userInfo = [
+            RequestKeys.type: RequestKeys.typeValue,
+            RequestKeys.notificationId: note.notificationId
+        ]
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let identifier = UUID().uuidString
+        let notificationRequest = UNNotificationRequest(identifier: identifier,
+                                                        content: content,
+                                                        trigger: trigger)
+
+        UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { error in
+            if let error = error {
+                DDLogError("Unable to add reminder notification request (\(error), \(error.localizedDescription))")
+                completion?(false)
+            } else {
+                self.trackReminder(withId: identifier)
+                completion?(true)
+            }
+        })
+    }
 
     // MARK: - Get Reminder Details
 
@@ -20,7 +66,7 @@ struct NotificationRemindersHelper {
     ///   if one is present.
     ///
     func reminderNotificationId(from userInfo: [AnyHashable: Any]) -> String? {
-        return userInfo[RequestUserInfoKeys.notificationId.rawValue] as? String
+        return userInfo[RequestKeys.notificationId] as? String
     }
 
     /// - returns: The trigger date for the specified reminder request.
@@ -53,7 +99,7 @@ struct NotificationRemindersHelper {
         var ids = reminderIds
         ids.append(id)
         defaults.set(ids as Any,
-                     forKey: DefaultsKeys.reminderIds.rawValue)
+                     forKey: DefaultsKeys.reminderIds)
     }
 
     /// Checks for the presence of pending reminders.
@@ -127,15 +173,94 @@ struct NotificationRemindersHelper {
     /// An array of all reminder identifiers that are currently being tracked.
     ///
     private var reminderIds: [String] {
-        let ids = UserDefaults.standard.array(forKey: DefaultsKeys.reminderIds.rawValue) as? [String]
+        let ids = UserDefaults.standard.array(forKey: DefaultsKeys.reminderIds) as? [String]
         return ids ?? []
     }
 
-    private enum DefaultsKeys: String {
-        case reminderIds = "notification-reminder-ids"
+    private enum DefaultsKeys {
+        static let reminderIds = "notification-reminder-ids"
     }
 
-    private enum RequestUserInfoKeys: String {
-        case notificationId = "note_id"
+    private enum RequestKeys {
+        static let category = "notification-reminder"
+        static let notificationId = "note_id"
+        static let type = "type"
+        static let typeValue = "local"
+    }
+}
+
+/// Encapsulates the period after which a reminder should be displayed.
+///
+enum NotificationReminderPeriod: CaseIterable {
+    case in20minutes
+    case in1hour
+    case in3hours
+    case tomorrow   // 9am tomorrow
+    case nextWeek   // 9am on the next Monday
+
+    /// A title describing the time period, for display to the user.
+    ///
+    var displayTitle: String {
+        switch self {
+        case .in20minutes:
+            return NSLocalizedString("In 20 Minutes", comment: "Title of a reminder option that sets a reminder in 20 minutes time")
+        case .in1hour:
+            return NSLocalizedString("In 1 Hour", comment: "Title of a reminder option that sets a reminder in 1 hours time")
+        case .in3hours:
+            return NSLocalizedString("In 3 Hours", comment: "Title of a reminder option that sets a reminder in 3 hours time")
+        case .tomorrow:
+            return NSLocalizedString("Tomorrow", comment: "Title of a reminder option that sets a reminder for 9am tomorrow.")
+        case .nextWeek:
+            return NSLocalizedString("Next Week", comment: "Title of a reminder option that sets a reminder for 9am the following Monday.")
+        }
+    }
+
+    /// Date components representing the time period. Used to schedule a reminder.
+    ///
+    var dateComponents: DateComponents? {
+        var components = DateComponents()
+
+        switch self {
+        case .in20minutes:
+            components.minute = 20
+            return Date.today.addingComponents(components)?.timeAndDateComponents
+        case .in1hour:
+            components.hour = 1
+            return Date.today.addingComponents(components)?.timeAndDateComponents
+        case .in3hours:
+            components.hour = 3
+            return Date.today.addingComponents(components)?.timeAndDateComponents
+        case .tomorrow:
+            components.day = 1
+            guard let tomorrow = Date.today.addingComponents(components),
+                let date = Calendar.current.date(bySettingHour: ComponentValues.hours9am, minute: 0, second: 0, of: tomorrow) else {
+                    return nil
+            }
+            return date.timeAndDateComponents
+        case .nextWeek:
+            components.weekday = ComponentValues.weekdayMonday
+            components.hour = ComponentValues.hours9am
+            return components
+        }
+    }
+
+    private enum ComponentValues {
+        static let hours9am = 9
+        static let weekdayMonday = 2
+    }
+}
+
+private extension Date {
+    static var today: Date {
+        return Date()
+    }
+
+    var timeAndDateComponents: DateComponents {
+        return Calendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second],
+                                               from: self)
+    }
+
+    func addingComponents(_ components: DateComponents) -> Date? {
+        return Calendar.current.date(byAdding: components, to: self)
     }
 }
