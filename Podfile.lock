@@ -248,7 +248,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
   - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/08a09629cc0adb7709b86f15bb3c43e8c69efd64/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
-  - react-native-keyboard-aware-scroll-view (from `https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git`, commit `064d4ce04f5fd757a8530eedd4c0abedb71139f9`)
+  - react-native-keyboard-aware-scroll-view (from `https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git`, commit `0d1637b99bf6f108d2792919bff0057e3d853677`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/08a09629cc0adb7709b86f15bb3c43e8c69efd64/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `9.3.3-gb`)
   - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `08a09629cc0adb7709b86f15bb3c43e8c69efd64`)
@@ -317,7 +317,7 @@ EXTERNAL SOURCES:
   React:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/08a09629cc0adb7709b86f15bb3c43e8c69efd64/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   react-native-keyboard-aware-scroll-view:
-    :commit: 064d4ce04f5fd757a8530eedd4c0abedb71139f9
+    :commit: 0d1637b99bf6f108d2792919bff0057e3d853677
     :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
   react-native-safe-area:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/08a09629cc0adb7709b86f15bb3c43e8c69efd64/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
@@ -341,7 +341,7 @@ CHECKOUT OPTIONS:
     :commit: 08a09629cc0adb7709b86f15bb3c43e8c69efd64
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   react-native-keyboard-aware-scroll-view:
-    :commit: 064d4ce04f5fd757a8530eedd4c0abedb71139f9
+    :commit: 0d1637b99bf6f108d2792919bff0057e3d853677
     :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
@@ -403,6 +403,6 @@ SPEC CHECKSUMS:
   yoga: 1fe535cf9b523600f42e2785b6ed56484a62b46d
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 13f0b7c85648171c86f4edb506b5e37d6be50a6f
+PODFILE CHECKSUM: 3a25887cc095dadd6c34f7002cf67e48555e5577
 
 COCOAPODS: 1.5.3
