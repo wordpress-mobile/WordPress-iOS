@@ -1187,9 +1187,12 @@
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
+		CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */; };
+		CC8498D32241477F00DB490A /* TagsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8498D22241477F00DB490A /* TagsComponent.swift */; };
 		CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
 		CC94FC68221452A4002E5825 /* EditorNoticeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */; };
 		CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC94FC692214532D002E5825 /* FancyAlertComponent.swift */; };
+		CCE55E992242715C002A9634 /* CategoriesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE55E982242715C002A9634 /* CategoriesComponent.swift */; };
 		CCE911BC221D8497007E1D4E /* LoginSiteAddressScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */; };
 		CCE911BE221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */; };
 		CCF6ACE7221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCF6ACE6221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift */; };
@@ -3198,12 +3201,15 @@
 		C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		C9264D275F6288F66C33D2CE /* Pods-WordPressTest.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-internal.xcconfig"; sourceTree = "<group>"; };
 		C9BDC428A69177C2CBF0C247 /* Pods-WordPressShareExtension.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-internal.xcconfig"; sourceTree = "<group>"; };
+		CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPostSettings.swift; sourceTree = "<group>"; };
 		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CC24E5F21577DFF400A6D5B5 /* Twitter.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		CC8498D22241477F00DB490A /* TagsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsComponent.swift; sourceTree = "<group>"; };
 		CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPUITestCredentials.swift; sourceTree = "<group>"; };
 		CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorNoticeComponent.swift; sourceTree = "<group>"; };
 		CC94FC692214532D002E5825 /* FancyAlertComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertComponent.swift; sourceTree = "<group>"; };
+		CCE55E982242715C002A9634 /* CategoriesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesComponent.swift; sourceTree = "<group>"; };
 		CCE911BB221D8497007E1D4E /* LoginSiteAddressScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSiteAddressScreen.swift; sourceTree = "<group>"; };
 		CCE911BD221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUsernamePasswordScreen.swift; sourceTree = "<group>"; };
 		CCF6ACE6221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCheckMagicLinkScreen.swift; sourceTree = "<group>"; };
@@ -7377,10 +7383,12 @@
 		BED4D83C1FF13C6200A11345 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
+				CC8498CF2241473400DB490A /* EditorSettingsComponents */,
 				BED4D8361FF1289B00A11345 /* EditorEditLinkScreen.swift */,
 				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
 				BED4D8341FF1208400A11345 /* EditorScreen.swift */,
 				CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */,
+				CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -7470,6 +7478,15 @@
 				B558541019631A1000FAF6C3 /* Notifications.storyboard */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		CC8498CF2241473400DB490A /* EditorSettingsComponents */ = {
+			isa = PBXGroup;
+			children = (
+				CCE55E982242715C002A9634 /* CategoriesComponent.swift */,
+				CC8498D22241477F00DB490A /* TagsComponent.swift */,
+			);
+			path = EditorSettingsComponents;
 			sourceTree = "<group>";
 		};
 		CCB3A03814C8DD5100D43C3F /* Reader */ = {
@@ -10865,6 +10882,7 @@
 				CC94FC6A2214532D002E5825 /* FancyAlertComponent.swift in Sources */,
 				BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */,
 				CCE911BC221D8497007E1D4E /* LoginSiteAddressScreen.swift in Sources */,
+				CC19BE06223FECAC00CAB3E1 /* EditorPostSettings.swift in Sources */,
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				CCE911BE221D85E4007E1D4E /* LoginUsernamePasswordScreen.swift in Sources */,
 				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
@@ -10874,9 +10892,11 @@
 				BE6DD3321FD6803700E55192 /* MeTabScreen.swift in Sources */,
 				BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */,
 				BE8707172006B774004FB5A4 /* MySiteScreen.swift in Sources */,
+				CCE55E992242715C002A9634 /* CategoriesComponent.swift in Sources */,
 				BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */,
 				CCF6ACE7221ED73900D0C5BE /* LoginCheckMagicLinkScreen.swift in Sources */,
 				FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */,
+				CC8498D32241477F00DB490A /* TagsComponent.swift in Sources */,
 				BED4D8391FF137FD00A11345 /* EditorTests.swift in Sources */,
 				BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */,
 				BE6DD32A1FD6708900E55192 /* LinkOrPasswordScreen.swift in Sources */,

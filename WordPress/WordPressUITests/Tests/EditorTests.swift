@@ -12,9 +12,11 @@ class EditorTests: XCTestCase {
         app.launchArguments = ["NoAnimations"]
         app.activate()
 
+        // Media permissions alert handler
+        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
+
         editorScreen = LoginFlow
-            .login(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
-            .tabBar
+            .loginIfNeeded(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
             .gotoEditorScreen()
     }
 
@@ -22,16 +24,40 @@ class EditorTests: XCTestCase {
         if editorScreen.isLoaded() {
             _ = editorScreen.goBack()
         }
-        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 
     func testSimplePublish() {
-        let title = "Hello XCUI World!"
-        let longText = String(repeating: "very ", count: 20) + "long text in a galaxy not so far away"
+        let title = DataHelper.title
+        let content = DataHelper.longText
         _ = editorScreen
             .enterTextInTitle(text: title)
-            .enterText(text: longText)
+            .enterText(text: content)
+            .publish()
+            .viewPublishedPost(withTitle: title)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .done()
+    }
+
+    func testBasicPublish() {
+        let title = DataHelper.title
+        let content = DataHelper.longText
+        let category = DataHelper.category
+        let tag = DataHelper.tag
+        _ = editorScreen
+            .enterTextInTitle(text: title)
+            .enterText(text: content)
+            .addImageByOrder(id: 0)
+            .openPostSettings()
+            .openCategories()
+            .selectCategory(name: category)
+            .goBackToSettings()
+            .openTags()
+            .addTag(name: tag)
+            .goBackToSettings()
+            .setFeaturedImage()
+            .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
+            .closePostSettings()
             .publish()
             .viewPublishedPost(withTitle: title)
             .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)

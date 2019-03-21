@@ -13,6 +13,13 @@ class LoginFlow {
             .dismissNotificationAlertIfNeeded()
     }
 
+    static func loginIfNeeded(email: String, password: String) -> TabNavComponent {
+        guard TabNavComponent.isLoaded() else {
+            return login(email: email, password: password).tabBar
+        }
+        return TabNavComponent()
+    }
+
     static func logoutIfNeeded() {
         if TabNavComponent.isLoaded() {
             Logger.log(message: "Logging out...", event: .i)

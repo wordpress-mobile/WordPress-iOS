@@ -19,18 +19,18 @@ class EditorScreen: BaseScreen {
 
     let titleView = XCUIApplication().textViews["Title"]
 
-    lazy var mediaButton = XCUIApplication().buttons["formatToolbarInsertMedia"]
-    lazy var headerButton = XCUIApplication().buttons["formatToolbarSelectParagraphStyle"]
-    lazy var boldButton = XCUIApplication().buttons["formatToolbarToggleBold"]
-    lazy var italicButton = XCUIApplication().buttons["formatToolbarToggleItalic"]
-    lazy var underlineButton = XCUIApplication().buttons["formatToolbarToggleUnderline"]
-    lazy var strikethroughButton = XCUIApplication().buttons["formatToolbarToggleStrikethrough"]
-    lazy var blockquoteButton = XCUIApplication().buttons["formatToolbarToggleBlockquote"]
-    lazy var listButton = XCUIApplication().buttons["formatToolbarToggleListUnordered"]
-    lazy var linkButton = XCUIApplication().buttons["formatToolbarInsertLink"]
-    lazy var horizontalrulerButton = XCUIApplication().buttons["formatToolbarInsertHorizontalRuler"]
-    lazy var sourcecodeButton = XCUIApplication().buttons["formatToolbarToggleHtmlView"]
-    lazy var moreButton = XCUIApplication().buttons["formatToolbarInsertMore"]
+    lazy var mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
+    lazy var headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
+    lazy var boldButton = XCUIApplication().buttons["format_toolbar_toggle_bold"]
+    lazy var italicButton = XCUIApplication().buttons["format_toolbar_toggle_italic"]
+    lazy var underlineButton = XCUIApplication().buttons["format_toolbar_toggle_underline"]
+    lazy var strikethroughButton = XCUIApplication().buttons["format_toolbar_toggle_strikethrough"]
+    lazy var blockquoteButton = XCUIApplication().buttons["format_toolbar_toggle_blockquote"]
+    lazy var listButton = XCUIApplication().buttons["format_toolbar_toggle_list_unordered"]
+    lazy var linkButton = XCUIApplication().buttons["format_toolbar_insert_link"]
+    lazy var horizontalrulerButton = XCUIApplication().buttons["format_toolbar_insert_horizontal_ruler"]
+    lazy var sourcecodeButton = XCUIApplication().buttons["format_toolbar_toggle_html_view"]
+    lazy var moreButton = XCUIApplication().buttons["format_toolbar_insert_more"]
 
     let unorderedListOption = XCUIApplication().buttons["Unordered List"]
     let orderedListOption = XCUIApplication().buttons["Ordered List"]
@@ -204,26 +204,19 @@ class EditorScreen: BaseScreen {
      */
     func addImageByOrder(id: Int) -> EditorScreen {
         tapToolbarButton(button: mediaButton)
-        let cameraRollButton = app.otherElements.cells["Camera Roll"]
-        waitFor(element: cameraRollButton, predicate: "isEnabled == true && isHittable == true")
-        cameraRollButton.tap()
 
-        // Wait for the Camera Roll Animation
-        let navigationBar = app.otherElements.navigationBars["Camera Roll"]
-        _ = navigationBar.waitForExistence(timeout: waitTimeout)
+        // Allow access to device media
+        app.tap() // trigger the media permissions alert handler
 
         // Inject the first picture
         app.cells.element(boundBy: 0).tap()
-
-        // wait for upload simulation
-        sleep(6)
+        app.buttons["Insert 1"].tap()
 
         return self
     }
 
     // returns void since return screen depends on from which screen it loaded
     func goBack() {
-//    func goBack() -> MySitesScreen {
         let navBar = app.navigationBars["Azctec Editor Navigation Bar"]
         navBar.buttons["Close"].tap()
         let notSavedState = app.staticTexts["You have unsaved changes."]
@@ -235,16 +228,32 @@ class EditorScreen: BaseScreen {
 
     func publish() -> EditorNoticeComponent {
         app.buttons["Publish"].tap()
-        acceptPublishAlertIfNeeded() // Accepts "Publish with Confidence" alert
+        confirmPublish()
 
         return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
     }
 
-    private func acceptPublishAlertIfNeeded() {
-        let publishAlert = FancyAlertComponent()
-        if publishAlert.isLoaded() {
-            publishAlert.acceptAlert()
+    private func confirmPublish() {
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().acceptAlert()
+        } else {
+            if isIpad {
+                app.alerts.buttons["Publish"].tap()
+            } else {
+                app.sheets.buttons["Publish"].tap()
+            }
         }
+    }
+
+    func openPostSettings() -> EditorPostSettings {
+        app.buttons["More"].tap()
+        if isIpad {
+            app.alerts.buttons["Post Settings"].tap()
+        } else {
+            app.sheets.buttons["Post Settings"].tap()
+        }
+
+        return EditorPostSettings()
     }
 
     private func getHTMLContent() -> String {

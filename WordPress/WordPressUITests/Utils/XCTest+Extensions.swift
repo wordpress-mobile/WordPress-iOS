@@ -36,6 +36,13 @@ var isIpad: Bool {
 
 extension XCTestCase {
 
+    public func systemAlertHandler(alertTitle: String, alertButton: String) {
+        addUIInterruptionMonitor(withDescription: alertTitle) { (alert) -> Bool in
+            alert.buttons[alertButton].tap()
+            return true
+        }
+    }
+
     public func waitForElementToExist(element: XCUIElement, timeout: TimeInterval? = nil) {
         let timeoutValue = timeout ?? 30
         guard element.waitForExistence(timeout: timeoutValue) else {
@@ -54,5 +61,14 @@ extension XCTestCase {
             XCTFail("\(element) still exists after \(timeoutValue) seconds.")
             return
         }
+    }
+
+    public struct DataHelper {
+        static let title = "WordPress for iOS Test Post"
+        static let shortText = "Lorem ipsum dolor sit amet."
+        static let longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Nam congue efficitur leo eget porta. Proin dictum non ligula aliquam varius. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
+        static let link = "https://wordpress.org/mobile/"
+        static let category = "iOS Test"
+        static let tag = "tag \(Date().toString())"
     }
 }
