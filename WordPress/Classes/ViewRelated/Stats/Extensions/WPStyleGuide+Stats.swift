@@ -182,7 +182,7 @@ extension WPStyleGuide {
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()
         static let filterDividerColor = WPStyleGuide.greyLighten20()
 
-        static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
+        static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
 
         static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
