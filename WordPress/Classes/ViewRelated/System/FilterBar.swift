@@ -262,6 +262,7 @@ class FilterTabBar: UIControl {
 
         tab.setAttributedTitle(item.attributedTitle, for: .normal)
         tab.titleLabel?.lineBreakMode = .byWordWrapping
+        tab.titleLabel?.textAlignment = .center
         tab.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: item.attributedTitle), for: .selected)
         tab.setAttributedTitle(addColor(deselectedTabColor, toAttributedString: item.attributedTitle), for: .normal)
 
