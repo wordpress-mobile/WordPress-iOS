@@ -440,7 +440,7 @@ class FilterTabBar: UIControl {
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
-        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
+        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 2.0, bottom: 10.0, right: 2.0)
     }
 
     private enum SelectionAnimation {
