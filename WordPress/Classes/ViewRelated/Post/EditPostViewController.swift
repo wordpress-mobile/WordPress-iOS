@@ -132,6 +132,8 @@ class EditPostViewController: UIViewController {
 
     private func showEditor(_ editor: EditorViewController) {
         editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
+        // only open the media picker once.
+        openWithMediaPicker = false
         editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
             guard let strongSelf = self else {
                 editor?.dismiss(animated: true) {}
