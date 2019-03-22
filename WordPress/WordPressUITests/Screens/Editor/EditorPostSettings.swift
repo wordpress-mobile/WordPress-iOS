@@ -38,7 +38,7 @@ class EditorPostSettings: BaseScreen {
     func setFeaturedImage() -> EditorPostSettings {
         featuredImageButton.tap()
         mediaLibrary.tap()
-        app.cells.element(boundBy: 0).tap() // Select latest uploaded image in media library
+        app.collectionViews.cells.element(boundBy: 0).tap() // Select latest uploaded image in media library
 
         return EditorPostSettings()
     }

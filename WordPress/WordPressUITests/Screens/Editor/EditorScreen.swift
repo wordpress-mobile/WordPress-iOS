@@ -208,6 +208,11 @@ class EditorScreen: BaseScreen {
         // Allow access to device media
         app.tap() // trigger the media permissions alert handler
 
+        // Make sure media picker is open
+        if mediaButton.isHittable {
+            tapToolbarButton(button: mediaButton)
+        }
+
         // Inject the first picture
         app.cells.element(boundBy: 0).tap()
         app.buttons["Insert 1"].tap()
@@ -247,11 +252,7 @@ class EditorScreen: BaseScreen {
 
     func openPostSettings() -> EditorPostSettings {
         app.buttons["More"].tap()
-        if isIpad {
-            app.alerts.buttons["Post Settings"].tap()
-        } else {
-            app.sheets.buttons["Post Settings"].tap()
-        }
+        app.sheets.buttons["Post Settings"].tap()
 
         return EditorPostSettings()
     }
