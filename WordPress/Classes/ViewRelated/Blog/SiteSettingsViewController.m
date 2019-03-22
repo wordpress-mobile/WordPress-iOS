@@ -501,7 +501,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForMediaSettingsAtRow:(NSInteger)row
 {
     if (self.blog.isQuotaAvailable) {
-        NSString *formatString = NSLocalizedString(@"%@ of %@", @"Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB.");
+        NSString *formatString = NSLocalizedString(@"%@ of %@ on your site", @"Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB.");
         self.mediaQuotaCell.value = [[NSString alloc] initWithFormat:formatString, self.blog.quotaPercentageUsedDescription, self.blog.quotaSpaceAllowedDescription];
         self.mediaQuotaCell.percentage = self.blog.quotaPercentageUsed;
     }
