@@ -105,6 +105,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     }
 
     private func showMediaSelectionOnStart() {
+        isOpenedDirectlyForPhotoPost = false
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .device,
                                                        callback: {(asset) in
@@ -250,9 +251,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         gutenberg.delegate = self
         showInformativeDialogIfNecessary()
-        if isOpenedDirectlyForPhotoPost {
-            showMediaSelectionOnStart()
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -485,6 +483,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             isFirstGutenbergLayout = false
         }
         if isFirstGutenbergLayout {
+            insertPrePopulatedMedia()
+            if isOpenedDirectlyForPhotoPost {
+                showMediaSelectionOnStart()
+            }
             focusTitleIfNeeded()
         }
     }
@@ -494,7 +496,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         if !editorSession.started {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
         }
-        insertPrePopulatedMedia()
     }
 }
 
