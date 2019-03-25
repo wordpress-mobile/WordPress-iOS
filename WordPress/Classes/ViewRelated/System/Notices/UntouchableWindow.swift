@@ -25,7 +25,6 @@ class UntouchableViewController: UIViewController {
     }
 
     override func loadView() {
-        super.loadView()
         view = UntouchableView()
     }
 
