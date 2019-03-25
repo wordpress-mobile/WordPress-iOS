@@ -1,5 +1,6 @@
 12.2
 -----
+* Fix Notices appearing anywhere but the bottom on iPad devices.
  
 12.1
 -----
