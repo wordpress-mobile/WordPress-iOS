@@ -64,6 +64,40 @@ class UntouchableViewController: UIViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // For iPad devices and app configs where all orientations are supported, the view is
+        // never automatically resized when the device is rotated. So, in here, we manually
+        // resize the view whenever the device is rotated.
+        //
+        // More curiously, the `viewWillTransitionToSize:withTransitionCoordinator` is also never
+        // called in the ViewController.
+        //
+        // Another solution to avoid this is to remove the support for _Upside Down_ orientation
+        // in Info.plist. We probably do not want that though.
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let nc = NotificationCenter.default
+            nc.addObserver(self, selector: #selector(updateFrame(notification:)),
+                           name: UIDevice.orientationDidChangeNotification, object: nil)
+        }
+    }
+
+    /// Update the frame of the view to match the current device's orientation.
+    @objc func updateFrame(notification: Notification) {
+        let currentSize = view.frame.size
+        let maxDimension = max(currentSize.width, currentSize.height)
+        let minDimension = min(currentSize.width, currentSize.height)
+
+        let isLandscape = UIDevice.current.orientation.isLandscape
+        let size = CGSize(
+            width: isLandscape ? maxDimension : minDimension,
+            height: isLandscape ? minDimension : maxDimension
+        )
+
+        view.frame = CGRect(origin: view.frame.origin, size: size)
+    }
+
     enum Constants {
         static let offsetWithoutTabbar: CGFloat = 50.0
     }
