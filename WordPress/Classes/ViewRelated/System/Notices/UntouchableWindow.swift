@@ -73,9 +73,6 @@ class UntouchableViewController: UIViewController {
         //
         // More curiously, the `viewWillTransitionToSize:withTransitionCoordinator` is also never
         // called in the ViewController.
-        //
-        // Another solution to avoid this is to remove the support for _Upside Down_ orientation
-        // in Info.plist. We probably do not want that though.
         if UIDevice.current.userInterfaceIdiom == .pad {
             let nc = NotificationCenter.default
             nc.addObserver(self, selector: #selector(updateFrame(notification:)),
