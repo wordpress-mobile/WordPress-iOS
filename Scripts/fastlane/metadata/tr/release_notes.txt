@@ -1,3 +1,4 @@
-- Sizi kişiselleştirilmiş, halihazırda özelleştirilmiş bir web sitesiyle başlatan akıllı site oluşturma işlemiyle "ilk kayıttan" "web sitesi tamamlamaya" daha hızlı ilerlersiniz. Artık yayın tarihinizi öne çekmeniz gerekebilir, bunun için üzgünüz! Ne kadar güzel bir sorun.
-- Yeni sitenizi oluşturduğunuzda, kitlenizi oluşturmaya ilişkin ipuçları dahil, sitenizi şekillendirmek ve büyütmekle ilgili hiç olmadığı kadar fazla sayıda eğitim mevcut. İşinize yarayacağı zaman bunları önereceğiz ve tümünü istediğiniz zaman Sitelerim ekranında bulabilirsiniz. Çünkü yayımlamak bir bitiş değil başlangıçtır.
-- Uygulamayı kullanmayı eğlenceli -en azından daha keyifli- kılmaya yönelik yolculuğumuzda düzenleyici penceresinin içeriğini artırdık. Böylece, daha uzun yazılar yazmak daha rahat hale geldi ve anlamalarını kolaylaştırmak için bazı hata sayfası düzenleri ve illüstrasyonları uygulamanın geri kalanıyla daha tutarlı olarak sağlandı.
+- Dikte etme artık blok düzenleyicide çalışıyor.
+- Çevrimdışı hata mesajları şimdi sayfanın altındaki daha küçük açılır pencerelerde görüntülenecek.
+- Site önizleme adres çubuğunun site oluşturma akışında düzenlenebileceği bir hata düzeltildi.
+- Blok düzenleyicideki resimlerin özel sitelere yüklenemediği bir sorun düzeltildi.

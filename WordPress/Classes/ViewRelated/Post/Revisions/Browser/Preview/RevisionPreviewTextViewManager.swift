@@ -66,7 +66,7 @@ private extension RevisionPreviewTextViewManager {
             return
         }
 
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: failure)
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { (_) in failure() })
         activeMediaRequests.append(receipt)
     }
 }

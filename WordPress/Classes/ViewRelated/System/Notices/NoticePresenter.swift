@@ -189,6 +189,14 @@ class NoticePresenter: NSObject {
         dismiss(container: container)
     }
 
+    /// Dismiss the currently shown `Notice` if its `tag` is equal to the given `tag`.
+    public func dismissCurrentNotice(tagged tag: String) {
+        // It's named _nextNotice_ but it really is the _current_ Notice in NoticeStore.state
+        if store.nextNotice?.tag == tag {
+            dismissCurrentNotice()
+        }
+    }
+
     private func dismiss(container: NoticeContainerView) {
         guard container.superview != nil else {
             return
@@ -262,7 +270,8 @@ private extension UIWindow {
 /// width when displayed in a regular size class.
 ///
 private class NoticeContainerView: UIView {
-    let containerMargin: CGFloat = 16.0
+    /// The space between the Notice and its parent View
+    private let containerMargin = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 15.0, right: 8.0)
     var bottomConstraint: NSLayoutConstraint?
 
     let noticeView: UIView
@@ -274,10 +283,7 @@ private class NoticeContainerView: UIView {
 
         translatesAutoresizingMaskIntoConstraints = false
 
-        layoutMargins = UIEdgeInsets(top: containerMargin,
-                                     left: containerMargin,
-                                     bottom: containerMargin,
-                                     right: containerMargin)
+        layoutMargins = containerMargin
 
         // Padding views on either side, of equal width to ensure centering
         let leftPaddingView = UIView()

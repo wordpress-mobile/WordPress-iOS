@@ -24,7 +24,13 @@ class TabNavComponent: BaseScreen {
         return MeTabScreen()
     }
 
+    func gotoMySiteScreen() -> MySiteScreen {
+        mySitesTabButton.tap()
+        return MySiteScreen()
+    }
+
     func gotoMySitesScreen() -> MySitesScreen {
+        mySitesTabButton.tap()
         mySitesTabButton.tap()
         return MySitesScreen()
     }

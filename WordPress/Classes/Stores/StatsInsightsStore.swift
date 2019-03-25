@@ -4,6 +4,8 @@ import WordPressFlux
 import WordPressComStatsiOS
 
 enum InsightAction: Action {
+
+    // Insights overview
     case receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?)
     case receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?)
     case receivedAnnualAndMostPopularTimeStats(_ annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?)
@@ -12,16 +14,30 @@ enum InsightAction: Action {
     case receivedPublicize(_ publicizeStats: StatsPublicizeInsight?)
     case receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?)
     case receivedTodaysStats(_ todaysStats: StatsTodayInsight?)
-    case receivedPostingActivity(_ postingActivity: StatsStreak?)
+    case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?)
     case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?)
     case refreshInsights()
+
+    // Insights details
+    case receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?)
+    case receivedAllEmailFollowers(_ allDotComFollowers: StatsGroup?)
+    case refreshFollowers()
+
+    case receivedAllAuthorsComments()
+    case receivedAllPostsComments()
+    case refreshComments()
 }
 
 enum InsightQuery {
     case insights
+    case allFollowers
+    case allComments
 }
 
 struct InsightStoreState {
+
+    // Insights overview
+
     var lastPostInsight: StatsLastPostInsight?
     var fetchingLastPostInsight = false
 
@@ -46,11 +62,26 @@ struct InsightStoreState {
     var todaysStats: StatsTodayInsight?
     var fetchingTodaysStats = false
 
-    var postingActivity: StatsStreak?
+    var postingActivity: StatsPostingStreakInsight?
     var fetchingPostingActivity = false
 
     var topTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingTagsAndCategories = false
+
+    // Insights details
+
+    var allDotComFollowers: [StatsItem]?
+    var fetchingAllDotComFollowers = false
+
+    var allEmailFollowers: [StatsItem]?
+    var fetchingAllEmailFollowers = false
+
+    var allAuthorsComments: StatsCommentsInsight?
+    var fetchingAllAuthorsComments = false
+
+
+    var allPostsComments: StatsCommentsInsight?
+    var fetchingAllPostsComments = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -88,6 +119,18 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedTagsAndCategories(tagsAndCategories)
         case .refreshInsights:
             refreshInsights()
+        case .receivedAllDotComFollowers(let allDotComFollowers):
+            receivedAllDotComFollowers(allDotComFollowers)
+        case .receivedAllEmailFollowers(let allEmailFollowers):
+            receivedAllEmailFollowers(allEmailFollowers)
+        case .refreshFollowers:
+            refreshFollowers()
+        case .receivedAllAuthorsComments:
+            receivedAllAuthorsComments()
+        case .receivedAllPostsComments:
+            receivedAllPostsComments()
+        case .refreshComments:
+            refreshComments()
         }
     }
 
@@ -104,18 +147,39 @@ private extension StatsInsightsStore {
 
     func processQueries() {
 
-        guard !activeQueries.isEmpty && shouldFetch() else {
+        guard !activeQueries.isEmpty else {
             return
         }
 
-        fetchInsights()
+        activeQueries.forEach { query in
+            switch query {
+            case .insights:
+                if shouldFetchOverview() {
+                    fetchInsights()
+                }
+            case .allFollowers:
+                if shouldFetchFollowers() {
+                    fetchAllFollowers()
+                }
+            case .allComments:
+                if shouldFetchComments() {
+                    fetchAllComments()
+                }
+            }
+        }
     }
+
+    // MARK: - Insights Overview
 
     func fetchInsights() {
 
-        setAllAsFetching()
+        setAllAsFetchingOverview()
 
-        let api = apiService(for: SiteStatsInformation.sharedInstance.siteID!.intValue)
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
+
+        let api = apiService(for: siteID)
 
         api.getInsight { (lastPost: StatsLastPostInsight?, error) in
             if error != nil {
@@ -182,32 +246,24 @@ private extension StatsInsightsStore {
             self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight))
         }
 
-        SiteStatsInformation.statsService()?.retrieveInsightsStats(
-        allTimeStatsCompletionHandler: nil,
-        insightsCompletionHandler: nil,
-        todaySummaryCompletionHandler: nil,
-        latestPostSummaryCompletionHandler: nil,
-        commentsAuthorCompletionHandler: nil,
-        commentsPostsCompletionHandler: nil,
-        tagsCategoriesCompletionHandler: nil,
-        followersDotComCompletionHandler: nil,
-        followersEmailCompletionHandler: nil,
-        publicizeCompletionHandler: nil,
-        streakCompletionHandler: { (statsStreak, error) in
+        api.getInsight { (streak: StatsPostingStreakInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching stats streak: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(statsStreak))
-        }, progressBlock: { (numberOfFinishedOperations, totalNumberOfOperations) in
 
-        }, andOverallCompletionHandler: {
+            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak))
+        }
+    }
 
-        })
+    func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
+        let api = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+
+        return StatsServiceRemoteV2(wordPressComRestApi: api, siteID: site, siteTimezone: SiteStatsInformation.sharedInstance.siteTimeZone!)
     }
 
     func refreshInsights() {
-        guard shouldFetch() else {
-            DDLogInfo("Stats Insights refresh triggered while one was in progress.")
+        guard shouldFetchOverview() else {
+            DDLogInfo("Stats Insights Overview refresh triggered while one was in progress.")
             return
         }
 
@@ -270,7 +326,7 @@ private extension StatsInsightsStore {
         }
     }
 
-    func receivedPostingActivity(_ postingActivity: StatsStreak?) {
+    func receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?) {
         transaction { state in
             state.postingActivity = postingActivity
             state.fetchingPostingActivity = false
@@ -284,11 +340,7 @@ private extension StatsInsightsStore {
         }
     }
 
-    func shouldFetch() -> Bool {
-        return !isFetching
-    }
-
-    func setAllAsFetching() {
+    func setAllAsFetchingOverview() {
         state.fetchingLastPostInsight = true
         state.fetchingAllTimeStats = true
         state.fetchingAnnualAndMostPopularTime = true
@@ -299,6 +351,96 @@ private extension StatsInsightsStore {
         state.fetchingPostingActivity = true
         state.fetchingCommentsInsight = true
         state.fetchingTagsAndCategories = true
+    }
+
+    func shouldFetchOverview() -> Bool {
+        return !isFetchingOverview
+    }
+
+    // MARK: - Insights Details
+
+    func fetchAllFollowers() {
+        state.fetchingAllDotComFollowers = true
+        state.fetchingAllEmailFollowers = true
+
+        SiteStatsInformation.statsService()?.retrieveFollowers(of: .dotCom, withCompletionHandler: { (dotComFollowers, error) in
+            if error != nil {
+                DDLogInfo("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers))
+        })
+
+        SiteStatsInformation.statsService()?.retrieveFollowers(of: .email, withCompletionHandler: { (emailFollowers, error) in
+            if error != nil {
+                DDLogInfo("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllEmailFollowers(emailFollowers))
+        })
+    }
+
+    func fetchAllComments() {
+        state.fetchingAllAuthorsComments = true
+        state.fetchingAllPostsComments = true
+
+        // TODO: replace with api call when fetch all author and post comments is supported.
+        actionDispatcher.dispatch(InsightAction.receivedAllAuthorsComments())
+        actionDispatcher.dispatch(InsightAction.receivedAllPostsComments())
+    }
+
+    func receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?) {
+        transaction { state in
+            state.allDotComFollowers = allDotComFollowers?.items as? [StatsItem]
+            state.fetchingAllDotComFollowers = false
+        }
+    }
+
+    func receivedAllEmailFollowers(_ allEmailFollowers: StatsGroup?) {
+        transaction { state in
+            state.allEmailFollowers = allEmailFollowers?.items as? [StatsItem]
+            state.fetchingAllEmailFollowers = false
+        }
+    }
+
+    func refreshFollowers() {
+        guard shouldFetchFollowers() else {
+            DDLogInfo("Stats Insights Followers refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllFollowers()
+    }
+
+    func shouldFetchFollowers() -> Bool {
+        return !isFetchingFollowers
+    }
+
+    func receivedAllAuthorsComments() {
+        transaction { state in
+            // TODO: replace with real allAuthorsComments when API supports it.
+            state.allAuthorsComments = state.topCommentsInsight
+            state.fetchingAllAuthorsComments = false
+        }
+    }
+
+    func receivedAllPostsComments() {
+        transaction { state in
+            // TODO: replace with real allPostsComments when API supports it.
+            state.allPostsComments = state.topCommentsInsight
+            state.fetchingAllPostsComments = false
+        }
+    }
+
+    func refreshComments() {
+        guard shouldFetchComments() else {
+            DDLogInfo("Stats Insights Comments refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllComments()
+    }
+
+    func shouldFetchComments() -> Bool {
+        return !isFetchingComments
     }
 
 }
@@ -343,58 +485,82 @@ extension StatsInsightsStore {
         return state.topTagsAndCategories
     }
 
+    func getPostingActivity() -> StatsPostingStreakInsight? {
+        return state.postingActivity
+    }
     /// Summarizes the daily posting count for the month in the given date.
     /// Returns an array containing every day of the month and associated post count.
     ///
-    func getMonthlyPostingActivityFor(date: Date) -> [PostingActivityDayData] {
+    func getMonthlyPostingActivityFor(date: Date) -> [PostingStreakEvent] {
 
-        var monthData = [PostingActivityDayData]()
-        let dateComponents = Calendar.current.dateComponents([.year, .month], from: date.normalizedDate())
-
-        // Add every day in the month to the array, seeding with 0 counts.
-        guard let dayRange = Calendar.current.range(of: .day, in: .month, for: date) else {
-            return monthData
+        guard
+            let postingEvents = state.postingActivity?.postingEvents,
+            postingEvents.count > 0
+            else {
+                return []
         }
 
-        dayRange.forEach { day in
-            let components = DateComponents(year: dateComponents.year, month: dateComponents.month, day: day)
-            guard let date = Calendar.current.date(from: components) else {
-                return
+        let calendar = Calendar.autoupdatingCurrent
+        let components = calendar.dateComponents([.month, .year], from: date)
+
+        guard
+            let month = components.month,
+            let year = components.year
+            else {
+                return []
+        }
+
+        // This gives a range of how many days there are in a given month...
+        let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
+
+        let mappedMonth = rangeOfMonth
+            // then we create a `Date` representing each of those days
+            .compactMap {
+                return calendar.date(from: DateComponents(year: year, month: month, day: $0))
             }
-
-            monthData.append(PostingActivityDayData(date: date, count: 0))
+            // and pick out a relevant `PostingStreakEvent` from data we have or return
+            // an empty one.
+            .map { (date: Date) -> PostingStreakEvent in
+                if let postingEvent = postingEvents.first(where: { event in return event.date == date }) {
+                    return postingEvent
+                }
+                return PostingStreakEvent(date: date, postCount: 0)
         }
 
-        // If there is no posting activity at all, return.
-        guard let allPostingActivity = state.postingActivity?.items else {
-            return monthData
-        }
+        return mappedMonth
 
-        // If the posting occurred in the requested month, increment the count for that day.
-        allPostingActivity.forEach { postingActivity in
-            let postDate = postingActivity.date.normalizedDate()
-            if let dayIndex = monthData.index(where: { $0.date == postDate }) {
-                monthData[dayIndex].count += 1
-            }
-        }
-
-        return monthData
     }
 
-    func getYearlyPostingActivityFrom(date: Date) -> [[PostingActivityDayData]] {
-        var monthsData = [[PostingActivityDayData]]()
-
-        // Get last 12 months, in ascending order.
-        for month in (0...11).reversed() {
-            if let monthDate = Calendar.current.date(byAdding: .month, value: -month, to: Date()) {
-                monthsData.append(getMonthlyPostingActivityFor(date: monthDate))
+    func getYearlyPostingActivityFrom(date: Date) -> [[PostingStreakEvent]] {
+        // We operate on a "reversed" range since we want least-recent months first.
+        return (0...11).reversed().compactMap {
+            guard
+                let monthDate = Calendar.current.date(byAdding: .month, value: -$0, to: date)
+                else {
+                    return nil
             }
-        }
 
-        return monthsData
+            return getMonthlyPostingActivityFor(date: monthDate)
+        }
     }
 
-    var isFetching: Bool {
+    func getAllDotComFollowers() -> [StatsItem]? {
+        return state.allDotComFollowers
+    }
+
+    func getAllEmailFollowers() -> [StatsItem]? {
+        return state.allEmailFollowers
+    }
+
+    func getAllAuthorsComments() -> StatsCommentsInsight? {
+        return state.allAuthorsComments
+    }
+
+    func getAllPostsComments() -> StatsCommentsInsight? {
+        return state.allPostsComments
+    }
+
+    var isFetchingOverview: Bool {
         return
             state.fetchingLastPostInsight ||
             state.fetchingAllTimeStats ||
@@ -408,10 +574,16 @@ extension StatsInsightsStore {
             state.fetchingTagsAndCategories
     }
 
-    private func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
-        let api = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+    var isFetchingFollowers: Bool {
+        return
+            state.fetchingAllDotComFollowers ||
+            state.fetchingAllEmailFollowers
+    }
 
-        return StatsServiceRemoteV2(wordPressComRestApi: api, siteID: site, siteTimezone: SiteStatsInformation.sharedInstance.siteTimeZone!)
+    var isFetchingComments: Bool {
+        return
+            state.fetchingAllAuthorsComments ||
+            state.fetchingAllPostsComments
     }
 
 }

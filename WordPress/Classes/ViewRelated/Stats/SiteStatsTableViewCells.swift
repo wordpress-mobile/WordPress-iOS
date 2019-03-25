@@ -82,7 +82,7 @@ struct PostingActivityRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let monthsData: [[PostingActivityDayData]]
+    let monthsData: [[PostingStreakEvent]]
     let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
     let action: ImmuTableAction? = nil
 
@@ -115,7 +115,37 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate, showTotalCount: showTotalCount)
+        cell.configure(tabsData: tabsData,
+                       siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                       showTotalCount: showTotalCount)
+    }
+}
+
+struct TabbedTotalsDetailStatsRow: ImmuTableRow {
+
+    typealias CellType = TabbedTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let tabsData: [TabData]
+    let siteStatsDetailsDelegate: SiteStatsDetailsDelegate
+    let showTotalCount: Bool
+    let selectedIndex: Int
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(tabsData: tabsData,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
+                       showTotalCount: showTotalCount,
+                       selectedIndex: selectedIndex,
+                       limitRowsDisplayed: false)
     }
 }
 
@@ -243,6 +273,27 @@ struct CountriesStatsRow: ImmuTableRow {
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+    }
+}
+
+struct OverviewRow: ImmuTableRow {
+
+    typealias CellType = OverviewCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let tabsData: [OverviewTabData]
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(tabsData: tabsData)
     }
 }
 

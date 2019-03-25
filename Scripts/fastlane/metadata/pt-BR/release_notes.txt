@@ -1,3 +1,0 @@
-- Você criará o seu site mais rapidamente com um processo que iniciará seu site já personalizado. Assim você poderá lançar seu site o quanto antes.
-- Assim que você criar um novo site, exibiremos dicas de como melhorar o site e aumentar sua audiência. As sugestões aparecerão quando forem necessárias e você poderá vê-las na tela "Meu site" a qualquer momento.
-- Para continuar a melhor o aplicativo, nós aumentamos a margem no editor para que seja mais confortável escrever posts longos e adicionamos ilustrações em telas de erros consistentes com as outras telas do aplicativo para que seja mais simples de entendê-los.

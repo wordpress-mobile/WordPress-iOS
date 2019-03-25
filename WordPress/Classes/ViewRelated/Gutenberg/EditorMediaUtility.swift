@@ -42,9 +42,18 @@ class EditorMediaUtility {
         })
     }
 
-    func downloadImage(from url: URL, post: AbstractPost, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) -> ImageDownloader.Task {
-        var requestURL = url
+
+    func downloadImage(from url: URL, post: AbstractPost, success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Error) -> Void) -> ImageDownloader.Task {
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        //use height zero to maintain the aspect ratio when fetching
+        let size = CGSize(width: imageMaxDimension, height: 0)
+        let scale = UIScreen.main.scale
+        return downloadImage(from: url, size: size, scale: scale, post: post, success: success, onFailure: failure)
+    }
+
+    func downloadImage(from url: URL, size requestSize: CGSize, scale: CGFloat, post: AbstractPost, success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Error) -> Void) -> ImageDownloader.Task {
+        var requestURL = url
+        let imageMaxDimension = max(requestSize.width, requestSize.height)
         //use height zero to maintain the aspect ratio when fetching
         var size = CGSize(width: imageMaxDimension, height: 0)
         let request: URLRequest
@@ -54,11 +63,11 @@ class EditorMediaUtility {
         } else if post.blog.isPrivate() && PrivateSiteURLProtocol.urlGoes(toWPComSite: url) {
             // private wpcom image needs special handling.
             // the size that WPImageHelper expects is pixel size
-            size.width = size.width * UIScreen.main.scale
+            size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
         } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
-            size.width = size.width * UIScreen.main.scale
+            size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = URLRequest(url: requestURL)
         } else {
@@ -75,7 +84,11 @@ class EditorMediaUtility {
             DispatchQueue.main.async {
                 guard let image = image else {
                     DDLogError("Unable to download image for attachment with url = \(url). Details: \(String(describing: error?.localizedDescription))")
-                    failure()
+                    if let error = error {
+                        failure(error)
+                    } else {
+                        failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil))
+                    }
                     return
                 }
 

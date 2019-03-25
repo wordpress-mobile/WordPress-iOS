@@ -48,7 +48,7 @@ private extension CountriesCell {
         Style.configureCell(self)
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
-        Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsSeparator(separatorLine)
     }
 
     func setSubtitleVisibility() {

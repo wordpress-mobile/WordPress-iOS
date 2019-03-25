@@ -19,7 +19,7 @@ class BaseScreen {
 
     func waitForPage() throws -> BaseScreen {
         let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
-        XCTAssert(result)
+        XCTAssert(result, "Page \(self) is not loaded.")
         Logger.log(message: "Page \(self) is loaded", event: .i)
         return self
     }

@@ -3,6 +3,24 @@ import UIKit
 /// Filter Tab Bar is a tabbed control (much like a segmented control), but
 /// has an appearance similar to Android tabs.
 ///
+
+protocol FilterTabBarItem {
+    var title: String { get }
+    var attributedTitle: NSAttributedString? { get }
+    var accessibilityIdentifier: String { get }
+}
+
+extension FilterTabBarItem {
+    var attributedTitle: NSAttributedString? { return nil }
+}
+
+extension FilterTabBarItem where Self: RawRepresentable {
+
+    var accessibilityIdentifier: String {
+        return "\(self)"
+    }
+}
+
 class FilterTabBar: UIControl {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -36,11 +54,35 @@ class FilterTabBar: UIControl {
         return divider
     }()
 
-    /// Titles of tabs to display.
-    ///
-    @IBInspectable var items: [String] = [] {
+    var items: [FilterTabBarItem] = [] {
         didSet {
             refreshTabs()
+        }
+    }
+
+    private var tabBarHeightConstraint: NSLayoutConstraint! {
+        didSet {
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate([oldValue])
+            }
+        }
+    }
+
+    var tabBarHeight = AppearanceMetrics.height {
+        didSet {
+            tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
+        }
+    }
+
+    var equalWidthFill: UIStackView.Distribution = .fillEqually {
+        didSet {
+            stackView.distribution = equalWidthFill
+        }
+    }
+
+    var equalWidthSpacing: CGFloat = 0 {
+        didSet {
+            stackView.spacing = equalWidthSpacing
         }
     }
 
@@ -56,6 +98,11 @@ class FilterTabBar: UIControl {
                 $0.tintColor = tintColor
                 $0.setTitleColor(titleColorForSelected, for: .selected)
                 $0.setTitleColor(titleColorForSelected, for: .highlighted)
+
+                $0.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
+                                      for: .selected)
+                $0.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: $0.currentAttributedTitle),
+                                      for: .highlighted)
             })
             selectionIndicator.backgroundColor = tintColor
         }
@@ -143,15 +190,6 @@ class FilterTabBar: UIControl {
     }
 
     // MARK: - Initialization
-
-    init(items: [String]) {
-        self.items = items
-
-        super.init(frame: .zero)
-
-        refreshTabs()
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -159,7 +197,8 @@ class FilterTabBar: UIControl {
     }
 
     private func commonInit() {
-        heightAnchor.constraint(equalToConstant: AppearanceMetrics.height).isActive = true
+        tabBarHeightConstraint = heightAnchor.constraint(equalToConstant: tabBarHeight)
+        tabBarHeightConstraint?.isActive = true
 
         addSubview(scrollView)
         NSLayoutConstraint.activate([
@@ -205,27 +244,50 @@ class FilterTabBar: UIControl {
 
     private func refreshTabs() {
         tabs.forEach({ $0.removeFromSuperview() })
-        tabs = items.map(makeTab(_:))
-        tabs.forEach(stackView.addArrangedSubview(_:))
+        tabs = items.map(makeTab)
+        stackView.addArrangedSubviews(tabs)
 
         layoutIfNeeded()
 
         setSelectedIndex(selectedIndex, animated: false)
     }
 
-    private func makeTab(_ title: String) -> UIButton {
+    private func makeTab(_ item: FilterTabBarItem) -> UIButton {
+
         let tab = TabBarButton(type: .custom)
-        tab.setTitle(title, for: .normal)
+        tab.setTitle(item.title, for: .normal)
         tab.setTitleColor(titleColorForSelected, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
 
-        tab.contentEdgeInsets = AppearanceMetrics.buttonInsets
+        tab.setAttributedTitle(item.attributedTitle, for: .normal)
+        tab.titleLabel?.lineBreakMode = .byWordWrapping
+        tab.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: item.attributedTitle), for: .selected)
+        tab.setAttributedTitle(addColor(deselectedTabColor, toAttributedString: item.attributedTitle), for: .normal)
+
+        tab.accessibilityIdentifier = item.accessibilityIdentifier
+
+        tab.contentEdgeInsets = item.attributedTitle != nil ?
+            AppearanceMetrics.buttonInsetsAttributedTitle :
+            AppearanceMetrics.buttonInsets
+
         tab.sizeToFit()
 
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
 
         return tab
+    }
+
+    private func addColor(_ color: UIColor, toAttributedString attributedString: NSAttributedString?) -> NSAttributedString? {
+
+        guard let attributedString = attributedString else {
+            return nil
+        }
+
+        let mutableString = NSMutableAttributedString(attributedString: attributedString)
+        mutableString.addAttributes([.foregroundColor: color], range: NSMakeRange(0, mutableString.string.count))
+
+        return mutableString
     }
 
     private func updateTabSizingConstraints() {
@@ -242,7 +304,8 @@ class FilterTabBar: UIControl {
 
         switch tabSizingStyle {
         case .equalWidths:
-            stackView.distribution = .fillEqually
+            stackView.distribution = equalWidthFill
+            stackView.spacing = equalWidthSpacing
             NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
             stackView.distribution = .fill
@@ -357,8 +420,12 @@ class FilterTabBar: UIControl {
         selectionIndicatorLeadingConstraint?.isActive = false
         selectionIndicatorTrailingConstraint?.isActive = false
 
-        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - AppearanceMetrics.buttonInsets.left)
-        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + AppearanceMetrics.buttonInsets.right)
+        let buttonInsets = tab.currentAttributedTitle != nil ?
+            AppearanceMetrics.buttonInsetsAttributedTitle :
+            AppearanceMetrics.buttonInsets
+
+        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - buttonInsets.left)
+        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + buttonInsets.right)
 
         selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant)
         selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant)
@@ -373,6 +440,7 @@ class FilterTabBar: UIControl {
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
+        static let buttonInsetsAttributedTitle = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
     }
 
     private enum SelectionAnimation {
