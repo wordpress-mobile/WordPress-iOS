@@ -9,8 +9,9 @@ class StatsBarChartView: BarChartView {
 
     // MARK: Properties
 
-    private struct Metrics {
-        static let intrinsicHeight = CGFloat(170)   // height via Zeplin
+    private struct Constants {
+        static let intrinsicHeight  = CGFloat(170)   // height via Zeplin
+        static let highlightAlpha   = CGFloat(0.1)
     }
 
     private let barChartData: BarChartDataConvertible
@@ -18,6 +19,12 @@ class StatsBarChartView: BarChartView {
     private let styling: BarChartStyling
 
     // MARK: StatsBarChartView
+
+    override var bounds: CGRect {
+        didSet {
+            redrawChartMarkersIfNeeded()
+        }
+    }
 
     init(data: BarChartDataConvertible, styling: BarChartStyling) {
         self.barChartData = data
@@ -33,7 +40,7 @@ class StatsBarChartView: BarChartView {
     }
 
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIView.noIntrinsicMetric, height: Metrics.intrinsicHeight)
+        return CGSize(width: UIView.noIntrinsicMetric, height: Constants.intrinsicHeight)
     }
 
     // MARK: Private behavior
@@ -45,6 +52,28 @@ class StatsBarChartView: BarChartView {
 
         configureXAxis()
         configureYAxis()
+    }
+
+    /// Unfortunately the framework doesn't offer much in the way of Auto Layout support,
+    /// so here we manually calculate geometry.
+    ///
+    /// - Parameter entry: the selected entry for which to determine highlight information
+    /// - Returns: the frame & offset from the bar that should be used to render the marker
+    ///
+    private func calculateHighlightFrameAndOffset(for entry: ChartDataEntry) -> (CGRect, CGPoint) {
+        guard let barChartDataEntry = entry as? BarChartDataEntry else {
+            return (.zero, .zero)
+        }
+
+        let barBounds = getBarBounds(entry: barChartDataEntry)
+        let highlightOrigin = CGPoint(x: barBounds.origin.x, y: 0)
+        let rect = CGRect(origin: highlightOrigin, size: barBounds.size)
+
+        let offsetWidth = -(barBounds.width / 2)
+        let offsetHeight = -barBounds.height
+        let offset = CGPoint(x: offsetWidth, y: offsetHeight)
+
+        return (rect, offset)
     }
 
     private func configureBarChartViewProperties() {
@@ -72,8 +101,6 @@ class StatsBarChartView: BarChartView {
 
     private func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
-        drawMarkers = false
-        highlightPerTapEnabled = false
 
         extraRightOffset = CGFloat(20)
 
@@ -84,12 +111,12 @@ class StatsBarChartView: BarChartView {
     }
 
     private func configureXAxis() {
-        xAxis.axisLineColor = styling.adornmentColor
+        xAxis.axisLineColor = styling.lineColor
         xAxis.drawAxisLineEnabled = true
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
-        xAxis.labelTextColor = styling.adornmentColor
+        xAxis.labelTextColor = styling.labelColor
         xAxis.setLabelCount(2, force: true)
         xAxis.valueFormatter = styling.xAxisValueFormatter
     }
@@ -97,11 +124,12 @@ class StatsBarChartView: BarChartView {
     private func configureYAxis() {
         let yAxis = leftAxis
 
-        yAxis.gridColor = styling.adornmentColor
+        xAxis.axisLineColor = styling.lineColor
+        yAxis.gridColor = styling.lineColor
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
-        yAxis.labelTextColor = styling.adornmentColor
+        yAxis.labelTextColor = styling.labelColor
         yAxis.valueFormatter = styling.yAxisValueFormatter
     }
 
@@ -110,20 +138,68 @@ class StatsBarChartView: BarChartView {
 
         if let dataSets = barChartData.dataSets as? [BarChartDataSet] {
             for dataSet in dataSets {
-                dataSet.drawValuesEnabled = false
-                dataSet.highlightEnabled = false
-
                 dataSet.colors = [ styling.barColor ]
+
+                dataSet.drawValuesEnabled = false
+
+                if let barHighlightColor = styling.highlightColor {
+                    dataSet.highlightColor = barHighlightColor
+                    dataSet.highlightEnabled = true
+                    dataSet.highlightAlpha = CGFloat(1)
+                } else {
+                    highlightPerTapEnabled = false
+                }
             }
         }
 
         data = barChartData
     }
 
+    private func drawChartMarker(for entry: ChartDataEntry, triggerRedraw: Bool = false) {
+        let (markerRect, markerOffset) = calculateHighlightFrameAndOffset(for: entry)
+        let marker = StatsBarChartMarker(frame: markerRect)
+        marker.offset = markerOffset
+
+        let markerColor = (styling.highlightColor ?? UIColor.clear).withAlphaComponent(Constants.highlightAlpha)
+        marker.backgroundColor = markerColor
+
+        self.marker = marker
+
+        if triggerRedraw {
+            setNeedsDisplay()
+        }
+    }
+
     private func initialize() {
         translatesAutoresizingMaskIntoConstraints = false
 
+        delegate = self
+
         applyStyling()
         configureAndPopulateData()
+    }
+
+    private func redrawChartMarkersIfNeeded() {
+        guard marker != nil, let highlight = lastHighlighted, let entry = barData?.entryForHighlight(highlight) else {
+            return
+        }
+
+        notifyDataSetChanged()
+
+        let postRotationDelay = DispatchTime.now() + TimeInterval(0.3)
+        DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
+            self.drawChartMarker(for: entry, triggerRedraw: true)
+        }
+    }
+}
+
+// MARK: - ChartViewDelegate
+
+private typealias StatsBarChartMarker = MarkerView
+
+extension StatsBarChartView: ChartViewDelegate {
+
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        drawChartMarker(for: entry)
     }
 }

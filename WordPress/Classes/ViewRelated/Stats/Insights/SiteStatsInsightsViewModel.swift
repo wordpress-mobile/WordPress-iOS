@@ -147,16 +147,6 @@ private extension SiteStatsInsightsViewModel {
         static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
-    enum FollowerType {
-        case wordPressDotCom
-        case email
-    }
-
-    enum CommentType {
-        case author
-        case post
-    }
-
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
         guard let allTimeInsight = store.getAllTimeStats() else {
             return []
@@ -310,7 +300,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createPostingActivityRow() -> PostingActivityRow {
-        var monthsData = [[PostingActivityDayData]]()
+        var monthsData = [[PostingStreakEvent]]()
 
         if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
             monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
@@ -400,25 +390,20 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {
-        return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.author),
-                                               tabDataForCommentType(.post)],
+        return TabbedTotalsStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
+                                               tabDataForCommentType(.insightsCommentsPosts)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: false)
     }
 
-    func tabDataForCommentType(_ commentType: CommentType) -> TabData {
+    func tabDataForCommentType(_ commentType: StatSection) -> TabData {
         let commentsInsight = store.getTopCommentsInsight()
 
-        var tabTitle: String
-        var itemSubtitle: String
         var rowItems: [StatsTotalRowData] = []
 
         switch commentType {
-        case .author:
+        case .insightsCommentsAuthors:
             let authors = commentsInsight?.topAuthors ?? []
-            tabTitle = StatSection.insightsCommentsAuthors.tabTitle
-            itemSubtitle = StatSection.insightsCommentsAuthors.itemSubtitle
-
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -426,11 +411,8 @@ private extension SiteStatsInsightsViewModel {
                                   showDisclosure: false,
                                   statSection: .insightsCommentsAuthors)
             }
-        case .post:
+        case .insightsCommentsPosts:
             let posts = commentsInsight?.topPosts ?? []
-            tabTitle = StatSection.insightsCommentsPosts.tabTitle
-            itemSubtitle = StatSection.insightsCommentsPosts.itemSubtitle
-
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -438,56 +420,51 @@ private extension SiteStatsInsightsViewModel {
                                   disclosureURL: $0.postURL,
                                   statSection: .insightsCommentsPosts)
             }
+        default:
+            break
         }
 
-        return TabData(tabTitle: tabTitle,
-                       itemSubtitle: itemSubtitle,
-                       dataSubtitle: StatSection.insightsCommentsPosts.dataSubtitle,
+        return TabData(tabTitle: commentType.tabTitle,
+                       itemSubtitle: commentType.itemSubtitle,
+                       dataSubtitle: commentType.dataSubtitle,
                        dataRows: rowItems)
     }
 
     func createFollowersRow() -> TabbedTotalsStatsRow {
-        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.wordPressDotCom),
-                                               tabDataForFollowerType(.email)],
+        return TabbedTotalsStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
+                                               tabDataForFollowerType(.insightsFollowersEmail)],
                                     siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                     showTotalCount: true)
     }
 
-    func tabDataForFollowerType(_ followerType: FollowerType) -> TabData {
-
-        var tabTitle: String
+    func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
+        let tabTitle = followerType.tabTitle
         var followers: [StatsFollower]?
         var totalFollowers: Int?
-        var statSection: StatSection?
-        var totalCount: String
 
         switch followerType {
-        case .wordPressDotCom:
-            tabTitle = StatSection.insightsFollowersWordPress.tabTitle
+        case .insightsFollowersWordPress:
             followers = store.getDotComFollowers()?.topDotComFollowers
             totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
-            statSection = .insightsFollowersWordPress
-            totalCount = String(format: StatSection.insightsFollowersWordPress.totalFollowers,
-                                (totalFollowers ?? 0).abbreviatedString())
-        case .email:
-            tabTitle = StatSection.insightsFollowersEmail.tabTitle
+        case .insightsFollowersEmail:
             followers = store.getEmailFollowers()?.topEmailFollowers
             totalFollowers = store.getEmailFollowers()?.emailFollowersCount
-            statSection = .insightsFollowersEmail
-            totalCount = String(format: StatSection.insightsFollowersEmail.totalFollowers,
-                                (totalFollowers ?? 0).abbreviatedString())
+        default:
+            break
         }
+
+        let totalCount = String(format: followerType.totalFollowers, (totalFollowers ?? 0).abbreviatedString())
 
         let followersData = followers?.compactMap {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.subscribedDate.relativeStringInPast(),
                                      userIconURL: $0.avatarURL,
-                                     statSection: statSection)
+                                     statSection: followerType)
         }
 
         return TabData(tabTitle: tabTitle,
-                       itemSubtitle: StatSection.insightsFollowersWordPress.itemSubtitle,
-                       dataSubtitle: StatSection.insightsFollowersWordPress.dataSubtitle,
+                       itemSubtitle: followerType.itemSubtitle,
+                       dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
     }

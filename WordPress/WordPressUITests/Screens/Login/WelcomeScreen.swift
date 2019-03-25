@@ -1,13 +1,19 @@
 import Foundation
 import XCTest
 
+private struct ElementStringIDs {
+    static let loginButton = "Prologue Log In Button"
+    static let createNewSiteButton = "nextButton"
+}
+
 class WelcomeScreen: BaseScreen {
     let logInButton: XCUIElement
     let createNewSiteButton: XCUIElement
 
     init() {
-        logInButton = XCUIApplication().buttons["Prologue Log In Button"]
-        createNewSiteButton = XCUIApplication().buttons["nextButton"]
+        logInButton = XCUIApplication().buttons[ElementStringIDs.loginButton]
+        createNewSiteButton = XCUIApplication().buttons[ElementStringIDs.createNewSiteButton]
+
         super.init(element: logInButton)
     }
 
@@ -23,6 +29,6 @@ class WelcomeScreen: BaseScreen {
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["nextButton"].exists
+        return XCUIApplication().buttons[ElementStringIDs.loginButton].exists
     }
 }

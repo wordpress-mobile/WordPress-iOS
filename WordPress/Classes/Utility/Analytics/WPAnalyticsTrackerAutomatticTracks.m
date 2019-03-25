@@ -1235,8 +1235,13 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"quick_start_migration_dialog_button_tapped";
             eventProperties = @{ @"type" : @"positive" };
             break;
-        case WPAnalyticsStatQuickStartRemoveDialogButtonTapped:
+        case WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped:
             eventName = @"quick_start_remove_dialog_button_tapped";
+            eventProperties = @{ @"type" : @"positive" };
+            break;
+        case WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped:
+            eventName = @"quick_start_remove_dialog_button_tapped";
+            eventProperties = @{ @"type" : @"negative" };
             break;
         case WPAnalyticsStatQuickStartTypeDismissed:
             eventName = @"quick_start_type_dismissed";
@@ -1752,8 +1757,13 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSearchAdsAttribution:
             eventName = @"searchads_attribution_detail_received";
             break;
-
-        // to be implemented
+            
+        // The following are yet to be implemented.
+        //
+        // If you get test failures in WPAnalyticsTrackerAutomatticTracksTests, it's most likely
+        // because there are new WPAnalyticsStat enum values. This can mean that somebody is
+        // currently working on it. In cases like this, add the enum values here, returning
+        // as `nil`. The tests should pass.
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:

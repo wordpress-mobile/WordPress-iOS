@@ -66,6 +66,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.estimatedRowHeight = 500
     }
 
 }
@@ -103,6 +104,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                OverviewRow.self,
                 TableFooterRow.self]
     }
 
@@ -139,8 +141,13 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        if #available(iOS 11.0, *) {
+            tableView.performBatchUpdates({
+            })
+        } else {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
 
     func clearExpandedRows() {
@@ -186,7 +193,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection, siteStatsPeriodDelegate: self)
+        detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

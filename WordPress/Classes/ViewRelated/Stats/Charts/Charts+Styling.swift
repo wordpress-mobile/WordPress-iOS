@@ -3,21 +3,22 @@ import Foundation
 
 import Charts
 
-// MARK: - LatestPostSummaryStyling
+// MARK: - PostSummaryStyling
 
-struct LatestPostSummaryStyling: BarChartStyling {
-    let adornmentColor: UIColor
+class PostSummaryStyling: BarChartStyling {
     let barColor: UIColor
+    let highlightColor: UIColor?
+    let labelColor: UIColor
+    let lineColor: UIColor
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter
-}
 
-extension LatestPostSummaryStyling {
-    init(xAxisFormatter: IAxisValueFormatter, yAxisFormatter: IAxisValueFormatter) {
-        self.init(
-            adornmentColor: NSUIColor.chartColor,
-            barColor: WPStyleGuide.wordPressBlue(),
-            xAxisValueFormatter: xAxisFormatter,
-            yAxisValueFormatter: yAxisFormatter)
+    init(barColor: UIColor, highlightColor: UIColor?, labelColor: UIColor, lineColor: UIColor, xAxisValueFormatter: IAxisValueFormatter, yAxisValueFormatter: IAxisValueFormatter) {
+        self.barColor               = barColor
+        self.highlightColor         = highlightColor
+        self.labelColor             = labelColor
+        self.lineColor              = lineColor
+        self.xAxisValueFormatter    = xAxisValueFormatter
+        self.yAxisValueFormatter    = yAxisValueFormatter
     }
 }

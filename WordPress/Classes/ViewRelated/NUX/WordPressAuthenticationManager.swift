@@ -7,6 +7,7 @@ import WordPressAuthenticator
 //
 @objc
 class WordPressAuthenticationManager: NSObject {
+    static var isPresentingSignIn = false
 
     /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
@@ -61,7 +62,14 @@ extension WordPressAuthenticationManager {
             return
         }
 
-        let controller = signinForWPComFixingAuthToken()
+        guard !isPresentingSignIn else {
+            return
+        }
+
+        isPresentingSignIn = true
+        let controller = signinForWPComFixingAuthToken({ (_) in
+            isPresentingSignIn = false
+        })
         presenter.present(controller, animated: true)
     }
 }

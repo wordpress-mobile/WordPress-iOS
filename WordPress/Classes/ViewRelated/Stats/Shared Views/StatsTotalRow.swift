@@ -175,8 +175,8 @@ private extension StatsTotalRow {
         Style.configureLabelAsCellRowTitle(itemLabel)
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
-        Style.configureViewAsSeperator(separatorLine)
-        Style.configureViewAsSeperator(topExpandedSeparatorLine)
+        Style.configureViewAsSeparator(separatorLine)
+        Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
     }
 

@@ -1,5 +1,12 @@
+12.1
+-----
+ 
 12.0
 -----
+* Redesigned Notices
+* Changed offline error messages to be less disruptive.
+* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
+* Made it easier to find a domain for your new site, by moving the best match to the top of the search results.
  
 11.9
 ------

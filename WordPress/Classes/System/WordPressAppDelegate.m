@@ -76,9 +76,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Set the main window up
     [self.window makeKeyAndVisible];
 
-    // Local Notifications
-    [self addNotificationObservers];
-
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
     __weak __typeof(self) weakSelf = self;
@@ -149,85 +146,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
-    DDLogInfo(@"Application launched with URL: %@", url);
-    BOOL returnValue = NO;
-
-    if ([self.hockey handleOpenURL:url options:options]) {
-        returnValue = YES;
-    }
-
-    if ([WordPressAuthenticator.shared handleGoogleAuthUrl:url
-                                         sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                                annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
-        returnValue = YES;
-    }
-
-    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
-        NSString *URLString = [url absoluteString];
-
-        if ([URLString rangeOfString:@"magic-login"].length) {
-            DDLogInfo(@"App launched with authentication link");
-            BOOL allowWordPressComAuth = [AccountHelper isDotcomAvailable] == false;
-            returnValue = [WordPressAuthenticator openAuthenticationURL:url allowWordPressComAuth:allowWordPressComAuth fromRootViewController:self.window.rootViewController];
-        } else if ([URLString rangeOfString:@"viewpost"].length) {
-            // View the post specified by the shared blog ID and post ID
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            
-            if (params.count) {
-                NSNumber *blogId = [params numberForKey:@"blogId"];
-                NSNumber *postId = [params numberForKey:@"postId"];
-
-                WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController showReaderTabForPost:postId onBlog:blogId];
-
-                returnValue = YES;
-            }
-        } else if ([URLString rangeOfString:@"viewstats"].length) {
-            // View the post specified by the shared blog ID and post ID
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            
-            if (params.count) {
-                NSNumber *siteId = [params numberForKey:@"siteId"];
-                
-                BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-                Blog *blog = [blogService blogByBlogId:siteId];
-                
-                if (blog) {
-                    returnValue = YES;
-                    
-                    StatsViewController *statsViewController = [[StatsViewController alloc] init];
-                    statsViewController.blog = blog;
-                    statsViewController.dismissBlock = ^{
-                        [[WPTabBarController sharedInstance] dismissViewControllerAnimated:YES completion:nil];
-                    };
-                    
-                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
-                    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-                    navController.navigationBar.translucent = NO;
-                    [[WPTabBarController sharedInstance] presentViewController:navController animated:YES completion:nil];
-                }
-            }
-        } else if ([URLString rangeOfString:@"debugging"].length) {
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-
-            if (params.count > 0) {
-                NSString *debugType = [params stringForKey:@"type"];
-                NSString *debugKey = [params stringForKey:@"key"];
-
-                if ([[ApiCredentials debuggingKey] isEqualToString:@""] || [debugKey isEqualToString:@""]) {
-                    return NO;
-                }
-
-                if ([debugKey isEqualToString:[ApiCredentials debuggingKey]]) {
-                    if ([debugType isEqualToString:@"crashlytics_crash"]) {
-                        [[Crashlytics sharedInstance] crash];
-                    }
-                }
-            }
-        }
-    }
-
-    return returnValue;
+    return [self application:app open:url options:options];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -338,6 +257,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
 {
+    // Local Notifications
+    [self addNotificationObservers];
+    
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];

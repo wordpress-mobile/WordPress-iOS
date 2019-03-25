@@ -80,8 +80,8 @@ private extension LatestPostSummaryCell {
         Style.configureCell(self)
 
         Style.configureLabelAsSummary(summaryLabel)
-        Style.configureViewAsSeperator(topSeparatorLine)
-        Style.configureViewAsSeperator(bottomSeparatorLine)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
 
         viewsLabel.text = CellStrings.views
         viewsLabel.textColor = Style.defaultTextColor
@@ -229,10 +229,10 @@ private extension LatestPostSummaryCell {
     func configureChartView() {
         resetChartView()
 
+        // Introduced via #11061, to be replaced with real data via #11067
         let stubbedData = LatestPostSummaryDataStub()
-
         let firstStubbedDateInterval = stubbedData.data.first?.date.timeIntervalSince1970 ?? 0
-        let styling = LatestPostSummaryStubStyling(initialDateInterval: firstStubbedDateInterval)
+        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
 
         let chartView = StatsBarChartView(data: stubbedData, styling: styling)
         chartStackView.addArrangedSubview(chartView)

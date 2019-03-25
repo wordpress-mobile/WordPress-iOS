@@ -15,7 +15,7 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var legendView: UIView!
 
-    var yearData = [[PostingActivityDayData]]()
+    var yearData = [[PostingStreakEvent]]()
 
     private var selectedDay: PostingActivityDay?
     private typealias Style = WPStyleGuide.Stats
@@ -82,7 +82,7 @@ extension PostingActivityViewController: PostingActivityDayDelegate {
 
         dayDataView.isHidden = false
         dateLabel.text = formattedDate(dayData.date)
-        postCountLabel.text = formattedPostCount(dayData.count)
+        postCountLabel.text = formattedPostCount(dayData.postCount)
     }
 
 }
@@ -99,7 +99,7 @@ private extension PostingActivityViewController {
     func applyStyles() {
         Style.configureLabelAsPostingDate(dateLabel)
         Style.configureLabelAsPostingCount(postCountLabel)
-        Style.configureViewAsSeperator(separatorLine)
+        Style.configureViewAsSeparator(separatorLine)
     }
 
     func formattedDate(_ date: Date) -> String {

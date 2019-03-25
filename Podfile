@@ -8,38 +8,27 @@ workspace 'WordPress.xcworkspace'
 
 plugin 'cocoapods-repo-update'
 
-post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        if ['WordPress-Aztec-iOS', 'WordPress-Editor-iOS'].include? target.name
-            target.build_configurations.each do |config|
-                config.build_settings['SWIFT_VERSION'] = '4.0'
-            end
-        end
-    end
-end
-
-
 ## Pods shared between all the targets
 ## ===================================
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.7.1'
+    pod 'WordPressShared', '1.7.2'
 
     ## for development:
-    ##pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-#    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '43ee0cb3a24fa9fdfc93116b6ec91f6be51f2b07'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c37c645aaa4e000eb53e8a9537798162c072a321'
 end
 
 def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'e0fc55abb4809b3b23b6d8b56791798af864025d'
-    pod 'WordPress-Editor-iOS', '1.4.3'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a61fb769c1e0c8cabd0ff46234f0f1c72740faac'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a61fb769c1e0c8cabd0ff46234f0f1c72740faac'
+    pod 'WordPress-Editor-iOS', '1.4.4'
 end
 
 def wordpress_ui
@@ -52,8 +41,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 2.1.0.1'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'f2e1d41'
+    pod 'WordPressKit', '~> 3.1.2'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ddf1292ff9df94550b8d30dd8f3c2e23be677a9c'
     #pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
 
@@ -67,6 +56,7 @@ end
 def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
+    pod 'Reachability', '3.2'
 
 	wordpress_kit
 end
@@ -77,14 +67,26 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
-def gutenberg_pod(name, branch=nil)
-    gutenberg_branch=branch || 'master'
-    pod name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{gutenberg_branch}/react-native-gutenberg-bridge/third-party-podspecs/#{name}.podspec.json"
-end
-
 def gutenberg(options)
+    options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
+
+    gutenberg_dependencies options
+end
+
+def gutenberg_dependencies(options)
+    dependencies = [
+        'React',
+        'yoga',
+        'Folly',
+        'react-native-safe-area',
+    ]
+    tag_or_commit = options[:tag] || options[:commit]
+
+    for pod_name in dependencies do
+        pod pod_name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
+    end
 end
 
 ## WordPress iOS
@@ -96,17 +98,13 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    ## React Native
+    ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :git => 'http://github.com/wordpress-mobile/gutenberg-mobile/', :tag => 'v1.0.2'
+    gutenberg :tag => 'v1.1.0'
 
-    gutenberg_pod 'React'
-    gutenberg_pod 'yoga'
-    gutenberg_pod 'Folly'
-    gutenberg_pod 'react-native-safe-area'
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.5'
+    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.6'
     
     ## Third party libraries
     ## =====================
@@ -119,7 +117,6 @@ target 'WordPress' do
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MGSwipeTableCell', '1.6.8'
     pod 'MRProgress', '0.8.3'
-    pod 'Reachability',    '3.2'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
@@ -135,9 +132,9 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.1.9'
+    pod 'WordPressAuthenticator', '~> 1.1.11'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '90a025caaf91cbecd43fa09f98d86b2402f81a09'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => 'f19542a'
 
 
     aztec
@@ -156,9 +153,9 @@ target 'WordPress' do
     target 'WordPressShareExtension' do
         inherit! :search_paths
 
+        aztec
         shared_with_all_pods
         shared_with_networking_pods
-        aztec
         wordpress_ui
     end
 
@@ -169,9 +166,9 @@ target 'WordPress' do
     target 'WordPressDraftActionExtension' do
         inherit! :search_paths
 
+        aztec
         shared_with_all_pods
         shared_with_networking_pods
-        aztec
         wordpress_ui
     end
 
