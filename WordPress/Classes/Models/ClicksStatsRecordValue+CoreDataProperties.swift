@@ -11,6 +11,7 @@ extension ClicksStatsRecordValue {
     @NSManaged public var clicksCount: Int64
     @NSManaged public var label: String?
     @NSManaged public var urlString: String?
+    @NSManaged public var iconUrlString: String?
     @NSManaged public var children: NSOrderedSet?
     @NSManaged public var parent: ClicksStatsRecordValue?
 
