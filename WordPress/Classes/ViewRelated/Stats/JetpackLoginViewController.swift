@@ -73,30 +73,13 @@ class JetpackLoginViewController: UIViewController {
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
-        updateMessageAndButton()
 
-        guard Feature.enabled(.jetpackRemoteInstallation) else {
-            tacButton.isHidden = true
-            faqButton.isHidden = tacButton.isHidden
-            return
-        }
-
-        let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
-                                                lineBreakMode: .byWordWrapping,
-                                                alignment: .center)
-        let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.footnote),
-                                                         .foregroundColor: WPStyleGuide.darkGrey(),
-                                                         .paragraphStyle: paragraph]
-        let attributedTitle = NSMutableAttributedString(string: Constants.Buttons.termsAndConditionsTitle,
-                                                        attributes: attributes)
-        attributedTitle.applyStylesToMatchesWithPattern(Constants.Buttons.termsAndConditions,
-                                                        styles: [.underlineStyle: NSUnderlineStyle.single.rawValue])
         tacButton.titleLabel?.numberOfLines = 0
-        tacButton.setAttributedTitle(attributedTitle, for: .normal)
 
         faqButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
         faqButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
-        faqButton.setTitle(Constants.Buttons.faqTitle, for: .normal)
+
+        updateMessageAndButton()
     }
 
     fileprivate func observeLoginNotifications(_ observe: Bool) {
@@ -148,6 +131,30 @@ class JetpackLoginViewController: UIViewController {
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = !hasJetpack
+
+        // If .jetpackRemoteInstallation is not enabled
+        // I want to skip the buttons configuration and hide those buttons
+        guard Feature.enabled(.jetpackRemoteInstallation) else {
+            tacButton.isHidden = true
+            faqButton.isHidden = tacButton.isHidden
+            return
+        }
+
+        let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
+                                                lineBreakMode: .byWordWrapping,
+                                                alignment: .center)
+        let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.footnote),
+                                                         .foregroundColor: WPStyleGuide.darkGrey(),
+                                                         .paragraphStyle: paragraph]
+        let attributedTitle = NSMutableAttributedString(string: Constants.Buttons.termsAndConditionsTitle,
+                                                        attributes: attributes)
+        attributedTitle.applyStylesToMatchesWithPattern(Constants.Buttons.termsAndConditions,
+                                                        styles: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        tacButton.setAttributedTitle(attributedTitle, for: .normal)
+        tacButton.isHidden = installJetpackButton.isHidden
+
+        faqButton.setTitle(Constants.Buttons.faqTitle, for: .normal)
+        faqButton.isHidden = tacButton.isHidden
     }
 
     // MARK: - Private Helpers
