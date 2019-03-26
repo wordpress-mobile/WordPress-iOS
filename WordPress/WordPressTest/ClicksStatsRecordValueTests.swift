@@ -11,7 +11,7 @@ class ClicksStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .clicks)
+        let fr = StatsRecord.fetchRequest(for: .clicks, on: Date(), periodType: .month)
 
         let results = try! mainContext.fetch(fr)
 
@@ -43,7 +43,7 @@ class ClicksStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .clicks)
+        let fr = StatsRecord.fetchRequest(for: .clicks, on: Date(), periodType: .month)
 
         let results = try! mainContext.fetch(fr)
 
@@ -66,13 +66,17 @@ class ClicksStatsRecordValueTests: StatsTestCase {
 
 
     func testURLConversionWorks() {
-        let parent = createStatsRecord(in: mainContext, type: .clicks, date: Date())
+        let parent = createStatsRecord(in: mainContext, type: .clicks, period: .month, date: Date())
 
         let tag = ClicksStatsRecordValue(parent: parent)
         tag.urlString = "www.wordpress.com"
+        tag.clicksCount = 90001
+        tag.label = "test"
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .clicks)
-        let result = try! mainContext.fetch(fetchRequest)
+        XCTAssertNoThrow(try mainContext.save())
+
+        let fr = StatsRecord.fetchRequest(for: .clicks, on: Date(), periodType: .month)
+        let result = try! mainContext.fetch(fr)
 
         let fetchedValue = result.first!.values!.firstObject as! ClicksStatsRecordValue
         XCTAssertNotNil(fetchedValue.clickedURL)

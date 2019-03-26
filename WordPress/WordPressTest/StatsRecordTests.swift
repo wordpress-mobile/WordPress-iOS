@@ -92,26 +92,4 @@ class StatsRecordTests: StatsTestCase {
 
         XCTAssertEqual(results.count, 2)
     }
-
-    func testFetchingForAnywhereInADay() {
-        let calendar = Calendar.autoupdatingCurrent
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
-
-        let yesterdayHourEarlier = calendar.date(byAdding: .hour, value: -1, to: yesterday)!
-        let yesterdayHourLater = calendar.date(byAdding: .hour, value: 1, to: yesterday)!
-
-        let yesterdayRange = calendar.dateInterval(of: .day, for: yesterday)!
-
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterday)
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayHourLater)
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayHourEarlier)
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayRange.start)
-        createStatsRecord(in: mainContext, type: .blogVisitsSummary, date: yesterdayRange.end)
-
-        let fetchRequest = StatsRecord.fetchRequest(for: .blogVisitsSummary, on: yesterday)
-
-        let results = try! mainContext.fetch(fetchRequest)
-
-        XCTAssertEqual(results.count, 5)
-    }
 }

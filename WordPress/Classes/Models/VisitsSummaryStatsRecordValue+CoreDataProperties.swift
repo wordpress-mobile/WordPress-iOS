@@ -12,5 +12,6 @@ extension VisitsSummaryStatsRecordValue {
     @NSManaged public var visitorsCount: Int64
     @NSManaged public var likesCount: Int64
     @NSManaged public var commentsCount: Int64
+    @NSManaged public var periodStart: NSDate?
 
 }

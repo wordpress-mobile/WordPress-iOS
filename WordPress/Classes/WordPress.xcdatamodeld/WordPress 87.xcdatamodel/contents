@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18E226" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -279,6 +279,7 @@
     </entity>
     <entity name="ClicksStatsRecordValue" representedClassName=".ClicksStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="clicksCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="iconUrlString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ClicksStatsRecordValue" inverseName="parent" inverseEntity="ClicksStatsRecordValue" syncable="YES"/>
@@ -478,6 +479,10 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="OtherAndTotalViewsCountStatsRecordValue" representedClassName=".OtherAndTotalViewsCountStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
+        <attribute name="otherCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="totalCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="Page" representedClassName="Page" parentEntity="AbstractPost">
         <attribute name="parentID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO">
@@ -873,21 +878,23 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TopViewedPostStatsRecordValue" inverseName="author" inverseEntity="TopViewedPostStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="TopViewedPostStatsRecordValue" representedClassName=".TopViewedPostStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
-        <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postID" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="viewsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TopViewedAuthorStatsRecordValue" inverseName="posts" inverseEntity="TopViewedAuthorStatsRecordValue" syncable="YES"/>
     </entity>
     <entity name="TopViewedVideoStatsRecordValue" representedClassName=".TopViewedVideoStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="playsCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="postID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postID" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postURLString" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="VisitsSummaryStatsRecordValue" representedClassName=".VisitsSummaryStatsRecordValue" parentEntity="StatsRecordValue" syncable="YES">
         <attribute name="commentsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="likesCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="periodStart" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="viewsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="visitorsCount" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
     </entity>
@@ -959,8 +966,9 @@
         <element name="TopCommentedPostStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
         <element name="TopCommentsAuthorStatsRecordValue" positionX="27" positionY="153" width="128" height="90"/>
         <element name="TopViewedAuthorStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
-        <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="120"/>
+        <element name="TopViewedPostStatsRecordValue" positionX="45" positionY="171" width="128" height="135"/>
         <element name="TopViewedVideoStatsRecordValue" positionX="36" positionY="162" width="128" height="105"/>
-        <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="105"/>
+        <element name="VisitsSummaryStatsRecordValue" positionX="45" positionY="153" width="128" height="120"/>
+        <element name="OtherAndTotalViewsCountStatsRecordValue" positionX="45" positionY="153" width="128" height="75"/>
     </elements>
 </model>

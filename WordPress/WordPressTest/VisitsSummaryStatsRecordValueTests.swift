@@ -9,10 +9,11 @@ class VisitsSummaryStatsRecordValueTests: StatsTestCase {
         visits.visitorsCount = 2
         visits.likesCount = 3
         visits.commentsCount = 4
+        visits.periodStart = Date() as NSDate
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .blogVisitsSummary)
+        let fr = StatsRecord.fetchRequest(for: .blogVisitsSummary, on: Date(), periodType: .week)
 
         let results = try! mainContext.fetch(fr)
 

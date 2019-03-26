@@ -12,7 +12,7 @@ class CountryStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .countryViews)
+        let fr = StatsRecord.fetchRequest(for: .countryViews, on: Date(), periodType: .year)
 
         let results = try! mainContext.fetch(fr)
 

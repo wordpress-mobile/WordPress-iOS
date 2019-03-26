@@ -7,11 +7,11 @@ class TopViewedVideoStatsTests: StatsTestCase {
         let video = TopViewedVideoStatsRecordValue(parent: parent)
         video.playsCount = 900000001
         video.title = "Selfies — how to do em good???????"
-        video.postID = "test"
+        video.postID = 9001
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .videos)
+        let fr = StatsRecord.fetchRequest(for: .videos, on: Date(), periodType: .day)
 
         let results = try! mainContext.fetch(fr)
 
@@ -30,10 +30,11 @@ class TopViewedVideoStatsTests: StatsTestCase {
 
         let video = TopViewedVideoStatsRecordValue(parent: parent)
         video.postURLString = "www.wordpress.com"
+        video.postID = 9001
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .videos)
+        let fetchRequest = StatsRecord.fetchRequest(for: .videos, on: Date(), periodType: .day)
         let result = try! mainContext.fetch(fetchRequest)
 
         let fetchedValue = result.first!.values!.firstObject as! TopViewedVideoStatsRecordValue
