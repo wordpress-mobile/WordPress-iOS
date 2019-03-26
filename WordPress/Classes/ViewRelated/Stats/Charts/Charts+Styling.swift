@@ -3,9 +3,9 @@ import Foundation
 
 import Charts
 
-// MARK: - PeriodPerformanceStyling
+// MARK: - ViewsPeriodPerformanceStyling
 
-class PeriodPerformanceStyling: BarChartStyling {
+class ViewsPeriodPerformanceStyling: BarChartStyling {
 
     let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?

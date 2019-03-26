@@ -25,9 +25,11 @@ class PeriodDataStub: DataStub<[PeriodDatum]> {
     }
 }
 
-// MARK: - BarChartDataConvertible
+// MARK: - ViewsPeriodDataStub
 
-extension PeriodDataStub: BarChartDataConvertible {
+class ViewsPeriodDataStub: PeriodDataStub {}
+
+extension ViewsPeriodDataStub: BarChartDataConvertible {
     var barChartData: BarChartData {
 
         let data = periodData

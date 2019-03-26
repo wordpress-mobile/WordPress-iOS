@@ -78,11 +78,11 @@ private extension SiteStatsPeriodViewModel {
         let four = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle, tabData: 987654321, difference: -258547987, differencePercent: -125999)
 
         // Introduced via #11063, to be replaced with real data via #11069
-        let stubbedData = PeriodDataStub()
-        let firstStubbedDateInterval = stubbedData.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = PeriodPerformanceStyling(initialDateInterval: firstStubbedDateInterval)
+        let viewsPeriodStub = ViewsPeriodDataStub()
+        let viewsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let viewsStyling = ViewsPeriodPerformanceStyling(initialDateInterval: viewsPeriodStubDateInterval)
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: [stubbedData], chartStyling: [styling])
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: [viewsPeriodStub], chartStyling: [viewsStyling])
         tableRows.append(row)
 
         return tableRows
