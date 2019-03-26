@@ -25,7 +25,7 @@ class StatsTestCase: XCTestCase {
                                               date: Date) -> StatsRecord {
         let newRecord = StatsRecord(context: context)
         newRecord.type = type.rawValue
-        newRecord.date = date as NSDate
+        newRecord.date = Calendar.autoupdatingCurrent.startOfDay(for: date) as NSDate
         newRecord.period = period.rawValue
         newRecord.blog = defaultBlog
 

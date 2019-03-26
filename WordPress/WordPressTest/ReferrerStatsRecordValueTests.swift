@@ -10,7 +10,7 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .referrers)
+        let fr = StatsRecord.fetchRequest(for: .referrers, on: Date(), periodType: .week)
 
         let results = try! mainContext.fetch(fr)
 
@@ -42,7 +42,7 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .referrers)
+        let fr = StatsRecord.fetchRequest(for: .referrers, on: Date(), periodType: .week)
 
         let results = try! mainContext.fetch(fr)
 
@@ -76,7 +76,7 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .referrers)
+        let fetchRequest = StatsRecord.fetchRequest(for: .referrers, on: Date(), periodType: .week)
         let result = try! mainContext.fetch(fetchRequest)
 
         let fetchedValue = result.first!.values!.firstObject as! ReferrerStatsRecordValue
@@ -95,7 +95,7 @@ class ReferrerStatsRecordValueTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fetchRequest = StatsRecord.fetchRequest(for: .referrers)
+        let fetchRequest = StatsRecord.fetchRequest(for: .referrers, on: Date(), periodType: .week)
         let result = try! mainContext.fetch(fetchRequest)
 
         let fetchedValue = result.first!.values!.firstObject as! ReferrerStatsRecordValue

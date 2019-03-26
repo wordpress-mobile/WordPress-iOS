@@ -11,7 +11,7 @@ class TopViewedStatsTests: StatsTestCase {
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .topViewedAuthor)
+        let fr = StatsRecord.fetchRequest(for: .topViewedAuthor, on: Date(), periodType: .year)
 
         let results = try! mainContext.fetch(fr)
 
@@ -30,10 +30,12 @@ class TopViewedStatsTests: StatsTestCase {
         let post = TopViewedPostStatsRecordValue(parent: parent)
         post.viewsCount = 1989
         post.title = "(blank space)"
+        post.postID = 9001
+        post.type = TopViewsPostType.unknown.rawValue
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .topViewedPost)
+        let fr = StatsRecord.fetchRequest(for: .topViewedPost, on: Date(), periodType: .year)
 
         let results = try! mainContext.fetch(fr)
 
@@ -56,12 +58,14 @@ class TopViewedStatsTests: StatsTestCase {
         let post = TopViewedPostStatsRecordValue(context: mainContext)
         post.viewsCount = 1989
         post.title = "(blank space)"
+        post.postID = 9001
+        post.type = TopViewsPostType.unknown.rawValue
 
         author.addToPosts(post)
 
         XCTAssertNoThrow(try mainContext.save())
 
-        let fr = StatsRecord.fetchRequest(for: .topViewedAuthor)
+        let fr = StatsRecord.fetchRequest(for: .topViewedAuthor, on: Date(), periodType: .year)
 
         let results = try! mainContext.fetch(fr)
 

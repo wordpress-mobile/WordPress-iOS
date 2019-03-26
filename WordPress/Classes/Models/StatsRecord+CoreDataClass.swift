@@ -117,7 +117,7 @@ public enum StatsRecordPeriodType: Int16 {
 
 public class StatsRecord: NSManagedObject {
 
-    private class func fetchRequest(for kind: StatsRecordType, on day: Date = Date(), periodType: StatsRecordPeriodType = .notApplicable) -> NSFetchRequest<StatsRecord> {
+    class func fetchRequest(for kind: StatsRecordType, on day: Date = Date(), periodType: StatsRecordPeriodType = .notApplicable) -> NSFetchRequest<StatsRecord> {
         let fr: NSFetchRequest<StatsRecord> = self.fetchRequest()
 
         let calendar = Calendar.autoupdatingCurrent
@@ -130,7 +130,7 @@ public class StatsRecord: NSManagedObject {
         }
 
         let datePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.date)) == %@", calendar.startOfDay(for: day) as NSDate)
-        let periodTypePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.period)) == %@", periodType.rawValue)
+        let periodTypePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.period)) == %i", periodType.rawValue)
 
         fr.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             typePredicate,
