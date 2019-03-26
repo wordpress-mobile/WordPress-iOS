@@ -241,6 +241,7 @@ class StatsBarChartView: BarChartView {
 
     private func drawSecondaryHighlightIfNeeded(for primaryEntry: ChartDataEntry, with primaryHighlight: Highlight) {
         guard let chartData = data, chartData.dataSets.count > 1 else {
+            highlightValues([primaryHighlight])
             return
         }
 
@@ -277,8 +278,8 @@ class StatsBarChartView: BarChartView {
 
         let postRotationDelay = DispatchTime.now() + TimeInterval(0.35)
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
-            self.drawChartMarker(for: entry)
             self.drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
+            self.drawChartMarker(for: entry)
         }
     }
 }
