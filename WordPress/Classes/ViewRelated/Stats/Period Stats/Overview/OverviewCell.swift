@@ -67,8 +67,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
-    private(set) var chartData: BarChartDataConvertible?
-    private(set) var chartStyling: BarChartStyling?
+    private(set) var chartData: [BarChartDataConvertible] = []
+    private(set) var chartStyling: [BarChartStyling] = []
 
     // MARK: - Configure
 
@@ -77,7 +77,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: BarChartDataConvertible? = nil, barChartStyling: BarChartStyling? = nil) {
+    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = []) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
@@ -153,7 +153,7 @@ private extension OverviewCell {
     // MARK: Chart support
 
     func configureChartViewIfNeeded() {
-        guard chartContainerView.subviews.isEmpty, let barChartData = chartData, let barChartStyling = chartStyling else {
+        guard chartContainerView.subviews.isEmpty, let barChartData = chartData.first, let barChartStyling = chartStyling.first else {
             return
         }
 

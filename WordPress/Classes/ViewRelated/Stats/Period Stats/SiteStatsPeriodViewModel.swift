@@ -82,7 +82,7 @@ private extension SiteStatsPeriodViewModel {
         let firstStubbedDateInterval = stubbedData.periodData.first?.date.timeIntervalSince1970 ?? 0
         let styling = PeriodPerformanceStyling(initialDateInterval: firstStubbedDateInterval)
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: stubbedData, chartStyling: styling)
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: [stubbedData], chartStyling: [styling])
         tableRows.append(row)
 
         return tableRows
