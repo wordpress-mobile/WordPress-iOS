@@ -77,7 +77,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
             return nil
         }
 
-        cell.configure(date: selectedDate)
+        cell.configure(date: selectedDate, period: selectedPeriod)
 
         return cell
     }
