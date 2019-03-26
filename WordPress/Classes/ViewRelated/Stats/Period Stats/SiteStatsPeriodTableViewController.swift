@@ -235,6 +235,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
 
     func dateChangedTo(_ newDate: Date?) {
+        selectedDate = newDate
+        refreshData()
     }
 
 }
