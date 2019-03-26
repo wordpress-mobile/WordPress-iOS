@@ -81,3 +81,144 @@ extension ViewsPeriodDataStub: BarChartDataConvertible {
         return chartData
     }
 }
+
+// MARK: - VisitorsPeriodDataStub
+
+class VisitorsPeriodDataStub: PeriodDataStub {}
+
+extension VisitorsPeriodDataStub: BarChartDataConvertible {
+    var barChartData: BarChartData {
+
+        let data = periodData
+
+        // Our stub data is ordered
+        let firstDateInterval: TimeInterval
+        let lastDateInterval: TimeInterval
+        let effectiveWidth: Double
+
+        if data.isEmpty {
+            firstDateInterval = 0
+            lastDateInterval = 0
+            effectiveWidth = 1
+        } else {
+            firstDateInterval = data.first!.date.timeIntervalSince1970
+            lastDateInterval = data.last!.date.timeIntervalSince1970
+
+            let range = lastDateInterval - firstDateInterval
+
+            let effectiveBars = Double(Double(data.count) * 1.2)
+
+            effectiveWidth = range / effectiveBars
+        }
+
+        var entries = [BarChartDataEntry]()
+        for datum in data {
+            let dateInterval = datum.date.timeIntervalSince1970
+            let offset = dateInterval - firstDateInterval
+
+            let x = offset
+            let y = Double(datum.visitorCount)
+            let entry = BarChartDataEntry(x: x, y: y)
+            entries.append(entry)
+        }
+
+        let chartData = BarChartData(entries: entries)
+        chartData.barWidth = effectiveWidth
+
+        return chartData
+    }
+}
+
+// MARK: - LikesPeriodDataStub
+
+class LikesPeriodDataStub: PeriodDataStub {}
+
+extension LikesPeriodDataStub: BarChartDataConvertible {
+    var barChartData: BarChartData {
+
+        let data = periodData
+
+        // Our stub data is ordered
+        let firstDateInterval: TimeInterval
+        let lastDateInterval: TimeInterval
+        let effectiveWidth: Double
+
+        if data.isEmpty {
+            firstDateInterval = 0
+            lastDateInterval = 0
+            effectiveWidth = 1
+        } else {
+            firstDateInterval = data.first!.date.timeIntervalSince1970
+            lastDateInterval = data.last!.date.timeIntervalSince1970
+
+            let range = lastDateInterval - firstDateInterval
+
+            let effectiveBars = Double(Double(data.count) * 1.2)
+
+            effectiveWidth = range / effectiveBars
+        }
+
+        var entries = [BarChartDataEntry]()
+        for datum in data {
+            let dateInterval = datum.date.timeIntervalSince1970
+            let offset = dateInterval - firstDateInterval
+
+            let x = offset
+            let y = Double(datum.likeCount)
+            let entry = BarChartDataEntry(x: x, y: y)
+            entries.append(entry)
+        }
+
+        let chartData = BarChartData(entries: entries)
+        chartData.barWidth = effectiveWidth
+
+        return chartData
+    }
+}
+
+// MARK: - CommentsPeriodDataStub
+
+class CommentsPeriodDataStub: PeriodDataStub {}
+
+extension CommentsPeriodDataStub: BarChartDataConvertible {
+    var barChartData: BarChartData {
+
+        let data = periodData
+
+        // Our stub data is ordered
+        let firstDateInterval: TimeInterval
+        let lastDateInterval: TimeInterval
+        let effectiveWidth: Double
+
+        if data.isEmpty {
+            firstDateInterval = 0
+            lastDateInterval = 0
+            effectiveWidth = 1
+        } else {
+            firstDateInterval = data.first!.date.timeIntervalSince1970
+            lastDateInterval = data.last!.date.timeIntervalSince1970
+
+            let range = lastDateInterval - firstDateInterval
+
+            let effectiveBars = Double(Double(data.count) * 1.2)
+
+            effectiveWidth = range / effectiveBars
+        }
+
+        var entries = [BarChartDataEntry]()
+        for datum in data {
+            let dateInterval = datum.date.timeIntervalSince1970
+            let offset = dateInterval - firstDateInterval
+
+            let x = offset
+            let y = Double(datum.commentCount)
+            let entry = BarChartDataEntry(x: x, y: y)
+            entries.append(entry)
+        }
+
+        let chartData = BarChartData(entries: entries)
+        chartData.barWidth = effectiveWidth
+
+        return chartData
+    }
+}

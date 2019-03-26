@@ -82,7 +82,33 @@ private extension SiteStatsPeriodViewModel {
         let viewsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
         let viewsStyling = ViewsPeriodPerformanceStyling(initialDateInterval: viewsPeriodStubDateInterval)
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: [viewsPeriodStub], chartStyling: [viewsStyling])
+        let visitorsPeriodStub = VisitorsPeriodDataStub()
+        let visitorsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let visitorsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: visitorsPeriodStubDateInterval)
+
+        let likesPeriodStub = LikesPeriodDataStub()
+        let likesPeriodStubDateInterval = likesPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let likesStyling = DefaultPeriodPerformanceStyling(initialDateInterval: likesPeriodStubDateInterval)
+
+        let commentsPeriodStub = CommentsPeriodDataStub()
+        let commentsPeriodStubDateInterval = commentsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let commentsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: commentsPeriodStubDateInterval)
+
+        let chartData: [BarChartDataConvertible] = [
+            viewsPeriodStub,
+            visitorsPeriodStub,
+            likesPeriodStub,
+            commentsPeriodStub
+        ]
+
+        let chartStyling: [BarChartStyling] = [
+            viewsStyling,
+            visitorsStyling,
+            likesStyling,
+            commentsStyling
+        ]
+
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling)
         tableRows.append(row)
 
         return tableRows
