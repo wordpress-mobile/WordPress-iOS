@@ -67,6 +67,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
+    private(set) var chartSelectedIndex = -1
     private(set) var chartData: [BarChartDataConvertible] = []
     private(set) var chartStyling: [BarChartStyling] = []
 
@@ -138,7 +139,7 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        // TODO: update chart - configureChartView() - via #11064
+        configureChartViewIfNeeded()
         updateLabels()
     }
 
@@ -153,8 +154,17 @@ private extension OverviewCell {
     // MARK: Chart support
 
     func configureChartViewIfNeeded() {
-        guard chartContainerView.subviews.isEmpty, let barChartData = chartData.first, let barChartStyling = chartStyling.first else {
+        let filterSelectedIndex = filterTabBar.selectedIndex
+
+        guard filterSelectedIndex != chartSelectedIndex, chartData.count > filterSelectedIndex, chartStyling.count > filterSelectedIndex else {
             return
+        }
+
+        let barChartData = chartData[filterSelectedIndex]
+        let barChartStyling = chartStyling[filterSelectedIndex]
+
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
         }
 
         let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling)
@@ -166,6 +176,8 @@ private extension OverviewCell {
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
+
+        self.chartSelectedIndex = filterSelectedIndex
     }
 
     enum ChartBottomMargin {
