@@ -47,15 +47,18 @@ private extension SiteStatsTableHeaderView {
         case .day, .month, .year:
             return dateFormatter.string(from: date)
         case .week:
-            var calendar = Calendar(identifier: .gregorian)
+            // Week is Monday - Sunday
+            var calendar = Calendar(identifier: .iso8601)
             calendar.timeZone = .autoupdatingCurrent
-            let endDate = calendar.date(byAdding: .day, value: 6, to: date)
 
-            let startDateFormatted = dateFormatter.string(from: date)
-            let endDateFormatted = (endDate != nil) ? dateFormatter.string(from: endDate!) : ""
+            let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
+            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart)
 
-            let weekFormat = NSLocalizedString("%@ - %@", comment: "Stats label for week date range. Ex: Mar 27 - Apr 2")
-            return String.localizedStringWithFormat(weekFormat, startDateFormatted, endDateFormatted)
+            let startDate = dateFormatter.string(from: weekStart)
+            let endDate = (weekEnd != nil) ? dateFormatter.string(from: weekEnd!) : ""
+
+            let weekFormat = NSLocalizedString("%@ - %@", comment: "Stats label for week date range. Ex: Mar 25 - Mar 31")
+            return String.localizedStringWithFormat(weekFormat, startDate, endDate)
         }
     }
 
