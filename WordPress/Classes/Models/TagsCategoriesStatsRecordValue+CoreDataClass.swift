@@ -76,7 +76,7 @@ fileprivate extension StatsTagAndCategory {
             let categoriesType = TagsCategoriesType(rawValue: recordValue.type),
             let children = recordValue.children?.array as? [TagsCategoriesStatsRecordValue]
             else {
-            return nil
+                return nil
         }
 
         self = StatsTagAndCategory(name: name, kind: tagAndCategoryKind(from: categoriesType),

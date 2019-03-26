@@ -12,4 +12,3 @@ public class OtherAndTotalViewsCountStatsRecordValue: StatsRecordValue {
     }
 
 }
-
