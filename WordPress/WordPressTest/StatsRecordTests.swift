@@ -91,5 +91,5 @@ class StatsRecordTests: StatsTestCase {
         let results = try! mainContext.fetch(fetchRequest)
 
         XCTAssertEqual(results.count, 2)
-    }^
+    }
 }
