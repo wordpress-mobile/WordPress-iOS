@@ -11,7 +11,14 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     static let height: CGFloat = 44
     private typealias Style = WPStyleGuide.Stats
+    private var date: Date?
+    private var period: StatsPeriodUnit?
 
+    private lazy var calendar: Calendar = {
+        var cal = Calendar(identifier: .iso8601)
+        cal.timeZone = .autoupdatingCurrent
+        return cal
+    }()
 
     // MARK: - View
 
@@ -20,12 +27,9 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     }
 
     func configure(date: Date?, period: StatsPeriodUnit?) {
-
-        guard let date = date, let period = period else {
-            return
-        }
-
-        dateLabel.text = displayDateFor(date: date, period: period)
+        self.date = date
+        self.period = period
+        dateLabel.text = displayDate()
     }
 
 }
@@ -39,7 +43,11 @@ private extension SiteStatsTableHeaderView {
         forwardArrow.image = Style.imageForGridiconType(.chevronRight)
     }
 
-    func displayDateFor(date: Date, period: StatsPeriodUnit) -> String {
+    func displayDate() -> String? {
+        guard let date = date, let period = period else {
+            return nil
+        }
+
         let dateFormatter = DateFormatter()
         dateFormatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
 
@@ -48,9 +56,6 @@ private extension SiteStatsTableHeaderView {
             return dateFormatter.string(from: date)
         case .week:
             // Week is Monday - Sunday
-            var calendar = Calendar(identifier: .iso8601)
-            calendar.timeZone = .autoupdatingCurrent
-
             let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
             let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart)
 
@@ -60,6 +65,24 @@ private extension SiteStatsTableHeaderView {
             let weekFormat = NSLocalizedString("%@ - %@", comment: "Stats label for week date range. Ex: Mar 25 - Mar 31")
             return String.localizedStringWithFormat(weekFormat, startDate, endDate)
         }
+    }
+
+    @IBAction func didTapBackButton(_ sender: UIButton) {
+        updateDate(forward: false)
+    }
+
+    @IBAction func didTapForwardButton(_ sender: UIButton) {
+        updateDate(forward: true)
+    }
+
+    func updateDate(forward: Bool) {
+        guard let date = date, let period = period else {
+            return
+        }
+
+        let value = forward ? 1 : -1
+        self.date = calendar.date(byAdding: period.calendarComponent, value: value, to: date)
+        dateLabel.text = displayDate()
     }
 
 }
@@ -76,6 +99,19 @@ private extension StatsPeriodUnit {
             return "MMM yyyy"
         case .year:
             return "yyyy"
+        }
+    }
+
+    var calendarComponent: Calendar.Component {
+        switch self {
+        case .day:
+            return .day
+        case .week:
+            return .weekOfYear
+        case .month:
+            return .month
+        case .year:
+            return .year
         }
     }
 
