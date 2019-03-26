@@ -112,8 +112,7 @@ private extension SiteStatsDetailTableViewController {
         return [TabbedTotalsDetailStatsRow.self,
                 TopTotalsDetailStatsRow.self,
                 CountriesDetailStatsRow.self,
-                TopTotalsNoSubtitlesPeriodDetailStatsRow.self,
-                TableFooterRow.self]
+                TopTotalsNoSubtitlesPeriodDetailStatsRow.self]
     }
 
     func storeIsFetching(statSection: StatSection) -> Bool {

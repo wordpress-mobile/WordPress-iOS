@@ -15,7 +15,7 @@ struct OverviewTabData: FilterTabBarItem {
 
     var attributedTitle: NSAttributedString? {
 
-        let attributedTitle = NSMutableAttributedString(string: tabTitle)
+        let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
