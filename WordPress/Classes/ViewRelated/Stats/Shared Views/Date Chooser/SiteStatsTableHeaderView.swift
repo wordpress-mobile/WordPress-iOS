@@ -1,5 +1,9 @@
 import UIKit
 
+protocol SiteStatsTableHeaderDelegate: class {
+    func dateChangedTo(_ newDate: Date?)
+}
+
 class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     // MARK: - Properties
@@ -11,6 +15,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     static let height: CGFloat = 44
     private typealias Style = WPStyleGuide.Stats
+    private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
 
@@ -26,9 +31,10 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?) {
+    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate) {
         self.date = date
         self.period = period
+        self.delegate = delegate
         dateLabel.text = displayDate()
     }
 
@@ -82,6 +88,7 @@ private extension SiteStatsTableHeaderView {
 
         let value = forward ? 1 : -1
         self.date = calendar.date(byAdding: period.calendarComponent, value: value, to: date)
+        delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
     }
 
