@@ -84,16 +84,43 @@ public enum StatsRecordPeriodType: Int16 {
     case month
     case year
     case notApplicable // this doesn't apply to Insights.
+
+    init(remoteStatus: StatsPeriodUnit) {
+        switch remoteStatus {
+        case .day:
+            self = .day
+        case .week:
+            self = .week
+        case .month:
+            self = .month
+        case .year:
+            self = .year
+        }
+    }
+
+    var statsPeriodUnitValue: StatsPeriodUnit {
+        switch self {
+        case .day:
+            return .day
+        case .week:
+            return .week
+        case .month:
+            return .month
+        case .year:
+            return .year
+        case .notApplicable:
+            fatalError("Calling statsPeriodUnitValue on `StatsRecordPeriodType.notApplicable` is an error.")
+        }
+    }
 }
 
 
 public class StatsRecord: NSManagedObject {
 
-    public class func fetchRequest(for kind: StatsRecordType, on day: Date = Date()) -> NSFetchRequest<StatsRecord> {
+    private class func fetchRequest(for kind: StatsRecordType, on day: Date = Date(), periodType: StatsRecordPeriodType = .notApplicable) -> NSFetchRequest<StatsRecord> {
         let fr: NSFetchRequest<StatsRecord> = self.fetchRequest()
 
         let calendar = Calendar.autoupdatingCurrent
-        let rangeOfDay = calendar.dateInterval(of: .day, for: day)!
 
         let typePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.type)) = %i", kind.rawValue)
 
@@ -102,13 +129,13 @@ public class StatsRecord: NSManagedObject {
             return fr
         }
 
-        let dateStartPredicate = NSPredicate(format: "\(#keyPath(StatsRecord.date)) >= %@", rangeOfDay.start as NSDate)
-        let dateEndPredicate = NSPredicate(format: "\(#keyPath(StatsRecord.date)) <= %@", rangeOfDay.end as NSDate)
+        let datePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.date)) == %@", calendar.startOfDay(for: day) as NSDate)
+        let periodTypePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.period)) == %@", periodType.rawValue)
 
         fr.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             typePredicate,
-            NSCompoundPredicate(andPredicateWithSubpredicates: [dateStartPredicate,
-                                                               dateEndPredicate])])
+            NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate,
+                                                               periodTypePredicate])])
 
         return fr
     }
@@ -118,7 +145,7 @@ public class StatsRecord: NSManagedObject {
 
         let fr: NSFetchRequest<StatsRecord> = self.fetchRequest()
 
-        let blogPredicate = NSPredicate(format: "\(#keyPath(StatsRecord.blog)) =  %@", blog)
+        let blogPredicate = NSPredicate(format: "\(#keyPath(StatsRecord.blog)) = %@", blog)
         let typePredicate = NSPredicate(format: "\(#keyPath(StatsRecord.type)) = %i", type.rawValue)
 
         let compoundPredicate =  NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -138,6 +165,27 @@ public class StatsRecord: NSManagedObject {
         }
 
         let fetchRequest = self.insightFetchRequest(for: blog, type: type)
+        let fetchResults = try? moc.fetch(fetchRequest)
+
+        return fetchResults?.first
+    }
+
+    public class func timeIntervalFetchRequest(for blog: Blog, type: StatsRecordType, period: StatsRecordPeriodType, date: Date) -> NSFetchRequest<StatsRecord> {
+        let blogPredicate = NSPredicate(format: "\(#keyPath(StatsRecord.blog)) =  %@", blog)
+
+        let fetchRequest = self.fetchRequest(for: type, on: date, periodType: period)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [fetchRequest.predicate!, blogPredicate])
+
+        return fetchRequest
+    }
+
+    public class func timeIntervalData(for blog: Blog, type: StatsRecordType, period: StatsRecordPeriodType, date: Date) -> StatsRecord? {
+        guard let moc = blog.managedObjectContext else {
+            DDLogDebug("`Blog` with no `NSManagedObjectContext` attatched was passed to `StatsRecord.timeIntervalData(blog:_type:_) -> StatsRecord`. This is probably an error.")
+            return nil
+        }
+
+        let fetchRequest = self.timeIntervalFetchRequest(for: blog, type: type, period: period, date: date)
         let fetchResults = try? moc.fetch(fetchRequest)
 
         return fetchResults?.first
@@ -258,6 +306,39 @@ extension StatsRecord {
 
         parentRecord.addToValues(NSOrderedSet(array: newValues))
 
+        parentRecord.fetchedDate = Date() as NSDate
+
         return parentRecord
     }
+}
+
+extension StatsRecord {
+    static func record<TimeIntervalType: StatsTimeIntervalData & TimeIntervalStatsRecordValueConvertible>(from timeIntervalData: TimeIntervalType, for blog: Blog) -> StatsRecord {
+        guard let managedObjectContext = blog.managedObjectContext else {
+            preconditionFailure("Blog` with no `NSManagedObjectContext` attatched was passed to `StatsRecord.record(from:_for:_)`. This is an error.")
+        }
+
+        let recordType = TimeIntervalType.recordType
+        let parentRecord: StatsRecord
+
+        if let record = self.timeIntervalData(for: blog, type: recordType, period: timeIntervalData.recordPeriodType, date: timeIntervalData.date) {
+            parentRecord = record
+        } else {
+            parentRecord = StatsRecord(context: managedObjectContext)
+            parentRecord.blog = blog
+            parentRecord.period = timeIntervalData.recordPeriodType.rawValue
+            parentRecord.date = Calendar.autoupdatingCurrent.startOfDay(for: timeIntervalData.date) as NSDate
+            parentRecord.type = recordType.rawValue
+        }
+
+        parentRecord.recordValues.forEach { managedObjectContext.deleteObject($0) }
+
+        parentRecord.addToValues(NSOrderedSet(array: timeIntervalData.statsRecordValues(in: managedObjectContext)))
+
+        parentRecord.fetchedDate = Date() as NSDate
+
+        return parentRecord
+    }
+
+
 }

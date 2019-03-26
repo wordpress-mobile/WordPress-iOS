@@ -27,3 +27,8 @@ protocol StatsRecordValueConvertible {
 
     static var recordType: StatsRecordType { get }
 }
+
+protocol TimeIntervalStatsRecordValueConvertible: StatsRecordValueConvertible {
+    var recordPeriodType: StatsRecordPeriodType { get }
+    var date: Date { get }
+}
