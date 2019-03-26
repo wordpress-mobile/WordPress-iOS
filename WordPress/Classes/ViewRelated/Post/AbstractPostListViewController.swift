@@ -614,7 +614,7 @@ class AbstractPostListViewController: UIViewController,
         if appDelegate?.connectionAvailable == false {
             refreshResults()
             dismissAllNetworkErrorNotices()
-            presentNoNetworkAlert()
+            handleConnectionError()
             return
         }
 
@@ -625,10 +625,6 @@ class AbstractPostListViewController: UIViewController,
             // Update in the background
             syncItemsWithUserInteraction(false)
         }
-    }
-
-    func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
@@ -796,7 +792,7 @@ class AbstractPostListViewController: UIViewController,
         // `noConnectionMessage()` (overridden by subclasses). For everything else, we let
         // `WPError.showNetworkingNotice` determine the user-friendly error message.
         if !connectionAvailable() {
-            presentNoNetworkAlert()
+            handleConnectionError()
         } else {
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingNotice(title: title, error: error)
@@ -1148,6 +1144,10 @@ class AbstractPostListViewController: UIViewController,
 
     func noConnectionMessage() -> String {
         return ReachabilityUtils.noConnectionMessage()
+    }
+
+    func shouldPresentAlert() -> Bool {
+        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 }
 

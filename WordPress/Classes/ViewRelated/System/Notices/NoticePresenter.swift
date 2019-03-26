@@ -76,11 +76,14 @@ class NoticePresenter: NSObject {
         }
 
         listenToKeyboardEvents()
+        listenToOrientationChangeEvents()
     }
 
     override convenience init() {
         self.init(store: StoreContainer.shared.notice)
     }
+
+    // MARK: - Events
 
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
@@ -111,6 +114,20 @@ class NoticePresenter: NSObject {
                 currentContainer.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
                 self.view.layoutIfNeeded()
             })
+        }
+    }
+
+    /// Adjust the current Notice so it will always be in the correct y-position after the
+    /// device is rotated.
+    private func listenToOrientationChangeEvents() {
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self,
+                let containerView = self.currentNoticePresentation?.containerView else {
+                    return
+            }
+
+            containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
         }
     }
 
@@ -198,6 +215,9 @@ class NoticePresenter: NSObject {
         }
 
         window.isHidden = false
+
+        // Mask must be initialized after the window is shown or the view.frame will be zero
+        view.mask = MaskView(parent: view, untouchableViewController: self.window.untouchableViewController)
 
         let fromState = offscreenState(for: noticeContainerView)
         let toState = onscreenState(for: noticeContainerView)
@@ -379,6 +399,53 @@ private class NoticeContainerView: UIView {
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         return noticeView.point(inside: convert(point, to: noticeView), with: event)
+    }
+}
+
+private extension NoticePresenter {
+    /// A view that should be used as a mask for the `NoticePresenter.view`.
+    ///
+    /// The mask will prevent any `NoticeView` from animating on top of a tab bar.
+    class MaskView: UIView {
+        private unowned let parentView: UIView
+        private unowned let untouchableVC: UntouchableViewController
+
+        init(parent: UIView, untouchableViewController: UntouchableViewController) {
+            // We use the parent's frame to determine the size of this `MaskView`. If a parent has
+            // a zero frame, this may be that it is not visible. Check that the parent view's
+            // window is not hidden.
+            assert(parent.frame != .zero, "The parent view should have a non-zero frame. Is it visible?")
+
+            self.parentView = parent
+            self.untouchableVC = untouchableViewController
+
+            super.init(frame: MaskView.calculateFrame(parent: parent, untouchableVC: untouchableViewController))
+
+            translatesAutoresizingMaskIntoConstraints = false
+            backgroundColor = .blue
+
+            let nc = NotificationCenter.default
+            nc.addObserver(self, selector: #selector(updateFrame(notification:)),
+                           name: UIDevice.orientationDidChangeNotification, object: nil)
+        }
+
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        @objc func updateFrame(notification: Notification) {
+            frame = MaskView.calculateFrame(parent: parentView, untouchableVC: untouchableVC)
+        }
+
+        private static func calculateFrame(parent: UIView,
+                                           untouchableVC: UntouchableViewController) -> CGRect {
+            return CGRect(
+                x: 0,
+                y: 0,
+                width: parent.bounds.width,
+                height: parent.bounds.height - untouchableVC.offsetOnscreen
+            )
+        }
     }
 }
 
