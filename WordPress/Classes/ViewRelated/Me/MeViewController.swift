@@ -368,7 +368,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.updateUserDetails(for: account, success: { () in }, failure: { _ in })
+        service.updateUserDetails(for: account, success: { [weak self] in
+            self?.reloadViewModel()
+        }, failure: { error in
+            DDLogError(error.localizedDescription)
+        })
     }
 
 

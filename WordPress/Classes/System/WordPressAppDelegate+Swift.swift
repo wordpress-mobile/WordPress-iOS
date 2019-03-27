@@ -359,8 +359,8 @@ extension WordPressAppDelegate {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
-        if let account = accountService.defaultWordPressComAccount() {
-            ShareExtensionService.configureShareExtensionToken(account.authToken)
+        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+            ShareExtensionService.configureShareExtensionToken(authToken)
             ShareExtensionService.configureShareExtensionUsername(account.username)
         }
     }
@@ -381,11 +381,11 @@ extension WordPressAppDelegate {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
-        if let account = accountService.defaultWordPressComAccount() {
-            NotificationSupportService.insertContentExtensionToken(account.authToken)
+        if let account = accountService.defaultWordPressComAccount(), let authToken = account.authToken {
+            NotificationSupportService.insertContentExtensionToken(authToken)
             NotificationSupportService.insertContentExtensionUsername(account.username)
 
-            NotificationSupportService.insertServiceExtensionToken(account.authToken)
+            NotificationSupportService.insertServiceExtensionToken(authToken)
             NotificationSupportService.insertServiceExtensionUsername(account.username)
         }
     }

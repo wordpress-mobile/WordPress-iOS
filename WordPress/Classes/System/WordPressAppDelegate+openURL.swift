@@ -153,6 +153,8 @@ import WordPressAuthenticator
 
         WPTabBarController.sharedInstance()?.present(postVC, animated: true, completion: nil)
 
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "url_scheme"])
+
         return true
     }
 

@@ -1,3 +1,4 @@
-- Passerai più velocemente da “accesso iniziale” a “sito web completo” grazie n nuovo processo intelligente di creazione del sito comincia con un sito web personalizzato e già su misura. Spiacenti! Potrebbe essere necessario aumentare la programmazione di lancio. È un bel problema da avere.
-- Una volta creato il tuo nuovo sito web, saranno disponibili moltissimi tutorial per aiutarti a dare forma e accrescere il tuo sito, con tanti suggerimenti sulla creazione del tuo pubblico. Te li suggeriremo quando sarà il caso e li troverai tutti nella schermata I miei siti in qualsiasi momento. Perché il lancio è l’inizio, non la fine.
-- Nella nostra costante ricerca volta a rendere l'app piacevole da usare, o almeno più gradevole, abbiamo incrementato il padding della finestra dell'editor, per poter digitare messaggi più lunghi in maniera confortevole e rendere l’illustrazione e i layout di alcune pagine di errore più coerenti con il resto dell’app, in modo che siano più facili da capire.
+- Ora nell’editor del blocco funziona la dettatura.
+- I messaggi di errore offline verranno ora visualizzati un finestre di dialogo a comparsa più piccole nella parte inferiore della pagina.
+- È stato risolto un bug a causa del quale la barra dell’indirizzo di anteprima del sito non poteva essere modificata nel flusso di creazione del sito.
+- È stato risolto un problema nell’editor del blocco a causa del quale le immagini non potevano essere caricate nei siti privati.

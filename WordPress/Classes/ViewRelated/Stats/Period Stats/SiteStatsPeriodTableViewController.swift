@@ -67,7 +67,23 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         tableView.estimatedRowHeight = 500
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        cell.configure(date: selectedDate, period: selectedPeriod)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return SiteStatsTableHeaderView.height
     }
 
 }
@@ -92,7 +108,7 @@ private extension SiteStatsPeriodTableViewController {
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
-                !store.isFetching else {
+                !store.isFetchingOverview else {
                     return
             }
 
@@ -112,7 +128,9 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
+
+        guard let viewModel = viewModel,
+        viewIsVisible() else {
             return
         }
 
@@ -138,7 +156,7 @@ private extension SiteStatsPeriodTableViewController {
                 return
         }
 
-        viewModel?.refreshPeriodData(withDate: selectedDate, forPeriod: selectedPeriod)
+        viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
     func applyTableUpdates() {
@@ -153,6 +171,10 @@ private extension SiteStatsPeriodTableViewController {
 
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedPeriods()
+    }
+
+    func viewIsVisible() -> Bool {
+        return isViewLoaded && view.window != nil
     }
 
 }
@@ -194,7 +216,9 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection,
+                                            selectedDate: selectedDate,
+                                            selectedPeriod: selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
