@@ -442,7 +442,15 @@ private extension NoticePresenter {
         }
 
         @objc func updateFrame(notification: Notification) {
-            frame = MaskView.calculateFrame(parent: parentView, untouchableVC: untouchableVC)
+            // Update the `frame` on the next run loop. When this Notification event handler is
+            // called, the `self.parentView` still has the frame from the previous orientation.
+            // Running this routine after the current run loop ensures we have the correct frame.
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.frame = MaskView.calculateFrame(parent: self.parentView, untouchableVC: self.untouchableVC)
+            }
         }
 
         private static func calculateFrame(parent: UIView,
