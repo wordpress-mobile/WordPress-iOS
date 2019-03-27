@@ -22,6 +22,10 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     private var date: Date?
     private var period: StatsPeriodUnit?
 
+    // Limits how far back the date chooser can go.
+    // Corresponds to the number of bars shown on the Overview chart.
+    private let backLimit = -12
+
     private lazy var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
         cal.timeZone = .autoupdatingCurrent
@@ -77,17 +81,6 @@ private extension SiteStatsTableHeaderView {
         }
     }
 
-    func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
-        // Note: Week is Monday - Sunday
-
-        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
-            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
-                return nil
-        }
-
-        return (weekStart, weekEnd)
-    }
-
     @IBAction func didTapBackButton(_ sender: UIButton) {
         updateDate(forward: false)
     }
@@ -110,42 +103,51 @@ private extension SiteStatsTableHeaderView {
 
     func updateButtonStates() {
 
-        guard let date = date, let period = period else {
+        // Use dates without time
+        let currentDate = Date().normalizedDate()
+
+        guard var date = date,
+            let period = period,
+            var oldestDate = calendar.date(byAdding: period.calendarComponent, value: backLimit, to: currentDate) else {
             backButton.isEnabled = false
             forwardButton.isEnabled = false
             updateArrowStates()
             return
         }
 
-        // Use dates without time
-        let normalizedDate = date.normalizedDate()
-        let normalizedCurrentDate = Date().normalizedDate()
+        date = date.normalizedDate()
+        oldestDate = oldestDate.normalizedDate()
 
         switch period {
         case .day:
-            forwardButton.isEnabled = normalizedDate < normalizedCurrentDate
+            forwardButton.isEnabled = date < currentDate
+            backButton.isEnabled = date > oldestDate
         case .week:
-            if let weekEnd = weekIncludingDate(normalizedDate)?.weekEnd,
-                let currentWeekEnd = weekIncludingDate(normalizedCurrentDate)?.weekEnd {
+            let week = weekIncludingDate(date)
+            if let weekStart = week?.weekStart,
+                let weekEnd = week?.weekEnd,
+                let currentWeekEnd = weekIncludingDate(currentDate)?.weekEnd,
+                let oldestWeekStart = weekIncludingDate(oldestDate)?.weekStart {
                 forwardButton.isEnabled = weekEnd < currentWeekEnd
+                backButton.isEnabled = weekStart > oldestWeekStart
             } else {
                 forwardButton.isEnabled = false
+                backButton.isEnabled = false
             }
         case .month:
-            let dateComponents = calendar.dateComponents([.month, .year], from: normalizedDate)
-            let month = calendar.date(from: dateComponents)
-            let currentDateComponents = calendar.dateComponents([.month, .year], from: normalizedCurrentDate)
-            let currentMonth = calendar.date(from: currentDateComponents)
-
-            if month != nil && currentMonth != nil {
-                forwardButton.isEnabled = month! < currentMonth!
+            if let month = monthFromDate(date),
+                let currentMonth = monthFromDate(currentDate),
+                let oldestMonth = monthFromDate(oldestDate) {
+                forwardButton.isEnabled = month < currentMonth
+                backButton.isEnabled = month > oldestMonth
             } else {
+                backButton.isEnabled = false
                 forwardButton.isEnabled = false
             }
         case .year:
-            let year = calendar.component(.year, from: normalizedDate)
-            let currentYear = calendar.component(.year, from: normalizedCurrentDate)
-            forwardButton.isEnabled = year < currentYear
+            let year = yearFromDate(date)
+            forwardButton.isEnabled = year < yearFromDate(currentDate)
+            backButton.isEnabled = year > yearFromDate(oldestDate)
         }
 
         updateArrowStates()
@@ -156,6 +158,27 @@ private extension SiteStatsTableHeaderView {
         backArrow.image = Style.imageForGridiconType(.chevronLeft, withTint: (backButton.isEnabled ? .darkGrey : .grey))
     }
 
+    // MARK: - Date Helpers
+
+    func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
+        // Note: Week is Monday - Sunday
+
+        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
+            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
+                return nil
+        }
+
+        return (weekStart, weekEnd)
+    }
+
+    func monthFromDate(_ date: Date) -> Date? {
+        let dateComponents = calendar.dateComponents([.month, .year], from: date)
+        return calendar.date(from: dateComponents)
+    }
+
+    func yearFromDate(_ date: Date) -> Int {
+        return calendar.component(.year, from: date)
+    }
 }
 
 private extension StatsPeriodUnit {
