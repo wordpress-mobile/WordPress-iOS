@@ -74,8 +74,8 @@ class NoticePresenter: NSObject {
         // done, the window is not automatically resized when the device is rotated. This issue
         // only happens on iPad devices.
         window.makeKeyAndVisible()
-        DispatchQueue.main.async {
-            self.window.isHidden = true
+        DispatchQueue.main.async { [weak self] in
+            self?.window.isHidden = true
         }
 
         // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
