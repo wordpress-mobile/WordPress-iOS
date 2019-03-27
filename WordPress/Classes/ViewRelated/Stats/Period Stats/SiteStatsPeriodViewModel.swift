@@ -78,11 +78,37 @@ private extension SiteStatsPeriodViewModel {
         let four = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle, tabData: 987654321, difference: -258547987, differencePercent: -125999)
 
         // Introduced via #11063, to be replaced with real data via #11069
-        let stubbedData = PeriodDataStub()
-        let firstStubbedDateInterval = stubbedData.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = PeriodPerformanceStyling(initialDateInterval: firstStubbedDateInterval)
+        let viewsPeriodStub = ViewsPeriodDataStub()
+        let viewsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let viewsStyling = ViewsPeriodPerformanceStyling(initialDateInterval: viewsPeriodStubDateInterval)
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: stubbedData, chartStyling: styling)
+        let visitorsPeriodStub = VisitorsPeriodDataStub()
+        let visitorsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let visitorsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: visitorsPeriodStubDateInterval)
+
+        let likesPeriodStub = LikesPeriodDataStub()
+        let likesPeriodStubDateInterval = likesPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let likesStyling = DefaultPeriodPerformanceStyling(initialDateInterval: likesPeriodStubDateInterval)
+
+        let commentsPeriodStub = CommentsPeriodDataStub()
+        let commentsPeriodStubDateInterval = commentsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
+        let commentsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: commentsPeriodStubDateInterval)
+
+        let chartData: [BarChartDataConvertible] = [
+            viewsPeriodStub,
+            visitorsPeriodStub,
+            likesPeriodStub,
+            commentsPeriodStub
+        ]
+
+        let chartStyling: [BarChartStyling] = [
+            viewsStyling,
+            visitorsStyling,
+            likesStyling,
+            commentsStyling
+        ]
+
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling)
         tableRows.append(row)
 
         return tableRows
