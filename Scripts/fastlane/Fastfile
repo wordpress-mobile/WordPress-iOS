@@ -7,6 +7,11 @@ platform :ios do
 ########################################################################
 Dotenv.load('~/.wpios-env.default')
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
+ENV[“PROJECT_NAME”]=“WordPress”
+ENV[“PUBLIC_CONFIG_FILE”]=“../config/Version.Public.xcconfig”
+ENV[“INTERNAL_CONFIG_FILE”]=“../config/Version.internal.xcconfig”
+ENV[“DOWNLOAD_METADATA”]=“./fastlane/download_metadata.swift”
+ENV[“PROJECT_ROOT_FOLDER”]=“../“
 
 ########################################################################
 # Screenshots 
