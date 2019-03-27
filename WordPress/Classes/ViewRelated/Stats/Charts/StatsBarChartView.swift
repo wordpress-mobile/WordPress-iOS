@@ -14,6 +14,7 @@ class StatsBarChartView: BarChartView {
         static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
         static let highlightAlpha       = CGFloat(1)
         static let markerAlpha          = CGFloat(0.2)
+        static let topOffsetSansLegend  = CGFloat(5)
         static let trailingOffset       = CGFloat(20)
     }
 
@@ -195,7 +196,7 @@ class StatsBarChartView: BarChartView {
         NSLayoutConstraint.activate([
             chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
         ])
-        extraTopOffset += chartLegend.intrinsicContentSize.height
+        extraTopOffset = chartLegend.intrinsicContentSize.height
 
         self.legendView = chartLegend
     }
@@ -214,13 +215,17 @@ class StatsBarChartView: BarChartView {
     private func configureYAxis() {
         let yAxis = leftAxis
 
-        xAxis.axisLineColor = styling.lineColor
+        yAxis.axisLineColor = styling.lineColor
         yAxis.gridColor = styling.lineColor
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
         yAxis.labelTextColor = styling.labelColor
         yAxis.valueFormatter = styling.yAxisValueFormatter
+
+        // This adjustment is intended to prevent clipping observed with some labels
+        // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
+        extraTopOffset = Constants.topOffsetSansLegend
     }
 
     private func drawChartMarker(for entry: ChartDataEntry) {
