@@ -1,32 +1,3 @@
-12.1
------
-* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
-* Improved text import from other apps, such as Bear or Ulysses 🥰
-* Added support on the editor for video elements that use the source elements. For example:
-```<video alt="Another video with bunnies">
-<source src="https://videos.files.wordpress.com/kUJmAcSf/bbb_sunflower_1080p_30fps_normal.mp4" type="video/mp4">
-</video>```
-* Block editor now supports the creation of posts with pre-inserted photos and the the 3touch action of starting a post with photo.
-
-12.1
------
-* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
-* Improved text import from other apps, such as Bear or Ulysses 🥰
-* Reader: fixed issue where empty state buttons were not functional.
-
-12.0
------
-* Redesigned Notices
-* Changed offline error messages to be less disruptive.
-* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
-* Made it easier to find a domain for your new site, by moving the best match to the top of the search results.
- 
-11.9
-------
-* Quick Start v2: After creating a new site with WordPress.com there are more tutorials available, now including tips to improve growth.
-* Quick Start will also be suggested less often, but when it's more likely to be helpful.
-* Added connection error alert in Sharing screen.
-* Increased padding at the bottom of the share extension's editor, to make typing a longer post a bit more comfortable.
-* Removes the white background color applied to the site icon on the site details screen.
-* Updated No Results View illustration and copy displayed on connectivity issue.
-* Enhanced Site Creation flow for smarter, more personalized sites.
+- Everyone’s got their own workflow. Now sharing text from writing and note-taking apps to WordPress is more reliable.
+- Sometimes updates to user account details fail, even if we wish they didn’t. We’ve added clearer, more detailed error messages so you know what went wrong and what to do next.
+- You have more ways to create posts with images: the Block editor supports posts with pre-inserted photos, and you can use Apple’s 3D touch action to launch the app and start a new photo post with a single press.
