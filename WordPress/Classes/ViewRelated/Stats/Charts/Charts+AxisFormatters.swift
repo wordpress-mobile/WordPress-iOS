@@ -80,29 +80,5 @@ class VerticalAxisFormatter: IAxisValueFormatter {
         }
 
         return formattedValue
-
-        // Take 1
-//        let number = NSNumber(value: value/1000)
-//        let value = formatter.string(from: number) ?? ""
-//
-//        // This is, admittedly NOT locale-sensitive formatting approach.
-//        // It is slated to be improved via #11143.
-//        let formattedValue = "\(value)k"
-//
-//        return formattedValue
-
-        // Take 2
-//        let formattedValue: String
-//        let threshold = Double(1000)
-//        if value > threshold {
-//            // This is, admittedly NOT locale-sensitive formatting approach. It will be improved via #11143.
-//            let scaledValue = NSNumber(value: value/threshold)
-//            let rawFormattedValue = formatter.string(from: scaledValue) ?? ""
-//            formattedValue = "\(rawFormattedValue)k"
-//        } else {
-//            formattedValue = formatter.string(from: value) ?? "\(value)"
-//        }
-//
-//        return formattedValue
     }
 }
