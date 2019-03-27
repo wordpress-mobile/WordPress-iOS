@@ -13,6 +13,9 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     @IBOutlet weak var forwardArrow: UIImageView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var forwardButton: UIButton!
+
     static let height: CGFloat = 44
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: SiteStatsTableHeaderDelegate?

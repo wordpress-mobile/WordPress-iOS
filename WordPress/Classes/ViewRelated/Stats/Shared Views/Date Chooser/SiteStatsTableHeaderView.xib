@@ -112,9 +112,11 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="backArrow" destination="Ssg-6U-5Ac" id="vC4-Hc-zMu"/>
+                <outlet property="backButton" destination="b3M-QS-Aux" id="d3f-cX-bL9"/>
                 <outlet property="bottomSeparatorLine" destination="82h-So-kdz" id="EKp-FJ-DKe"/>
                 <outlet property="dateLabel" destination="hDF-ds-FAU" id="DkU-jG-M41"/>
                 <outlet property="forwardArrow" destination="2dA-xk-MWI" id="Kz1-HD-bfG"/>
+                <outlet property="forwardButton" destination="U1z-fb-p7G" id="7OL-e9-0vu"/>
             </connections>
             <point key="canvasLocation" x="-698.39999999999998" y="59.370314842578715"/>
         </view>
