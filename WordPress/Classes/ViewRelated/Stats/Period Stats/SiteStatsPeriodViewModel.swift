@@ -138,14 +138,19 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func referrersDataRows() -> [StatsTotalRowData] {
-        return store.getTopReferrers()?.referrers.map { StatsTotalRowData(name: $0.title,
-                                                                          data: $0.viewsCount.abbreviatedString(),
-                                                                          socialIconURL: $0.iconURL,
-                                                                          showDisclosure: true,
-                                                                          disclosureURL: $0.url,
-                                                                          childRows: [], // FIXME
-                                                                          statSection: .periodReferrers) }
-            ?? []
+        let referrers = store.getTopReferrers()?.referrers ?? []
+
+        func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            return StatsTotalRowData(name: referrer.title,
+                                     data: referrer.viewsCount.abbreviatedString(),
+                                     socialIconURL: referrer.iconURL,
+                                     showDisclosure: true,
+                                     disclosureURL: referrer.url,
+                                     childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
+                                     statSection: .periodReferrers)
+        }
+
+        return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
     func clicksTableRows() -> [ImmuTableRow] {
@@ -165,7 +170,11 @@ private extension SiteStatsPeriodViewModel {
                                                                     userIconURL: $0.iconURL,
                                                                     showDisclosure: true,
                                                                     disclosureURL: $0.clickedURL,
-                                                                    childRows: [], //TODO FIXME
+                                                                    childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                                                                   data: $0.clicksCount.abbreviatedString(),
+                                                                                                                   showDisclosure: true,
+                                                                                                                   disclosureURL: $0.clickedURL)
+            },
                                                                     statSection: .periodClicks) }
             ?? []
     }
@@ -190,7 +199,7 @@ private extension SiteStatsPeriodViewModel {
                                                dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
                                                userIconURL: $0.iconURL,
                                                showDisclosure: true,
-                                               childRows: [], // TODO FIXME
+                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
                                                statSection: .periodAuthors)
         }
     }
@@ -209,7 +218,7 @@ private extension SiteStatsPeriodViewModel {
     func countriesDataRows() -> [StatsTotalRowData] {
         return store.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                           data: $0.viewsCount.abbreviatedString(),
-                                                                          countryIconURL: nil, //FIXME TODO
+                                                                          countryIconURL: nil, // TODO Move this from WPStatsiOS.
                                                                           statSection: .periodCountries) }
             ?? []
     }
@@ -276,7 +285,7 @@ private extension SiteStatsPeriodViewModel {
     func videosDataRows() -> [StatsTotalRowData] {
         return store.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
                                                                     data: $0.playsCount.abbreviatedString(),
-                                                                    mediaID: 0, //TODO FIXIT,
+                                                                    mediaID: 0, //TODO Currently backend only returns URLs, not IDs.
                                                                     icon: Style.imageForGridiconType(.video),
                                                                     showDisclosure: true,
                                                                     statSection: .periodVideos) }

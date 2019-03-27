@@ -394,7 +394,7 @@ private extension SiteStatsDetailsViewModel {
                                                                         data: $0.value.displayString(),
                                                                         showDisclosure: true,
                                                                         disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                        childRows: StatsDataHelper.childRowsForClicks($0),
+                                                                        childRows: [], //TODO FIXME StatsDataHelper.childRowsForClicks($0),
                                                                         statSection: .periodClicks) }
             ?? []
     }
@@ -406,7 +406,7 @@ private extension SiteStatsDetailsViewModel {
                                                      dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
                                                      userIconURL: $0.iconURL,
                                                      showDisclosure: true,
-                                                     childRows: StatsDataHelper.childRowsForAuthor($0),
+                                                     childRows: [], // TODO FIXME StatsDataHelper.childRowsForAuthor($0),
                                                      statSection: .periodAuthors) }
             ?? []
     }
@@ -417,7 +417,7 @@ private extension SiteStatsDetailsViewModel {
                                                                            socialIconURL: $0.iconURL,
                                                                            showDisclosure: true,
                                                                            disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                           childRows: StatsDataHelper.childRowsForReferrers($0),
+                                                                           childRows: [], // TODO FIXME StatsDataHelper.childRowsForReferrers($0),
                                                                            statSection: .periodReferrers) }
             ?? []
     }
