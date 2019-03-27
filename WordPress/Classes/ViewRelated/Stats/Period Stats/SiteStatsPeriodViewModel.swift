@@ -100,7 +100,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func postsAndPagesDataRows() -> [StatsTotalRowData] {
-        let postsAndPages = store.getTopPostsAndPages()?.topPosts ?? []
+        let postsAndPages = store.getTopPostsAndPages()?.topPosts.prefix(10) ?? []
 
         return postsAndPages.map {
             let icon: UIImage?
@@ -138,7 +138,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func referrersDataRows() -> [StatsTotalRowData] {
-        let referrers = store.getTopReferrers()?.referrers ?? []
+        let referrers = store.getTopReferrers()?.referrers.prefix(10) ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
             return StatsTotalRowData(name: referrer.title,
@@ -165,17 +165,17 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func clicksDataRows() -> [StatsTotalRowData] {
-        return store.getTopClicks()?.clicks.map { StatsTotalRowData(name: $0.title,
-                                                                    data: $0.clicksCount.abbreviatedString(),
-                                                                    userIconURL: $0.iconURL,
-                                                                    showDisclosure: true,
-                                                                    disclosureURL: $0.clickedURL,
-                                                                    childRows: $0.children.map { StatsTotalRowData(name: $0.title,
-                                                                                                                   data: $0.clicksCount.abbreviatedString(),
-                                                                                                                   showDisclosure: true,
-                                                                                                                   disclosureURL: $0.clickedURL)
+        return store.getTopClicks()?.clicks.prefix(10).map { StatsTotalRowData(name: $0.title,
+                                                                               data: $0.clicksCount.abbreviatedString(),
+                                                                               userIconURL: $0.iconURL,
+                                                                               showDisclosure: true,
+                                                                               disclosureURL: $0.clickedURL,
+                                                                               childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                                                                              data: $0.clicksCount.abbreviatedString(),
+                                                                                                                              showDisclosure: true,
+                                                                                                                              disclosureURL: $0.clickedURL)
             },
-                                                                    statSection: .periodClicks) }
+                                                                               statSection: .periodClicks) }
             ?? []
     }
 
@@ -191,7 +191,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func authorsDataRows() -> [StatsTotalRowData] {
-        let authors = store.getTopAuthors()?.topAuthors ?? []
+        let authors = store.getTopAuthors()?.topAuthors.prefix(10) ?? []
 
 
         return authors.map { StatsTotalRowData(name: $0.name,
@@ -216,10 +216,10 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func countriesDataRows() -> [StatsTotalRowData] {
-        return store.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
-                                                                          data: $0.viewsCount.abbreviatedString(),
-                                                                          countryIconURL: nil, // TODO Move this from WPStatsiOS.
-                                                                          statSection: .periodCountries) }
+        return store.getTopCountries()?.countries.prefix(10).map { StatsTotalRowData(name: $0.name,
+                                                                                     data: $0.viewsCount.abbreviatedString(),
+                                                                                     countryIconURL: nil, // TODO Move this from WPStatsiOS.
+                                                                                     statSection: .periodCountries) }
             ?? []
     }
 
@@ -239,9 +239,9 @@ private extension SiteStatsPeriodViewModel {
             return []
         }
 
-        var mappedSearchTerms = searchTerms.searchTerms.map { StatsTotalRowData(name: $0.term,
-                                                                                data: $0.viewsCount.abbreviatedString(),
-                                                                                statSection: .periodSearchTerms) }
+        var mappedSearchTerms = searchTerms.searchTerms.prefix(10).map { StatsTotalRowData(name: $0.term,
+                                                                                           data: $0.viewsCount.abbreviatedString(),
+                                                                                           statSection: .periodSearchTerms) }
 
         let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
                                                                           comment: "Search Terms label for 'unknown search terms'."),
@@ -263,7 +263,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func publishedDataRows() -> [StatsTotalRowData] {
-        return store.getTopPublished()?.publishedPosts.map { StatsTotalRowData.init(name: $0.title,
+        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title,
                                                                                     data: "",
                                                                                     showDisclosure: true,
                                                                                     disclosureURL: $0.postURL,
@@ -283,12 +283,12 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func videosDataRows() -> [StatsTotalRowData] {
-        return store.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
-                                                                    data: $0.playsCount.abbreviatedString(),
-                                                                    mediaID: 0, //TODO Currently backend only returns URLs, not IDs.
-                                                                    icon: Style.imageForGridiconType(.video),
-                                                                    showDisclosure: true,
-                                                                    statSection: .periodVideos) }
+        return store.getTopVideos()?.videos.prefix(10).map { StatsTotalRowData(name: $0.title,
+                                                                               data: $0.playsCount.abbreviatedString(),
+                                                                               mediaID: 0, //TODO Currently backend only returns URLs, not IDs.
+                                                                               icon: Style.imageForGridiconType(.video),
+                                                                               showDisclosure: true,
+                                                                               statSection: .periodVideos) }
             ?? []
     }
 

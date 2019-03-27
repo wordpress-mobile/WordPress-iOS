@@ -348,94 +348,104 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func postsAndPagesRows() -> [StatsTotalRowData] {
-        let postsAndPages = periodStore.getAllPostsAndPages()
-        var dataRows = [StatsTotalRowData]()
+        let postsAndPages = periodStore.getTopPostsAndPages()?.topPosts ?? []
 
-        postsAndPages?.forEach { item in
+        return postsAndPages.map {
+            let icon: UIImage?
 
-            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
-            let icon = Style.imageForGridiconType(.posts)
+            switch $0.kind {
+            case .homepage:
+                icon = Style.imageForGridiconType(.house)
+            case .page:
+                icon = Style.imageForGridiconType(.pages)
+            case .post:
+                icon = Style.imageForGridiconType(.posts)
+            case .unknown:
+                icon = Style.imageForGridiconType(.posts)
+            }
 
-            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
-
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             dataBarPercent: dataBarPercent,
-                                             icon: icon,
-                                             showDisclosure: true,
-                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
-                                             statSection: .periodPostsAndPages)
-
-            dataRows.append(row)
+            return StatsTotalRowData(name: $0.title,
+                                     data: $0.viewsCount.abbreviatedString(),
+                                     dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
+                                     icon: icon,
+                                     showDisclosure: true,
+                                     disclosureURL: $0.postURL,
+                                     statSection: .periodPostsAndPages)
         }
-
-        return dataRows
     }
 
     func searchTermsRows() -> [StatsTotalRowData] {
-        return periodStore.getAllSearchTerms()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                             data: $0.value.displayString(),
-                                                                             statSection: .periodSearchTerms) }
+        return periodStore.getTopSearchTerms()?.searchTerms.map { StatsTotalRowData(name: $0.term,
+                                                                                    data: $0.viewsCount.abbreviatedString(),
+                                                                                    statSection: .periodSearchTerms) }
             ?? []
     }
 
     func videosRows() -> [StatsTotalRowData] {
-        return periodStore.getAllVideos()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                        data: $0.value.displayString(),
-                                                                        mediaID: $0.itemID,
-                                                                        icon: Style.imageForGridiconType(.video),
-                                                                        showDisclosure: true,
-                                                                        statSection: .periodVideos) }
+        return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
+                                                                          data: $0.playsCount.abbreviatedString(),
+                                                                          mediaID: 0, // TODO FIXME Add this from WPKit
+                                                                          icon: Style.imageForGridiconType(.video),
+                                                                          showDisclosure: true,
+                                                                          statSection: .periodVideos) }
             ?? []
     }
 
     func clicksRows() -> [StatsTotalRowData] {
-        return periodStore.getAllClicks()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                        data: $0.value.displayString(),
-                                                                        showDisclosure: true,
-                                                                        disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                        childRows: [], //TODO FIXME StatsDataHelper.childRowsForClicks($0),
-                                                                        statSection: .periodClicks) }
+        return periodStore.getTopClicks()?.clicks.map { StatsTotalRowData(name: $0.title,
+                                                                          data: $0.clicksCount.abbreviatedString(),
+                                                                          showDisclosure: true,
+                                                                          disclosureURL: $0.iconURL,
+                                                                          childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                                                                         data: $0.clicksCount.abbreviatedString(),
+                                                                                                                         showDisclosure: true,
+                                                                                                                         disclosureURL: $0.clickedURL) },
+                                                                          statSection: .periodClicks) }
             ?? []
     }
 
     func authorsRows() -> [StatsTotalRowData] {
-        let authors = periodStore.getAllAuthors()
-        return authors?.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
-                                                     userIconURL: $0.iconURL,
-                                                     showDisclosure: true,
-                                                     childRows: [], // TODO FIXME StatsDataHelper.childRowsForAuthor($0),
-                                                     statSection: .periodAuthors) }
-            ?? []
+        let authors = periodStore.getTopAuthors()?.topAuthors ?? []
+
+        return authors.map { StatsTotalRowData(name: $0.name,
+                                               data: $0.viewsCount.abbreviatedString(),
+                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                                               userIconURL: $0.iconURL,
+                                               showDisclosure: true,
+                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                                               statSection: .periodAuthors) }
     }
 
     func referrersRows() -> [StatsTotalRowData] {
-        return periodStore.getAllReferrers()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                           data: $0.value.displayString(),
-                                                                           socialIconURL: $0.iconURL,
-                                                                           showDisclosure: true,
-                                                                           disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                           childRows: [], // TODO FIXME StatsDataHelper.childRowsForReferrers($0),
-                                                                           statSection: .periodReferrers) }
-            ?? []
+        let referrers = periodStore.getTopReferrers()?.referrers ?? []
+
+        func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            return StatsTotalRowData(name: referrer.title,
+                                     data: referrer.viewsCount.abbreviatedString(),
+                                     socialIconURL: referrer.iconURL,
+                                     showDisclosure: true,
+                                     disclosureURL: referrer.url,
+                                     childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
+                                     statSection: .periodReferrers)
+        }
+
+        return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
     func countriesRows() -> [StatsTotalRowData] {
-        return periodStore.getAllCountries()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                           data: $0.value.displayString(),
-                                                                           countryIconURL: $0.iconURL,
-                                                                           statSection: .periodCountries) }
+        return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
+                                                                                data: $0.viewsCount.abbreviatedString(),
+                                                                                countryIconURL: nil, //$0.iconURL // TODO FIXME Move this from WPiOSStats
+                                                                                statSection: .periodCountries) }
             ?? []
     }
 
     func publishedRows() -> [StatsTotalRowData] {
-        return periodStore.getAllPublished()?.map { StatsTotalRowData.init(name: $0.title,
-                                                                           data: "",
-                                                                           showDisclosure: true,
-                                                                           disclosureURL: $0.postURL,
-                                                                           statSection: .periodPublished) }
+        return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
+                                                                                     data: "",
+                                                                                     showDisclosure: true,
+                                                                                     disclosureURL: $0.postURL,
+                                                                                     statSection: .periodPublished) }
             ?? []
     }
 

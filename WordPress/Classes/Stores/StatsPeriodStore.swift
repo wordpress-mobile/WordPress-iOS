@@ -18,30 +18,14 @@ enum PeriodAction: Action {
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit)
 
     // Period details
-
-    case receivedAllPostsAndPages(_ postsAndPages: StatsGroup?)
     case refreshPostsAndPages(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllSearchTerms(_ searchTerms: StatsGroup?)
-    case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllVideos(_ videos: StatsGroup?)
-    case refreshVideos(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllClicks(_ clicks: StatsGroup?)
-    case refreshClicks(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllAuthors(_ authors: StatsGroup?)
-    case refreshAuthors(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllReferrers(_ referrers: StatsGroup?)
-    case refreshReferrers(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllCountries(_ countries: StatsGroup?)
-    case refreshCountries(date: Date, period: StatsPeriodUnit)
-
-    case receivedAllPublished(_ published: StatsPublishedPostsTimeIntervalData?)
     case refreshPublished(date: Date, period: StatsPeriodUnit)
+    case refreshReferrers(date: Date, period: StatsPeriodUnit)
+    case refreshClicks(date: Date, period: StatsPeriodUnit)
+    case refreshAuthors(date: Date, period: StatsPeriodUnit)
+    case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
+    case refreshVideos(date: Date, period: StatsPeriodUnit)
+    case refreshCountries(date: Date, period: StatsPeriodUnit)
 }
 
 enum PeriodQuery {
@@ -132,32 +116,6 @@ struct PeriodStoreState {
 
     var topVideos: StatsTopVideosTimeIntervalData?
     var fetchingVideos = false
-
-    // Period details
-
-    var allPostsAndPages: [StatsItem]?
-    var fetchingAllPostsAndPages = false
-
-    var allSearchTerms: [StatsItem]?
-    var fetchingAllSearchTerms = false
-
-    var allVideos: [StatsItem]?
-    var fetchingAllVideos = false
-
-    var allClicks: [StatsItem]?
-    var fetchingAllClicks = false
-
-    var allAuthors: [StatsItem]?
-    var fetchingAllAuthors = false
-
-    var allReferrers: [StatsItem]?
-    var fetchingAllReferrers = false
-
-    var allCountries: [StatsItem]?
-    var fetchingAllCountries = false
-
-    var allPublished: [StatsTopPost]?
-    var fetchingAllPublished = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -193,36 +151,20 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedCountries(countries)
         case .refreshPeriodOverviewData(let date, let period):
             refreshPeriodOverviewData(date: date, period: period)
-        case .receivedAllPostsAndPages(let postsAndPages):
-            receivedAllPostsAndPages(postsAndPages)
         case .refreshPostsAndPages(let date, let period):
             refreshPostsAndPages(date: date, period: period)
-        case .receivedAllSearchTerms(let searchTerms):
-            receivedAllSearchTerms(searchTerms)
         case .refreshSearchTerms(let date, let period):
             refreshSearchTerms(date: date, period: period)
-        case .receivedAllVideos(let videos):
-            receivedAllVideos(videos)
         case .refreshVideos(let date, let period):
             refreshVideos(date: date, period: period)
-        case .receivedAllClicks(let clicks):
-            receivedAllClicks(clicks)
         case .refreshClicks(let date, let period):
             refreshClicks(date: date, period: period)
-        case .receivedAllAuthors(let authors):
-            receivedAllAuthors(authors)
         case .refreshAuthors(let date, let period):
             refreshAuthors(date: date, period: period)
-        case .receivedAllReferrers(let referrers):
-            receivedAllReferrers(referrers)
         case .refreshReferrers(let date, let period):
             refreshReferrers(date: date, period: period)
-        case .receivedAllCountries(let countries):
-            receivedAllCountries(countries)
         case .refreshCountries(let date, let period):
             refreshCountries(date: date, period: period)
-        case .receivedAllPublished(let published):
-            receivedAllPublished(published)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
         }
@@ -398,15 +340,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllPostsAndPages(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllPostsAndPages = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrievePosts(for: date, andUnit: period, withCompletionHandler: { (postsAndPages, error) in
+        state.fetchingPostsAndPages = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Posts and Pages: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all posts: \(String(describing: error?.localizedDescription))")
             }
-            DDLogInfo("Stats: Finished fetching all posts and pages.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllPostsAndPages(postsAndPages))
-        })
+
+            DDLogInfo("Stats: Finished fetching all posts.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(posts))
+        }
     }
 
     func refreshPostsAndPages(date: Date, period: StatsPeriodUnit) {
@@ -419,15 +367,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllSearchTerms(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllSearchTerms = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrieveSearchTerms(for: date, andUnit: period, withCompletionHandler: { (searchTerms, error) in
+        state.fetchingSearchTerms = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Search Terms: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all search terms: \(String(describing: error?.localizedDescription))")
             }
+
             DDLogInfo("Stats: Finished fetching all search terms.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllSearchTerms(searchTerms))
-        })
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
+        }
     }
 
     func refreshSearchTerms(date: Date, period: StatsPeriodUnit) {
@@ -440,15 +394,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllVideos(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllVideos = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrieveVideos(for: date, andUnit: period, withCompletionHandler: { (videos, error) in
+        state.fetchingVideos = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Videos: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching videos: \(String(describing: error?.localizedDescription))")
             }
-            DDLogInfo("Stats: Finished fetching all videos.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllVideos(videos))
-        })
+
+            DDLogInfo("Stats: Finished fetching videos.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
+        }
     }
 
     func refreshVideos(date: Date, period: StatsPeriodUnit) {
@@ -461,15 +421,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllClicks(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllClicks = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrieveClicks(for: date, andUnit: period, withCompletionHandler: { (clicks, error) in
+        state.fetchingClicks = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Clicks: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all clicks: \(String(describing: error?.localizedDescription))")
             }
+
             DDLogInfo("Stats: Finished fetching all clicks.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllClicks(clicks))
-        })
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks))
+        }
     }
 
     func refreshClicks(date: Date, period: StatsPeriodUnit) {
@@ -482,15 +448,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllAuthors(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllAuthors = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrieveAuthors(for: date, andUnit: period, withCompletionHandler: { (authors, error) in
+        state.fetchingAuthors = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Authors: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all authors: \(String(describing: error?.localizedDescription))")
             }
+
             DDLogInfo("Stats: Finished fetching all authors.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllAuthors(authors))
-        })
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors))
+        }
     }
 
     func refreshAuthors(date: Date, period: StatsPeriodUnit) {
@@ -503,15 +475,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllReferrers = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrieveReferrers(for: date, andUnit: period, withCompletionHandler: { (referrers, error) in
+        state.fetchingReferrers = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Referrers: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all referrers: \(String(describing: error?.localizedDescription))")
             }
+
             DDLogInfo("Stats: Finished fetching all referrers.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllReferrers(referrers))
-        })
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers))
+        }
     }
 
     func refreshReferrers(date: Date, period: StatsPeriodUnit) {
@@ -524,15 +502,21 @@ private extension StatsPeriodStore {
     }
 
     func fetchAllCountries(date: Date, period: StatsPeriodUnit) {
-        state.fetchingAllCountries = true
+        guard let statsRemote = statsRemote() else {
+            return
+        }
 
-        SiteStatsInformation.statsService()?.retrieveCountries(for: date, andUnit: period, withCompletionHandler: { (countries, error) in
+        state.fetchingCountries = true
+
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
-                DDLogInfo("Error fetching all Countries: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all countries: \(String(describing: error?.localizedDescription))")
             }
+
             DDLogInfo("Stats: Finished fetching all countries.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllCountries(countries))
-        })
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries))
+        }
     }
 
     func refreshCountries(date: Date, period: StatsPeriodUnit) {
@@ -549,16 +533,15 @@ private extension StatsPeriodStore {
             return
         }
 
-        state.fetchingAllPublished = true
+        state.fetchingPublished = true
 
-        statsRemote.getData(for: period, endingOn: date, limit: 0, completion: {
-            (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching all Published: \(String(describing: error?.localizedDescription))")
             }
             DDLogInfo("Stats: Finished fetching all published.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedAllPublished(published))
-        })
+            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
+        }
     }
 
     func refreshPublished(date: Date, period: StatsPeriodUnit) {
@@ -658,65 +641,6 @@ private extension StatsPeriodStore {
 
             if countries != nil {
                 state.topCountries = countries
-            }
-        }
-    }
-
-    func receivedAllPostsAndPages(_ postsAndPages: StatsGroup?) {
-        transaction { state in
-            state.allPostsAndPages = postsAndPages?.items as? [StatsItem]
-            state.fetchingAllPostsAndPages = false
-        }
-    }
-
-    func receivedAllSearchTerms(_ searchTerms: StatsGroup?) {
-        transaction { state in
-            state.allSearchTerms = searchTerms?.items as? [StatsItem] //TODO FIXME reorder this in VM
-            state.fetchingAllSearchTerms = false
-        }
-    }
-
-    func receivedAllVideos(_ videos: StatsGroup?) {
-        transaction { state in
-            state.allVideos = videos?.items as? [StatsItem]
-            state.fetchingAllVideos = false
-        }
-    }
-
-    func receivedAllClicks(_ clicks: StatsGroup?) {
-        transaction { state in
-            state.allClicks = clicks?.items as? [StatsItem]
-            state.fetchingAllClicks = false
-        }
-    }
-
-    func receivedAllAuthors(_ authors: StatsGroup?) {
-        transaction { state in
-            state.allAuthors = authors?.items as? [StatsItem]
-            state.fetchingAllAuthors = false
-        }
-    }
-
-    func receivedAllReferrers(_ referrers: StatsGroup?) {
-        transaction { state in
-            state.allReferrers = referrers?.items as? [StatsItem]
-            state.fetchingAllReferrers = false
-        }
-    }
-
-    func receivedAllCountries(_ countries: StatsGroup?) {
-        transaction { state in
-            state.allCountries = countries?.items as? [StatsItem]
-            state.fetchingAllCountries = false
-        }
-    }
-
-    func receivedAllPublished(_ published: StatsPublishedPostsTimeIntervalData?) {
-        transaction { state in
-            state.fetchingAllPublished = false
-
-            if published != nil {
-                state.allPublished = published?.publishedPosts
             }
         }
     }
@@ -825,38 +749,6 @@ extension StatsPeriodStore {
         return state.topCountries
     }
 
-    func getAllPostsAndPages() -> [StatsItem]? {
-        return state.allPostsAndPages
-    }
-
-    func getAllSearchTerms() -> [StatsItem]? {
-        return state.allSearchTerms
-    }
-
-    func getAllVideos() -> [StatsItem]? {
-        return state.allVideos
-    }
-
-    func getAllClicks() -> [StatsItem]? {
-        return state.allClicks
-    }
-
-    func getAllAuthors() -> [StatsItem]? {
-        return state.allAuthors
-    }
-
-    func getAllReferrers() -> [StatsItem]? {
-        return state.allReferrers
-    }
-
-    func getAllCountries() -> [StatsItem]? {
-        return state.allCountries
-    }
-
-    func getAllPublished() -> [StatsTopPost]? {
-        return state.allPublished
-    }
-
     var isFetchingOverview: Bool {
         return
             state.fetchingSummary ||
@@ -871,35 +763,35 @@ extension StatsPeriodStore {
     }
 
     var isFetchingPostsAndPages: Bool {
-        return state.fetchingAllPostsAndPages
+        return state.fetchingPostsAndPages
     }
 
     var isFetchingSearchTerms: Bool {
-        return state.fetchingAllSearchTerms
+        return state.fetchingSearchTerms
     }
 
     var isFetchingVideos: Bool {
-        return state.fetchingAllVideos
+        return state.fetchingVideos
     }
 
     var isFetchingClicks: Bool {
-        return state.fetchingAllClicks
+        return state.fetchingClicks
     }
 
     var isFetchingAuthors: Bool {
-        return state.fetchingAllAuthors
+        return state.fetchingAuthors
     }
 
     var isFetchingReferrers: Bool {
-        return state.fetchingAllReferrers
+        return state.fetchingReferrers
     }
 
     var isFetchingCountries: Bool {
-        return state.fetchingAllCountries
+        return state.fetchingCountries
     }
 
     var isFetchingPublished: Bool {
-        return state.fetchingAllPublished
+        return state.fetchingPublished
     }
 
 }
