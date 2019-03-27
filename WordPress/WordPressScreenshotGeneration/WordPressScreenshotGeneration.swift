@@ -124,14 +124,14 @@ class WordPressScreenshotGeneration: XCTestCase {
         app.buttons["drafts"].tap()
 
         // Get a screenshot of the post editor
-        screenshotPost(withSlug: "summer-band-jam", called: "1-PostEditor")
+        screenshotGutenPost(withSlug: "summer-band-jam", called: "1-PostEditor")
 
         // Get a screenshot of the drafts feature
-        screenshotPost(withSlug: "ideas", called: "5-DraftEditor")
+        screenshotAztecPost(withSlug: "ideas", called: "5-DraftEditor")
 
         // Get a screenshot of the full-screen editor
         if isIpad {
-            screenshotPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
+            screenshotAztecPost(withSlug: "now-booking-summer-sessions", called: "6-No-Keyboard-Editor")
         }
 
         // Tap the back button if on an iPhone screen
@@ -147,7 +147,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         snapshot("4-Media")
 
         // Tap the back button if on an iPhone screen
-        if UIDevice.current.userInterfaceIdiom == .phone {
+        if isIPhone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
 
@@ -177,10 +177,11 @@ class WordPressScreenshotGeneration: XCTestCase {
         snapshot("3-Notifications")
     }
 
-    private func screenshotPost(withSlug slug: String, called screenshotName: String, withKeyboard: Bool = false) {
+    private func screenshotAztecPost(withSlug slug: String, called screenshotName: String, withKeyboard: Bool = false) {
 
         let app = XCUIApplication()
 
+        tapStatusBarToScrollToTop()
         let cell = app.tables.cells[slug]
         waitForElementToExist(element: cell)
 
@@ -206,29 +207,30 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
     }
 
-    private func gutenScreenshot() {
-
+    private func screenshotGutenPost(withSlug slug: String, called screenshotName: String, withKeyboard: Bool = false) {
         let app = XCUIApplication()
 
-        app.tables["Blog Details Table"]
-            .cells["Site Pages Row"].tap() // tap Site Pages
-        waitForElementToExist(element: app.tables["PagesTable"])
+        tapStatusBarToScrollToTop()
+        let cell = app.tables.cells[slug]
+        waitForElementToExist(element: cell)
 
-        // Switch the filter to drafts
-        app.buttons["drafts"].tap()
+        scrollElementIntoView(element: cell, within: app.tables["PostsTable"])
+        cell.tap()
 
-        app.tables.cells["gutenpage"].tap()
-        sleep(10)
-        snapshot("7-gutenpage")
 
-//        app.buttons["editor-close-button"].tap()
+        let editorNavigationBar = app.navigationBars["Gutenberg Editor Navigation Bar"]
+        waitForElementToExist(element: editorNavigationBar)
 
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            // Tap the Gutenberg close button
-            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
-
-            // Tap the nav bar back button
-            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
+        //Tap the "OK" button to dismiss the Gutenberg Prompt
+        let notNowButton = app.buttons["defaultAlertButton"]
+        if notNowButton.exists {
+            notNowButton.tap()
         }
+
+        sleep(imagesWaitTime) // wait for post images to load
+        // The title field gets focus automatically
+        snapshot(screenshotName)
+
+        app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
     }
 }

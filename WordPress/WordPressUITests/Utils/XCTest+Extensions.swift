@@ -143,12 +143,28 @@ extension XCTestCase {
         var iteration = 0
 
         while !elementIsFullyVisibleOnScreen(element: element) && iteration < threshold {
-            scrollView.swipeUp()
+            scrollView.scroll(byDeltaX: 0, deltaY: 100)
             iteration += 1
         }
 
         if !elementIsFullyVisibleOnScreen(element: element) {
             XCTFail("Unable to scroll element into view")
         }
+    }
+
+    // A shortcut to scroll TableViews or CollectionViews to top
+    func tapStatusBarToScrollToTop() {
+        XCUIApplication().statusBars.firstMatch.tap()
+    }
+}
+
+extension XCUIElement {
+
+    func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) {
+
+        let startCoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
+        let destination = startCoordinate.withOffset(CGVector(dx: deltaX, dy: deltaY * -1))
+
+        startCoordinate.press(forDuration: 0.01, thenDragTo: destination)
     }
 }
