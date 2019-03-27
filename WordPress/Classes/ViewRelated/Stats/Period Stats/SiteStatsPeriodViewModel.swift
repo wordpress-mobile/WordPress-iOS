@@ -167,7 +167,6 @@ private extension SiteStatsPeriodViewModel {
     func clicksDataRows() -> [StatsTotalRowData] {
         return store.getTopClicks()?.clicks.prefix(10).map { StatsTotalRowData(name: $0.title,
                                                                                data: $0.clicksCount.abbreviatedString(),
-                                                                               userIconURL: $0.iconURL,
                                                                                showDisclosure: true,
                                                                                disclosureURL: $0.clickedURL,
                                                                                childRows: $0.children.map { StatsTotalRowData(name: $0.title,
