@@ -34,7 +34,7 @@
             <constraints>
                 <constraint firstItem="hQm-TV-IDW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="QB9-fd-Zsn"/>
                 <constraint firstItem="hQm-TV-IDW" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="eud-Yr-hp5"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="hQm-TV-IDW" secondAttribute="trailing" constant="16" id="pJe-WK-HF0"/>
+                <constraint firstItem="H2p-sc-9uM" firstAttribute="trailing" secondItem="hQm-TV-IDW" secondAttribute="trailing" constant="16" id="pJe-WK-HF0"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
