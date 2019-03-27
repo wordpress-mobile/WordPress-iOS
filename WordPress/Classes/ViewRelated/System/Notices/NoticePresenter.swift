@@ -70,10 +70,10 @@ class NoticePresenter: NSObject {
 
         super.init()
 
-        // Make the window key and visible at first but hide it on the next UI loop. If this is not
-        // done, the window is not automatically resized when the device is rotated. This issue
+        // Keep the window visible but hide it on the next run loop. If we hide it immediately,
+        // the window is not automatically resized when the device is rotated. This issue
         // only happens on iPad devices.
-        window.makeKeyAndVisible()
+        window.isHidden = false
         DispatchQueue.main.async { [weak self] in
             self?.window.isHidden = true
         }
