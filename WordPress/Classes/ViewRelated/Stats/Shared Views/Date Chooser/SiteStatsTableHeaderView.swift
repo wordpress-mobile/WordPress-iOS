@@ -28,6 +28,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     // MARK: - View
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         applyStyles()
     }
 
