@@ -72,7 +72,7 @@ class NoticePresenter: NSObject {
 
         // Keep the window visible but hide it on the next run loop. If we hide it immediately,
         // the window is not automatically resized when the device is rotated. This issue
-        // only happens on iPad devices.
+        // only happens on iPad simulators.
         window.isHidden = false
         DispatchQueue.main.async { [weak self] in
             self?.window.isHidden = true
