@@ -116,7 +116,6 @@ private extension SiteStatsDashboardViewController {
             return
         }
 
-        // TODO: when implemented, pass user selected date to VC.
         periodTableViewController?.selectedDate = Date()
         let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
         periodTableViewController?.selectedPeriod = selectedPeriod
