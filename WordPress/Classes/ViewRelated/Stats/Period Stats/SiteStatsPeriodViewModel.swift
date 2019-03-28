@@ -12,6 +12,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     private let periodDelegate: SiteStatsPeriodDelegate
     private let store: StatsPeriodStore
+    private var lastRequestedPeriod: StatsPeriodUnit
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
@@ -24,6 +25,7 @@ class SiteStatsPeriodViewModel: Observable {
          periodDelegate: SiteStatsPeriodDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
+        self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
 
         changeReceipt = store.onChange { [weak self] in
@@ -58,6 +60,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period))
+        self.lastRequestedPeriod = period
     }
 }
 
@@ -108,7 +111,7 @@ private extension SiteStatsPeriodViewModel {
             commentsStyling
         ]
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling)
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling, period: lastRequestedPeriod)
         tableRows.append(row)
 
         return tableRows
