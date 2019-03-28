@@ -10,7 +10,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
-    private let periodDelegate: SiteStatsPeriodDelegate
+    private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
