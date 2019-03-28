@@ -29,18 +29,58 @@
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="0sS-MO-MHI" userLabel="Arrows Stack View">
                     <rect key="frame" x="289" y="12" width="64" height="20"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="Ssg-6U-5Ac">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ANL-Um-LdU" userLabel="Back View">
                             <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="Ssg-6U-5Ac">
+                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3M-QS-Aux" userLabel="Back Button">
+                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                    <connections>
+                                        <action selector="didTapBackButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="c6p-VQ-SS4"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="20" id="UaK-3g-euz"/>
+                                <constraint firstAttribute="trailing" secondItem="Ssg-6U-5Ac" secondAttribute="trailing" id="1Ti-ir-8Eu"/>
+                                <constraint firstItem="Ssg-6U-5Ac" firstAttribute="top" secondItem="ANL-Um-LdU" secondAttribute="top" id="47u-vP-kBg"/>
+                                <constraint firstItem="b3M-QS-Aux" firstAttribute="leading" secondItem="Ssg-6U-5Ac" secondAttribute="leading" id="9pS-Yd-bcz"/>
+                                <constraint firstItem="Ssg-6U-5Ac" firstAttribute="leading" secondItem="ANL-Um-LdU" secondAttribute="leading" id="Rsi-pr-H6P"/>
+                                <constraint firstItem="b3M-QS-Aux" firstAttribute="top" secondItem="Ssg-6U-5Ac" secondAttribute="top" id="XKH-DN-Rw0"/>
+                                <constraint firstItem="b3M-QS-Aux" firstAttribute="bottom" secondItem="Ssg-6U-5Ac" secondAttribute="bottom" id="Xea-2p-t5C"/>
+                                <constraint firstItem="b3M-QS-Aux" firstAttribute="trailing" secondItem="Ssg-6U-5Ac" secondAttribute="trailing" id="jCi-6C-6GT"/>
+                                <constraint firstAttribute="width" constant="20" id="rM3-sd-PgX"/>
+                                <constraint firstAttribute="bottom" secondItem="Ssg-6U-5Ac" secondAttribute="bottom" id="upK-YJ-fvz"/>
                             </constraints>
-                        </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="2dA-xk-MWI">
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MDc-iR-4u0" userLabel="Forward View">
                             <rect key="frame" x="44" y="0.0" width="20" height="20"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="2dA-xk-MWI">
+                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1z-fb-p7G" userLabel="Forward Button">
+                                    <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                    <connections>
+                                        <action selector="didTapForwardButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="GBT-pg-rO2"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="20" id="S5d-Sl-8fP"/>
+                                <constraint firstItem="2dA-xk-MWI" firstAttribute="leading" secondItem="MDc-iR-4u0" secondAttribute="leading" id="8gB-9S-kgq"/>
+                                <constraint firstItem="2dA-xk-MWI" firstAttribute="top" secondItem="MDc-iR-4u0" secondAttribute="top" id="BUE-Gb-mWp"/>
+                                <constraint firstAttribute="trailing" secondItem="2dA-xk-MWI" secondAttribute="trailing" id="LMy-m5-Hme"/>
+                                <constraint firstItem="U1z-fb-p7G" firstAttribute="trailing" secondItem="2dA-xk-MWI" secondAttribute="trailing" id="UKE-Iv-Yct"/>
+                                <constraint firstAttribute="width" constant="20" id="VHg-Zg-qku"/>
+                                <constraint firstItem="U1z-fb-p7G" firstAttribute="bottom" secondItem="2dA-xk-MWI" secondAttribute="bottom" id="a0A-rh-ZzX"/>
+                                <constraint firstItem="U1z-fb-p7G" firstAttribute="top" secondItem="2dA-xk-MWI" secondAttribute="top" id="eHU-f4-YHb"/>
+                                <constraint firstItem="U1z-fb-p7G" firstAttribute="leading" secondItem="2dA-xk-MWI" secondAttribute="leading" id="es9-lQ-Xjj"/>
+                                <constraint firstAttribute="bottom" secondItem="2dA-xk-MWI" secondAttribute="bottom" id="ruq-lf-Eas"/>
                             </constraints>
-                        </imageView>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="mWu-cY-kmx"/>
@@ -72,9 +112,11 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="backArrow" destination="Ssg-6U-5Ac" id="vC4-Hc-zMu"/>
+                <outlet property="backButton" destination="b3M-QS-Aux" id="d3f-cX-bL9"/>
                 <outlet property="bottomSeparatorLine" destination="82h-So-kdz" id="EKp-FJ-DKe"/>
                 <outlet property="dateLabel" destination="hDF-ds-FAU" id="DkU-jG-M41"/>
                 <outlet property="forwardArrow" destination="2dA-xk-MWI" id="Kz1-HD-bfG"/>
+                <outlet property="forwardButton" destination="U1z-fb-p7G" id="7OL-e9-0vu"/>
             </connections>
             <point key="canvasLocation" x="-698.39999999999998" y="59.370314842578715"/>
         </view>
