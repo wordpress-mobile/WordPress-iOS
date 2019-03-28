@@ -15,11 +15,6 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
             static let nameText = WPStyleGuide.darkGrey()
             static let valueText = WPStyleGuide.greyDarken10()
         }
-
-        enum ValueTextFieldEdgeInset {
-            static let accessoryTypeDisclosure = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 0)
-            static let accessoryTypeNone = UIEdgeInsets(top: 7, left: 0, bottom: 7, right: 10)
-        }
     }
 
     @IBOutlet weak var nameValueWidthRatioConstraint: NSLayoutConstraint!
@@ -29,13 +24,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
-            switch accessoryType {
-            case .disclosureIndicator:
-                valueTextField.contentInsets = Const.ValueTextFieldEdgeInset.accessoryTypeDisclosure
+            if accessoryType != .none {
                 valueTextField.isEnabled = false
-            default:
-                valueTextField.contentInsets = Const.ValueTextFieldEdgeInset.accessoryTypeNone
-                valueTextField.isEnabled = true
             }
         }
     }
