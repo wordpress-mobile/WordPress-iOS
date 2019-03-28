@@ -125,8 +125,6 @@ class SiteStatsDetailsViewModel: Observable {
             break
         }
 
-        tableRows.append(TableFooterRow())
-
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: tableRows)

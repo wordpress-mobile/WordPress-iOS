@@ -67,7 +67,23 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         tableView.estimatedRowHeight = 500
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return SiteStatsTableHeaderView.height
     }
 
 }
@@ -210,6 +226,17 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postTitle: postTitle)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        selectedDate = newDate
+        refreshData()
     }
 
 }

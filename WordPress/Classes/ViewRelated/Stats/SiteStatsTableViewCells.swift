@@ -367,8 +367,8 @@ struct OverviewRow: ImmuTableRow {
 
     let tabsData: [OverviewTabData]
     let action: ImmuTableAction? = nil
-    let chartData: BarChartDataConvertible
-    let chartStyling: BarChartStyling
+    let chartData: [BarChartDataConvertible]
+    let chartStyling: [BarChartStyling]
 
     func configureCell(_ cell: UITableViewCell) {
 

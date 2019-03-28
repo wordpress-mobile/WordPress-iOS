@@ -1,3 +1,4 @@
-- Vous irez plus vite de l’inscription initiale au site web complet avec le processus de création de site intelligent qui vous fera démarrer avec une site personnalisé et sur mesure. Vous devriez avancer votre calendrier de lancement. désolé pour ça ! Un problème qui n’en est pas un.
-- Une fois créé votre nouveau site, il y a d’avantage de tutoriaux disponibles qui vont vous aider à l’améliorer, y compris des astuces pour faire grandir votre audience. Nous les suggérerons au moment oppportun et vous pouvez les retrouver tous sur l’écran Mes sites à tout moment. Le lancement est le commencement pas une fin.
-- dans notre quête de faire de l’app un plaisir d’utilisation, ou au moins plus agréable, nous avons agrandi la marge intérieure de la fenêtre de l’éditeur. Il sera donc plus confortable d’écrire des textes plus longs et vous permettra de voir les erreurs de mise en page et d’illustration, ce qui sera plus cohérent avec le reste de l’application.
+- La dictée dans l'éditeur de blocs fonctionne comme attendu.
+- Les messages d'erreur hors ligne s'affichent désormais dans des fenêtres contextuelles plus petites en bas de la page.
+- Correction d'un bogue où la barre d'adresse de prévisualisation du site pouvait être modifiée dans le flux de création de site.
+- Correction d'un problème dans l'éditeur de blocs où les images ne pouvaient pas être téléversées sur des sites privés.

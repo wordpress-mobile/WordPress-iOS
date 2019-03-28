@@ -15,7 +15,7 @@ struct OverviewTabData: FilterTabBarItem {
 
     var attributedTitle: NSAttributedString? {
 
-        let attributedTitle = NSMutableAttributedString(string: tabTitle)
+        let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
@@ -67,8 +67,9 @@ class OverviewCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
-    private(set) var chartData: BarChartDataConvertible?
-    private(set) var chartStyling: BarChartStyling?
+    private(set) var chartSelectedIndex = -1
+    private(set) var chartData: [BarChartDataConvertible] = []
+    private(set) var chartStyling: [BarChartStyling] = []
 
     // MARK: - Configure
 
@@ -77,7 +78,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: BarChartDataConvertible? = nil, barChartStyling: BarChartStyling? = nil) {
+    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = []) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
@@ -138,7 +139,7 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        // TODO: update chart - configureChartView() - via #11064
+        configureChartViewIfNeeded()
         updateLabels()
     }
 
@@ -153,8 +154,17 @@ private extension OverviewCell {
     // MARK: Chart support
 
     func configureChartViewIfNeeded() {
-        guard chartContainerView.subviews.isEmpty, let barChartData = chartData, let barChartStyling = chartStyling else {
+        let filterSelectedIndex = filterTabBar.selectedIndex
+
+        guard filterSelectedIndex != chartSelectedIndex, chartData.count > filterSelectedIndex, chartStyling.count > filterSelectedIndex else {
             return
+        }
+
+        let barChartData = chartData[filterSelectedIndex]
+        let barChartStyling = chartStyling[filterSelectedIndex]
+
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
         }
 
         let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling)
@@ -166,6 +176,8 @@ private extension OverviewCell {
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
+
+        self.chartSelectedIndex = filterSelectedIndex
     }
 
     enum ChartBottomMargin {

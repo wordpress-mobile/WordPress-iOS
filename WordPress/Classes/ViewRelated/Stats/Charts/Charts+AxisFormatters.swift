@@ -65,12 +65,19 @@ class VerticalAxisFormatter: IAxisValueFormatter {
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        let number = NSNumber(value: value/1000)
-        let value = formatter.string(from: number) ?? ""
+        let threshold = Double(1000)
 
-        // This is, admittedly NOT locale-sensitive formatting approach.
-        // It is slated to be improved via #11143.
-        let formattedValue = "\(value)k"
+        let formattedValue: String
+        if value > threshold {
+            let numericValue = NSNumber(value: value/threshold)
+            let rawFormattedValue = formatter.string(from: numericValue) ?? "\(numericValue)"
+
+            // This is, admittedly NOT locale-sensitive formatting approach. It will be improved via #11143.
+            formattedValue = "\(rawFormattedValue)k"
+        } else {
+            let numericValue = NSNumber(value: value)
+            formattedValue = formatter.string(from: numericValue) ?? "\(value)"
+        }
 
         return formattedValue
     }
