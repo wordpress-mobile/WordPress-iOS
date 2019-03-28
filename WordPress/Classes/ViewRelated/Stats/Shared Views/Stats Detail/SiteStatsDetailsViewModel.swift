@@ -384,7 +384,7 @@ private extension SiteStatsDetailsViewModel {
     func videosRows() -> [StatsTotalRowData] {
         return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
                                                                           data: $0.playsCount.abbreviatedString(),
-                                                                          mediaID: 0, // TODO FIXME Add this from WPKit
+                                                                          mediaID: $0.postID as NSNumber,
                                                                           icon: Style.imageForGridiconType(.video),
                                                                           showDisclosure: true,
                                                                           statSection: .periodVideos) }

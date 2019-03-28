@@ -284,7 +284,7 @@ private extension SiteStatsPeriodViewModel {
     func videosDataRows() -> [StatsTotalRowData] {
         return store.getTopVideos()?.videos.prefix(10).map { StatsTotalRowData(name: $0.title,
                                                                                data: $0.playsCount.abbreviatedString(),
-                                                                               mediaID: 0, //TODO Currently backend only returns URLs, not IDs.
+                                                                               mediaID: $0.postID as NSNumber,
                                                                                icon: Style.imageForGridiconType(.video),
                                                                                showDisclosure: true,
                                                                                statSection: .periodVideos) }
