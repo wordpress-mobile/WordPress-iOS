@@ -242,12 +242,17 @@ private extension SiteStatsPeriodViewModel {
                                                                                            data: $0.viewsCount.abbreviatedString(),
                                                                                            statSection: .periodSearchTerms) }
 
-        let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
-                                                                          comment: "Search Terms label for 'unknown search terms'."),
-                                                  data: searchTerms.hiddenSearchTermsCount.abbreviatedString(),
-                                                  statSection: .periodSearchTerms)
+        if !mappedSearchTerms.isEmpty && searchTerms.hiddenSearchTermsCount > 0 {
+            // We want to insert the "Unknown search terms" item only if there's anything to show in the first place — if the
+            // section is empty, it doesn't make sense to insert it here.
 
-        mappedSearchTerms.insert(unknownSearchTerm, at: 0)
+            let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
+                                                                              comment: "Search Terms label for 'unknown search terms'."),
+                                                      data: searchTerms.hiddenSearchTermsCount.abbreviatedString(),
+                                                      statSection: .periodSearchTerms)
+
+            mappedSearchTerms.insert(unknownSearchTerm, at: 0)
+        }
 
         return mappedSearchTerms
     }

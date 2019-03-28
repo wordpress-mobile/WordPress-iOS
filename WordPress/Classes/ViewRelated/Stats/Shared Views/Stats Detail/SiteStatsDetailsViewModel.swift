@@ -375,10 +375,28 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func searchTermsRows() -> [StatsTotalRowData] {
-        return periodStore.getTopSearchTerms()?.searchTerms.map { StatsTotalRowData(name: $0.term,
-                                                                                    data: $0.viewsCount.abbreviatedString(),
-                                                                                    statSection: .periodSearchTerms) }
-            ?? []
+        guard let searchTerms = periodStore.getTopSearchTerms() else {
+            return []
+        }
+
+
+        var mappedSearchTerms = searchTerms.searchTerms.map { StatsTotalRowData(name: $0.term,
+                                                                                data: $0.viewsCount.abbreviatedString(),
+                                                                                statSection: .periodSearchTerms) }
+
+        if !mappedSearchTerms.isEmpty && searchTerms.hiddenSearchTermsCount > 0 {
+            // We want to insert the "Unknown search terms" item only if there's anything to show in the first place — if the
+            // section is empty, it doesn't make sense to insert it here.
+
+            let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
+                                                                              comment: "Search Terms label for 'unknown search terms'."),
+                                                      data: searchTerms.hiddenSearchTermsCount.abbreviatedString(),
+                                                      statSection: .periodSearchTerms)
+
+            mappedSearchTerms.insert(unknownSearchTerm, at: 0)
+        }
+
+        return mappedSearchTerms
     }
 
     func videosRows() -> [StatsTotalRowData] {
