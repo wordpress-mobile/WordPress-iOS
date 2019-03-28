@@ -179,6 +179,10 @@ private extension StatsInsightsStore {
     func processQueries() {
 
         guard !activeQueries.isEmpty else {
+            // This being empty means a VC just unregistered from observing data.
+            // Let's persist what we have an clear the in-memory store.
+            persistToCoreData()
+            state = InsightStoreState()
             return
         }
 
@@ -209,12 +213,12 @@ private extension StatsInsightsStore {
     func fetchInsights() {
 
         loadFromCache()
-        setAllAsFetchingOverview()
 
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
             return
         }
 
+        setAllAsFetchingOverview()
         let api = apiService(for: siteID)
 
         api.getInsight { (lastPost: StatsLastPostInsight?, error) in
