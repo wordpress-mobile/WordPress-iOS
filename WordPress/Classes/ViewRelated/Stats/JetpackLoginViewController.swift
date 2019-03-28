@@ -251,7 +251,7 @@ public enum JetpackLoginPromptType {
     var message: String {
         switch (self, Feature.enabled(.jetpackRemoteInstallation)) {
         case (.stats, true):
-            return NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.",
+            return NSLocalizedString("To use stats on your site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from stats")
         case (.stats, false):
             return NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
@@ -282,7 +282,7 @@ private enum JetpackWebviewType {
 
 private enum Constants {
     enum Buttons {
-        static let termsAndConditions = NSLocalizedString("terms and conditions", comment: "The underlined title sentence")
+        static let termsAndConditions = NSLocalizedString("Terms and Conditions", comment: "The underlined title sentence")
         static let termsAndConditionsTitle = String.localizedStringWithFormat(NSLocalizedString("By setting up Jetpack you agree to our\n%@",
                                                                                                 comment: "Title of the button which opens the Jetpack terms and conditions page."), termsAndConditions)
         static let faqTitle = NSLocalizedString("Jetpack FAQ", comment: "Title of the button which opens the Jetpack FAQ page.")
