@@ -168,6 +168,12 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
         }
+
+        if isFetchingOverview {
+            DDLogInfo("Stats: Fetching overview in progress.")
+        } else {
+            DDLogInfo("Stats: Fetching overview finisheda.")
+        }
     }
 
     override func queriesChanged() {
