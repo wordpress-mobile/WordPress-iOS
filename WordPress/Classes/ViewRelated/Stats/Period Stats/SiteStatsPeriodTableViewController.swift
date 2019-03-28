@@ -77,7 +77,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
             return nil
         }
 
-        cell.configure(date: selectedDate, period: selectedPeriod)
+        cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
 
         return cell
     }
@@ -226,6 +226,17 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postTitle: postTitle)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        selectedDate = newDate
+        refreshData()
     }
 
 }
