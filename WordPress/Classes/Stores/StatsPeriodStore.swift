@@ -179,6 +179,27 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         processQueries()
     }
 
+    func persistToCoreData() {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID,
+            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+                return
+        }
+
+        _ = state.summary.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topPostsAndPages.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topReferrers.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topClicks.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topPublished.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topAuthors.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topSearchTerms.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topCountries.flatMap { StatsRecord.record(from: $0, for: blog) }
+        _ = state.topVideos.flatMap { StatsRecord.record(from: $0, for: blog) }
+
+        try? ContextManager.shared.mainContext.save()
+        DDLogInfo("Stats: finished persisting Stats to disk.")
+    }
+
 }
 
 // MARK: - Private Methods
@@ -236,6 +257,16 @@ private extension StatsPeriodStore {
     }
 
     func fetchPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
+
+        loadFromCache(date: date, period: period)
+
+        // This check is done here and not in a layer above because even if we don't want to
+        // make a network call for whatever reason, we still want to load the data we have cached.
+
+        guard shouldFetchOverview() else {
+            DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
+            return
+        }
 
         guard let statsRemote = statsRemote() else {
             return
@@ -324,12 +355,46 @@ private extension StatsPeriodStore {
         }
     }
 
-    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchOverview() else {
-            DDLogInfo("Stats Period Overview refresh triggered while one was in progress.")
-            return
+    func loadFromCache(date: Date, period: StatsPeriodUnit) {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID,
+            let blog = BlogService.withMainContext().blog(byBlogId: siteID) else {
+                return
         }
 
+        let summary = StatsRecord.timeIntervalData(for: blog, type: .blogVisitsSummary, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let posts = StatsRecord.timeIntervalData(for: blog, type: .topViewedPost, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let referrers = StatsRecord.timeIntervalData(for: blog, type: .referrers, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let clicks = StatsRecord.timeIntervalData(for: blog, type: .clicks, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let published = StatsRecord.timeIntervalData(for: blog, type: .publishedPosts, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let authors = StatsRecord.timeIntervalData(for: blog, type: .topViewedAuthor, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let searchTerms = StatsRecord.timeIntervalData(for: blog, type: .searchTerms, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let countries = StatsRecord.timeIntervalData(for: blog, type: .countryViews, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+        let videos = StatsRecord.timeIntervalData(for: blog, type: .videos, period: StatsRecordPeriodType(remoteStatus: period), date: date)
+
+        DDLogInfo("Stats: Finished loading data from Core Data.")
+
+        transaction { state in
+            state.summary = summary.flatMap { StatsSummaryTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topPostsAndPages = posts.flatMap { StatsTopPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topReferrers = referrers.flatMap { StatsTopReferrersTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topClicks = clicks.flatMap { StatsTopClicksTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topPublished = published.flatMap { StatsPublishedPostsTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topAuthors = authors.flatMap { StatsTopAuthorsTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topSearchTerms = searchTerms.flatMap { StatsSearchTermTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topCountries = countries.flatMap { StatsTopCountryTimeIntervalData(statsRecordValues: $0.recordValues) }
+            state.topVideos = videos.flatMap { StatsTopVideosTimeIntervalData(statsRecordValues: $0.recordValues) }
+
+            DDLogInfo("Stats: Finished setting data to store from Core Data.")
+        }
+    }
+
+    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
+        // The call to `persistToCoreData()` might seem unintuitive here, at a first glance.
+        // It's here because call to this method will usually happen after user selects a different
+        // time period they're interested in. If we only relied on calls to `persistToCoreData()`
+        // when user has left the screen/app, we would possibly lose on storing A LOT of data.
+        persistToCoreData()
         fetchPeriodOverviewData(date: date, period: period)
     }
 
@@ -348,6 +413,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all posts.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(posts))
+            self.persistToCoreData()
         }
     }
 
@@ -375,6 +441,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all search terms.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
+            self.persistToCoreData()
         }
     }
 
@@ -402,6 +469,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching videos.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
+            self.persistToCoreData()
         }
     }
 
@@ -429,6 +497,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all clicks.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks))
+            self.persistToCoreData()
         }
     }
 
@@ -456,6 +525,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all authors.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors))
+            self.persistToCoreData()
         }
     }
 
@@ -483,6 +553,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all referrers.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers))
+            self.persistToCoreData()
         }
     }
 
@@ -510,6 +581,7 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching all countries.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries))
+            self.persistToCoreData()
         }
     }
 
@@ -535,6 +607,7 @@ private extension StatsPeriodStore {
             }
             DDLogInfo("Stats: Finished fetching all published.")
             self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
+            self.persistToCoreData()
         }
     }
 
