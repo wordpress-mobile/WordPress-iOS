@@ -209,6 +209,25 @@ class JetpackLoginViewController: UIViewController {
         present(navigationViewController, animated: true, completion: nil)
     }
 
+    private func jetpackIsCanceled() {
+        trackStat(.installJetpackCanceled)
+        dismiss(animated: true, completion: completionBlock)
+    }
+
+    private func jetpackIsCompleted() {
+        trackStat(.installJetpackCompleted)
+        dismiss(animated: true, completion: completionBlock)
+    }
+
+    private func openJetpackRemoteInstall() {
+        trackStat(.selectedInstallJetpack)
+        let controller = JetpackRemoteInstallViewController(blog: blog,
+                                                            delegate: self,
+                                                            promptType: promptType)
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true)
+    }
+
     // MARK: - Actions
 
     @IBAction func didTouchSignInButton(_ sender: Any) {
@@ -216,7 +235,11 @@ class JetpackLoginViewController: UIViewController {
     }
 
     @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
-        openInstallJetpackURL()
+        guard Feature.enabled(.jetpackRemoteInstallation) else {
+            openInstallJetpackURL()
+            return
+        }
+        openJetpackRemoteInstall()
     }
 
     @IBAction func didTouchTacButton(_ sender: Any) {
@@ -230,13 +253,21 @@ class JetpackLoginViewController: UIViewController {
 
 extension JetpackLoginViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted() {
-        trackStat(.installJetpackCompleted)
-        dismiss(animated: true, completion: completionBlock)
+        jetpackIsCompleted()
     }
 
     func jetpackConnectionCanceled() {
-        trackStat(.installJetpackCanceled)
-        dismiss(animated: true, completion: completionBlock)
+        jetpackIsCanceled()
+    }
+}
+
+extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
+    func jetpackRemoteInstallCanceled() {
+        jetpackIsCanceled()
+    }
+
+    func jetpackRemoteInstallCompleted() {
+        jetpackIsCompleted()
     }
 }
 

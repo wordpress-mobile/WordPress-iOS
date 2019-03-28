@@ -988,6 +988,8 @@
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
 		9A938C5D21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */; };
+		9AAB241E224D104300085B05 /* JetpackRemoteInstallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAB241C224D104300085B05 /* JetpackRemoteInstallViewController.swift */; };
+		9AAB241F224D104300085B05 /* JetpackRemoteInstallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AAB241D224D104300085B05 /* JetpackRemoteInstallViewController.xib */; };
 		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9AF750F321EE196400DC47CA /* WPStyleGuide+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */; };
 		9AF9551821A1D7970057827C /* DiffAbstractValue+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9551721A1D7970057827C /* DiffAbstractValue+Attributes.swift */; };
@@ -2952,6 +2954,8 @@
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
 		9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistViewControllerV1.swift; sourceTree = "<group>"; };
+		9AAB241C224D104300085B05 /* JetpackRemoteInstallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewController.swift; sourceTree = "<group>"; };
+		9AAB241D224D104300085B05 /* JetpackRemoteInstallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRemoteInstallViewController.xib; sourceTree = "<group>"; };
 		9AE21A3D2181ED8C002D4FE2 /* WordPress 82.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 82.xcdatamodel"; sourceTree = "<group>"; };
 		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
 		9AF750F221EE196400DC47CA /* WPStyleGuide+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Colors.swift"; sourceTree = "<group>"; };
@@ -4625,8 +4629,6 @@
 				98747671219638BF0080967F /* Insights */,
 				984B138C21F65F680004B6A2 /* Period Stats */,
 				98F89D47219E008600190EE6 /* Shared Views */,
-				7470840D1E269669002CA726 /* JetpackLoginViewController.swift */,
-				7470840E1E269669002CA726 /* JetpackLoginViewController.xib */,
 				981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */,
 				981C3493218388CA00FC2683 /* SiteStatsDashboardViewController.swift */,
 				9874766E219630240080967F /* SiteStatsTableViewCells.swift */,
@@ -6548,6 +6550,33 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		9AAB2419224D0F7700085B05 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				7470840D1E269669002CA726 /* JetpackLoginViewController.swift */,
+				7470840E1E269669002CA726 /* JetpackLoginViewController.xib */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		9AAB241A224D0F8E00085B05 /* Webview */ = {
+			isa = PBXGroup;
+			children = (
+				E1F391EE1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift */,
+			);
+			path = Webview;
+			sourceTree = "<group>";
+		};
+		9AAB241B224D0F9700085B05 /* Install */ = {
+			isa = PBXGroup;
+			children = (
+				9AAB241C224D104300085B05 /* JetpackRemoteInstallViewController.swift */,
+				9AAB241D224D104300085B05 /* JetpackRemoteInstallViewController.xib */,
+				9AAB241A224D0F8E00085B05 /* Webview */,
+			);
+			path = Install;
+			sourceTree = "<group>";
+		};
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -8040,7 +8069,8 @@
 		E1F391ED1FF25DEC00DB32A3 /* Jetpack */ = {
 			isa = PBXGroup;
 			children = (
-				E1F391EE1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift */,
+				9AAB2419224D0F7700085B05 /* Login */,
+				9AAB241B224D0F9700085B05 /* Install */,
 			);
 			path = Jetpack;
 			sourceTree = "<group>";
@@ -8726,6 +8756,7 @@
 				9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */,
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
+				9AAB241F224D104300085B05 /* JetpackRemoteInstallViewController.xib in Resources */,
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
@@ -9615,6 +9646,7 @@
 				E6805D301DCD399600168E4F /* WPRichTextEmbed.swift in Sources */,
 				D8AEA54A21C21BEC00AB4DCB /* NewVerticalCell.swift in Sources */,
 				7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */,
+				9AAB241E224D104300085B05 /* JetpackRemoteInstallViewController.swift in Sources */,
 				F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */,
 				738B9A5C21B85EB00005062B /* UIView+ContentLayout.swift in Sources */,
 				E1B9128F1BB05B1D003C25B9 /* PeopleCell.swift in Sources */,
