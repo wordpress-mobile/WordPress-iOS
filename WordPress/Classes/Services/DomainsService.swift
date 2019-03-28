@@ -22,7 +22,7 @@ struct DomainsService {
     }
 
     func getDomainSuggestions(base: String,
-                              segmentID: Int,
+                              segmentID: Int64,
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {
         remote.getDomainSuggestions(base: base,
