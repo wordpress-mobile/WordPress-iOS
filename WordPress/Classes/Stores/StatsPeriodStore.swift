@@ -169,10 +169,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             refreshPublished(date: date, period: period)
         }
 
-        if isFetchingOverview {
-            DDLogInfo("Stats: Fetching overview in progress.")
-        } else {
-            DDLogInfo("Stats: Fetching overview finisheda.")
+        if !isFetchingOverview {
+            DDLogInfo("Stats: All fetching operations finished.")
         }
     }
 
