@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="4096" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackLoginViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="descriptionLabel" destination="5EX-8b-0NL" id="D6j-Vu-Grr"/>
+                <outlet property="faqButton" destination="qJb-qz-DEY" id="3Bw-KJ-XM8"/>
                 <outlet property="installJetpackButton" destination="Qm1-Pi-98R" id="nNU-KI-fYA"/>
                 <outlet property="jetpackImage" destination="GNi-Lj-sLf" id="OLq-eC-Ez8"/>
                 <outlet property="signinButton" destination="lMy-o2-gd3" id="9I4-sr-k0G"/>
+                <outlet property="tacButton" destination="qvD-Ju-Pvz" id="qud-BR-l77"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                    <rect key="frame" x="57" y="185" width="300" height="365"/>
+                <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
+                    <rect key="frame" x="37.666666666666657" y="193" width="300" height="426"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wp-illustration-stats" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="179"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="154"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looks like you have Jetpack set up on your site." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5EX-8b-0NL">
-                            <rect key="frame" x="0.0" y="209" width="300" height="36"/>
+                            <rect key="frame" x="0.0" y="174" width="300" height="36"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="NUXButton" customModule="WordPressAuthenticator">
-                            <rect key="frame" x="0.0" y="275" width="300" height="30"/>
-                            <state key="normal" title="Log in"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="NUXButton" customModule="WordPressAuthenticator">
+                            <rect key="frame" x="0.0" y="230" width="300" height="34"/>
+                            <state key="normal" title="Log in">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                             </userDefinedRuntimeAttributes>
@@ -46,14 +50,35 @@
                                 <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="NUXButton" customModule="WordPressAuthenticator">
-                            <rect key="frame" x="0.0" y="335" width="300" height="30"/>
-                            <state key="normal" title="Set up Jetpack"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="NUXButton" customModule="WordPressAuthenticator">
+                            <rect key="frame" x="0.0" y="284" width="300" height="34"/>
+                            <state key="normal" title="Set up Jetpack">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="jig-Gw-45O"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvD-Ju-Pvz">
+                            <rect key="frame" x="0.0" y="338" width="300" height="34"/>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                            <state key="normal" title="Terms and conditions">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="didTouchTacButton:" destination="-1" eventType="touchUpInside" id="Nzp-Vq-0Wa"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qJb-qz-DEY">
+                            <rect key="frame" x="0.0" y="392" width="300" height="34"/>
+                            <state key="normal" title="FAQ">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="didTouchFaqButton:" destination="-1" eventType="touchUpInside" id="i6t-I4-xbg"/>
                             </connections>
                         </button>
                     </subviews>
@@ -65,8 +90,6 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="wZ5-Fs-qlA" secondAttribute="trailing" constant="57" id="0Js-9m-Blr"/>
-                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="57" id="Dxb-er-ZaS"/>
                 <constraint firstItem="wZ5-Fs-qlA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L7X-Kp-l86"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wZ5-Fs-qlA" secondAttribute="bottom" constant="10" id="QJ4-zJ-Y1h"/>
                 <constraint firstItem="wZ5-Fs-qlA" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="uM1-5X-YF1"/>
@@ -76,6 +99,6 @@
         </view>
     </objects>
     <resources>
-        <image name="wp-illustration-stats" width="226" height="179"/>
+        <image name="wp-illustration-stats" width="195" height="154"/>
     </resources>
 </document>
