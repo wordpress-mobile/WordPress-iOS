@@ -242,6 +242,7 @@
 		4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058F4191FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib */; };
 		405B53FB1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */; };
 		40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */; };
+		406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */; };
 		4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */; };
 		4093FE40218C384200B1D224 /* AztecVerificationPromptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402FFB23218C36CF00FF4A0B /* AztecVerificationPromptHelper.swift */; };
@@ -2087,6 +2088,7 @@
 		4058F4191FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginDetailViewHeaderCell.xib; sourceTree = "<group>"; };
 		405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlerts+VerificationPrompt.swift"; sourceTree = "<group>"; };
 		40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextWithAccessoryButtonCell.xib; sourceTree = "<group>"; };
+		406A0EEF224D39C50016AD6A /* Flags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Flags.xcassets; sourceTree = "<group>"; };
 		4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewindStatusTableViewCell.xib; sourceTree = "<group>"; };
 		4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDateFormatting.swift; sourceTree = "<group>"; };
 		40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -4402,6 +4404,7 @@
 				5D6651461637324000EBDA7D /* Sounds */,
 				B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */,
 				4645AFC41961E1FB005F7509 /* AppImages.xcassets */,
+				406A0EEF224D39C50016AD6A /* Flags.xcassets */,
 				85ED988717DFA00000090D0B /* Images.xcassets */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */,
@@ -8719,6 +8722,7 @@
 				98B11B8B2216536C00B7F2D7 /* StatsChildRowsView.xib in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
+				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */,
 				D8380CA52192E77F00250609 /* VerticalsCell.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
