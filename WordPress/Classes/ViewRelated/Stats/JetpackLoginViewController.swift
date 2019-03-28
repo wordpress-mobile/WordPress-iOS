@@ -64,12 +64,19 @@ class JetpackLoginViewController: UIViewController {
         setupControls()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        hideImageView()
+    }
+
     // MARK: - Configuration
 
     /// One time setup of the form textfields and buttons
     ///
     fileprivate func setupControls() {
         jetpackImage.image = promptType.image
+        hideImageView()
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
@@ -80,6 +87,10 @@ class JetpackLoginViewController: UIViewController {
         faqButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
 
         updateMessageAndButton()
+    }
+
+    private func hideImageView() {
+        jetpackImage.isHidden = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
     }
 
     fileprivate func observeLoginNotifications(_ observe: Bool) {
@@ -132,8 +143,6 @@ class JetpackLoginViewController: UIViewController {
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = !hasJetpack
 
-        // If .jetpackRemoteInstallation is not enabled
-        // I want to skip the buttons configuration and hide those buttons
         guard Feature.enabled(.jetpackRemoteInstallation) else {
             tacButton.isHidden = true
             faqButton.isHidden = tacButton.isHidden
@@ -207,11 +216,7 @@ class JetpackLoginViewController: UIViewController {
     }
 
     @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
-        guard Feature.enabled(.jetpackRemoteInstallation) else {
-            openInstallJetpackURL()
-            return
-        }
-        // Open new Jetpack remote installation
+        openInstallJetpackURL()
     }
 
     @IBAction func didTouchTacButton(_ sender: Any) {
