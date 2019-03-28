@@ -421,10 +421,15 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func countriesRows() -> [StatsTotalRowData] {
-        return periodStore.getAllCountries()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                           data: $0.value.displayString(),
-                                                                           countryIconURL: $0.iconURL,
-                                                                           statSection: .periodCountries) }
+        return periodStore.getAllCountries()?.map {
+            // This hack is here just temporarily until #11342 gets merged which exposes the "code" property nicely.
+            let countryCode = $0.iconURL.lastPathComponent.prefix(2)
+            let icon = UIImage(named: String(countryCode))
+
+            return StatsTotalRowData.init(name: $0.label,
+                                          data: $0.value.displayString(),
+                                          icon: icon,
+                                          statSection: .periodCountries) }
             ?? []
     }
 
