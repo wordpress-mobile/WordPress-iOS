@@ -255,7 +255,8 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (= 1.5.0)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `87f7f8bac143d3022512b201749e5d8652a61aa1`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `87f7f8bac143d3022512b201749e5d8652a61aa1`)
   - WordPressAuthenticator (~> 1.2.0)
   - WordPressKit (~> 3.2.1)
   - WordPressShared (= 1.7.2)
@@ -296,8 +297,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
@@ -327,6 +326,12 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.1.2
+  WordPress-Aztec-iOS:
+    :commit: 87f7f8bac143d3022512b201749e5d8652a61aa1
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: 87f7f8bac143d3022512b201749e5d8652a61aa1
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -349,6 +354,12 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.1.2
+  WordPress-Aztec-iOS:
+    :commit: 87f7f8bac143d3022512b201749e5d8652a61aa1
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: 87f7f8bac143d3022512b201749e5d8652a61aa1
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -403,6 +414,6 @@ SPEC CHECKSUMS:
   yoga: 1fe535cf9b523600f42e2785b6ed56484a62b46d
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 3a73e8804c4e7db2dc83db0981cdbcf13def2e4d
+PODFILE CHECKSUM: 728d681a0d7a699213fa7b67159054799a0d50c3
 
 COCOAPODS: 1.5.3
