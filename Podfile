@@ -158,6 +158,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         wordpress_ui
+        pod 'ZIPFoundation', '~> 0.9.8'
     end
 
 

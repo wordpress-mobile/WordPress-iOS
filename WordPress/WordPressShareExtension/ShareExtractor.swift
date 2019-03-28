@@ -1,6 +1,7 @@
 import Foundation
 import MobileCoreServices
 import UIKit
+import ZIPFoundation
 
 /// A type that represents the information we can extract from an extension context
 ///
@@ -257,7 +258,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         case "textbundle":
             return handleTextBundle(url: url)
         case "textpack":
-            return handleCompressedTextBundle(url: url)
+            return handleTextPack(url: url)
         case "text", "txt":
             return handlePlainTextFile(url: url)
         default:
@@ -265,8 +266,35 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         }
     }
 
-    private func handleCompressedTextBundle(url: URL) -> ExtractedItem? {
-        return nil
+    private func handleTextPack(url: URL) -> ExtractedItem? {
+        let fileManager = FileManager()
+        guard let temporaryDirectoryURL = try? FileManager.default.url(for: .itemReplacementDirectory,
+                                                                in: .userDomainMask,
+                                                                appropriateFor: url,
+                                                                create: true) else {
+                                                                    return nil
+        }
+
+        defer {
+            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
+        }
+
+        let textBundleURL: URL
+        do {
+            try fileManager.unzipItem(at: url, to: temporaryDirectoryURL)
+            let files = try fileManager.contentsOfDirectory(at: temporaryDirectoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            guard let unzippedBundleURL = files.first(where: { url in
+                    url.pathExtension == "textbundle"
+                }) else {
+                return nil
+            }
+            textBundleURL = unzippedBundleURL
+        } catch {
+            DDLogError("TextPack opening failed: \(error.localizedDescription)")
+            return nil
+        }
+
+        return handleTextBundle(url: textBundleURL)
     }
 
     private func handleTextBundle(url: URL) -> ExtractedItem? {
@@ -274,7 +302,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
 
         var returnedItem = ExtractedItem()
-        returnedItem.selectedText = bundleWrapper.text
+        returnedItem.importedText = bundleWrapper.text
         return returnedItem
     }
 
