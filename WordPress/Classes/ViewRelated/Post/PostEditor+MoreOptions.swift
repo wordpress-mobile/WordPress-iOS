@@ -14,7 +14,7 @@ extension PostEditor where Self: UIViewController {
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    private func savePostBeforePreview(completion: @escaping () -> Void){
+    private func savePostBeforePreview(completion: @escaping (() -> Void)){
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         if post.isDraft() {
@@ -29,7 +29,7 @@ extension PostEditor where Self: UIViewController {
             completion()
         }
     }
-        
+
     func displayPreview() {
         self.savePostBeforePreview() { [weak self] in
             guard let post = self?.post else {
