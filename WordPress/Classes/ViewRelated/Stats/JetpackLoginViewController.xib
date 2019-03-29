@@ -26,44 +26,50 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                    <rect key="frame" x="37.666666666666657" y="193" width="300" height="426"/>
+                    <rect key="frame" x="30" y="203" width="315" height="406"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wp-illustration-stats" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="154"/>
+                            <rect key="frame" x="0.0" y="0.0" width="315" height="154"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looks like you have Jetpack set up on your site." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5EX-8b-0NL">
-                            <rect key="frame" x="0.0" y="174" width="300" height="36"/>
+                            <rect key="frame" x="0.0" y="174" width="315" height="36"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="NUXButton" customModule="WordPressAuthenticator">
-                            <rect key="frame" x="0.0" y="230" width="300" height="34"/>
-                            <state key="normal" title="Log in">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="NUXButton" customModule="WordPressAuthenticator">
-                            <rect key="frame" x="0.0" y="284" width="300" height="34"/>
-                            <state key="normal" title="Set up Jetpack">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="jig-Gw-45O"/>
-                            </connections>
-                        </button>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iCv-gL-vpC" userLabel="Main buttons">
+                            <rect key="frame" x="0.0" y="230" width="315" height="68"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                    <rect key="frame" x="133" y="0.0" width="49" height="34"/>
+                                    <state key="normal" title="Log in">
+                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                    <rect key="frame" x="96.666666666666686" y="34" width="122" height="34"/>
+                                    <state key="normal" title="Set up Jetpack">
+                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="jig-Gw-45O"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <edgeInsets key="layoutMargins" top="0.0" left="20" bottom="0.0" right="20"/>
+                        </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvD-Ju-Pvz">
-                            <rect key="frame" x="0.0" y="338" width="300" height="34"/>
+                            <rect key="frame" x="0.0" y="318" width="315" height="34"/>
                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                             <state key="normal" title="Terms and conditions">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -73,7 +79,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qJb-qz-DEY">
-                            <rect key="frame" x="0.0" y="392" width="300" height="34"/>
+                            <rect key="frame" x="0.0" y="372" width="315" height="34"/>
                             <state key="normal" title="FAQ">
                                 <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -83,7 +89,7 @@
                         </button>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="300" id="Gku-Cz-guL"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="Gku-Cz-guL"/>
                     </constraints>
                     <variation key="heightClass=compact" spacing="10"/>
                 </stackView>
@@ -91,9 +97,9 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="wZ5-Fs-qlA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L7X-Kp-l86"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wZ5-Fs-qlA" secondAttribute="bottom" constant="10" id="QJ4-zJ-Y1h"/>
+                <constraint firstAttribute="trailing" secondItem="wZ5-Fs-qlA" secondAttribute="trailing" priority="999" constant="30" id="Y1b-tW-L00"/>
+                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" priority="999" constant="30" id="kLX-fi-MCo"/>
                 <constraint firstItem="wZ5-Fs-qlA" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="uM1-5X-YF1"/>
-                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="xL7-0Z-D7p"/>
             </constraints>
             <point key="canvasLocation" x="-1606.5" y="-689.5"/>
         </view>

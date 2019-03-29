@@ -139,6 +139,7 @@ class JetpackLoginViewController: UIViewController {
         let title = Feature.enabled(.jetpackRemoteInstallation) ? Constants.Buttons.jetpackInstallTitle : Constants.Buttons.jetpackSetupTitle
         installJetpackButton.setTitle(title, for: .normal)
         installJetpackButton.isHidden = hasJetpack
+        installJetpackButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = !hasJetpack
