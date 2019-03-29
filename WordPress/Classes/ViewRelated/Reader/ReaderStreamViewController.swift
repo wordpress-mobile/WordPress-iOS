@@ -248,7 +248,9 @@ import WordPressFlux
         didSetupView = true
 
         if readerTopic != nil {
-            configureControllerForTopic()
+            // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
+            // prevents a possible internet connection error being shown twice.
+            configureControllerForTopic(synchronize: false)
         } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
@@ -274,11 +276,21 @@ import WordPressFlux
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        dismissNoNetworkAlert()
+
         // We want to listen for any changes (following, liked) in a post detail so we can refresh the child context.
         let mainContext = ContextManager.sharedInstance().mainContext
         NotificationCenter.default.addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { _ in
+            if self.isShowingResultStatusView {
+                self.resultsStatusView.updateAccessoryViewsVisibility()
+            }
+        })
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -450,7 +462,7 @@ import WordPressFlux
 
     /// Configures the controller for the `readerTopic`.  This should only be called
     /// once when the topic is set.
-    private func configureControllerForTopic() {
+    private func configureControllerForTopic(synchronize: Bool = true) {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded, "The controller's view must be loaded before displaying the topic")
 
@@ -479,7 +491,10 @@ import WordPressFlux
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()
-        syncIfAppropriate()
+
+        if synchronize {
+            syncIfAppropriate()
+        }
 
         bumpStats()
 
@@ -1553,17 +1568,9 @@ private extension ReaderStreamViewController {
     func displayResultsStatus() {
         resultsStatusView.removeFromView()
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        layoutNoResultsStatus()
+        resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
         footerView.isHidden = true
-    }
-
-    func layoutNoResultsStatus() {
-        resultsStatusView.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            resultsStatusView.view.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
-            resultsStatusView.view.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
-            ])
     }
 
     func hideResultsStatus() {
@@ -1624,6 +1631,11 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return content.contentCount == 0
+    }
+
+    func noConnectionMessage() -> String {
+        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Reader without an internet connection.")
     }
 }
 

@@ -1,4 +1,4 @@
-- Du kannst jetzt eine Website über Reader teilen.
-- Es wurde ein Fehler behoben, bei dem das Bearbeiten einer lokalen Kopie eines Entwurfsbeitrags und das Verwerfen von Änderungen zum Löschen des Beitrags führte. 
-- Ein Fehler in Reader wurde behoben, der dazu führte, dass die App abstürzte, wenn ein Beitrag mit einem Video angezeigt wurde.
-- Einige UI-Layoutfehler behoben, bei denen sich Elemente überschneiden oder falsche Größen hatten.
+- Das Diktieren funktioniert nun im Block-Editor.
+- Offline-Fehlermeldungen werden nun in kleineren Popup-Dialogen unten auf der Seite angezeigt. 
+- Es wurde ein Fehler behoben, bei dem die Adressleiste der Seitenvorschau im Prozess der Seitenerstellung bearbeitet werden konnte.
+- Es wurde ein Problem im Block-Editor behoben, bei dem Bilder nicht auf private Seiten hochgeladen werden konnten.

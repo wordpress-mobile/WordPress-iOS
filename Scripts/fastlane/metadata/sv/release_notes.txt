@@ -1,4 +1,4 @@
-- Nu kan du dela en webbplats via läsaren.
-- Rättat ett fel vid redigering av lokal kopia av ett utkast till ett inlägg. Om man därefter kastade ändringarna resulterade detta tidigare i att inlägget raderades.
-- Rättat ett fel i läsaren som fick appen att krascha när ett inlägg med ett videoklipp visades.
-- Rättat några layoutfel i användargränssnittet där olika element överlappade varandra eller hade felaktiga storlekar.
+- Nu går det att diktera i blockredigeraren.
+- Felmeddelanden om offline-läge kommer nu att visas i ett mindre popup-fönster i slutet av sidan.
+- Rättat ett fel där det gick att redigera fältet för förhandsvisning av webbplatsens adress i flödet för skapande av ny webbplats.
+- Rättat ett problem i blockredigeraren där det inte gick att ladda upp bilder till privata webbplatser..

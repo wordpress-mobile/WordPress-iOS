@@ -168,6 +168,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
 
+        dismissNoNetworkAlert()
+
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
         tableViewHandler.updateRowAnimation = .none
     }
@@ -825,6 +827,11 @@ extension NotificationsViewController {
 extension NotificationsViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
+    }
+
+    func noConnectionMessage() -> String {
+        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Notifications without an internet connection.")
     }
 }
 

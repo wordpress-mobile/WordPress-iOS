@@ -20,13 +20,19 @@ extension Double {
     ///  - 1000000000 becomes "1b"
     ///  - 1000000000000 becomes "1t"
 
-    func abbreviatedString() -> String {
+    func abbreviatedString(forHeroNumber: Bool = false) -> String {
         var num = self
         let sign = num < 0 ? "-" : ""
         num = fabs(num)
 
-        if num < 10000.0 {
-            return "\(sign)\(Int(num))"
+        let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
+
+        if num < abbreviationLimit {
+            // Add commas to non-abbreviated values
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            let formattedNumber = numberFormatter.string(from: NSNumber(value: num)) ?? ""
+            return "\(sign)\(formattedNumber)"
         }
 
         let exp: Int = Int(log10(num) / 3.0)
@@ -43,19 +49,19 @@ extension Double {
 }
 
 extension NSNumber {
-    func abbreviatedString() -> String {
-        return self.doubleValue.abbreviatedString()
+    func abbreviatedString(forHeroNumber: Bool = false) -> String {
+        return self.doubleValue.abbreviatedString(forHeroNumber: forHeroNumber)
     }
 }
 
 extension Float {
-    func abbreviatedString() -> String {
-        return Double(self).abbreviatedString()
+    func abbreviatedString(forHeroNumber: Bool = false) -> String {
+        return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
 }
 
 extension Int {
-    func abbreviatedString() -> String {
-        return Double(self).abbreviatedString()
+    func abbreviatedString(forHeroNumber: Bool = false) -> String {
+        return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
 }

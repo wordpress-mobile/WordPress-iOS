@@ -6,7 +6,8 @@ extension CommentsViewController: NetworkAwareUI {
     }
 
     @objc func noConnectionMessage() -> String {
-        return ReachabilityUtils.noConnectionMessage()
+        return NSLocalizedString("No internet connection. Some comments may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Site Comments without an internet connection.")
     }
 
     @objc func connectionAvailable() -> Bool {
@@ -17,6 +18,10 @@ extension CommentsViewController: NetworkAwareUI {
         if shouldPresentAlert() {
             presentNoNetworkAlert()
         }
+    }
+
+    @objc func dismissConnectionErrorNotice() {
+        dismissNoNetworkAlert()
     }
 }
 

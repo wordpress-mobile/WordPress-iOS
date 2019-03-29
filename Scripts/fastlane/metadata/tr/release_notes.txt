@@ -1,4 +1,4 @@
-- Artık Okuyucu ile bir site paylaşabilirsiniz.
-- Taslak gönderinin yerel bir kopyasını düzenlerken, yapılan değişiklikleri göz ardı etmenin gönderinin silinmesine neden olmasıyla ilgili bir hata giderildi.
-- Okuyucu’da video içerikli bir gönderi gösterilirken uygulamanın çökmesine neden olan bir hata düzeltildi.
-- Öğelerin çakıştığı veya yanlış boyutta olduğu bir takım kullanıcı arayüzü düzen hataları düzeltildi.
+- Dikte etme artık blok düzenleyicide çalışıyor.
+- Çevrimdışı hata mesajları şimdi sayfanın altındaki daha küçük açılır pencerelerde görüntülenecek.
+- Site önizleme adres çubuğunun site oluşturma akışında düzenlenebileceği bir hata düzeltildi.
+- Blok düzenleyicideki resimlerin özel sitelere yüklenemediği bir sorun düzeltildi.

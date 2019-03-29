@@ -28,7 +28,14 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
+class AbstractPostListViewController: UIViewController,
+    WPContentSyncHelperDelegate,
+    UISearchControllerDelegate,
+    UISearchResultsUpdating,
+    WPTableViewHandlerDelegate,
+    // This protocol is not in an extension so that subclasses can override noConnectionMessage()
+    NetworkAwareUI {
+
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)
     fileprivate static let postsFetchRequestBatchSize = Int(10)
@@ -240,6 +247,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             searchController.isActive = false
         }
 
+        dismissAllNetworkErrorNotices()
+
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         unregisterForKeyboardNotifications()
     }
@@ -302,7 +311,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
-    fileprivate func refreshResults(forcingNetworkAlerts: Bool = false) {
+    private func refreshResults() {
         guard isViewLoaded == true else {
             return
         }
@@ -312,11 +321,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
 
         hideNoResultsView()
-        if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
-            if forcingNetworkAlerts {
-                presentNoNetworkAlert()
-            }
-        } else {
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             showNoResultsView()
         }
     }
@@ -608,7 +613,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()
-            presentNoNetworkAlert()
+            dismissAllNetworkErrorNotices()
+            handleConnectionError()
             return
         }
 
@@ -621,21 +627,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    func presentNoNetworkAlert() {
-        if shouldPresentAlert() {
-            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-            WPError.showAlert(withTitle: title, message: message)
-        }
-    }
-
-    func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
-    }
-
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        refreshResults(forcingNetworkAlerts: userInteraction)
+        refreshResults()
     }
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
@@ -792,7 +786,17 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
-        WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+        dismissAllNetworkErrorNotices()
+
+        // If there is no internet connection, we'll show the specific error message defined in
+        // `noConnectionMessage()` (overridden by subclasses). For everything else, we let
+        // `WPError.showNetworkingNotice` determine the user-friendly error message.
+        if !connectionAvailable() {
+            handleConnectionError()
+        } else {
+            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingNotice(title: title, error: error)
+        }
     }
 
     @objc func promptForPassword() {
@@ -1057,6 +1061,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         assert(false, "You should implement this method in the subclass")
     }
 
+    private func dismissAllNetworkErrorNotices() {
+        dismissNoNetworkAlert()
+        WPError.dismissNetworkingNotice()
+    }
+
     // MARK: - Post Actions
 
     @objc func createPost() {
@@ -1126,11 +1135,19 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
     }
-}
 
-extension AbstractPostListViewController: NetworkAwareUI {
+    // MARK: - NetworkAwareUI
+
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
+    }
+
+    func noConnectionMessage() -> String {
+        return ReachabilityUtils.noConnectionMessage()
+    }
+
+    func shouldPresentAlert() -> Bool {
+        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 }
 

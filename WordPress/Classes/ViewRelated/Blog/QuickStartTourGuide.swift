@@ -328,18 +328,19 @@ private extension QuickStartTourGuide {
         }
 
         blog.completeTour(tour.key)
-        recentlyTouredBlog = blog
 
         if postNotification {
             NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.tourCompleted])
+            WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
+            recentlyTouredBlog = blog
+        } else {
+            recentlyTouredBlog = nil
         }
 
         guard !(tour is QuickStartCongratulationsTour) else {
             WPAnalytics.track(.quickStartCongratulationsViewed)
             return
         }
-
-        WPAnalytics.track(.quickStartTourCompleted, withProperties: ["task_name": tour.analyticsKey])
 
         if allToursCompleted(for: blog) {
             WPAnalytics.track(.quickStartAllToursCompleted)
@@ -404,12 +405,12 @@ private extension QuickStartTourGuide {
     }
 
     func dismissSuggestion() {
-        guard currentSuggestion != nil, let presenter = findNoticePresenter() else {
+        guard currentSuggestion != nil else {
             return
         }
 
         currentSuggestion = nil
-        presenter.dismissCurrentNotice()
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 
     func getNextStep() -> TourState? {
@@ -426,16 +427,8 @@ private extension QuickStartTourGuide {
         recentlyTouredBlog = nil
     }
 
-    func findNoticePresenter() -> NoticePresenter? {
-        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
-    }
-
     func dismissCurrentNotice() {
-        guard let presenter = findNoticePresenter() else {
-            return
-        }
-
-        presenter.dismissCurrentNotice()
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
         ActionDispatcher.dispatch(NoticeAction.empty)
         NotificationCenter.default.post(name: .QuickStartTourElementChangedNotification, object: self, userInfo: [QuickStartTourGuide.notificationElementKey: QuickStartTourElement.noSuchElement])
     }

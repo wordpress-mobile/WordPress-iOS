@@ -1,4 +1,4 @@
-- Vous pouvez à présent partager un site via le Lecteur.
-- Correction d’un bug lors de l’édition d’une copie locale d’un article en brouillon, les changements n'étaient pas pris en compte et l’article était effacé.
-- Correction d’un bug dans le Lecteur qui causait un crash de l’app lors de l’affichage d’un article avec une vidéo.
-- Correction de quelques erreurs de mise en page de l’interface où des éléments se chevauchaient ou avaient la mauvaise taille.
+- La dictée dans l'éditeur de blocs fonctionne comme attendu.
+- Les messages d'erreur hors ligne s'affichent désormais dans des fenêtres contextuelles plus petites en bas de la page.
+- Correction d'un bogue où la barre d'adresse de prévisualisation du site pouvait être modifiée dans le flux de création de site.
+- Correction d'un problème dans l'éditeur de blocs où les images ne pouvaient pas être téléversées sur des sites privés.

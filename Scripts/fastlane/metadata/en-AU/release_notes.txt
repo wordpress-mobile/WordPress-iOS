@@ -1,4 +1,4 @@
-- You can now share a site via Reader.
-- Fixed a bug in which editing a local copy of a draft post, then discarding changes, would result in deleting the post.
-- Fixed a bug in Reader that caused the app to crash when showing a post with a video.
-- Fixed some UI layout errors where elements overlapped or had wrong sizes.
+- Dictation now works in the block editor.
+- Offline error messages will now display in smaller popup dialogues on the bottom of the page.
+- Fixed a bug where the site preview address bar could be edited in the Site Creation flow.
+- Fixed an issue in the block editor where images could not be uploaded to private sites.

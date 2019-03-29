@@ -120,9 +120,8 @@ class AccountSettingsService {
                 DDLogError("Error reverting change \(error)")
             }
             DDLogError("Error saving account settings change \(error)")
-            // TODO: show/return error to the user (@koke 2015-11-24)
-            // What should be showing the error? Let's post a notification for now so something else can handle it
-            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: error as NSError)
+
+            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: self, userInfo: [NSUnderlyingErrorKey: error])
 
             finished?(false)
         }

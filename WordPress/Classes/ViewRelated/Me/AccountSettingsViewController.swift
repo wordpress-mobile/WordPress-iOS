@@ -47,6 +47,7 @@ private class AccountSettingsController: SettingsController {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name.AccountSettingsChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.showSettingsChangeErrorMessage), name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: nil)
     }
 
     func refreshModel() {
@@ -201,6 +202,13 @@ private class AccountSettingsController: SettingsController {
         }
     }
 
+    @objc fileprivate func showSettingsChangeErrorMessage(notification: NSNotification) {
+        guard let error = notification.userInfo?[NSUnderlyingErrorKey] as? NSError,
+            let errorMessage = error.userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String else {
+                return
+        }
+        SVProgressHUD.showError(withStatus: errorMessage)
+    }
 
     // MARK: - Private Helpers
 

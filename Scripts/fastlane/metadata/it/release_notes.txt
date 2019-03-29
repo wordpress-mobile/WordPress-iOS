@@ -1,4 +1,4 @@
-- Ora puoi condividere un sito tramite Reader.
-- Corretto un bug che causava l'eliminazione dell'articolo quando si modificava una copia locale di un articolo bozza e poi se ne eliminavano le modifiche.
-- Corretto un bug nel Reader che causava l'arresto anomalo dell'app quando si mostrava un articolo con un video.
-- Corretti alcuni errori di layout della UI in cui gli elementi erano sovrapposti o avevano la dimensione errata.
+- Ora nell’editor del blocco funziona la dettatura.
+- I messaggi di errore offline verranno ora visualizzati un finestre di dialogo a comparsa più piccole nella parte inferiore della pagina.
+- È stato risolto un bug a causa del quale la barra dell’indirizzo di anteprima del sito non poteva essere modificata nel flusso di creazione del sito.
+- È stato risolto un problema nell’editor del blocco a causa del quale le immagini non potevano essere caricate nei siti privati.

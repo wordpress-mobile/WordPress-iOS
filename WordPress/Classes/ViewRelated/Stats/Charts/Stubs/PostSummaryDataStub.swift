@@ -15,6 +15,18 @@ struct PostSummaryDatum: Decodable {
     }
 }
 
+// MARK: - PostSummaryDataStub
+
+class PostSummaryDataStub: DataStub<[PostSummaryDatum]> {
+    init(fileName: String) {
+        super.init([PostSummaryDatum].self, fileName: fileName)
+    }
+
+    var summaryData: [PostSummaryDatum] {
+        return data as? [PostSummaryDatum] ?? []
+    }
+}
+
 // MARK: - LatestPostSummaryDataStub
 
 class LatestPostSummaryDataStub: PostSummaryDataStub {
@@ -31,45 +43,12 @@ class SelectedPostSummaryDataStub: PostSummaryDataStub {
     }
 }
 
-/// Stub structure informed by https://developer.wordpress.com/docs/api/1.1/get/sites/%24site/stats/post/%24post_id/
-/// Values approximate what's depicted in Zeplin
-///
-class PostSummaryDataStub {
-
-    private static let jsonFileExtension = "json"
-
-    private(set) var data: [PostSummaryDatum]
-
-    init(fileName: String) {
-        let bundle = Bundle(for: type(of: self))
-
-        guard let url = bundle.url(
-            forResource: fileName,
-            withExtension: PostSummaryDataStub.jsonFileExtension) else {
-
-            fatalError("Failed to locate \(fileName).\(PostSummaryDataStub.jsonFileExtension) in bundle.")
-        }
-
-        guard let jsonData = try? Data(contentsOf: url) else {
-            fatalError("Failed to parse \(fileName).\(PostSummaryDataStub.jsonFileExtension) as Data.")
-        }
-
-        let decoder = JSONDecoder()
-        let dateFormatter = PostSummaryDateFormatter()
-        decoder.dateDecodingStrategy = .formatted(dateFormatter)
-
-        guard let decoded = try? decoder.decode([PostSummaryDatum].self, from: jsonData) else {
-            fatalError("Failed to decode \(fileName).\(PostSummaryDataStub.jsonFileExtension) from data")
-        }
-
-        self.data = decoded
-    }
-}
-
 // MARK: - BarChartDataConvertible
 
 extension PostSummaryDataStub: BarChartDataConvertible {
     var barChartData: BarChartData {
+
+        let data = summaryData
 
         // Our stub data is ordered
         let firstDateInterval: TimeInterval
@@ -110,26 +89,11 @@ extension PostSummaryDataStub: BarChartDataConvertible {
     }
 }
 
-// MARK: - PostSummaryDateFormatter
-
-private class PostSummaryDateFormatter: DateFormatter {
-    override init() {
-        super.init()
-
-        self.locale = Locale(identifier: "en_US_POSIX")
-        self.dateFormat = "yyyy-MM-dd"
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 // MARK: - PostSummaryStubStyling
 
 extension PostSummaryStyling {
     convenience init(initialDateInterval: TimeInterval, highlightColor: UIColor? = nil) {
-        let xAxisFormatter = PostSummaryHorizontalAxisFormatter(initialDateInterval: initialDateInterval)
+        let xAxisFormatter = HorizontalAxisFormatter(initialDateInterval: initialDateInterval)
 
         self.init(
             barColor: WPStyleGuide.wordPressBlue(),
@@ -137,7 +101,7 @@ extension PostSummaryStyling {
             labelColor: WPStyleGuide.grey(),
             lineColor: WPStyleGuide.greyLighten30(),
             xAxisValueFormatter: xAxisFormatter,
-            yAxisValueFormatter: PostSummaryVerticalAxisFormatter())
+            yAxisValueFormatter: VerticalAxisFormatter())
     }
 }
 

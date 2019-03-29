@@ -38,11 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v11.9-whats-new"
+msgctxt "v12.1-whats-new"
 msgid ""
-"- You’ll go from “initial signup” to “complete website” faster with a smart site-creation process that starts you off with a personalized, already-customized website. You might need to push up your launch schedule now, sorry about that! What a nice problem to have.\n"
-"- Once you create your new site, there are more tutorials available than ever to help you shape and grow it, including tips on building your audience. We’ll suggest them where it makes sense, and you find them all on the My Sites screen at any time. Because launching is beginning, not an ending.\n"
-"- In our ongoing quest to make the app a joy to use — or at least more pleasant — we’ve increased the padding of the editor window so typing longer posts is more comfortable, and given some error pages layouts and illustration that are more consistent with the rest of the app so they’re easier to understand.\n"
+"- Everyone’s got their own workflow. Now sharing text from writing and note-taking apps to WordPress is more reliable.\n"
+"- Sometimes updates to user account details fail, even if we wish they didn’t. We’ve added clearer, more detailed error messages so you know what went wrong and what to do next.\n"
+"- You have more ways to create posts with images: the Block editor supports posts with pre-inserted photos, and you can use Apple’s 3D touch action to launch the app and start a new photo post with a single press.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -106,7 +106,7 @@ msgstr ""
 msgctxt "app_store_screenshot-5"
 msgid ""
 "All the stats\n"
-"in your hand"
+"in your hand\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.

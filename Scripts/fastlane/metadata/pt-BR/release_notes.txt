@@ -1,4 +1,0 @@
-- Agora você pode compartilhar um site pelo Leitor.
-- Correção de um erro no qual, ao editar uma cópia local de um rascunho de post e descartar as edições, o post era apagado.
-- Correção de um erro no Leitor que reiniciava o aplicativo ao exibir posts com vídeos.
-- Correção de alguns erros de layout que exibiam elementos sobrepostos ou com tamanhos diferentes.

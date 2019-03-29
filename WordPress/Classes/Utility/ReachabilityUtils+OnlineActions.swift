@@ -1,17 +1,20 @@
 import Foundation
+import WordPressFlux
 
 extension ReachabilityUtils {
+    private enum DefaultNoConnectionMessage {
+        static let title = NSLocalizedString("No Connection",
+                comment: "Title of error prompt when no internet connection is available.")
+        static let message = noConnectionMessage()
+        static let tag: Notice.Tag = "ReachabilityUtils.NoConnection"
+    }
 
     /// Performs the action when an internet connection is available
     /// If no internet connection is available an error message is displayed
     ///
     @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
-            let title = NSLocalizedString("No Connection",
-                                          comment: "Title of error prompt when no internet connection is available.")
-            let message = NSLocalizedString("The Internet connection appears to be offline",
-                                            comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
-            WPError.showAlert(withTitle: title, message: message)
+            WPError.showAlert(withTitle: DefaultNoConnectionMessage.title, message: DefaultNoConnectionMessage.message)
             return
         }
         action()
@@ -34,5 +37,20 @@ extension ReachabilityUtils {
             filter: { (notification) in
                 return notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true
         })
+    }
+
+    /// Shows a generic non-blocking "No Connection" error message to the user.
+    ///
+    /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
+    /// Alerts can be disruptive.
+    static func showNoInternetConnectionNotice(message: String) {
+        // An empty title is intentional to only show a single regular font message.
+        let notice = Notice(title: "", message: message, tag: DefaultNoConnectionMessage.tag)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
+    static func dismissNoInternetConnectionNotice() {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(DefaultNoConnectionMessage.tag))
     }
 }

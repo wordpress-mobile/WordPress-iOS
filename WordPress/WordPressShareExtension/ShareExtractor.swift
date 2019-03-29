@@ -9,11 +9,10 @@ struct ExtractedShare {
     var description: String
     var url: URL?
     var selectedText: String
+    var importedText: String
     var images: [UIImage]
 
     var combinedContentHTML: String {
-        var returnString: String
-
         var rawLink = ""
         var readOnText = ""
 
@@ -25,23 +24,26 @@ struct ExtractedShare {
         }
 
         // Build the returned string by doing the following:
-        //   * 1st check: Look for selected text, if it exists put it into a blockquote.
-        //   * 2nd check: No selected text, but we have a page description...use that.
-        //   * 3rd check: No selected text, but we have a page title...use that.
+        //   * 1: Look for imported text.
+        //   * 2: Look for selected text, if it exists put it into a blockquote.
+        //   * 3: No selected text, but we have a page description...use that.
+        //   * 4: No selected text, but we have a page title...use that.
         //   * Finally, default to a simple link if nothing else is found
-        if selectedText.isEmpty {
-            if !description.isEmpty {
-                returnString = "<p>\(description)\(readOnText)</p>"
-            } else if !title.isEmpty {
-                returnString = "<p>\(title)\(readOnText)</p>"
-            } else {
-                returnString = "<p>\(rawLink)</p>"
-            }
-        } else {
-            returnString = "<blockquote><p>\(selectedText)\(readOnText)</p></blockquote>"
+        guard importedText.isEmpty else {
+            return importedText.escapeHtmlNamedEntities()
         }
 
-        return returnString
+        guard selectedText.isEmpty else {
+            return "<blockquote><p>\(selectedText.escapeHtmlNamedEntities())\(readOnText)</p></blockquote>"
+        }
+
+        if !description.isEmpty {
+            return "<p>\(description)\(readOnText)</p>"
+        } else if !title.isEmpty {
+            return "<p>\(title)\(readOnText)</p>"
+        } else {
+            return "<p>\(rawLink)</p>"
+        }
     }
 }
 
@@ -66,6 +68,7 @@ struct ShareExtractor {
                 let title = extractedTextResults?.title ?? ""
                 let description = extractedTextResults?.description ?? ""
                 let selectedText = extractedTextResults?.selectedText ?? ""
+                let importedText = extractedTextResults?.importedText ?? ""
                 let url = extractedTextResults?.url
                 let returnedImages = images ?? [UIImage]()
 
@@ -73,6 +76,7 @@ struct ShareExtractor {
                                           description: description,
                                           url: url,
                                           selectedText: selectedText,
+                                          importedText: importedText,
                                           images: returnedImages))
             }
         }
@@ -99,6 +103,10 @@ private struct ExtractedItem {
     /// Any text that was selected
     ///
     var selectedText: String?
+
+    /// Text that was imported from another app
+    ///
+    var importedText: String?
 
     /// A description of the resource if available
     ///
@@ -151,9 +159,11 @@ private extension ShareExtractor {
             let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
             let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
             let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
+            let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
             let urls = extractedItems.compactMap({ $0.url })
 
             completion(ExtractedItem(selectedText: combinedSelectedText,
+                                     importedText: combinedImportedText,
                                      description: combinedDescription,
                                      url: urls.first,
                                      title: combinedTitle,
@@ -231,10 +241,28 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
     func convert(payload: URL) -> ExtractedItem? {
         guard !payload.isFileURL else {
-            return nil
+            return processLocalFile(url: payload)
         }
+
         var returnedItem = ExtractedItem()
         returnedItem.url = payload
+
+        return returnedItem
+    }
+
+    private func processLocalFile(url: URL) -> ExtractedItem? {
+        switch url.pathExtension {
+        case "text", "txt":
+            return handlePlainTextFile(url: url)
+        default:
+            return nil
+        }
+    }
+
+    private func handlePlainTextFile(url: URL) -> ExtractedItem? {
+        var returnedItem = ExtractedItem()
+        let rawText = (try? String(contentsOf: url)) ?? ""
+        returnedItem.importedText = rawText
         return returnedItem
     }
 }
