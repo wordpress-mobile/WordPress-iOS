@@ -12,7 +12,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
     }()
 
     let summaryData: StatsLastPostInsight?
-    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -83,7 +83,7 @@ struct PostingActivityRow: ImmuTableRow {
     }()
 
     let monthsData: [[PostingStreakEvent]]
-    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -105,7 +105,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }()
 
     let tabsData: [TabData]
-    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let showTotalCount: Bool
     let action: ImmuTableAction? = nil
 
@@ -130,7 +130,7 @@ struct TabbedTotalsDetailStatsRow: ImmuTableRow {
     }()
 
     let tabsData: [TabData]
-    let siteStatsDetailsDelegate: SiteStatsDetailsDelegate
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     let showTotalCount: Bool
     let selectedIndex: Int
     let action: ImmuTableAction? = nil
@@ -160,7 +160,7 @@ struct TopTotalsDetailStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let siteStatsDetailsDelegate: SiteStatsDetailsDelegate
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -215,7 +215,7 @@ struct TopTotalsNoSubtitlesPeriodDetailStatsRow: ImmuTableRow {
     }()
 
     let dataRows: [StatsTotalRowData]
-    let siteStatsDetailsDelegate: SiteStatsDetailsDelegate
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -241,7 +241,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -269,7 +269,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let siteStatsPeriodDelegate: SiteStatsPeriodDelegate
+    weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -294,7 +294,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
     }()
 
     let dataRows: [StatsTotalRowData]
-    let siteStatsPeriodDelegate: SiteStatsPeriodDelegate
+    weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -341,7 +341,7 @@ struct CountriesStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let siteStatsPeriodDelegate: SiteStatsPeriodDelegate
+    weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
