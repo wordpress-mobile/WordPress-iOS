@@ -144,8 +144,8 @@ private extension SiteStatsPeriodViewModel {
             case .unknown:
                 icon = Style.imageForGridiconType(.posts)
             }
-            return StatsTotalRowData(name: $0.title,
 
+            return StatsTotalRowData(name: $0.title,
                                      data: $0.viewsCount.abbreviatedString(),
                                      dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
                                      icon: icon,
@@ -244,10 +244,22 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func countriesDataRows() -> [StatsTotalRowData] {
+<<<<<<< HEAD
+        return store.getTopCountries()?.map {
+            // This hack is here just temporarily until #11342 gets merged which exposes the "code" property nicely.
+            let countryCode = $0.iconURL.lastPathComponent.prefix(2)
+            let icon = UIImage(named: String(countryCode))
+
+            return StatsTotalRowData.init(name: $0.label,
+                                          data: $0.value.displayString(),
+                                          icon: icon,
+                                          statSection: .periodCountries) }
+=======
         return store.getTopCountries()?.countries.prefix(10).map { StatsTotalRowData(name: $0.name,
                                                                                      data: $0.viewsCount.abbreviatedString(),
-                                                                                     icon: UIImage(named: $0.code),
+                                                                                     countryIconURL: nil, // TODO Move this from WPStatsiOS.
                                                                                      statSection: .periodCountries) }
+>>>>>>> develop
             ?? []
     }
 

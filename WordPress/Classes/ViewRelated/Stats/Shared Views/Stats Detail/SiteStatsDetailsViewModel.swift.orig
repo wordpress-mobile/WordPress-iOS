@@ -449,10 +449,22 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func countriesRows() -> [StatsTotalRowData] {
+<<<<<<< HEAD
+        return periodStore.getAllCountries()?.map {
+            // This hack is here just temporarily until #11342 gets merged which exposes the "code" property nicely.
+            let countryCode = $0.iconURL.lastPathComponent.prefix(2)
+            let icon = UIImage(named: String(countryCode))
+
+            return StatsTotalRowData.init(name: $0.label,
+                                          data: $0.value.displayString(),
+                                          icon: icon,
+                                          statSection: .periodCountries) }
+=======
         return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                                 data: $0.viewsCount.abbreviatedString(),
-                                                                                icon: UIImage(named: $0.code),
+                                                                                countryIconURL: nil, //$0.iconURL // TODO FIXME Move this from WPiOSStats
                                                                                 statSection: .periodCountries) }
+>>>>>>> develop
             ?? []
     }
 
