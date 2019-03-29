@@ -14,10 +14,31 @@ extension PostEditor where Self: UIViewController {
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
+    private func savePostBeforePreview(completion: @escaping () -> Void){
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        if post.isDraft() {
+            postService.uploadPost(post, success: { [weak self] newPost in
+                self?.post = newPost
+                completion()
+                }, failure: { error in
+                    DDLogError("Error while trying to save post before preview: \(String(describing: error))")
+                    completion()
+            })
+        } else {
+            completion()
+        }
+    }
+        
     func displayPreview() {
-        let previewController = PostPreviewViewController(post: post)
-        previewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(previewController, animated: true)
+        self.savePostBeforePreview() { [weak self] in
+            guard let post = self?.post else {
+                return
+            }
+            let previewController = PostPreviewViewController(post: post)
+            previewController.hidesBottomBarWhenPushed = true
+            self?.navigationController?.pushViewController(previewController, animated: true)
+        }
     }
 
     func displayHistory() {
