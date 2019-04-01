@@ -16,18 +16,18 @@ enum InsightAction: Action {
     case receivedTodaysStats(_ todaysStats: StatsTodayInsight?)
     case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?)
     case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?)
-    case refreshInsights()
+    case refreshInsights
 
     // Insights details
     case receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?)
     case receivedAllEmailFollowers(_ allDotComFollowers: StatsEmailFollowersInsight?)
-    case refreshFollowers()
+    case refreshFollowers
 
     case receivedAllCommentsInsight(_ commentsInsight: StatsCommentsInsight?)
-    case refreshComments()
+    case refreshComments
 
     case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?)
-    case refreshTagsAndCategories()
+    case refreshTagsAndCategories
 }
 
 enum InsightQuery {

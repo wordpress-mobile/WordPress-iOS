@@ -134,15 +134,15 @@ class SiteStatsDetailsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshFollowers() {
-        ActionDispatcher.dispatch(InsightAction.refreshFollowers())
+        ActionDispatcher.dispatch(InsightAction.refreshFollowers)
     }
 
     func refreshComments() {
-        ActionDispatcher.dispatch(InsightAction.refreshComments())
+        ActionDispatcher.dispatch(InsightAction.refreshComments)
     }
 
     func refreshTagsAndCategories() {
-        ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories())
+        ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
     }
 
     func refreshPostsAndPages() {

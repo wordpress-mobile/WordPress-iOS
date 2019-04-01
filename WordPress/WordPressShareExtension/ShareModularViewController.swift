@@ -773,7 +773,7 @@ fileprivate extension ShareModularViewController {
         }
     }
 
-    fileprivate func prepareForPublishing() {
+    func prepareForPublishing() {
         // We are preemptively logging the Tracks posted event here because if handled in a completion handler,
         // there is a good chance iOS will invalidate that network call and the event is never received server-side.
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/9789 for more details.
