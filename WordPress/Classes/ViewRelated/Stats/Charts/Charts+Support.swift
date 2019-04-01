@@ -55,3 +55,26 @@ protocol BarChartStyling {
 protocol BarChartDataConvertible {
     var barChartData: BarChartData { get }
 }
+
+// MARK: - Charts & analytics
+
+/// Vends property values for analytics events that use granularity.
+///
+enum BarChartAnalyticsPropertyGranularityValue: String, CaseIterable {
+    case days, weeks, months, years
+}
+
+extension StatsPeriodUnit {
+    var analyticsGranularity: BarChartAnalyticsPropertyGranularityValue {
+        switch self {
+        case .day:
+            return .days
+        case .week:
+            return .weeks
+        case .month:
+            return .months
+        case .year:
+            return .years
+        }
+    }
+}

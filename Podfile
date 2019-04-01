@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '1.7.2'
+    pod 'WordPressShared', '~> 1.7.3-beta.2'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c37c645aaa4e000eb53e8a9537798162c072a321'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '994dd2b'
 end
 
 def aztec
@@ -42,8 +42,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 3.2.1'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'd07fb8c5e6255c08e4d1dc3511a047f2b8c2bc84'
+    pod 'WordPressKit', '~> 3.2.2beta-2'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'c5ad18dbfd381649d3ff7fd42a84cbf2a559e03d'
     #pod 'WordPressKit', :path => '~/Developer/WordPressKit-iOS'
 end
 
@@ -102,7 +102,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.1.2'
+    gutenberg :commit => 'a090aafc156cb272ccc607628839365dc62efbb4'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'

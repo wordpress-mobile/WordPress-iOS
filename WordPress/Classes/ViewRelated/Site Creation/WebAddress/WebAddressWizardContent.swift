@@ -150,10 +150,12 @@ final class WebAddressWizardContent: UIViewController {
         tableViewOffsetCoordinator?.hideBottomToolbar()
 
         guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
-            setupTableDataProvider()
+            setupTableDataProvider(isShowingImplicitSuggestions: true)
             return
         }
+
         validDataProvider.data = []
+        validDataProvider.isShowingImplicitSuggestions = true
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
@@ -179,10 +181,14 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
+        let header = self.table.tableHeaderView as! TitleSubtitleTextfieldHeader
+        let isShowingImplicitSuggestions = header.textField.text!.isEmpty
+
         if let validDataProvider = tableViewProvider as? WebAddressTableViewProvider {
             validDataProvider.data = data
+            validDataProvider.isShowingImplicitSuggestions = isShowingImplicitSuggestions
         } else {
-            setupTableDataProvider(data)
+            setupTableDataProvider(data, isShowingImplicitSuggestions: isShowingImplicitSuggestions)
         }
 
         if data.isEmpty {
@@ -372,7 +378,7 @@ final class WebAddressWizardContent: UIViewController {
         ])
     }
 
-    private func setupTableDataProvider(_ data: [DomainSuggestion] = []) {
+    private func setupTableDataProvider(_ data: [DomainSuggestion] = [], isShowingImplicitSuggestions: Bool) {
         let handler: CellSelectionHandler = { [weak self] selectedIndexPath in
             guard let self = self, let provider = self.tableViewProvider as? WebAddressTableViewProvider else {
                 return
@@ -384,17 +390,29 @@ final class WebAddressWizardContent: UIViewController {
             self.tableViewOffsetCoordinator?.showBottomToolbar()
         }
 
-        self.tableViewProvider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
+        let provider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
+        provider.isShowingImplicitSuggestions = isShowingImplicitSuggestions
+
+        self.tableViewProvider = provider
+    }
+
+    private func query(from textField: UITextField?) -> String? {
+        guard let text = textField?.text,
+            !text.isEmpty else {
+                return siteCreator.information?.title
+        }
+
+        return text
     }
 
     @objc
     private func textChanged(sender: UITextField) {
-        guard let searchTerm = sender.text, searchTerm.isEmpty == false else {
+        guard let query = query(from: sender) else {
             clearContent()
             return
         }
 
-        performSearchIfNeeded(query: searchTerm)
+        performSearchIfNeeded(query: query)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 
