@@ -478,6 +478,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
         }
     }
+
+    func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
+        switch logLevel {
+        case .trace:
+            DDLogDebug(message)
+        case .info:
+            DDLogInfo(message)
+        case .warn:
+            DDLogWarn(message)
+        case .error:
+            DDLogError(message)
+        }
+    }
 }
 
 // MARK: - GutenbergBridgeDataSource
