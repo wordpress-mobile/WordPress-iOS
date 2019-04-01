@@ -39,6 +39,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="title" destination="hQm-TV-IDW" id="B0v-92-6ti"/>
+                <outlet property="titleTrailingConstraint" destination="pJe-WK-HF0" id="2gJ-Uy-POc"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="130.43478260869566"/>
         </tableViewCell>
