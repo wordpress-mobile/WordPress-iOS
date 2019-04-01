@@ -269,12 +269,6 @@ extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
     func jetpackRemoteInstallCompleted() {
         jetpackIsCompleted()
     }
-
-    func jetpackRemoteInstallErrorFallback() {
-        dismiss(animated: true) { [weak self] in
-            self?.openInstallJetpackURL()
-        }
-    }
 }
 
 public enum JetpackLoginPromptType {
