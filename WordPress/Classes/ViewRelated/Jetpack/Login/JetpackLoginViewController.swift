@@ -64,10 +64,9 @@ class JetpackLoginViewController: UIViewController {
         setupControls()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        hideImageView()
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        hideImageView(with: newCollection)
     }
 
     // MARK: - Configuration
@@ -76,7 +75,7 @@ class JetpackLoginViewController: UIViewController {
     ///
     fileprivate func setupControls() {
         jetpackImage.image = promptType.image
-        hideImageView()
+        hideImageView(with: traitCollection)
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
@@ -89,8 +88,8 @@ class JetpackLoginViewController: UIViewController {
         updateMessageAndButton()
     }
 
-    private func hideImageView() {
-        jetpackImage.isHidden = WPDeviceIdentification.isiPhone() && UIDevice.current.orientation.isLandscape
+    private func hideImageView(with collection: UITraitCollection) {
+        jetpackImage.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
     fileprivate func observeLoginNotifications(_ observe: Bool) {
@@ -139,6 +138,7 @@ class JetpackLoginViewController: UIViewController {
         let title = Feature.enabled(.jetpackRemoteInstallation) ? Constants.Buttons.jetpackInstallTitle : Constants.Buttons.jetpackSetupTitle
         installJetpackButton.setTitle(title, for: .normal)
         installJetpackButton.isHidden = hasJetpack
+        installJetpackButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = !hasJetpack
