@@ -4,6 +4,7 @@ import WordPressAuthenticator
 protocol JetpackRemoteInstallDelegate: class {
     func jetpackRemoteInstallCompleted()
     func jetpackRemoteInstallCanceled()
+    func jetpackRemoteInstallErrorFallback()
 }
 
 class JetpackRemoteInstallViewController: UIViewController {
@@ -94,7 +95,7 @@ private extension JetpackRemoteInstallViewController {
         case .failure(let error):
             supportButton.isHidden = false
             if error.isBlockingError {
-                delegate?.jetpackRemoteInstallCanceled()
+                delegate?.jetpackRemoteInstallErrorFallback()
             }
         default:
             supportButton.isHidden = true
