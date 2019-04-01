@@ -42,8 +42,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 3.2.2beta-2'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'c5ad18dbfd381649d3ff7fd42a84cbf2a559e03d'
+    pod 'WordPressKit', '~> 3.2.2.beta-3'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '5d13f1513a630be3c0d3f31a09b20468c807a26d'
     #pod 'WordPressKit', :path => '~/Developer/WordPressKit-iOS'
 end
 

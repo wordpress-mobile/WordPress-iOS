@@ -25,8 +25,9 @@ struct DomainsService {
                               segmentID: Int64,
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {
-        remote.getDomainSuggestions(base: base,
-                                    segmentID: segmentID,
+        let request = DomainSuggestionRequest(query: base, segmentID: segmentID)
+
+        remote.getDomainSuggestions(request: request,
                                     success: { suggestions in
                                         let sorted = self.sortedSuggestions(suggestions, forBase: base)
                                         success(sorted)
