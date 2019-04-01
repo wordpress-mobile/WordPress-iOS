@@ -68,6 +68,7 @@ private extension JetpackRemoteInstallViewController {
         mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         supportButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
+        supportButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
         supportButton.setTitle(NSLocalizedString("Contact Support", comment: "Contact Support button title"),
                                for: .normal)
     }
@@ -101,11 +102,11 @@ private extension JetpackRemoteInstallViewController {
         }
     }
 
-    private func hideImageView(with collection: UITraitCollection) {
+    func hideImageView(with collection: UITraitCollection) {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    private func openInstallJetpackURL() {
+    func openInstallJetpackURL() {
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
@@ -133,5 +134,11 @@ private extension UIActivityIndicatorView {
         } else {
             stopAnimating()
         }
+    }
+}
+
+private extension JetpackRemoteInstallViewController {
+    @IBAction func stateChange(_ sender: UISegmentedControl) {
+        viewModel.testState(sender.selectedSegmentIndex)
     }
 }

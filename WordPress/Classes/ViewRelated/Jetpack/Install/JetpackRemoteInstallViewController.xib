@@ -73,11 +73,26 @@
                     </constraints>
                     <variation key="heightClass=compact" spacing="10"/>
                 </stackView>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="q47-qd-WE3">
+                    <rect key="frame" x="10" y="629" width="355" height="29"/>
+                    <segments>
+                        <segment title="Install"/>
+                        <segment title="Installations"/>
+                        <segment title="Success"/>
+                        <segment title="Failure"/>
+                    </segments>
+                    <connections>
+                        <action selector="stateChange:" destination="-1" eventType="valueChanged" id="fpz-v8-gTI"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="q47-qd-WE3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="6Uv-3O-dne"/>
                 <constraint firstItem="Wtq-ol-N3i" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OYj-TI-469"/>
                 <constraint firstItem="Wtq-ol-N3i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" priority="999" constant="30" id="RL8-bM-EWM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="q47-qd-WE3" secondAttribute="bottom" constant="10" id="Zs5-J6-7qf"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="q47-qd-WE3" secondAttribute="trailing" constant="10" id="g02-x5-8z4"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Wtq-ol-N3i" secondAttribute="trailing" priority="999" constant="30" id="rsW-YW-I5E"/>
                 <constraint firstItem="Wtq-ol-N3i" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="xX4-84-XFD"/>
             </constraints>
