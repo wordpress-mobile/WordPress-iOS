@@ -987,6 +987,9 @@
 		9A4E61F621A2C37B0017A925 /* WPStyleSuide+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */; };
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
+		9A68FAE72252335700FBCCE1 /* JetpackRemoteInstallViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68FAE62252335700FBCCE1 /* JetpackRemoteInstallViewState.swift */; };
+		9A68FAE92252358800FBCCE1 /* JetpackInstallError+Blocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68FAE82252358800FBCCE1 /* JetpackInstallError+Blocking.swift */; };
+		9A68FAEB22523E5800FBCCE1 /* JetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68FAEA22523E5800FBCCE1 /* JetpackRemoteInstallViewModel.swift */; };
 		9A938C5D21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */; };
 		9AAB241E224D104300085B05 /* JetpackRemoteInstallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAB241C224D104300085B05 /* JetpackRemoteInstallViewController.swift */; };
 		9AAB241F224D104300085B05 /* JetpackRemoteInstallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AAB241D224D104300085B05 /* JetpackRemoteInstallViewController.xib */; };
@@ -2953,6 +2956,9 @@
 		9A4E61F521A2C37B0017A925 /* WPStyleSuide+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleSuide+Revisions.swift"; sourceTree = "<group>"; };
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
+		9A68FAE62252335700FBCCE1 /* JetpackRemoteInstallViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewState.swift; sourceTree = "<group>"; };
+		9A68FAE82252358800FBCCE1 /* JetpackInstallError+Blocking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JetpackInstallError+Blocking.swift"; sourceTree = "<group>"; };
+		9A68FAEA22523E5800FBCCE1 /* JetpackRemoteInstallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewModel.swift; sourceTree = "<group>"; };
 		9A938C5C21FB3B10009D0C24 /* QuickStartChecklistViewControllerV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistViewControllerV1.swift; sourceTree = "<group>"; };
 		9AAB241C224D104300085B05 /* JetpackRemoteInstallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewController.swift; sourceTree = "<group>"; };
 		9AAB241D224D104300085B05 /* JetpackRemoteInstallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRemoteInstallViewController.xib; sourceTree = "<group>"; };
@@ -6550,6 +6556,16 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		9A68FAE52252332900FBCCE1 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				9A68FAE62252335700FBCCE1 /* JetpackRemoteInstallViewState.swift */,
+				9A68FAE82252358800FBCCE1 /* JetpackInstallError+Blocking.swift */,
+				9A68FAEA22523E5800FBCCE1 /* JetpackRemoteInstallViewModel.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		9AAB2419224D0F7700085B05 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -6572,6 +6588,7 @@
 			children = (
 				9AAB241C224D104300085B05 /* JetpackRemoteInstallViewController.swift */,
 				9AAB241D224D104300085B05 /* JetpackRemoteInstallViewController.xib */,
+				9A68FAE52252332900FBCCE1 /* Data */,
 				9AAB241A224D0F8E00085B05 /* Webview */,
 			);
 			path = Install;
@@ -9958,6 +9975,7 @@
 				08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */,
 				FF2EC3C02209A144006176E1 /* GutenbergImgUploadProcessor.swift in Sources */,
 				E151C0C81F388A2000710A83 /* PluginListViewModel.swift in Sources */,
+				9A68FAEB22523E5800FBCCE1 /* JetpackRemoteInstallViewModel.swift in Sources */,
 				E1B9128B1BB0129C003C25B9 /* WPStyleGuide+People.swift in Sources */,
 				E6F2788121BC1A4A008B4DB5 /* PlanGroup.swift in Sources */,
 				08216FCE1CDBF96000304BA7 /* MenuItemPostsViewController.m in Sources */,
@@ -9980,6 +9998,7 @@
 				E137B1661F8B77D4006AC7FC /* WebNavigationDelegate.swift in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
 				439F4F3A219B715300F8D0C7 /* RevisionsNavigationController.swift in Sources */,
+				9A68FAE72252335700FBCCE1 /* JetpackRemoteInstallViewState.swift in Sources */,
 				D818FFDE219177DA000E5FEE /* SiteSegmentsDelegate.swift in Sources */,
 				17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */,
 				984B139221F66AC60004B6A2 /* SiteStatsPeriodViewModel.swift in Sources */,
@@ -10431,6 +10450,7 @@
 				177B4C252123161900CF8084 /* GiphyPicker.swift in Sources */,
 				17B7C8C120EE2A870042E260 /* Routes+Notifications.swift in Sources */,
 				9A341E5621997A340036662E /* BlogAuthor.swift in Sources */,
+				9A68FAE92252358800FBCCE1 /* JetpackInstallError+Blocking.swift in Sources */,
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
