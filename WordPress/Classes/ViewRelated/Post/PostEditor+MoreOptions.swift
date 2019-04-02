@@ -27,12 +27,17 @@ extension PostEditor where Self: UIViewController {
         if post.isDraft() && post.hasUnsavedChanges() {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
+             let status = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
+            SVProgressHUD.setDefaultMaskType(.clear)
+            SVProgressHUD.show(withStatus: status)
             postService.uploadPost(post, success: { [weak self] newPost in
                 self?.post = newPost
                 self?.createPostRevisionBeforePreview(completion: completion)
+                SVProgressHUD.dismiss()
                 }, failure: { error in
                     DDLogError("Error while trying to save post before preview: \(String(describing: error))")
                     completion()
+                    SVProgressHUD.dismiss()
             })
         } else {
            createPostRevisionBeforePreview(completion: completion)
