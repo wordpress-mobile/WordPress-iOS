@@ -37,6 +37,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         nameLabel.textColor = Const.Color.nameText
         nameLabel.font = WPStyleGuide.tableviewTextFont()
         nameLabel.numberOfLines = 0
+        nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:))))
 
         valueTextField.textColor = Const.Color.valueText
         valueTextField.font = WPStyleGuide.tableviewTextFont()
@@ -62,6 +63,10 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func textEditingDidEnd(textField: UITextField) {
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
+    }
+
+    @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
+        valueTextField.becomeFirstResponder()
     }
 }
 
