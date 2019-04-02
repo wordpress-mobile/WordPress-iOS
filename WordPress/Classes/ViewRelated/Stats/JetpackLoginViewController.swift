@@ -66,7 +66,7 @@ class JetpackLoginViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        hideImageView(with: newCollection)
+        toggleHidingImageView(for: newCollection)
     }
 
     // MARK: - Configuration
@@ -75,7 +75,7 @@ class JetpackLoginViewController: UIViewController {
     ///
     fileprivate func setupControls() {
         jetpackImage.image = promptType.image
-        hideImageView(with: traitCollection)
+        toggleHidingImageView(for: traitCollection)
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
@@ -88,7 +88,7 @@ class JetpackLoginViewController: UIViewController {
         updateMessageAndButton()
     }
 
-    private func hideImageView(with collection: UITraitCollection) {
+    private func toggleHidingImageView(for collection: UITraitCollection) {
         jetpackImage.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
