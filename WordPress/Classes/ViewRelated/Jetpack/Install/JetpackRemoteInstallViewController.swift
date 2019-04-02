@@ -46,6 +46,8 @@ class JetpackRemoteInstallViewController: UIViewController {
     }
 }
 
+// MARK: - Private functions
+
 private extension JetpackRemoteInstallViewController {
     func setupNavigationBar() {
         title = NSLocalizedString("Jetpack", comment: "Title for the Jetpack Installation")
@@ -117,6 +119,8 @@ private extension JetpackRemoteInstallViewController {
     }
 }
 
+// MARK: - Jetpack Connection Web Delegate
+
 extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCanceled() {
         delegate?.jetpackRemoteInstallCanceled()
@@ -126,6 +130,8 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
         delegate?.jetpackRemoteInstallCompleted()
     }
 }
+
+// MARK: - UIActivityIndicatorView extension
 
 private extension UIActivityIndicatorView {
     func animate(_ animate: Bool) {
@@ -137,6 +143,8 @@ private extension UIActivityIndicatorView {
     }
 }
 
+// This is just for manual testing purpose
+// It will be removed
 private extension JetpackRemoteInstallViewController {
     @IBAction func stateChange(_ sender: UISegmentedControl) {
         viewModel.testState(sender.selectedSegmentIndex)

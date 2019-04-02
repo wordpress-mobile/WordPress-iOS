@@ -14,6 +14,8 @@ class JetpackRemoteInstallViewModel {
     }
 }
 
+// This is just for manual testing purpose
+// It will be removed
 extension JetpackRemoteInstallViewModel {
     func testState(_ index: Int) {
         switch index {

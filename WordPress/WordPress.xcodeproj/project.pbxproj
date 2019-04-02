@@ -6560,8 +6560,8 @@
 			isa = PBXGroup;
 			children = (
 				9A68FAE62252335700FBCCE1 /* JetpackRemoteInstallViewState.swift */,
-				9A68FAE82252358800FBCCE1 /* JetpackInstallError+Blocking.swift */,
 				9A68FAEA22523E5800FBCCE1 /* JetpackRemoteInstallViewModel.swift */,
+				9A68FAE82252358800FBCCE1 /* JetpackInstallError+Blocking.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
