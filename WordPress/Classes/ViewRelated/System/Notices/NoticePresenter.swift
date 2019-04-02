@@ -421,6 +421,7 @@ private extension NoticePresenter {
 
             super.init(frame: MaskView.calculateFrame(parent: parent, untouchableVC: untouchableViewController))
 
+            isUserInteractionEnabled = false
             translatesAutoresizingMaskIntoConstraints = false
             backgroundColor = .blue
 
