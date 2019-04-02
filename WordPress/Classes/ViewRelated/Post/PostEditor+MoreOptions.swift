@@ -14,24 +14,33 @@ extension PostEditor where Self: UIViewController {
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    private func savePostBeforePreview(completion: @escaping (() -> Void)){
+    private func createPostRevisionBeforePreview(completion: @escaping (() -> Void)) {
         let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        if post.isDraft() {
+        context.performAndWait {
+            post = self.post.createRevision()
+            ContextManager.sharedInstance().save(context)
+            completion()
+        }
+    }
+
+    private func savePostBeforePreview(completion: @escaping (() -> Void)) {
+        if post.isDraft() && post.hasUnsavedChanges() {
+            let context = ContextManager.sharedInstance().mainContext
+            let postService = PostService(managedObjectContext: context)
             postService.uploadPost(post, success: { [weak self] newPost in
                 self?.post = newPost
-                completion()
+                self?.createPostRevisionBeforePreview(completion: completion)
                 }, failure: { error in
                     DDLogError("Error while trying to save post before preview: \(String(describing: error))")
                     completion()
             })
         } else {
-            completion()
+           createPostRevisionBeforePreview(completion: completion)
         }
     }
 
     func displayPreview() {
-        self.savePostBeforePreview() { [weak self] in
+        savePostBeforePreview() { [weak self] in
             guard let post = self?.post else {
                 return
             }
