@@ -185,7 +185,7 @@ extension PostEditor where Self: UIViewController {
     func cancelEditing() {
         stopEditing()
 
-        if post.canSave() && !post.isDraft() {
+        if post.canSave() {
             showPostHasChangesAlert()
         } else {
             editorSession.end(outcome: .cancel)
