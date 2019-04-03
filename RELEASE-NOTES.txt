@@ -1,6 +1,6 @@
 12.2
 -----
- 
+* Draft preview now shows the remote version of the post.
 12.1
 -----
 * Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
