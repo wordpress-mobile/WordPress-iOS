@@ -12,12 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackRemoteInstallViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="Ey2-D0-DkS" id="xqo-Bn-Yim"/>
-                <outlet property="descriptionLabel" destination="qfY-Ya-QEH" id="8pM-Gb-wSa"/>
-                <outlet property="imageView" destination="KKm-Ii-Lm9" id="x8x-D2-F4w"/>
-                <outlet property="mainButton" destination="7R5-Vb-lw9" id="et5-wb-dWg"/>
-                <outlet property="supportButton" destination="2ED-Ua-KGh" id="irH-pW-trh"/>
-                <outlet property="titleLabel" destination="Mfa-HN-SJM" id="u9B-6R-cZh"/>
+                <outlet property="segmented" destination="q47-qd-WE3" id="RpJ-cg-wI0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,53 +21,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Wtq-ol-N3i">
-                    <rect key="frame" x="30" y="176.5" width="315" height="314.5"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jetpack-install-logo" translatesAutoresizingMaskIntoConstraints="NO" id="KKm-Ii-Lm9">
-                            <rect key="frame" x="0.0" y="0.0" width="315" height="88"/>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mfa-HN-SJM">
-                            <rect key="frame" x="0.0" y="108" width="315" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfY-Ya-QEH">
-                            <rect key="frame" x="0.0" y="148.5" width="315" height="18"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UoR-0w-tRI" userLabel="Main buttons">
-                            <rect key="frame" x="0.0" y="186.5" width="315" height="34"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7R5-Vb-lw9" customClass="NUXButton" customModule="WordPressAuthenticator">
-                                    <rect key="frame" x="130.5" y="0.0" width="54" height="34"/>
-                                    <state key="normal" title="Button">
-                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
-                                </button>
-                            </subviews>
-                        </stackView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ED-Ua-KGh">
-                            <rect key="frame" x="0.0" y="240.5" width="315" height="34"/>
-                            <state key="normal" title="Custom Support Button">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                        </button>
-                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ey2-D0-DkS">
-                            <rect key="frame" x="0.0" y="294.5" width="315" height="20"/>
-                        </activityIndicatorView>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="txR-YY-Aqh"/>
-                    </constraints>
-                    <variation key="heightClass=compact" spacing="10"/>
-                </stackView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="q47-qd-WE3">
                     <rect key="frame" x="10" y="629" width="355" height="29"/>
                     <segments>
@@ -80,6 +28,7 @@
                         <segment title="Installations"/>
                         <segment title="Success"/>
                         <segment title="Failure"/>
+                        <segment title="Fallback"/>
                     </segments>
                     <connections>
                         <action selector="stateChange:" destination="-1" eventType="valueChanged" id="fpz-v8-gTI"/>
@@ -89,17 +38,10 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="q47-qd-WE3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="6Uv-3O-dne"/>
-                <constraint firstItem="Wtq-ol-N3i" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OYj-TI-469"/>
-                <constraint firstItem="Wtq-ol-N3i" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" priority="999" constant="30" id="RL8-bM-EWM"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="q47-qd-WE3" secondAttribute="bottom" constant="10" id="Zs5-J6-7qf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="q47-qd-WE3" secondAttribute="trailing" constant="10" id="g02-x5-8z4"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Wtq-ol-N3i" secondAttribute="trailing" priority="999" constant="30" id="rsW-YW-I5E"/>
-                <constraint firstItem="Wtq-ol-N3i" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="xX4-84-XFD"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
-    <resources>
-        <image name="jetpack-install-logo" width="88" height="88"/>
-    </resources>
 </document>

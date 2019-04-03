@@ -10,15 +10,10 @@ class JetpackRemoteInstallViewController: UIViewController {
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var promptType: JetpackLoginPromptType
     private var blog: Blog
+    private let jetpackView = JetpackRemoteInstallView()
     private let viewModel: JetpackRemoteInstallViewModel
 
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var titleLabel: UILabel!
-    @IBOutlet private var descriptionLabel: UILabel!
-    @IBOutlet private var mainButton: NUXButton!
-    @IBOutlet private var supportButton: UIButton!
-    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-
+    @IBOutlet private var segmented: UISegmentedControl!
 
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
         self.blog = blog
@@ -42,7 +37,7 @@ class JetpackRemoteInstallViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        hideImageView(with: newCollection)
+        jetpackView.toggleHidingImageView(for: newCollection)
     }
 }
 
@@ -59,53 +54,27 @@ private extension JetpackRemoteInstallViewController {
     func setupUI() {
         view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
 
-        hideImageView(with: traitCollection)
+        jetpackView.delegate = self
+        add(jetpackView)
 
-        titleLabel.font = WPStyleGuide.fontForTextStyle(.title2)
-        titleLabel.textColor = WPStyleGuide.greyDarken10()
+        jetpackView.toggleHidingImageView(for: traitCollection)
 
-        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = WPStyleGuide.darkGrey()
-
-        mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
-
-        supportButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        supportButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
-        supportButton.setTitle(NSLocalizedString("Contact Support", comment: "Contact Support button title"),
-                               for: .normal)
+        view.bringSubviewToFront(segmented)
     }
 
     func setupViewModel() {
         viewModel.onChangeState = { [weak self] state in
-            self?.setupView(for: state)
+            DispatchQueue.main.async {
+                self?.jetpackView.setupView(for: state)
+            }
+
+            if case let .failure(error) = state {
+                if error.isBlockingError {
+                    self?.openInstallJetpackURL()
+                }
+            }
         }
         viewModel.viewReady()
-    }
-
-    func setupView(for state: JetpackRemoteInstallViewState) {
-        imageView.image = state.image
-
-        titleLabel.text = state.title
-        descriptionLabel.text = state.message
-
-        mainButton.isHidden = state == .installing
-        mainButton.setTitle(state.buttonTitle, for: .normal)
-
-        activityIndicator.animate(state == .installing)
-
-        switch state {
-        case .failure(let error):
-            supportButton.isHidden = false
-            if error.isBlockingError {
-                openInstallJetpackURL()
-            }
-        default:
-            supportButton.isHidden = true
-        }
-    }
-
-    func hideImageView(with collection: UITraitCollection) {
-        imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
     func openInstallJetpackURL() {
@@ -131,15 +100,15 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
     }
 }
 
-// MARK: - UIActivityIndicatorView extension
+// MARK: - Jetpack View delegate
 
-private extension UIActivityIndicatorView {
-    func animate(_ animate: Bool) {
-        if animate {
-            startAnimating()
-        } else {
-            stopAnimating()
-        }
+extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
+    func mainButtonDidTouch() {
+
+    }
+
+    func customerSupportButtonDidTouch() {
+
     }
 }
 

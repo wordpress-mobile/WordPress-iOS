@@ -27,8 +27,10 @@ extension JetpackRemoteInstallViewModel {
             state = .success
         case 3:
             state = .failure(.unknown)
+        case 4:
+            state = .failure(.forbidden)
         default:
-            return
+            break
         }
     }
 }
