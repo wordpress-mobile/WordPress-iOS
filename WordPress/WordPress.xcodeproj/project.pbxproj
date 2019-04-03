@@ -6798,6 +6798,7 @@
 			children = (
 				9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */,
 				9A8ECE072254A3260043C8DA /* JetpackRemoteInstallViewController.xib */,
+				9A8ECE1F22550A210043C8DA /* Error */,
 				9A8ECE1A2254ADFA0043C8DA /* View */,
 				9A8ECE082254A3260043C8DA /* Data */,
 				9A8ECE042254A3260043C8DA /* Webview */,
@@ -6818,7 +6819,6 @@
 			children = (
 				9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */,
 				9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallViewState.swift */,
-				9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -6831,6 +6831,14 @@
 			);
 			name = View;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		9A8ECE1F22550A210043C8DA /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */,
+			);
+			path = Error;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
