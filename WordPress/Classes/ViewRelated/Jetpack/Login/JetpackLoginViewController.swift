@@ -66,7 +66,7 @@ class JetpackLoginViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        hideImageView(with: newCollection)
+        toggleHidingImageView(for: newCollection)
     }
 
     // MARK: - Configuration
@@ -75,7 +75,7 @@ class JetpackLoginViewController: UIViewController {
     ///
     fileprivate func setupControls() {
         jetpackImage.image = promptType.image
-        hideImageView(with: traitCollection)
+        toggleHidingImageView(for: traitCollection)
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
@@ -88,7 +88,7 @@ class JetpackLoginViewController: UIViewController {
         updateMessageAndButton()
     }
 
-    private func hideImageView(with collection: UITraitCollection) {
+    private func toggleHidingImageView(for collection: UITraitCollection) {
         jetpackImage.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
@@ -320,7 +320,7 @@ private enum Constants {
     enum Buttons {
         static let termsAndConditions = NSLocalizedString("Terms and Conditions", comment: "The underlined title sentence")
         static let termsAndConditionsTitle = String.localizedStringWithFormat(NSLocalizedString("By setting up Jetpack you agree to our\n%@",
-                                                                                                comment: "Title of the button which opens the Jetpack terms and conditions page."), termsAndConditions)
+                                                                                                comment: "Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break \n. Also there is a placeholder %@ which is: Terms and Conditions"), termsAndConditions)
         static let faqTitle = NSLocalizedString("Jetpack FAQ", comment: "Title of the button which opens the Jetpack FAQ page.")
         static let jetpackInstallTitle = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation.")
         static let jetpackSetupTitle = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Set up.")

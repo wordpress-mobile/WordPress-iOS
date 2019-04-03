@@ -10,7 +10,7 @@ class SiteStatsInsightsViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
-    private let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private let store: StatsInsightsStore
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?

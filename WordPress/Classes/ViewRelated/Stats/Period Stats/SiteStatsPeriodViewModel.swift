@@ -10,8 +10,9 @@ class SiteStatsPeriodViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
-    private let periodDelegate: SiteStatsPeriodDelegate
+    private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
+    private var lastRequestedPeriod: StatsPeriodUnit
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
@@ -24,6 +25,7 @@ class SiteStatsPeriodViewModel: Observable {
          periodDelegate: SiteStatsPeriodDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
+        self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
 
         changeReceipt = store.onChange { [weak self] in
@@ -58,6 +60,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period))
+        self.lastRequestedPeriod = period
     }
 }
 
@@ -108,7 +111,7 @@ private extension SiteStatsPeriodViewModel {
             commentsStyling
         ]
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling)
+        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling, period: lastRequestedPeriod)
         tableRows.append(row)
 
         return tableRows
@@ -126,28 +129,30 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func postsAndPagesDataRows() -> [StatsTotalRowData] {
-        let postsAndPages = store.getTopPostsAndPages()
-        var dataRows = [StatsTotalRowData]()
+        let postsAndPages = store.getTopPostsAndPages()?.topPosts.prefix(10) ?? []
 
-        postsAndPages?.forEach { item in
+        return postsAndPages.map {
+            let icon: UIImage?
 
-            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
-            let icon = Style.imageForGridiconType(.posts)
+            switch $0.kind {
+            case .homepage:
+                icon = Style.imageForGridiconType(.house)
+            case .page:
+                icon = Style.imageForGridiconType(.pages)
+            case .post:
+                icon = Style.imageForGridiconType(.posts)
+            case .unknown:
+                icon = Style.imageForGridiconType(.posts)
+            }
 
-            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
-
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             dataBarPercent: dataBarPercent,
-                                             icon: icon,
-                                             showDisclosure: true,
-                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
-                                             statSection: .periodPostsAndPages)
-
-            dataRows.append(row)
+            return StatsTotalRowData(name: $0.title,
+                                     data: $0.viewsCount.abbreviatedString(),
+                                     dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
+                                     icon: icon,
+                                     showDisclosure: true,
+                                     disclosureURL: $0.postURL,
+                                     statSection: .periodPostsAndPages)
         }
-
-        return dataRows
     }
 
     func referrersTableRows() -> [ImmuTableRow] {
@@ -162,14 +167,19 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func referrersDataRows() -> [StatsTotalRowData] {
-        return store.getTopReferrers()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                  data: $0.value.displayString(),
-                                                                  socialIconURL: $0.iconURL,
-                                                                  showDisclosure: true,
-                                                                  disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                  childRows: StatsDataHelper.childRowsForReferrers($0),
-                                                                  statSection: .periodReferrers) }
-            ?? []
+        let referrers = store.getTopReferrers()?.referrers.prefix(10) ?? []
+
+        func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            return StatsTotalRowData(name: referrer.title,
+                                     data: referrer.viewsCount.abbreviatedString(),
+                                     socialIconURL: referrer.iconURL,
+                                     showDisclosure: true,
+                                     disclosureURL: referrer.url,
+                                     childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
+                                     statSection: .periodReferrers)
+        }
+
+        return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
     func clicksTableRows() -> [ImmuTableRow] {
@@ -184,12 +194,16 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func clicksDataRows() -> [StatsTotalRowData] {
-        return store.getTopClicks()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                  data: $0.value.displayString(),
-                                                                  showDisclosure: true,
-                                                                  disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                  childRows: StatsDataHelper.childRowsForClicks($0),
-                                                                  statSection: .periodClicks) }
+        return store.getTopClicks()?.clicks.prefix(10).map { StatsTotalRowData(name: $0.title,
+                                                                               data: $0.clicksCount.abbreviatedString(),
+                                                                               showDisclosure: true,
+                                                                               disclosureURL: $0.clickedURL,
+                                                                               childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                                                                              data: $0.clicksCount.abbreviatedString(),
+                                                                                                                              showDisclosure: true,
+                                                                                                                              disclosureURL: $0.clickedURL)
+            },
+                                                                               statSection: .periodClicks) }
             ?? []
     }
 
@@ -205,15 +219,17 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func authorsDataRows() -> [StatsTotalRowData] {
-        let authors = store.getTopAuthors()
-        return authors?.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
-                                                     userIconURL: $0.iconURL,
-                                                     showDisclosure: true,
-                                                     childRows: StatsDataHelper.childRowsForAuthor($0),
-                                                     statSection: .periodAuthors) }
-            ?? []
+        let authors = store.getTopAuthors()?.topAuthors.prefix(10) ?? []
+
+
+        return authors.map { StatsTotalRowData(name: $0.name,
+                                               data: $0.viewsCount.abbreviatedString(),
+                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                                               userIconURL: $0.iconURL,
+                                               showDisclosure: true,
+                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                                               statSection: .periodAuthors)
+        }
     }
 
     func countriesTableRows() -> [ImmuTableRow] {
@@ -228,10 +244,10 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func countriesDataRows() -> [StatsTotalRowData] {
-        return store.getTopCountries()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                     data: $0.value.displayString(),
-                                                                     countryIconURL: $0.iconURL,
-                                                                     statSection: .periodCountries) }
+        return store.getTopCountries()?.countries.prefix(10).map { StatsTotalRowData(name: $0.name,
+                                                                                     data: $0.viewsCount.abbreviatedString(),
+                                                                                     countryIconURL: nil, // TODO Move this from WPStatsiOS.
+                                                                                     statSection: .periodCountries) }
             ?? []
     }
 
@@ -247,10 +263,27 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func searchTermsDataRows() -> [StatsTotalRowData] {
-        return store.getTopSearchTerms()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                       data: $0.value.displayString(),
-                                                                       statSection: .periodSearchTerms) }
-            ?? []
+        guard let searchTerms = store.getTopSearchTerms() else {
+            return []
+        }
+
+        var mappedSearchTerms = searchTerms.searchTerms.prefix(10).map { StatsTotalRowData(name: $0.term,
+                                                                                           data: $0.viewsCount.abbreviatedString(),
+                                                                                           statSection: .periodSearchTerms) }
+
+        if !mappedSearchTerms.isEmpty && searchTerms.hiddenSearchTermsCount > 0 {
+            // We want to insert the "Unknown search terms" item only if there's anything to show in the first place — if the
+            // section is empty, it doesn't make sense to insert it here.
+
+            let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
+                                                                              comment: "Search Terms label for 'unknown search terms'."),
+                                                      data: searchTerms.hiddenSearchTermsCount.abbreviatedString(),
+                                                      statSection: .periodSearchTerms)
+
+            mappedSearchTerms.insert(unknownSearchTerm, at: 0)
+        }
+
+        return mappedSearchTerms
     }
 
     func publishedTableRows() -> [ImmuTableRow] {
@@ -263,11 +296,11 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func publishedDataRows() -> [StatsTotalRowData] {
-        return store.getTopPublished()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                     data: "",
-                                                                     showDisclosure: true,
-                                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                     statSection: .periodPublished) }
+        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title,
+                                                                                    data: "",
+                                                                                    showDisclosure: true,
+                                                                                    disclosureURL: $0.postURL,
+                                                                                    statSection: .periodPublished) }
             ?? []
     }
 
@@ -283,12 +316,12 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func videosDataRows() -> [StatsTotalRowData] {
-        return store.getTopVideos()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                  data: $0.value.displayString(),
-                                                                  mediaID: $0.itemID,
-                                                                  icon: Style.imageForGridiconType(.video),
-                                                                  showDisclosure: true,
-                                                                  statSection: .periodVideos) }
+        return store.getTopVideos()?.videos.prefix(10).map { StatsTotalRowData(name: $0.title,
+                                                                               data: $0.playsCount.abbreviatedString(),
+                                                                               mediaID: $0.postID as NSNumber,
+                                                                               icon: Style.imageForGridiconType(.video),
+                                                                               showDisclosure: true,
+                                                                               statSection: .periodVideos) }
             ?? []
     }
 
