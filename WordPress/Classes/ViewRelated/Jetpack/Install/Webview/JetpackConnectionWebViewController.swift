@@ -50,7 +50,7 @@ class JetpackConnectionWebViewController: UIViewController {
         super.viewDidLoad()
         progressView.observeProgress(webView: webView)
 
-        if !Feature.enabled(.jetpackRemoteInstallation) {
+        if isModal() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(JetpackConnectionWebViewController.cancel))
         }
 
