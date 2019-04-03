@@ -32,9 +32,9 @@ class JetpackRemoteInstallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupViewModel()
         setupNavigationBar()
         setupUI()
-        setupViewModel()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -61,7 +61,10 @@ private extension JetpackRemoteInstallViewController {
 
         jetpackView.toggleHidingImageView(for: traitCollection)
 
+        #warning("This is for manual testing purpose only. Remove after this PR is merged.")
         view.bringSubviewToFront(segmented)
+
+        viewModel.viewReady()
     }
 
     func setupViewModel() {
@@ -76,7 +79,6 @@ private extension JetpackRemoteInstallViewController {
                 }
             }
         }
-        viewModel.viewReady()
     }
 
     func openInstallJetpackURL() {
