@@ -103,6 +103,7 @@ class GutenbergViewController: UIViewController, PostEditor {
     private func showMediaSelectionOnStart() {
         isOpenedDirectlyForPhotoPost = false
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       filter: .image,
                                                        dataSourceType: .device,
                                                        callback: {(asset) in
                                                         guard let phAsset = asset as? PHAsset else {
@@ -338,20 +339,45 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDelegate {
 
-    func gutenbergDidRequestMedia(from source: MediaPickerSource, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(from source: MediaPickerSource, filter: [MediaFilter]?, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
-            gutenbergDidRequestMediaFromSiteMediaLibrary(with: callback)
+            gutenbergDidRequestMediaFromSiteMediaLibrary(filter: flags, with: callback)
         case .deviceLibrary:
-            gutenbergDidRequestMediaFromDevicePicker(with: callback)
+            gutenbergDidRequestMediaFromDevicePicker(filter: flags, with: callback)
         case .deviceCamera:
-            gutenbergDidRequestMediaFromCameraPicker(with: callback)
+            gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         }
     }
 
+    func mediaFilterFlags(using filterArray: [MediaFilter]?) -> WPMediaType {
+        if let filterArray = filterArray {
+            var mediaType: Int = 0
+            for filter in filterArray {
+                switch filter {
+                case .image:
+                    mediaType = mediaType | WPMediaType.image.rawValue
+                case .video:
+                    mediaType = mediaType | WPMediaType.video.rawValue
+                case .audio:
+                    mediaType = mediaType | WPMediaType.audio.rawValue
+                case .other:
+                    mediaType = mediaType | WPMediaType.other.rawValue
+                }
+            }
+            if mediaType == 0 {
+                return WPMediaType.all
+            } else {
+                return WPMediaType(rawValue: mediaType)
+            }
+        }
+        return WPMediaType.all
+    }
 
-    func gutenbergDidRequestMediaFromSiteMediaLibrary(with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       filter: filter,
                                                        dataSourceType: .mediaLibrary,
                                                        callback: {(asset) in
                                                         guard let media = asset as? Media else {
@@ -362,8 +388,9 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
-    func gutenbergDidRequestMediaFromDevicePicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
+                                                       filter: filter,
                                                        dataSourceType: .device,
                                                        callback: {(asset) in
                                                         guard let phAsset = asset as? PHAsset else {
@@ -374,7 +401,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
-    func gutenbergDidRequestMediaFromCameraPicker(with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
                                                          callback: {(asset) in
                                                             guard let phAsset = asset as? PHAsset else {

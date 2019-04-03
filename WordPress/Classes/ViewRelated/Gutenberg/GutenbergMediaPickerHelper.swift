@@ -46,6 +46,7 @@ class GutenbergMediaPickerHelper: NSObject {
     }
 
     func presentMediaPickerFullScreen(animated: Bool,
+                                      filter: WPMediaType,
                                       dataSourceType: MediaPickerDataSourceType = .device,
                                       callback: @escaping GutenbergMediaPickerHelperCallback) {
 
@@ -63,6 +64,7 @@ class GutenbergMediaPickerHelper: NSObject {
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
+        mediaPickerOptions.filter = filter
         picker.mediaPicker.options = mediaPickerOptions
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
