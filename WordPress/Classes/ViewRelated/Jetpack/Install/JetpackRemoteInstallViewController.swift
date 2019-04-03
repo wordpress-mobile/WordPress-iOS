@@ -4,6 +4,7 @@ import WordPressAuthenticator
 protocol JetpackRemoteInstallDelegate: class {
     func jetpackRemoteInstallCompleted()
     func jetpackRemoteInstallCanceled()
+    func jetpackRemoteInstallWebviewFallback()
 }
 
 class JetpackRemoteInstallViewController: UIViewController {
@@ -13,6 +14,7 @@ class JetpackRemoteInstallViewController: UIViewController {
     private let jetpackView = JetpackRemoteInstallView()
     private let viewModel: JetpackRemoteInstallViewModel
 
+    #warning("This is for manual testing purpose only. Remove after this PR is merged.")
     @IBOutlet private var segmented: UISegmentedControl!
 
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
@@ -70,7 +72,7 @@ private extension JetpackRemoteInstallViewController {
 
             if case let .failure(error) = state {
                 if error.isBlockingError {
-                    self?.openInstallJetpackURL()
+                    self?.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
             }
         }
@@ -108,12 +110,11 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
     }
 
     func customerSupportButtonDidTouch() {
-
+        navigationController?.pushViewController(SupportTableViewController(), animated: true)
     }
 }
 
-// This is just for manual testing purpose
-// It will be removed
+#warning("This is for manual testing purpose only")
 private extension JetpackRemoteInstallViewController {
     @IBAction func stateChange(_ sender: UISegmentedControl) {
         viewModel.testState(sender.selectedSegmentIndex)
