@@ -42,9 +42,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 3.2.beta'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/fix-parsing-for-empty-data-sets'
-    #pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
+    pod 'WordPressKit', '~> 3.2.2.beta-3'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '5d13f1513a630be3c0d3f31a09b20468c807a26d'
+    #pod 'WordPressKit', :path => '~/Developer/WordPressKit-iOS'
 end
 
 def shared_with_all_pods
