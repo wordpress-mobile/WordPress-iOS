@@ -3,7 +3,7 @@ class JetpackRemoteInstallViewModel {
 
     var onChangeState: JetpackRemoteInstallOnChangeState?
 
-    private var state: JetpackRemoteInstallViewState = .install {
+    private(set) var state: JetpackRemoteInstallViewState = .install {
         didSet {
             onChangeState?(state)
         }
