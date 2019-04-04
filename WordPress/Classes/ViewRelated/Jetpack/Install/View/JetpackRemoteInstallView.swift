@@ -48,8 +48,6 @@ private extension JetpackRemoteInstallView {
     func setupUI() {
         view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
 
-        toggleHidingImageView(for: traitCollection)
-
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title2)
         titleLabel.textColor = WPStyleGuide.greyDarken10()
 
