@@ -6829,8 +6829,7 @@
 				9A8ECE1B2254AE4E0043C8DA /* JetpackRemoteInstallView.swift */,
 				9A8ECE1C2254AE4E0043C8DA /* JetpackRemoteInstallView.xib */,
 			);
-			name = View;
-			path = "New Group";
+			path = View;
 			sourceTree = "<group>";
 		};
 		9A8ECE1F22550A210043C8DA /* Error */ = {
