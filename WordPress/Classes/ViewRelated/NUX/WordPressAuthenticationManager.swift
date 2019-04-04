@@ -147,6 +147,17 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
     }
 
+    /// A self-hosted site URL is available and needs validated
+    /// before presenting the username and password view controller.
+    /// - Parameters:
+    ///     - site: passes in the site information to the delegate method.
+    ///     - onCompletion: Closure to be executed on completion.
+    ///
+    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (Error?, Bool) -> Void) {
+        let isSelfHosted = true
+        onCompletion(nil, isSelfHosted)
+    }
+
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void) {
@@ -213,7 +224,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping () -> Void) {
         switch credentials {
-        case .wpcom(let authToken, let isJetpackLogin, _):
+        case .wpcom(let authToken, let isJetpackLogin, _, _):
             syncWPCom(authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
         case .wporg(let username, let password, let xmlrpc, let options):
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)

@@ -102,7 +102,7 @@ private extension LoginEpilogueViewController {
         switch credentials {
         case .wporg:
             configureButtons()
-        case .wpcom(_, let isJetpackLogin, _):
+        case .wpcom(_, let isJetpackLogin, _, _):
             configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: isJetpackLogin)
         }
     }
