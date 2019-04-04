@@ -140,6 +140,26 @@ class WPRichContentView: UITextView {
         }
     }
 
+    // Theoretically this shouldn't be needed, since the docs say that those are just convenience accesors
+    // for the `textContainer` properties, but in reality if it's not overridden, it returns an old value.
+    override var layoutManager: NSLayoutManager {
+        return customLayoutManager
+    }
+
+    private lazy var customLayoutManager: BlockquoteBackgroundLayoutManager = {
+        let manager = BlockquoteBackgroundLayoutManager()
+
+        /* TODO: Figure out what the correct incantation here is. The current one seems to work???
+        manager.addTextContainer(textContainer)
+
+        textStorage.layoutManagers.forEach { textStorage.removeLayoutManager($0) }
+        textStorage.addLayoutManager(manager)
+         */
+        textContainer.replaceLayoutManager(manager)
+
+        return manager
+    }()
+
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -162,7 +182,9 @@ class WPRichContentView: UITextView {
     ///
     @objc func setupView() {
         // Because the attachment manager is a lazy property.
+        _ = customLayoutManager
         _ = attachmentManager
+
 
         textContainerInset = Constants.textContainerInset
     }
@@ -443,4 +465,121 @@ class ContentInformation: ImageSourceInformation {
         self.isPrivateOnWPCom = isPrivateOnWPCom
         self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
     }
+}
+
+// TODO: This is shamelessly stolen from Aztec. Figure out if we should just expose the Aztec one publicly
+// instead of hacking this here?
+@objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
+    /// Blockquote's Left Border Color
+    ///
+    var blockquoteBorderColor = UIColor(red: 0.52, green: 0.65, blue: 0.73, alpha: 1.0)
+
+    /// Blockquote's Left Border width
+    ///
+    var blockquoteBorderWidth: CGFloat = 2
+
+    /// Draws the background, associated to a given Text Range
+    ///
+    override func drawBackground(forGlyphRange glyphsToShow: NSRange, at origin: CGPoint) {
+        super.drawBackground(forGlyphRange: glyphsToShow, at: origin)
+
+        drawBlockquotes(forGlyphRange: glyphsToShow, at: origin)
+    }
+
+    func drawBlockquotes(forGlyphRange glyphsToShow: NSRange, at origin: CGPoint) {
+        guard let textStorage = textStorage else {
+            return
+        }
+
+        guard let context = UIGraphicsGetCurrentContext() else {
+            preconditionFailure("When drawBackgroundForGlyphRange is called, the graphics context is supposed to be set by UIKit")
+        }
+
+        let characterRange = self.characterRange(forGlyphRange: glyphsToShow, actualGlyphRange: nil)
+
+        // Draw: Blockquotes
+        textStorage.enumerateAttribute(.paragraphStyle, in: characterRange, options: []) { (object, range, stop) in
+
+            //TODO: get rid of magic numbers here
+            guard
+                let style = object as? NSParagraphStyle,
+                style.headIndent == 20,
+                style.firstLineHeadIndent == 20
+                else {
+                    return
+            }
+
+            let blockquoteGlyphRange = glyphRange(forCharacterRange: range, actualCharacterRange: nil)
+
+            enumerateLineFragments(forGlyphRange: blockquoteGlyphRange) { (rect, usedRect, textContainer, glyphRange, stop) in
+                let lineRange = self.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
+                let lineCharacters = textStorage.attributedSubstring(from: lineRange).string
+                let lineEndsParagraph = lineCharacters.isEndOfParagraph(before: lineCharacters.endIndex)
+                // TODO: ...and here
+                let blockquoteRect = self.blockquoteRect(origin: origin, lineRect: rect, blockquoteIndent: 10, lineEndsParagraph: lineEndsParagraph)
+
+                self.drawBlockquote(in: blockquoteRect.integral, with: context)
+            }
+        }
+    }
+
+
+    /// Returns the Rect in which the Blockquote should be rendered.
+    ///
+    /// - Parameters:
+    ///     - origin: Origin of coordinates
+    ///     - lineRect: Line Fragment's Rect
+    ///     - blockquoteIndent: Blockquote Indentation Level for the current lineFragment
+    ///     - lineEndsParagraph: Indicates if the current blockquote line is the end of a Paragraph
+    ///
+    /// - Returns: Rect in which we should render the blockquote.
+    ///
+    private func blockquoteRect(origin: CGPoint, lineRect: CGRect, blockquoteIndent: CGFloat, lineEndsParagraph: Bool) -> CGRect {
+        var blockquoteRect = lineRect.offsetBy(dx: origin.x, dy: origin.y)
+
+        guard blockquoteIndent != 0 else {
+            return blockquoteRect
+        }
+
+        // TODO: ...and more magic numbers here
+        let paddingWidth = CGFloat(4) * 0.5 + blockquoteIndent
+        blockquoteRect.origin.x += paddingWidth
+        blockquoteRect.size.width -= paddingWidth
+
+        // Ref. Issue #645: Cheking if we this a middle line inside a blockquote paragraph
+        if lineEndsParagraph {
+            blockquoteRect.size.height -= CGFloat(6) * 0.5
+        }
+
+        return blockquoteRect
+    }
+
+
+    /// Draws a single Blockquote Line Fragment, in the specified Rectangle, using a given Graphics Context.
+    ///
+    private func drawBlockquote(in rect: CGRect, with context: CGContext) {
+        let borderRect = CGRect(origin: rect.origin, size: CGSize(width: blockquoteBorderWidth, height: rect.height))
+        blockquoteBorderColor.setFill()
+        context.fill(borderRect)
+    }
+}
+
+fileprivate extension String {
+    func isEndOfParagraph(before index: String.Index) -> Bool {
+        assert(index != startIndex)
+        return isEndOfParagraph(at: self.index(before: index))
+    }
+
+    func isEndOfParagraph(at index: String.Index) -> Bool {
+        guard index != endIndex else {
+            return true
+        }
+
+        let endingRange = index ..< self.index(after: index)
+        let endingString = compatibleSubstring(with: endingRange)
+        let paragraphSeparators = [String(.carriageReturn), String(.lineFeed), String(.paragraphSeparator)]
+
+        return paragraphSeparators.contains(endingString)
+    }
+
 }

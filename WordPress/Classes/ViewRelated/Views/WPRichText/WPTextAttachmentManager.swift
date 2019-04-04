@@ -22,7 +22,7 @@ import UIKit
     @objc public init(textView: UITextView, delegate: WPTextAttachmentManagerDelegate) {
         self.textView = textView
         self.delegate = delegate
-        self.layoutManager = textView.layoutManager
+        self.layoutManager = textView.textContainer.layoutManager!
 
         super.init()
 
