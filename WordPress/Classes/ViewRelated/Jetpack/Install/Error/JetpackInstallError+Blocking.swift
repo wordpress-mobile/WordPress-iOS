@@ -1,7 +1,7 @@
 extension JetpackInstallError {
 
     /// If the error is blocking,
-    /// we should use the webview to install Jetpack
+    /// use the webview as fallback to install Jetpack
     var isBlockingError: Bool {
         switch self {
         case .loginFailure, .siteIsJetpack, .unknown:
