@@ -5,13 +5,13 @@ import WordPressKit
 typealias SiteAddressServiceCompletion = (Result<[DomainSuggestion]>) -> Void
 
 protocol SiteAddressService {
-    func addresses(for query: String, domainSuggestionType: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion)
+    func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion)
 }
 
 // MARK: - MockSiteAddressService
 
 final class MockSiteAddressService: SiteAddressService {
-    func addresses(for query: String, domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom, completion: @escaping SiteAddressServiceCompletion) {
+    func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
         let result = Result.success(mockAddresses())
         completion(result)
     }
@@ -65,10 +65,10 @@ final class DomainsServiceAdapter: LocalCoreDataService, SiteAddressService {
 
     // MARK: SiteAddressService
 
-    func addresses(for query: String, domainSuggestionType: DomainsServiceRemote.DomainSuggestionType, completion: @escaping SiteAddressServiceCompletion) {
+    func addresses(for query: String, segmentID: Int64, completion: @escaping SiteAddressServiceCompletion) {
 
         domainsService.getDomainSuggestions(base: query,
-                                            domainSuggestionType: domainSuggestionType,
+                                            segmentID: segmentID,
                                             success: { domainSuggestions in
                                                 completion(Result.success(domainSuggestions))
         },
