@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.3'
+    pod 'WordPressShared', '1.7.2'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '994dd2b'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c37c645aaa4e000eb53e8a9537798162c072a321'
 end
 
 def aztec
@@ -29,7 +29,7 @@ def aztec
     #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
     ##pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '1.5.2'
+    pod 'WordPress-Editor-iOS', '1.5.0'
 end
 
 def wordpress_ui
@@ -42,9 +42,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 3.2.2'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '5d13f1513a630be3c0d3f31a09b20468c807a26d'
-    #pod 'WordPressKit', :path => '~/Developer/WordPressKit-iOS'
+    pod 'WordPressKit', '~> 3.2.1'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ddf1292ff9df94550b8d30dd8f3c2e23be677a9c'
+    #pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -102,7 +102,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.2.0'
+    gutenberg :tag => 'v1.1.2'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
@@ -121,26 +121,21 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
-    pod 'ZIPFoundation', '~> 0.9.8'
+
 
     ## Automattic libraries
     ## ====================
     ##
-
-    # Production
-    pod 'Automattic-Tracks-iOS', '0.3.4'
-    # While in PR
-    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
-
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.3.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
     pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.3.0'
+    pod 'WordPressAuthenticator', '~> 1.2.0'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/wc-support-site-url-login'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '867fa63'
 
 
     aztec
@@ -163,6 +158,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         wordpress_ui
+        pod 'ZIPFoundation', '~> 0.9.8'
+        pod 'Down', '~> 0.6.3'
     end
 
 
@@ -235,23 +232,12 @@ target 'WordPressComStatsiOS' do
     ## ====================
     ##
     wordpress_ui
-end
 
-## WordPress.com Stats Tests
-## =========================
-##
-target 'WordPressComStatsiOSTests' do
-  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
+    target 'WordPressComStatsiOSTests' do
+        inherit! :search_paths
 
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  ## Automattic libraries
-  ## ====================
-  ##
-  wordpress_ui
-
-  shared_test_pods
+        shared_test_pods
+    end
 end
 
 ## Screenshot Generation
