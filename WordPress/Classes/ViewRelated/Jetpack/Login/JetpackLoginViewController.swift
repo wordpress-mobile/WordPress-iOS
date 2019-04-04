@@ -60,7 +60,7 @@ class JetpackLoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        view.backgroundColor = WPStyleGuide.greyLighten30()
         setupControls()
     }
 

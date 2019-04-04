@@ -46,7 +46,7 @@ class JetpackRemoteInstallView: UIViewController {
 
 private extension JetpackRemoteInstallView {
     func setupUI() {
-        view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        view.backgroundColor = WPStyleGuide.greyLighten30()
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title2)
         titleLabel.textColor = WPStyleGuide.greyDarken10()
