@@ -33,7 +33,7 @@ class JetpackRemoteInstallView: UIViewController {
         mainButton.isHidden = state == .installing
         mainButton.setTitle(state.buttonTitle, for: .normal)
 
-        activityIndicator.animate(state == .installing)
+        activityIndicator.toggleAnimating(state == .installing)
 
         switch state {
         case .failure:
@@ -74,7 +74,7 @@ private extension JetpackRemoteInstallView {
 // MARK: - UIActivityIndicatorView extension
 
 private extension UIActivityIndicatorView {
-    func animate(_ animate: Bool) {
+    func toggleAnimating(_ animate: Bool) {
         if animate {
             startAnimating()
         } else {
