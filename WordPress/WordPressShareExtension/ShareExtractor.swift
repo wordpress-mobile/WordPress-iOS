@@ -2,6 +2,7 @@ import Foundation
 import MobileCoreServices
 import UIKit
 import ZIPFoundation
+import Down
 
 /// A type that represents the information we can extract from an extension context
 ///
@@ -261,6 +262,8 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             return handleTextPack(url: url)
         case "text", "txt":
             return handlePlainTextFile(url: url)
+        case "md", "markdown":
+            return handleMarkdown(url: url)
         default:
             return nil
         }
@@ -311,6 +314,27 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let rawText = (try? String(contentsOf: url)) ?? ""
         returnedItem.importedText = rawText
         return returnedItem
+    }
+
+    private func handleMarkdown(url: URL, item: ExtractedItem? = nil) -> ExtractedItem? {
+        guard let md = try? String(contentsOf: url) else {
+            return item
+        }
+
+        let converter = Down(markdownString: md)
+        guard let html = try? converter.toHTML(.safe) else {
+            return item
+        }
+
+        var result: ExtractedItem
+        if let item = item {
+            result = item
+        } else {
+            result = ExtractedItem()
+        }
+        result.importedText = html
+
+        return result
     }
 }
 

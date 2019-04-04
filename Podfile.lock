@@ -33,6 +33,7 @@ PODS:
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - DoubleConversion (1.1.5)
+  - Down (0.6.3)
   - Fabric (1.9.0)
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -232,6 +233,7 @@ DEPENDENCIES:
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
+  - Down (~> 0.6.3)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.1.2/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
@@ -276,6 +278,7 @@ SPEC REPOS:
     - CocoaLumberjack
     - Crashlytics
     - DoubleConversion
+    - Down
     - Fabric
     - FormatterKit
     - Gifu
@@ -366,6 +369,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
+  Down: 184b7330d41cbbe53f96d87bdff4f4432579a159
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
@@ -407,6 +411,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 350b464ddaf6ad8e9311b12dc3cec32b7cd60a5c
+PODFILE CHECKSUM: ef6e2291c20773286f0dde232dd0c17b965267fd
 
 COCOAPODS: 1.5.3
