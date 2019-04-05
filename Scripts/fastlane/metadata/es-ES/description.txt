@@ -1,9 +1,9 @@
-Gestiona o crea tu blog o web de WordPress desde tu dispositivo iOS: crea y edita entradas y páginas, sube tus fotos y vídeos favoritos, mira las estadísticas y responde a los comentarios.
+Crea y administra tu sitio web o blog de WordPress directamente desde tu dispositivo iOS: crea y edita cualquier entrada o página, sube tus fotos y videos favoritos, accede a las estadísticas o responde a los comentarios fácilmente.
+ 
+Con WordPress para iOS, podrás publicar todo tu contenido desde la palma de tu mano. Escribe desde tu sofá el borrador de ese haiku que no te quitas de la cabeza. Sube y comparte en un momento esa increíble foto que hiciste durante el descanso en el trabajo. Responde a los últimos comentarios que te hayan dejado o descubre a qué nuevos países ha llegado hoy tu contenido echándole un vistazo a la sección de estadísticas.
+ 
+WordPress para iOS es un proyecto de código abierto, lo que significa que tú también puedes participar en su desarrollo. Descubre más información en https://apps.wordpress.com/contribute/..
+ 
+WordPress para iOS es compatible con sitios de WordPress.com y sitios WordPress.org autoalojadas que tengan WordPress 4.0 o superior.
 
-Con WordPress para iOS tienes el poder de publicar en la palma de tu mano. Crea un borrador de un haiku espontáneo desde el sofá. Captura y publica una foto en tu descanso para comer. Contesta a tus últimos comentarios, o comprueba tus estadísticas para ver de qué nuevos países están llegando los visitantes de hoy.
-
-WordPress para iOS es un projecto de código abierto, lo que significa que tú también puedes contribuir a su desarrollo. Aprende más en https://apps.wordpress.com/contribute/.
-
-WordPress para iOS es compatible con webs de WordPress.com y autoalojadas de WordPress.org que tengan WordPress 4.0 o superior.
-
-¿Necesitas ayuda con la aplicación? Visita los foros en https://ios.forums.wordpress.org/ o escríbenos un tuit a @WordPressiOS.
+¿Necesitas ayuda con la aplicación? Entra en el foro de ayuda https://ios.forums.wordpress.org/ o déjanos un tweet en @WordPressiOS.
