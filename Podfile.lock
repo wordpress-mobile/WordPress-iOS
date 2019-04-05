@@ -65,16 +65,16 @@ PODS:
   - GTMSessionFetcher/Core (1.2.1)
   - GTMSessionFetcher/Full (1.2.1):
     - GTMSessionFetcher/Core (= 1.2.1)
-  - Gutenberg (1.1.2):
-    - React/Core (= 0.59.0)
-    - React/CxxBridge (= 0.59.0)
-    - React/DevSupport (= 0.59.0)
-    - React/RCTActionSheet (= 0.59.0)
-    - React/RCTAnimation (= 0.59.0)
-    - React/RCTImage (= 0.59.0)
-    - React/RCTLinkingIOS (= 0.59.0)
-    - React/RCTNetwork (= 0.59.0)
-    - React/RCTText (= 0.59.0)
+  - Gutenberg (1.2.0):
+    - React/Core (= 0.59.3)
+    - React/CxxBridge (= 0.59.3)
+    - React/DevSupport (= 0.59.3)
+    - React/RCTActionSheet (= 0.59.3)
+    - React/RCTAnimation (= 0.59.3)
+    - React/RCTImage (= 0.59.3)
+    - React/RCTLinkingIOS (= 0.59.3)
+    - React/RCTNetwork (= 0.59.3)
+    - React/RCTText (= 0.59.3)
     - RNTAztecView
     - WordPress-Aztec-iOS
     - yoga (= 0.59.3.React)
@@ -205,7 +205,7 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 3.1)
+    - WordPressKit (~> 3.2.2.beta)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
   - WordPressKit (3.2.2.beta-3):
@@ -265,7 +265,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (= 1.5.0)
+  - WordPress-Editor-iOS (= 1.5.2)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `task/wc-support-site-url-login`)
   - WordPressKit (~> 3.2.2.beta-3)
   - WordPressShared (~> 1.7.3-beta.2)
@@ -339,6 +339,7 @@ EXTERNAL SOURCES:
     :tag: 9.3.3-gb
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v1.2.0
   WordPressAuthenticator:
     :branch: task/wc-support-site-url-login
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
@@ -363,8 +364,9 @@ CHECKOUT OPTIONS:
     :tag: 9.3.3-gb
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
+    :tag: v1.2.0
   WordPressAuthenticator:
-    :commit: 0aa0670445d7baa8deac56fa886243fbf111edd2
+    :commit: 74512b859550275f3755fdd4d311d44fad8b3d8e
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -391,7 +393,7 @@ SPEC CHECKSUMS:
   Gridicons: 04261236382e9c62c62c9a104f2f532c1bdf6a78
   GTMOAuth2: e8b6512c896235149df975c41d9a36c868ab7fba
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
-  Gutenberg: 50fa0d8e637077e5fc47428b8ee85a0e564fc50a
+  Gutenberg: 464e83f78c3504fa223dbe192a9978aadcbb824a
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MGSwipeTableCell: dc4eca3212ed38a563b27d6aa7b3c01ce656c1e2
@@ -411,9 +413,9 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: 0cc6e513027dde1af209b8f41b6ed6961e181ae5
-  WordPress-Editor-iOS: e25330010a9360e48bce6f264f62dff05230b31d
-  WordPressAuthenticator: c1d524a7d5830962b4ab606d8e25386719aa7fb5
+  WordPress-Aztec-iOS: 16339a831d5d605ba9300b3722b75ba78e53cf09
+  WordPress-Editor-iOS: b90649909f99c1d02cef2bb79c0641322b31fa52
+  WordPressAuthenticator: 255287667ad0733572c187ea9c0cc0310488f377
   WordPressKit: 6ef1696d6f073385ed28c96e74747c1fbbd6fe4a
   WordPressShared: 95fa713d817e469eec4ec3b83f62843e78f89b58
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
@@ -423,6 +425,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: dbf59b944e8d5236a378d1a307e30575b0bcbe07
+PODFILE CHECKSUM: 9f879891253b0130cbc734c7dadb06c607c771dc
 
 COCOAPODS: 1.5.3
