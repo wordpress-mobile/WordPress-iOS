@@ -154,8 +154,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (Error?, Bool) -> Void) {
-        let isSelfHosted = true
-        onCompletion(nil, isSelfHosted)
+        onCompletion(nil, true)
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
