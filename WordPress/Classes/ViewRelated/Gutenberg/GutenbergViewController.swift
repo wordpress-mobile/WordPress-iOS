@@ -349,7 +349,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-
     func gutenbergDidRequestMediaFromSiteMediaLibrary(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
@@ -383,6 +382,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
         })
+    }
+
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
     }
 
     func gutenbergDidRequestMediaUploadSync() {
