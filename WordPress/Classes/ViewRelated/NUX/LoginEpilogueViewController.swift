@@ -33,7 +33,7 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Site that was just connected to our awesome app.
     ///
-    var credentials: WordPressCredentials? {
+    var credentials: AuthenticatorCredentials? {
         didSet {
             guard isViewLoaded, let credentials = credentials else {
                 return
@@ -98,12 +98,11 @@ private extension LoginEpilogueViewController {
 
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
-    func refreshInterface(with credentials: WordPressCredentials) {
-        switch credentials {
-        case .wporg:
+    func refreshInterface(with credentials: AuthenticatorCredentials) {
+        if credentials.wporg != nil {
             configureButtons()
-        case .wpcom(_, let isJetpackLogin, _, _):
-            configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: isJetpackLogin)
+        } else if let wpcom = credentials.wpcom {
+            configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: wpcom.isJetpackLogin)
         }
     }
 
