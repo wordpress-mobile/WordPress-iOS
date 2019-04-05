@@ -222,6 +222,7 @@ PODS:
   - ZendeskSDK/UI (2.2.0):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
+  - ZIPFoundation (0.9.8)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -263,6 +264,7 @@ DEPENDENCIES:
   - WPMediaPicker (= 1.3.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/7447c0c9c129b89c71c977abf618b48829952b0a/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.2.0)
+  - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -304,6 +306,7 @@ SPEC REPOS:
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
@@ -402,7 +405,8 @@ SPEC CHECKSUMS:
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
+  ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 93356b5f3e5193dbfe93aa5a9ec7b46ba8400e69
+PODFILE CHECKSUM: ae480a263ec3f25467c81d140c6003e94e6fa5bf
 
 COCOAPODS: 1.5.3
