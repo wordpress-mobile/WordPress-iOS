@@ -57,18 +57,18 @@ PODS:
   - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
   - Gridicons (0.18)
   - Gutenberg (1.1.2):
-    - React/Core (= 0.59.0)
-    - React/CxxBridge (= 0.59.0)
-    - React/DevSupport (= 0.59.0)
-    - React/RCTActionSheet (= 0.59.0)
-    - React/RCTAnimation (= 0.59.0)
-    - React/RCTImage (= 0.59.0)
-    - React/RCTLinkingIOS (= 0.59.0)
-    - React/RCTNetwork (= 0.59.0)
-    - React/RCTText (= 0.59.0)
+    - React/Core (= 0.59.3)
+    - React/CxxBridge (= 0.59.3)
+    - React/DevSupport (= 0.59.3)
+    - React/RCTActionSheet (= 0.59.3)
+    - React/RCTAnimation (= 0.59.3)
+    - React/RCTImage (= 0.59.3)
+    - React/RCTLinkingIOS (= 0.59.3)
+    - React/RCTNetwork (= 0.59.3)
+    - React/RCTText (= 0.59.3)
     - RNTAztecView
     - WordPress-Aztec-iOS
-    - yoga (= 0.59.0.React)
+    - yoga (= 0.59.3.React)
   - HockeySDK (5.1.4):
     - HockeySDK/DefaultLib (= 5.1.4)
   - HockeySDK/DefaultLib (5.1.4)
@@ -122,56 +122,56 @@ PODS:
   - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - React (0.59.0):
-    - React/Core (= 0.59.0)
+  - React (0.59.3):
+    - React/Core (= 0.59.3)
   - react-native-keyboard-aware-scroll-view (0.8.7):
     - React
   - react-native-safe-area (0.5.0):
     - React
-  - React/Core (0.59.0):
-    - yoga (= 0.59.0.React)
-  - React/CxxBridge (0.59.0):
+  - React/Core (0.59.3):
+    - yoga (= 0.59.3.React)
+  - React/CxxBridge (0.59.3):
     - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
     - React/jsiexecutor
-  - React/cxxreact (0.59.0):
+  - React/cxxreact (0.59.3):
     - boost-for-react-native (= 1.63.0)
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
     - React/jsinspector
-  - React/DevSupport (0.59.0):
+  - React/DevSupport (0.59.3):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.59.0)
-  - React/jsi (0.59.0):
+  - React/fishhook (0.59.3)
+  - React/jsi (0.59.3):
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
-  - React/jsiexecutor (0.59.0):
+  - React/jsiexecutor (0.59.3):
     - DoubleConversion
     - Folly (= 2018.10.22.00)
     - glog
     - React/cxxreact
     - React/jsi
-  - React/jsinspector (0.59.0)
-  - React/RCTActionSheet (0.59.0):
+  - React/jsinspector (0.59.3)
+  - React/RCTActionSheet (0.59.3):
     - React/Core
-  - React/RCTAnimation (0.59.0):
+  - React/RCTAnimation (0.59.3):
     - React/Core
-  - React/RCTBlob (0.59.0):
+  - React/RCTBlob (0.59.3):
     - React/Core
-  - React/RCTImage (0.59.0):
+  - React/RCTImage (0.59.3):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.59.0):
+  - React/RCTLinkingIOS (0.59.3):
     - React/Core
-  - React/RCTNetwork (0.59.0):
+  - React/RCTNetwork (0.59.3):
     - React/Core
-  - React/RCTText (0.59.0):
+  - React/RCTText (0.59.3):
     - React/Core
-  - React/RCTWebSocket (0.59.0):
+  - React/RCTWebSocket (0.59.3):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -212,7 +212,7 @@ PODS:
   - WordPressUI (1.2.0)
   - WPMediaPicker (1.3.2)
   - wpxmlrpc (0.8.4)
-  - yoga (0.59.0.React)
+  - yoga (0.59.3.React)
   - ZendeskSDK (2.2.0):
     - ZendeskSDK/Providers (= 2.2.0)
     - ZendeskSDK/UI (= 2.2.0)
@@ -232,12 +232,12 @@ DEPENDENCIES:
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
-  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
+  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `a090aafc156cb272ccc607628839365dc62efbb4`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `3bd518afb686ac6c10526bbe43d8442b22b8c055`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
   - MRProgress (= 0.8.3)
@@ -248,11 +248,11 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
-  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
+  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
   - react-native-keyboard-aware-scroll-view (from `https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git`, tag `gb-v0.8.7`)
-  - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
+  - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `9.3.3-gb`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `a090aafc156cb272ccc607628839365dc62efbb4`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `3bd518afb686ac6c10526bbe43d8442b22b8c055`)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
@@ -262,7 +262,7 @@ DEPENDENCIES:
   - WordPressShared (~> 1.7.3-beta.2)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
-  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
+  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.2.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -313,35 +313,35 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.3.2
   Folly:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
-    :commit: a090aafc156cb272ccc607628839365dc62efbb4
+    :commit: 3bd518afb686ac6c10526bbe43d8442b22b8c055
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   React:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   react-native-keyboard-aware-scroll-view:
     :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
     :tag: gb-v0.8.7
   react-native-safe-area:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 9.3.3-gb
   RNTAztecView:
-    :commit: a090aafc156cb272ccc607628839365dc62efbb4
+    :commit: 3bd518afb686ac6c10526bbe43d8442b22b8c055
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
   yoga:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/a090aafc156cb272ccc607628839365dc62efbb4/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/3bd518afb686ac6c10526bbe43d8442b22b8c055/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.3.2
   Gutenberg:
-    :commit: a090aafc156cb272ccc607628839365dc62efbb4
+    :commit: 3bd518afb686ac6c10526bbe43d8442b22b8c055
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   react-native-keyboard-aware-scroll-view:
     :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
@@ -350,7 +350,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 9.3.3-gb
   RNTAztecView:
-    :commit: a090aafc156cb272ccc607628839365dc62efbb4
+    :commit: 3bd518afb686ac6c10526bbe43d8442b22b8c055
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -375,7 +375,7 @@ SPEC CHECKSUMS:
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   Gridicons: 04261236382e9c62c62c9a104f2f532c1bdf6a78
-  Gutenberg: 50fa0d8e637077e5fc47428b8ee85a0e564fc50a
+  Gutenberg: b86f159e146223e69092a78622af2928c7a784b3
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
   MGSwipeTableCell: dc4eca3212ed38a563b27d6aa7b3c01ce656c1e2
@@ -386,7 +386,7 @@ SPEC CHECKSUMS:
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  React: 0d6c719d9549bea0bd5676f8170b0e5c56e2c3c7
+  React: b52fdb80565505b7e4592b313a38868f5df51641
   react-native-keyboard-aware-scroll-view: 01c4b2303c4ef1c49c4d239c9c5856f0393104df
   react-native-safe-area: 7dc92953fce43bf36ab5ecae2fb4ffa2bda9a203
   RNSVG: 978db19eaef499d9ebffb74a091ca0abf209c8c1
@@ -403,10 +403,10 @@ SPEC CHECKSUMS:
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
-  yoga: 1fe535cf9b523600f42e2785b6ed56484a62b46d
+  yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 7e92114b338c2b0093a6e0f13f129fd16aab5c0b
+PODFILE CHECKSUM: 4a95bf136ab0088cf0318f203edb23bba87b5893
 
 COCOAPODS: 1.5.3
