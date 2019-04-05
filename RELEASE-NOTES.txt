@@ -2,6 +2,7 @@
 -----
 * Draft preview now shows the remote version of the post.
 * Initial support for importing TextBundle and TextPack from other apps.
+* Support for lists in Gutenberg posts.
 
 12.1
 -----
