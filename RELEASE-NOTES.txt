@@ -3,7 +3,7 @@
 * Draft preview now shows the remote version of the post.
 * Initial support for importing TextBundle and TextPack from other apps.
 * Support for lists in Gutenberg posts.
-
+* Change example.wordpress.com to example.com in the placeholder URL when adding a self-hosted site
 12.1
 -----
 * Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
