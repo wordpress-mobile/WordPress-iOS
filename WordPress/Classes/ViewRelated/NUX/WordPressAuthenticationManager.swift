@@ -224,9 +224,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func sync(credentials: AuthenticatorCredentials, onCompletion: @escaping () -> Void) {
         if let wpcom = credentials.wpcom {
             syncWPCom(authToken: wpcom.authToken, isJetpackLogin: wpcom.isJetpackLogin, onCompletion: onCompletion)
-        }
-
-        if let wporg = credentials.wporg {
+        } else if let wporg = credentials.wporg {
             syncWPOrg(username: wporg.username, password: wporg.password, xmlrpc: wporg.xmlrpc, options: wporg.options, onCompletion: onCompletion)
         }
     }
