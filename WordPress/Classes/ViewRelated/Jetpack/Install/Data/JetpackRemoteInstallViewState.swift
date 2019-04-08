@@ -13,7 +13,7 @@ enum JetpackRemoteInstallViewState: Equatable {
         case .failure:
             return NSLocalizedString("There was a problem", comment: "The Jetpack view title used when an error occurred")
         case .success:
-            return NSLocalizedString("Jetpack Installed", comment: "The Jetpack view title for the success state")
+            return NSLocalizedString("Jetpack installed", comment: "The Jetpack view title for the success state")
         }
     }
 
