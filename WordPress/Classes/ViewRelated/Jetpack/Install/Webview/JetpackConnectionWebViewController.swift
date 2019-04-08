@@ -50,7 +50,9 @@ class JetpackConnectionWebViewController: UIViewController {
         super.viewDidLoad()
         progressView.observeProgress(webView: webView)
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(JetpackConnectionWebViewController.cancel))
+        if isModal() {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(JetpackConnectionWebViewController.cancel))
+        }
 
         startConnectionFlow()
     }
