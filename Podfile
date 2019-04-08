@@ -128,9 +128,9 @@ target 'WordPress' do
     ##
 
     # Production
-    #pod 'Automattic-Tracks-iOS', '0.3.3'
+    pod 'Automattic-Tracks-iOS', '0.3.4'
     # While in PR
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
+    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
 
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'

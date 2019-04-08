@@ -237,7 +237,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, commit `f6332b67448a4e9c2661513cbb98fa5bb12b7c8f`)
+  - Automattic-Tracks-iOS (= 0.3.4)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
@@ -280,6 +280,7 @@ SPEC REPOS:
     - 1PasswordExtension
     - AFNetworking
     - Alamofire
+    - Automattic-Tracks-iOS
     - boost-for-react-native
     - Charts
     - CocoaLumberjack
@@ -320,9 +321,6 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
-  Automattic-Tracks-iOS:
-    :commit: f6332b67448a4e9c2661513cbb98fa5bb12b7c8f
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.2.0/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
@@ -348,9 +346,6 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.2.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
 CHECKOUT OPTIONS:
-  Automattic-Tracks-iOS:
-    :commit: f6332b67448a4e9c2661513cbb98fa5bb12b7c8f
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
@@ -420,6 +415,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 3738917c85464a9b989230d5cf8c287e0927f46d
+PODFILE CHECKSUM: cbad35ec4fa1efb0ec5b3ccdd48596d732a69a6c
 
 COCOAPODS: 1.5.3
