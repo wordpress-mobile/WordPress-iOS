@@ -412,6 +412,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         })
     }
 
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
+    }
+
     func gutenbergDidRequestMediaUploadSync() {
         self.mediaInserterHelper.syncUploads()
     }

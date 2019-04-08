@@ -160,10 +160,14 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        // NB : We hard-code the domain suggestions until we have a solution for .blog subdomains `paCBwp-F-p2`
-        let suggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
+        // It's not ideal to let the segment ID be optional at this point, but in order to avoid overcomplicating my current
+        // task, I'll default to silencing this situation.  Since the segment ID should exist, this silencing should not
+        // really be triggered for now.
+        guard let segmentID = siteCreator.segment?.identifier else {
+            return
+        }
 
-        service.addresses(for: searchTerm, domainSuggestionType: suggestionType) { [weak self] results in
+        service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
             switch results {
             case .error(let error):
                 self?.handleError(error)

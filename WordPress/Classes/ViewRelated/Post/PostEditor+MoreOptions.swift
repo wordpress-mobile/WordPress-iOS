@@ -14,10 +14,45 @@ extension PostEditor where Self: UIViewController {
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
+    private func createPostRevisionBeforePreview(completion: @escaping (() -> Void)) {
+        let context = ContextManager.sharedInstance().mainContext
+        context.performAndWait {
+            post = self.post.createRevision()
+            ContextManager.sharedInstance().save(context)
+            completion()
+        }
+    }
+
+    private func savePostBeforePreview(completion: @escaping (() -> Void)) {
+        if post.isDraft() && post.hasUnsavedChanges() {
+            let context = ContextManager.sharedInstance().mainContext
+            let postService = PostService(managedObjectContext: context)
+             let status = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
+            SVProgressHUD.setDefaultMaskType(.clear)
+            SVProgressHUD.show(withStatus: status)
+            postService.uploadPost(post, success: { [weak self] newPost in
+                self?.post = newPost
+                self?.createPostRevisionBeforePreview(completion: completion)
+                SVProgressHUD.dismiss()
+                }, failure: { error in
+                    DDLogError("Error while trying to save post before preview: \(String(describing: error))")
+                    completion()
+                    SVProgressHUD.dismiss()
+            })
+        } else {
+           createPostRevisionBeforePreview(completion: completion)
+        }
+    }
+
     func displayPreview() {
-        let previewController = PostPreviewViewController(post: post)
-        previewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(previewController, animated: true)
+        savePostBeforePreview() { [weak self] in
+            guard let post = self?.post else {
+                return
+            }
+            let previewController = PostPreviewViewController(post: post)
+            previewController.hidesBottomBarWhenPushed = true
+            self?.navigationController?.pushViewController(previewController, animated: true)
+        }
     }
 
     func displayHistory() {
