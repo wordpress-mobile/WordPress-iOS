@@ -196,7 +196,7 @@ PODS:
   - WordPress-Aztec-iOS (1.5.2)
   - WordPress-Editor-iOS (1.5.2):
     - WordPress-Aztec-iOS (= 1.5.2)
-  - WordPressAuthenticator (1.2.1):
+  - WordPressAuthenticator (1.2.0):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.4)
@@ -205,7 +205,7 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 3.2.2)
+    - WordPressKit (~> 3.2.2.beta)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
   - WordPressKit (3.2.2):
@@ -420,6 +420,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 9f879891253b0130cbc734c7dadb06c607c771dc
+PODFILE CHECKSUM: 69ef97a2667b7d50161a5b2812defe8afd36a6b2
 
 COCOAPODS: 1.5.3
