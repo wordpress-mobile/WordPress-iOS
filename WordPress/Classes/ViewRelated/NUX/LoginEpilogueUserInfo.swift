@@ -9,7 +9,7 @@ public struct LoginEpilogueUserInfo {
     var fullName = ""
     var email = ""
     var gravatarUrl: String?
-    var credentials: WordPressCredentials?
+    var credentials: AuthenticatorCredentials?
 
     /// Initializes the EpilogueUserInfo with all of the metadata contained within WPAccount.
     ///
