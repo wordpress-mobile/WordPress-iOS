@@ -1,9 +1,11 @@
 12.2
 -----
 * Draft preview now shows the remote version of the post.
-* Initial support for importing TextBundle and TextPack from other apps.
+* Adds support for importing data from Bear and Ulysses (or any apps using the TextBundle and TextPack formats).
 * Support for lists in Gutenberg posts.
 * Several UI details were polished in the Site Creation flow.
+* Adjusted some wording to clarify how much storage space is used by your site.
+* Fixed a crash when managing plugins.
 
 12.1
 -----
