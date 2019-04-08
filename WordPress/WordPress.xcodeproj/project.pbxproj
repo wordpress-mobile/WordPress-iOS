@@ -1039,6 +1039,7 @@
 		9A2B28F52192121400458F2A /* RevisionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28F42192121400458F2A /* RevisionOperation.swift */; };
 		9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B28F62192121F00458F2A /* RevisionOperation.xib */; };
 		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
+		9A2D0B11225BA162009E585F /* JetpackInstallStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B10225BA162009E585F /* JetpackInstallStore.swift */; };
 		9A341E5321997A1F0036662E /* BlogService+BlogAuthors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */; };
 		9A341E5621997A340036662E /* BlogAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5421997A330036662E /* BlogAuthor.swift */; };
 		9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5521997A330036662E /* Blog+BlogAuthors.swift */; };
@@ -3074,6 +3075,7 @@
 		9A2B28F42192121400458F2A /* RevisionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionOperation.swift; sourceTree = "<group>"; };
 		9A2B28F62192121F00458F2A /* RevisionOperation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionOperation.xib; sourceTree = "<group>"; };
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
+		9A2D0B10225BA162009E585F /* JetpackInstallStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackInstallStore.swift; sourceTree = "<group>"; };
 		9A341E51219979BA0036662E /* WordPress 85.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 85.xcdatamodel"; sourceTree = "<group>"; };
 		9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlogService+BlogAuthors.swift"; sourceTree = "<group>"; };
 		9A341E5421997A330036662E /* BlogAuthor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogAuthor.swift; sourceTree = "<group>"; };
@@ -8333,6 +8335,7 @@
 				98AE3DF4219A1788003C0E24 /* StatsInsightsStore.swift */,
 				984B139321F66B2D0004B6A2 /* StatsPeriodStore.swift */,
 				E1CB6DA2200F376400945457 /* TimeZoneStore.swift */,
+				9A2D0B10225BA162009E585F /* JetpackInstallStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -9877,6 +9880,7 @@
 				17BD4A0820F76A4700975AC3 /* Routes+Banners.swift in Sources */,
 				1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */,
 				4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */,
+				9A2D0B11225BA162009E585F /* JetpackInstallStore.swift in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
 				981C986821B9BDF300A7C0C8 /* PostingActivityViewController.swift in Sources */,
 				E69EF9D51BFA539F00ED0554 /* ReaderDetailViewController.swift in Sources */,
