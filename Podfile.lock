@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - Alamofire (4.7.3)
-  - Automattic-Tracks-iOS (0.3.2):
+  - Automattic-Tracks-iOS (0.3.4):
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 1.1.4)
@@ -228,7 +228,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.3.2`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, commit `f6332b67448a4e9c2661513cbb98fa5bb12b7c8f`)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
@@ -310,8 +310,8 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
+    :commit: f6332b67448a4e9c2661513cbb98fa5bb12b7c8f
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.3.2
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.2.0/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
@@ -338,8 +338,8 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
+    :commit: f6332b67448a4e9c2661513cbb98fa5bb12b7c8f
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.3.2
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
@@ -360,7 +360,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  Automattic-Tracks-iOS: cedc19fcfc1e5b3be48dbc313a548d2e38565265
+  Automattic-Tracks-iOS: 67d00f2f20e1978ee09154f26cdf3475d158508c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
@@ -407,6 +407,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 50dc80f1361fe0ec3febce62422d428cdbaf273b
+PODFILE CHECKSUM: c15e79b1e6862223b0bf0f93b60e002f3a065666
 
 COCOAPODS: 1.5.3
