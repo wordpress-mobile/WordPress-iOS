@@ -1059,7 +1059,6 @@
 		9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */; };
 		9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE052254A3260043C8DA /* JetpackConnectionWebViewController.swift */; };
 		9A8ECE0F2254A3260043C8DA /* JetpackRemoteInstallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */; };
-		9A8ECE102254A3260043C8DA /* JetpackRemoteInstallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A8ECE072254A3260043C8DA /* JetpackRemoteInstallViewController.xib */; };
 		9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */; };
 		9A8ECE122254A3260043C8DA /* JetpackRemoteInstallViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallViewState.swift */; };
 		9A8ECE132254A3260043C8DA /* JetpackInstallError+Blocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */; };
@@ -1740,7 +1739,7 @@
 		FF00889F204E01AE007CCE66 /* MediaQuotaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00889E204E01AE007CCE66 /* MediaQuotaCell.swift */; };
 		FF0148E51DFABBC9001AD265 /* NSFileManager+FolderSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0148E41DFABBC9001AD265 /* NSFileManager+FolderSize.swift */; };
 		FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */; };
-		FF0AAE0D1A16550D0089841D /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		FF0AAE0D1A16550D0089841D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0D8145205809C8000EE505 /* PostCoordinator.swift */; };
 		FF0F722C206E5345000DAAB5 /* PostService+RefreshStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0F722B206E5345000DAAB5 /* PostService+RefreshStatus.swift */; };
 		FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */; };
@@ -3097,7 +3096,6 @@
 		9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
 		9A8ECE052254A3260043C8DA /* JetpackConnectionWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackConnectionWebViewController.swift; sourceTree = "<group>"; };
 		9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewController.swift; sourceTree = "<group>"; };
-		9A8ECE072254A3260043C8DA /* JetpackRemoteInstallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackRemoteInstallViewController.xib; sourceTree = "<group>"; };
 		9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewModel.swift; sourceTree = "<group>"; };
 		9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewState.swift; sourceTree = "<group>"; };
 		9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JetpackInstallError+Blocking.swift"; sourceTree = "<group>"; };
@@ -4499,7 +4497,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -6805,7 +6803,6 @@
 			isa = PBXGroup;
 			children = (
 				9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */,
-				9A8ECE072254A3260043C8DA /* JetpackRemoteInstallViewController.xib */,
 				9A8ECE1F22550A210043C8DA /* Error */,
 				9A8ECE1A2254ADFA0043C8DA /* View */,
 				9A8ECE082254A3260043C8DA /* Data */,
@@ -8977,7 +8974,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -9030,7 +9027,6 @@
 				9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */,
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
-				9A8ECE102254A3260043C8DA /* JetpackRemoteInstallViewController.xib in Resources */,
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
@@ -10456,7 +10452,7 @@
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
 				7E442FCD20F6AB9C00DEACA5 /* ActivityRange.swift in Sources */,
-				FF0AAE0D1A16550D0089841D /* BuildFile in Sources */,
+				FF0AAE0D1A16550D0089841D /* (null) in Sources */,
 				9AF9551821A1D7970057827C /* DiffAbstractValue+Attributes.swift in Sources */,
 				7E58879A20FE8D9300DB6F80 /* Environment.swift in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
