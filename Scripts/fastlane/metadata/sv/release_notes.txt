@@ -1,4 +1,3 @@
-- Nu går det att diktera i blockredigeraren.
-- Felmeddelanden om offline-läge kommer nu att visas i ett mindre popup-fönster i slutet av sidan.
-- Rättat ett fel där det gick att redigera fältet för förhandsvisning av webbplatsens adress i flödet för skapande av ny webbplats.
-- Rättat ett problem i blockredigeraren där det inte gick att ladda upp bilder till privata webbplatser..
+- Alla har sitt eget arbetsflöde. Nu fungerar det mer stabilt än tidigare att dela text från olika appar för skrivande och noteringar till WordPress.
+- Trots att vi inte gillar det, misslyckas det ibland när man försöker uppdatera uppgifter i något användarkonto. Vi har lagt in tydligare och mer detaljerade felmeddelanden så att du ska veta vad som blev fel och hur du kommer vidare.
+- Nu har du fler sätt att skapa inlägg med bilder: blockredigeraren har stöd för inlägg där foton redan är inlagda och du använda åtgärden 3D touch från Apple för att starta appen och inleda ett nytt bildinlägg med en enda tryckning.
