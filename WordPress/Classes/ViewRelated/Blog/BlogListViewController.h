@@ -11,6 +11,5 @@
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
 - (void)bypassBlogListViewController;
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
-- (void)showAddNewWordPressController;
 
 @end
