@@ -7,7 +7,6 @@ enum FeatureFlag: Int {
     case newsCard
     case giphy
     case automatedTransfersCustomDomain
-    case enhancedSiteCreation
     case revisions
     case statsRefresh
     case gutenberg
@@ -26,8 +25,6 @@ enum FeatureFlag: Int {
         case .newsCard:
             return true
         case .giphy:
-            return true
-        case .enhancedSiteCreation:
             return true
         case .revisions:
             return true

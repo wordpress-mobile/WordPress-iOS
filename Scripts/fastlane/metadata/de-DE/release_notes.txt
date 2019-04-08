@@ -1,4 +1,3 @@
-- Das Diktieren funktioniert nun im Block-Editor.
-- Offline-Fehlermeldungen werden nun in kleineren Popup-Dialogen unten auf der Seite angezeigt. 
-- Es wurde ein Fehler behoben, bei dem die Adressleiste der Seitenvorschau im Prozess der Seitenerstellung bearbeitet werden konnte.
-- Es wurde ein Problem im Block-Editor behoben, bei dem Bilder nicht auf private Seiten hochgeladen werden konnten.
+– Jeder erhält seinen eigenen Workflow. Das Teilen von Text aus Texterstellungs- und Notiz-Apps in WordPress erfolgt jetzt reibungsloser.
+– Manchmal schlagen Aktualisierungen von Benutzerkontodetails leider fehl. Wir haben klarere, ausführlichere Fehlermeldungen hinzugefügt, damit du weißt, was schiefgelaufen ist und was als Nächstes zu tun ist.
+– Du hast mehr Möglichkeiten, Beiträge mit Bildern zu erstellen: Der Block-Editor unterstützt Beiträge mit vorab eingefügten Fotos und du kannst die 3D-Touchaktion von Apple verwenden, um mit nur einmaligem Drücken die App zu starten und einen neuen Fotobeitrag zu beginnen.

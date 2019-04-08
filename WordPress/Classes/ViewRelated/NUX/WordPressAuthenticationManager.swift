@@ -147,9 +147,19 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
     }
 
+    /// A self-hosted site URL is available and needs validated
+    /// before presenting the username and password view controller.
+    /// - Parameters:
+    ///     - site: passes in the site information to the delegate method.
+    ///     - onCompletion: Closure to be executed on completion.
+    ///
+    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (Error?, Bool) -> Void) {
+        onCompletion(nil, true)
+    }
+
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, onDismiss: @escaping () -> Void) {
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -163,7 +173,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
-    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, service: SocialService?) {
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, service: SocialService?) {
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
             fatalError()
@@ -211,12 +221,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Synchronizes the specified WordPress Account.
     ///
-    func sync(credentials: WordPressCredentials, onCompletion: @escaping () -> Void) {
-        switch credentials {
-        case .wpcom(let authToken, let isJetpackLogin, _):
-            syncWPCom(authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
-        case .wporg(let username, let password, let xmlrpc, let options):
-            syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
+    func sync(credentials: AuthenticatorCredentials, onCompletion: @escaping () -> Void) {
+        if let wpcom = credentials.wpcom {
+            syncWPCom(authToken: wpcom.authToken, isJetpackLogin: wpcom.isJetpackLogin, onCompletion: onCompletion)
+        } else if let wporg = credentials.wporg {
+            syncWPOrg(username: wporg.username, password: wporg.password, xmlrpc: wporg.xmlrpc, options: wporg.options, onCompletion: onCompletion)
         }
     }
 
