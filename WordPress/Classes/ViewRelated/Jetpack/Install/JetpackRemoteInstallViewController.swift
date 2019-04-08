@@ -26,6 +26,10 @@ class JetpackRemoteInstallViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func loadView() {
+        view = UIView()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,6 +59,7 @@ private extension JetpackRemoteInstallViewController {
 
         jetpackView.delegate = self
         add(jetpackView)
+        jetpackView.view.frame = view.bounds
 
         jetpackView.toggleHidingImageView(for: traitCollection)
 
