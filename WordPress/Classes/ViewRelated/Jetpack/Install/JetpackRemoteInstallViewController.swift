@@ -107,7 +107,18 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
     func mainButtonDidTouch() {
+        guard let url = blog.url,
+            let username = blog.username,
+            let password = blog.password else {
+            return
+        }
 
+        switch viewModel.state {
+        case .install, .failure:
+            viewModel.installJetpack(with: url, username: username, password: password)
+        default:
+            break
+        }
     }
 
     func customerSupportButtonDidTouch() {
