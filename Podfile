@@ -102,10 +102,11 @@ target 'WordPress' do
     ## =====================
     ##
     gutenberg :path => '/Users/pinarolguc/Development/WordPress-Android/libs/gutenberg-mobile'
-    gutenberg_dependencies :commit => '2f145bf51e33949dd537a834e336121efd190d6d'
+    gutenberg_dependencies :commit => 'ea314d3b4745c9efee367e8eb7fe5441ffd72d86'
     
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
+    pod 'react-native-video', :git => 'https://github.com/react-native-community/react-native-video.git', :tag => '4.4.1'
 
     ## Third party libraries
     ## =====================
