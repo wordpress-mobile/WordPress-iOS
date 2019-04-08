@@ -26,9 +26,10 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a61fb769c1e0c8cabd0ff46234f0f1c72740faac'
-    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a61fb769c1e0c8cabd0ff46234f0f1c72740faac'
-    pod 'WordPress-Editor-iOS', '1.4.4'
+    #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '87f7f8bac143d3022512b201749e5d8652a61aa1'
+    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '87f7f8bac143d3022512b201749e5d8652a61aa1'
+    ##pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
+    pod 'WordPress-Editor-iOS', '1.5.1'
 end
 
 def wordpress_ui
@@ -41,7 +42,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 3.1.2'
+    pod 'WordPressKit', '~> 3.2.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ddf1292ff9df94550b8d30dd8f3c2e23be677a9c'
     #pod 'WordPressKit', :path => '~/Developer/a8c/WordPressKit-iOS'
 end
@@ -101,11 +102,11 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.1.0'
+    gutenberg :tag => 'v1.1.2'
 
-    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '8.0.9-gb.0'
-    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.6'
-    
+    pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
+    pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
+
     ## Third party libraries
     ## =====================
     ##
@@ -132,9 +133,9 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.1.11'
+    pod 'WordPressAuthenticator', '~> 1.2.0'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => 'f19542a'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '867fa63'
 
 
     aztec

@@ -1,4 +1,4 @@
-SWIFTLINT_VERSION="0.23.1"
+SWIFTLINT_VERSION="0.27.0"
 XCODE_WORKSPACE="WordPress.xcworkspace"
 XCODE_SCHEME="WordPress"
 XCODE_CONFIGURATION="Debug"
@@ -89,23 +89,13 @@ namespace :dependencies do
         puts "Installing SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
         Dir.mktmpdir do |tmpdir|
           # Try first using a binary release
-          pkgfile = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}.pkg"
-          sh "curl --fail --location -o #{pkgfile} https://github.com/realm/SwiftLint/releases/download/#{SWIFTLINT_VERSION}/SwiftLint.pkg || true"
-          if File.exists?(pkgfile)
-            pkgdir = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}"
-            sh "pkgutil --expand #{pkgfile} #{pkgdir}"
-            Dir.chdir(pkgdir) do
-              binfile = "#{pkgdir}/usr/local/bin/swiftlint"
-              sh "cat Payload | gzip -d | cpio -id"
-              sh "install_name_tool -rpath /Library/Frameworks '@executable_path/../Frameworks' #{binfile}"
-              sh "install_name_tool -rpath /Library/Frameworks/SwiftLintFramework.framework/Versions/Current/Frameworks '@executable_path/../Frameworks/SwiftLintFramework.framework/Versions/Current/Frameworks' #{binfile}"
-              puts "Copying SwiftLint #{SWIFTLINT_VERSION} into #{swiftlint_path}"
-              FileUtils.remove_entry_secure(swiftlint_path) if Dir.exist?(swiftlint_path)
-              FileUtils.mkdir_p(swiftlint_path)
-              FileUtils.cp_r("#{pkgdir}/Library/Frameworks", swiftlint_path)
-              FileUtils.mkdir_p("#{swiftlint_path}/bin")
-              FileUtils.cp("#{pkgdir}/usr/local/bin/swiftlint", "#{swiftlint_path}/bin/swiftlint")
-            end
+          zipfile = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}.zip"
+          sh "curl --fail --location -o #{zipfile} https://github.com/realm/SwiftLint/releases/download/#{SWIFTLINT_VERSION}/portable_swiftlint.zip || true"
+          if File.exists?(zipfile)
+            extracted_dir = "#{tmpdir}/swiftlint-#{SWIFTLINT_VERSION}"
+            sh "unzip #{zipfile} -d #{extracted_dir}"
+            FileUtils.mkdir_p("#{swiftlint_path}/bin")
+            FileUtils.cp("#{extracted_dir}/swiftlint", "#{swiftlint_path}/bin/swiftlint")
           else
             sh "git clone --quiet https://github.com/realm/SwiftLint.git #{tmpdir}"
             Dir.chdir(tmpdir) do

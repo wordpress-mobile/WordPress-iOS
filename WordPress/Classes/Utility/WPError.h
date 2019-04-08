@@ -1,3 +1,5 @@
+NS_ASSUME_NONNULL_BEGIN
+
 @interface WPError : NSObject
 
 
@@ -18,7 +20,7 @@
  @param error
  @param title Custom title displayed on the alert
  */
-+ (void)showNetworkingAlertWithError:(NSError *)error title:(NSString *)title;
++ (void)showNetworkingAlertWithError:(NSError *)error title:(nullable NSString *)title;
 
 /**
  Show an alert that resulted from a network call,
@@ -26,7 +28,7 @@
  
  @param error
  */
-+ (void)showXMLRPCErrorAlert:(NSError *)error;
++ (void)showXMLRPCErrorAlert:(nullable NSError *)error;
 
 /**
  * Create a suggested title and message based on the given `error`
@@ -36,7 +38,7 @@
  *
  * @return A dictionary with keys "title" and "message". Both values are not null.
  */
-+ (nonnull NSDictionary<NSString *, NSString *> *)titleAndMessageFromNetworkingError:(nonnull NSError *)error
++ (nonnull NSDictionary<NSString *, NSString *> *)titleAndMessageFromNetworkingError:(NSError *)error
                                                                         desiredTitle:(nullable NSString *)desiredTitle;
 
 /**
@@ -48,7 +50,7 @@
  * @param error Assumed to be an error from a networking call.
  * @returns YES if a sign-in page was shown.
  */
-+ (BOOL)showWPComSigninIfErrorIsInvalidAuth:(nonnull NSError *)error;
++ (BOOL)showWPComSigninIfErrorIsInvalidAuth:(NSError *)error;
 
 ///---------------------
 /// @name General alerts
@@ -92,8 +94,12 @@
  @param showSupport YES shows the Need Help button and NO does not.
  @param okPressedBlock a block to execute if the OK button is pressed
  */
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
-         withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertController *alertView))okBlock;
++ (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message
+         withSupportButton:(BOOL)showSupport
+            okPressedBlock:(nullable void (^)(UIAlertController *alertView))okBlock;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

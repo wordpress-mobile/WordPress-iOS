@@ -40,7 +40,8 @@ class EpilogueUserInfoCell: UITableViewCell {
         fullNameLabel.text = userInfo.fullName
         fullNameLabel.fadeInAnimation()
 
-        usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
+        let username = userInfo.username.characterCount > 0 ? "@\(userInfo.username)" : ""
+        usernameLabel.text = showEmail ? userInfo.email : username
         usernameLabel.fadeInAnimation()
 
         gravatarAddIcon.isHidden = !allowGravatarUploads

@@ -1,4 +1,3 @@
-- Dikte etme artık blok düzenleyicide çalışıyor.
-- Çevrimdışı hata mesajları şimdi sayfanın altındaki daha küçük açılır pencerelerde görüntülenecek.
-- Site önizleme adres çubuğunun site oluşturma akışında düzenlenebileceği bir hata düzeltildi.
-- Blok düzenleyicideki resimlerin özel sitelere yüklenemediği bir sorun düzeltildi.
+Herkesin kendi iş akışı var. Artık yazma ve not alma uygulamalarından WordPress'e metin paylaşmak daha güvenilir.
+- Bazen istenmese de kullanıcı hesabı ayrıntılarında yapılan güncellemeler başarısız olur. Daha net ve daha ayrıntılı hata mesajları ekledik, böylece neyin yanlış gittiğini ve daha sonra ne yapacağınızı bileceksiniz.
+- Görsel içeren yazılar oluşturmanın başka yolları da var: Blok düzenleyici önceden eklenmiş fotoğraflara sahip yazıları destekler ve uygulamayı başlatmak ve tek bir dokunuşla fotoğraf içeren yeni bir yazı oluşturmak için Apple’ın 3D dokunma eylemini kullanabilirsiniz.

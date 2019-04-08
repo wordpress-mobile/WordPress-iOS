@@ -132,6 +132,8 @@ class EditPostViewController: UIViewController {
 
     private func showEditor(_ editor: EditorViewController) {
         editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
+        // only open the media picker once.
+        openWithMediaPicker = false
         editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
             guard let strongSelf = self else {
                 editor?.dismiss(animated: true) {}
@@ -156,9 +158,8 @@ class EditPostViewController: UIViewController {
         postPost.present(navController, animated: !showImmediately) {
             generator.impactOccurred()
 
-            if let insertedMedia = self.insertedMedia,
-                let aztec = editor as? AztecPostViewController {
-                aztec.prepopulateMediaItems(insertedMedia)
+            if let insertedMedia = self.insertedMedia {
+                editor.prepopulateMediaItems(insertedMedia)
             }
         }
     }

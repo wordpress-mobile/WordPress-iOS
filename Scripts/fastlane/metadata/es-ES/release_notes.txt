@@ -1,4 +1,3 @@
-- El dictado ahora funciona en el editor de bloques.
-- Los mensajes de error desconectado se mostrarán ahora en ventanas emergentes más pequeñas en la parte inferior de la página.
-- Se ha corregido un error por el que la barra de direcciones de la vista previa del sitio se podía editar en el flujo de creación del sitio.
-- Se ha corregido un problema en el editor de bloques por el que no se podían cargar imágenes en sitios privados.
+- Todos tenemos nuestra forma de trabajar. Por eso, ahora con WordPress compartir texto desde aplicaciones de notas y edición de texto es mucho más fácil.
+- A veces, no todo funciona como quisiéramos y ocurren errores al actualizar los datos de la cuenta de usuario. Para que siempre sepas qué ha ocurrido y cómo continuar, hemos añadido mensajes de error más claros y detallados.
+- Ahora tienes nuevas formas de crear entradas con imágenes: el editor de bloques es capaz de trabajar con entradas que incluyan imágenes preinsertadas, por lo que puedes usar 3D Touch de Apple, abrir la aplicación directamente y empezar una nueva entrada con tu imagen con tan sólo presionar tu pantalla.
