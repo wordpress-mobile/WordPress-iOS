@@ -32,7 +32,7 @@ struct ExtractedShare {
         //   * 4: No selected text, but we have a page title...use that.
         //   * Finally, default to a simple link if nothing else is found
         guard importedText.isEmpty else {
-            return importedText.escapeHtmlNamedEntities()
+            return importedText
         }
 
         guard selectedText.isEmpty else {
@@ -388,7 +388,6 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
 
         var returnedItem = ExtractedItem()
-        returnedItem.importedText = bundleWrapper.text
         var cachedImageURLs = [URL]()
 
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
@@ -409,13 +408,14 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
         returnedItem.imageURLs = cachedImageURLs
 
+        returnedItem.importedText = bundleWrapper.text.escapeHtmlNamedEntities()
         return returnedItem
     }
 
     private func handlePlainTextFile(url: URL) -> ExtractedItem? {
         var returnedItem = ExtractedItem()
         let rawText = (try? String(contentsOf: url)) ?? ""
-        returnedItem.importedText = rawText
+        returnedItem.importedText = rawText.escapeHtmlNamedEntities()
         return returnedItem
     }
 
