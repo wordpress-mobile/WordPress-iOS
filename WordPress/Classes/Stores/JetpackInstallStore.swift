@@ -16,10 +16,9 @@ struct JetpackInstallStoreState {
 }
 
 class JetpackInstallStore: StatefulStore<JetpackInstallStoreState> {
-    private var service: BlogService?
+    private let service = BlogService(managedObjectContext: ContextManager.shared.mainContext)
 
     init() {
-        self.service = BlogService(managedObjectContext: ContextManager.shared.mainContext)
         super.init(initialState: JetpackInstallStoreState())
     }
 
@@ -42,7 +41,7 @@ private extension JetpackInstallStore {
         }
 
         state.current = .loading
-        service?.installJetpack(url: url, username: username, password: password) { [weak self] (success, error) in
+        service.installJetpack(url: url, username: username, password: password) { [weak self] (success, error) in
             if success {
                 self?.state.current = .success
             } else {
