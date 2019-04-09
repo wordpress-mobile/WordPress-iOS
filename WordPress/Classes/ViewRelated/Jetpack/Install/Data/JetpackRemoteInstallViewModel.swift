@@ -24,13 +24,10 @@ class JetpackRemoteInstallViewModel {
             switch state.current {
             case .loading:
                 self?.state = .installing
-
             case .success:
                 self?.state = .success
-
             case .failure(let error):
                 self?.state = .failure(error)
-
             default:
                 break
             }
@@ -39,11 +36,5 @@ class JetpackRemoteInstallViewModel {
 
     func installJetpack(with url: String, username: String, password: String) {
         store.onDispatch(JetpackInstallAction.install(url: url, username: username, password: password))
-    }
-}
-
-private extension JetpackRemoteInstallViewModel {
-    func test() {
-        state = .installing
     }
 }
