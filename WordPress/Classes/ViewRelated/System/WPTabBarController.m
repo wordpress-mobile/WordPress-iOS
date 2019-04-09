@@ -170,29 +170,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex
-{
-    [super setSelectedIndex:selectedIndex];
-
-    // Bumping the stat in this method works for cases where the selected tab is
-    // set in response to other feature behavior (e.g. a notifications), and
-    // when set via state restoration.
-    switch (selectedIndex) {
-        case WPTabMe:
-            [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
-            break;
-        case WPTabMySites:
-            [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
-            break;
-        case WPTabReader:
-            [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
-            break;
-
-        default:
-            break;
-    }
-}
-
 #pragma mark - UIViewControllerRestoration methods
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
