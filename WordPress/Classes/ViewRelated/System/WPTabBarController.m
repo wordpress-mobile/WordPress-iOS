@@ -181,6 +181,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder
 {
     self.selectedIndex = [coder decodeIntegerForKey:WPTabBarSelectedIndexKey];
+    [self trackAccessStatForCurrentlySelectedTabIndex];
     [super decodeRestorableStateWithCoder:coder];
 }
 

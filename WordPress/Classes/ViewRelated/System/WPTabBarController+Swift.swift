@@ -10,15 +10,23 @@ extension WPTabBarController {
 
     @objc func startObserversForTracking() {
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(trackEventsForAppForeground(_:)),
+                                               selector: #selector(trackAccessStatForCurrentlySelectedTabIndex),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
     }
 
-    @objc func trackEventsForAppForeground(_ notification: Notification) {
+    /// Count the current `selectedIndex` as "accessed" in analytics.
+    ///
+    /// We want to call this on:
+    ///
+    /// - The app has been placed in the foreground
+    /// - The app was just launched and we restored the previously selected tab
+    ///   (in `decodeRestorableStateWithCoder`)
+    /// - The user selected a different tab
+    @objc func trackAccessStatForCurrentlySelectedTabIndex() {
         guard let tabType = WPTabType(rawValue: UInt(selectedIndex)),
             let stat = WPTabBarController.tabIndexToStatMap[tabType] else {
-            return
+                return
         }
 
         WPAppAnalytics.track(stat)
