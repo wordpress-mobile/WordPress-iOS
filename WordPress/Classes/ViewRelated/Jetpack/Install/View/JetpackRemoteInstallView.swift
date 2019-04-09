@@ -13,7 +13,7 @@ class JetpackRemoteInstallView: UIViewController {
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var mainButton: NUXButton!
     @IBOutlet private var supportButton: UIButton!
-    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicatorContainer: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class JetpackRemoteInstallView: UIViewController {
         mainButton.isHidden = state == .installing
         mainButton.setTitle(state.buttonTitle, for: .normal)
 
-        activityIndicator.toggleAnimating(state == .installing)
+        activityIndicatorContainer.isHidden = state != .installing
 
         switch state {
         case .failure:
@@ -68,17 +68,5 @@ private extension JetpackRemoteInstallView {
 
     @IBAction func customSupportButtonAction(_ sender: UIButton) {
         delegate?.customerSupportButtonDidTouch()
-    }
-}
-
-// MARK: - UIActivityIndicatorView extension
-
-private extension UIActivityIndicatorView {
-    func toggleAnimating(_ animate: Bool) {
-        if animate {
-            startAnimating()
-        } else {
-            stopAnimating()
-        }
     }
 }
