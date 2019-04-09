@@ -19,5 +19,5 @@ class StoreContainer {
     let activity = ActivityStore()
     let statsInsights = StatsInsightsStore()
     let statsPeriod = StatsPeriodStore()
-
+    let jetpackInstall = JetpackInstallStore()
 }

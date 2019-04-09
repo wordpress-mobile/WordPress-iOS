@@ -4,17 +4,13 @@ class JetpackRemoteInstallViewModel {
     typealias JetpackRemoteInstallOnChangeState = (JetpackRemoteInstallViewState) -> Void
 
     var onChangeState: JetpackRemoteInstallOnChangeState?
-    private let store: JetpackInstallStore
+    private let store = StoreContainer.shared.jetpackInstall
     private var storeReceipt: Receipt?
 
     private(set) var state: JetpackRemoteInstallViewState = .install {
         didSet {
             onChangeState?(state)
         }
-    }
-
-    init() {
-        self.store = JetpackInstallStore()
     }
 
     func viewReady() {
