@@ -153,7 +153,21 @@ class GutenbergMediaInserterHelper: NSObject {
             guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
                 break
             }
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
+            if media.mediaType == .image {
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
+            } else if media.mediaType == .video {
+                fetchVideoPressUrl(for: media) { [weak self] (result) in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    switch result {
+                    case .error:
+                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
+                    case .success(let value):
+                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID)
+                    }
+                }
+            }
         case .failed(let error):
             if error.code == NSURLErrorCancelled {
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
@@ -163,6 +177,28 @@ class GutenbergMediaInserterHelper: NSObject {
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
         }
+    }
+
+    func fetchVideoPressUrl(for media: Media, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?)> ) -> Void) {
+        guard let videoPressID = media.videopressGUID else {
+            completion(Result.error(NSError()))
+            return
+        }
+        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+            guard let videoURL = URL(string: videoURLString) else {
+                completion(Result.error(NSError()))
+                return
+            }
+            var posterURL: URL?
+            if let validPosterURLString = posterURLString, let url = URL(string: validPosterURLString) {
+                posterURL = url
+            }
+            completion(Result.success((videoURL: videoURL, posterURL: posterURL)))
+        }, failure: { (error) in
+            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            completion(Result.error(error))
+        })
     }
 }
 
