@@ -16,6 +16,8 @@ struct JetpackInstallStoreState {
 }
 
 class JetpackInstallStore: StatefulStore<JetpackInstallStoreState> {
+    private var service: BlogServiceRemoteREST?
+
     init() {
         super.init(initialState: JetpackInstallStoreState())
     }
@@ -26,9 +28,18 @@ class JetpackInstallStore: StatefulStore<JetpackInstallStoreState> {
         }
 
         switch action {
-//        case .install(let url, let username, let password):
-        case .install:
-            state.current = .loading
+        case .install(let url, let username, let password):
+            startInstallingJetpack(with: url, username: username, password: password)
         }
+    }
+}
+
+private extension JetpackInstallStore {
+    func startInstallingJetpack(with url: String, username: String, password: String) {
+        if case .loading = state.current {
+            return
+        }
+
+        state.current = .loading
     }
 }
