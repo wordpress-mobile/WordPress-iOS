@@ -181,8 +181,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder
 {
     self.selectedIndex = [coder decodeIntegerForKey:WPTabBarSelectedIndexKey];
-    [self trackAccessStatForCurrentlySelectedTabIndex];
     [super decodeRestorableStateWithCoder:coder];
+
+    [self trackAccessStatForCurrentlySelectedTab];
 }
 
 #pragma mark - Tab Bar Items
@@ -815,22 +816,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (newIndex != tabBarController.selectedIndex) {
         switch (newIndex) {
             case WPTabMySites: {
-                [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
                 [self bypassBlogListViewControllerIfNecessary];
                 break;
             }
             case WPTabReader: {
-                [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
                 [self alertQuickStartThatReaderWasTapped];
-                break;
-            }
-            case WPTabMe: {
-                [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
                 break;
             }
             default: break;
         }
 
+        [self trackAccessStatForTabIndex:newIndex];
         [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
