@@ -116,6 +116,8 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
         switch viewModel.state {
         case .install, .failure:
             viewModel.installJetpack(with: url, username: username, password: password)
+        case .success:
+            openInstallJetpackURL()
         default:
             break
         }
