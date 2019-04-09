@@ -254,7 +254,7 @@
 		403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403269912027719C00608441 /* PluginDirectoryAccessoryItem.swift */; };
 		4034FDEA2007C42400153B87 /* ExpandableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4034FDE92007C42400153B87 /* ExpandableCell.swift */; };
 		4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4034FDED2007D4F700153B87 /* ExpandableCell.xib */; };
-		403E192B21377DEA00E4E657 /* BlogService+JetpackConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E192A21377DEA00E4E657 /* BlogService+JetpackConvenience.swift */; };
+		403E192B21377DEA00E4E657 /* BlogService+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E192A21377DEA00E4E657 /* BlogService+Jetpack.swift */; };
 		403F57BC20E5CA6A004E889A /* RewindStatusRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */; };
 		4054F43B221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */; };
 		4054F43C221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */; };
@@ -2176,7 +2176,7 @@
 		403269912027719C00608441 /* PluginDirectoryAccessoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryAccessoryItem.swift; sourceTree = "<group>"; };
 		4034FDE92007C42400153B87 /* ExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableCell.swift; sourceTree = "<group>"; };
 		4034FDED2007D4F700153B87 /* ExpandableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandableCell.xib; sourceTree = "<group>"; };
-		403E192A21377DEA00E4E657 /* BlogService+JetpackConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+JetpackConvenience.swift"; sourceTree = "<group>"; };
+		403E192A21377DEA00E4E657 /* BlogService+Jetpack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogService+Jetpack.swift"; sourceTree = "<group>"; };
 		403F57BB20E5CA6A004E889A /* RewindStatusRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewindStatusRow.swift; sourceTree = "<group>"; };
 		4054F439221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentedPostStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4054F43A221354E000D261AB /* TopCommentedPostStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TopCommentedPostStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -6367,7 +6367,7 @@
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */,
-				403E192A21377DEA00E4E657 /* BlogService+JetpackConvenience.swift */,
+				403E192A21377DEA00E4E657 /* BlogService+Jetpack.swift */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
 				E16A76F21FC4766900A661E3 /* CredentialsService.swift */,
@@ -10217,7 +10217,7 @@
 				4349B0AF218A477F0034118A /* RevisionsTableViewCell.swift in Sources */,
 				738B9A5921B85CF20005062B /* KeyboardInfo.swift in Sources */,
 				E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */,
-				403E192B21377DEA00E4E657 /* BlogService+JetpackConvenience.swift in Sources */,
+				403E192B21377DEA00E4E657 /* BlogService+Jetpack.swift in Sources */,
 				08D978571CD2AF7D0054F19A /* MenuItemCheckButtonView.m in Sources */,
 				08216FCC1CDBF96000304BA7 /* MenuItemLinkViewController.m in Sources */,
 				173F6DFE212352D000A4C8E2 /* GiphyService.swift in Sources */,
