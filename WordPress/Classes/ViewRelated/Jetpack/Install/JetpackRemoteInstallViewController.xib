@@ -12,7 +12,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackRemoteInstallViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
-                <outlet property="segmented" destination="q47-qd-WE3" id="RpJ-cg-wI0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,27 +19,7 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="q47-qd-WE3">
-                    <rect key="frame" x="10" y="629" width="355" height="29"/>
-                    <segments>
-                        <segment title="Install"/>
-                        <segment title="Installations"/>
-                        <segment title="Success"/>
-                        <segment title="Failure"/>
-                        <segment title="Fallback"/>
-                    </segments>
-                    <connections>
-                        <action selector="stateChange:" destination="-1" eventType="valueChanged" id="fpz-v8-gTI"/>
-                    </connections>
-                </segmentedControl>
-            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstItem="q47-qd-WE3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="6Uv-3O-dne"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="q47-qd-WE3" secondAttribute="bottom" constant="10" id="Zs5-J6-7qf"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="q47-qd-WE3" secondAttribute="trailing" constant="10" id="g02-x5-8z4"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>

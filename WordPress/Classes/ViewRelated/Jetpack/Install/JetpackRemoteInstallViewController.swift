@@ -14,9 +14,6 @@ class JetpackRemoteInstallViewController: UIViewController {
     private let jetpackView = JetpackRemoteInstallView()
     private let viewModel: JetpackRemoteInstallViewModel
 
-    #warning("This is for manual testing purpose only. Remove after this PR is merged.")
-    @IBOutlet private var segmented: UISegmentedControl!
-
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
         self.blog = blog
         self.delegate = delegate
@@ -58,11 +55,9 @@ private extension JetpackRemoteInstallViewController {
 
         jetpackView.delegate = self
         add(jetpackView)
+        jetpackView.view.frame = view.bounds
 
         jetpackView.toggleHidingImageView(for: traitCollection)
-
-        #warning("This is for manual testing purpose only. Remove after this PR is merged.")
-        view.bringSubviewToFront(segmented)
 
         viewModel.viewReady()
     }
@@ -113,12 +108,5 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
 
     func customerSupportButtonDidTouch() {
         navigationController?.pushViewController(SupportTableViewController(), animated: true)
-    }
-}
-
-#warning("This is for manual testing purpose only")
-private extension JetpackRemoteInstallViewController {
-    @IBAction func stateChange(_ sender: UISegmentedControl) {
-        viewModel.testState(sender.selectedSegmentIndex)
     }
 }
