@@ -973,6 +973,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Handling Layout
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self startObserversForTracking];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
