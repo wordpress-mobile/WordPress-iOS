@@ -318,6 +318,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (IBAction)dismiss
 {
+    [ReachabilityUtils dismissNoInternetConnectionNotice];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -440,7 +441,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)displayLoadError:(NSError *)error
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNoticeWithMessage: ReachabilityUtils.noConnectionMessage];
         [self reloadWhenConnectionRestored];
     } else {
         [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
