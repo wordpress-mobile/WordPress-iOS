@@ -8,7 +8,7 @@ extension WPTabBarController {
         .me: .meTabAccessed
     ]
 
-    @objc func startObserversForTracking() {
+    @objc func startObserversForTabAccessStatTracking() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(trackAccessStatForCurrentlySelectedTab),
                                                name: UIApplication.willEnterForegroundNotification,

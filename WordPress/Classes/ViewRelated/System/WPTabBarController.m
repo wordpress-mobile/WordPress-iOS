@@ -970,7 +970,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self startObserversForTracking];
+    [self startObserversForTabAccessStatTracking];
 }
 
 - (void)viewDidAppear:(BOOL)animated
