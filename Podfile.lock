@@ -42,7 +42,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gifu (3.2.0)
-  - GiphyCoreSDK (1.4.2)
+  - GiphyCoreSDK (1.4.1)
   - glog (0.3.4)
   - GoogleSignIn (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
@@ -196,7 +196,7 @@ PODS:
   - WordPress-Aztec-iOS (1.5.2)
   - WordPress-Editor-iOS (1.5.2):
     - WordPress-Aztec-iOS (= 1.5.2)
-  - WordPressAuthenticator (1.4.0-beta.1):
+  - WordPressAuthenticator (1.3.0):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.4)
@@ -205,10 +205,10 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.0.0-beta)
+    - WordPressKit (~> 3.2.2)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
-  - WordPressKit (4.0.0-beta.2):
+  - WordPressKit (3.2.3-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -266,8 +266,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.5.2)
-  - WordPressAuthenticator (~> 1.4.0-beta)
-  - WordPressKit (~> 4.0.0-beta)
+  - WordPressAuthenticator (~> 1.3.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `ec088e065b10c7c31aa0ebb6e6afdd93192495e3`)
   - WordPressShared (~> 1.7.3)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
@@ -313,7 +313,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -339,6 +338,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
+  WordPressKit:
+    :commit: ec088e065b10c7c31aa0ebb6e6afdd93192495e3
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -358,6 +360,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
+  WordPressKit:
+    :commit: ec088e065b10c7c31aa0ebb6e6afdd93192495e3
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -376,7 +381,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
-  GiphyCoreSDK: 1a89e03e55dc6b636b9d40fde76107867dbb9da5
+  GiphyCoreSDK: 147a492c2477e9ddb20f8dd3a4489e3ea3c05e38
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
@@ -405,8 +410,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 16339a831d5d605ba9300b3722b75ba78e53cf09
   WordPress-Editor-iOS: b90649909f99c1d02cef2bb79c0641322b31fa52
-  WordPressAuthenticator: f0e30e8e555e33bea8e13e6f1245172d557a8ee4
-  WordPressKit: e9fcb4af6bbb31554a3dde1eb8df09ef0eabcafb
+  WordPressAuthenticator: b14ec6a2ddfe65bc2abd1c517ef7ec86aaa9d0f5
+  WordPressKit: 473686f859eae05923628f299360f567471e50aa
   WordPressShared: 0853172642668b0fbf5c8d56e743896ebf9aae01
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
@@ -415,6 +420,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 176ea891062eda934b6266e8a10df7bf6339e072
+PODFILE CHECKSUM: 39c4d93f0f477cb888c04f087e5a5a2a94b2fe5d
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.5.3
