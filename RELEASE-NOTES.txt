@@ -1,6 +1,7 @@
 12.3
 -----
- 
+* Resolved a crash that might occur during the new Site Creation flow.
+
 12.2
 -----
 * Draft preview now shows the remote version of the post.
