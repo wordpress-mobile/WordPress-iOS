@@ -20,14 +20,30 @@ extension WPTabBarController {
     }
 
     @objc func startObserversForTabAccessStatTracking() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(trackAccessStatForCurrentlySelectedTabOnEnterForeground),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self,
+                       selector: #selector(trackAccessStatForCurrentlySelectedTabOnEnterForeground),
+                       name: UIApplication.willEnterForegroundNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(resetViewDidAppearTrackingFlagAfterWPComAccountChange(_:)),
+                       name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged,
+                       object: nil)
     }
 
     @objc func trackAccessStatForCurrentlySelectedTabOnEnterForeground() {
         trackAccessStatForTabIndex(selectedIndex)
+    }
+
+    /// Reset `hasTrackedTabAccessOnViewDidAppear` if the user has logged out.
+    ///
+    /// This allows us to track tab access on `-viewDidLoad` when the user logs back in again.
+    @objc func resetViewDidAppearTrackingFlagAfterWPComAccountChange(_ notification: NSNotification) {
+        guard notification.object == nil else {
+            return
+        }
+
+        hasTrackedTabAccessOnViewDidAppear = false
     }
 
     /// Track tab access on viewDidAppear but only once.
