@@ -42,7 +42,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gifu (3.2.0)
-  - GiphyCoreSDK (1.4.1)
+  - GiphyCoreSDK (1.4.2)
   - glog (0.3.4)
   - GoogleSignIn (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
@@ -376,7 +376,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
-  GiphyCoreSDK: 147a492c2477e9ddb20f8dd3a4489e3ea3c05e38
+  GiphyCoreSDK: 1a89e03e55dc6b636b9d40fde76107867dbb9da5
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d

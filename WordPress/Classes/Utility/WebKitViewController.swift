@@ -120,6 +120,7 @@ class WebKitViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopWaitingForConnectionRestored()
+        ReachabilityUtils.dismissNoInternetConnectionNotice()
     }
 
     @objc func loadWebViewRequest() {
@@ -412,7 +413,7 @@ extension WebKitViewController: WKUIDelegate {
         }
 
         if !ReachabilityUtils.isInternetReachable() {
-            ReachabilityUtils.showAlertNoInternetConnection()
+            ReachabilityUtils.showNoInternetConnectionNotice(message: ReachabilityUtils.noConnectionMessage())
             reloadWhenConnectionRestored()
         } else {
             WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
