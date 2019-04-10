@@ -140,6 +140,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [ReachabilityUtils dismissNoInternetConnectionNotice];
+}
+
 - (void)applyModalStyleIfNeeded
 {
     // Proceed only if this Modal, and it's the only view in the stack.
@@ -318,7 +324,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (IBAction)dismiss
 {
-    [ReachabilityUtils dismissNoInternetConnectionNotice];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
