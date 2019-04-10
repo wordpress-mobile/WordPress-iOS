@@ -121,7 +121,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
-
+    pod 'ZIPFoundation', '~> 0.9.8'
 
     ## Automattic libraries
     ## ====================
@@ -163,7 +163,6 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         wordpress_ui
-        pod 'ZIPFoundation', '~> 0.9.8'
     end
 
 
@@ -236,12 +235,23 @@ target 'WordPressComStatsiOS' do
     ## ====================
     ##
     wordpress_ui
+end
 
-    target 'WordPressComStatsiOSTests' do
-        inherit! :search_paths
+## WordPress.com Stats Tests
+## =========================
+##
+target 'WordPressComStatsiOSTests' do
+  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
-        shared_test_pods
-    end
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  wordpress_ui
+
+  shared_test_pods
 end
 
 ## Screenshot Generation
