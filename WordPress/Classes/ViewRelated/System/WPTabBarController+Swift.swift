@@ -21,12 +21,13 @@ extension WPTabBarController {
 
     /// Count the current tab as "accessed" in analytics.
     ///
-    /// We want to call this when:
+    /// We want to call this when the user is logged in and:
     ///
     /// - The app has been placed in the foreground
     /// - The app was just launched and we restored the previously selected tab
     ///   (in `decodeRestorableStateWithCoder`)
     /// - The user selected a different tab
+    /// - After logging in (and this VC is shown)
     @objc func trackAccessStatForTabIndex(_ tabIndex: Int) {
         // Since this ViewController is a singleton, it can be active **behind** the login view.
         // The `isViewonScreen()` prevents us from tracking this.

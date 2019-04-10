@@ -182,8 +182,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     self.selectedIndex = [coder decodeIntegerForKey:WPTabBarSelectedIndexKey];
     [super decodeRestorableStateWithCoder:coder];
-
-    [self trackAccessStatForCurrentlySelectedTab];
 }
 
 #pragma mark - Tab Bar Items
@@ -980,6 +978,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super viewDidAppear:animated];
     [self updateNotificationBadgeVisibility];
     [self startWatchingQuickTours];
+
+    // Since this ViewController is a singleton, we expect -viewDidAppear to only be launched
+    // once in the lifetime of the app. We trigger a "tab access" event here instead of `-init`
+    // and `-decodeRestorableStateWithCoder` to give a chance for the login VC to be shown. If
+    // the login VC is shown, this tracking method will not do anything -- and that's what we want.
+    [self trackAccessStatForCurrentlySelectedTab];
 }
 
 - (void)viewDidLayoutSubviews
