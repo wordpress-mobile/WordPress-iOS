@@ -1023,7 +1023,7 @@
 		9A2B28F52192121400458F2A /* RevisionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2B28F42192121400458F2A /* RevisionOperation.swift */; };
 		9A2B28F72192121F00458F2A /* RevisionOperation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B28F62192121F00458F2A /* RevisionOperation.xib */; };
 		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
-		9A2D0B23225CB92B009E585F /* BlogService+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B22225CB92B009E585F /* BlogService+Jetpack.swift */; };
+		9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B22225CB92B009E585F /* BlogService+JetpackConvenience.swift */; };
 		9A2D0B25225CB980009E585F /* JetpackInstallStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */; };
 		9A2D0B36225E2511009E585F /* JetpackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B35225E2511009E585F /* JetpackService.swift */; };
 		9A341E5321997A1F0036662E /* BlogService+BlogAuthors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */; };
@@ -3044,7 +3044,7 @@
 		9A2B28F42192121400458F2A /* RevisionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionOperation.swift; sourceTree = "<group>"; };
 		9A2B28F62192121F00458F2A /* RevisionOperation.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RevisionOperation.xib; sourceTree = "<group>"; };
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
-		9A2D0B22225CB92B009E585F /* BlogService+Jetpack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlogService+Jetpack.swift"; sourceTree = "<group>"; };
+		9A2D0B22225CB92B009E585F /* BlogService+JetpackConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlogService+JetpackConvenience.swift"; sourceTree = "<group>"; };
 		9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackInstallStore.swift; sourceTree = "<group>"; };
 		9A2D0B35225E2511009E585F /* JetpackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackService.swift; sourceTree = "<group>"; };
 		9A341E51219979BA0036662E /* WordPress 85.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 85.xcdatamodel"; sourceTree = "<group>"; };
@@ -6336,7 +6336,7 @@
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */,
-				9A2D0B22225CB92B009E585F /* BlogService+Jetpack.swift */,
+				9A2D0B22225CB92B009E585F /* BlogService+JetpackConvenience.swift */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
 				E16A76F21FC4766900A661E3 /* CredentialsService.swift */,
@@ -9901,7 +9901,7 @@
 				40F50B7E22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataProperties.swift in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */,
-				9A2D0B23225CB92B009E585F /* BlogService+Jetpack.swift in Sources */,
+				9A2D0B23225CB92B009E585F /* BlogService+JetpackConvenience.swift in Sources */,
 				B50C0C5F1EF42A4A00372C65 /* AztecPostViewController.swift in Sources */,
 				2FA6511321F26949009AA935 /* SiteVerticalsPromptService.swift in Sources */,
 				FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */,
