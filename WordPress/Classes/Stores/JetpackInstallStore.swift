@@ -16,7 +16,7 @@ struct JetpackInstallStoreState {
 }
 
 class JetpackInstallStore: StatefulStore<JetpackInstallStoreState> {
-    private let service = BlogService(managedObjectContext: ContextManager.shared.mainContext)
+    private let service = JetpackService()
 
     init() {
         super.init(initialState: JetpackInstallStoreState())

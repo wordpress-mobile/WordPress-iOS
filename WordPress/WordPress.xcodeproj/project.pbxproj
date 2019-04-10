@@ -1025,6 +1025,7 @@
 		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
 		9A2D0B23225CB92B009E585F /* BlogService+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B22225CB92B009E585F /* BlogService+Jetpack.swift */; };
 		9A2D0B25225CB980009E585F /* JetpackInstallStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */; };
+		9A2D0B36225E2511009E585F /* JetpackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2D0B35225E2511009E585F /* JetpackService.swift */; };
 		9A341E5321997A1F0036662E /* BlogService+BlogAuthors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */; };
 		9A341E5621997A340036662E /* BlogAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5421997A330036662E /* BlogAuthor.swift */; };
 		9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A341E5521997A330036662E /* Blog+BlogAuthors.swift */; };
@@ -3045,6 +3046,7 @@
 		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
 		9A2D0B22225CB92B009E585F /* BlogService+Jetpack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlogService+Jetpack.swift"; sourceTree = "<group>"; };
 		9A2D0B24225CB97F009E585F /* JetpackInstallStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackInstallStore.swift; sourceTree = "<group>"; };
+		9A2D0B35225E2511009E585F /* JetpackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackService.swift; sourceTree = "<group>"; };
 		9A341E51219979BA0036662E /* WordPress 85.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 85.xcdatamodel"; sourceTree = "<group>"; };
 		9A341E5221997A1E0036662E /* BlogService+BlogAuthors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlogService+BlogAuthors.swift"; sourceTree = "<group>"; };
 		9A341E5421997A330036662E /* BlogAuthor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogAuthor.swift; sourceTree = "<group>"; };
@@ -6340,6 +6342,7 @@
 				E16A76F21FC4766900A661E3 /* CredentialsService.swift */,
 				1702BBDF1CF3034E00766A33 /* DomainsService.swift */,
 				B5772AC31C9C7A070031F97E /* GravatarService.swift */,
+				9A2D0B35225E2511009E585F /* JetpackService.swift */,
 				1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */,
 				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
@@ -9892,6 +9895,7 @@
 				FF0F722C206E5345000DAAB5 /* PostService+RefreshStatus.swift in Sources */,
 				405BFB20223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataClass.swift in Sources */,
 				F126FE0220A33BDB0010EB6E /* DocumentUploadProcessor.swift in Sources */,
+				9A2D0B36225E2511009E585F /* JetpackService.swift in Sources */,
 				177B4C3121236F0F00CF8084 /* GiphyDataLoader.swift in Sources */,
 				8236EB4B20248FF1007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift in Sources */,
 				40F50B7E22130E6C00CBBB73 /* FollowersStatsRecordValue+CoreDataProperties.swift in Sources */,
