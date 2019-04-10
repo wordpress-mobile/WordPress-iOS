@@ -824,7 +824,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             default: break;
         }
 
-        [self trackAccessStatForTabIndex:newIndex];
+        [self trackTabAccessForTabIndex:newIndex];
         [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
@@ -970,7 +970,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self startObserversForTabAccessStatTracking];
+    [self startObserversForTabAccessTracking];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -979,7 +979,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self updateNotificationBadgeVisibility];
     [self startWatchingQuickTours];
 
-    [self trackAccessStatForCurrentlySelectedTabOnViewDidAppear];
+    [self trackTabAccessOnViewDidAppear];
 }
 
 - (void)viewDidLayoutSubviews
