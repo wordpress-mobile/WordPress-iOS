@@ -1,13 +1,17 @@
 import Foundation
 
+/// Local service for Jetpack
+///
 class JetpackService {
-    private var context: NSManagedObjectContext?
     private let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi())
 
-    init(managedObjectContext context: NSManagedObjectContext = ContextManager.shared.mainContext) {
-        self.context = context
-    }
-
+    /// This method installs remotely Jetpack in a self-hosted blog.
+    ///
+    /// - Parameters:
+    ///   - url: The self-hosted site url string
+    ///   - username: The username for the self-hosted site
+    ///   - password: The password for the self-hosted site
+    ///   - completion: The completion block used to handle if the service will succeed or fail with a specific error
     func installJetpack(url: String,
                         username: String,
                         password: String,
