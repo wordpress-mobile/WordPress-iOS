@@ -23,6 +23,8 @@ import WordPressShared
     var twitterSection: SharingButtonsSection {
         return sections.last!
     }
+    
+    var didMakeChanges: Bool = false
 
     @objc let buttonStyles = [
         "icon-text": NSLocalizedString("Icon & Text", comment: "Title of a button style"),
@@ -75,8 +77,10 @@ import WordPressShared
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        self.saveButtonChanges(true)
+        
+        if didMakeChanges {
+            self.saveButtonChanges(true)
+        }
     }
 
 
@@ -195,6 +199,7 @@ import WordPressShared
                 switchCell.on = !self.blog.settings!.sharingDisabledReblogs
                 switchCell.onChange = { newValue in
                     self.blog.settings!.sharingDisabledReblogs = !newValue
+                    self.didMakeChanges = true
                     self.saveBlogSettingsChanges(false)
 
                     let properties = [
@@ -217,6 +222,7 @@ import WordPressShared
                 switchCell.on = !self.blog.settings!.sharingDisabledLikes
                 switchCell.onChange = { newValue in
                     self.blog.settings!.sharingDisabledLikes = !newValue
+                    self.didMakeChanges = true
                     self.saveBlogSettingsChanges(false)
                 }
             }
@@ -244,6 +250,7 @@ import WordPressShared
                 switchCell.on = self.blog.settings!.sharingCommentLikesEnabled
                 switchCell.onChange = { newValue in
                     self.blog.settings!.sharingCommentLikesEnabled = newValue
+                    self.didMakeChanges = true
                     self.saveBlogSettingsChanges(false)
                 }
             }
@@ -329,6 +336,8 @@ import WordPressShared
                     if button.enabled {
                         button.visibility = button.enabled ? SharingButton.visible : nil
                     }
+
+                    self.didMakeChanges = true
                     self.refreshMoreSection()
                 }
             }
@@ -354,6 +363,8 @@ import WordPressShared
                     if button.enabled {
                         button.visibility = button.enabled ? SharingButton.hidden : nil
                     }
+
+                    self.didMakeChanges = true
                     self.refreshButtonsSection()
                 }
             }
@@ -394,6 +405,7 @@ import WordPressShared
                 switchCell.onChange = { newValue in
                     self.buttonsSection.editing = !self.buttonsSection.editing
                     self.updateButtonOrderAfterEditing()
+                    self.didMakeChanges = true
                     self.saveButtonChanges(true)
                 }
             }
@@ -437,6 +449,7 @@ import WordPressShared
                 switchCell.onChange = { newValue in
                     self.updateButtonOrderAfterEditing()
                     self.moreSection.editing = !self.moreSection.editing
+                    self.didMakeChanges = true
                     self.saveButtonChanges(true)
                 }
             }
@@ -520,7 +533,7 @@ import WordPressShared
     ///
     /// - Parameter refresh: True if the tableview should be reloaded.
     ///
-    @objc func saveBlogSettingsChanges(_ refresh: Bool) {
+    private func saveBlogSettingsChanges(_ refresh: Bool) {
         if refresh {
             tableView.reloadData()
         }
@@ -544,7 +557,7 @@ import WordPressShared
     /// Syncs sharing buttons from the user's blog and reloads the button sections
     /// when finished.  Fails silently if there is an error.
     ///
-    @objc func syncSharingButtons() {
+    private func syncSharingButtons() {
         let service = SharingService(managedObjectContext: managedObjectContext)
         service.syncSharingButtonsForBlog(self.blog,
             success: { [weak self] in
@@ -624,7 +637,7 @@ import WordPressShared
     ///
     /// - Parameter refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
-    @objc func saveButtonChanges(_ refreshAfterSync: Bool) {
+    private func saveButtonChanges(_ refreshAfterSync: Bool) {
         let context = ContextManager.sharedInstance().mainContext
         ContextManager.sharedInstance().save(context) { [weak self] in
             self?.reloadButtons()
@@ -636,7 +649,7 @@ import WordPressShared
     /// Retrives a fresh copy of the SharingButtons from core data, updating the
     /// `buttons` property and refreshes the button section and the more section.
     ///
-    @objc func reloadButtons() {
+    private func reloadButtons() {
         let service = SharingService(managedObjectContext: managedObjectContext)
         buttons = service.allSharingButtonsForBlog(blog)
 
@@ -649,7 +662,7 @@ import WordPressShared
     ///
     /// - Parameter refresh: True if the tableview sections should be reloaded.
     ///
-    @objc func syncButtonChangesToBlog(_ refresh: Bool) {
+    private func syncButtonChangesToBlog(_ refresh: Bool) {
         let service = SharingService(managedObjectContext: managedObjectContext)
         service.updateSharingButtonsForBlog(blog,
             sharingButtons: buttons,
@@ -670,7 +683,7 @@ import WordPressShared
     ///
     /// - Parameter error: An NSError object.
     ///
-    @objc func showErrorSyncingMessage(_ error: NSError?) {
+    private func showErrorSyncingMessage(_ error: NSError?) {
         let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
         var message = NSLocalizedString("There was a problem saving changes to sharing management.", comment: "A short error message shown in a prompt.")
         if let error = error {
