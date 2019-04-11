@@ -72,7 +72,7 @@ def gutenberg(options)
     options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
-    
+
     gutenberg_dependencies options
 end
 
@@ -104,7 +104,7 @@ target 'WordPress' do
     ## =====================
     ##
     gutenberg :commit => 'f16c51caabb519120ecc69224ad800329730ed4c'
-    
+
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
 
