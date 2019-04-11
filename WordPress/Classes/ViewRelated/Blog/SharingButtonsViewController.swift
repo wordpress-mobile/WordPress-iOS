@@ -394,8 +394,7 @@ import WordPressShared
                 switchCell.onChange = { newValue in
                     self.buttonsSection.editing = !self.buttonsSection.editing
                     self.updateButtonOrderAfterEditing()
-                    self.didMakeChanges = true
-                    self.saveButtonChanges(true)
+                    self.reloadButtons()
                 }
             }
         }
@@ -437,8 +436,7 @@ import WordPressShared
                 switchCell.onChange = { newValue in
                     self.updateButtonOrderAfterEditing()
                     self.moreSection.editing = !self.moreSection.editing
-                    self.didMakeChanges = true
-                    self.saveButtonChanges(true)
+                   self.reloadButtons()
                 }
             }
         }
@@ -905,8 +903,7 @@ extension SharingButtonsViewController {
             let sharingButton = button as! SharingButton
             sharingButton.order = NSNumber(value: index)
         }
-
-        self.saveButtonChanges(false)
+        self.didMakeChanges = true
         WPAppAnalytics.track(.sharingButtonOrderChanged, with: blog)
     }
 }
