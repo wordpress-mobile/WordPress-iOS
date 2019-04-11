@@ -11,7 +11,7 @@ class JetpackRemoteInstallViewController: UIViewController {
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var promptType: JetpackLoginPromptType
     private var blog: Blog
-    private let jetpackView = JetpackRemoteInstallView()
+    private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
 
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
@@ -24,10 +24,6 @@ class JetpackRemoteInstallViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func loadView() {
-        view = UIView()
     }
 
     override func viewDidLoad() {
@@ -105,7 +101,7 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 // MARK: - Jetpack View delegate
 
-extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
+extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDelegate {
     func mainButtonDidTouch() {
         guard let url = blog.url,
             let username = blog.username,

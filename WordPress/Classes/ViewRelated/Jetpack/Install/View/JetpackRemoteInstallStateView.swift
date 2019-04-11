@@ -1,12 +1,12 @@
 import WordPressAuthenticator
 
-protocol JetpackRemoteInstallViewDelegate: class {
+protocol JetpackRemoteInstallStateViewDelegate: class {
     func mainButtonDidTouch()
     func customerSupportButtonDidTouch()
 }
 
-class JetpackRemoteInstallView: UIViewController {
-    weak var delegate: JetpackRemoteInstallViewDelegate?
+class JetpackRemoteInstallStateView: UIViewController {
+    weak var delegate: JetpackRemoteInstallStateViewDelegate?
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
@@ -44,7 +44,7 @@ class JetpackRemoteInstallView: UIViewController {
     }
 }
 
-private extension JetpackRemoteInstallView {
+private extension JetpackRemoteInstallStateView {
     func setupUI() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
 
