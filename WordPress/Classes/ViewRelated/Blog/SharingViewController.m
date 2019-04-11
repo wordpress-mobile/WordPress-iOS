@@ -55,6 +55,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [ReachabilityUtils dismissNoInternetConnectionNotice];
+}
+
 -(void) dealloc
 {
     [self.reachability stopNotifier];
@@ -261,11 +267,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 -(void)showConnectionError
 {
-    NSString *title = NSLocalizedString(@"No Connection", @"Title of error prompt when no internet connection is available.");
-    NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [WPError showAlertWithTitle:title message:message];
-    });
+//    NSString *title = NSLocalizedString(@"No Connection", @"Title of error prompt when no internet connection is available.");
+//    NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [WPError showAlertWithTitle:title message:message];
+//    });
+    
+     [ReachabilityUtils showNoInternetConnectionNoticeWithMessage: ReachabilityUtils.noConnectionMessage];
 }
 
 - (void)syncPublicizeServices
