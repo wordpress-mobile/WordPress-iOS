@@ -42,8 +42,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-#    pod 'WordPressKit', '~> 3.2.2'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ec088e065b10c7c31aa0ebb6e6afdd93192495e3'
+    pod 'WordPressKit', '~> 4.0.0-beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '5d13f1513a630be3c0d3f31a09b20468c807a26d'
     #pod 'WordPressKit', :path => '~/Developer/WordPressKit-iOS'
 end
 
@@ -121,7 +121,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
-
+    pod 'ZIPFoundation', '~> 0.9.8'
 
     ## Automattic libraries
     ## ====================
@@ -138,7 +138,7 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.3.0'
+    pod 'WordPressAuthenticator', '~> 1.4.0-beta'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/wc-support-site-url-login'
 
@@ -163,7 +163,6 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         wordpress_ui
-        pod 'ZIPFoundation', '~> 0.9.8'
     end
 
 
@@ -236,12 +235,23 @@ target 'WordPressComStatsiOS' do
     ## ====================
     ##
     wordpress_ui
+end
 
-    target 'WordPressComStatsiOSTests' do
-        inherit! :search_paths
+## WordPress.com Stats Tests
+## =========================
+##
+target 'WordPressComStatsiOSTests' do
+  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
-        shared_test_pods
-    end
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  wordpress_ui
+
+  shared_test_pods
 end
 
 ## Screenshot Generation
