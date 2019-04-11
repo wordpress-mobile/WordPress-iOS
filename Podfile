@@ -122,21 +122,26 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.2.0'
-
+    pod 'ZIPFoundation', '~> 0.9.8'
 
     ## Automattic libraries
     ## ====================
     ##
-    pod 'Automattic-Tracks-iOS', '0.3.3'
+
+    # Production
+    pod 'Automattic-Tracks-iOS', '0.3.4'
+    # While in PR
+    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
+
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.2'
     pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.2.1'
+    pod 'WordPressAuthenticator', '~> 1.3.0'
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git' , :commit => '867fa63'
+    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/wc-support-site-url-login'
 
 
     aztec
@@ -159,7 +164,6 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         wordpress_ui
-        pod 'ZIPFoundation', '~> 0.9.8'
     end
 
 
@@ -232,12 +236,23 @@ target 'WordPressComStatsiOS' do
     ## ====================
     ##
     wordpress_ui
+end
 
-    target 'WordPressComStatsiOSTests' do
-        inherit! :search_paths
+## WordPress.com Stats Tests
+## =========================
+##
+target 'WordPressComStatsiOSTests' do
+  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
-        shared_test_pods
-    end
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  wordpress_ui
+
+  shared_test_pods
 end
 
 ## Screenshot Generation
