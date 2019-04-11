@@ -23,7 +23,7 @@ import WordPressShared
     var twitterSection: SharingButtonsSection {
         return sections.last!
     }
-    
+
     var didMakeChanges: Bool = false
 
     @objc let buttonStyles = [
@@ -77,7 +77,7 @@ import WordPressShared
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         if didMakeChanges {
             self.saveButtonChanges(true)
         }
