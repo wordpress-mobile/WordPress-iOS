@@ -60,7 +60,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let bundle = Bundle(for: WordPressAuthenticator.self)
+        let bundle = WordPressAuthenticator.bundle
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
