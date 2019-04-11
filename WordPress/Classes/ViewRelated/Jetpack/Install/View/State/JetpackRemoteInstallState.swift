@@ -1,4 +1,4 @@
-enum JetpackRemoteInstallViewState: Equatable {
+enum JetpackRemoteInstallState: Equatable {
     case install
     case installing
     case failure(JetpackInstallError)

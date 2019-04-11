@@ -24,7 +24,7 @@ class JetpackRemoteInstallStateView: UIViewController {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    func setupView(for state: JetpackRemoteInstallViewState) {
+    func setupView(for state: JetpackRemoteInstallState) {
         imageView.image = state.image
 
         titleLabel.text = state.title

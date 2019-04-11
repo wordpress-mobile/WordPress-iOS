@@ -1047,7 +1047,7 @@
 		9A8ECE0E2254A3260043C8DA /* JetpackConnectionWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE052254A3260043C8DA /* JetpackConnectionWebViewController.swift */; };
 		9A8ECE0F2254A3260043C8DA /* JetpackRemoteInstallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */; };
 		9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */; };
-		9A8ECE122254A3260043C8DA /* JetpackRemoteInstallViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallViewState.swift */; };
+		9A8ECE122254A3260043C8DA /* JetpackRemoteInstallState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallState.swift */; };
 		9A8ECE132254A3260043C8DA /* JetpackInstallError+Blocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */; };
 		9A8ECE1D2254AE4E0043C8DA /* JetpackRemoteInstallStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE1B2254AE4E0043C8DA /* JetpackRemoteInstallStateView.swift */; };
 		9A8ECE1E2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A8ECE1C2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib */; };
@@ -3070,7 +3070,7 @@
 		9A8ECE052254A3260043C8DA /* JetpackConnectionWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackConnectionWebViewController.swift; sourceTree = "<group>"; };
 		9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewController.swift; sourceTree = "<group>"; };
 		9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewModel.swift; sourceTree = "<group>"; };
-		9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallViewState.swift; sourceTree = "<group>"; };
+		9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRemoteInstallState.swift; sourceTree = "<group>"; };
 		9A8ECE0B2254A3260043C8DA /* JetpackInstallError+Blocking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JetpackInstallError+Blocking.swift"; sourceTree = "<group>"; };
 		9A8ECE1B2254AE4E0043C8DA /* JetpackRemoteInstallStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JetpackRemoteInstallStateView.swift; path = Classes/ViewRelated/Jetpack/Install/View/JetpackRemoteInstallStateView.swift; sourceTree = SOURCE_ROOT; };
 		9A8ECE1C2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = JetpackRemoteInstallStateView.xib; path = Classes/ViewRelated/Jetpack/Install/View/JetpackRemoteInstallStateView.xib; sourceTree = SOURCE_ROOT; };
@@ -6668,6 +6668,14 @@
 			path = Operation;
 			sourceTree = "<group>";
 		};
+		9A35B08D225F9E2200A293E0 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
 		9A38DC63218899E4006A409B /* Revisions */ = {
 			isa = PBXGroup;
 			children = (
@@ -6751,7 +6759,7 @@
 				9A8ECE062254A3260043C8DA /* JetpackRemoteInstallViewController.swift */,
 				9A8ECE1F22550A210043C8DA /* Error */,
 				9A8ECE1A2254ADFA0043C8DA /* View */,
-				9A8ECE082254A3260043C8DA /* Data */,
+				9A8ECE082254A3260043C8DA /* ViewModel */,
 				9A8ECE042254A3260043C8DA /* Webview */,
 			);
 			path = Install;
@@ -6765,18 +6773,18 @@
 			path = Webview;
 			sourceTree = "<group>";
 		};
-		9A8ECE082254A3260043C8DA /* Data */ = {
+		9A8ECE082254A3260043C8DA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				9A8ECE092254A3260043C8DA /* JetpackRemoteInstallViewModel.swift */,
-				9A8ECE0A2254A3260043C8DA /* JetpackRemoteInstallViewState.swift */,
 			);
-			path = Data;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		9A8ECE1A2254ADFA0043C8DA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9A35B08D225F9E2200A293E0 /* State */,
 				9A8ECE1B2254AE4E0043C8DA /* JetpackRemoteInstallStateView.swift */,
 				9A8ECE1C2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib */,
 			);
@@ -10766,7 +10774,7 @@
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */,
 				4054F4602214F50300D261AB /* StreakInsightStatsRecordValue+CoreDataProperties.swift in Sources */,
-				9A8ECE122254A3260043C8DA /* JetpackRemoteInstallViewState.swift in Sources */,
+				9A8ECE122254A3260043C8DA /* JetpackRemoteInstallState.swift in Sources */,
 				40D7823A206AEA880015A3A1 /* Scheduler.swift in Sources */,
 				436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,

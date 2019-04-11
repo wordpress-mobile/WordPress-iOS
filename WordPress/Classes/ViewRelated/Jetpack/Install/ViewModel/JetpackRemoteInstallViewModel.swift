@@ -1,13 +1,13 @@
 import WordPressFlux
 
 class JetpackRemoteInstallViewModel {
-    typealias JetpackRemoteInstallOnChangeState = (JetpackRemoteInstallViewState) -> Void
+    typealias JetpackRemoteInstallOnChangeState = (JetpackRemoteInstallState) -> Void
 
     var onChangeState: JetpackRemoteInstallOnChangeState?
     private let store = StoreContainer.shared.jetpackInstall
     private var storeReceipt: Receipt?
 
-    private(set) var state: JetpackRemoteInstallViewState = .install {
+    private(set) var state: JetpackRemoteInstallState = .install {
         didSet {
             onChangeState?(state)
         }
