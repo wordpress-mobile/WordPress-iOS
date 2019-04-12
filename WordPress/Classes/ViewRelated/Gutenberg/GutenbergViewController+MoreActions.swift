@@ -68,7 +68,7 @@ extension GutenbergViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            Crashlytics.sharedInstance().recordError(error)
+            WPCrashLogging.logError(error)
             return
         }
 

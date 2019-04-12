@@ -1709,6 +1709,7 @@
 		F1CE42AA2213475000316683 /* DebouncerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CE42A92213475000316683 /* DebouncerTests.swift */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
+		F928EDA3226140620030D451 /* WPCrashLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F928EDA2226140620030D451 /* WPCrashLogging.swift */; };
 		F9463A7321C05EE90081F11E /* ScreenshotCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */; };
 		F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
@@ -3922,6 +3923,7 @@
 		F373612EEEEF10E500093FF3 /* Pods-WordPress.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7E3CC306AECBBCB71D2E19C /* Pods_WordPressDraftActionExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressDraftActionExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F928EDA2226140620030D451 /* WPCrashLogging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPCrashLogging.swift; sourceTree = "<group>"; };
 		F9463A7221C05EE90081F11E /* ScreenshotCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenshotCredentials.swift; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
@@ -6120,6 +6122,7 @@
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				F1D690131F828FF000200E30 /* BuildInformation */,
 				B5ECA6CB1DBAA0110062D7E0 /* CoreData */,
+				F928EDA1226140430030D451 /* Sentry */,
 				B5C9401F1DB902220079D4FF /* HockeyApp */,
 				B5DB8AF51C949DC70059196A /* ImmuTable */,
 				59DD94311AC479DC0032DD6B /* Logging */,
@@ -8487,6 +8490,14 @@
 			path = BuildInformation;
 			sourceTree = "<group>";
 		};
+		F928EDA1226140430030D451 /* Sentry */ = {
+			isa = PBXGroup;
+			children = (
+				F928EDA2226140620030D451 /* WPCrashLogging.swift */,
+			);
+			path = Sentry;
+			sourceTree = "<group>";
+		};
 		FA5C74091C596E69000B528C /* SiteManagement */ = {
 			isa = PBXGroup;
 			children = (
@@ -9306,6 +9317,7 @@
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
 				"${BUILT_PRODUCTS_DIR}/WPMediaPicker/WPMediaPicker.framework",
@@ -9353,6 +9365,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WPMediaPicker.framework",
@@ -10074,6 +10087,7 @@
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
 				43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */,
 				4089C51122371B120031CE78 /* TodayStatsRecordValue+CoreDataProperties.swift in Sources */,
+				F928EDA3226140620030D451 /* WPCrashLogging.swift in Sources */,
 				D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */,
 				176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,

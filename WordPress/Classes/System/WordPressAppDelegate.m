@@ -4,7 +4,6 @@
 #import "Constants.h"
 
 // Pods
-#import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressUI/WordPressUI.h>
 
@@ -264,7 +263,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
-    [self configureCrashlytics];
+    [self configureCrashLogging];
     [self configureAppRatingUtility];
 
     // Analytics

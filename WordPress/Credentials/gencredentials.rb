@@ -223,10 +223,6 @@ end
 configuration = ENV["CONFIGURATION"]
 if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration)
 
-  if crashlytics.nil?
-    $stderr.puts "warning: Crashlytics API key not found"
-  end
-
   if google_client.nil?
     $stderr.puts "warning: Google Login Client ID not found"
   end
