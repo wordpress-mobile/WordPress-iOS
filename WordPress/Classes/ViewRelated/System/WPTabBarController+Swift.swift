@@ -9,17 +9,17 @@ extension WPTabBarController {
     ]
 
     private struct AssociatedKeys {
-        static var hasTrackedTabAccessOnViewDidAppear = 0
+        static var shouldTrackTabAccessOnViewDidAppear = 0
     }
 
-    private var hasTrackedTabAccessOnViewDidAppear: Bool {
+    private var shouldTrackTabAccessOnViewDidAppear: Bool {
         get {
-            let storedVal = objc_getAssociatedObject(self, &AssociatedKeys.hasTrackedTabAccessOnViewDidAppear)
+            let storedVal = objc_getAssociatedObject(self, &AssociatedKeys.shouldTrackTabAccessOnViewDidAppear)
             return storedVal as? Bool ?? false
         }
         set(value) {
             objc_setAssociatedObject(self,
-                                     &AssociatedKeys.hasTrackedTabAccessOnViewDidAppear,
+                                     &AssociatedKeys.shouldTrackTabAccessOnViewDidAppear,
                                      value,
                                      .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
@@ -28,8 +28,8 @@ extension WPTabBarController {
     @objc func startObserversForTabAccessTracking() {
         let nc = NotificationCenter.default
         nc.addObserver(self,
-                       selector: #selector(trackTabAccessOnAppEnterForeground),
-                       name: UIApplication.willEnterForegroundNotification,
+                       selector: #selector(trackTabAccessOnAppDidBecomeActive),
+                       name: UIApplication.didBecomeActiveNotification,
                        object: nil)
         nc.addObserver(self,
                        selector: #selector(resetViewDidAppearFlagOnWPComAccountChange),
@@ -37,40 +37,31 @@ extension WPTabBarController {
                        object: nil)
     }
 
-    @objc func trackTabAccessOnAppEnterForeground() {
+    @objc func trackTabAccessOnAppDidBecomeActive() {
         trackTabAccessForTabIndex(selectedIndex)
     }
 
-    /// Reset `hasTrackedTabAccessOnViewDidAppear` if the user has logged out.
+    /// Reset `shouldTrackTabAccessOnViewDidAppear` if the user has logged out.
     ///
-    /// This allows us to track tab access on `-viewDidLoad` when the user logs back in again.
+    /// This allows us to track tab access on `-viewDidAppear` when the user logs back in again.
     @objc func resetViewDidAppearFlagOnWPComAccountChange(_ notification: NSNotification) {
         guard notification.object == nil else {
             return
         }
 
-        hasTrackedTabAccessOnViewDidAppear = false
+        shouldTrackTabAccessOnViewDidAppear = true
     }
 
     /// Track tab access on viewDidAppear but only once.
     ///
-    /// This covers events like:
-    ///
-    /// - The user logging in
-    /// - The app was launched and we restored the previous tab on `decodeRestorableStateWithCoder`
-    ///
-    /// And this prevents incorrect tracking for scenarios like:
-    ///
-    /// - This VC is active on app launch but we're also showing the login VC. By calling this
-    ///   method in `-viewDidLoad`, we are able to determine if the login VC is visible.
-    /// - The user opens a webview and dismisses it. The `-viewDidLoad` gets called again.
+    /// This covers the scenario when the user has just logged in.
     @objc func trackTabAccessOnViewDidAppear() {
-        guard !hasTrackedTabAccessOnViewDidAppear else {
+        guard shouldTrackTabAccessOnViewDidAppear else {
             return
         }
 
         if trackTabAccessForTabIndex(selectedIndex) {
-            hasTrackedTabAccessOnViewDidAppear = true
+            shouldTrackTabAccessOnViewDidAppear = false
         }
     }
 
