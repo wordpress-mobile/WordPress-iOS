@@ -189,9 +189,7 @@ private extension StatsInsightsStore {
         activeQueries.forEach { query in
             switch query {
             case .insights:
-                if shouldFetchOverview() {
-                    fetchInsights()
-                }
+                loadFromCache()
             case .allFollowers:
                 if shouldFetchFollowers() {
                     fetchAllFollowers()
