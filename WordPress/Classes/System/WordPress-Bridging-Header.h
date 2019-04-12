@@ -73,6 +73,8 @@
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
 
+#import "TextBundleWrapper.h"
+
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"

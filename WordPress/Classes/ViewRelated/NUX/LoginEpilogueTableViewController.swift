@@ -21,7 +21,7 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Site that was just connected to our awesome app.
     ///
-    private var credentials: WordPressCredentials?
+    private var credentials: AuthenticatorCredentials?
 
 
     // MARK: - Lifecycle
@@ -38,7 +38,7 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
     ///
-    func setup(with credentials: WordPressCredentials) {
+    func setup(with credentials: AuthenticatorCredentials) {
         self.credentials = credentials
         refreshInterface(for: credentials)
     }
@@ -169,15 +169,13 @@ private extension LoginEpilogueTableViewController {
 
     /// Refreshes the interface, so that the specified Endpoint's sites are displayed.
     ///
-    func refreshInterface(for credentials: WordPressCredentials) {
-        switch credentials {
-        case .wpcom:
+    func refreshInterface(for credentials: AuthenticatorCredentials) {
+        if credentials.wpcom != nil {
             epilogueUserInfo = loadEpilogueForDotcom()
+        } else if let wporg = credentials.wporg {
+            blogDataSource.blog = loadBlog(username: wporg.username, xmlrpc: wporg.xmlrpc)
 
-        case .wporg(let username, let password, let xmlrpc, _):
-            blogDataSource.blog = loadBlog(username: username, xmlrpc: xmlrpc)
-
-            loadEpilogueForSelfhosted(username: username, password: password, xmlrpc: xmlrpc) { [weak self] epilogueInfo in
+            loadEpilogueForSelfhosted(username: wporg.username, password: wporg.password, xmlrpc: wporg.xmlrpc) { [weak self] epilogueInfo in
                 self?.epilogueUserInfo = epilogueInfo
             }
         }

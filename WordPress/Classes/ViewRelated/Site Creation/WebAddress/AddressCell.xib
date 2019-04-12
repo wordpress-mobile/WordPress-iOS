@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQm-TV-IDW">
-                        <rect key="frame" x="16" y="12" width="288" height="20"/>
+                        <rect key="frame" x="16" y="12" width="249" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -34,7 +34,7 @@
             <constraints>
                 <constraint firstItem="hQm-TV-IDW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="QB9-fd-Zsn"/>
                 <constraint firstItem="hQm-TV-IDW" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="eud-Yr-hp5"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="hQm-TV-IDW" secondAttribute="trailing" constant="16" id="pJe-WK-HF0"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="hQm-TV-IDW" secondAttribute="trailing" constant="55" id="pJe-WK-HF0"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>

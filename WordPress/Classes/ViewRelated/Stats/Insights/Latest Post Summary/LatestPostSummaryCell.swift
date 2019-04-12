@@ -51,7 +51,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate) {
+    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
 
