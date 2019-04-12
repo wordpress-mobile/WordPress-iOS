@@ -1,5 +1,3 @@
-import Foundation
-
 /// Local service for Jetpack
 ///
 class JetpackService {
