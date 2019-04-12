@@ -71,7 +71,10 @@ struct ShareExtractor {
                 let selectedText = extractedTextResults?.selectedText ?? ""
                 let importedText = extractedTextResults?.importedText ?? ""
                 let url = extractedTextResults?.url
-                let returnedImages = images ?? [UIImage]()
+                var returnedImages = images ?? [UIImage]()
+                if let extractedImage = extractedTextResults?.image {
+                    returnedImages.append(extractedImage)
+                }
 
                 completion(ExtractedShare(title: title,
                                           description: description,
@@ -162,6 +165,7 @@ private extension ShareExtractor {
             let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
             let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
             let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
+            let combinedImages = extractedItems.compactMap({ $0.image })
             let urls = extractedItems.compactMap({ $0.url })
 
             completion(ExtractedItem(selectedText: combinedSelectedText,
@@ -169,7 +173,7 @@ private extension ShareExtractor {
                                      description: combinedDescription,
                                      url: urls.first,
                                      title: combinedTitle,
-                                     image: nil))
+                                     image: combinedImages.first))
         }
     }
 
@@ -303,6 +307,25 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
         var returnedItem = ExtractedItem()
         returnedItem.importedText = bundleWrapper.text
+
+        bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
+            guard let fileName = fileWrapper.filename, let fileURL = URL(string: fileName) else {
+                return
+            }
+
+//            switch (fileName as NSString).lastPathComponent {
+            switch fileURL.pathExtension.lowercased() {
+            case "jpg", "jpeg", "heic":
+//                let img = UIImage(contentsOfURL: fileURL)
+                let img = UIImage(data: fileWrapper.regularFileContents!)
+                returnedItem.image = img
+            case "gif":
+                print("we have a gif")
+            default:
+                break
+            }
+        }
+
         return returnedItem
     }
 
