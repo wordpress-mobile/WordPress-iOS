@@ -271,6 +271,7 @@ extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
     }
 
     func jetpackRemoteInstallWebviewFallback() {
+        trackStat(.installJetpackRemoteStartManualFlow)
         dismiss(animated: true) { [weak self] in
             self?.openInstallJetpackURL()
         }
