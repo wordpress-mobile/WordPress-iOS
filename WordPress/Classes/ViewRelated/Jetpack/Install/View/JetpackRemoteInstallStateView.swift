@@ -1,19 +1,19 @@
 import WordPressAuthenticator
 
-protocol JetpackRemoteInstallViewDelegate: class {
+protocol JetpackRemoteInstallStateViewDelegate: class {
     func mainButtonDidTouch()
     func customerSupportButtonDidTouch()
 }
 
-class JetpackRemoteInstallView: UIViewController {
-    weak var delegate: JetpackRemoteInstallViewDelegate?
+class JetpackRemoteInstallStateView: UIViewController {
+    weak var delegate: JetpackRemoteInstallStateViewDelegate?
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var mainButton: NUXButton!
     @IBOutlet private var supportButton: UIButton!
-    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private var activityIndicatorContainer: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,7 @@ class JetpackRemoteInstallView: UIViewController {
         imageView.isHidden = collection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact))
     }
 
-    func setupView(for state: JetpackRemoteInstallViewState) {
+    func setupView(for state: JetpackRemoteInstallState) {
         imageView.image = state.image
 
         titleLabel.text = state.title
@@ -33,7 +33,7 @@ class JetpackRemoteInstallView: UIViewController {
         mainButton.isHidden = state == .installing
         mainButton.setTitle(state.buttonTitle, for: .normal)
 
-        activityIndicator.toggleAnimating(state == .installing)
+        activityIndicatorContainer.isHidden = state != .installing
 
         switch state {
         case .failure:
@@ -44,7 +44,7 @@ class JetpackRemoteInstallView: UIViewController {
     }
 }
 
-private extension JetpackRemoteInstallView {
+private extension JetpackRemoteInstallStateView {
     func setupUI() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
 
@@ -68,17 +68,5 @@ private extension JetpackRemoteInstallView {
 
     @IBAction func customSupportButtonAction(_ sender: UIButton) {
         delegate?.customerSupportButtonDidTouch()
-    }
-}
-
-// MARK: - UIActivityIndicatorView extension
-
-private extension UIActivityIndicatorView {
-    func toggleAnimating(_ animate: Bool) {
-        if animate {
-            startAnimating()
-        } else {
-            stopAnimating()
-        }
     }
 }
