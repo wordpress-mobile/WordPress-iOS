@@ -72,8 +72,8 @@ struct ShareExtractor {
                 let importedText = extractedTextResults?.importedText ?? ""
                 let url = extractedTextResults?.url
                 var returnedImages = images ?? [UIImage]()
-                if let extractedImage = extractedTextResults?.image {
-                    returnedImages.append(extractedImage)
+                if let extractedImages = extractedTextResults?.images {
+                    returnedImages.append(contentsOf: extractedImages)
                 }
 
                 completion(ExtractedShare(title: title,
@@ -126,7 +126,7 @@ private struct ExtractedItem {
 
     /// An image
     ///
-    var image: UIImage?
+    var images: [UIImage]?
 }
 
 private extension ShareExtractor {
@@ -165,7 +165,7 @@ private extension ShareExtractor {
             let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
             let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
             let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
-            let combinedImages = extractedItems.compactMap({ $0.image })
+            let combinedImages = extractedItems.compactMap({ $0.images }).flatMap({ $0 })
             let urls = extractedItems.compactMap({ $0.url })
 
             completion(ExtractedItem(selectedText: combinedSelectedText,
@@ -173,7 +173,7 @@ private extension ShareExtractor {
                                      description: combinedDescription,
                                      url: urls.first,
                                      title: combinedTitle,
-                                     image: combinedImages.first))
+                                     images: combinedImages))
         }
     }
 
@@ -187,7 +187,7 @@ private extension ShareExtractor {
                 completion(nil)
                 return
             }
-            let images = extractedItems.compactMap({ $0.image })
+            let images = extractedItems.compactMap({ $0.images }).flatMap({ $0 })
             completion(images)
         }
     }
@@ -307,23 +307,29 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
         var returnedItem = ExtractedItem()
         returnedItem.importedText = bundleWrapper.text
+        var bundledImages = [UIImage]()
 
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
-            guard let fileName = fileWrapper.filename, let fileURL = URL(string: fileName) else {
+            guard let fileName = fileWrapper.filename,
+                let fileURL = URL(string: fileName),
+                let fileData = fileWrapper.regularFileContents else {
                 return
             }
 
-//            switch (fileName as NSString).lastPathComponent {
             switch fileURL.pathExtension.lowercased() {
             case "jpg", "jpeg", "heic":
-//                let img = UIImage(contentsOfURL: fileURL)
-                let img = UIImage(data: fileWrapper.regularFileContents!)
-                returnedItem.image = img
+                if let img = UIImage(data: fileData) {
+                    bundledImages.append(img)
+                }
             case "gif":
                 print("we have a gif")
             default:
                 break
             }
+        }
+
+        if bundledImages.count > 0 {
+            returnedItem.images = bundledImages
         }
 
         return returnedItem
@@ -354,7 +360,9 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
         }
 
         var returnedItem = ExtractedItem()
-        returnedItem.image = loadedImage
+        if let image = loadedImage {
+            returnedItem.images = [image]
+        }
         return returnedItem
     }
 }
