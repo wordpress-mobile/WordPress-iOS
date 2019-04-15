@@ -27,7 +27,7 @@ enum InsightAction: Action {
     case receivedAllPostsComments()
     case refreshComments()
 
-    case receivedAllTagsAndCategories()
+    case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?)
     case refreshTagsAndCategories()
 }
 
@@ -137,8 +137,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllPostsComments()
         case .refreshComments:
             refreshComments()
-        case .receivedAllTagsAndCategories:
-            receivedAllTagsAndCategories()
+        case .receivedAllTagsAndCategories(let allTagsAndCategories):
+            receivedAllTagsAndCategories(allTagsAndCategories)
         case .refreshTagsAndCategories:
             refreshTagsAndCategories()
         }
@@ -442,12 +442,12 @@ private extension StatsInsightsStore {
     // MARK: - Insights Details
 
     func fetchAllFollowers() {
-        state.fetchingAllDotComFollowers = true
-        state.fetchingAllEmailFollowers = true
-
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
             return
         }
+
+        state.fetchingAllDotComFollowers = true
+        state.fetchingAllEmailFollowers = true
 
         let api = apiService(for: siteID)
 
@@ -476,10 +476,23 @@ private extension StatsInsightsStore {
     }
 
     func fetchAllTagsAndCategories() {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
+
         state.fetchingAllTagsAndCategories = true
 
-        // TODO: replace with api call when fetch all tags & categories is supported.
-        actionDispatcher.dispatch(InsightAction.receivedAllTagsAndCategories())
+        let api = apiService(for: siteID)
+
+        // The API doesn't work when we specify `0` here, like most of the other endpoints do, unfortunately...
+        // 100 was chosen as an arbitraily large number that should be "big enough" for all of our users
+        // but I'm open to increasing it.
+        api.getInsight(limit: 100) { (allTagsAndCategories: StatsTagsAndCategoriesInsight?, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all tags and categories: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllTagsAndCategories(allTagsAndCategories))
+        }
     }
 
     func receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?) {
@@ -542,10 +555,11 @@ private extension StatsInsightsStore {
         return !isFetchingComments
     }
 
-    func receivedAllTagsAndCategories() {
+    func receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?) {
         transaction { state in
-            // TODO: replace with real allTagsAndCategories when API supports it.
-            state.allTagsAndCategories = state.topTagsAndCategories
+            if allTagsAndCategories != nil {
+                state.allTagsAndCategories = allTagsAndCategories
+            }
             state.fetchingAllTagsAndCategories = false
         }
     }
