@@ -245,7 +245,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             UIApplication.shared.isCreatingScreenshots() ? UITextViewWithoutCaret() : UITextView()
 
         textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
-        textView.accessibilityLabel = "aztec-editor-title"
+        textView.accessibilityIdentifier = "aztec-editor-title"
         textView.delegate = self
         textView.font = Fonts.title
         textView.returnKeyType = .next
