@@ -19,8 +19,8 @@ enum InsightAction: Action {
     case refreshInsights()
 
     // Insights details
-    case receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?)
-    case receivedAllEmailFollowers(_ allDotComFollowers: StatsGroup?)
+    case receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?)
+    case receivedAllEmailFollowers(_ allDotComFollowers: StatsEmailFollowersInsight?)
     case refreshFollowers()
 
     case receivedAllAuthorsComments()
@@ -74,10 +74,10 @@ struct InsightStoreState {
 
     // Insights details
 
-    var allDotComFollowers: [StatsItem]?
+    var allDotComFollowers: StatsDotComFollowersInsight?
     var fetchingAllDotComFollowers = false
 
-    var allEmailFollowers: [StatsItem]?
+    var allEmailFollowers: StatsEmailFollowersInsight?
     var fetchingAllEmailFollowers = false
 
     var allAuthorsComments: StatsCommentsInsight?
@@ -445,19 +445,25 @@ private extension StatsInsightsStore {
         state.fetchingAllDotComFollowers = true
         state.fetchingAllEmailFollowers = true
 
-        SiteStatsInformation.statsService()?.retrieveFollowers(of: .dotCom, withCompletionHandler: { (dotComFollowers, error) in
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
+
+        let api = apiService(for: siteID)
+
+        api.getInsight(limit: 0) { (dotComFollowers: StatsDotComFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers))
-        })
+        }
 
-        SiteStatsInformation.statsService()?.retrieveFollowers(of: .email, withCompletionHandler: { (emailFollowers, error) in
+          api.getInsight(limit: 0) { (emailFollowers: StatsEmailFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllEmailFollowers(emailFollowers))
-        })
+        }
     }
 
     func fetchAllComments() {
@@ -476,16 +482,20 @@ private extension StatsInsightsStore {
         actionDispatcher.dispatch(InsightAction.receivedAllTagsAndCategories())
     }
 
-    func receivedAllDotComFollowers(_ allDotComFollowers: StatsGroup?) {
+    func receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?) {
         transaction { state in
-            state.allDotComFollowers = allDotComFollowers?.items as? [StatsItem]
+            if allDotComFollowers != nil {
+                state.allDotComFollowers = allDotComFollowers
+            }
             state.fetchingAllDotComFollowers = false
         }
     }
 
-    func receivedAllEmailFollowers(_ allEmailFollowers: StatsGroup?) {
+    func receivedAllEmailFollowers(_ allEmailFollowers: StatsEmailFollowersInsight?) {
         transaction { state in
-            state.allEmailFollowers = allEmailFollowers?.items as? [StatsItem]
+            if allEmailFollowers != nil {
+                state.allEmailFollowers = allEmailFollowers
+            }
             state.fetchingAllEmailFollowers = false
         }
     }
@@ -654,11 +664,11 @@ extension StatsInsightsStore {
         }
     }
 
-    func getAllDotComFollowers() -> [StatsItem]? {
+    func getAllDotComFollowers() -> StatsDotComFollowersInsight? {
         return state.allDotComFollowers
     }
 
-    func getAllEmailFollowers() -> [StatsItem]? {
+    func getAllEmailFollowers() -> StatsEmailFollowersInsight? {
         return state.allEmailFollowers
     }
 
