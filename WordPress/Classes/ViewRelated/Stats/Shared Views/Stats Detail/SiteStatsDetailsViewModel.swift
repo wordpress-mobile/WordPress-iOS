@@ -290,10 +290,7 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func tabDataForCommentType(_ commentType: StatSection) -> TabData {
-
-        // TODO: replace this Store call to get actual Authors and Posts comments
-        // when the api supports it.
-        let commentsInsight = insightsStore.getTopCommentsInsight()
+        let commentsInsight = insightsStore.getAllCommentsInsight()
 
         var rowItems: [StatsTotalRowData] = []
 

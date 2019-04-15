@@ -23,8 +23,7 @@ enum InsightAction: Action {
     case receivedAllEmailFollowers(_ allDotComFollowers: StatsEmailFollowersInsight?)
     case refreshFollowers()
 
-    case receivedAllAuthorsComments()
-    case receivedAllPostsComments()
+    case receivedAllCommentsInsight(_ commentsInsight: StatsCommentsInsight?)
     case refreshComments()
 
     case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?)
@@ -80,11 +79,8 @@ struct InsightStoreState {
     var allEmailFollowers: StatsEmailFollowersInsight?
     var fetchingAllEmailFollowers = false
 
-    var allAuthorsComments: StatsCommentsInsight?
-    var fetchingAllAuthorsComments = false
-
-    var allPostsComments: StatsCommentsInsight?
-    var fetchingAllPostsComments = false
+    var allCommentsInsight: StatsCommentsInsight?
+    var fetchingAllCommentsInsight = false
 
     var allTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingAllTagsAndCategories = false
@@ -131,10 +127,8 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllEmailFollowers(allEmailFollowers)
         case .refreshFollowers:
             refreshFollowers()
-        case .receivedAllAuthorsComments:
-            receivedAllAuthorsComments()
-        case .receivedAllPostsComments:
-            receivedAllPostsComments()
+        case .receivedAllCommentsInsight(let allComments):
+            receivedAllCommentsInsight(allComments)
         case .refreshComments:
             refreshComments()
         case .receivedAllTagsAndCategories(let allTagsAndCategories):
@@ -467,12 +461,20 @@ private extension StatsInsightsStore {
     }
 
     func fetchAllComments() {
-        state.fetchingAllAuthorsComments = true
-        state.fetchingAllPostsComments = true
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+            return
+        }
 
-        // TODO: replace with api call when fetch all author and post comments is supported.
-        actionDispatcher.dispatch(InsightAction.receivedAllAuthorsComments())
-        actionDispatcher.dispatch(InsightAction.receivedAllPostsComments())
+        let api = apiService(for: siteID)
+
+        state.fetchingAllCommentsInsight = true
+
+        api.getInsight(limit: 100) {(allComments: StatsCommentsInsight?, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all comments: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllCommentsInsight(allComments))
+        }
     }
 
     func fetchAllTagsAndCategories() {
@@ -526,19 +528,12 @@ private extension StatsInsightsStore {
         return !isFetchingFollowers
     }
 
-    func receivedAllAuthorsComments() {
+    func receivedAllCommentsInsight(_ allCommentsInsight: StatsCommentsInsight?) {
         transaction { state in
-            // TODO: replace with real allAuthorsComments when API supports it.
-            state.allAuthorsComments = state.topCommentsInsight
-            state.fetchingAllAuthorsComments = false
-        }
-    }
-
-    func receivedAllPostsComments() {
-        transaction { state in
-            // TODO: replace with real allPostsComments when API supports it.
-            state.allPostsComments = state.topCommentsInsight
-            state.fetchingAllPostsComments = false
+            if allCommentsInsight != nil {
+                state.allCommentsInsight = allCommentsInsight
+            }
+            state.fetchingAllCommentsInsight = false
         }
     }
 
@@ -686,12 +681,8 @@ extension StatsInsightsStore {
         return state.allEmailFollowers
     }
 
-    func getAllAuthorsComments() -> StatsCommentsInsight? {
-        return state.allAuthorsComments
-    }
-
-    func getAllPostsComments() -> StatsCommentsInsight? {
-        return state.allPostsComments
+    func getAllCommentsInsight() -> StatsCommentsInsight? {
+        return state.allCommentsInsight
     }
 
     func getAllTagsAndCategories() -> StatsTagsAndCategoriesInsight? {
@@ -719,9 +710,7 @@ extension StatsInsightsStore {
     }
 
     var isFetchingComments: Bool {
-        return
-            state.fetchingAllAuthorsComments ||
-            state.fetchingAllPostsComments
+        return state.fetchingAllCommentsInsight
     }
 
     var isFetchingTagsAndCategories: Bool {
