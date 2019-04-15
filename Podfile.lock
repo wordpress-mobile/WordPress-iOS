@@ -231,7 +231,7 @@ PODS:
   - ZendeskSDK/UI (2.2.0):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
-  - ZIPFoundation (0.9.8)
+  - ZIPFoundation (0.9.9)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -413,7 +413,7 @@ SPEC CHECKSUMS:
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
-  ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
+  ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
 PODFILE CHECKSUM: 176ea891062eda934b6266e8a10df7bf6339e072
 
