@@ -6,6 +6,7 @@ class FlagsTest: XCTestCase {
         for countryCode in type(of: self).countryCodes {
             let image = UIImage(named: countryCode)
             XCTAssertNotNil(image, "Failed to create image with name: \(countryCode)")
+            XCTAssertEqual(image?.size, CGSize(width: 24, height: 24))
         }
     }
 
