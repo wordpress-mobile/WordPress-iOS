@@ -451,7 +451,7 @@ private extension SiteStatsDetailsViewModel {
     func countriesRows() -> [StatsTotalRowData] {
         return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                                 data: $0.viewsCount.abbreviatedString(),
-                                                                                countryIconURL: nil, //$0.iconURL // TODO FIXME Move this from WPiOSStats
+                                                                                icon: UIImage(named: $0.code),
                                                                                 statSection: .periodCountries) }
             ?? []
     }
