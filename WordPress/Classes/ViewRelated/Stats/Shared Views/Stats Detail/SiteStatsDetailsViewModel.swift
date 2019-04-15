@@ -259,26 +259,26 @@ private extension SiteStatsDetailsViewModel {
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
-        var followers: [StatsItem]?
+        var followers: [StatsFollower] = []
         var totalFollowers: Int?
 
         switch followerType {
         case .insightsFollowersWordPress:
-            followers = insightsStore.getAllDotComFollowers()
+            followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
             totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
-            followers = insightsStore.getAllEmailFollowers()
-            totalFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount
+            followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
+            totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
         default:
             break
         }
 
         let totalCount = String(format: followerType.totalFollowers, (totalFollowers ?? 0).abbreviatedString())
 
-        let followersData = followers?.compactMap {
-            return StatsTotalRowData(name: $0.label,
-                                     data: $0.value,
-                                     userIconURL: $0.iconURL,
+        let followersData = followers.compactMap {
+            return StatsTotalRowData(name: $0.name,
+                                     data: $0.subscribedDate.relativeStringInPast(),
+                                     userIconURL: $0.avatarURL,
                                      statSection: followerType)
         }
 
@@ -286,14 +286,11 @@ private extension SiteStatsDetailsViewModel {
                        itemSubtitle: followerType.itemSubtitle,
                        dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
-                       dataRows: followersData ?? [])
+                       dataRows: followersData)
     }
 
     func tabDataForCommentType(_ commentType: StatSection) -> TabData {
-
-        // TODO: replace this Store call to get actual Authors and Posts comments
-        // when the api supports it.
-        let commentsInsight = insightsStore.getTopCommentsInsight()
+        let commentsInsight = insightsStore.getAllCommentsInsight()
 
         var rowItems: [StatsTotalRowData] = []
 
