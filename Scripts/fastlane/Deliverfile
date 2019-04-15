@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load('~/.wpios-env.default')
+
 screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 

@@ -1,11 +1,8 @@
 12.2
 -----
-* Draft preview now shows the remote version of the post.
-* Adds support for importing data from Bear and Ulysses (or any apps using the TextBundle and TextPack formats).
-* Support for lists in Gutenberg posts.
-* Several UI details were polished in the Site Creation flow.
-* Adjusted some wording to clarify how much storage space is used by your site.
-* Fixed a crash when managing plugins.
+* Publish with confidence! Draft previews will show you a more accurate version of your posts.
+* If you prefer to write in apps like Bear or Ulysses (or any other app using the TextBundle and TextPack formats), great – keep doing it. And now you can import text from the those apps into this one.
+* The whole app got a spring pick-me-up — we fixed up some little visual tics in the site creation process, adjusted some wording to make it clear how much storage space your site is using, and took care of a pesky crash that would sometimes occur when you were trying to manage plugins.
 
 12.1
 -----

@@ -25,7 +25,9 @@ class SiteStatsInsightsViewModel: Observable {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.store = store
+
         insightsReceipt = store.query(.insights)
+        store.actionDispatcher.dispatch(InsightAction.refreshInsights())
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()

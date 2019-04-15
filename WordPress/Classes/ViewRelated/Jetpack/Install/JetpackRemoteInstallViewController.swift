@@ -11,7 +11,7 @@ class JetpackRemoteInstallViewController: UIViewController {
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var promptType: JetpackLoginPromptType
     private var blog: Blog
-    private let jetpackView = JetpackRemoteInstallView()
+    private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
 
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
@@ -101,9 +101,22 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 // MARK: - Jetpack View delegate
 
-extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
+extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDelegate {
     func mainButtonDidTouch() {
+        guard let url = blog.url,
+            let username = blog.username,
+            let password = blog.password else {
+            return
+        }
 
+        switch viewModel.state {
+        case .install, .failure:
+            viewModel.installJetpack(with: url, username: username, password: password)
+        case .success:
+            openInstallJetpackURL()
+        default:
+            break
+        }
     }
 
     func customerSupportButtonDidTouch() {
