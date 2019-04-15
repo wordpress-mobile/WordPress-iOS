@@ -1,1 +1,3 @@
 RELEASE-NOTES.txt merge=union
+*.strings diff=localizablestrings
+
