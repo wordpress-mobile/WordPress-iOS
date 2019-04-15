@@ -79,6 +79,15 @@
     }
 }
 
+- (void)setFilter:(WPMediaType)filter {
+    if ( _filter != filter ) {
+        _filter = filter;
+        
+        _fetchController = nil;
+        [self.fetchController performFetch:nil];
+    }
+}
+
 - (void)searchCancelled
 {
     _searchQuery = nil;
