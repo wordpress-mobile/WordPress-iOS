@@ -469,7 +469,10 @@ private extension StatsInsightsStore {
 
         state.fetchingAllCommentsInsight = true
 
-        api.getInsight(limit: 100) {(allComments: StatsCommentsInsight?, error) in
+        // The API doesn't work when we specify `0` here, like most of the other endpoints do, unfortunately...
+        // 1000 was chosen as an arbitraily large number that should be "big enough" for all of our users
+        // but I'm open to increasing it.
+        api.getInsight(limit: 1000) {(allComments: StatsCommentsInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching all comments: \(String(describing: error?.localizedDescription))")
             }
@@ -486,10 +489,8 @@ private extension StatsInsightsStore {
 
         let api = apiService(for: siteID)
 
-        // The API doesn't work when we specify `0` here, like most of the other endpoints do, unfortunately...
-        // 100 was chosen as an arbitraily large number that should be "big enough" for all of our users
-        // but I'm open to increasing it.
-        api.getInsight(limit: 100) { (allTagsAndCategories: StatsTagsAndCategoriesInsight?, error) in
+        // See the comment about the limit in the method above.
+        api.getInsight(limit: 1000) { (allTagsAndCategories: StatsTagsAndCategoriesInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching all tags and categories: \(String(describing: error?.localizedDescription))")
             }
