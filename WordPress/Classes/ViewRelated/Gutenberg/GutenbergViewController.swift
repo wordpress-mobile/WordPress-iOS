@@ -349,7 +349,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-
     func gutenbergDidRequestMediaFromSiteMediaLibrary(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
@@ -383,6 +382,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
         })
+    }
+
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -476,6 +479,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         startAutoSave()
         if !editorSession.started {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+        }
+    }
+
+    func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
+        switch logLevel {
+        case .trace:
+            DDLogDebug(message)
+        case .info:
+            DDLogInfo(message)
+        case .warn:
+            DDLogWarn(message)
+        case .error:
+            DDLogError(message)
         }
     }
 }

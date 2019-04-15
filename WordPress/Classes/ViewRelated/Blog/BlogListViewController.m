@@ -892,17 +892,6 @@ static NSInteger HideSearchMinSites = 3;
     return [accountService defaultWordPressComAccount];
 }
 
-- (void)showAddNewWordPressController
-{
-    [self setEditing:NO animated:NO];
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
-    SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
-    SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
-                                                       initWithRootViewController:controller];
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
 - (void)showLoginControllerForAddingSelfHostedSite
 {
     [self setEditing:NO animated:NO];

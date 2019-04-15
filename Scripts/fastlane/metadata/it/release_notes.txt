@@ -1,4 +1,3 @@
-- Ora nell’editor del blocco funziona la dettatura.
-- I messaggi di errore offline verranno ora visualizzati un finestre di dialogo a comparsa più piccole nella parte inferiore della pagina.
-- È stato risolto un bug a causa del quale la barra dell’indirizzo di anteprima del sito non poteva essere modificata nel flusso di creazione del sito.
-- È stato risolto un problema nell’editor del blocco a causa del quale le immagini non potevano essere caricate nei siti privati.
+- Ognuno ha il proprio flusso di lavoro. Ora la condivisione del testo dalle app di scrittura e annotazione su WordPress è più affidabile.
+- Alcune volte gli aggiornamenti nei dettagli dell’account utente non riescono, anche se ci auguriamo che ciò non accada. Abbiamo aggiunto messaggi di errore più dettagliati e chiari per permetterti di comprendere cosa è andato storto e come procedere.
+- Sono disponibili più modi per creare articoli con le immagini: l’editor Blocco supporta articoli con foto pre-inserite ed è possibile utilizzare l’azione 3D touch di Apple per lanciare l’app e iniziare un nuovo articolo immagine con una singola pressione..

@@ -6,7 +6,7 @@ class SignupEpilogueViewController: NUXViewController {
 
     // MARK: - Public Properties
 
-    var credentials: WordPressCredentials?
+    var credentials: AuthenticatorCredentials?
     var socialService: SocialService?
 
     // MARK: - Outlets

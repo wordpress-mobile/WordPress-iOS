@@ -1,4 +1,3 @@
-- Dictation now works in the block editor.
-- Offline error messages will now display in smaller popup dialogues on the bottom of the page.
-- Fixed a bug where the site preview address bar could be edited in the Site Creation flow.
-- Fixed an issue in the block editor where images could not be uploaded to private sites.
+- Everyone’s got their own workflow. Now sharing text from writing and note-taking apps to WordPress is more reliable.
+- Sometimes updates to user account details fail, even if we wish they didn’t. We’ve added clearer, more detailed error messages so you know what went wrong and what to do next.
+- You have more ways to create posts with images: the block editor supports posts with pre-inserted photos, and you can use Apple’s 3D touch action to launch the app and start a new photo post with a single press.

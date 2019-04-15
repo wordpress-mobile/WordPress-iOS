@@ -27,6 +27,7 @@ class SiteStatsPeriodViewModel: Observable {
         self.store = store
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
