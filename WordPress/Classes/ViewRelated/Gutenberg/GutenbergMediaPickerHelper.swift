@@ -80,6 +80,7 @@ class GutenbergMediaPickerHelper: NSObject {
     }()
 
     func presentCameraCaptureFullScreen(animated: Bool,
+                                        filter: WPMediaType,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
 
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
@@ -92,6 +93,7 @@ class GutenbergMediaPickerHelper: NSObject {
         cameraPicker.resetState(false)
         cameraPicker.modalPresentationStyle = .currentContext
         cameraPicker.viewControllerToUseToPresent = context
+        cameraPicker.options.filter = filter
         cameraPicker.showCapture()
     }
 }

@@ -403,6 +403,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true,
+                                                         filter: filter,
                                                          callback: {(asset) in
                                                             guard let phAsset = asset as? PHAsset else {
                                                                 callback(nil, nil)
