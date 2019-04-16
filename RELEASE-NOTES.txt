@@ -1,6 +1,7 @@
 12.3
 -----
 * Resolved a crash that might occur during the new Site Creation flow.
+ * Improved connectivity errors messaging in sharing screen.
 
 12.2
 -----
