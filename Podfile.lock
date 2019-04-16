@@ -193,9 +193,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.5.2)
-  - WordPress-Editor-iOS (1.5.2):
-    - WordPress-Aztec-iOS (= 1.5.2)
+  - WordPress-Aztec-iOS (1.6.0-beta.1)
+  - WordPress-Editor-iOS (1.6.0-beta.1):
+    - WordPress-Aztec-iOS (= 1.6.0-beta.1)
   - WordPressAuthenticator (1.4.0-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -219,16 +219,16 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.2.0)
-  - WPMediaPicker (1.3.2)
+  - WPMediaPicker (1.3.3)
   - wpxmlrpc (0.8.4)
   - yoga (0.59.3.React)
-  - ZendeskSDK (2.2.0):
-    - ZendeskSDK/Providers (= 2.2.0)
-    - ZendeskSDK/UI (= 2.2.0)
-  - ZendeskSDK/Core (2.2.0)
-  - ZendeskSDK/Providers (2.2.0):
+  - ZendeskSDK (2.3.1):
+    - ZendeskSDK/Providers (= 2.3.1)
+    - ZendeskSDK/UI (= 2.3.1)
+  - ZendeskSDK/Core (2.3.1)
+  - ZendeskSDK/Providers (2.3.1):
     - ZendeskSDK/Core
-  - ZendeskSDK/UI (2.2.0):
+  - ZendeskSDK/UI (2.3.1):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
   - ZIPFoundation (0.9.9)
@@ -265,14 +265,14 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (= 1.5.2)
+  - WordPress-Editor-iOS (~> 1.6.0-beta)
   - WordPressAuthenticator (~> 1.4.0-beta)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/tags-and-categories-limit`)
+  - WordPressKit (~> 4.0.0-beta)
   - WordPressShared (~> 1.7.4-beta)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
-  - WPMediaPicker (= 1.3.2)
+  - WPMediaPicker (= 1.3.3)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.2.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
-  - ZendeskSDK (= 2.2.0)
+  - ZendeskSDK (= 2.3.1)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
@@ -313,6 +313,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -338,9 +339,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
-  WordPressKit:
-    :branch: feature/tags-and-categories-limit
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -360,9 +358,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
-  WordPressKit:
-    :commit: 33d4d01806a54cf0cfc953a65b6c1e9cb46c5185
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -408,18 +403,18 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: 16339a831d5d605ba9300b3722b75ba78e53cf09
-  WordPress-Editor-iOS: b90649909f99c1d02cef2bb79c0641322b31fa52
+  WordPress-Aztec-iOS: 3b12eea844ff38b3b82c66f3ed5b01b0fc2f6327
+  WordPress-Editor-iOS: d3352429009ba5a75f6ae81deded7156b7a6ffb8
   WordPressAuthenticator: f0e30e8e555e33bea8e13e6f1245172d557a8ee4
-  WordPressKit: caf0c55f704778c18ec6ab0914ed8eeeef7dc2d7
+  WordPressKit: 1ddb164dcca4a03ed8e9bd7c6050a8deea1264e0
   WordPressShared: 024fe85444c520baebcf9a8e8f24bd6d00a4c6d7
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
-  WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
+  WPMediaPicker: 6d23120b16c0f66987fd98ec2b294864e1df03bf
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
-  ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
+  ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 8f28b50dd09852854a0ecf27b88b41e9ef796e14
+PODFILE CHECKSUM: e2d6522f37b4a9b57dc3d68c27e24871008b8333
 
 COCOAPODS: 1.6.1

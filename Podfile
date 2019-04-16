@@ -29,7 +29,7 @@ def aztec
     #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
     #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
     ##pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '1.5.2'
+    pod 'WordPress-Editor-iOS', '~> 1.6.0-beta'
 end
 
 def wordpress_ui
@@ -42,8 +42,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 4.0.0-beta'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
+    pod 'WordPressKit', '~> 4.0.0-beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -120,7 +120,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'ZendeskSDK', '2.2.0'
+    pod 'ZendeskSDK', '2.3.1'
     pod 'ZIPFoundation', '~> 0.9.8'
 
     ## Automattic libraries
@@ -133,7 +133,7 @@ target 'WordPress' do
     #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
 
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '1.3.2'
+    pod 'WPMediaPicker', '1.3.3'
     pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
