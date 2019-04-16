@@ -51,6 +51,11 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        removeRowsFromStackView(rowsStackView)
+    }
+
     func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
