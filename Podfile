@@ -42,8 +42,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    #pod 'WordPressKit', '~> 4.0.0-beta'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
+    pod 'WordPressKit', '~> 4.0.0-beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
