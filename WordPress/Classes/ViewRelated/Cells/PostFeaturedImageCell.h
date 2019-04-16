@@ -4,9 +4,9 @@
 @class PostFeaturedImageCell;
 
 @protocol PostFeaturedImageCellDelegate <NSObject>
-- (void)postFeatureImageCellDidFinishLoadingImage:(PostFeaturedImageCell *)cell;
-- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingAnimatedImageWithData:(NSData *)animationData;
-- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingImageWithError:(NSError *)error;
+- (void)postFeatureImageCellDidFinishLoadingImage:(nonnull PostFeaturedImageCell *)cell;
+- (void)postFeatureImageCell:(nonnull PostFeaturedImageCell *)cell didFinishLoadingAnimatedImageWithData:(nullable NSData *)animationData;
+- (void)postFeatureImageCell:(nonnull PostFeaturedImageCell *)cell didFinishLoadingImageWithError:(nullable NSError *)error;
 @end
 
 @interface PostFeaturedImageCell : WPTableViewCell
