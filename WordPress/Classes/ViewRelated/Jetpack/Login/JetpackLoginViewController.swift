@@ -188,7 +188,7 @@ class JetpackLoginViewController: UIViewController {
         WordPressAuthenticator.showLoginForJustWPCom(from: self, xmlrpc: blog.xmlrpc, username: blog.username, connectedEmail: blog.jetpack?.connectedEmail)
     }
 
-    fileprivate func trackStat(_ stat: WPAnalyticsStat) {
+    fileprivate func trackStat(_ stat: WPAnalyticsStat, blog: Blog? = nil) {
         var properties = [String: String]()
         switch promptType {
         case .stats:
@@ -196,7 +196,12 @@ class JetpackLoginViewController: UIViewController {
         case .notifications:
             properties["source"] = "notifications"
         }
-        WPAnalytics.track(stat, withProperties: properties)
+
+        if let blog = blog {
+            WPAppAnalytics.track(stat, withProperties: properties, with: blog)
+        } else {
+            WPAnalytics.track(stat, withProperties: properties)
+        }
     }
 
     private func openWebView(for webviewType: JetpackWebviewType) {
@@ -216,6 +221,7 @@ class JetpackLoginViewController: UIViewController {
 
     private func jetpackIsCompleted() {
         trackStat(.installJetpackCompleted)
+        trackStat(.signedInToJetpack, blog: blog)
         dismiss(animated: true, completion: completionBlock)
     }
 
