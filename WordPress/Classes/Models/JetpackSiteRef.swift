@@ -23,8 +23,8 @@ struct JetpackSiteRef: Hashable, Codable {
         self.username = username
     }
 
-    var hashValue: Int {
-        return "\(username)-\(siteID)".hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine("\(username)-\(siteID)")
     }
 
     static func ==(lhs: JetpackSiteRef, rhs: JetpackSiteRef) -> Bool {

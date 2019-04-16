@@ -160,9 +160,7 @@ private extension SignupEpilogueViewController {
             }
         } else {
             if !changesMade {
-                defer {
-                    WordPressAuthenticator.track(.signupEpilogueUnchanged, properties: tracksProperties())
-                }
+                WordPressAuthenticator.track(.signupEpilogueUnchanged, properties: tracksProperties())
             }
             self.refreshAccountDetails() {
                 SVProgressHUD.dismiss()
