@@ -208,7 +208,7 @@ PODS:
     - WordPressKit (~> 4.0.0-beta)
     - WordPressShared (~> 1.4)
     - WordPressUI (~> 1.0)
-  - WordPressKit (4.0.0-beta.2):
+  - WordPressKit (4.0.0-beta.3):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -231,7 +231,7 @@ PODS:
   - ZendeskSDK/UI (2.2.0):
     - ZendeskSDK/Core
     - ZendeskSDK/Providers
-  - ZIPFoundation (0.9.8)
+  - ZIPFoundation (0.9.9)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -267,7 +267,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (= 1.5.2)
   - WordPressAuthenticator (~> 1.4.0-beta)
-  - WordPressKit (~> 4.0.0-beta)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `feature/tags-and-categories-limit`)
   - WordPressShared (~> 1.7.4-beta)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.2)
@@ -313,7 +313,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -339,6 +338,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
+  WordPressKit:
+    :branch: feature/tags-and-categories-limit
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -358,6 +360,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
+  WordPressKit:
+    :commit: 33d4d01806a54cf0cfc953a65b6c1e9cb46c5185
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -406,15 +411,15 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 16339a831d5d605ba9300b3722b75ba78e53cf09
   WordPress-Editor-iOS: b90649909f99c1d02cef2bb79c0641322b31fa52
   WordPressAuthenticator: f0e30e8e555e33bea8e13e6f1245172d557a8ee4
-  WordPressKit: e9fcb4af6bbb31554a3dde1eb8df09ef0eabcafb
+  WordPressKit: caf0c55f704778c18ec6ab0914ed8eeeef7dc2d7
   WordPressShared: 024fe85444c520baebcf9a8e8f24bd6d00a4c6d7
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: e50edd8f30f5d87288840941ef3ff9cd11860937
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
-  ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
+  ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: ab1e9cadc6d7d6cfd05db8046915642caaac8356
+PODFILE CHECKSUM: 8f28b50dd09852854a0ecf27b88b41e9ef796e14
 
 COCOAPODS: 1.6.1
