@@ -1240,11 +1240,10 @@ private extension ShareExtensionEditorViewController {
                 self?.setTitleText(share.title)
                 self?.richTextView.setHTML(share.combinedContentHTML)
 
-                share.images.forEach({ image in
-                    if let fileURL = self?.saveImageToSharedContainer(image) {
-                        self?.insertImageAttachment(with: fileURL)
-                    }
+                share.imageURLs.forEach({ imageURL in
+                    self?.insertImageAttachment(with: imageURL)
                 })
+
 
                 // Lets an extra <p> at the bottom to make editing a little easier
                 if let currentHTML = self?.richTextView.getHTML() {

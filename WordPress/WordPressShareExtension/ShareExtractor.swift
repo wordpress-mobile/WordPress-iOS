@@ -11,7 +11,7 @@ struct ExtractedShare {
     var url: URL?
     var selectedText: String
     var importedText: String
-    var images: [UIImage]
+    var imageURLs: [URL]
 
     var combinedContentHTML: String {
         var rawLink = ""
@@ -65,15 +65,15 @@ struct ShareExtractor {
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
         extractText { extractedTextResults in
-            self.extractImages { images in
+            self.extractImages { imageURLs in
                 let title = extractedTextResults?.title ?? ""
                 let description = extractedTextResults?.description ?? ""
                 let selectedText = extractedTextResults?.selectedText ?? ""
                 let importedText = extractedTextResults?.importedText ?? ""
                 let url = extractedTextResults?.url
-                var returnedImages = images ?? [UIImage]()
-                if let extractedImages = extractedTextResults?.images {
-                    returnedImages.append(contentsOf: extractedImages)
+                var returnedImageURLs = imageURLs
+                if let extractedImageURLs = extractedTextResults?.imageURLs {
+                    returnedImageURLs.append(contentsOf: extractedImageURLs)
                 }
 
                 completion(ExtractedShare(title: title,
@@ -81,7 +81,7 @@ struct ShareExtractor {
                                           url: url,
                                           selectedText: selectedText,
                                           importedText: importedText,
-                                          images: returnedImages))
+                                          imageURLs: returnedImageURLs))
             }
         }
     }
@@ -126,7 +126,7 @@ private struct ExtractedItem {
 
     /// An image
     ///
-    var images: [UIImage]?
+    var imageURLs = [URL]()
 }
 
 private extension ShareExtractor {
@@ -165,7 +165,14 @@ private extension ShareExtractor {
             let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
             let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
             let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
-            let combinedImages = extractedItems.compactMap({ $0.images }).flatMap({ $0 })
+//            let combinedImages = extractedItems.compactMap({ $0.images }).flatMap({ $0 })
+            var imageURLs = [URL]()
+            extractedItems.forEach({ item in
+                item.imageURLs.forEach({ imageURL in
+                    imageURLs.append(imageURL)
+                })
+            })
+
             let urls = extractedItems.compactMap({ $0.url })
 
             completion(ExtractedItem(selectedText: combinedSelectedText,
@@ -173,22 +180,28 @@ private extension ShareExtractor {
                                      description: combinedDescription,
                                      url: urls.first,
                                      title: combinedTitle,
-                                     images: combinedImages))
+                                     imageURLs: imageURLs))
         }
     }
 
-    func extractImages(completion: @escaping ([UIImage]?) -> Void) {
+    func extractImages(completion: @escaping ([URL]) -> Void) {
         guard let imageExtractor = imageExtractor else {
-            completion(nil)
+            completion([])
             return
         }
         imageExtractor.extract(context: extensionContext) { extractedItems in
             guard extractedItems.count > 0 else {
-                completion(nil)
+                completion([])
                 return
             }
-            let images = extractedItems.compactMap({ $0.images }).flatMap({ $0 })
-            completion(images)
+            var imageURLs = [URL]()
+            extractedItems.forEach({ item in
+                imageURLs.forEach({ imageURL in
+                    imageURLs.append(imageURL)
+                })
+            })
+
+            completion(imageURLs)
         }
     }
 }
@@ -196,6 +209,9 @@ private extension ShareExtractor {
 private protocol ExtensionContentExtractor {
     func canHandle(context: NSExtensionContext) -> Bool
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void)
+    func saveToSharedContainer(image: UIImage) -> URL?
+    func saveToSharedContainer(wrapper: FileWrapper) -> URL?
+    func copyToSharedContainer(url: URL) -> URL?
 }
 
 private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor {
@@ -205,6 +221,14 @@ private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor {
 }
 
 private extension TypeBasedExtensionContentExtractor {
+
+    /// Maximum Image Size
+    ///
+    var maximumImageSize: CGSize {
+        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
+        return CGSize(width: dimension, height: dimension)
+    }
+
     func canHandle(context: NSExtensionContext) -> Bool {
         return !context.itemProviders(ofType: acceptedType).isEmpty
     }
@@ -239,6 +263,61 @@ private extension TypeBasedExtensionContentExtractor {
         syncGroup.notify(queue: DispatchQueue.main) {
             completion(results)
         }
+    }
+
+    func saveToSharedContainer(image: UIImage) -> URL? {
+        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
+            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+                return nil
+        }
+
+        let fileName = "image_\(UUID().uuidString).jpg"
+        let fullPath = mediaDirectory.appendingPathComponent(fileName)
+        do {
+            try encodedMedia.write(to: fullPath, options: [.atomic])
+        } catch {
+            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            return nil
+        }
+        return fullPath
+    }
+
+    func saveToSharedContainer(wrapper: FileWrapper) -> URL? {
+        guard let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL,
+            let wrappedFileName = wrapper.filename,
+            let wrappedURL = URL(string: wrappedFileName) else {
+                return nil
+        }
+        let ext = wrappedURL.pathExtension
+        let fileName = "image_\(UUID().uuidString).\(ext)"
+        let newPath = mediaDirectory.appendingPathComponent(fileName)
+
+        do {
+            try wrapper.write(to: newPath, options: [], originalContentsURL: nil)
+        } catch {
+            DDLogError("Error saving \(newPath) to shared container: \(String(describing: error))")
+            return nil
+        }
+
+        return newPath
+    }
+
+    func copyToSharedContainer(url: URL) -> URL? {
+        guard let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+            return nil
+        }
+        let ext = url.lastPathComponent
+        let fileName = "image_\(UUID().uuidString).\(ext)"
+        let newPath = mediaDirectory.appendingPathComponent(fileName)
+
+        do {
+            try FileManager.default.copyItem(at: url, to: newPath)
+        } catch {
+            DDLogError("Error saving \(newPath) to shared container: \(String(describing: error))")
+            return nil
+        }
+
+        return newPath
     }
 }
 
@@ -307,19 +386,18 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
         var returnedItem = ExtractedItem()
         returnedItem.importedText = bundleWrapper.text
-        var bundledImages = [UIImage]()
+        var cachedImageURLs = [URL]()
 
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
-            guard let fileName = fileWrapper.filename,
-                let fileURL = URL(string: fileName),
-                let fileData = fileWrapper.regularFileContents else {
+            guard let fileName = fileWrapper.filename else {
                 return
             }
+            let assetURL = url.appendingPathComponent(fileName, isDirectory: false)
 
-            switch fileURL.pathExtension.lowercased() {
+            switch assetURL.pathExtension.lowercased() {
             case "jpg", "jpeg", "heic":
-                if let img = UIImage(data: fileData) {
-                    bundledImages.append(img)
+                if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
+                    cachedImageURLs.append(cachedURL)
                 }
             case "gif":
                 print("we have a gif")
@@ -328,9 +406,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             }
         }
 
-        if bundledImages.count > 0 {
-            returnedItem.images = bundledImages
-        }
+        returnedItem.imageURLs = cachedImageURLs
 
         return returnedItem
     }
@@ -347,22 +423,24 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = AnyObject
     let acceptedType = kUTTypeImage as String
     func convert(payload: AnyObject) -> ExtractedItem? {
-        let loadedImage: UIImage?
+        var returnedItem = ExtractedItem()
+
         switch payload {
         case let url as URL:
-            loadedImage = UIImage(contentsOfURL: url)
+            returnedItem.imageURLs = [url]
         case let data as Data:
-            loadedImage = UIImage(data: data)
+            if let image = UIImage(data: data),
+                let imageURL = saveToSharedContainer(image: image) {
+                returnedItem.imageURLs = [imageURL]
+            }
         case let image as UIImage:
-            loadedImage = image
+            if let imageURL = saveToSharedContainer(image: image) {
+                returnedItem.imageURLs = [imageURL]
+            }
         default:
-            loadedImage = nil
+            break
         }
 
-        var returnedItem = ExtractedItem()
-        if let image = loadedImage {
-            returnedItem.images = [image]
-        }
         return returnedItem
     }
 }
@@ -466,4 +544,8 @@ private struct ShareBlogExtractor: TypeBasedExtensionContentExtractor {
 
         return returnedItem
     }
+}
+
+private enum Constants {
+    static let defaultMaxDimension = 3000
 }
