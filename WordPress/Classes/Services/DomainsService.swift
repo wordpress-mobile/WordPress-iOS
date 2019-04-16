@@ -22,6 +22,21 @@ struct DomainsService {
     }
 
     func getDomainSuggestions(base: String,
+                              segmentID: Int64,
+                              success: @escaping ([DomainSuggestion]) -> Void,
+                              failure: @escaping (Error) -> Void) {
+        let request = DomainSuggestionRequest(query: base, segmentID: segmentID)
+
+        remote.getDomainSuggestions(request: request,
+                                    success: { suggestions in
+                                        let sorted = self.sortedSuggestions(suggestions, forBase: base)
+                                        success(sorted)
+        }) { error in
+            failure(error)
+        }
+    }
+
+    func getDomainSuggestions(base: String,
                               domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom,
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {

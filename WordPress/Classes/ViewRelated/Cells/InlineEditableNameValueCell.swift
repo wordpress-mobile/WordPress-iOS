@@ -33,9 +33,12 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+
         nameLabel.textColor = Const.Color.nameText
         nameLabel.font = WPStyleGuide.tableviewTextFont()
         nameLabel.numberOfLines = 0
+        nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:))))
+
         valueTextField.textColor = Const.Color.valueText
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
@@ -43,8 +46,6 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
                                  for: UIControl.Event.editingChanged)
         valueTextField.addTarget(self, action: #selector(textEditingDidEnd(textField:)),
                                  for: UIControl.Event.editingDidEnd)
-
-        accessoryType = .none
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
             valueTextField.textAlignment = .right
@@ -52,6 +53,8 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
             // swiftlint:disable:next natural_text_alignment
             valueTextField.textAlignment = .left
         }
+
+        accessoryType = .none
     }
 
     @objc func textFieldDidChange(textField: UITextField) {
@@ -60,6 +63,10 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func textEditingDidEnd(textField: UITextField) {
         delegate?.inlineEditableNameValueCell?(self, valueTextFieldEditingDidEnd: textField)
+    }
+
+    @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
+        valueTextField.becomeFirstResponder()
     }
 }
 

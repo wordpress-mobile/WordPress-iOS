@@ -25,7 +25,9 @@ class SiteStatsInsightsViewModel: Observable {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.store = store
+
         insightsReceipt = store.query(.insights)
+        store.actionDispatcher.dispatch(InsightAction.refreshInsights)
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -93,7 +95,7 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshInsights() {
-        ActionDispatcher.dispatch(InsightAction.refreshInsights())
+        ActionDispatcher.dispatch(InsightAction.refreshInsights)
     }
 
 }

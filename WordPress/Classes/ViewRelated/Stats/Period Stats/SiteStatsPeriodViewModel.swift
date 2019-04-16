@@ -27,6 +27,7 @@ class SiteStatsPeriodViewModel: Observable {
         self.store = store
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -144,8 +145,8 @@ private extension SiteStatsPeriodViewModel {
             case .unknown:
                 icon = Style.imageForGridiconType(.posts)
             }
-
             return StatsTotalRowData(name: $0.title,
+
                                      data: $0.viewsCount.abbreviatedString(),
                                      dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
                                      icon: icon,
@@ -246,7 +247,7 @@ private extension SiteStatsPeriodViewModel {
     func countriesDataRows() -> [StatsTotalRowData] {
         return store.getTopCountries()?.countries.prefix(10).map { StatsTotalRowData(name: $0.name,
                                                                                      data: $0.viewsCount.abbreviatedString(),
-                                                                                     countryIconURL: nil, // TODO Move this from WPStatsiOS.
+                                                                                     icon: UIImage(named: $0.code),
                                                                                      statSection: .periodCountries) }
             ?? []
     }

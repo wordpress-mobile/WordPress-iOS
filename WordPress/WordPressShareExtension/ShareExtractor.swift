@@ -1,6 +1,7 @@
 import Foundation
 import MobileCoreServices
 import UIKit
+import ZIPFoundation
 
 /// A type that represents the information we can extract from an extension context
 ///
@@ -153,9 +154,10 @@ private extension ShareExtractor {
         }
         textExtractor.extract(context: extensionContext) { extractedItems in
             guard extractedItems.count > 0 else {
-                completion(nil)
+            	completion(nil)
                 return
             }
+
             let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
             let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
             let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
@@ -205,6 +207,7 @@ private extension TypeBasedExtensionContentExtractor {
 
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
         let itemProviders = context.itemProviders(ofType: acceptedType)
+        print(acceptedType)
         var results = [ExtractedItem]()
         guard itemProviders.count > 0 else {
             DispatchQueue.main.async {
@@ -252,11 +255,55 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
     private func processLocalFile(url: URL) -> ExtractedItem? {
         switch url.pathExtension {
+        case "textbundle":
+            return handleTextBundle(url: url)
+        case "textpack":
+            return handleTextPack(url: url)
         case "text", "txt":
             return handlePlainTextFile(url: url)
         default:
             return nil
         }
+    }
+
+    private func handleTextPack(url: URL) -> ExtractedItem? {
+        let fileManager = FileManager()
+        guard let temporaryDirectoryURL = try? FileManager.default.url(for: .itemReplacementDirectory,
+                                                                in: .userDomainMask,
+                                                                appropriateFor: url,
+                                                                create: true) else {
+                                                                    return nil
+        }
+
+        defer {
+            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
+        }
+
+        let textBundleURL: URL
+        do {
+            try fileManager.unzipItem(at: url, to: temporaryDirectoryURL)
+            let files = try fileManager.contentsOfDirectory(at: temporaryDirectoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            guard let unzippedBundleURL = files.first(where: { url in
+                    url.pathExtension == "textbundle"
+                }) else {
+                return nil
+            }
+            textBundleURL = unzippedBundleURL
+        } catch {
+            DDLogError("TextPack opening failed: \(error.localizedDescription)")
+            return nil
+        }
+
+        return handleTextBundle(url: textBundleURL)
+    }
+
+    private func handleTextBundle(url: URL) -> ExtractedItem? {
+        var error: NSError?
+        let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
+
+        var returnedItem = ExtractedItem()
+        returnedItem.importedText = bundleWrapper.text
+        return returnedItem
     }
 
     private func handlePlainTextFile(url: URL) -> ExtractedItem? {

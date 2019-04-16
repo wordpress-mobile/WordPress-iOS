@@ -99,9 +99,18 @@ langs.each do |code,local|
   puts "Updating #{code}"
   system "mkdir -p #{lang_dir}"
   system "if [ -e #{lang_dir}/Localizable.strings ]; then cp #{lang_dir}/Localizable.strings #{lang_dir}/Localizable.strings.bak; fi"
-  system "curl -fso #{lang_dir}/Localizable.strings https://translate.wordpress.org/projects/apps/ios/dev/#{code}/default/export-translations?format=strings" or begin
+
+  url = "https://translate.wordpress.org/projects/apps/ios/dev/#{code}/default/export-translations?format=strings"
+  destination = "#{lang_dir}/Localizable.strings"
+
+  system "curl -fLso #{destination} #{url}" or begin
     puts "Error downloading #{code}"
   end
+
+  if File.size(destination).to_f == 0
+      abort("\e[31mFatal Error: #{destination} appears to be empty. Exiting.\e[0m")
+  end
+
   system "./Scripts/fix-translation #{lang_dir}/Localizable.strings"
   system "plutil -lint #{lang_dir}/Localizable.strings" and system "rm #{lang_dir}/Localizable.strings.bak"
   system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable.strings"

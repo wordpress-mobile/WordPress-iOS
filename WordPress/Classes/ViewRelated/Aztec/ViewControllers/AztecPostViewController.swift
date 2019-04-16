@@ -8,7 +8,6 @@ import WordPressShared
 import MobileCoreServices
 import WordPressEditor
 import WPMediaPicker
-import SVProgressHUD
 import AVKit
 import MobileCoreServices
 

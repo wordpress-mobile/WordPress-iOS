@@ -60,7 +60,7 @@ extension NSManagedObjectContext {
         do {
             result = try count(for: request)
         } catch {
-            DDLogError("Error counting objects [\(T.entityName)]: \(error)")
+            DDLogError("Error counting objects [\(String(describing: T.entityName))]: \(error)")
             assertionFailure()
         }
 
@@ -113,7 +113,7 @@ extension NSManagedObjectContext {
         do {
             result = try existingObject(with: objectID) as? T
         } catch {
-            DDLogError("Error loading Object [\(T.entityName)]")
+            DDLogError("Error loading Object [\(String(describing: T.entityName))]")
         }
 
         return result
@@ -140,7 +140,7 @@ extension NSManagedObjectContext {
         do {
             objects = try fetch(request) as? [T]
         } catch {
-            DDLogError("Error loading Objects [\(T.entityName)")
+            DDLogError("Error loading Objects [\(String(describing: T.entityName))")
             assertionFailure()
         }
 
