@@ -83,7 +83,7 @@ private extension SupportTableViewController {
     func setupNavBar() {
         title = LocalizedText.viewTitle
 
-        if  splitViewController == nil {
+        if isModal() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
                                                                style: WPStyleGuide.barButtonStyleForBordered(),
                                                                target: self,

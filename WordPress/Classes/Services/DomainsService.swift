@@ -22,16 +22,46 @@ struct DomainsService {
     }
 
     func getDomainSuggestions(base: String,
+                              segmentID: Int64,
+                              success: @escaping ([DomainSuggestion]) -> Void,
+                              failure: @escaping (Error) -> Void) {
+        let request = DomainSuggestionRequest(query: base, segmentID: segmentID)
+
+        remote.getDomainSuggestions(request: request,
+                                    success: { suggestions in
+                                        let sorted = self.sortedSuggestions(suggestions, forBase: base)
+                                        success(sorted)
+        }) { error in
+            failure(error)
+        }
+    }
+
+    func getDomainSuggestions(base: String,
                               domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom,
                               success: @escaping ([DomainSuggestion]) -> Void,
                               failure: @escaping (Error) -> Void) {
         remote.getDomainSuggestions(base: base,
                                     domainSuggestionType: domainSuggestionType,
                                     success: { suggestions in
-            success(suggestions)
+            let sorted = self.sortedSuggestions(suggestions, forBase: base)
+            success(sorted)
         }) { error in
             failure(error)
         }
+    }
+
+    // If any of the suggestions matches the base exactly,
+    // then sort that suggestion up to the top of the list.
+    fileprivate func sortedSuggestions(_ suggestions: [DomainSuggestion], forBase base: String) -> [DomainSuggestion] {
+        let normalizedBase = base.lowercased().replacingMatches(of: " ", with: "")
+
+        var filteredSuggestions = suggestions
+        if let matchedSuggestionIndex = suggestions.firstIndex(where: { $0.subdomain == base || $0.subdomain == normalizedBase }) {
+            let matchedSuggestion = filteredSuggestions.remove(at: matchedSuggestionIndex)
+            filteredSuggestions.insert(matchedSuggestion, at: 0)
+        }
+
+        return filteredSuggestions
     }
 
     fileprivate func mergeDomains(_ domains: [Domain], forSite siteID: Int) {

@@ -10,6 +10,14 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
     /// The table view serviced by this provider
     private weak var tableView: UITableView?
 
+    /// Implicit suggestions are the base suggestions based on the site's name and info.
+    /// Whenever the user types something, this should be set to false.
+    var isShowingImplicitSuggestions = true {
+        didSet {
+            tableView?.reloadData()
+        }
+    }
+
     /// The underlying data represented by the provider
     var data: [DomainSuggestion] {
         didSet {
@@ -50,6 +58,10 @@ final class WebAddressTableViewProvider: NSObject, TableViewProvider {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard isShowingImplicitSuggestions else {
+            return nil
+        }
+
         return NSLocalizedString("Suggestions", comment: "Suggested domains")
     }
 

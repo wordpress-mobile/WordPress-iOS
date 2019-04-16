@@ -140,6 +140,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [ReachabilityUtils dismissNoInternetConnectionNotice];
+}
+
 - (void)applyModalStyleIfNeeded
 {
     // Proceed only if this Modal, and it's the only view in the stack.
@@ -440,7 +446,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)displayLoadError:(NSError *)error
 {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
+        [ReachabilityUtils showNoInternetConnectionNoticeWithMessage: ReachabilityUtils.noConnectionMessage];
         [self reloadWhenConnectionRestored];
     } else {
         [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];

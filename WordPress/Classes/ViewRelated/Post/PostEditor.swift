@@ -33,6 +33,12 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     ///
     var isOpenedDirectlyForPhotoPost: Bool { get set }
 
+    /// Media items to be inserted on the post after creation
+    ///
+    /// - Parameter media: the media items to add
+    ///
+    func prepopulateMediaItems(_ media: [Media])
+
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
     var shouldRemovePostOnDismiss: Bool { get }

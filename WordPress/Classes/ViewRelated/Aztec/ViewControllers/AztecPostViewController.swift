@@ -8,7 +8,6 @@ import WordPressShared
 import MobileCoreServices
 import WordPressEditor
 import WPMediaPicker
-import SVProgressHUD
 import AVKit
 import MobileCoreServices
 
@@ -1873,6 +1872,9 @@ extension AztecPostViewController {
 
         editorView.toggleEditingMode()
         editorSession.switch(editor: analyticsEditor)
+        if editorView.editingMode == .richText {
+            processMediaAttachments()
+        }
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
@@ -2442,7 +2444,9 @@ extension AztecPostViewController {
     }
 
     private func insertVideoAttachmentWithPlaceholder() -> VideoAttachment {
-        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: Constants.placeholderMediaLink, posterURL: Constants.placeholderMediaLink, placeHolderImage: Assets.defaultMissingImage)
+        let videoAttachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: Constants.placeholderMediaLink, posterURL: Constants.placeholderMediaLink, placeHolderImage: Assets.defaultMissingImage)
+        videoAttachment.isShortcode = true
+        return videoAttachment
     }
 
     private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment) {
@@ -2555,6 +2559,8 @@ extension AztecPostViewController {
                 }
                 if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                     videoAttachment.videoPressID = videoPressGUID
+                } else {
+                    videoAttachment.isShortcode = true
                 }
                 richTextView.refresh(attachment, overlayUpdateOnly: !posterChange)
             }
@@ -2861,7 +2867,7 @@ extension AztecPostViewController {
     }
 
     func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = videoAttachment.url else {
+        guard let videoURL = videoAttachment.mediaURL else {
             return
         }
         guard let videoPressID = videoAttachment.videoPressID else {
@@ -2909,7 +2915,7 @@ extension AztecPostViewController {
     }
 
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
-        guard let videoSrcURL = videoAttachment.url, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil else {
+        guard let videoSrcURL = videoAttachment.mediaURL, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil else {
             onFailure()
             return
         }
