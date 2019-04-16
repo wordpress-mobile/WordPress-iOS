@@ -16,8 +16,6 @@ devices([
   "iPad Pro (12.9-inch) (3rd generation)",
 ])
 
-languages("da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" "))
-
 # Where should the resulting screenshots be stored?
 output_directory File.join fastlane_directory, "screenshots"
 

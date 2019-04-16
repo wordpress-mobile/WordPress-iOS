@@ -20,7 +20,7 @@ platform :ios do
   # bundle exec fastlane screenshots
   #####################################################################################
   desc "Generate localised screenshots"
-  lane :screenshots do
+  lane :screenshots  do |options| 
     fastlane_directory = File.expand_path File.dirname(__FILE__)
     scan(
       workspace: File.join(fastlane_directory, "../../WordPress.xcworkspace"),
@@ -28,9 +28,29 @@ platform :ios do
       build_for_testing: true,
       derived_data_path: File.join(fastlane_directory, "DerivedData"),
     )
+
+    # By default, clear previous screenshots
+    should_clear_previous_screenshots = true
+    languages = "da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" ")
+
+    # Allow creating screenshots for just one languages
+    if options[:language] != nil
+      languages.keep_if { |language|
+        language.casecmp(options[:language]) == 0
+      }
+
+      # Don't clear, because we might just be fixing one locale
+      should_clear_previous_screenshots = false
+    end
+
+    puts languages
+
     capture_ios_screenshots(
       test_without_building: true,
+      concurrent_simulators: true,
       derived_data_path: File.join(fastlane_directory, "DerivedData"),
+      languages: languages,
+      clear_previous_screenshots: should_clear_previous_screenshots,
     )
   end
 
