@@ -22,6 +22,13 @@ platform :ios do
   desc "Generate localised screenshots"
   lane :screenshots  do |options| 
     fastlane_directory = File.expand_path File.dirname(__FILE__)
+  
+    Dir.chdir("../../") do
+      FileUtils.rm_rf('Pods')
+    end
+
+    sh('bundle exec pod install')
+
     scan(
       workspace: File.join(fastlane_directory, "../../WordPress.xcworkspace"),
       scheme: "WordPressScreenshotGeneration",
