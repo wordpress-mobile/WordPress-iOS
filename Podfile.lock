@@ -33,7 +33,7 @@ PODS:
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - DoubleConversion (1.1.5)
-  - Down (0.6.5)
+  - Down (0.6.6)
   - Fabric (1.9.0)
   - Folly (2018.10.22.00):
     - boost-for-react-native
@@ -233,7 +233,7 @@ DEPENDENCIES:
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.12.0)
-  - Down (from `https://github.com/nheagy/Down.git`, commit `3b3e833e7e6022d34a6633a7ddb89165365f169c`)
+  - Down (~> 0.6.6)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.1.2/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
@@ -278,6 +278,7 @@ SPEC REPOS:
     - CocoaLumberjack
     - Crashlytics
     - DoubleConversion
+    - Down
     - Fabric
     - FormatterKit
     - Gifu
@@ -314,9 +315,6 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.3.2
-  Down:
-    :commit: 3b3e833e7e6022d34a6633a7ddb89165365f169c
-    :git: https://github.com/nheagy/Down.git
   Folly:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.1.2/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
@@ -345,9 +343,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.3.2
-  Down:
-    :commit: 3b3e833e7e6022d34a6633a7ddb89165365f169c
-    :git: https://github.com/nheagy/Down.git
   Gutenberg:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.1.2
@@ -374,7 +369,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
-  Down: b91ef4869bf342eb3094e6ce0c68dbadb0029f7f
+  Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
@@ -416,6 +411,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
   ZIPFoundation: b1f07e4409baf1641f3fe5948b2a1c3f5c500cb1
 
-PODFILE CHECKSUM: 67cfd0b8ed468965e15640935c28097f690cadf1
+PODFILE CHECKSUM: 36e9a094dbe615634b3497e41969ff1eb4466a09
 
 COCOAPODS: 1.5.3
