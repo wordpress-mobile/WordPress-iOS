@@ -17,7 +17,7 @@ public extension NSAttributedString {
     ///
     /// - Returns: NSAttributedString Optional
     ///
-    public class func attributedStringFromHTMLString(
+    class func attributedStringFromHTMLString(
         _ string: String,
         defaultAttributes: [NSAttributedString.Key: Any]?) throws -> NSAttributedString? {
 

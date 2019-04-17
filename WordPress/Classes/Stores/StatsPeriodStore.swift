@@ -217,9 +217,7 @@ private extension StatsPeriodStore {
         activeQueries.forEach { query in
             switch query {
             case .periods:
-                if shouldFetchOverview() {
-                    fetchPeriodOverviewData(date: query.date, period: query.period)
-                }
+                loadFromCache(date: query.date, period: query.period)
             case .allPostsAndPages:
                 if shouldFetchPostsAndPages() {
                     fetchAllPostsAndPages(date: query.date, period: query.period)

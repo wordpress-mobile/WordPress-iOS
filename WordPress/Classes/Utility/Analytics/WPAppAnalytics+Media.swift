@@ -8,7 +8,7 @@ public extension WPAppAnalytics {
     ///     - selectionMethod: The Media's method of selection.
     /// - Returns: Dictionary
     ///
-    public class func properties(for media: Media, selectionMethod: MediaSelectionMethod) -> [String: Any] {
+    class func properties(for media: Media, selectionMethod: MediaSelectionMethod) -> [String: Any] {
         var properties = WPAppAnalytics.properties(for: media)
         properties[MediaOriginKey] = String(describing: selectionMethod)
         return properties
@@ -19,7 +19,7 @@ public extension WPAppAnalytics {
      - parameter media: the Media object
      - returns: Dictionary
      */
-    @objc public class func properties(for media: Media) -> Dictionary<String, Any> {
+    @objc class func properties(for media: Media) -> Dictionary<String, Any> {
         var properties = [String: Any]()
         properties[MediaProperties.mime] = media.mimeType()
         if let fileExtension = media.fileExtension(), !fileExtension.isEmpty {

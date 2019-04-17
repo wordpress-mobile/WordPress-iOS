@@ -11,11 +11,8 @@ class JetpackRemoteInstallViewController: UIViewController {
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var promptType: JetpackLoginPromptType
     private var blog: Blog
-    private let jetpackView = JetpackRemoteInstallView()
+    private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
-
-    #warning("This is for manual testing purpose only. Remove after this PR is merged.")
-    @IBOutlet private var segmented: UISegmentedControl!
 
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
         self.blog = blog
@@ -58,11 +55,9 @@ private extension JetpackRemoteInstallViewController {
 
         jetpackView.delegate = self
         add(jetpackView)
+        jetpackView.view.frame = view.bounds
 
         jetpackView.toggleHidingImageView(for: traitCollection)
-
-        #warning("This is for manual testing purpose only. Remove after this PR is merged.")
-        view.bringSubviewToFront(segmented)
 
         viewModel.viewReady()
     }
@@ -106,19 +101,25 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 // MARK: - Jetpack View delegate
 
-extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
+extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDelegate {
     func mainButtonDidTouch() {
+        guard let url = blog.url,
+            let username = blog.username,
+            let password = blog.password else {
+            return
+        }
 
+        switch viewModel.state {
+        case .install, .failure:
+            viewModel.installJetpack(with: url, username: username, password: password)
+        case .success:
+            openInstallJetpackURL()
+        default:
+            break
+        }
     }
 
     func customerSupportButtonDidTouch() {
         navigationController?.pushViewController(SupportTableViewController(), animated: true)
-    }
-}
-
-#warning("This is for manual testing purpose only")
-private extension JetpackRemoteInstallViewController {
-    @IBAction func stateChange(_ sender: UISegmentedControl) {
-        viewModel.testState(sender.selectedSegmentIndex)
     }
 }

@@ -170,29 +170,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex
-{
-    [super setSelectedIndex:selectedIndex];
-
-    // Bumping the stat in this method works for cases where the selected tab is
-    // set in response to other feature behavior (e.g. a notifications), and
-    // when set via state restoration.
-    switch (selectedIndex) {
-        case WPTabMe:
-            [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
-            break;
-        case WPTabMySites:
-            [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
-            break;
-        case WPTabReader:
-            [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
-            break;
-
-        default:
-            break;
-    }
-}
-
 #pragma mark - UIViewControllerRestoration methods
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -837,22 +814,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (newIndex != tabBarController.selectedIndex) {
         switch (newIndex) {
             case WPTabMySites: {
-                [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
                 [self bypassBlogListViewControllerIfNecessary];
                 break;
             }
             case WPTabReader: {
-                [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
                 [self alertQuickStartThatReaderWasTapped];
-                break;
-            }
-            case WPTabMe: {
-                [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
                 break;
             }
             default: break;
         }
 
+        [self trackTabAccessForTabIndex:newIndex];
         [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
@@ -996,11 +968,18 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Handling Layout
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self startObserversForTabAccessTracking];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self updateNotificationBadgeVisibility];
     [self startWatchingQuickTours];
+
+    [self trackTabAccessOnViewDidAppear];
 }
 
 - (void)viewDidLayoutSubviews

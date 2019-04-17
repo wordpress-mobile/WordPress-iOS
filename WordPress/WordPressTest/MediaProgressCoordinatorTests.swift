@@ -220,7 +220,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.totalUnitCount == Int64(1), "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "\(index)")
+        mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "\(String(describing: index))")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
 
