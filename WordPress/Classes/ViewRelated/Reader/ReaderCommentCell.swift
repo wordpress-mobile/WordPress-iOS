@@ -21,14 +21,16 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var enableLoggedInFeatures = false
 
+    @IBOutlet var parentStackView: UIStackView!
     @IBOutlet var avatarImageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
     @IBOutlet var timeLabel: LongPressGestureLabel!
-    @IBOutlet var textView: WPRichContentView!
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
+
+    var textView: WPRichContentView!
 
     @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
@@ -68,14 +70,11 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let newTextView = WPRichContentView(frame: textView.frame, textContainer: nil)
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
         newTextView.isScrollEnabled = false
         newTextView.translatesAutoresizingMaskIntoConstraints = false
 
-        let stackView = textView.superview as! UIStackView
-        stackView.insertArrangedSubview(newTextView, at: 1)
-
-        textView.removeFromSuperview()
+        parentStackView.insertArrangedSubview(newTextView, at: 1)
         textView = newTextView
 
         setupReplyButton()

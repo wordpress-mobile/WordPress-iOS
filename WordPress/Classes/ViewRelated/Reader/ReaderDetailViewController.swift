@@ -59,8 +59,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var textView: WPRichContentView!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
+    fileprivate weak var textView: WPRichContentView!
 
     // Spacers
     @IBOutlet fileprivate weak var featuredImageBottomPaddingView: UIView!
@@ -213,22 +213,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        let newTextView = WPRichContentView(frame: textView.frame, textContainer: nil)
-        newTextView.translatesAutoresizingMaskIntoConstraints = false
-        newTextView.delegate = self
-        textView.removeFromSuperview()
-
-        view.addSubview(newTextView)
-        view.addConstraints([
-            topLayoutGuide.bottomAnchor.constraint(equalTo: newTextView.topAnchor),
-            view.leadingAnchor.constraint(equalTo: newTextView.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: newTextView.trailingAnchor),
-            newTextView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
-            ])
-
-
-        textView = newTextView
-
+        setupTextView()
         setupContentHeaderAndFooter()
         textView.alpha = 0
         footerView.isHidden = true
@@ -390,6 +375,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         })
     }
 
+    /// Setup the Text View.
+    fileprivate func setupTextView() {
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+        newTextView.delegate = self
+
+        view.addSubview(newTextView)
+        view.addConstraints([
+            topLayoutGuide.bottomAnchor.constraint(equalTo: newTextView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: newTextView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: newTextView.trailingAnchor),
+            newTextView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            ])
+
+        textView = newTextView
+    }
 
     /// Composes the views for the post header and Discover attribution.
     fileprivate func setupContentHeaderAndFooter() {

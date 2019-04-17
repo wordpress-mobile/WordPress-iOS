@@ -453,16 +453,25 @@ class ContentInformation: ImageSourceInformation {
     }
 }
 
-// TODO: This is shamelessly stolen from Aztec. Figure out if we should just expose the Aztec one publicly
-// instead of hacking this here?
+// This is very much based on Aztec.LayoutManager — most of this code is pretty much copy-pasted
+// from there and trimmed to only contain the relevant parts.
 @objc fileprivate class BlockquoteBackgroundLayoutManager: NSLayoutManager {
     /// Blockquote's Left Border Color
     ///
-    var blockquoteBorderColor = UIColor(red: 0.52, green: 0.65, blue: 0.73, alpha: 1.0)
+    let blockquoteBorderColor = UIColor(red: 0.52, green: 0.65, blue: 0.73, alpha: 1.0)
 
     /// Blockquote's Left Border width
     ///
-    var blockquoteBorderWidth: CGFloat = 2
+    let blockquoteBorderWidth: CGFloat = 2
+
+    /// HeadIndent marker
+    /// Used to determine whether a given paragraph is a result of `<blockquote>` being parsed by
+    /// NSAttributedString.attributedStringFromHTMLString(:_)
+    let headIndentMarker: CGFloat = 20
+
+    /// Blockquote Indent
+    ///
+    let blockquoteIndent: CGFloat = 10
 
     /// Draws the background, associated to a given Text Range
     ///
@@ -486,11 +495,10 @@ class ContentInformation: ImageSourceInformation {
         // Draw: Blockquotes
         textStorage.enumerateAttribute(.paragraphStyle, in: characterRange, options: []) { (object, range, stop) in
 
-            //TODO: get rid of magic numbers here
             guard
                 let style = object as? NSParagraphStyle,
-                style.headIndent == 20,
-                style.firstLineHeadIndent == 20
+                style.headIndent == headIndentMarker,
+                style.firstLineHeadIndent == headIndentMarker
                 else {
                     return
             }
@@ -501,8 +509,7 @@ class ContentInformation: ImageSourceInformation {
                 let lineRange = self.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
                 let lineCharacters = textStorage.attributedSubstring(from: lineRange).string
                 let lineEndsParagraph = lineCharacters.isEndOfParagraph(before: lineCharacters.endIndex)
-                // TODO: ...and here
-                let blockquoteRect = self.blockquoteRect(origin: origin, lineRect: rect, blockquoteIndent: 10, lineEndsParagraph: lineEndsParagraph)
+                let blockquoteRect = self.blockquoteRect(origin: origin, lineRect: rect, lineEndsParagraph: lineEndsParagraph)
 
                 self.drawBlockquote(in: blockquoteRect.integral, with: context)
             }
@@ -520,14 +527,9 @@ class ContentInformation: ImageSourceInformation {
     ///
     /// - Returns: Rect in which we should render the blockquote.
     ///
-    private func blockquoteRect(origin: CGPoint, lineRect: CGRect, blockquoteIndent: CGFloat, lineEndsParagraph: Bool) -> CGRect {
+    private func blockquoteRect(origin: CGPoint, lineRect: CGRect, lineEndsParagraph: Bool) -> CGRect {
         var blockquoteRect = lineRect.offsetBy(dx: origin.x, dy: origin.y)
 
-        guard blockquoteIndent != 0 else {
-            return blockquoteRect
-        }
-
-        // TODO: ...and more magic numbers here
         let paddingWidth = CGFloat(4) * 0.5 + blockquoteIndent
         blockquoteRect.origin.x += paddingWidth
         blockquoteRect.size.width -= paddingWidth
