@@ -140,35 +140,22 @@ class WPRichContentView: UITextView {
         }
     }
 
-    // Theoretically this shouldn't be needed, since the docs say that those are just convenience accesors
-    // for the `textContainer` properties, but in reality if it's not overridden, it returns an old value.
-    override var layoutManager: NSLayoutManager {
-        return customLayoutManager
-    }
-
-    private lazy var customLayoutManager: BlockquoteBackgroundLayoutManager = {
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        let container = NSTextContainer(size: frame.size)
+        let storage = NSTextStorage()
         let manager = BlockquoteBackgroundLayoutManager()
 
-        /* TODO: Figure out what the correct incantation here is. The current one seems to work???
-        manager.addTextContainer(textContainer)
+        storage.addLayoutManager(manager)
+        manager.addTextContainer(container)
 
-        textStorage.layoutManagers.forEach { textStorage.removeLayoutManager($0) }
-        textStorage.addLayoutManager(manager)
-         */
-        textContainer.replaceLayoutManager(manager)
-
-        return manager
-    }()
-
-
-    override init(frame: CGRect, textContainer: NSTextContainer?) {
-        super.init(frame: frame, textContainer: textContainer)
+        super.init(frame: frame, textContainer: container)
 
         setupView()
     }
 
 
     required init?(coder aDecoder: NSCoder) {
+        DDLogDebug("This class should be initialized via code, in order to properly render blockquotes. We need to be able to ovverride the default `textContainer`, and we don't have opportunity to do so when unpacking from a `nib`. Sorry for that :(")
         super.init(coder: aDecoder)
 
         setupView()
@@ -182,7 +169,6 @@ class WPRichContentView: UITextView {
     ///
     @objc func setupView() {
         // Because the attachment manager is a lazy property.
-        _ = customLayoutManager
         _ = attachmentManager
 
 

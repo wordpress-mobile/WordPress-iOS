@@ -68,9 +68,20 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        let newTextView = WPRichContentView(frame: textView.frame, textContainer: nil)
+        newTextView.isScrollEnabled = false
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+
+        let stackView = textView.superview as! UIStackView
+        stackView.insertArrangedSubview(newTextView, at: 1)
+
+        textView.removeFromSuperview()
+        textView = newTextView
+
         setupReplyButton()
         setupLikeButton()
         applyStyles()
+
     }
 
 

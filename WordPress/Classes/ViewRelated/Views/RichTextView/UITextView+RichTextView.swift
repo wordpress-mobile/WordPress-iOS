@@ -20,16 +20,6 @@ extension UITextView {
 @objc
 extension UITextView {
     func frameForTextInRange(_ range: NSRange) -> CGRect {
-        // This works... okay, but visibly different and worse than the original codepath.
-        var mutRange = NSRange()
-
-        return layoutManager
-            .lineFragmentRect(forGlyphAt: range.location, effectiveRange: &mutRange)
-            .insetBy(dx: textContainerInset.left, dy: 0)
-
-
-        // This is the original code-path and for a reason beyond my understanding the `firstPosition`
-        // and `lastPosition` are returned as `nil` if I override the `layoutManager`.
         guard
             let firstPosition   = position(from: beginningOfDocument, offset: range.location),
             let lastPosition    = position(from: beginningOfDocument, offset: range.location + range.length),

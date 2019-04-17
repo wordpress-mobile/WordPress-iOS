@@ -213,6 +213,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        let newTextView = WPRichContentView(frame: textView.frame, textContainer: nil)
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+        newTextView.delegate = self
+        textView.removeFromSuperview()
+
+        view.addSubview(newTextView)
+        view.addConstraints([
+            topLayoutGuide.bottomAnchor.constraint(equalTo: newTextView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: newTextView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: newTextView.trailingAnchor),
+            newTextView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            ])
+
+
+        textView = newTextView
+
         setupContentHeaderAndFooter()
         textView.alpha = 0
         footerView.isHidden = true
