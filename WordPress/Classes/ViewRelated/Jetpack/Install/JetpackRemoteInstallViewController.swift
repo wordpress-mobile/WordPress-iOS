@@ -119,16 +119,13 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
             return
         }
 
-        let installJetpack: JetpackInstallBlock = { [weak self] url, username, password, event in
-            WPAnalytics.track(event)
-            self?.viewModel.installJetpack(with: url, username: username, password: password)
-        }
-
         switch viewModel.state {
         case .install:
-            installJetpack(url, username, password, .installJetpackRemoteStart)
+            WPAnalytics.track(.installJetpackRemoteStart)
+            viewModel.installJetpack(with: url, username: username, password: password)
         case .failure:
-            installJetpack(url, username, password, .installJetpackRemoteRetry)
+            WPAnalytics.track(.installJetpackRemoteRetry)
+            viewModel.installJetpack(with: url, username: username, password: password)
         case .success:
             openInstallJetpackURL()
         default:
