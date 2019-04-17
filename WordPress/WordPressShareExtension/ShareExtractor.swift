@@ -395,12 +395,10 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             let assetURL = url.appendingPathComponent(fileName, isDirectory: false)
 
             switch assetURL.pathExtension.lowercased() {
-            case "jpg", "jpeg", "heic":
+            case "jpg", "jpeg", "heic", "gif":
                 if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
                     cachedImageURLs.append(cachedURL)
                 }
-            case "gif":
-                print("we have a gif")
             default:
                 break
             }
