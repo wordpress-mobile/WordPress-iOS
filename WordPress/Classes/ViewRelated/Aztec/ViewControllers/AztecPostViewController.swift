@@ -175,6 +175,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .natural
+        label.accessibilityIdentifier = "aztec-content-placeholder"
         return label
     }()
 

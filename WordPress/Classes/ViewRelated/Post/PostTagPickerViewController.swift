@@ -57,6 +57,8 @@ class PostTagPickerViewController: UIViewController {
         // Don't add extra padding so text aligns with suggestions
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
+        textView.accessibilityLabel = NSLocalizedString("Add new tags, separated by commas.", comment: "Voiceover accessibility label for the tags field in blog post settings.")
+        textView.accessibilityIdentifier = "add-tags"
 
         view.addSubview(tableView)
         textViewContainer.addSubview(textView)
