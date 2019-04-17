@@ -3,6 +3,7 @@
 * Resolved a crash that might occur during the new Site Creation flow.
 * Improved connectivity errors messaging in sharing screen.
 * Quotes in Reader are now easier to read, thanks to a vertical bar on the left making them more visually distinct
+* Fixed an issue where some text in Activity Log would show up in a wrong language
 
 12.2
 -----

@@ -380,7 +380,7 @@ private extension ActivityStore {
             return nil
         }
 
-        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyDefault)   // ActivityServiceRemote currently injects "locale", not "_locale"
+        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)
 
         return ActivityServiceRemote(wordPressComRestApi: api)
     }
