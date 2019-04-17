@@ -57,7 +57,7 @@ private extension PostStatsViewModel {
         let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
         let styling = SelectedPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
 
-        let row = OverviewRow(tabsData: [data], chartData: [stubbedData], chartStyling: [styling])
+        let row = OverviewRow(tabsData: [data], chartData: [stubbedData], chartStyling: [styling], period: nil)
         tableRows.append(row)
 
         return tableRows

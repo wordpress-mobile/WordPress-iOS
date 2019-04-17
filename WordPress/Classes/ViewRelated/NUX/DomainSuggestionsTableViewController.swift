@@ -285,7 +285,7 @@ extension DomainSuggestionsTableViewController {
         }
         styledDomain.addAttribute(.foregroundColor,
                                   value: WPStyleGuide.darkGrey(),
-                                  range: NSMakeRange(0, dotPosition.encodedOffset))
+                                  range: NSMakeRange(0, dotPosition.utf16Offset(in: domain)))
         return styledDomain
     }
 }

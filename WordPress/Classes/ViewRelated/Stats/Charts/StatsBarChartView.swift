@@ -5,6 +5,8 @@ import Charts
 
 // MARK: - StatsBarChartView
 
+private let BarChartAnalyticsPropertyGranularityKey = "granularity"
+
 class StatsBarChartView: BarChartView {
 
     // MARK: Properties
@@ -26,6 +28,10 @@ class StatsBarChartView: BarChartView {
     ///
     private let styling: BarChartStyling
 
+    /// This informs the analytics event captured via user interaction.
+    ///
+    private let analyticsGranularity: BarChartAnalyticsPropertyGranularityValue?
+
     /// When set, this stock `UIView` serves as a legend for the rendered chart.
     ///
     private var legendView: UIView?
@@ -38,9 +44,10 @@ class StatsBarChartView: BarChartView {
         }
     }
 
-    init(data: BarChartDataConvertible, styling: BarChartStyling) {
+    init(data: BarChartDataConvertible, styling: BarChartStyling, analyticsGranularity: BarChartAnalyticsPropertyGranularityValue? = nil) {
         self.barChartData = data
         self.styling = styling
+        self.analyticsGranularity = analyticsGranularity
 
         super.init(frame: .zero)
 
@@ -90,6 +97,16 @@ class StatsBarChartView: BarChartView {
         let offset = CGPoint(x: offsetWidth, y: offsetHeight)
 
         return (rect, offset)
+    }
+
+    private func captureAnalyticsEvent() {
+        var properties = [String: String]()
+
+        if let specifiedAnalyticsGranularity = analyticsGranularity {
+            properties[BarChartAnalyticsPropertyGranularityKey] = specifiedAnalyticsGranularity.rawValue
+        }
+
+        WPAnalytics.track(.statsOverviewBarChartTapped, withProperties: properties)
     }
 
     private func configureAndPopulateData() {
@@ -161,7 +178,6 @@ class StatsBarChartView: BarChartView {
     }
 
     private func configureChartForSingleDataSet(_ dataSet: BarChartDataSet) {
-
         dataSet.colors = [ styling.primaryBarColor ]
         dataSet.drawValuesEnabled = false
 
@@ -177,7 +193,6 @@ class StatsBarChartView: BarChartView {
 
     private func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
-
         extraRightOffset = Constants.trailingOffset
 
         animate(yAxisDuration: Constants.animationDuration)
@@ -271,6 +286,7 @@ class StatsBarChartView: BarChartView {
         delegate = self
 
         applyStyling()
+        prepareForVoiceOver()
         configureAndPopulateData()
     }
 
@@ -295,7 +311,21 @@ private typealias StatsBarChartMarker = MarkerView
 
 extension StatsBarChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        captureAnalyticsEvent()
         drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
         drawChartMarker(for: entry)
+    }
+}
+
+// MARK: - Accessible
+
+extension StatsBarChartView: Accessible {
+    func prepareForVoiceOver() {
+        // ChartDataRendererBase creates a meaningful a11y description, relying on the chart description
+        guard let chartDescription = chartDescription else {
+            return
+        }
+        chartDescription.text = barChartData.accessibilityDescription
+        chartDescription.enabled = false    // disabling the description hides a corresponding label
     }
 }

@@ -264,15 +264,15 @@ final class ErrorStateView: UIView {
 
 @objc
 private extension ErrorStateView {
-    func contactSupportTapped() {
+    @objc func contactSupportTapped() {
         configuration.contactSupportActionHandler?()
     }
 
-    func dismissTapped() {
+    @objc func dismissTapped() {
         configuration.dismissalActionHandler?()
     }
 
-    func retryTapped() {
+    @objc func retryTapped() {
         configuration.retryActionHandler?()
     }
 }
