@@ -2,19 +2,19 @@ import Foundation
 import XCTest
 
 class TagsComponent: BaseScreen {
-    let header: XCUIElement
     let backButton: XCUIElement
+    let tagsField: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        header = app.navigationBars["Azctec Editor Navigation Bar"].otherElements["Tags"]
         backButton = app.buttons["Post Settings"]
+        tagsField = app.textViews["add-tags"]
 
-        super.init(element: header)
+        super.init(element: tagsField)
     }
 
     func addTag(name: String) -> TagsComponent {
-        app.typeText(name)
+        tagsField.typeText(name)
 
         return self
     }

@@ -17,7 +17,13 @@ class EditorScreen: BaseScreen {
     private var richTextField = "Rich Content"
     private var htmlTextField = "HTMLContentView"
 
+    let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
+    let publishButton = XCUIApplication().buttons["Publish"]
+    let moreButton = XCUIApplication().buttons["More"]
+    let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
+
     let titleView = XCUIApplication().textViews["Title"]
+    let contentPlaceholder = XCUIApplication().staticTexts["aztec-content-placeholder"]
 
     lazy var mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
     lazy var headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
@@ -30,10 +36,14 @@ class EditorScreen: BaseScreen {
     lazy var linkButton = XCUIApplication().buttons["format_toolbar_insert_link"]
     lazy var horizontalrulerButton = XCUIApplication().buttons["format_toolbar_insert_horizontal_ruler"]
     lazy var sourcecodeButton = XCUIApplication().buttons["format_toolbar_toggle_html_view"]
-    lazy var moreButton = XCUIApplication().buttons["format_toolbar_insert_more"]
+    lazy var moreToolbarButton = XCUIApplication().buttons["format_toolbar_insert_more"]
 
     let unorderedListOption = XCUIApplication().buttons["Unordered List"]
     let orderedListOption = XCUIApplication().buttons["Ordered List"]
+
+    // Action sheet buttons
+    let discardButton = XCUIApplication().buttons["Discard"]
+    let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"]
 
     init(mode: Mode) {
         var textField = ""
@@ -87,11 +97,10 @@ class EditorScreen: BaseScreen {
     func addListWithLines(type: String, lines: Array<String>) -> EditorScreen {
         addList(type: type)
 
-        let returnButton = app.buttons["Return"]
         for (index, line) in lines.enumerated() {
             enterText(text: line)
             if index != (lines.count - 1) {
-                returnButton.tap()
+                app.buttons["Return"].tap()
             }
         }
         return self
@@ -150,7 +159,7 @@ class EditorScreen: BaseScreen {
      */
     @discardableResult
     func enterText(text: String) -> EditorScreen {
-        textView.tap()
+        contentPlaceholder.tap()
         textView.typeText(text)
         return self
     }
@@ -209,7 +218,7 @@ class EditorScreen: BaseScreen {
         app.tap() // trigger the media permissions alert handler
 
         // Make sure media picker is open
-        if mediaButton.isHittable {
+        if mediaButton.exists {
             tapToolbarButton(button: mediaButton)
         }
 
@@ -217,22 +226,24 @@ class EditorScreen: BaseScreen {
         app.cells.element(boundBy: 0).tap()
         app.buttons["Insert 1"].tap()
 
+        // Wait for upload to finish
+        _ = waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
+
         return self
     }
 
     // returns void since return screen depends on from which screen it loaded
     func goBack() {
-        let navBar = app.navigationBars["Azctec Editor Navigation Bar"]
-        navBar.buttons["Close"].tap()
+        editorCloseButton.tap()
         let notSavedState = app.staticTexts["You have unsaved changes."]
         if notSavedState.exists {
             Logger.log(message: "Discarding unsaved changes", event: .v)
-            app.buttons["Discard"].tap()
+            discardButton.tap()
         }
     }
 
     func publish() -> EditorNoticeComponent {
-        app.buttons["Publish"].tap()
+        publishButton.tap()
         confirmPublish()
 
         return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
@@ -251,8 +262,8 @@ class EditorScreen: BaseScreen {
     }
 
     func openPostSettings() -> EditorPostSettings {
-        app.buttons["More"].tap()
-        app.sheets.buttons["Post Settings"].tap()
+        moreButton.tap()
+        postSettingsButton.tap()
 
         return EditorPostSettings()
     }

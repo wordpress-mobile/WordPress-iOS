@@ -45,14 +45,14 @@ class EditorPostSettings: BaseScreen {
 
     func verifyPostSettings(withCategory category: String? = nil, withTag tag: String? = nil, hasImage: Bool) -> EditorPostSettings {
         if let postCategory = category {
-            XCTAssertTrue(categoriesSection.staticTexts[postCategory].exists)
+            XCTAssertTrue(categoriesSection.staticTexts[postCategory].exists, "Category \(postCategory) not set")
         }
         if let postTag = tag {
-            XCTAssertTrue(tagsSection.staticTexts[postTag].exists)
+            XCTAssertTrue(tagsSection.staticTexts[postTag].exists, "Tag \(postTag) not set")
         }
         if hasImage {
             let imageCount = settingsTable.images.count
-            XCTAssertTrue(imageCount == 1)
+            XCTAssertTrue(imageCount == 1, "Featured image not set")
         }
 
         return EditorPostSettings()

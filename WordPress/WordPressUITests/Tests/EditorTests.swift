@@ -27,7 +27,7 @@ class EditorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testSimplePublish() {
+    func testTextPostPublish() {
         let title = DataHelper.title
         let content = DataHelper.longText
         _ = editorScreen
@@ -39,7 +39,7 @@ class EditorTests: XCTestCase {
             .done()
     }
 
-    func testBasicPublish() {
+    func testBasicPostPublish() {
         let title = DataHelper.title
         let content = DataHelper.longText
         let category = DataHelper.category

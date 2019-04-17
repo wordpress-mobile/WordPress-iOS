@@ -23,8 +23,8 @@ class EditorPublishEpilogueScreen: BaseScreen {
         let actualPostTitle = XCUIApplication().staticTexts["postTitle"].label
         let actualSiteAddress = XCUIApplication().staticTexts["siteUrl"].label
 
-        XCTAssertEqual(expectedPostTitle, actualPostTitle)
-        XCTAssertEqual(expectedSiteAddress, actualSiteAddress)
+        XCTAssertEqual(expectedPostTitle, actualPostTitle, "Post title doesn't match expected title")
+        XCTAssertEqual(expectedSiteAddress, actualSiteAddress, "Site address doesn't match expected address")
 
         return self
     }

@@ -64,7 +64,7 @@ extension XCTestCase {
     }
 
     public struct DataHelper {
-        static let title = "WordPress for iOS Test Post"
+        static let title = "WordPress for iOS Test"
         static let shortText = "Lorem ipsum dolor sit amet."
         static let longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ornare accumsan ante, sollicitudin bibendum erat bibendum nec. Nam congue efficitur leo eget porta. Proin dictum non ligula aliquam varius. Aenean vehicula nunc in sapien rutrum, nec vehicula enim iaculis."
         static let link = "https://wordpress.org/mobile/"
