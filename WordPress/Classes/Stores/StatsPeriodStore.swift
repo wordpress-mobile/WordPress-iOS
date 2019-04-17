@@ -272,6 +272,16 @@ private extension StatsPeriodStore {
 
         setAllAsFetchingOverview()
 
+        statsRemote.getData(for: period, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching summary.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary))
+        }
+
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching posts: \(String(describing: error?.localizedDescription))")
@@ -729,6 +739,7 @@ private extension StatsPeriodStore {
     }
 
     func setAllAsFetchingOverview() {
+        state.fetchingSummary = true
         state.fetchingPostsAndPages = true
         state.fetchingReferrers = true
         state.fetchingClicks = true
