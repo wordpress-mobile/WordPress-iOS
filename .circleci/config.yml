@@ -1,16 +1,17 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.20
+  ios: wordpress-mobile/ios@0.0.25
 
 workflows:
   wordpress_ios:
     jobs:
       - ios/test:
           name: build_and_test
+          xcode-version: "10.2.0"
           workspace: WordPress.xcworkspace
           scheme: WordPress
           device: iPhone XS
-          ios-version: "12.1"
+          ios-version: "12.2"
           # If you want to reset the CircleCI cache, increment the number in the cache prefix below
           cache-prefix: dependency-cache-v1

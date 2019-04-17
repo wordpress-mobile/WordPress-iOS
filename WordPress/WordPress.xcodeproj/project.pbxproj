@@ -273,6 +273,7 @@
 		405BFB20223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BFB1E223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataClass.swift */; };
 		405BFB21223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405BFB1F223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataProperties.swift */; };
 		40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */; };
+		406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */; };
 		4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */; };
 		4089C51022371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4089C50E22371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift */; };
@@ -287,6 +288,7 @@
 		40A71C69220E1952002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C63220E1951002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift */; };
 		40A71C6A220E1952002E3D25 /* StatsRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */; };
 		40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */; };
+		40ACCF14224E167900190713 /* FlagsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ACCF13224E167900190713 /* FlagsTest.swift */; };
 		40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
 		40C403EB2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403E92215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift */; };
 		40C403EC2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C403EA2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift */; };
@@ -2181,6 +2183,7 @@
 		405BFB1E223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FollowersCountStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		405BFB1F223B37A000CD5BEA /* FollowersCountStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FollowersCountStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextWithAccessoryButtonCell.xib; sourceTree = "<group>"; };
+		406A0EEF224D39C50016AD6A /* Flags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Flags.xcassets; sourceTree = "<group>"; };
 		4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewindStatusTableViewCell.xib; sourceTree = "<group>"; };
 		4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDateFormatting.swift; sourceTree = "<group>"; };
 		4089C50E22371B120031CE78 /* TodayStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -2195,6 +2198,7 @@
 		40A71C63220E1951002E3D25 /* LastPostStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LastPostStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40A71C64220E1951002E3D25 /* StatsRecord+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40A71C65220E1951002E3D25 /* StatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		40ACCF13224E167900190713 /* FlagsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagsTest.swift; sourceTree = "<group>"; };
 		40ADB15420686870009A9161 /* PluginStore+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PluginStore+Persistence.swift"; sourceTree = "<group>"; };
 		40C403E92215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchResultsStatsRecordValue+CoreDataClass.swift"; sourceTree = "<group>"; };
 		40C403EA2215CD1300E8C894 /* SearchResultsStatsRecordValue+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchResultsStatsRecordValue+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -4526,6 +4530,7 @@
 				5D6651461637324000EBDA7D /* Sounds */,
 				B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */,
 				4645AFC41961E1FB005F7509 /* AppImages.xcassets */,
+				406A0EEF224D39C50016AD6A /* Flags.xcassets */,
 				85ED988717DFA00000090D0B /* Images.xcassets */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */,
@@ -4826,6 +4831,7 @@
 		40E7FEC32211DF490032834E /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				40ACCF13224E167900190713 /* FlagsTest.swift */,
 				400A2C8E2217AD7F000A8A59 /* ClicksStatsRecordValueTests.swift */,
 				400A2C922217B463000A8A59 /* ReferrerStatsRecordValueTests.swift */,
 				400A2C942217B68D000A8A59 /* TopViewedVideoStatsRecordValueTests.swift */,
@@ -8886,13 +8892,9 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "WordPress" */;
 			compatibilityVersion = "Xcode 8.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				en,
 				es,
 				it,
@@ -8974,6 +8976,7 @@
 				98B11B8B2216536C00B7F2D7 /* StatsChildRowsView.xib in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
+				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */,
 				D8380CA52192E77F00250609 /* VerticalsCell.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
@@ -9329,9 +9332,9 @@
 				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressUI/WordPressUI.framework",
 				"${BUILT_PRODUCTS_DIR}/ZIPFoundation/ZIPFoundation.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskCoreSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskProviderSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.0/ZendeskCoreSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.0/ZendeskProviderSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.0/ZendeskSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-keyboard-aware-scroll-view/react_native_keyboard_aware_scroll_view.framework",
@@ -9489,7 +9492,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPressAuthenticator/WordPressAuthenticator.bundle",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskSDKStrings.bundle",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/5.0/ZendeskSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -11099,6 +11102,7 @@
 				D81C2F5A20F86E94002AE1F1 /* LikeCommentActionTests.swift in Sources */,
 				FF8CD625214184EE00A33A8D /* MediaAssetExporterTests.swift in Sources */,
 				B5C0CF3F204DB92F00DB0362 /* NotificationReplyStoreTests.swift in Sources */,
+				40ACCF14224E167900190713 /* FlagsTest.swift in Sources */,
 				D800D87620999AE700E7C7E5 /* DiscoverMenuItemCreatorTests.swift in Sources */,
 				E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */,
 				E1B642131EFA5113001DC6D7 /* ModelTestHelper.swift in Sources */,
@@ -11520,12 +11524,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"$(SRCROOT)",
-					"$(PROJECT_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -11591,12 +11590,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"$(SRCROOT)",
-					"$(PROJECT_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -12440,12 +12434,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"$(SRCROOT)",
-					"$(PROJECT_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -12920,12 +12909,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Classes\"",
-					"$(SRCROOT)",
-					"$(PROJECT_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
