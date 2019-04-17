@@ -159,7 +159,7 @@ target 'WordPress' do
         shared_with_networking_pods
         wordpress_ui
         pod 'ZIPFoundation', '~> 0.9.8'
-        pod 'Down', :git => 'https://github.com/nheagy/Down.git', :commit => '3b3e833e7e6022d34a6633a7ddb89165365f169c'
+        pod 'Down', '~> 0.6.6'
     end
 
 
