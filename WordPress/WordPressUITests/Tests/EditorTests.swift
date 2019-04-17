@@ -28,8 +28,8 @@ class EditorTests: XCTestCase {
     }
 
     func testTextPostPublish() {
-        let title = DataHelper.title
-        let content = DataHelper.longText
+        let title = getRandomPhrase()
+        let content = getRandomContent()
         _ = editorScreen
             .enterTextInTitle(text: title)
             .enterText(text: content)
@@ -40,10 +40,10 @@ class EditorTests: XCTestCase {
     }
 
     func testBasicPostPublish() {
-        let title = DataHelper.title
-        let content = DataHelper.longText
-        let category = DataHelper.category
-        let tag = DataHelper.tag
+        let title = getRandomPhrase()
+        let content = getRandomContent()
+        let category = getCategory()
+        let tag = getTag()
         _ = editorScreen
             .enterTextInTitle(text: title)
             .enterText(text: content)
