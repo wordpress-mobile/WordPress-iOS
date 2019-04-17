@@ -30,11 +30,11 @@ class ReaderCommentCell: UITableViewCell {
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
 
-    var textView: WPRichContentView!
+    var textView: WPRichContentView?
 
     @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
-            textView.delegate = delegate
+            textView?.delegate = delegate
         }
     }
 
@@ -70,13 +70,7 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
-        newTextView.isScrollEnabled = false
-        newTextView.translatesAutoresizingMaskIntoConstraints = false
-
-        parentStackView.insertArrangedSubview(newTextView, at: 1)
-        textView = newTextView
-
+        setupContentView()
         setupReplyButton()
         setupLikeButton()
         applyStyles()
@@ -93,9 +87,17 @@ class ReaderCommentCell: UITableViewCell {
 
         authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
-        textView.textContainerInset = Constants.textViewInsets
+        textView?.textContainerInset = Constants.textViewInsets
     }
 
+    func setupContentView() {
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
+        newTextView.isScrollEnabled = false
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+
+        parentStackView.insertArrangedSubview(newTextView, at: 1)
+        textView = newTextView
+    }
 
     @objc func setupReplyButton() {
         let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
@@ -189,10 +191,10 @@ class ReaderCommentCell: UITableViewCell {
             return
         }
 
-        textView.isPrivate = comment.isPrivateContent()
+        textView?.isPrivate = comment.isPrivateContent()
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
-        textView.content = comment.content
+        textView?.content = comment.content
     }
 
 
@@ -223,7 +225,7 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func ensureTextViewLayout() {
-        textView.updateLayoutForAttachments()
+        textView?.updateLayoutForAttachments()
     }
 
 
