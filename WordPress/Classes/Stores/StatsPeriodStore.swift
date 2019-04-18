@@ -15,7 +15,7 @@ enum PeriodAction: Action {
     case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?)
     case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?)
     case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?)
-    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit)
+    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
 
     // Period details
     case refreshPostsAndPages(date: Date, period: StatsPeriodUnit)
@@ -151,8 +151,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedVideos(videos)
         case .receivedCountries(let countries):
             receivedCountries(countries)
-        case .refreshPeriodOverviewData(let date, let period):
-            refreshPeriodOverviewData(date: date, period: period)
+        case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
+            refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshPostsAndPages(let date, let period):
             refreshPostsAndPages(date: date, period: period)
         case .refreshSearchTerms(let date, let period):
@@ -399,12 +399,20 @@ private extension StatsPeriodStore {
         }
     }
 
-    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
+    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
         // The call to `persistToCoreData()` might seem unintuitive here, at a first glance.
         // It's here because call to this method will usually happen after user selects a different
         // time period they're interested in. If we only relied on calls to `persistToCoreData()`
         // when user has left the screen/app, we would possibly lose on storing A LOT of data.
         persistToCoreData()
+
+        if forceRefresh {
+            // Stop existing queries and start fresh.
+            statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
+            setAllAsFetchingOverview(fetching: false)
+            initializeStatsRemote()
+        }
+
         fetchPeriodOverviewData(date: date, period: period)
     }
 
@@ -750,16 +758,15 @@ private extension StatsPeriodStore {
         return !isFetchingOverview
     }
 
-    func setAllAsFetchingOverview() {
-        state.fetchingSummary = true
-        state.fetchingPostsAndPages = true
-        state.fetchingReferrers = true
-        state.fetchingClicks = true
-        state.fetchingPublished = true
-        state.fetchingAuthors = true
-        state.fetchingSearchTerms = true
-        state.fetchingVideos = true
-        state.fetchingCountries = true
+    func setAllAsFetchingOverview(fetching: Bool = true) {
+        state.fetchingPostsAndPages = fetching
+        state.fetchingReferrers = fetching
+        state.fetchingClicks = fetching
+        state.fetchingPublished = fetching
+        state.fetchingAuthors = fetching
+        state.fetchingSearchTerms = fetching
+        state.fetchingVideos = fetching
+        state.fetchingCountries = fetching
     }
 
     func shouldFetchPostsAndPages() -> Bool {
