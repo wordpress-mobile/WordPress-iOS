@@ -16,7 +16,6 @@ class PostStatsTitleCell: UITableViewCell, NibLoadable {
 
     // MARK: - Configure
 
-    // nix ? on URL (?)
     func configure(postTitle: String, postURL: URL?, postStatsDelegate: PostStatsDelegate? = nil) {
         self.postTitle = postTitle
         self.postURL = postURL
