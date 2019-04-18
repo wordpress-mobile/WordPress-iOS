@@ -386,11 +386,9 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     private func handleTextBundle(url: URL) -> ExtractedItem? {
         var error: NSError?
         let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
-
         var returnedItem = ExtractedItem()
-        returnedItem.importedText = bundleWrapper.text.escapeHtmlNamedEntities()
-        var cachedImageURLs = [URL]()
 
+        var cachedImageURLs = [String:URL]()
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
             guard let fileName = fileWrapper.filename else {
                 return
@@ -400,14 +398,32 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             switch assetURL.pathExtension.lowercased() {
             case "jpg", "jpeg", "heic", "gif":
                 if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
-                    cachedImageURLs.append(cachedURL)
+                    cachedImageURLs["assets/\(fileName)"] = cachedURL
                 }
             default:
                 break
             }
         }
 
-        returnedItem.imageURLs = cachedImageURLs
+        if bundleWrapper.type == kUTTypeMarkdown {
+            var mdText = bundleWrapper.text
+            for key in cachedImageURLs.keys {
+                let searchKey = "](\(key))"
+                if mdText.contains(searchKey), let cachedPath = cachedImageURLs[key]?.absoluteString {
+                    mdText = mdText.replacingOccurrences(of: searchKey, with: "](\(cachedPath))")
+                    cachedImageURLs.removeValue(forKey: key)
+                }
+            }
+
+            let converter = Down(markdownString: mdText)
+            if let html = try? converter.toHTML()  {
+                returnedItem.importedText = html
+            }
+        } else {
+            returnedItem.importedText = bundleWrapper.text.escapeHtmlNamedEntities()
+        }
+
+        returnedItem.imageURLs = Array(cachedImageURLs.values)
 
         return returnedItem
     }
@@ -424,6 +440,23 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             return item
         }
 
+        let converter = Down(markdownString: md)
+        guard let html = try? converter.toHTML(.safe) else {
+            return item
+        }
+
+        var result: ExtractedItem
+        if let item = item {
+            result = item
+        } else {
+            result = ExtractedItem()
+        }
+        result.importedText = html
+
+        return result
+    }
+
+    private func handleMarkdown(md: String, item: ExtractedItem? = nil) -> ExtractedItem? {
         let converter = Down(markdownString: md)
         guard let html = try? converter.toHTML(.safe) else {
             return item
