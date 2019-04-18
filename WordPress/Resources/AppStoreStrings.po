@@ -38,11 +38,14 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v12.1-whats-new"
+msgctxt "v12.2-whats-new"
 msgid ""
-"- Everyone’s got their own workflow. Now sharing text from writing and note-taking apps to WordPress is more reliable.\n"
-"- Sometimes updates to user account details fail, even if we wish they didn’t. We’ve added clearer, more detailed error messages so you know what went wrong and what to do next.\n"
-"- You have more ways to create posts with images: the Block editor supports posts with pre-inserted photos, and you can use Apple’s 3D touch action to launch the app and start a new photo post with a single press.\n"
+"12.2\n"
+"-----\n"
+"* Publish with confidence! Draft previews will show you a more accurate version of your posts.\n"
+"* If you prefer to write in apps like Bear or Ulysses (or any other app using the TextBundle and TextPack formats), great – keep doing it. And now you can import text from the those apps into this one.\n"
+"* The whole app got a spring pick-me-up — we fixed up some little visual tics in the site creation process, adjusted some wording to make it clear how much storage space your site is using, and took care of a pesky crash that would sometimes occur when you were trying to manage plugins.\n"
+"\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

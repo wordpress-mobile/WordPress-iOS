@@ -575,9 +575,12 @@ public protocol ThemePresenter: class {
                 // since we need to keep a reference to them to update the counts
                 if sections[indexPath.section] == .customThemes {
                     customThemesHeader = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader, for: indexPath) as! ThemeBrowserSectionHeaderView)
+                    customThemesHeader?.isHidden = customThemeCount == 0
+
                     return customThemesHeader!
                 } else {
                     themesHeader = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader, for: indexPath) as! ThemeBrowserSectionHeaderView)
+                    themesHeader?.isHidden = themeCount == 0
                     return themesHeader!
                 }
             }
