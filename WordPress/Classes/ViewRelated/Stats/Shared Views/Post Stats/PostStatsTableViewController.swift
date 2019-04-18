@@ -32,8 +32,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         initViewModel()
     }
 
-    // TODO: remove nil when fix Period Table VC
-    func configure(postTitle: String?, postURL: URL? = nil) {
+    func configure(postTitle: String?, postURL: URL?) {
         self.postTitle = postTitle
         self.postURL = postURL
     }
