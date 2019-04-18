@@ -294,7 +294,7 @@ private extension TypeBasedExtensionContentExtractor {
 
     func saveToSharedContainer(wrapper: FileWrapper) -> URL? {
         guard let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL,
-            let wrappedFileName = wrapper.filename,
+            let wrappedFileName = wrapper.filename?.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
             let wrappedURL = URL(string: wrappedFileName) else {
                 return nil
         }
@@ -420,10 +420,12 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             let converter = Down(markdownString: mdText)
             if var html = try? converter.toHTML(.safe) {
                 for key in cachedImages.keys {
-                    let searchKey = "src=\"\(key)\""
-                    if html.contains(searchKey), let cachedPath = cachedImages[key]?.url {
-                        html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath.absoluteString)\" \(MediaAttachment.uploadKey)=\"\(cachedPath.lastPathComponent)\"")
-                        cachedImages[key]?.insertionState = .embeddedInHTML
+                    if let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) {
+                        let searchKey = "src=\"\(escapedKey)\""
+                        if html.contains(searchKey), let cachedPath = cachedImages[key]?.url {
+                            html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath.absoluteString)\" \(MediaAttachment.uploadKey)=\"\(cachedPath.lastPathComponent)\"")
+                            cachedImages[key]?.insertionState = .embeddedInHTML
+                        }
                     }
                 }
 
