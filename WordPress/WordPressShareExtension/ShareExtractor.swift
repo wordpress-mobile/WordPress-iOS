@@ -197,7 +197,7 @@ private extension ShareExtractor {
             }
             var imageURLs = [URL]()
             extractedItems.forEach({ item in
-                imageURLs.forEach({ imageURL in
+                item.imageURLs.forEach({ imageURL in
                     imageURLs.append(imageURL)
                 })
             })
