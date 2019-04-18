@@ -120,6 +120,8 @@ struct PeriodStoreState {
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
+    private var statsServiceRemote: StatsServiceRemoteV2?
+
     init() {
         super.init(initialState: PeriodStoreState())
     }
@@ -723,15 +725,25 @@ private extension StatsPeriodStore {
     // MARK: - Helpers
 
     func statsRemote() -> StatsServiceRemoteV2? {
+
+        if statsServiceRemote == nil {
+            initializeStatsRemote()
+        }
+
+        return statsServiceRemote
+    }
+
+    func initializeStatsRemote() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
             let timeZone = SiteStatsInformation.sharedInstance.siteTimeZone
             else {
-                return nil
+                statsServiceRemote = nil
+                return
         }
 
         let wpApi = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
-        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
+        statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
     }
 
     func shouldFetchOverview() -> Bool {
