@@ -405,7 +405,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             let assetURL = url.appendingPathComponent(fileName, isDirectory: false)
 
             switch assetURL.pathExtension.lowercased() {
-            case "jpg", "jpeg", "heic", "gif":
+            case "jpg", "jpeg", "heic", "gif", "png":
                 if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
                     cachedImages["assets/\(fileName)"] = ExtractedImage(url: cachedURL, insertionState: .requiresInsertion)
                 }
