@@ -122,6 +122,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
     pod 'ZIPFoundation', '~> 0.9.8'
+    pod 'Down', '~> 0.6.6'
 
     ## Automattic libraries
     ## ====================
