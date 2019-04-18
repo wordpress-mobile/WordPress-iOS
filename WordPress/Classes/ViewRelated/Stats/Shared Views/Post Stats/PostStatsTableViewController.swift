@@ -1,5 +1,9 @@
 import UIKit
 
+@objc protocol PostStatsDelegate {
+    @objc optional func displayWebViewWithURL(_ url: URL)
+}
+
 class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     // MARK: - StoryboardLoadable Protocol
@@ -9,6 +13,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     // MARK: - Properties
 
     private var postTitle: String?
+    private var postURL: URL?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
 
@@ -27,8 +32,9 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         initViewModel()
     }
 
-    func configure(postTitle: String?) {
+    func configure(postTitle: String?, postURL: URL?) {
         self.postTitle = postTitle
+        self.postURL = postURL
     }
 }
 
@@ -37,7 +43,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 private extension PostStatsTableViewController {
 
     func initViewModel() {
-        viewModel = PostStatsViewModel(postTitle: postTitle)
+        viewModel = PostStatsViewModel(postTitle: postTitle, postURL: postURL, postStatsDelegate: self)
         refreshTableView()
     }
 
@@ -65,6 +71,18 @@ private extension PostStatsTableViewController {
         // TODO: data fetching
 
         refreshControl?.endRefreshing()
+    }
+
+}
+
+// MARK: - PostStatsDelegate Methods
+
+extension PostStatsTableViewController: PostStatsDelegate {
+
+    func displayWebViewWithURL(_ url: URL) {
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
+        let navController = UINavigationController.init(rootViewController: webViewController)
+        present(navController, animated: true)
     }
 
 }

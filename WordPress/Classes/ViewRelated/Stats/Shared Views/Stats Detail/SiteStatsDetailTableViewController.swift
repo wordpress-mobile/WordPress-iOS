@@ -5,7 +5,7 @@ import WordPressFlux
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
-    @objc optional func showPostStats(withPostTitle postTitle: String?)
+    @objc optional func showPostStats(withPostTitle postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
 
@@ -242,7 +242,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController.init(rootViewController: webViewController)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     func expandedRowUpdated(_ row: StatsTotalRow) {
@@ -250,9 +250,9 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
     }
 
-    func showPostStats(withPostTitle postTitle: String?) {
+    func showPostStats(withPostTitle postTitle: String?, postURL: URL?) {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postTitle: postTitle)
+        postStatsTableViewController.configure(postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 

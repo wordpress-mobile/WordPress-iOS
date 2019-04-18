@@ -287,9 +287,9 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsDetailsDelegate?.expandedRowUpdated?(row)
     }
 
-    func showPostStats(withPostTitle postTitle: String?) {
-        siteStatsPeriodDelegate?.showPostStats?(withPostTitle: postTitle)
-        siteStatsDetailsDelegate?.showPostStats?(withPostTitle: postTitle)
+    func showPostStats(withPostTitle postTitle: String?, postURL: URL?) {
+        siteStatsPeriodDelegate?.showPostStats?(withPostTitle: postTitle, postURL: postURL)
+        siteStatsDetailsDelegate?.showPostStats?(withPostTitle: postTitle, postURL: postURL)
     }
 
 }

@@ -224,7 +224,7 @@ private extension LatestPostSummaryCell {
 
         switch actionType {
         case .viewMore:
-            siteStatsInsightsDelegate?.showPostStats?(withPostTitle: postTitle)
+            siteStatsInsightsDelegate?.showPostStats?(postTitle: postTitle, postURL: lastPostInsight?.url)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 return
