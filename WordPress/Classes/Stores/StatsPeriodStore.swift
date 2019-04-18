@@ -410,6 +410,8 @@ private extension StatsPeriodStore {
             // Stop existing queries and start fresh.
             statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
             setAllAsFetchingOverview(fetching: false)
+            // invalidateAndCancelTasks invalidates the SessionManager, 
+            // so we need to recreate it to run queries.
             initializeStatsRemote()
         }
 
