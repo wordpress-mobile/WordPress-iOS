@@ -407,16 +407,17 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 
         if bundleWrapper.type == kUTTypeMarkdown {
             var mdText = bundleWrapper.text
-            for key in cachedImageURLs.keys {
-                let searchKey = "](\(key))"
-                if mdText.contains(searchKey), let cachedPath = cachedImageURLs[key]?.absoluteString {
-                    mdText = mdText.replacingOccurrences(of: searchKey, with: "](\(cachedPath))")
-                    cachedImageURLs.removeValue(forKey: key)
-                }
-            }
 
             let converter = Down(markdownString: mdText)
-            if let html = try? converter.toHTML()  {
+            if var html = try? converter.toHTML(.safe)  {
+                for key in cachedImageURLs.keys {
+                    let searchKey = "src=\"\(key)\""
+                    if html.contains(searchKey), let cachedPath = cachedImageURLs[key]?.absoluteString {
+                        html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath)\"")
+                        cachedImageURLs.removeValue(forKey: key)
+                    }
+                }
+
                 returnedItem.importedText = html
             }
         } else {
