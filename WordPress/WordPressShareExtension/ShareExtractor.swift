@@ -3,6 +3,7 @@ import MobileCoreServices
 import UIKit
 import ZIPFoundation
 import Down
+import Aztec
 
 /// A type that represents the information we can extract from an extension context
 ///
@@ -420,8 +421,8 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             if var html = try? converter.toHTML(.safe)  {
                 for key in cachedImageURLs.keys {
                     let searchKey = "src=\"\(key)\""
-                    if html.contains(searchKey), let cachedPath = cachedImageURLs[key]?.url.absoluteString {
-                        html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath)\"")
+                    if html.contains(searchKey), let cachedPath = cachedImageURLs[key]?.url {
+                        html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath.absoluteString)\" \(MediaAttachment.uploadKey)=\"\(cachedPath.lastPathComponent)\"")
                         cachedImageURLs[key]?.insertionState = .embeddedInHTML
                     }
                 }
