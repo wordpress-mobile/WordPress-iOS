@@ -12,7 +12,7 @@ struct ExtractedShare {
     var url: URL?
     var selectedText: String
     var importedText: String
-    var imageURLs: [URL]
+    var imageURLs: [ExtractedImage]
 
     var combinedContentHTML: String {
         var rawLink = ""
@@ -47,6 +47,15 @@ struct ExtractedShare {
             return "<p>\(rawLink)</p>"
         }
     }
+}
+
+struct ExtractedImage {
+    enum InsertionState {
+        case embeddedInHTML
+        case requiresInsertion
+    }
+    let url: URL
+    var insertionState: InsertionState
 }
 
 /// Extracts valid information from an extension context.
@@ -127,7 +136,7 @@ private struct ExtractedItem {
 
     /// An image
     ///
-    var imageURLs = [URL]()
+    var imageURLs = [ExtractedImage]()
 }
 
 private extension ShareExtractor {
@@ -166,8 +175,7 @@ private extension ShareExtractor {
             let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
             let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
             let combinedImportedText = extractedItems.compactMap({ $0.importedText }).joined(separator: "\n\n")
-//            let combinedImages = extractedItems.compactMap({ $0.images }).flatMap({ $0 })
-            var imageURLs = [URL]()
+            var imageURLs = [ExtractedImage]()
             extractedItems.forEach({ item in
                 item.imageURLs.forEach({ imageURL in
                     imageURLs.append(imageURL)
@@ -185,7 +193,7 @@ private extension ShareExtractor {
         }
     }
 
-    func extractImages(completion: @escaping ([URL]) -> Void) {
+    func extractImages(completion: @escaping ([ExtractedImage]) -> Void) {
         guard let imageExtractor = imageExtractor else {
             completion([])
             return
@@ -195,7 +203,7 @@ private extension ShareExtractor {
                 completion([])
                 return
             }
-            var imageURLs = [URL]()
+            var imageURLs = [ExtractedImage]()
             extractedItems.forEach({ item in
                 item.imageURLs.forEach({ imageURL in
                     imageURLs.append(imageURL)
@@ -388,7 +396,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
         var returnedItem = ExtractedItem()
 
-        var cachedImageURLs = [String:URL]()
+        var cachedImageURLs = [String:ExtractedImage]()
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
             guard let fileName = fileWrapper.filename else {
                 return
@@ -398,7 +406,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             switch assetURL.pathExtension.lowercased() {
             case "jpg", "jpeg", "heic", "gif":
                 if let cachedURL = saveToSharedContainer(wrapper: fileWrapper) {
-                    cachedImageURLs["assets/\(fileName)"] = cachedURL
+                    cachedImageURLs["assets/\(fileName)"] = ExtractedImage(url: cachedURL, insertionState: .requiresInsertion)
                 }
             default:
                 break
@@ -406,15 +414,15 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         }
 
         if bundleWrapper.type == kUTTypeMarkdown {
-            var mdText = bundleWrapper.text
+            let mdText = bundleWrapper.text
 
             let converter = Down(markdownString: mdText)
             if var html = try? converter.toHTML(.safe)  {
                 for key in cachedImageURLs.keys {
                     let searchKey = "src=\"\(key)\""
-                    if html.contains(searchKey), let cachedPath = cachedImageURLs[key]?.absoluteString {
+                    if html.contains(searchKey), let cachedPath = cachedImageURLs[key]?.url.absoluteString {
                         html = html.replacingOccurrences(of: searchKey, with: "src=\"\(cachedPath)\"")
-                        cachedImageURLs.removeValue(forKey: key)
+                        cachedImageURLs[key]?.insertionState = .embeddedInHTML
                     }
                 }
 
@@ -483,15 +491,17 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
 
         switch payload {
         case let url as URL:
-            returnedItem.imageURLs = [url]
+            if let imageURL = copyToSharedContainer(url: url) {
+                returnedItem.imageURLs = [ExtractedImage(url: imageURL, insertionState: .requiresInsertion)]
+            }
         case let data as Data:
             if let image = UIImage(data: data),
                 let imageURL = saveToSharedContainer(image: image) {
-                returnedItem.imageURLs = [imageURL]
+                returnedItem.imageURLs = [ExtractedImage(url: imageURL, insertionState: .requiresInsertion)]
             }
         case let image as UIImage:
             if let imageURL = saveToSharedContainer(image: image) {
-                returnedItem.imageURLs = [imageURL]
+                returnedItem.imageURLs = [ExtractedImage(url: imageURL, insertionState: .requiresInsertion)]
             }
         default:
             break

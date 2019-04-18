@@ -123,11 +123,14 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
                 self.shareData.title = share.title
                 self.shareData.contentBody = share.combinedContentHTML
 
-                share.imageURLs.forEach({ imageURL in
+                share.imageURLs.forEach({ extractedImage in
+                    let imageURL = extractedImage.url
                     self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: imageURL)
 
                     // Use the filename as the uploadID here.
-                    self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(mediaURL: imageURL.absoluteString, uploadID: imageURL.lastPathComponent)
+                    if extractedImage.insertionState == .requiresInsertion {
+                        self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(mediaURL: imageURL.absoluteString, uploadID: imageURL.lastPathComponent)
+                    }
                 })
 
                 // Clear out the extension context after loading it once. We don't need it anymore.
