@@ -1,5 +1,7 @@
 12.3
 -----
+* Images are now imported from TextBundle and TextPack files shared from other apps
+* Added support for importing Markdown files shared from other apps
  
 12.2
 -----
