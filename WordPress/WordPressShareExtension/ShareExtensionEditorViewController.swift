@@ -1240,7 +1240,7 @@ private extension ShareExtensionEditorViewController {
                 self?.setTitleText(share.title)
                 self?.richTextView.setHTML(share.combinedContentHTML)
 
-                share.imageURLs.forEach({ extractedImage in
+                share.images.forEach({ extractedImage in
                     if extractedImage.insertionState == .requiresInsertion {
                         self?.insertImageAttachment(with: extractedImage.url)
                     } else {

@@ -123,7 +123,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
                 self.shareData.title = share.title
                 self.shareData.contentBody = share.combinedContentHTML
 
-                share.imageURLs.forEach({ extractedImage in
+                share.images.forEach({ extractedImage in
                     let imageURL = extractedImage.url
                     self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: imageURL)
 
