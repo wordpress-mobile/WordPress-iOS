@@ -2,6 +2,7 @@ import Foundation
 import MobileCoreServices
 import UIKit
 import ZIPFoundation
+import Down
 
 /// A type that represents the information we can extract from an extension context
 ///
@@ -31,7 +32,7 @@ struct ExtractedShare {
         //   * 4: No selected text, but we have a page title...use that.
         //   * Finally, default to a simple link if nothing else is found
         guard importedText.isEmpty else {
-            return importedText.escapeHtmlNamedEntities()
+            return importedText
         }
 
         guard selectedText.isEmpty else {
@@ -344,6 +345,8 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             return handleTextPack(url: url)
         case "text", "txt":
             return handlePlainTextFile(url: url)
+        case "md", "markdown":
+            return handleMarkdown(url: url)
         default:
             return nil
         }
@@ -385,7 +388,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
 
         var returnedItem = ExtractedItem()
-        returnedItem.importedText = bundleWrapper.text
+        returnedItem.importedText = bundleWrapper.text.escapeHtmlNamedEntities()
         var cachedImageURLs = [URL]()
 
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
@@ -412,8 +415,29 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     private func handlePlainTextFile(url: URL) -> ExtractedItem? {
         var returnedItem = ExtractedItem()
         let rawText = (try? String(contentsOf: url)) ?? ""
-        returnedItem.importedText = rawText
+        returnedItem.importedText = rawText.escapeHtmlNamedEntities()
         return returnedItem
+    }
+
+    private func handleMarkdown(url: URL, item: ExtractedItem? = nil) -> ExtractedItem? {
+        guard let md = try? String(contentsOf: url) else {
+            return item
+        }
+
+        let converter = Down(markdownString: md)
+        guard let html = try? converter.toHTML(.safe) else {
+            return item
+        }
+
+        var result: ExtractedItem
+        if let item = item {
+            result = item
+        } else {
+            result = ExtractedItem()
+        }
+        result.importedText = html
+
+        return result
     }
 }
 
