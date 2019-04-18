@@ -92,6 +92,11 @@ private extension JetpackRemoteInstallViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
+    func installJetpack(with url: String, username: String, password: String, event: WPAnalyticsStat) {
+        WPAnalytics.track(event)
+        viewModel.installJetpack(with: url, username: username, password: password)
+    }
+
     @objc func cancel() {
         delegate?.jetpackRemoteInstallCanceled()
     }
@@ -121,11 +126,9 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
 
         switch viewModel.state {
         case .install:
-            WPAnalytics.track(.installJetpackRemoteStart)
-            viewModel.installJetpack(with: url, username: username, password: password)
+            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteStart)
         case .failure:
-            WPAnalytics.track(.installJetpackRemoteRetry)
-            viewModel.installJetpack(with: url, username: username, password: password)
+            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteRetry)
         case .success:
             openInstallJetpackURL()
         default:
