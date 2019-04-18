@@ -397,7 +397,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         let bundleWrapper = TextBundleWrapper(contentsOf: url, options: .immediate, error: &error)
         var returnedItem = ExtractedItem()
 
-        var cachedImages = [String:ExtractedImage]()
+        var cachedImages = [String: ExtractedImage]()
         bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
             guard let fileName = fileWrapper.filename else {
                 return
@@ -418,7 +418,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             let mdText = bundleWrapper.text
 
             let converter = Down(markdownString: mdText)
-            if var html = try? converter.toHTML(.safe)  {
+            if var html = try? converter.toHTML(.safe) {
                 for key in cachedImages.keys {
                     let searchKey = "src=\"\(key)\""
                     if html.contains(searchKey), let cachedPath = cachedImages[key]?.url {
