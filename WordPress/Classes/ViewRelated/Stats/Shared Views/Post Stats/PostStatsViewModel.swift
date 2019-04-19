@@ -9,16 +9,32 @@ class PostStatsViewModel: Observable {
     // MARK: - Properties
 
     let changeDispatcher = Dispatcher<Void>()
+
+    private var postID: Int?
     private var postTitle: String?
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
+    private let store = StoreContainer.shared.statsPeriod
+    private var receipt: Receipt?
+    private var changeReceipt: Receipt?
+
     // MARK: - Init
 
-    init(postTitle: String?, postURL: URL?, postStatsDelegate: PostStatsDelegate) {
+    init(postID: Int,
+         postTitle: String?,
+         postURL: URL?,
+         postStatsDelegate: PostStatsDelegate) {
+        self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
+
+        receipt = store.query(.postStats(postID: postID))
+
+        changeReceipt = store.onChange { [weak self] in
+            self?.emitChange()
+        }
     }
 
     // MARK: - Table View
@@ -35,6 +51,12 @@ class PostStatsViewModel: Observable {
             ImmuTableSection(
                 rows: tableRows)
             ])
+    }
+
+    // MARK: - Refresh Data
+
+    func refreshPostStats(postID: Int) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
 }
