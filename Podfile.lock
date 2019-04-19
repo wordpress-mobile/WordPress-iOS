@@ -269,7 +269,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.6.0-beta)
   - WordPressAuthenticator (~> 1.4.0-beta)
-  - WordPressKit (~> 4.0.0-beta)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `fix/post_stats_endpoint`)
   - WordPressShared (~> 1.7.4-beta)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
   - WPMediaPicker (= 1.3.3)
@@ -316,7 +316,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -342,6 +341,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
+  WordPressKit:
+    :branch: fix/post_stats_endpoint
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -361,6 +363,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
+  WordPressKit:
+    :commit: 9866fab7ed04494814ebe90088b9abb7e24be480
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -410,7 +415,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 3b12eea844ff38b3b82c66f3ed5b01b0fc2f6327
   WordPress-Editor-iOS: d3352429009ba5a75f6ae81deded7156b7a6ffb8
   WordPressAuthenticator: f215f1b23f47053ec4f2a7766a2126f605ee27d2
-  WordPressKit: 1ddb164dcca4a03ed8e9bd7c6050a8deea1264e0
+  WordPressKit: caf0c55f704778c18ec6ab0914ed8eeeef7dc2d7
   WordPressShared: 024fe85444c520baebcf9a8e8f24bd6d00a4c6d7
   WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
   WPMediaPicker: 6d23120b16c0f66987fd98ec2b294864e1df03bf
@@ -419,6 +424,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e6c429e453c281ee55b6fcfc92b2b47f0e09f537
+PODFILE CHECKSUM: 8432cc2cea3f7f18587c06d29da7f068ed567fc3
 
 COCOAPODS: 1.6.1
