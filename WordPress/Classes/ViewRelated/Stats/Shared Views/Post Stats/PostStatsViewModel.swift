@@ -40,6 +40,9 @@ class PostStatsViewModel: Observable {
     // MARK: - Table View
 
     func tableViewModel() -> ImmuTable {
+
+        testPostStats()
+
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(titleTableRow())
@@ -89,6 +92,21 @@ private extension PostStatsViewModel {
         tableRows.append(row)
 
         return tableRows
+    }
+
+    // Temporary method just to show Post Stats data was successfully fetched.
+    // To be removed when data is actually shown on the Post Stats view.
+    func testPostStats() {
+        let fetchedPostStats = store.getPostStats()
+
+        guard let postStats = fetchedPostStats else {
+            print("🔴 No postStats received.")
+            return
+        }
+
+        print("🔴 postStats.monthlyBreakdown: ", postStats.monthlyBreakdown)
+        print("🔴 postStats.dailyAveragesPerMonth: ", postStats.dailyAveragesPerMonth)
+        print("🔴 postStats.recentWeeks: ", postStats.recentWeeks)
     }
 
 }
