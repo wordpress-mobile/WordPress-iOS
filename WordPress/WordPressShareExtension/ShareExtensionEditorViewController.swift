@@ -1240,9 +1240,11 @@ private extension ShareExtensionEditorViewController {
                 self?.setTitleText(share.title)
                 self?.richTextView.setHTML(share.combinedContentHTML)
 
-                share.images.forEach({ image in
-                    if let fileURL = self?.saveImageToSharedContainer(image) {
-                        self?.insertImageAttachment(with: fileURL)
+                share.images.forEach({ extractedImage in
+                    if extractedImage.insertionState == .requiresInsertion {
+                        self?.insertImageAttachment(with: extractedImage.url)
+                    } else {
+                        self?.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: extractedImage.url)
                     }
                 })
 
