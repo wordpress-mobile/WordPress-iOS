@@ -225,11 +225,13 @@ private extension LatestPostSummaryCell {
         switch actionType {
         case .viewMore:
             guard let postID = lastPostInsight?.postID else {
+                DDLogInfo("No postID available to show Post Stats.")
                 return
             }
             siteStatsInsightsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: lastPostInsight?.url)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
+                DDLogInfo("No postID available to share post.")
                 return
             }
             siteStatsInsightsDelegate?.showShareForPost?(postID: postID as NSNumber, fromView: actionStackView)

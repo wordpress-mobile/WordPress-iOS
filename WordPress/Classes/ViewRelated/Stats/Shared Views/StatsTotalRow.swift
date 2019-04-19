@@ -283,6 +283,7 @@ private extension StatsTotalRow {
             if let statSection = rowData?.statSection,
                 statSection == .periodPostsAndPages {
                 guard let postID = rowData?.postID else {
+                    DDLogInfo("No postID available to show Post Stats.")
                     return
                 }
                 delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
