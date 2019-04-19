@@ -30,6 +30,10 @@ class PeriodDataStub: DataStub<[PeriodDatum]> {
 class ViewsPeriodDataStub: PeriodDataStub {}
 
 extension ViewsPeriodDataStub: BarChartDataConvertible {
+    var accessibilityDescription: String {
+        return "Bar Chart depicting Views for selected period, Visitors superimposed"   // NB: we don't localize stub data
+    }
+
     var barChartData: BarChartData {
 
         let data = periodData
@@ -87,6 +91,10 @@ extension ViewsPeriodDataStub: BarChartDataConvertible {
 class VisitorsPeriodDataStub: PeriodDataStub {}
 
 extension VisitorsPeriodDataStub: BarChartDataConvertible {
+    var accessibilityDescription: String {
+        return "Bar Chart depicting Visitors for selected period"   // NB: we don't localize stub data
+    }
+
     var barChartData: BarChartData {
 
         let data = periodData
@@ -134,6 +142,10 @@ extension VisitorsPeriodDataStub: BarChartDataConvertible {
 class LikesPeriodDataStub: PeriodDataStub {}
 
 extension LikesPeriodDataStub: BarChartDataConvertible {
+    var accessibilityDescription: String {
+        return "Bar Chart depicting Likes for selected period"   // NB: we don't localize stub data
+    }
+
     var barChartData: BarChartData {
 
         let data = periodData
@@ -181,6 +193,10 @@ extension LikesPeriodDataStub: BarChartDataConvertible {
 class CommentsPeriodDataStub: PeriodDataStub {}
 
 extension CommentsPeriodDataStub: BarChartDataConvertible {
+    var accessibilityDescription: String {
+        return "Bar Chart depicting Comments for selected period"   // NB: we don't localize stub data
+    }
+
     var barChartData: BarChartData {
 
         let data = periodData

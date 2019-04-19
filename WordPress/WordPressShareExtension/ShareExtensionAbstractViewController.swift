@@ -100,13 +100,6 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
-    /// Maximum Image Size
-    ///
-    internal lazy var maximumImageSize: CGSize = {
-        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
-        return CGSize(width: dimension, height: dimension)
-    }()
-
     /// WordPress.com OAuth Token
     ///
     internal lazy var oauth2Token: String? = {
@@ -150,24 +143,6 @@ extension ShareExtensionAbstractViewController {
 
         alertController.addAction(alertAction)
         present(alertController, animated: true)
-    }
-
-    func saveImageToSharedContainer(_ image: UIImage) -> URL? {
-        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
-            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
-                return nil
-        }
-
-        let uniqueString = "image_\(NSDate.timeIntervalSinceReferenceDate)"
-        let fileName = uniqueString.components(separatedBy: ["."]).joined() + ".jpg"
-        let fullPath = mediaDirectory.appendingPathComponent(fileName)
-        do {
-            try encodedMedia.write(to: fullPath, options: [.atomic])
-        } catch {
-            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
-            return nil
-        }
-        return fullPath
     }
 
     func cleanUpSharedContainerAndCache() {

@@ -51,6 +51,11 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        removeRowsFromStackView(rowsStackView)
+    }
+
     func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
@@ -219,7 +224,7 @@ private extension LatestPostSummaryCell {
 
         switch actionType {
         case .viewMore:
-            siteStatsInsightsDelegate?.showPostStats?(withPostTitle: postTitle)
+            siteStatsInsightsDelegate?.showPostStats?(postTitle: postTitle, postURL: lastPostInsight?.url)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 return

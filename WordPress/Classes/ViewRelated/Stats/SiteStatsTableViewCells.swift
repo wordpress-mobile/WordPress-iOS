@@ -390,6 +390,8 @@ struct PostStatsTitleRow: ImmuTableRow {
     }()
 
     let postTitle: String
+    let postURL: URL?
+    weak var postStatsDelegate: PostStatsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -398,7 +400,7 @@ struct PostStatsTitleRow: ImmuTableRow {
             return
         }
 
-        cell.configure(postTitle: postTitle)
+        cell.configure(postTitle: postTitle, postURL: postURL, postStatsDelegate: postStatsDelegate)
     }
 }
 
