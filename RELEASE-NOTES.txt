@@ -5,6 +5,7 @@
 * Resolved a crash that might occur during the new Site Creation flow.
 * Improved connectivity errors messaging in sharing screen.
 * Fixed an issue where some text in Activity Log would show up in a wrong language
+* Jetpack Remote Install: enabled the native feature to install and activate Jetpack on a self-hosted site
 
 12.2
 -----
