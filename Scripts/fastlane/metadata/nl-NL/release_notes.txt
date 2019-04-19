@@ -1,3 +1,6 @@
-- Iedereen heeft zijn eigen workflow. Tekst vanuit schrijf- en kladblok-apps met WordPress delen is nu betrouwbaarder.
-- Soms mislukken updates van accountgegevens van gebruikers, zelfs als we dat niet willen. We hebben de foutmeldingen duidelijker en uitgebreider gemaakt, zodat je weet wat er fout ging en wat je vervolgens moet doen.
-- Er zijn nu nog meer manieren om afbeeldingen aan berichten toe te voegen: de blok-editor ondersteunt berichten waar al foto's in staan, en met 3D-touch van Apple kun je de app starten en met één druk op de knop een nieuwe foto plaatsen.
+12.2
+-----
+* Publiceer vol vertrouwen! In voorbeeldweergaven van concepten zie je nu een nauwkeurigere versie van je berichten.
+* Als je liever in apps als Bear of Ulysses schrijft (of elke andere app die gebruikmaakt van de TextBundle- en TextPack-indeling) dan kun je dat nu blijven doen. Je kunt de tekst van die apps importeren naar deze.
+* De hele app heeft een voorjaarsschoonmaak gekregen: we hebben wat visuele bugs in het aanmaakproces van sites gerepareerd, een paar teksten aangepast om duidelijk te maken hoeveel opslagruimte je site gebruikt en we hebben een irritante crash opgelost die soms plaatsvond als je probeerde plugins te beheren.
+

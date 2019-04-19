@@ -1,3 +1,6 @@
-- Semua memiliki alur kerja sendiri. Kini teks berbagi dari aplikasi pencatat dan menulis sampai WordPress makin dapat diandalkan.
-- Terkadang pembaruan untuk detail akun pengguna gagal, meskipun kami tidak menghendakinya. Kami telah menambahkan pesan error yang lebih detail dan jelas sehingga Anda tahu apa yang sedang terjadi serta apa yang harus dilakukan selanjutnya.
-- Anda punya lebih banyak cara untuk membuat postingan dengan gambar: Penyunting Blok mendukung postingan dengan foto yang dimasukkan sebelumnya, dan Anda dapat menggunakan tindakan 3D Touch milik Apple untuk membuka aplikasi dan mengirim postingan foto dengan sekali tekan.
+12.2
+-----
+* Publikasikan dengan percaya diri! Pratinjau konsep akan menampilkan versi yang lebih akurat untuk pos Anda.
+* jika Anda lebih suka menulis di aplikasi seperti Bear atau Ulysses (atau aplikasi lain yang menggunakan format TextBundle dan TextPack), tidak masalah, lanjutkan. Dan sekarang Anda dapat mengimpor teks dari aplikasi itu ke sini.
+* Seluruh aplikasi mendapatkan pembaruan musim semi. Kami memperbaiki beberapa gangguan visual dalam proses pembuatan situs, menyesuaikan susunan kata untuk memperjelas detail ruang penyimpanan yang digunakan di situs Anda, dan mengatasi masalah crash mengganggu yang terkadang terjadi saat Anda mencoba mengelola plugin.
+

@@ -1,3 +1,6 @@
-- Everyone’s got their own workflow. Now sharing text from writing and note-taking apps to WordPress is more reliable.
-- Sometimes updates to user account details fail, even if we wish they didn’t. We’ve added clearer, more detailed error messages so you know what went wrong and what to do next.
-- You have more ways to create posts with images: the Block Editor supports posts with pre-inserted photos, and you can use Apple’s 3D touch action to launch the app and start a new photo post with a single press.
+12.2
+-----
+* Publish with confidence! Draft previews will show you a more accurate version of your posts.
+* If you prefer to write in apps like Bear or Ulysses (or any other app using the TextBundle and TextPack formats), great – keep doing it. And now you can import text from those apps into this one.
+* The whole app got a spring pick-me-up — we fixed up some little visual tics in the site creation process, adjusted some wording to make it clear how much storage space your site is using, and took care of a pesky crash that would sometimes occur when you were trying to manage plugins.
+
