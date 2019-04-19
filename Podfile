@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.3'
+    pod 'WordPressShared', '~> 1.7.4-beta'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
