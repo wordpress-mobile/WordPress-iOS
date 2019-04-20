@@ -28,11 +28,7 @@ extension Double {
         let abbreviationLimit = forHeroNumber ? 100000.0 : 10000.0
 
         if num < abbreviationLimit {
-            // Add commas to non-abbreviated values
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            let formattedNumber = numberFormatter.string(from: NSNumber(value: num)) ?? ""
-            return "\(sign)\(formattedNumber)"
+            return "\(sign)\(num.formatWithCommas())"
         }
 
         let exp: Int = Int(log10(num) / 3.0)
@@ -44,6 +40,13 @@ extension Double {
         } else {
             return "\(sign)\(roundedNum)\(units[exp-1])"
         }
+    }
+
+    func formatWithCommas() -> String {
+        // Add commas to number
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: self)) ?? ""
     }
 
 }
@@ -63,5 +66,9 @@ extension Float {
 extension Int {
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
+    }
+
+    func formatWithCommas() -> String {
+        return Double(self).formatWithCommas()
     }
 }
