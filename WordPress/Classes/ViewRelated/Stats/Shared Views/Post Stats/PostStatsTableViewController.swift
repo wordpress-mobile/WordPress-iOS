@@ -3,6 +3,7 @@ import WordPressFlux
 
 @objc protocol PostStatsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
 }
 
 class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
@@ -97,6 +98,16 @@ private extension PostStatsTableViewController {
         viewModel?.refreshPostStats(postID: postID)
     }
 
+    func applyTableUpdates() {
+        if #available(iOS 11.0, *) {
+            tableView.performBatchUpdates({
+            })
+        } else {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+
 }
 
 // MARK: - PostStatsDelegate Methods
@@ -108,5 +119,10 @@ extension PostStatsTableViewController: PostStatsDelegate {
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true)
     }
+
+    func expandedRowUpdated(_ row: StatsTotalRow) {
+        applyTableUpdates()
+    }
+
 
 }

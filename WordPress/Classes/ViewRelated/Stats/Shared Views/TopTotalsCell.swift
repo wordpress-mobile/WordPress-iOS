@@ -288,6 +288,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
         siteStatsDetailsDelegate?.expandedRowUpdated?(row)
+        postStatsDelegate?.expandedRowUpdated?(row)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
