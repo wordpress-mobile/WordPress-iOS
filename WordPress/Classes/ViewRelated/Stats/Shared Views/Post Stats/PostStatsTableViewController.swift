@@ -69,6 +69,7 @@ private extension PostStatsTableViewController {
         return [CellHeaderRow.self,
                 PostStatsTitleRow.self,
                 OverviewRow.self,
+                TopTotalsPostStatsRow.self,
                 TableFooterRow.self]
     }
 
