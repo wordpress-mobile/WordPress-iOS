@@ -144,7 +144,9 @@ private extension PostStatsViewModel {
     // MARK: - Recent Weeks Helpers
 
     func childRowsForWeek(_ week: StatsWeeklyBreakdown) -> [StatsTotalRowData] {
-        return week.days.map { StatsTotalRowData(name: displayDay(forDate: $0.date), data: String($0.viewsCount)) }
+        return week.days.reversed().map {
+            StatsTotalRowData(name: displayDay(forDate: $0.date), data: String($0.viewsCount))
+        }
     }
 
     func displayWeek(startDay: DateComponents, endDay: DateComponents) -> String {
