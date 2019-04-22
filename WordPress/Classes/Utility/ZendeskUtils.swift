@@ -117,8 +117,7 @@ extension NSNotification.Name {
         helpCenterConfig.groupIds = [Constants.mobileCategoryID as NSNumber]
         helpCenterConfig.labels = [Constants.articleLabel]
 
-        let helpCenterController = HelpCenterUi.buildHelpCenterOverview(withConfigs: [helpCenterConfig])
-        helpCenterController.uiDelegate = self
+        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig])
         ZendeskUtils.showZendeskView(helpCenterController)
     }
 
