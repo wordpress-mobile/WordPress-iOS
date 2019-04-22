@@ -224,7 +224,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
                 [mediaService updateMedia:mediaToUpdate overallSuccess:^{
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
                     if (success) {
                         success(postInContext);
                     }
@@ -266,6 +265,60 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                    failure:failureBlock];
     } else {
         [remote createPost:remotePost
+                   success:successBlock
+                   failure:failureBlock];
+    }
+}
+
+- (void)savePost:(AbstractPost *)post
+         success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
+         failure:(void (^)(NSError * _Nullable error))failure
+{
+    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    RemotePost *remotePost = [self remotePostWithPost:post];
+    NSManagedObjectID *postObjectID = post.objectID;
+    void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                if ([postInContext isRevision]) {
+                    postInContext = postInContext.original;
+                    [postInContext applyRevision];
+                    [postInContext deleteRevision];
+                }
+                NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
+                NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
+                for (Media *media in mediaToUpdate) {
+                    media.postID = post.postID;
+                }
+                
+                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                [mediaService updateMedia:mediaToUpdate overallSuccess:^{
+                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                } failure:^(NSError *error){
+                    // Sergio Estevao (2018-02-27): even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed was attaching the media to it.
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                }];
+            } else {
+                // This can happen if the post was deleted right after triggering the upload.
+                if (success) {
+                    success(nil, nil);
+                }
+            }
+        }];
+    };
+    
+     void (^failureBlock)(NSError *error) = ^(NSError *error) {
+         failure(error);
+     };
+    
+    if ([post.postID longLongValue] > 0) {
+        [remote savePost:remotePost
                    success:successBlock
                    failure:failureBlock];
     }

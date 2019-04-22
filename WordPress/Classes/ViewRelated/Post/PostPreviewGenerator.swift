@@ -9,6 +9,7 @@ protocol PostPreviewGeneratorDelegate {
 
 class PostPreviewGenerator: NSObject {
     @objc let post: AbstractPost
+    @objc var previewURLString: String?
     @objc weak var delegate: PostPreviewGeneratorDelegate?
     fileprivate let authenticator: WebViewAuthenticator?
 
@@ -17,20 +18,27 @@ class PostPreviewGenerator: NSObject {
         authenticator = WebViewAuthenticator(blog: post.blog)
         super.init()
     }
+    
+    @objc convenience init(post: AbstractPost, previewURLString: String) {
+        self.init(post: post)
+        self.previewURLString = previewURLString
+    }
 
     @objc func generate() {
-        guard let url = post.permaLink.flatMap(URL.init(string:)),
-            !post.hasLocalChanges() else {
-                showFakePreview()
-                return
-        }
-
-        guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
-            delegate?.previewFailed(self, message: NSLocalizedString("The internet connection appears to be offline.", comment: "An error message."))
+        guard ReachabilityUtils.isInternetReachable() else {
+            ReachabilityUtils.showNoInternetConnectionNotice()
             return
         }
 
-        attemptPreview(url: url)
+        if let previewURLString = previewURLString, let url = URL(string: previewURLString) {
+            attemptPreview(url: url)
+        } else {
+            guard let url = post.permaLink.flatMap(URL.init(string:)) else {
+                showFakePreview()
+                return
+            }
+             attemptPreview(url: url)
+        }
     }
 
     @objc func previewRequestFailed(error: NSError) {

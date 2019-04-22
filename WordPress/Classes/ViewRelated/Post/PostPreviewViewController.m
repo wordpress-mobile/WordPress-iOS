@@ -49,6 +49,18 @@
     return self;
 }
 
+- (instancetype)initWithPost:(AbstractPost *)aPost previewURL:(NSString *)previewURLString
+{
+    self = [super init];
+    if (self) {
+        self.apost = aPost;
+        self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost previewURLString:previewURLString];
+        self.generator.delegate = self;
+        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
+    }
+    return self;
+}
+
 - (void)didReceiveMemoryWarning
 {
     DDLogMethod();

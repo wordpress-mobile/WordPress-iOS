@@ -23,33 +23,59 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    private func savePostBeforePreview(completion: @escaping (() -> Void)) {
-        if post.isDraft() && post.hasUnsavedChanges() {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-             let status = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
-            SVProgressHUD.setDefaultMaskType(.clear)
-            SVProgressHUD.show(withStatus: status)
-            postService.uploadPost(post, success: { [weak self] newPost in
-                self?.post = newPost
-                self?.createPostRevisionBeforePreview(completion: completion)
-                SVProgressHUD.dismiss()
-                }, failure: { error in
-                    DDLogError("Error while trying to save post before preview: \(String(describing: error))")
-                    completion()
+    private func savePostBeforePreview(completion: @escaping ((String?) -> Void)) {
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        let draftStatus = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
+        //TODO: add to localized string
+        let publishedStatus = NSLocalizedString("Generating Preview...", comment: "Text displayed in HUD while a post is being saved.")
+        SVProgressHUD.setDefaultMaskType(.clear)
+        if post.hasUnsavedChanges() {
+            if post.isDraft() {
+                SVProgressHUD.show(withStatus: draftStatus)
+                postService.uploadPost(post, success: { [weak self] savedPost in
+                    self?.post = savedPost
+                    self?.createPostRevisionBeforePreview() {
+                        completion(nil)
+                    }
                     SVProgressHUD.dismiss()
-            })
+                    }, failure: { error in
+                        DDLogError("Error while trying to save draft post before preview: \(String(describing: error))")
+                        completion(nil)
+                        SVProgressHUD.dismiss()
+                })
+            } else {
+                SVProgressHUD.show(withStatus: publishedStatus)
+                postService.save(post, success: { [weak self] savedPost, previewURL in
+                    self?.post = savedPost
+                    SVProgressHUD.dismiss()
+                    self?.createPostRevisionBeforePreview() {
+                        completion(previewURL)
+                    }
+                }) { error in
+                    DDLogError("Error while trying to save published post before preview: \(String(describing: error))")
+                    SVProgressHUD.dismiss()
+                    completion(nil)
+                }
+            }
         } else {
-           createPostRevisionBeforePreview(completion: completion)
+            createPostRevisionBeforePreview() {
+                completion(nil)
+            }
         }
     }
 
     func displayPreview() {
-        savePostBeforePreview() { [weak self] in
+        savePostBeforePreview() { [weak self] previewURL in
             guard let post = self?.post else {
                 return
             }
-            let previewController = PostPreviewViewController(post: post)
+            var previewController: PostPreviewViewController
+            if let previewURL = previewURL {
+                previewController = PostPreviewViewController(post: post, previewURL: previewURL)
+            } else {
+                previewController = PostPreviewViewController(post: post)
+            }
             previewController.hidesBottomBarWhenPushed = true
             self?.navigationController?.pushViewController(previewController, animated: true)
         }

@@ -14,6 +14,7 @@ typedef void (^PostPreviewViewCompletionHandler)(void);
 @property (nonatomic, strong, readonly) AbstractPost *apost;
 
 - (instancetype)initWithPost:(AbstractPost *)aPost;
+- (instancetype)initWithPost:(AbstractPost *)aPost previewURL:(NSString *)previewURLString;
 
 @end
 
