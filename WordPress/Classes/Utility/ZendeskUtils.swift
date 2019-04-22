@@ -101,10 +101,11 @@ extension NSNotification.Name {
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         ZendeskUtils.presentInController = controller
+        let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity
 
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
-        if !ZendeskUtils.sharedInstance.haveUserIdentity {
+        if !haveUserIdentity {
             let zendeskIdentity = Identity.createAnonymous()
             Zendesk.instance?.setIdentity(zendeskIdentity)
         }
@@ -117,7 +118,12 @@ extension NSNotification.Name {
         helpCenterConfig.groupIds = [Constants.mobileCategoryID as NSNumber]
         helpCenterConfig.labels = [Constants.articleLabel]
 
-        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig])
+        // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
+        helpCenterConfig.hideContactSupport = !haveUserIdentity
+        let articleConfig = ArticleUiConfiguration()
+        articleConfig.hideContactSupport = !haveUserIdentity
+
+        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig])
         ZendeskUtils.showZendeskView(helpCenterController)
     }
 
@@ -905,26 +911,6 @@ private extension ZendeskUtils {
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
-    }
-
-}
-
-// MARK: - ZDKHelpCenterConversationsUIDelegate
-
-extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
-
-    func navBarConversationsUIType() -> ZDKNavBarConversationsUIType {
-        // When ZDKContactUsVisibility is on, use the default right nav bar label.
-        return .localizedLabel
-    }
-
-    func active() -> ZDKContactUsVisibility {
-        // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
-        if !ZendeskUtils.sharedInstance.haveUserIdentity {
-            return .off
-        }
-
-        return .articleListAndArticle
     }
 
 }
