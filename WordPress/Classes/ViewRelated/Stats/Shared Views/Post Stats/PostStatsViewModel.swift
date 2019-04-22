@@ -27,14 +27,13 @@ class PostStatsViewModel: Observable {
     }()
 
     private lazy var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.setLocalizedDateFormatFromTemplate(Constants.monthFormat)
-        return df
+        return DateFormatter()
     }()
 
     private struct Constants {
         static let maxRowsToDisplay = 6
         static let monthFormat = "MMM d"
+        static let dayFormat = "MMM d, yyyy"
         static let noTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
         static let unknown = NSLocalizedString("Unknown", comment: "Displayed when date cannot be determined.")
         static let weekFormat = NSLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
@@ -158,6 +157,14 @@ private extension PostStatsViewModel {
                 return ""
         }
 
+        // If there is only one day in the week, display just the single day.
+        if startDate == endDate {
+            dateFormatter.setLocalizedDateFormatFromTemplate(Constants.dayFormat)
+            return dateFormatter.string(from: startDate)
+        }
+
+        // If there are multiple days in the week, show the date range.
+        dateFormatter.setLocalizedDateFormatFromTemplate(Constants.monthFormat)
         return String.localizedStringWithFormat(Constants.weekFormat,
                                                 dateFormatter.string(from: startDate),
                                                 dateFormatter.string(from: endDate),
@@ -169,6 +176,7 @@ private extension PostStatsViewModel {
             return ""
         }
 
+        dateFormatter.setLocalizedDateFormatFromTemplate(Constants.monthFormat)
         return dateFormatter.string(from: day)
     }
 
