@@ -4,14 +4,13 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
-    case newsCard
     case giphy
     case automatedTransfersCustomDomain
     case revisions
     case statsRefresh
     case gutenberg
     case quickStartV2
-    case jetpackRemoteInstallation
+    case domainCredit
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -21,8 +20,6 @@ enum FeatureFlag: Int {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .automatedTransfersCustomDomain:
-            return true
-        case .newsCard:
             return true
         case .giphy:
             return true
@@ -34,8 +31,8 @@ enum FeatureFlag: Int {
             return true
         case .quickStartV2:
             return true
-        case .jetpackRemoteInstallation:
-            return true
+        case .domainCredit:
+            return false
         }
     }
 }
