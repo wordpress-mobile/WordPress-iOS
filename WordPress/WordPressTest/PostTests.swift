@@ -306,7 +306,7 @@ class PostTests: XCTestCase {
 
         revision.status = .trash
         let trashStatusDisplay = "\(Post.title(for: .trash))"
-        XCTAssertEqual(revision.statusForDisplay(),  String(format: NSLocalizedString("%@, %@", comment: ""), trashStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), trashStatusDisplay, local))
 
         revision.status = .deleted
         let deletedStatusDisplay = "\(Post.title(for: .deleted))"

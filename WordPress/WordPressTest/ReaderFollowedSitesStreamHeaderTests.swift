@@ -25,11 +25,11 @@ final class ReaderFollowedSitesStreamHeaderTests: XCTestCase {
     }
 
     func testSubjectLabeMatchesExpectation() {
-        XCTAssertEqual(subject?.accessibilityLabel, String(format: "%@",TestConstants.label), "Accessibility label does not return the expected value")
+        XCTAssertEqual(subject?.accessibilityLabel, String(format: "%@", TestConstants.label), "Accessibility label does not return the expected value")
     }
 
     func testSubjectHintMatchesExpectation() {
-        XCTAssertEqual(subject?.accessibilityHint, String(format: "%@",TestConstants.hint), "Accessibility hint does not return the expected value")
+        XCTAssertEqual(subject?.accessibilityHint, String(format: "%@", TestConstants.hint), "Accessibility hint does not return the expected value")
     }
 
     func testSubjectTraitsMatchesExpectation() {

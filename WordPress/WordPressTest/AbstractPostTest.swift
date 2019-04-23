@@ -23,11 +23,11 @@ class AbstractPostTest: XCTestCase {
 
         status = PostStatusTrash
         title = AbstractPost.title(forStatus: status)
-        XCTAssertTrue(title == NSLocalizedString("Trashed", comment:"Trashed"), "Title did not match status")
+        XCTAssertTrue(title == NSLocalizedString("Trashed", comment: "Trashed"), "Title did not match status")
 
         status = PostStatusScheduled
         title = AbstractPost.title(forStatus: status)
-        XCTAssertTrue(title == NSLocalizedString("Scheduled", comment:"Scheduled"), "Title did not match status")
+        XCTAssertTrue(title == NSLocalizedString("Scheduled", comment: "Scheduled"), "Title did not match status")
     }
 
 }
