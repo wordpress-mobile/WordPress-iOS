@@ -514,7 +514,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         let size = blavatarImageView.frame.size.width * UIScreen.main.scale
         if let url = post?.siteIconForDisplay(ofSize: Int(size)) {
-            blavatarImageView.setImageWith(url, placeholderImage: placeholder)
+            blavatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         }
         // Site name
         let blogName = post?.blogNameForDisplay()
@@ -635,7 +635,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         if let avatarURLString = post?.authorAvatarURL,
             let url = URL(string: avatarURLString) {
-            avatarImageView.setImageWith(url, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         }
 
         // Byline
