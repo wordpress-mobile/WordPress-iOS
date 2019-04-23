@@ -16,10 +16,6 @@ class GutenbergViewController: UIViewController, PostEditor {
         case autoSave
     }
 
-    // MARK: - UI
-
-    private var containerView = GutenbergContainerView.loadFromNib()
-
     // MARK: - Aztec
 
     internal let replaceEditor: (EditorViewController, EditorViewController) -> ()
@@ -243,7 +239,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupContainerView()
         setupGutenbergView()
         createRevisionOfPost()
         configureNavigationBar()
@@ -328,28 +323,14 @@ class GutenbergViewController: UIViewController, PostEditor {
 
 extension GutenbergViewController {
     private func setupGutenbergView() {
-        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.editorContainerView.addSubview(gutenberg.rootView)
-        containerView.editorContainerView.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
-        containerView.editorContainerView.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
-        containerView.editorContainerView.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
-        containerView.editorContainerView.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
-    }
-
-    private func setupContainerView() {
         view.backgroundColor = .white
-        view.addSubview(containerView)
+        gutenberg.rootView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(gutenberg.rootView)
 
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        if WPDeviceIdentification.isiPad() {
-            containerView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor).isActive = true
-            containerView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor).isActive = true
-        } else {
-            containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-            containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        }
-        containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        view.leftAnchor.constraint(equalTo: gutenberg.rootView.leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: gutenberg.rootView.rightAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: gutenberg.rootView.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: gutenberg.rootView.bottomAnchor).isActive = true
     }
 }
 
@@ -367,7 +348,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             gutenbergDidRequestMediaFromCameraPicker(with: callback)
         }
     }
-
 
     func gutenbergDidRequestMediaFromSiteMediaLibrary(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
@@ -402,6 +382,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
         })
+    }
+
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -495,6 +479,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         startAutoSave()
         if !editorSession.started {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+        }
+    }
+
+    func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
+        switch logLevel {
+        case .trace:
+            DDLogDebug(message)
+        case .info:
+            DDLogInfo(message)
+        case .warn:
+            DDLogWarn(message)
+        case .error:
+            DDLogError(message)
         }
     }
 }

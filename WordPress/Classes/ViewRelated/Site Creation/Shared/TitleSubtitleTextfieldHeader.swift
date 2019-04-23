@@ -9,6 +9,7 @@ private final class SearchTextField: UITextField {
     // MARK: Properties
 
     private struct Constants {
+        static let defaultPadding   = CGFloat(16)
         static let iconDimension    = CGFloat(18)
         static let iconInset        = CGFloat(19)
         static let clearButtonInset = CGFloat(-9)
@@ -34,7 +35,7 @@ private final class SearchTextField: UITextField {
     }
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        let textInsets = UIEdgeInsets(top: 0, left: Constants.textInset, bottom: 0, right: 0)
+        let textInsets = UIEdgeInsets(top: 0, left: Constants.textInset, bottom: 0, right: Constants.defaultPadding)
         return bounds.inset(by: textInsets)
     }
 
