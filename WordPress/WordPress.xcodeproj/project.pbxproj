@@ -5031,6 +5031,7 @@
 		59DD94311AC479DC0032DD6B /* Logging */ = {
 			isa = PBXGroup;
 			children = (
+				F928EDA2226140620030D451 /* WPCrashLogging.swift */,
 				938CF3DB1EF1BE6800AF838E /* CocoaLumberjack.swift */,
 				59DD94321AC479ED0032DD6B /* WPLogger.h */,
 				59DD94331AC479ED0032DD6B /* WPLogger.m */,
@@ -6104,7 +6105,6 @@
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
 				F1D690131F828FF000200E30 /* BuildInformation */,
 				B5ECA6CB1DBAA0110062D7E0 /* CoreData */,
-				F928EDA1226140430030D451 /* Sentry */,
 				B5C9401F1DB902220079D4FF /* HockeyApp */,
 				B5DB8AF51C949DC70059196A /* ImmuTable */,
 				59DD94311AC479DC0032DD6B /* Logging */,
@@ -8453,14 +8453,6 @@
 				F1D690151F828FF000200E30 /* FeatureFlag.swift */,
 			);
 			path = BuildInformation;
-			sourceTree = "<group>";
-		};
-		F928EDA1226140430030D451 /* Sentry */ = {
-			isa = PBXGroup;
-			children = (
-				F928EDA2226140620030D451 /* WPCrashLogging.swift */,
-			);
-			path = Sentry;
 			sourceTree = "<group>";
 		};
 		FA5C74091C596E69000B528C /* SiteManagement */ = {
