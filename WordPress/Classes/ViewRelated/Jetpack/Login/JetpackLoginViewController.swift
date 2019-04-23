@@ -287,7 +287,7 @@ public enum JetpackLoginPromptType {
     }
 
     var message: String {
-        switch (self) {
+        switch self {
         case .stats:
             return NSLocalizedString("To use stats on your site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from stats")
