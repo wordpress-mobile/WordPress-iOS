@@ -12,8 +12,7 @@ extension BlogDetailsViewController {
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
             if let index = QuickStartTourGuide.find()?.currentElementInt(),
-                let element = QuickStartTourElement(rawValue: index),
-                Feature.enabled(.quickStartV2) {
+                let element = QuickStartTourElement(rawValue: index) {
                 self?.scroll(to: element)
             }
         }
@@ -79,7 +78,7 @@ extension BlogDetailsViewController {
     }
 
     private func showQuickStart(with type: QuickStartType? = nil) {
-        if let type = type, Feature.enabled(.quickStartV2) {
+        if let type = type {
             let checklist = QuickStartChecklistViewController(blog: blog, type: type)
             let navigationViewController = UINavigationController(rootViewController: checklist)
             present(navigationViewController, animated: true, completion: nil)

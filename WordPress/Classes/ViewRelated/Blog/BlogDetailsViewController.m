@@ -292,10 +292,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [super viewDidAppear:animated];
     [self createUserActivity];
     [self startAlertTimer];
-
-    if (![Feature enabled:FeatureFlagQuickStartV2]) {
-        [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -442,7 +438,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)restorableSelectedIndexPath
 {
     if (!_restorableSelectedIndexPath) {
-        NSUInteger section = [Feature enabled:FeatureFlagQuickStartV2] && [self shouldShowQuickStartChecklist] ? 1 : 0;
+        NSUInteger section = [self shouldShowQuickStartChecklist] ? 1 : 0;
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
@@ -527,7 +523,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
-    if ([self shouldShowQuickStartChecklist] && [Feature enabled:FeatureFlagQuickStartV2]) {
+    if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
     [marr addObject:[self generalSectionViewModel]];
@@ -549,19 +545,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-
-    if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
-        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
-                                                         identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[Gridicon iconOfType:GridiconTypeListCheckmark]
-                                                           callback:^{
-                                                               [weakSelf showQuickStartV1];
-                                                           }];
-        row.quickStartIdentifier = QuickStartTourElementChecklist;
-
-        row.detail = [[QuickStartTourGuide find] detailStringFor:self.blog];
-        [rows addObject:row];
-    }
 
     BlogDetailsRow *statsRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                   accessibilityIdentifier:@"Stats Row"
@@ -1473,28 +1456,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
 
-    NSUInteger generalSectionCountBefore = self.tableSections[0].rows.count;
     BlogDetailsSection *firstSectionBefore = [self.tableSections objectAtIndex:0];
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self configureTableViewData];
-        NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
         BlogDetailsSection *firstSectionAfter = [self.tableSections objectAtIndex:0];
 
         // quick start was just enabled
-
-        if ([Feature enabled:FeatureFlagQuickStartV2]) {
-            if (!firstSectionBefore.showQuickStartMenu && firstSectionAfter.showQuickStartMenu) {
-                [self showQuickStartCustomize];
-            }
-        } else {
-            if (generalSectionCountBefore != generalSectionCountAfter && [self shouldShowQuickStartChecklist]) {
-                [self showQuickStartV1];
-            }
+        if (!firstSectionBefore.showQuickStartMenu && firstSectionAfter.showQuickStartMenu) {
+            [self showQuickStartCustomize];
         }
-
         [self reloadTableViewPreservingSelection];
     }
 }
@@ -1503,10 +1476,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    if ([self shouldShowQuickStartChecklist] && ![Feature enabled:FeatureFlagQuickStartV2]) {
-        QuickStartChecklistViewControllerV1 *checklist = [[QuickStartChecklistViewControllerV1 alloc] initWithBlog:self.blog];
-        return checklist;
-    }
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
     statsView.statsService = self.statsService;

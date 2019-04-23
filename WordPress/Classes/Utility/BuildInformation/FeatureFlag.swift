@@ -9,7 +9,6 @@ enum FeatureFlag: Int {
     case revisions
     case statsRefresh
     case gutenberg
-    case quickStartV2
     case jetpackRemoteInstallation
 
     /// Returns a boolean indicating if the feature is enabled
@@ -28,8 +27,6 @@ enum FeatureFlag: Int {
         case .statsRefresh:
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
-            return true
-        case .quickStartV2:
             return true
         case .jetpackRemoteInstallation:
             return true
