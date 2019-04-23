@@ -5,7 +5,7 @@ screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-app_version "12.1.3"
+app_version "12.3"
 
 privacy_url({
   'default' => 'https://automattic.com/privacy/',
