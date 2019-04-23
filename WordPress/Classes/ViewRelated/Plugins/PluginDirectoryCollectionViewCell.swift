@@ -34,7 +34,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        accessoryView?.removeFromSuperview()        
+        accessoryView?.removeFromSuperview()
         logoImageView.cancelImageDownload()
         logoImageView.image = nil
     }
