@@ -9,6 +9,7 @@ enum FeatureFlag: Int {
     case revisions
     case statsRefresh
     case gutenberg
+    case domainCredit
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -27,6 +28,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .gutenberg:
             return true
+        case .domainCredit:
+            return false
         }
     }
 }
