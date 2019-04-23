@@ -4,7 +4,6 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
-    case giphy
     case automatedTransfersCustomDomain
     case revisions
     case statsRefresh
@@ -20,8 +19,6 @@ enum FeatureFlag: Int {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .automatedTransfersCustomDomain:
-            return true
-        case .giphy:
             return true
         case .revisions:
             return true
