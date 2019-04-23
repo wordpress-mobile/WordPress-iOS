@@ -567,13 +567,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
         && self.siteVisibility != SiteVisibilityPrivate
         && self.isAdmin;
 
-    BOOL hasCustomDomain = ![self.hostURL containsString:@".wordpress.com"];
-
-    if ([Feature enabled:FeatureFlagAutomatedTransfersCustomDomain]) {
-        return isTransferrable || hasRequiredJetpack;
-    } else {
-        return (isTransferrable && hasCustomDomain) || hasRequiredJetpack;
-    }
+    return isTransferrable || hasRequiredJetpack;
 }
 
 - (BOOL)accountIsDefaultAccount
