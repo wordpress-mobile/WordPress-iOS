@@ -10,6 +10,7 @@ enum FeatureFlag: Int {
     case statsRefresh
     case gutenberg
     case quickStartV2
+    case domainCredit
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -30,6 +31,8 @@ enum FeatureFlag: Int {
             return true
         case .quickStartV2:
             return true
+        case .domainCredit:
+            return false
         }
     }
 }
