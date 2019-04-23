@@ -10,7 +10,8 @@ class WPCrashLogging {
     static func start() {
         // Create a Sentry client and start crash handler
         do {
-            Client.shared = try Client(dsn: "https://7d2a517ff9de4433aa05d95b677943af@sentry.io/1438083")
+
+            Client.shared = try Client(dsn: ApiCredentials.sentryDSN())
 
             // Store lots of breadcrumbs to trace errors
             Client.shared?.breadcrumbs.maxBreadcrumbs = 500
