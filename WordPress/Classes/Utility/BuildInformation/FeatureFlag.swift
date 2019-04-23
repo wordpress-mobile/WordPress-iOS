@@ -8,7 +8,6 @@ enum FeatureFlag: Int {
     case automatedTransfersCustomDomain
     case revisions
     case statsRefresh
-    case gutenberg
     case quickStartV2
     case jetpackRemoteInstallation
 
@@ -27,8 +26,6 @@ enum FeatureFlag: Int {
             return true
         case .statsRefresh:
             return BuildConfiguration.current == .localDeveloper
-        case .gutenberg:
-            return true
         case .quickStartV2:
             return true
         case .jetpackRemoteInstallation:
