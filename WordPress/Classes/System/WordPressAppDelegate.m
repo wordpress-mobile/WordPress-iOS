@@ -282,7 +282,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [ZendeskUtils setup];
 
     // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
