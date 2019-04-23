@@ -49,10 +49,10 @@ EOF
 EOF
 end
 
-def print_crashlytics(crashlytics)
+def print_sentry(sentry)
 print <<-EOF
-+ (NSString *)crashlyticsApiKey {
-    return @"#{crashlytics}";
++ (NSString *)sentryDSN {
+    return @"#{sentry}";
 }
 EOF
 end
@@ -133,14 +133,14 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, crashlytics, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, sentry, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
 EOF
   print_client(client)
   print_secret(secret)
-  print_crashlytics(crashlytics)
+  print_sentry(sentry)
   print_hockeyapp(hockeyapp)
   print_giphy(giphy)
   print_google_login_client(google_client)
@@ -167,7 +167,7 @@ end
 
 client = nil
 secret = nil
-crashlytics = nil
+sentry = nil
 hockeyapp = nil
 giphy = nil
 google_client = nil
@@ -186,8 +186,8 @@ File.open(path) do |f|
       client = value
     elsif k == "WPCOM_APP_SECRET"
       secret = value
-    elsif k == "CRASHLYTICS_API_KEY"
-      crashlytics = value
+    elsif k == "SENTRY_DSN"
+      sentry = value
     elsif k == "HOCKEYAPP_APP_ID"
       hockeyapp = value
     elsif k == "GIPHY_APP_ID"
@@ -242,4 +242,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, crashlytics, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, sentry, hockeyapp, giphy, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
