@@ -267,7 +267,8 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.6.0)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633`)
   - WordPressAuthenticator (~> 1.4.0)
   - WordPressKit (~> 4.0.0)
   - WordPressShared (~> 1.7.4)
@@ -313,8 +314,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
@@ -342,6 +341,12 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.3.0
+  WordPress-Aztec-iOS:
+    :commit: 8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: 8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -361,6 +366,12 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.3.0
+  WordPress-Aztec-iOS:
+    :commit: 8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPress-Editor-iOS:
+    :commit: 8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.0
@@ -419,6 +430,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 0aa73f08a771f909b4daf6c18c0e0d82cb7ba935
+PODFILE CHECKSUM: 05cd4fa143ba7f2a6b9e95d5d11f16dd2a1ecbc2
 
 COCOAPODS: 1.6.1
