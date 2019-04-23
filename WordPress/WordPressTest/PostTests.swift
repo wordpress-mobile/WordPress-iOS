@@ -310,7 +310,7 @@ class PostTests: XCTestCase {
 
         revision.status = .deleted
         let deletedStatusDisplay = "\(Post.title(for: .deleted))"
-        XCTAssertEqual(revision.statusForDisplay(),String(format: NSLocalizedString("%@, %@", comment: ""), deletedStatusDisplay, local))
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), deletedStatusDisplay, local))
     }
 
     func testThatHasLocalChangesWorks() {
