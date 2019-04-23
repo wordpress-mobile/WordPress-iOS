@@ -33,7 +33,7 @@
 
     // Check if asset being used is a video, if not this method fails
     if (!(self.assetType == WPMediaTypeVideo || self.assetType == WPMediaTypeAudio)) {
-        NSString *errorMessage = NSLocalizedString(@"Selected media is not a video.", @"Error message when user tries to preview an image media like a video");
+        NSString *errorMessage = NSLocalizedString(@"Changed key.", @"Error message when user tries to preview an image media like a video");
         completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
