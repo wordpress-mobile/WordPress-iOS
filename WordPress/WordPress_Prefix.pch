@@ -11,8 +11,7 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MobileCoreServices/MobileCoreServices.h>
 
-	// 3rd Party
-    @import AFNetworking;
+	// 3rd Party    
     @import CocoaLumberjack;
     @import NSObject_SafeExpectations;
     @import WordPressShared.WPMapFilterReduce;

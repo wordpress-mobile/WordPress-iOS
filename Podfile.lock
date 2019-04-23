@@ -1,20 +1,5 @@
 PODS:
   - 1PasswordExtension (1.8.5)
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
-    - AFNetworking/NSURLSession
   - Alamofire (4.7.3)
   - Automattic-Tracks-iOS (0.3.4):
     - CocoaLumberjack (~> 3.4.1)
@@ -236,7 +221,6 @@ PODS:
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
-  - AFNetworking (= 3.2.1)
   - Alamofire (= 4.7.3)
   - Automattic-Tracks-iOS (= 0.3.4)
   - Charts (~> 3.2.2)
@@ -271,7 +255,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.4.0-beta)
   - WordPressKit (~> 4.0.0-beta)
   - WordPressShared (~> 1.7.4-beta)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.0`)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `933e24d9353b752e8c83332acd04bc28aaefb447`)
   - WPMediaPicker (= 1.3.3)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.2.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.3.1)
@@ -280,7 +264,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - 1PasswordExtension
-    - AFNetworking
     - Alamofire
     - Automattic-Tracks-iOS
     - boost-for-react-native
@@ -343,8 +326,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
   WordPressUI:
+    :commit: 933e24d9353b752e8c83332acd04bc28aaefb447
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
-    :tag: 1.2.0
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.2.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -362,12 +345,11 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.2.0
   WordPressUI:
+    :commit: 933e24d9353b752e8c83332acd04bc28aaefb447
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
-    :tag: 1.2.0
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Automattic-Tracks-iOS: 67d00f2f20e1978ee09154f26cdf3475d158508c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -419,6 +401,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e6c429e453c281ee55b6fcfc92b2b47f0e09f537
+PODFILE CHECKSUM: df32b1d9c57fc943be3d0d21384046b1e9e750f1
 
 COCOAPODS: 1.6.1

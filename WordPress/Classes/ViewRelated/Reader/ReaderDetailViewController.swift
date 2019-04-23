@@ -4,7 +4,6 @@ import WordPressShared
 import WordPressUI
 import QuartzCore
 import Gridicons
-import AFNetworking
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"

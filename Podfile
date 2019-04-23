@@ -34,11 +34,11 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.0'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.0'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '9972b8f597328a619a4c0110d89d62f09df3ff82'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '933e24d9353b752e8c83332acd04bc28aaefb447'
 end
 
 def wordpress_kit
@@ -54,8 +54,7 @@ def shared_with_all_pods
     pod 'NSObject-SafeExpectations', '0.0.3'
 end
 
-def shared_with_networking_pods
-    pod 'AFNetworking', '3.2.1'
+def shared_with_networking_pods    
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 

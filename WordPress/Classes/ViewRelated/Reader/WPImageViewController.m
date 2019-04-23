@@ -1,6 +1,5 @@
 #import "WPImageViewController.h"
 
-#import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 @import Gridicons;
