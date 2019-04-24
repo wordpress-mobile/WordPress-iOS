@@ -1,3 +1,6 @@
-- Todos tenemos nuestra forma de trabajar. Por eso, ahora con WordPress compartir texto desde aplicaciones de notas y edición de texto es mucho más fácil.
-- A veces, no todo funciona como quisiéramos y ocurren errores al actualizar los datos de la cuenta de usuario. Para que siempre sepas qué ha ocurrido y cómo continuar, hemos añadido mensajes de error más claros y detallados.
-- Ahora tienes nuevas formas de crear entradas con imágenes: el editor de bloques es capaz de trabajar con entradas que incluyan imágenes preinsertadas, por lo que puedes usar 3D Touch de Apple, abrir la aplicación directamente y empezar una nueva entrada con tu imagen con tan sólo presionar tu pantalla.
+12.2
+-----
+* ¡Publica con confianza! Las vistas preliminares en borrador te mostrarán una versión más precisa de tus entradas.
+* Si prefieres escribir en aplicaciones como Bear o Ulysses (o cualquier otra aplicación que utilice los formatos TextBundle y TextPack), genial, sigue haciéndolo. Y ahora puedes importar texto de esas aplicaciones a esta.
+* Toda la aplicación recibió un estímulo de primavera - arreglamos algunos pequeños fallos visuales en el proceso de creación del sitio, ajustamos algunas palabras para dejar claro cuánto espacio de almacenamiento está usando tu sitio, y nos encargamos de un molesto fallo que a veces se producía cuando estabas tratando de administrar los plugins.
+

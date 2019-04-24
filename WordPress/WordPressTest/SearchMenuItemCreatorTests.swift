@@ -6,7 +6,7 @@ final class SearchMenuItemCreatorTests: XCTestCase {
     private var creator: SearchMenuItemCreator?
 
     private struct TestConstants {
-        static let title = "Search"
+        static let title = NSLocalizedString("Search", comment: "Search")
         static let icon = Gridicon.iconOfType(.search)
     }
 
@@ -23,7 +23,7 @@ final class SearchMenuItemCreatorTests: XCTestCase {
     func testItemCreatorReturnsItemWithExpectedTitle() {
         let item = creator!.menuItem()
 
-        XCTAssertEqual(item.title, TestConstants.title)
+        XCTAssertEqual(item.title, String(format: TestConstants.title))
     }
 
     func testItemCreatorReturnsItemWithExpectedIcon() {

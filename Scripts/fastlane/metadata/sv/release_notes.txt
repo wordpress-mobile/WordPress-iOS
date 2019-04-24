@@ -1,3 +1,6 @@
-- Alla har sitt eget arbetsflöde. Nu fungerar det mer stabilt än tidigare att dela text från olika appar för skrivande och noteringar till WordPress.
-- Trots att vi inte gillar det, misslyckas det ibland när man försöker uppdatera uppgifter i något användarkonto. Vi har lagt in tydligare och mer detaljerade felmeddelanden så att du ska veta vad som blev fel och hur du kommer vidare.
-- Nu har du fler sätt att skapa inlägg med bilder: blockredigeraren har stöd för inlägg där foton redan är inlagda och du använda åtgärden 3D touch från Apple för att starta appen och inleda ett nytt bildinlägg med en enda tryckning.
+12.2
+-----
+* Publicera tillförlitligt! Förhandsvisningar av utkast kommer att ge en mer korrekt version av dina inlägg.
+* Om du föredrar att skriva i sådana appar som Bear eller Ulysses (eller någon annan app som använder formaten TextBundle eller TextPack) är det perfekt – fortsätt så. Och nu kan du även importera din text i de apparna till den här appen.
+* Vi har snyggat upp hela appen nu inför våren – rättat till några visuella störningen i processen för att skapa en ny webbplats, justerad vissa fraser för att tydliggöra hur stort lagringsutrymme webbplatsen använder. Dessutom har vi tagit hand om en jobbig krasch som ibland inträffade när man försökte att hantera sina tillägg.
+

@@ -1,3 +1,6 @@
-– Jeder erhält seinen eigenen Workflow. Das Teilen von Text aus Texterstellungs- und Notiz-Apps in WordPress erfolgt jetzt reibungsloser.
-– Manchmal schlagen Aktualisierungen von Benutzerkontodetails leider fehl. Wir haben klarere, ausführlichere Fehlermeldungen hinzugefügt, damit du weißt, was schiefgelaufen ist und was als Nächstes zu tun ist.
-– Du hast mehr Möglichkeiten, Beiträge mit Bildern zu erstellen: Der Block-Editor unterstützt Beiträge mit vorab eingefügten Fotos und du kannst die 3D-Touchaktion von Apple verwenden, um mit nur einmaligem Drücken die App zu starten und einen neuen Fotobeitrag zu beginnen.
+12.2
+-----
+* Veröffentlichen mit Sicherheit! Entwürfe von Voransichten werden dir eine genauere Version deiner Beiträge zeigen.
+* Wenn du es vorziehst, in Apps wie Bear oder Ulysses (oder jeder anderen App, die die Formate TextBundle und TextPack verwendet) zu schreiben, großartig – mach es weiter. Und jetzt kannst du Text aus den Apps in diese importieren.
+* Die ganze App bekam ein Frühlings-Make-up – wir haben einige kleine visuelle Details bei der Erstellung der Website korrigiert, einige Formulierungen angepasst, um deutlich zu machen, wie viel Speicherplatz deine Website nutzt, und uns um einen lästigen Absturz gekümmert, der manchmal auftreten würde, wenn du versucht hast, Plugins zu verwalten.
+

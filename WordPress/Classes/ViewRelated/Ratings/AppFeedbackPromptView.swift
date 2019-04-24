@@ -107,7 +107,6 @@ class AppFeedbackPromptView: UIView {
 
     func setupConstraints() {
         addConstraints([
-            label.centerXAnchor.constraint(equalTo: centerXAnchor),
             label.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.basePadding),
             label.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -LayoutConstants.basePadding),
             label.heightAnchor.constraint(greaterThanOrEqualToConstant: LayoutConstants.labelMinimumHeight),
