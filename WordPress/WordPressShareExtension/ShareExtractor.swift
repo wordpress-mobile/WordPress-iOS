@@ -415,10 +415,10 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         }
 
         if bundleWrapper.type == kUTTypeMarkdown {
-            let mdText = bundleWrapper.text
+            if let formattedItem = handleMarkdown(md: bundleWrapper.text),
+                var html = formattedItem.importedText {
+                returnedItem = formattedItem
 
-            let converter = Down(markdownString: mdText)
-            if var html = try? converter.toHTML(.safe) {
                 for key in cachedImages.keys {
                     if let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) {
                         let searchKey = "src=\"\(escapedKey)\""
