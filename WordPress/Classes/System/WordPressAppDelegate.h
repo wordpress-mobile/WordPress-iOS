@@ -32,8 +32,6 @@
 ///-----------
 /// @name NUX
 ///-----------
-- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
-- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor;
 - (void)customizeAppearanceForTextElements;
 
 @end

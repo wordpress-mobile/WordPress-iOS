@@ -351,29 +351,6 @@
 
 #pragma mark - Custom methods
 
-- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
-{
-    if ([self isWelcomeScreenVisible] || AccountHelper.isLoggedIn) {
-        return;
-    }
-    
-    UIViewController *presenter = self.window.rootViewController;
-    // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
-    // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-    if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
-        [presenter dismissViewControllerAnimated:animated completion:^{
-            [self showWelcomeScreenAnimated:animated thenEditor:NO];
-        }];
-    } else {
-        [self showWelcomeScreenAnimated:animated thenEditor:NO];
-    }
-}
-
-- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
-{
-    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated];
-}
-
 - (void)customizeAppearance
 {
     self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];

@@ -186,6 +186,31 @@ extension WordPressAppDelegate {
         }
     }
 
+
+    @objc(showWelcomeScreenIfNeededAnimated:)
+    func showWelcomeScreenIfNeeded(animated: Bool) {
+        guard isWelcomeScreenVisible == false && AccountHelper.isLoggedIn == false else {
+            return
+        }
+
+        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
+        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
+        if let presenter = window.rootViewController?.presentedViewController,
+            !(presenter is UIAlertController) {
+            presenter.dismiss(animated: animated, completion: { [weak self] in
+                self?.showWelcomeScreen(animated, thenEditor: false)
+            })
+        } else {
+            showWelcomeScreen(animated, thenEditor: false)
+        }
+    }
+
+    @objc func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
+        if let rootViewController = window.rootViewController {
+            WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
+        }
+    }
+
     @objc func trackLogoutIfNeeded() {
         if AccountHelper.isLoggedIn == false {
             WPAnalytics.track(.logout)
