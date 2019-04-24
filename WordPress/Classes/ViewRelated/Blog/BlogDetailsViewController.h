@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
 };
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
+    BlogDetailsSubsectionDomainCredit,
     BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
     BlogDetailsSubsectionPosts,
