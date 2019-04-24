@@ -62,7 +62,7 @@ extension FormattableMediaItem {
 public extension FormattableMediaItem {
     /// Known kinds of Media Entities
     ///
-    public enum Kind: String {
+    enum Kind: String {
         case image              = "image"
         case badge              = "badge"
     }

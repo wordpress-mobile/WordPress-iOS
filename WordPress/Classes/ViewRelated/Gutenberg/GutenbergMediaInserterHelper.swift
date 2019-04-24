@@ -60,6 +60,12 @@ class GutenbergMediaInserterHelper: NSObject {
 
     }
 
+    func insertFromDevice(url: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
+        let media = insert(exportableAsset: url as NSURL, source: .otherApps)
+        let mediaUploadID = media.gutenbergUploadID
+        callback(mediaUploadID, url.absoluteString)
+    }
+
     func syncUploads() {
         if mediaObserverReceipt != nil {
             registerMediaObserver()
@@ -90,7 +96,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     func cancelUploadOf(media: Media) {
-        mediaCoordinator.cancelUpload(of: media)
+        mediaCoordinator.cancelUploadAndDeleteMedia(media)
         gutenberg.mediaUploadUpdate(id: media.gutenbergUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
     }
 

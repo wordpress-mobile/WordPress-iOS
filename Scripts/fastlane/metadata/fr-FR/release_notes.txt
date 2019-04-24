@@ -1,3 +1,6 @@
-- Vous irez plus vite de l’inscription initiale au site web complet avec le processus de création de site intelligent qui vous fera démarrer avec une site personnalisé et sur mesure. Vous devriez avancer votre calendrier de lancement. désolé pour ça ! Un problème qui n’en est pas un.
-- Une fois créé votre nouveau site, il y a d’avantage de tutoriaux disponibles qui vont vous aider à l’améliorer, y compris des astuces pour faire grandir votre audience. Nous les suggérerons au moment oppportun et vous pouvez les retrouver tous sur l’écran Mes sites à tout moment. Le lancement est le commencement pas une fin.
-- dans notre quête de faire de l’app un plaisir d’utilisation, ou au moins plus agréable, nous avons agrandi la marge intérieure de la fenêtre de l’éditeur. Il sera donc plus confortable d’écrire des textes plus longs et vous permettra de voir les erreurs de mise en page et d’illustration, ce qui sera plus cohérent avec le reste de l’application.
+12.2
+-----
+* Publier en toute confiance ! L'affichage en mode brouillon vous donnera un aperçu plus précis de vos articles.
+* Si vous préférez rédiger dans des applications comme Bear ou Ulysses (ou toute autre application utilisant les formats TextBundle et TextPack), n'hésitez surtout pas, continuez. Vous pouvez à présent importer du texte de ces applications vers celle-ci.
+* L'application a subi un lifting de printemps : nous avons résolu certains petits défauts visuels lors du processus de création de sites, modifié certains termes pour indiquer plus clairement l'espace de stockage utilisé par votre site et corrigé une défaillance ennuyeuse qui se produisait parfois lorsque vous tentiez de gérer des extensions.
+

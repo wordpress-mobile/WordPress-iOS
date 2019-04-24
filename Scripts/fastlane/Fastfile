@@ -207,6 +207,7 @@ import "./ScreenshotFastfile"
         ipa: "../build/WordPress Internal.ipa",
         dsym: "../build/WordPress.app.dSYM.zip")
     
+    upload_symbols_to_crashlytics(dsym_path: "../build/WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
   end
 
   #####################################################################################
@@ -241,7 +242,11 @@ import "./ScreenshotFastfile"
       }
     )
     
-    testflight(skip_waiting_for_build_processing: true)
+    testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: "299112",
+    )
+
     sh("cd .. && rm WordPress.ipa")
     upload_symbols_to_crashlytics(dsym_path: "./WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
     sh("cd .. && rm WordPress.app.dSYM.zip")

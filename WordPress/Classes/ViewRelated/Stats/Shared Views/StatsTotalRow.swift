@@ -4,11 +4,11 @@ struct StatsTotalRowData {
     var name: String
     var data: String
     var mediaID: NSNumber?
+    var postID: Int?
     var dataBarPercent: Float?
     var icon: UIImage?
     var socialIconURL: URL?
     var userIconURL: URL?
-    var countryIconURL: URL?
     var nameDetail: String?
     var showDisclosure: Bool
     var disclosureURL: URL?
@@ -18,11 +18,11 @@ struct StatsTotalRowData {
     init(name: String,
          data: String,
          mediaID: NSNumber? = nil,
+         postID: Int? = nil,
          dataBarPercent: Float? = nil,
          icon: UIImage? = nil,
          socialIconURL: URL? = nil,
          userIconURL: URL? = nil,
-         countryIconURL: URL? = nil,
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
@@ -31,12 +31,12 @@ struct StatsTotalRowData {
         self.name = name
         self.data = data
         self.mediaID = mediaID
+        self.postID = postID
         self.dataBarPercent = dataBarPercent
         self.nameDetail = nameDetail
         self.icon = icon
         self.socialIconURL = socialIconURL
         self.userIconURL = userIconURL
-        self.countryIconURL = countryIconURL
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
         self.childRows = childRows
@@ -48,6 +48,7 @@ struct StatsTotalRowData {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -134,7 +135,7 @@ class StatsTotalRow: UIView, NibLoadable {
         guard let rowData = rowData else {
             return false
         }
-        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil || rowData.countryIconURL != nil
+        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
     }
 
     // MARK: - Configure
@@ -219,11 +220,6 @@ private extension StatsTotalRow {
 
             downloadImageFrom(iconURL)
         }
-
-        if let iconURL = rowData.countryIconURL {
-            imageWidthConstraint.constant = Constants.defaultImageSize
-            downloadImageFrom(iconURL)
-        }
     }
 
     func configureDataBar() {
@@ -284,15 +280,20 @@ private extension StatsTotalRow {
         }
 
         if let disclosureURL = rowData?.disclosureURL {
-            delegate?.displayWebViewWithURL?(disclosureURL)
+            if let statSection = rowData?.statSection,
+                statSection == .periodPostsAndPages {
+                guard let postID = rowData?.postID else {
+                    DDLogInfo("No postID available to show Post Stats.")
+                    return
+                }
+                delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
+            } else {
+                delegate?.displayWebViewWithURL?(disclosureURL)
+            }
             return
         }
 
-        let alertController =  UIAlertController(title: "More will be disclosed.",
-                                                 message: nil,
-                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle("OK")
-        alertController.presentFromRootViewController()
+        DDLogInfo("Stat row selection action not supported.")
     }
 
 }

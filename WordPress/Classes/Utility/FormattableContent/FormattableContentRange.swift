@@ -32,7 +32,7 @@ extension FormattableContentRange {
 }
 
 public extension FormattableContentRange where Self: LinkContentRange {
-    public func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, withShift shift: Int) -> Shift {
+    func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, withShift shift: Int) -> Shift {
         let shiftedRange = rangeShifted(by: shift)
 
         apply(styles, to: string, at: shiftedRange)

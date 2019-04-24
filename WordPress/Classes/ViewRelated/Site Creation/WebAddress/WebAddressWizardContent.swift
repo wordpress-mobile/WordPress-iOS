@@ -150,18 +150,24 @@ final class WebAddressWizardContent: UIViewController {
         tableViewOffsetCoordinator?.hideBottomToolbar()
 
         guard let validDataProvider = tableViewProvider as? WebAddressTableViewProvider else {
-            setupTableDataProvider()
+            setupTableDataProvider(isShowingImplicitSuggestions: true)
             return
         }
+
         validDataProvider.data = []
+        validDataProvider.isShowingImplicitSuggestions = true
         tableViewOffsetCoordinator?.resetTableOffsetIfNeeded()
     }
 
     private func fetchAddresses(_ searchTerm: String) {
-        // NB : We hard-code the domain suggestions until we have a solution for .blog subdomains `paCBwp-F-p2`
-        let suggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom
+        // It's not ideal to let the segment ID be optional at this point, but in order to avoid overcomplicating my current
+        // task, I'll default to silencing this situation.  Since the segment ID should exist, this silencing should not
+        // really be triggered for now.
+        guard let segmentID = siteCreator.segment?.identifier else {
+            return
+        }
 
-        service.addresses(for: searchTerm, domainSuggestionType: suggestionType) { [weak self] results in
+        service.addresses(for: searchTerm, segmentID: segmentID) { [weak self] results in
             switch results {
             case .error(let error):
                 self?.handleError(error)
@@ -172,10 +178,14 @@ final class WebAddressWizardContent: UIViewController {
     }
 
     private func handleData(_ data: [DomainSuggestion]) {
+        let header = self.table.tableHeaderView as! TitleSubtitleTextfieldHeader
+        let isShowingImplicitSuggestions = header.textField.text!.isEmpty
+
         if let validDataProvider = tableViewProvider as? WebAddressTableViewProvider {
             validDataProvider.data = data
+            validDataProvider.isShowingImplicitSuggestions = isShowingImplicitSuggestions
         } else {
-            setupTableDataProvider(data)
+            setupTableDataProvider(data, isShowingImplicitSuggestions: isShowingImplicitSuggestions)
         }
 
         if data.isEmpty {
@@ -365,7 +375,7 @@ final class WebAddressWizardContent: UIViewController {
         ])
     }
 
-    private func setupTableDataProvider(_ data: [DomainSuggestion] = []) {
+    private func setupTableDataProvider(_ data: [DomainSuggestion] = [], isShowingImplicitSuggestions: Bool) {
         let handler: CellSelectionHandler = { [weak self] selectedIndexPath in
             guard let self = self, let provider = self.tableViewProvider as? WebAddressTableViewProvider else {
                 return
@@ -377,17 +387,29 @@ final class WebAddressWizardContent: UIViewController {
             self.tableViewOffsetCoordinator?.showBottomToolbar()
         }
 
-        self.tableViewProvider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
+        let provider = WebAddressTableViewProvider(tableView: table, data: data, selectionHandler: handler)
+        provider.isShowingImplicitSuggestions = isShowingImplicitSuggestions
+
+        self.tableViewProvider = provider
+    }
+
+    private func query(from textField: UITextField?) -> String? {
+        guard let text = textField?.text,
+            !text.isEmpty else {
+                return siteCreator.information?.title
+        }
+
+        return text
     }
 
     @objc
     private func textChanged(sender: UITextField) {
-        guard let searchTerm = sender.text, searchTerm.isEmpty == false else {
+        guard let query = query(from: sender) else {
             clearContent()
             return
         }
 
-        performSearchIfNeeded(query: searchTerm)
+        performSearchIfNeeded(query: query)
         tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 

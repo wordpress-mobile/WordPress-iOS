@@ -1,3 +1,5 @@
-- Sizi kişiselleştirilmiş, halihazırda özelleştirilmiş bir web sitesiyle başlatan akıllı site oluşturma işlemiyle "ilk kayıttan" "web sitesi tamamlamaya" daha hızlı ilerlersiniz. Artık yayın tarihinizi öne çekmeniz gerekebilir, bunun için üzgünüz! Ne kadar güzel bir sorun.
-- Yeni sitenizi oluşturduğunuzda, kitlenizi oluşturmaya ilişkin ipuçları dahil, sitenizi şekillendirmek ve büyütmekle ilgili hiç olmadığı kadar fazla sayıda eğitim mevcut. İşinize yarayacağı zaman bunları önereceğiz ve tümünü istediğiniz zaman Sitelerim ekranında bulabilirsiniz. Çünkü yayımlamak bir bitiş değil başlangıçtır.
-- Uygulamayı kullanmayı eğlenceli -en azından daha keyifli- kılmaya yönelik yolculuğumuzda düzenleyici penceresinin içeriğini artırdık. Böylece, daha uzun yazılar yazmak daha rahat hale geldi ve anlamalarını kolaylaştırmak için bazı hata sayfası düzenleri ve illüstrasyonları uygulamanın geri kalanıyla daha tutarlı olarak sağlandı.
+12.2
+----- 
+* Güvenle yayınlayın! Taslak önizlemeler, yazılarınız daha doğru bir sürümünü gösterir.
+* Bear veya Ulysses (veya TextBundle ve TextPack formatlarını kullanan başka bir uygulama) gibi uygulamalarda yazmayı tercih ederseniz, harika - yapmaya devam edin. Artık bu uygulamalardan metin içeriğini buraya aktarabilirsiniz.
+* Tüm uygulamada bir bahar tespit edildi; site oluşturma sürecinde bazı küçük görsel tikleri düzeltdik, sitenizin ne kadar depolama alanı kullandığını netleştirmek için bazı ifadeler ayarlandı ve eklentileri yönetmeye çalışırken bazen ortaya çıkan bir hata düzeltildi.

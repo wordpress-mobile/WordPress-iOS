@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="94" id="KGk-i7-Jjw" customClass="PostStatsTitleCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="406" height="71"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="406" height="70.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpL-Db-PKI" userLabel="Top Separator Line">
+                        <rect key="frame" x="0.0" y="0.0" width="406" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="beV-Kg-kx9"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Showing stats for:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQc-hL-Bbc">
+                        <rect key="frame" x="16" y="16" width="374" height="16"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Name" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IAo-11-r7k">
+                        <rect key="frame" x="16" y="34" width="374" height="20.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7F-mg-QOb" userLabel="Post Title Button">
+                        <rect key="frame" x="16" y="34" width="374" height="20.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <action selector="didTapPostTitle:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DVU-yE-MhC"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJu-H6-3qo" userLabel="Bottom Separator Line">
+                        <rect key="frame" x="0.0" y="70" width="406" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="y0D-Z6-7PP"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="kpL-Db-PKI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="1GA-ej-kPX"/>
+                    <constraint firstItem="kpL-Db-PKI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="2Ru-Rj-qeU"/>
+                    <constraint firstAttribute="bottom" secondItem="dJu-H6-3qo" secondAttribute="bottom" id="MKS-QE-IDd"/>
+                    <constraint firstAttribute="bottom" secondItem="IAo-11-r7k" secondAttribute="bottom" constant="16" id="OAe-F1-q3m"/>
+                    <constraint firstAttribute="trailing" secondItem="dJu-H6-3qo" secondAttribute="trailing" id="QCn-b6-3ob"/>
+                    <constraint firstItem="VQc-hL-Bbc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="TIp-2M-tkj"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="bottom" secondItem="IAo-11-r7k" secondAttribute="bottom" id="Tom-tr-1Cc"/>
+                    <constraint firstAttribute="trailing" secondItem="kpL-Db-PKI" secondAttribute="trailing" id="XhD-xV-KoQ"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="top" secondItem="IAo-11-r7k" secondAttribute="top" id="Xpe-ec-0aG"/>
+                    <constraint firstItem="IAo-11-r7k" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Yni-Dp-MXW"/>
+                    <constraint firstItem="IAo-11-r7k" firstAttribute="top" secondItem="VQc-hL-Bbc" secondAttribute="bottom" constant="2" id="Zcd-Qe-cRI"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="trailing" secondItem="IAo-11-r7k" secondAttribute="trailing" id="eGe-Ux-cg8"/>
+                    <constraint firstAttribute="trailing" secondItem="VQc-hL-Bbc" secondAttribute="trailing" constant="16" id="fB6-eP-9H9"/>
+                    <constraint firstItem="q7F-mg-QOb" firstAttribute="leading" secondItem="IAo-11-r7k" secondAttribute="leading" id="hxy-ew-stt"/>
+                    <constraint firstAttribute="trailing" secondItem="IAo-11-r7k" secondAttribute="trailing" constant="16" id="kch-C9-JS2"/>
+                    <constraint firstItem="dJu-H6-3qo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="t4N-kv-EoQ"/>
+                    <constraint firstItem="VQc-hL-Bbc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="uNe-Lu-pCh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="bottomSeparatorLine" destination="dJu-H6-3qo" id="9aa-at-qTn"/>
+                <outlet property="postTitleLabel" destination="IAo-11-r7k" id="Vq3-Qu-ku2"/>
+                <outlet property="titleLabel" destination="VQc-hL-Bbc" id="4KO-Om-16S"/>
+                <outlet property="topSeparatorLine" destination="kpL-Db-PKI" id="G6k-Xz-9tR"/>
+            </connections>
+            <point key="canvasLocation" x="68.799999999999997" y="174.96251874062969"/>
+        </tableViewCell>
+    </objects>
+</document>

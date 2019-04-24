@@ -14,7 +14,7 @@ class SignupUsernameTableViewController: NUXTableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let bundle = Bundle(for: WordPressAuthenticator.self)
+        let bundle = WordPressAuthenticator.bundle
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
@@ -66,9 +66,7 @@ class SignupUsernameTableViewController: NUXTableViewController {
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
             if newSuggestions.count == 0 {
-                defer {
-                    WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
-                }
+                WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false
             SVProgressHUD.dismiss()

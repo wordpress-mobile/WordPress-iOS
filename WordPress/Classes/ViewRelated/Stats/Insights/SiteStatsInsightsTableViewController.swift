@@ -37,6 +37,7 @@ enum InsightType: Int {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -121,8 +122,10 @@ private extension SiteStatsInsightsTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
-            return
+
+        guard let viewModel = viewModel,
+            viewIsVisible() else {
+                return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
@@ -147,6 +150,10 @@ private extension SiteStatsInsightsTableViewController {
 
     func clearExpandedRows() {
         StatsDataHelper.clearExpandedInsights()
+    }
+
+    func viewIsVisible() -> Bool {
+        return isViewLoaded && view.window != nil
     }
 
     // MARK: User Defaults
@@ -175,7 +182,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController.init(rootViewController: webViewController)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     func showCreatePost() {
@@ -228,6 +235,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
 }

@@ -181,7 +181,10 @@ static CGFloat const FeaturedImageSize = 120.0;
                                        preferredSize:CGSizeMake(FeaturedImageSize, FeaturedImageSize)
                                          placeholder:nil
                                              success:nil
-                                               error:nil];
+                                               error:^(NSError *error) {
+                                                   DDLogError(@"Failed to load the media: %@", error);
+                                               }];
+        
     }
 }
 

@@ -4,22 +4,29 @@ import Foundation
 ///
 class StatsDataHelper {
 
+    private typealias Style = WPStyleGuide.Stats
+
     // MARK: - Expanded Row Handling
 
-    // This stores the labels for expanded rows.
-    // It is used to track which rows are expanded, so the expanded view can be restored
+    // These arrays store the labels for expanded rows.
+    // They are used to track which rows are expanded, so the expanded view can be restored
     // when the cells are recreated (ex: on scrolling).
     // They are segregated by StatSection for easy access.
-    static var expandedRowLabels = [StatSection: [String]]()
 
-    class func updatedExpandedState(forRow row: StatsTotalRow) {
+    // Period and Insights tables.
+    static var expandedRowLabels = [StatSection: [String]]()
+    // Details table.
+    static var expandedRowLabelsDetails = [StatSection: [String]]()
+
+    class func updatedExpandedState(forRow row: StatsTotalRow, inDetails: Bool = false) {
 
         guard let rowData = row.rowData,
             let statSection = rowData.statSection else {
                 return
         }
 
-        var expandedRowLabels = StatsDataHelper.expandedRowLabels[statSection] ?? []
+        var expandedRowsArray = inDetails ? StatsDataHelper.expandedRowLabelsDetails : StatsDataHelper.expandedRowLabels
+        var expandedRowLabels = expandedRowsArray[statSection] ?? []
 
         // Remove from array
         expandedRowLabels = expandedRowLabels.filter { $0 != rowData.name }
@@ -33,7 +40,14 @@ class StatsDataHelper {
         if row.expanded {
             expandedRowLabels.append(rowData.name)
         }
-        StatsDataHelper.expandedRowLabels[statSection] = expandedRowLabels
+
+        expandedRowsArray[statSection] = expandedRowLabels
+
+        if inDetails {
+            StatsDataHelper.expandedRowLabelsDetails = expandedRowsArray
+        } else {
+            StatsDataHelper.expandedRowLabels = expandedRowsArray
+        }
     }
 
     class func clearExpandedInsights() {
@@ -46,6 +60,10 @@ class StatsDataHelper {
         StatSection.allPeriods.forEach {
             StatsDataHelper.expandedRowLabels[$0]?.removeAll()
         }
+    }
+
+    class func clearExpandedDetails() {
+        StatsDataHelper.expandedRowLabelsDetails.removeAll()
     }
 
     // MARK: - Data Bar Percent
@@ -81,6 +99,29 @@ class StatsDataHelper {
         }()
 
         return disclosureURL
+    }
+
+    // MARK: - Tags and Categories Support
+
+    class func tagsAndCategoriesIconForKind(_ kind: StatsTagAndCategory.Kind) -> UIImage? {
+        switch kind {
+        case .folder:
+            return Style.imageForGridiconType(.folderMultiple)
+        case .category:
+            return Style.imageForGridiconType(.folder)
+        case .tag:
+            return Style.imageForGridiconType(.tag)
+        }
+    }
+
+    class func childRowsForItems(_ children: [StatsTagAndCategory]) -> [StatsTotalRowData] {
+        return children.map {
+            StatsTotalRowData.init(name: $0.name,
+                                   data: "",
+                                   icon: StatsDataHelper.tagsAndCategoriesIconForKind($0.kind),
+                                   showDisclosure: true,
+                                   disclosureURL: $0.url)
+        }
     }
 }
 

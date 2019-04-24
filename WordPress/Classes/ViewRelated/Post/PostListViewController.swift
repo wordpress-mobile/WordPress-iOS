@@ -508,32 +508,37 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            let cancelText: String
-            let deleteText: String
-            let messageText: String
-            let titleText: String
-
-            if post.status == .trash {
-                cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-                deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
-                titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
-                messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
-            } else {
-                cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-                deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
-                titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
-                messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
-            }
-
-            let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
-
-            alertController.addCancelActionWithTitle(cancelText)
-            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-                self?.deletePost(post)
-            }
-            alertController.presentFromRootViewController()
+        guard ReachabilityUtils.isInternetReachable() else {
+            let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
+            ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
+            return
         }
+
+        let cancelText: String
+        let deleteText: String
+        let messageText: String
+        let titleText: String
+
+        if post.status == .trash {
+            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+            deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
+            titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
+            messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
+        } else {
+            cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+            deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
+            titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
+            messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
+        }
+
+        let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(cancelText)
+        alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+            self?.deletePost(post)
+        }
+        alertController.presentFromRootViewController()
+
     }
 
     func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
@@ -579,11 +584,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         tableViewTopConstraint.isActive = false
         filterTabBarBottomConstraint.isActive = true
-
     }
 
     enum Animations {
         static let searchDismissDuration: TimeInterval = 0.3
+    }
+
+    // MARK: - NetworkAwareUI
+
+    override func noConnectionMessage() -> String {
+        return NSLocalizedString("No internet connection. Some posts may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Site Posts without an internet connection.")
     }
 }
 

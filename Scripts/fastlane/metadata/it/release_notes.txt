@@ -1,3 +1,6 @@
-- Passerai più velocemente da “accesso iniziale” a “sito web completo” grazie n nuovo processo intelligente di creazione del sito comincia con un sito web personalizzato e già su misura. Spiacenti! Potrebbe essere necessario aumentare la programmazione di lancio. È un bel problema da avere.
-- Una volta creato il tuo nuovo sito web, saranno disponibili moltissimi tutorial per aiutarti a dare forma e accrescere il tuo sito, con tanti suggerimenti sulla creazione del tuo pubblico. Te li suggeriremo quando sarà il caso e li troverai tutti nella schermata I miei siti in qualsiasi momento. Perché il lancio è l’inizio, non la fine.
-- Nella nostra costante ricerca volta a rendere l'app piacevole da usare, o almeno più gradevole, abbiamo incrementato il padding della finestra dell'editor, per poter digitare messaggi più lunghi in maniera confortevole e rendere l’illustrazione e i layout di alcune pagine di errore più coerenti con il resto dell’app, in modo che siano più facili da capire.
+12.2
+-----
+*Pubblica con fiducia! Le anteprime della bozza ti mostreranno una versione più accurata dei tuoi articoli.
+*Se preferisci scrivere in app come Bear o Ulysses (oppure qualsiasi altra app che utilizzi i formati TextBundle e TextPack), continua a farlo! Ora puoi importare il testo da quelle app a questa.
+*L'intera app è stata rimessa a nuovo: abbiamo risolto alcuni tic visuali durante la procedura di creazione del sito, sistemato alcune formulazioni per rendere più chiaro quanto spazio di archiviazione viene utilizzato dal tuo sito e ci siamo occupati di un fastidioso arresto anomalo che sarebbe avvenuto qualche volta durante i tentativi di gestione dei plugin.
+

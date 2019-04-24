@@ -139,7 +139,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         self.prepareForReuse()
     }
 
-    public func startLoadingAnimation() {
+    @objc public func startLoadingAnimation() {
         guard shouldShowLoadingIndicator else {
             return
         }
@@ -148,21 +148,16 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
     }
 
-    public func stopLoadingAnimation() {
+    @objc public func stopLoadingAnimation() {
         DispatchQueue.main.async() {
             self.loadingIndicator.stopAnimating()
         }
     }
 
     public func addLoadingIndicator(_ loadingIndicator: ActivityIndicatorType, style: LoadingIndicatorStyle) {
-        guard let loadingView = loadingIndicator as? UIView else {
-            assertionFailure("Loading indicator must be a UIView subclass")
-            return
-        }
-
         removeCustomLoadingIndicator()
         customLoadingIndicator = loadingIndicator
-        addCustomLoadingIndicator(loadingView, style: style)
+        addCustomLoadingIndicator(loadingIndicator, style: style)
     }
 
     // MARK: - Private methods
@@ -228,7 +223,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     // MARK: Loading indicator
 
     private func removeCustomLoadingIndicator() {
-        if let oldLoadingIndicator = customLoadingIndicator as? UIView {
+        if let oldLoadingIndicator = customLoadingIndicator {
             oldLoadingIndicator.removeFromSuperview()
         }
     }

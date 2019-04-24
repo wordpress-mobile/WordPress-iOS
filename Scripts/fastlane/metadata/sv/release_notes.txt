@@ -1,3 +1,6 @@
-- Med en smartare process för att skapa en webbplats kommer du snabbare från ”ursprunglig registrering” till ”färdig webbplats” där du börjar med en webbplats som redan är personlig och anpassad. Nu kanske du tvingas tidigarelägga din lansering. Förlåt oss i så fall. Men det är ju ett positivt problem!
-- När du skapar din nya webbplats finns det nu fler vägledningar än någonsin att välja mellan för att hjälpa dig forma och utvidga den, inklusive olika tips på hur du får fler läsare. Vi lämnar våra förslag när de kan vara till nytta, och du kan närsomhelst hitta dem alla på skärmen ”Mina webbplatser”. Lanseringen är inte slutpunkten, det är bara början.
-- I våra fortstta ansträngningar att göra appen härlig att använda – eller åtminstone trevligare – har vi breddat marginalerna i redigeringsfönstret för att göra det bekvämare när man redigerar längre inlägg. Vissa sidor med felmeddelanden har fått layout och illustrationer som stämmer bättre överens med resten av appen så att de blir lättare att förstå.
+12.2
+-----
+* Publicera tillförlitligt! Förhandsvisningar av utkast kommer att ge en mer korrekt version av dina inlägg.
+* Om du föredrar att skriva i sådana appar som Bear eller Ulysses (eller någon annan app som använder formaten TextBundle eller TextPack) är det perfekt – fortsätt så. Och nu kan du även importera din text i de apparna till den här appen.
+* Vi har snyggat upp hela appen nu inför våren – rättat till några visuella störningen i processen för att skapa en ny webbplats, justerad vissa fraser för att tydliggöra hur stort lagringsutrymme webbplatsen använder. Dessutom har vi tagit hand om en jobbig krasch som ibland inträffade när man försökte att hantera sina tillägg.
+
