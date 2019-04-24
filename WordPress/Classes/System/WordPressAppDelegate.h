@@ -37,6 +37,4 @@
 - (void)trackLogoutIfNeeded;
 - (void)customizeAppearanceForTextElements;
 
-+ (void)setLogLevel:(DDLogLevel)logLevel;
-
 @end

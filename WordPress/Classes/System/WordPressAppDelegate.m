@@ -17,9 +17,6 @@
 
 // Logging
 #import "WPLogger.h"
-#import <AutomatticTracks/TracksLogging.h>
-#import <WordPressComStatsiOS/WPStatsLogging.h>
-#import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -39,7 +36,6 @@
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
-DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
@@ -92,7 +88,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    DDLogInfo(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
