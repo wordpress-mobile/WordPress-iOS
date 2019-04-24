@@ -185,6 +185,14 @@ extension WordPressAppDelegate {
             return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
         }
     }
+
+    @objc func trackLogoutIfNeeded() {
+        if AccountHelper.isLoggedIn == false {
+            WPAnalytics.track(.logout)
+        }
+    }
+}
+
 }
 
 // MARK: - Debugging

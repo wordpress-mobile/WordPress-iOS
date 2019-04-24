@@ -438,13 +438,6 @@
     [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline maximumPointSize:maximumPointSize]];
 }
 
-- (void)trackLogoutIfNeeded
-{
-    if (![AccountHelper isLoggedIn]) {
-        [WPAnalytics track:WPAnalyticsStatLogout];
-    }
-}
-
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess
