@@ -123,7 +123,11 @@ extension NSNotification.Name {
         let articleConfig = ArticleUiConfiguration()
         articleConfig.hideContactSupport = !haveUserIdentity
 
-        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig])
+        // Get custom request configuration so new tickets from this path have all the necessary information.
+        let newRequestConfig = self.createRequest()
+
+
+        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig, newRequestConfig])
         ZendeskUtils.showZendeskView(helpCenterController)
     }
 
@@ -161,7 +165,10 @@ extension NSNotification.Name {
             self.sourceTag = sourceTag
             WPAnalytics.track(.supportTicketListViewed)
 
-            let requestListController = RequestUi.buildRequestList()
+            // Get custom request configuration so new tickets from this path have all the necessary information.
+            let newRequestConfig = self.createRequest()
+
+            let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
         }
     }
