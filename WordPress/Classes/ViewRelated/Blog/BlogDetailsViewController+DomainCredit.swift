@@ -1,7 +1,7 @@
 import Gridicons
 
 extension BlogDetailsViewController {
-    @objc func domainCreditViewModel() -> BlogDetailsSection {
+    @objc func domainCreditSectionViewModel() -> BlogDetailsSection {
         let image = Gridicon.iconOfType(.info)
         let row = BlogDetailsRow(title: NSLocalizedString("Register Domain", comment: "Action to redeem domain credit."),
                                  accessibilityIdentifier: "Register domain from site dashboard",
