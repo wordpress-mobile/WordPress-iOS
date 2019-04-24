@@ -47,7 +47,7 @@ extension GutenbergViewController {
             self?.displayPreview()
         }
 
-        if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
+        if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
                 self?.displayHistory()
             }
