@@ -536,6 +536,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return view;
     }
 }
+    
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
+    return detailSection.footerTitle;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
+}
 
 #pragma mark - Data Model setup
 
