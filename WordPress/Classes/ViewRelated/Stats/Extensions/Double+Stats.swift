@@ -54,7 +54,7 @@ extension Double {
     }
 
     func formatWithCommas() -> String {
-        return numberFormatter.string(from: NSNumber(value: self)) ?? ""
+        return numberFormatter.string(for: self) ?? ""
     }
 
 }
