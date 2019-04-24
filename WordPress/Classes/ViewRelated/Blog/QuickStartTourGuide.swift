@@ -50,14 +50,6 @@ open class QuickStartTourGuide: NSObject {
         blog.completeTour(v2tour.key)
     }
 
-    /// Note: this is only used for QS v1, and can be removed once the feature flag
-    ///       is also removed.
-    @objc func detailString(for blog: Blog) -> String {
-        let completedCount = countChecklistCompleted(in: QuickStartTourGuide.checklistTours, for: blog)
-        let totalCount = QuickStartTourGuide.checklistTours.count
-        return "\(completedCount)/\(totalCount)"
-    }
-
     /// Provides a tour to suggest to the user
     ///
     /// - Parameter blog: The Blog for which to suggest a tour.
@@ -76,28 +68,6 @@ open class QuickStartTourGuide: NSObject {
         let unavailableIDs = unavailableTours.map { $0.tourID }
         let remainingTours = allTours.filter { !unavailableIDs.contains($0.key) }
 
-        return remainingTours.first
-    }
-
-    private func tourToSuggestV1(for blog: Blog) -> QuickStartTour? {
-        let completedTours: [QuickStartTourState] = blog.completedQuickStartTours ?? []
-        let skippedTours: [QuickStartTourState] = blog.skippedQuickStartTours ?? []
-        let unavailableTours = Array(Set(completedTours + skippedTours))
-
-        guard isQuickStartEnabled(for: blog),
-            skippedTours.count < Constants.maxSkippedTours else {
-            return nil
-        }
-
-        // the last tour we suggest is the one to look at the checklist
-        if skippedTours.count == Constants.maxSkippedTours - 1 {
-            return QuickStartChecklistTour()
-        }
-
-        let allTours = QuickStartTourGuide.checklistTours
-
-        let unavailableIDs = unavailableTours.map { $0.tourID }
-        let remainingTours = allTours.filter { !unavailableIDs.contains($0.key) }
         return remainingTours.first
     }
 
