@@ -75,11 +75,10 @@ static NSInteger HideSearchMinSites = 3;
                                                                   target:nil
                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
-    
-    self.addSiteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
-                                                                                    style:UIBarButtonItemStylePlain
-                                                                                   target:self
-                                                                                   action:@selector(addSite)];
+
+    self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                       target:self
+                                                                       action:@selector(addSite)];
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
