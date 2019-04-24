@@ -9,21 +9,40 @@ class PostStatsViewModel: Observable {
     // MARK: - Properties
 
     let changeDispatcher = Dispatcher<Void>()
+
+    private var postID: Int?
     private var postTitle: String?
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
+    private let store = StoreContainer.shared.statsPeriod
+    private var receipt: Receipt?
+    private var changeReceipt: Receipt?
+
     // MARK: - Init
 
-    init(postTitle: String?, postURL: URL?, postStatsDelegate: PostStatsDelegate) {
+    init(postID: Int,
+         postTitle: String?,
+         postURL: URL?,
+         postStatsDelegate: PostStatsDelegate) {
+        self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
+
+        receipt = store.query(.postStats(postID: postID))
+
+        changeReceipt = store.onChange { [weak self] in
+            self?.emitChange()
+        }
     }
 
     // MARK: - Table View
 
     func tableViewModel() -> ImmuTable {
+
+        testPostStats()
+
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(titleTableRow())
@@ -35,6 +54,12 @@ class PostStatsViewModel: Observable {
             ImmuTableSection(
                 rows: tableRows)
             ])
+    }
+
+    // MARK: - Refresh Data
+
+    func refreshPostStats(postID: Int) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
 }
@@ -67,6 +92,21 @@ private extension PostStatsViewModel {
         tableRows.append(row)
 
         return tableRows
+    }
+
+    // Temporary method just to show Post Stats data was successfully fetched.
+    // To be removed when data is actually shown on the Post Stats view.
+    func testPostStats() {
+        let fetchedPostStats = store.getPostStats()
+
+        guard let postStats = fetchedPostStats else {
+            print("🔴 No postStats received.")
+            return
+        }
+
+        print("🔴 postStats.monthlyBreakdown: ", postStats.monthlyBreakdown)
+        print("🔴 postStats.dailyAveragesPerMonth: ", postStats.dailyAveragesPerMonth)
+        print("🔴 postStats.recentWeeks: ", postStats.recentWeeks)
     }
 
 }

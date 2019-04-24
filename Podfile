@@ -42,8 +42,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.0.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
+    pod 'WordPressKit', '~> 4.1.0-beta.1'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -59,7 +59,7 @@ def shared_with_networking_pods
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 
-	wordpress_kit
+    wordpress_kit
 end
 
 def shared_test_pods
@@ -139,9 +139,9 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
-    pod 'WordPressAuthenticator', '~> 1.4.0'
-    #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/wc-support-site-url-login'
+    pod 'WordPressAuthenticator', '~> 1.4.1-beta'
+    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
 
     aztec
@@ -201,7 +201,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-	wordpress_kit
+    wordpress_kit
     wordpress_shared
     wordpress_ui
 end

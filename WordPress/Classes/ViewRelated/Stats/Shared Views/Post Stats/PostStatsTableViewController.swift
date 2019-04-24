@@ -1,4 +1,5 @@
 import UIKit
+import WordPressFlux
 
 @objc protocol PostStatsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
@@ -14,8 +15,11 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     private var postTitle: String?
     private var postURL: URL?
+    private var postID: Int?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
+    private let store = StoreContainer.shared.statsPeriod
+    private var changeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -26,13 +30,14 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Stats", comment: "Window title for Post Stats view.")
-        refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         initViewModel()
     }
 
-    func configure(postTitle: String?, postURL: URL?) {
+    func configure(postID: Int, postTitle: String?, postURL: URL?) {
+        self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
     }
@@ -43,8 +48,21 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 private extension PostStatsTableViewController {
 
     func initViewModel() {
-        viewModel = PostStatsViewModel(postTitle: postTitle, postURL: postURL, postStatsDelegate: self)
-        refreshTableView()
+
+        guard let postID = postID else {
+            return
+        }
+
+        viewModel = PostStatsViewModel(postID: postID, postTitle: postTitle, postURL: postURL, postStatsDelegate: self)
+
+        changeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.store,
+                !store.isFetchingPostStats else {
+                    return
+            }
+
+            self?.refreshTableView()
+        }
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -65,12 +83,17 @@ private extension PostStatsTableViewController {
         refreshControl?.endRefreshing()
     }
 
-    @objc func refreshData() {
+    @objc func userInitiatedRefresh() {
         refreshControl?.beginRefreshing()
+        refreshData()
+    }
 
-        // TODO: data fetching
+    func refreshData() {
+        guard let postID = postID else {
+            return
+        }
 
-        refreshControl?.endRefreshing()
+        viewModel?.refreshPostStats(postID: postID)
     }
 
 }
