@@ -5,8 +5,8 @@ final class ReaderFollowedSitesStreamHeaderTests: XCTestCase {
     private var subject: ReaderFollowedSitesStreamHeader?
 
     private struct TestConstants {
-        static let label = "Manage"
-        static let hint = "Tapping lets you manage the sites you follow."
+        static let label = NSLocalizedString("Manage", comment: "Manage")
+        static let hint = NSLocalizedString("Tapping lets you manage the sites you follow.", comment: "Tapping lets you manage the sites you follow.")
         static let traits = UIAccessibilityTraits.button
     }
 
@@ -25,11 +25,11 @@ final class ReaderFollowedSitesStreamHeaderTests: XCTestCase {
     }
 
     func testSubjectLabeMatchesExpectation() {
-        XCTAssertEqual(subject?.accessibilityLabel, TestConstants.label, "Accessibility label does not return the expected value")
+        XCTAssertEqual(subject?.accessibilityLabel, String(format: "%@", TestConstants.label), "Accessibility label does not return the expected value")
     }
 
     func testSubjectHintMatchesExpectation() {
-        XCTAssertEqual(subject?.accessibilityHint, TestConstants.hint, "Accessibility hint does not return the expected value")
+        XCTAssertEqual(subject?.accessibilityHint, String(format: "%@", TestConstants.hint), "Accessibility hint does not return the expected value")
     }
 
     func testSubjectTraitsMatchesExpectation() {
