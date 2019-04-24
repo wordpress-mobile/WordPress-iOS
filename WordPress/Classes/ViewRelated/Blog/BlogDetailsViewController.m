@@ -105,12 +105,24 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @end
 
 @implementation BlogDetailsSection
-- (instancetype)initWithTitle:(NSString *)title andRows:(NSArray *)rows
+- (instancetype)initWithTitle:(NSString *)title
+                      andRows:(NSArray *)rows
+                     category:(BlogDetailsSectionCategory)category
+{
+    return [self initWithTitle:title rows:rows footerTitle:nil category:category];
+}
+
+- (instancetype)initWithTitle:(NSString *)title
+                         rows:(NSArray *)rows
+                  footerTitle:(NSString *)footerTitle
+                     category:(BlogDetailsSectionCategory)category
 {
     self = [super init];
     if (self) {
         _title = title;
         _rows = rows;
+        _footerTitle = footerTitle;
+        _category = category;
     }
     return self;
 }
@@ -593,7 +605,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:plansRow];
     }
 
-    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
 
 - (BlogDetailsSection *)publishTypeSectionViewModel
@@ -634,7 +646,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [rows addObject:row];
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPublish];
 }
 
 - (BlogDetailsSection *)personalizeSectionViewModel
@@ -658,7 +670,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPersonalize];
 }
 
 - (BlogDetailsSection *)configurationSectionViewModel
@@ -702,7 +714,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [rows addObject:row];
 
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryConfigure];
 }
 
 - (BlogDetailsSection *)externalSectionViewModel
@@ -734,7 +746,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     NSString *title = NSLocalizedString(@"External", @"Section title for the external table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryExternal];
 }
 
 - (BlogDetailsSection *)removeSiteSectionViewModel
@@ -752,7 +764,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     removeSiteRow.forDestructiveAction = YES;
     [rows addObject:removeSiteRow];
 
-    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryRemoveSite];
 
 }
 

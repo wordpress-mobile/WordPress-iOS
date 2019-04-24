@@ -121,7 +121,7 @@ extension BlogDetailsViewController {
         }
 
         let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
-        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)
         section.showQuickStartMenu = true
         return section
     }

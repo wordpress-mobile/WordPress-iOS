@@ -2,6 +2,17 @@
 
 @class Blog;
 
+typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
+    BlogDetailsSectionCategoryDomainCredit,
+    BlogDetailsSectionCategoryQuickStart,
+    BlogDetailsSectionCategoryGeneral,
+    BlogDetailsSectionCategoryPublish,
+    BlogDetailsSectionCategoryPersonalize,
+    BlogDetailsSectionCategoryConfigure,
+    BlogDetailsSectionCategoryExternal,
+    BlogDetailsSectionCategoryRemoveSite
+};
+
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
@@ -51,11 +62,14 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 
 @interface BlogDetailsSection : NSObject
 
-@property (nonatomic, strong, nonnull) NSString *title;
-@property (nonatomic, strong, nonnull) NSArray *rows;
+@property (nonatomic, strong, nullable, readonly) NSString *title;
+@property (nonatomic, strong, nonnull, readonly) NSArray *rows;
+@property (nonatomic, strong, nullable, readonly) NSString *footerTitle;
+@property (nonatomic, readonly) BlogDetailsSectionCategory category;
 @property (nonatomic) BOOL showQuickStartMenu;
 
-- (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title andRows:(NSArray * __nonnull)rows;
+- (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title andRows:(NSArray * __nonnull)rows category:(BlogDetailsSectionCategory)category;
+- (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title rows:(NSArray * __nonnull)rows footerTitle:(NSString * __nullable)footerTitle category:(BlogDetailsSectionCategory)category;
 
 @end
 
