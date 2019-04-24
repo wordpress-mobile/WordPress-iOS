@@ -153,10 +153,11 @@ class GutenbergMediaInserterHelper: NSObject {
             guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
                 break
             }
-            if media.mediaType == .image {
+            switch media.mediaType {
+            case .image:
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
-            } else if media.mediaType == .video {
-                fetchVideoPressUrl(for: media) { [weak self] (result) in
+            case .video:
+                fetchRemoteURL(for: media) { [weak self] (result) in
                     guard let strongSelf = self else {
                         return
                     }
@@ -167,6 +168,8 @@ class GutenbergMediaInserterHelper: NSObject {
                         strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID)
                     }
                 }
+            default:
+                break
             }
         case .failed(let error):
             if error.code == NSURLErrorCancelled {
@@ -179,9 +182,16 @@ class GutenbergMediaInserterHelper: NSObject {
         }
     }
 
-    func fetchVideoPressUrl(for media: Media, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?)> ) -> Void) {
+    func fetchRemoteURL(for media: Media, completion: @escaping ( Result<(videoURL: URL, posterURL: URL?)> ) -> Void) {
         guard let videoPressID = media.videopressGUID else {
-            completion(Result.error(NSError()))
+            //the site can be a self-hosted site if there's no videopressGUID
+            if let videoURLString = media.remoteURL,
+                let videoURL = URL(string: videoURLString) {
+                completion(Result.success((videoURL: videoURL, posterURL: nil)))
+            } else {
+                DDLogError("Unable to find remote video URL for video with upload ID = \(media.uploadID).")
+                completion(Result.error(NSError()))
+            }
             return
         }
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
