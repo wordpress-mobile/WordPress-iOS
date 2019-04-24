@@ -233,13 +233,13 @@ class PostTests: XCTestCase {
     func testThatTitleForDisplayWorks() {
         let post = newTestPost()
 
-        XCTAssertEqual(post.titleForDisplay(), "(no title)")
+        XCTAssertEqual(post.titleForDisplay(), NSLocalizedString("(no title)", comment: "(no title)"))
 
         post.postTitle = "hello world"
         XCTAssertEqual(post.titleForDisplay(), "hello world")
 
         post.postTitle = "    "
-        XCTAssertEqual(post.titleForDisplay(), "(no title)")
+        XCTAssertEqual(post.titleForDisplay(), NSLocalizedString("(no title)", comment: "(no title)"))
     }
 
     func testThatContentPreviewForDisplayWorks() {
@@ -285,27 +285,32 @@ class PostTests: XCTestCase {
     func testThatStatusForDisplayWorksForRevisionPost() {
         let original = newTestPost()
         let revision = original.createRevision()
-
+        let local = NSLocalizedString("Local", comment: "Local")
         revision.status = .draft
-        XCTAssertEqual(revision.statusForDisplay(), "Local")
+        XCTAssertEqual(revision.statusForDisplay(), local)
 
         revision.status = .pending
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .pending)), Local")
+        let pendingStatusDisplay = "\(Post.title(for: .pending))"
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), pendingStatusDisplay, local))
 
         revision.status = .publishPrivate
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .publishPrivate)), Local")
+        let publishPrivateStatusDisplay = "\(Post.title(for: .publishPrivate))"
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), publishPrivateStatusDisplay, local))
 
         revision.status = .publish
-        XCTAssertEqual(revision.statusForDisplay(), "Local")
+        XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local", comment: "Local"))
 
         revision.status = .scheduled
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .scheduled)), Local")
+        let scheduledStatusDisplay = "\(Post.title(for: .scheduled))"
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), scheduledStatusDisplay, local))
 
         revision.status = .trash
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .trash)), Local")
+        let trashStatusDisplay = "\(Post.title(for: .trash))"
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), trashStatusDisplay, local))
 
         revision.status = .deleted
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .deleted)), Local")
+        let deletedStatusDisplay = "\(Post.title(for: .deleted))"
+        XCTAssertEqual(revision.statusForDisplay(), String(format: NSLocalizedString("%@, %@", comment: ""), deletedStatusDisplay, local))
     }
 
     func testThatHasLocalChangesWorks() {
