@@ -21,7 +21,7 @@ class EditorTests: XCTestCase {
     }
 
     override func tearDown() {
-        if editorScreen.isLoaded() {
+        if editorScreen != nil && editorScreen.isLoaded() {
             _ = editorScreen.goBack()
         }
         super.tearDown()

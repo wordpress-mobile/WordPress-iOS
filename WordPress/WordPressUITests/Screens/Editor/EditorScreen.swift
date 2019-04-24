@@ -25,18 +25,18 @@ class EditorScreen: BaseScreen {
     let titleView = XCUIApplication().textViews["Title"]
     let contentPlaceholder = XCUIApplication().staticTexts["aztec-content-placeholder"]
 
-    lazy var mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
-    lazy var headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
-    lazy var boldButton = XCUIApplication().buttons["format_toolbar_toggle_bold"]
-    lazy var italicButton = XCUIApplication().buttons["format_toolbar_toggle_italic"]
-    lazy var underlineButton = XCUIApplication().buttons["format_toolbar_toggle_underline"]
-    lazy var strikethroughButton = XCUIApplication().buttons["format_toolbar_toggle_strikethrough"]
-    lazy var blockquoteButton = XCUIApplication().buttons["format_toolbar_toggle_blockquote"]
-    lazy var listButton = XCUIApplication().buttons["format_toolbar_toggle_list_unordered"]
-    lazy var linkButton = XCUIApplication().buttons["format_toolbar_insert_link"]
-    lazy var horizontalrulerButton = XCUIApplication().buttons["format_toolbar_insert_horizontal_ruler"]
-    lazy var sourcecodeButton = XCUIApplication().buttons["format_toolbar_toggle_html_view"]
-    lazy var moreToolbarButton = XCUIApplication().buttons["format_toolbar_insert_more"]
+    let mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
+    let headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
+    let boldButton = XCUIApplication().buttons["format_toolbar_toggle_bold"]
+    let italicButton = XCUIApplication().buttons["format_toolbar_toggle_italic"]
+    let underlineButton = XCUIApplication().buttons["format_toolbar_toggle_underline"]
+    let strikethroughButton = XCUIApplication().buttons["format_toolbar_toggle_strikethrough"]
+    let blockquoteButton = XCUIApplication().buttons["format_toolbar_toggle_blockquote"]
+    let listButton = XCUIApplication().buttons["format_toolbar_toggle_list_unordered"]
+    let linkButton = XCUIApplication().buttons["format_toolbar_insert_link"]
+    let horizontalrulerButton = XCUIApplication().buttons["format_toolbar_insert_horizontal_ruler"]
+    let sourcecodeButton = XCUIApplication().buttons["format_toolbar_toggle_html_view"]
+    let moreToolbarButton = XCUIApplication().buttons["format_toolbar_insert_more"]
 
     let unorderedListOption = XCUIApplication().buttons["Unordered List"]
     let orderedListOption = XCUIApplication().buttons["Ordered List"]
@@ -227,7 +227,7 @@ class EditorScreen: BaseScreen {
         app.buttons["Insert 1"].tap()
 
         // Wait for upload to finish
-        _ = waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
+        waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
 
         return self
     }
