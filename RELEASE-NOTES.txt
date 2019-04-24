@@ -1,6 +1,7 @@
 12.4
 -----
- 
+* Fixed crash when searching Free Photo Library.
+
 12.3
 -----
 * Images are now imported from TextBundle and TextPack files shared from other apps
