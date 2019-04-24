@@ -231,7 +231,7 @@ private extension SupportTableViewController {
     ///
     func checkForAutomatticEmail() {
         guard let email = ZendeskUtils.userSupportEmail(),
-            (Constants.automatticEmails.first { email.contains($0) == true }) != nil else {
+            (Constants.automatticEmails.first { email.contains($0) }) != nil else {
                 return
         }
 
