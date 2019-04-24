@@ -68,6 +68,12 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
+def shared_with_extension_pods
+    pod 'Gridicons', '~> 0.16'
+    pod 'ZIPFoundation', '~> 0.9.8'
+    pod 'Down', '~> 0.6.6'
+end
+
 def gutenberg(options)
     options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
     pod 'Gutenberg', options
@@ -98,6 +104,7 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
+    shared_with_extension_pods
 
     ## Gutenberg (React Native)
     ## =====================
@@ -121,8 +128,6 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
-    pod 'ZIPFoundation', '~> 0.9.8'
-    pod 'Down', '~> 0.6.6'
 
     ## Automattic libraries
     ## ====================
@@ -135,7 +140,6 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.3'
-    pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
 
@@ -143,52 +147,56 @@ target 'WordPress' do
     #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/wc-support-site-url-login'
 
-
     aztec
     wordpress_ui
+
     target 'WordPressTest' do
         inherit! :search_paths
 
         shared_test_pods
         pod 'Nimble', '~> 7.3.1'
     end
+end
 
 
-    ## Share Extension
-    ## ===============
-    ##
-    target 'WordPressShareExtension' do
-        inherit! :search_paths
+## Share Extension
+## ===============
+##
+target 'WordPressShareExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        aztec
-        shared_with_all_pods
-        shared_with_networking_pods
-        wordpress_ui
-    end
+    shared_with_extension_pods
 
-
-    ## DraftAction Extension
-    ## =====================
-    ##
-    target 'WordPressDraftActionExtension' do
-        inherit! :search_paths
-
-        aztec
-        shared_with_all_pods
-        shared_with_networking_pods
-        wordpress_ui
-    end
+    aztec
+    shared_with_all_pods
+    shared_with_networking_pods
+    wordpress_ui
+end
 
 
-    ## Today Widget
-    ## ============
-    ##
-    target 'WordPressTodayWidget' do
-        inherit! :search_paths
+## DraftAction Extension
+## =====================
+##
+target 'WordPressDraftActionExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        shared_with_all_pods
-        shared_with_networking_pods
-    end
+    shared_with_extension_pods
+
+    aztec
+    shared_with_all_pods
+    shared_with_networking_pods
+    wordpress_ui
+end
+
+
+## Today Widget
+## ============
+##
+target 'WordPressTodayWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+  
+    shared_with_all_pods
+    shared_with_networking_pods
 end
 
 
@@ -199,9 +207,7 @@ end
 target 'WordPressNotificationContentExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
-    inherit! :search_paths
-
-	wordpress_kit
+    wordpress_kit
     wordpress_shared
     wordpress_ui
 end
@@ -213,8 +219,6 @@ end
 ##
 target 'WordPressNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
-
-    inherit! :search_paths
 
     wordpress_kit
     wordpress_shared
