@@ -457,32 +457,36 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
-- (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)section
+- (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)subsection
 {
-    switch (section) {
+    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+    NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
+    switch (subsection) {
+        case BlogDetailsSubsectionDomainCredit:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionQuickStart:
-            return [NSIndexPath indexPathForRow:0 inSection:0];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionStats:
-            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:0] : [NSIndexPath indexPathForRow:0 inSection:0];
+            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:section] : [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
-            return [NSIndexPath indexPathForRow:1 inSection:0];
+            return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPosts:
-            return [NSIndexPath indexPathForRow:0 inSection:1];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
-            return [NSIndexPath indexPathForRow:0 inSection:2];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionMedia:
-            return [NSIndexPath indexPathForRow:2 inSection:1];
+            return [NSIndexPath indexPathForRow:2 inSection:section];
         case BlogDetailsSubsectionPages:
-            return [NSIndexPath indexPathForRow:0 inSection:0];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionComments:
-            return [NSIndexPath indexPathForRow:3 inSection:1];
+            return [NSIndexPath indexPathForRow:3 inSection:section];
         case BlogDetailsSubsectionSharing:
-            return [NSIndexPath indexPathForRow:0 inSection:3];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionPeople:
-            return [NSIndexPath indexPathForRow:1 inSection:3];
+            return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPlugins:
-            return [NSIndexPath indexPathForRow:2 inSection:3];
+            return [NSIndexPath indexPathForRow:2 inSection:section];
     }
 }
 
@@ -491,7 +495,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)restorableSelectedIndexPath
 {
     if (!_restorableSelectedIndexPath) {
-        NSUInteger section = [Feature enabled:FeatureFlagQuickStartV2] && [self shouldShowQuickStartChecklist] ? 1 : 0;
+        // If nil, default to stats subsection.
+        BlogDetailsSubsection subsection = BlogDetailsSubsectionStats;
+        BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+        NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
@@ -1535,23 +1542,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
 
-    NSUInteger generalSectionCountBefore = self.tableSections[0].rows.count;
-    BlogDetailsSection *firstSectionBefore = [self.tableSections objectAtIndex:0];
+    NSInteger generalSectionIndex = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryGeneral];
+    NSUInteger generalSectionCountBefore = self.tableSections[generalSectionIndex].rows.count;
+    BOOL isQuickStartSectionShownBefore = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self configureTableViewData];
-        NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
-        BlogDetailsSection *firstSectionAfter = [self.tableSections objectAtIndex:0];
-
+        
         // quick start was just enabled
 
         if ([Feature enabled:FeatureFlagQuickStartV2]) {
-            if (!firstSectionBefore.showQuickStartMenu && firstSectionAfter.showQuickStartMenu) {
+            BOOL isQuickStartSectionShownAfter = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
+            if (!isQuickStartSectionShownBefore && isQuickStartSectionShownAfter) {
                 [self showQuickStartCustomize];
             }
         } else {
+            NSInteger generalSectionIndex = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryGeneral];
+            NSUInteger generalSectionCountAfter = self.tableSections[generalSectionIndex].rows.count;
             if (generalSectionCountBefore != generalSectionCountAfter && [self shouldShowQuickStartChecklist]) {
                 [self showQuickStartV1];
             }
