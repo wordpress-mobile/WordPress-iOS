@@ -83,21 +83,52 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                          image:image
                       callback:callback];
 }
+    
+- (instancetype)initWithTitle:(NSString *)title
+      accessibilityIdentifier:(NSString *)accessibilityIdentifier
+                        image:(UIImage *)image
+                   imageColor:(UIColor *)imageColor
+                     callback:(void (^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:BlogDetailsCellIdentifier
+       accessibilityIdentifier:accessibilityIdentifier
+                         image:image
+                    imageColor:imageColor
+                      callback:callback];
+}
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                    identifier:(NSString * __nonnull)identifier
       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                        image:(UIImage * __nonnull)image                   
+                     callback:(void(^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:identifier
+       accessibilityIdentifier:accessibilityIdentifier
+                         image:image
+                    imageColor:[WPStyleGuide greyLighten10]
+                      callback:callback];
+}
+    
+- (instancetype)initWithTitle:(NSString * __nonnull)title
+                   identifier:(NSString * __nonnull)identifier
+      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                         image:(UIImage * __nonnull)image
+                   imageColor:(UIColor * __nonnull)imageColor
                      callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
         _title = title;
         _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _imageColor = imageColor;
         _callback = callback;
         _identifier = identifier;
         _accessibilityIdentifier = accessibilityIdentifier;
         _showsSelectionState = YES;
+        _hasNoAccessory = NO;
     }
     return self;
 }
@@ -1003,6 +1034,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     cell.accessibilityIdentifier = row.accessibilityIdentifier ?: row.identifier;
     cell.detailTextLabel.text = row.detail;
     cell.imageView.image = row.image;
+    cell.imageView.tintColor = row.imageColor;
     if (row.accessoryView) {
         cell.accessoryView = row.accessoryView;
     }
@@ -1018,10 +1050,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentNatural;
-    cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     if (row.forDestructiveAction) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewDestructiveActionCell:cell];
+    } else if (row.hasNoAccessory) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
     } else {
         cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewCell:cell];
