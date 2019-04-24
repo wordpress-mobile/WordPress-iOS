@@ -134,10 +134,10 @@ target 'WordPress' do
     #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
 
     pod 'NSURL+IDN', '0.3'
-    ## pod 'WPMediaPicker', '1.3.3'
+    pod 'WPMediaPicker', '1.3.4'
     pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
-    pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'c05d267c106776f0176d76869a5c6938d963bb75'
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'c05d267c106776f0176d76869a5c6938d963bb75'
 
     pod 'WordPressAuthenticator', '~> 1.4.1-beta'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
