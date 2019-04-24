@@ -595,6 +595,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
+    if ([Feature enabled:FeatureFlagDomainCredit]) {
+        [marr addObject:[self domainCreditSectionViewModel]];
+    }
     if ([self shouldShowQuickStartChecklist] && [Feature enabled:FeatureFlagQuickStartV2]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
