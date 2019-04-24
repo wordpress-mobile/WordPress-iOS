@@ -42,11 +42,13 @@ private extension JetpackInstallStore {
 
         state.current = .loading
         service.installJetpack(url: url, username: username, password: password) { [weak self] (success, error) in
-            if success {
-                self?.state.current = .success
-            } else {
-                self?.state.current = .failure(error ?? .unknown)
-            }
+            self?.transaction({ (state) in
+                if success {
+                    state.current = .success
+                } else {
+                    state.current = .failure(error ?? .unknown)
+                }
+            })
         }
     }
 }

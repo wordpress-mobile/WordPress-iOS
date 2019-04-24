@@ -1,3 +1,6 @@
-- On a chacun sa propre manière de rédiger. Désormais, il sera plus fiable de partager vos textes depuis des applications d'écriture et de prise de notes vers WordPress.
-- Les mises à jour des détails du compte utilisateur échouent parfois, même si nous souhaiterions que cela n’arrive pas. Nous avons ajouté des messages d'erreur plus clairs et plus détaillés pour que vous sachiez ce qu’il s'est passé et ce qu'il faut faire ensuite.
-- Vous avez plus de moyens de créer des publications avec des images : l'éditeur de blocs supporte les messages avec des photos pré-insérées, et vous pouvez utiliser l'action tactile 3D d'Apple pour lancer l'application et démarrer un nouveau message photo avec une seule pression.
+12.2
+-----
+* Publier en toute confiance ! L'affichage en mode brouillon vous donnera un aperçu plus précis de vos articles.
+* Si vous préférez rédiger dans des applications comme Bear ou Ulysses (ou toute autre application utilisant les formats TextBundle et TextPack), n'hésitez surtout pas, continuez. Vous pouvez à présent importer du texte de ces applications vers celle-ci.
+* L'application a subi un lifting de printemps : nous avons résolu certains petits défauts visuels lors du processus de création de sites, modifié certains termes pour indiquer plus clairement l'espace de stockage utilisé par votre site et corrigé une défaillance ennuyeuse qui se produisait parfois lorsque vous tentiez de gérer des extensions.
+

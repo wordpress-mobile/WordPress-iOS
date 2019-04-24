@@ -135,19 +135,12 @@ class JetpackLoginViewController: UIViewController {
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
 
-        let title = Feature.enabled(.jetpackRemoteInstallation) ? Constants.Buttons.jetpackInstallTitle : Constants.Buttons.jetpackSetupTitle
-        installJetpackButton.setTitle(title, for: .normal)
+        installJetpackButton.setTitle(Constants.Buttons.jetpackInstallTitle, for: .normal)
         installJetpackButton.isHidden = hasJetpack
         installJetpackButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = !hasJetpack
-
-        guard Feature.enabled(.jetpackRemoteInstallation) else {
-            tacButton.isHidden = true
-            faqButton.isHidden = tacButton.isHidden
-            return
-        }
 
         let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
                                                 lineBreakMode: .byWordWrapping,
@@ -188,7 +181,7 @@ class JetpackLoginViewController: UIViewController {
         WordPressAuthenticator.showLoginForJustWPCom(from: self, xmlrpc: blog.xmlrpc, username: blog.username, connectedEmail: blog.jetpack?.connectedEmail)
     }
 
-    fileprivate func trackStat(_ stat: WPAnalyticsStat) {
+    fileprivate func trackStat(_ stat: WPAnalyticsStat, blog: Blog? = nil) {
         var properties = [String: String]()
         switch promptType {
         case .stats:
@@ -196,7 +189,12 @@ class JetpackLoginViewController: UIViewController {
         case .notifications:
             properties["source"] = "notifications"
         }
-        WPAnalytics.track(stat, withProperties: properties)
+
+        if let blog = blog {
+            WPAppAnalytics.track(stat, withProperties: properties, with: blog)
+        } else {
+            WPAnalytics.track(stat, withProperties: properties)
+        }
     }
 
     private func openWebView(for webviewType: JetpackWebviewType) {
@@ -216,6 +214,7 @@ class JetpackLoginViewController: UIViewController {
 
     private func jetpackIsCompleted() {
         trackStat(.installJetpackCompleted)
+        trackStat(.signedInToJetpack, blog: blog)
         dismiss(animated: true, completion: completionBlock)
     }
 
@@ -235,10 +234,6 @@ class JetpackLoginViewController: UIViewController {
     }
 
     @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
-        guard Feature.enabled(.jetpackRemoteInstallation) else {
-            openInstallJetpackURL()
-            return
-        }
         openJetpackRemoteInstall()
     }
 
@@ -271,6 +266,7 @@ extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
     }
 
     func jetpackRemoteInstallWebviewFallback() {
+        trackStat(.installJetpackRemoteStartManualFlow)
         dismiss(animated: true) { [weak self] in
             self?.openInstallJetpackURL()
         }
@@ -291,19 +287,13 @@ public enum JetpackLoginPromptType {
     }
 
     var message: String {
-        switch (self, Feature.enabled(.jetpackRemoteInstallation)) {
-        case (.stats, true):
+        switch self {
+        case .stats:
             return NSLocalizedString("To use stats on your site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from stats")
-        case (.stats, false):
-            return NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
-                                     comment: "Message asking the user if they want to set up Jetpack from stats")
-        case (.notifications, true):
+        case .notifications:
             return NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from notifications")
-        case (.notifications, false):
-            return NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin. Would you like to set up Jetpack?",
-                                     comment: "Message asking the user if they want to set up Jetpack from notifications")
         }
     }
 }
@@ -329,7 +319,6 @@ private enum Constants {
                                                                                                 comment: "Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break \n. Also there is a placeholder %@ which is: Terms and Conditions"), termsAndConditions)
         static let faqTitle = NSLocalizedString("Jetpack FAQ", comment: "Title of the button which opens the Jetpack FAQ page.")
         static let jetpackInstallTitle = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation.")
-        static let jetpackSetupTitle = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Set up.")
         static let loginTitle = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
     }
 

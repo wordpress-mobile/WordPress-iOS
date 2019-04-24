@@ -1,6 +1,5 @@
 import WordPressAuthenticator
 
-
 protocol JetpackRemoteInstallDelegate: class {
     func jetpackRemoteInstallCompleted()
     func jetpackRemoteInstallCanceled()
@@ -8,6 +7,8 @@ protocol JetpackRemoteInstallDelegate: class {
 }
 
 class JetpackRemoteInstallViewController: UIViewController {
+    private typealias JetpackInstallBlock = (String, String, String, WPAnalyticsStat) -> Void
+
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var promptType: JetpackLoginPromptType
     private var blog: Blog
@@ -68,18 +69,32 @@ private extension JetpackRemoteInstallViewController {
                 self?.jetpackView.setupView(for: state)
             }
 
-            if case let .failure(error) = state {
+            switch state {
+            case .success:
+                WPAnalytics.track(.installJetpackRemoteCompleted)
+            case .failure(let error):
+                WPAnalytics.track(.installJetpackRemoteFailed)
                 if error.isBlockingError {
                     self?.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
+            default:
+                break
             }
         }
     }
 
     func openInstallJetpackURL() {
+        let event: WPAnalyticsStat = AccountHelper.isLoggedIn ? .installJetpackRemoteConnect : .installJetpackRemoteLogin
+        WPAnalytics.track(event)
+
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func installJetpack(with url: String, username: String, password: String, event: WPAnalyticsStat) {
+        WPAnalytics.track(event)
+        viewModel.installJetpack(with: url, username: username, password: password)
     }
 
     @objc func cancel() {
@@ -110,8 +125,10 @@ extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDeleg
         }
 
         switch viewModel.state {
-        case .install, .failure:
-            viewModel.installJetpack(with: url, username: username, password: password)
+        case .install:
+            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteStart)
+        case .failure:
+            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteRetry)
         case .success:
             openInstallJetpackURL()
         default:
