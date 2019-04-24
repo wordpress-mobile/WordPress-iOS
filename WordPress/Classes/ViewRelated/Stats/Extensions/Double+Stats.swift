@@ -2,6 +2,17 @@ import Foundation
 
 extension Double {
 
+    private static var _numberFormatter: NumberFormatter = NumberFormatter()
+
+    private var numberFormatter: NumberFormatter {
+        get {
+            let formatter = Double._numberFormatter
+            // Add commas to value
+            formatter.numberStyle = .decimal
+            return formatter
+        }
+    }
+
     /// Provides a short, friendly representation of the current Double value. If the value is
     /// below 10,000, the decimal is stripped and the string returned will look like an Int. If the value
     /// is above 10,000, the value is rounded to the nearest tenth and the appropriate abbreviation
@@ -43,9 +54,6 @@ extension Double {
     }
 
     func formatWithCommas() -> String {
-        // Add commas to number
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
         return numberFormatter.string(from: NSNumber(value: self)) ?? ""
     }
 
