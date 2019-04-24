@@ -231,7 +231,7 @@ private extension SupportTableViewController {
     ///
     func checkForAutomatticEmail() {
         guard let email = ZendeskUtils.userSupportEmail(),
-            email.contains(Constants.automatticEmail) else {
+            (Constants.automatticEmails.first { email.contains($0) == true }) != nil else {
                 return
         }
 
@@ -332,7 +332,7 @@ private extension SupportTableViewController {
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
-        static let automatticEmail = "@automattic.com"
+        static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
 
 }
