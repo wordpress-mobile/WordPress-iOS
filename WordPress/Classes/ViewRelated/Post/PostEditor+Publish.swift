@@ -192,14 +192,13 @@ extension PostEditor where Self: UIViewController {
             showPostHasChangesAlert()
         } else {
             editorSession.end(outcome: .cancel)
-            discardChangesAndUpdateGUI()
+            discardUnsavedChangesAndUpdateGUI()
         }
     }
 
-    func discardChangesAndUpdateGUI() {
+    func discardUnsavedChangesAndUpdateGUI() {
         discardChanges()
-
-        dismissOrPopView(didSave: false)
+        dismissOrPopView()
     }
 
     func discardChanges() {
@@ -283,7 +282,7 @@ extension PostEditor where Self: UIViewController {
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
             self.editorSession.end(outcome: .discard)
-            self.discardChangesAndUpdateGUI()
+            self.discardUnsavedChangesAndUpdateGUI()
         }
 
         alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
@@ -334,7 +333,7 @@ extension PostEditor where Self: UIViewController {
             }
 
             if dismissWhenDone {
-                strongSelf.dismissOrPopView(didSave: true)
+                strongSelf.dismissOrPopView()
             } else {
                 strongSelf.createRevisionOfPost()
             }
@@ -352,7 +351,7 @@ extension PostEditor where Self: UIViewController {
 
         PostCoordinator.shared.save(post: post)
 
-        dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
+        dismissOrPopView()
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
@@ -374,13 +373,13 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
+    func dismissOrPopView() {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
-            onClose(didSave, shouldShowPostEpilogue)
+            onClose(true, false)
         } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
