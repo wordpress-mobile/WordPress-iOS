@@ -127,6 +127,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
 
     ## Automattic libraries
     ## ====================
