@@ -1083,6 +1083,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [WPStyleGuide configureTableViewDestructiveActionCell:cell];
     } else if (row.hasNoAccessory) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewCell:cell];
     } else {
         cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewCell:cell];
