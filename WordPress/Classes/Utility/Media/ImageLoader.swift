@@ -232,7 +232,7 @@ import MobileCoreServices
     }
 
     private func callErrorHandler(with error: Error?) {
-        guard let error = error, (error as NSError).code != NSURLErrorCancelled else {
+        if let error = error, (error as NSError).code == NSURLErrorCancelled {
             return
         }
 
