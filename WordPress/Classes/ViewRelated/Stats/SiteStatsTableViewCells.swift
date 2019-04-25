@@ -172,8 +172,6 @@ struct TopTotalsDetailStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsInsightsDelegate: nil,
-                       siteStatsPeriodDelegate: nil,
                        siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        limitRowsDisplayed: false)
     }
@@ -201,7 +199,6 @@ struct CountriesDetailStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: nil,
                        limitRowsDisplayed: false)
     }
 }
@@ -253,8 +250,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsInsightsDelegate: siteStatsInsightsDelegate,
-                       siteStatsPeriodDelegate: nil)
+                       siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 
@@ -401,6 +397,35 @@ struct PostStatsTitleRow: ImmuTableRow {
         }
 
         cell.configure(postTitle: postTitle, postURL: postURL, postStatsDelegate: postStatsDelegate)
+    }
+}
+
+struct TopTotalsPostStatsRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let dataRows: [StatsTotalRowData]
+    let limitRowsDisplayed: Bool
+    weak var postStatsDelegate: PostStatsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle,
+                       dataSubtitle: dataSubtitle,
+                       dataRows: dataRows,
+                       postStatsDelegate: postStatsDelegate,
+                       limitRowsDisplayed: limitRowsDisplayed)
     }
 }
 

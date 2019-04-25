@@ -29,7 +29,7 @@ enum JetpackRemoteInstallState: Equatable {
             return NSLocalizedString("Jetpack could not be installed at this time.",
                                      comment: "The default Jetpack view message used when an error occurred")
         case .success:
-            return NSLocalizedString("You have Jetpack set up on your site. Congrats!",
+            return NSLocalizedString("Now that Jetpack is installed, we just need to get you set up. This will only take a minute.",
                                      comment: "The default Jetpack view message for the success state")
         }
     }
@@ -38,6 +38,8 @@ enum JetpackRemoteInstallState: Equatable {
         switch self {
         case .failure:
             return NSLocalizedString("Retry", comment: "The Jetpack view button title used when an error occurred")
+        case .success:
+            return NSLocalizedString("Set up", comment: "The Jetpack view button title for the success state")
         default:
             return NSLocalizedString("Continue", comment: "The default Jetpack view button title")
         }
