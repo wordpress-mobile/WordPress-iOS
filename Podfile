@@ -29,12 +29,12 @@ def aztec
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '~> 1.6.1'
+    pod 'WordPress-Editor-iOS', '~> 1.6.2'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.1'
+    pod 'WordPressUI', '~> 1.3.0-beta'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -272,4 +272,29 @@ target 'WordPressScreenshotGeneration' do
     inherit! :search_paths
 
     pod 'SimulatorStatusMagic'
+end
+
+# Static Frameworks:
+# ============
+#
+# Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
+# Linking the shared frameworks statically would lead to duplicate symbols
+# A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
+shared_targets = ['WordPressFlux', 'WordPressComStatsiOS']
+pre_install do |installer|
+    static = []
+    dynamic = []
+    installer.pod_targets.each do |pod|
+        # If this pod is a dependency of one of our shared targets, it must be linked dynamically
+        if pod.target_definitions.any? { |t| shared_targets.include? t.name }
+          dynamic << pod
+          next
+        end
+        static << pod
+        def pod.static_framework?;
+          true
+        end
+    end
+    puts "Installing #{static.count} pods as static frameworks"
+    puts "Installing #{dynamic.count} pods as dynamic frameworks"
 end
