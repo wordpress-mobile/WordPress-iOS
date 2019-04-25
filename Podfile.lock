@@ -316,6 +316,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.4.0
+  WordPressKit:
+    :branch: issue/add_autosave_api_call
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.1
@@ -335,6 +338,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.4.0
+  WordPressKit:
+    :commit: 5827290cd7ce137bc71485c3a9b0e4fbcc09dc59
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.1
