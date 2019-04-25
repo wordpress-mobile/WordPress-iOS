@@ -356,11 +356,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     switch (section) {
         case BlogDetailsSubsectionDomainCredit:
-            self.restorableSelectedIndexPath = indexPath;
-            [self.tableView selectRowAtIndexPath:indexPath
-                                        animated:NO
-                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            break;
         case BlogDetailsSubsectionQuickStart:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
