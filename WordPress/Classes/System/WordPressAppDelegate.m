@@ -100,10 +100,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupBackgroundRefresh:application];
     [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
-
-    if ([Feature enabled:FeatureFlagQuickStartV2]) {
-        [[PushNotificationsManager shared] deletePendingLocalNotifications];
-    }
+    [[PushNotificationsManager shared] deletePendingLocalNotifications];
 
     return YES;
 }
@@ -281,7 +278,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [ZendeskUtils setup];
 
     // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [self setupNetworkActivityIndicator];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden

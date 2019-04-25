@@ -297,16 +297,28 @@ final class SiteAssemblyContentView: UIView {
     }
 
     private func layoutInProgress() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
-            errorStateView?.alpha = 0
-            statusStackView.alpha = 1
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.errorStateView?.alpha = 0
+            self.statusStackView.alpha = 1
+            self.accessibilityElements = [ self.statusLabel ]
         })
     }
 
     private func layoutFailed() {
-        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [errorStateView, statusStackView] in
-            errorStateView?.alpha = 1
-            statusStackView.alpha = 0
+        UIView.animate(withDuration: Parameters.animationDuration, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.statusStackView.alpha = 0
+
+            if let errorView = self.errorStateView {
+                errorView.alpha = 1
+                self.accessibilityElements = [ errorView ]
+            }
         })
     }
 
@@ -339,6 +351,13 @@ final class SiteAssemblyContentView: UIView {
                                 }
 
                                 self.completionLabel.alpha = 1
+
+                                if let buttonView = self.buttonContainerView {
+                                    self.accessibilityElements = [ self.completionLabel, buttonView ]
+                                } else {
+                                    self.accessibilityElements = [ self.completionLabel ]
+                                }
+
                                 self.layoutIfNeeded()
                 })
         })

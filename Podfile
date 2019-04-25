@@ -34,16 +34,16 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.0'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.1'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '9972b8f597328a619a4c0110d89d62f09df3ff82'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '500fd609a7cbb541298bfea92d0ac842cf9b468d'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.0.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
+    pod 'WordPressKit', '~> 4.1.0-beta.1'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -55,12 +55,11 @@ def shared_with_all_pods
     pod 'Sentry', '4.3.1'
 end
 
-def shared_with_networking_pods
-    pod 'AFNetworking', '3.2.1'
+def shared_with_networking_pods    
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 
-	wordpress_kit
+    wordpress_kit
 end
 
 def shared_test_pods
@@ -128,6 +127,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
 
     ## Automattic libraries
     ## ====================
@@ -139,13 +139,14 @@ target 'WordPress' do
     #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
 
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '1.3.3'
+    pod 'WPMediaPicker', '1.3.4'
+    pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'c05d267c106776f0176d76869a5c6938d963bb75'
 
-    pod 'WordPressAuthenticator', '~> 1.4.0'
-    #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    #pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'task/wc-support-site-url-login'
+    pod 'WordPressAuthenticator', '~> 1.4.1-beta'
+    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
     aztec
     wordpress_ui

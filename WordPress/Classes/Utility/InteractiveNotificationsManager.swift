@@ -54,10 +54,12 @@ final class InteractiveNotificationsManager: NSObject {
         }
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.requestAuthorization(options: [.badge, .sound, .alert]) { (allowed, _)  in
-            if allowed {
-                WPAnalytics.track(.pushNotificationOSAlertAllowed)
-            } else {
-                WPAnalytics.track(.pushNotificationOSAlertDenied)
+            DispatchQueue.main.async {
+                if allowed {
+                    WPAnalytics.track(.pushNotificationOSAlertAllowed)
+                } else {
+                    WPAnalytics.track(.pushNotificationOSAlertDenied)
+                }
             }
             completion()
         }

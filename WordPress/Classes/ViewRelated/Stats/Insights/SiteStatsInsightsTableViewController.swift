@@ -37,7 +37,7 @@ enum InsightType: Int {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
-    @objc optional func showPostStats(postTitle: String?, postURL: URL?)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 class SiteStatsInsightsTableViewController: UITableViewController {
@@ -237,9 +237,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
-    func showPostStats(postTitle: String?, postURL: URL?) {
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postTitle: postTitle, postURL: postURL)
+        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
