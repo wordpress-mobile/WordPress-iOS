@@ -96,7 +96,6 @@
 #import "UIApplication+Helpers.h"
 #import "UIView+Subviews.h"
 
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"

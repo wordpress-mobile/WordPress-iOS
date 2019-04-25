@@ -1,7 +1,6 @@
 #import "HockeyManager.h"
 
 #ifdef HOCKEYAPP_ENABLED
-#import "WordPressAppDelegate.h"
 #import "ApiCredentials.h"
 #import "WPLogger.h"
 #import <HockeySDK/HockeySDK.h>

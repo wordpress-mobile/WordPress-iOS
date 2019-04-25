@@ -4,7 +4,6 @@
 #import "PostCategoriesViewController.h"
 #import "Constants.h"
 #import "SiteSettingsViewController.h"
-#import "WordPressAppDelegate.h"
 #import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "BlogService.h"

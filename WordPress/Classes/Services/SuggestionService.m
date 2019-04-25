@@ -5,7 +5,6 @@
 #import "WPAccount.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 
 NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNotification";

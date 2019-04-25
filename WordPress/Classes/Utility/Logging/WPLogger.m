@@ -2,7 +2,6 @@
 
 @import CocoaLumberjack;
 #import "WPCrashlyticsLogger.h"
-#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 
 @interface WPLogger ()

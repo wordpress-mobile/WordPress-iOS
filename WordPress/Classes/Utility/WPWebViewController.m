@@ -1,5 +1,4 @@
 #import "WPWebViewController.h"
-#import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
 #import "WPUserAgent.h"

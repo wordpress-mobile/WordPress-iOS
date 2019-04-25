@@ -4,7 +4,6 @@
 
 #import "StatsViewController.h"
 #import "Blog.h"
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"

@@ -1,5 +1,4 @@
 #import "WPError.h"
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressUI/WordPressUI.h>

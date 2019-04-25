@@ -1,5 +1,4 @@
 #import "CoreDataTestHelper.h"
-#import "WordPressAppDelegate.h"
 #import <objc/runtime.h>
 #import "ContextManager.h"
 
