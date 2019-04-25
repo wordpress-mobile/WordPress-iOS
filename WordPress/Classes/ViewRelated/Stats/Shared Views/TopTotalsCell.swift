@@ -31,6 +31,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
+    private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -41,6 +42,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+                   postStatsDelegate: PostStatsDelegate? = nil,
                    limitRowsDisplayed: Bool = true) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
@@ -49,6 +51,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
+        self.postStatsDelegate = postStatsDelegate
         self.limitRowsDisplayed = limitRowsDisplayed
 
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
@@ -285,6 +288,7 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
         siteStatsDetailsDelegate?.expandedRowUpdated?(row)
+        postStatsDelegate?.expandedRowUpdated?(row)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {

@@ -26,10 +26,10 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
-    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
-    ##pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '~> 1.6.0'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
+    pod 'WordPress-Editor-iOS', '~> 1.6.1'
 end
 
 def wordpress_ui
@@ -52,6 +52,7 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
+    pod 'Sentry', '4.3.1'
 end
 
 def shared_with_networking_pods
@@ -66,6 +67,12 @@ def shared_test_pods
     pod 'OHHTTPStubs', '6.1.0'
     pod 'OHHTTPStubs/Swift', '6.1.0'
     pod 'OCMock', '~> 3.4'
+end
+
+def shared_with_extension_pods
+    pod 'Gridicons', '~> 0.16'
+    pod 'ZIPFoundation', '~> 0.9.8'
+    pod 'Down', '~> 0.6.6'
 end
 
 def gutenberg(options)
@@ -98,6 +105,7 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
+    shared_with_extension_pods
 
     ## Gutenberg (React Native)
     ## =====================
@@ -112,7 +120,6 @@ target 'WordPress' do
     ##
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
-    pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -121,8 +128,6 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
-    pod 'ZIPFoundation', '~> 0.9.8'
-    pod 'Down', '~> 0.6.6'
 
     ## Automattic libraries
     ## ====================
@@ -143,52 +148,56 @@ target 'WordPress' do
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
-
     aztec
     wordpress_ui
+
     target 'WordPressTest' do
         inherit! :search_paths
 
         shared_test_pods
         pod 'Nimble', '~> 7.3.1'
     end
+end
 
 
-    ## Share Extension
-    ## ===============
-    ##
-    target 'WordPressShareExtension' do
-        inherit! :search_paths
+## Share Extension
+## ===============
+##
+target 'WordPressShareExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        aztec
-        shared_with_all_pods
-        shared_with_networking_pods
-        wordpress_ui
-    end
+    shared_with_extension_pods
 
-
-    ## DraftAction Extension
-    ## =====================
-    ##
-    target 'WordPressDraftActionExtension' do
-        inherit! :search_paths
-
-        aztec
-        shared_with_all_pods
-        shared_with_networking_pods
-        wordpress_ui
-    end
+    aztec
+    shared_with_all_pods
+    shared_with_networking_pods
+    wordpress_ui
+end
 
 
-    ## Today Widget
-    ## ============
-    ##
-    target 'WordPressTodayWidget' do
-        inherit! :search_paths
+## DraftAction Extension
+## =====================
+##
+target 'WordPressDraftActionExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        shared_with_all_pods
-        shared_with_networking_pods
-    end
+    shared_with_extension_pods
+
+    aztec
+    shared_with_all_pods
+    shared_with_networking_pods
+    wordpress_ui
+end
+
+
+## Today Widget
+## ============
+##
+target 'WordPressTodayWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+  
+    shared_with_all_pods
+    shared_with_networking_pods
 end
 
 
@@ -198,8 +207,6 @@ end
 ##
 target 'WordPressNotificationContentExtension' do
     project 'WordPress/WordPress.xcodeproj'
-
-    inherit! :search_paths
 
     wordpress_kit
     wordpress_shared
@@ -213,8 +220,6 @@ end
 ##
 target 'WordPressNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
-
-    inherit! :search_paths
 
     wordpress_kit
     wordpress_shared

@@ -4,7 +4,6 @@
 #import "Constants.h"
 
 // Pods
-#import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressUI/WordPressUI.h>
 
@@ -101,10 +100,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupBackgroundRefresh:application];
     [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
-
-    if ([Feature enabled:FeatureFlagQuickStartV2]) {
-        [[PushNotificationsManager shared] deletePendingLocalNotifications];
-    }
+    [[PushNotificationsManager shared] deletePendingLocalNotifications];
 
     return YES;
 }
@@ -264,7 +260,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
-    [self configureCrashlytics];
+    [self configureCrashLogging];
     [self configureAppRatingUtility];
 
     // Analytics

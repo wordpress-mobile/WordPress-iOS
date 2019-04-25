@@ -168,8 +168,6 @@ final class TitleSubtitleTextfieldHeader: UIView {
 
 extension TitleSubtitleTextfieldHeader: Accessible {
     func prepareForVoiceOver() {
-        titleSubtitle.prepareForVoiceOver()
-
         prepareSearchFieldForVoiceOver()
     }
 

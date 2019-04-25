@@ -61,8 +61,6 @@ final class TitleSubtitleHeader: UIView {
         ])
 
         setStyles()
-
-        prepareForVoiceOver()
     }
 
     private func setStyles() {
@@ -107,11 +105,5 @@ extension TitleSubtitleHeader {
     func preferredContentSizeDidChange() {
         // Title needs to be forced to reset its style, otherwise the types do not change
         styleTitle()
-    }
-}
-
-extension TitleSubtitleHeader: Accessible {
-    func prepareForVoiceOver() {
-
     }
 }

@@ -182,10 +182,14 @@ import "./ScreenshotFastfile"
   lane :build_and_upload_internal do | options |
     ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
     ios_build_preflight() unless (options[:skip_prechecks])
-    
-    gym(scheme: "WordPress Internal", workspace: "../WordPress.xcworkspace",
-      export_method: "enterprise", clean: true,
-      output_directory: "../build/", export_team_id: ENV["INT_EXPORT_TEAM_ID"],
+
+    gym(
+      scheme: "WordPress Internal",
+      workspace: "../WordPress.xcworkspace",
+      export_method: "enterprise",
+      clean: true,
+      output_directory: "../build/",
+      export_team_id: ENV["INT_EXPORT_TEAM_ID"],
       export_options: {
         method: "enterprise",
         provisioningProfiles: { 
@@ -205,9 +209,14 @@ import "./ScreenshotFastfile"
         notify: "0",
         status: "1",
         ipa: "../build/WordPress Internal.ipa",
-        dsym: "../build/WordPress.app.dSYM.zip")
+        dsym: "../build/WordPress.app.dSYM.zip",
+    )
     
-    upload_symbols_to_crashlytics(dsym_path: "../build/WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
+    upload_symbols_to_sentry(
+      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+    )
   end
 
   #####################################################################################
@@ -241,14 +250,19 @@ import "./ScreenshotFastfile"
         }
       }
     )
-    
+
     testflight(
       skip_waiting_for_build_processing: true,
       team_id: "299112",
     )
 
     sh("cd .. && rm WordPress.ipa")
-    upload_symbols_to_crashlytics(dsym_path: "./WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
+    upload_symbols_to_sentry(
+      dsym_path: "./WordPress.app.dSYM.zip",
+      auth_token: ENV["SENTRY_AUTH_TOKEN"],
+      org_slug: 'a8c',
+      project_slug: 'wordpress-ios',
+    )
     sh("cd .. && rm WordPress.app.dSYM.zip")
   end
 
