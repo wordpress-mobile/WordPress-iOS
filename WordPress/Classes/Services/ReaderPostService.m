@@ -710,16 +710,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             if (!deleteEarlier) {
                 // Before processing the new posts, check if there is an overlap between
                 // what is currently cached, and what is being synced.
-                NSSet *existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
-                NSSet *newGlobalIDs = [self globalIDsOfRemotePosts:posts];
-                overlap = [existingGlobalIDs intersectsSet:newGlobalIDs];
+                overlap = [self checkIfRemotePosts:posts overlapExistingPostsinTopic:readerTopic];
 
                 // A strategy to avoid false positives in gap detection is to sync
                 // one extra post. Only remove the extra post if we received a
                 // full set of results. A partial set means we've reached
                 // the end of syncable content.
                 if ([posts count] == [self numberToSyncForTopic:readerTopic] && ![ReaderHelpers isTopicSearchTopic:readerTopic]) {
-                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
+                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 1)];
                     postsCount = [posts count];
                 }
 
@@ -780,6 +778,37 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
+- (BOOL)checkIfRemotePosts:(NSArray *)remotePosts overlapExistingPostsinTopic:(ReaderAbstractTopic *)readerTopic
+{
+    // Get global IDs of new posts to use as part of the predicate.
+    NSSet *remoteGlobalIDs = [self globalIDsOfRemotePosts:remotePosts];
+
+    // Fetch matching existing posts.
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND globalID in %@", readerTopic, remoteGlobalIDs];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return NO;
+    }
+
+    // For each match, check that the dates are the same.  If at least one date is the same then there is an overlap so return true.
+    // If the dates are different then the existing cached post will be updated. Don't treat this as overlap.
+    for (ReaderPost *post in results) {
+        for (RemoteReaderPost *remotePost in remotePosts) {
+            if (![remotePost.globalID isEqualToString:post.globalID]) {
+                continue;
+            }
+            if ([post.sortDate isEqualToDate:remotePost.sortDate]) {
+                return YES;
+            }
+        }
+    }
+
+    return NO;
+}
 
 #pragma mark Gap Detection Methods
 
