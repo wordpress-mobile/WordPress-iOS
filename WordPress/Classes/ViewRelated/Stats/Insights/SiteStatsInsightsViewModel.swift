@@ -204,7 +204,7 @@ private extension SiteStatsInsightsViewModel {
         calendar.locale = Locale.autoupdatingCurrent
 
         // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
-        mostPopularWeekday = mostPopularWeekday == 0 ? 6 : mostPopularWeekday - 1
+        mostPopularWeekday = mostPopularWeekday == 0 ? calendar.standaloneWeekdaySymbols.count - 1 : mostPopularWeekday - 1
         let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday]
 
         guard let timeModifiedDate = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date()) else {
