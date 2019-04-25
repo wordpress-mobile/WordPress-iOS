@@ -8,7 +8,6 @@
 @class Reachability;
 @class WPUserAgent;
 @class WPAppAnalytics;
-@class WPCrashlytics;
 @class WPLogger;
 
 @import CocoaLumberjack;
@@ -21,7 +20,6 @@
 @property (nonatomic, strong, readonly) WPUserAgent *userAgent;
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
-@property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) WordPressAuthenticationManager *authManager;

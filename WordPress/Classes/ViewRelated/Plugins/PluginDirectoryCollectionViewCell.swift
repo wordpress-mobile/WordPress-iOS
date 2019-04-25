@@ -35,7 +35,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
 
         accessoryView?.removeFromSuperview()
-        logoImageView.cancelImageDownloadTask()
+        logoImageView.cancelImageDownload()
         logoImageView.image = nil
     }
 

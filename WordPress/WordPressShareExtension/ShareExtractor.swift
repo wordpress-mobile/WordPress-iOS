@@ -415,10 +415,10 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         }
 
         if bundleWrapper.type == kUTTypeMarkdown {
-            let mdText = bundleWrapper.text
+            if let formattedItem = handleMarkdown(md: bundleWrapper.text),
+                var html = formattedItem.importedText {
+                returnedItem = formattedItem
 
-            let converter = Down(markdownString: mdText)
-            if var html = try? converter.toHTML(.safe) {
                 for key in cachedImages.keys {
                     if let escapedKey = key.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) {
                         let searchKey = "src=\"\(escapedKey)\""
@@ -452,33 +452,34 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
             return item
         }
 
-        let converter = Down(markdownString: md)
-        guard let html = try? converter.toHTML(.safe) else {
-            return item
-        }
-
-        var result: ExtractedItem
-        if let item = item {
-            result = item
-        } else {
-            result = ExtractedItem()
-        }
-        result.importedText = html
-
-        return result
+        return handleMarkdown(md: md, item: item)
     }
 
-    private func handleMarkdown(md: String, item: ExtractedItem? = nil) -> ExtractedItem? {
-        let converter = Down(markdownString: md)
-        guard let html = try? converter.toHTML(.safe) else {
-            return item
-        }
-
+    private func handleMarkdown(md content: String, item: ExtractedItem? = nil) -> ExtractedItem? {
+        var md = content
         var result: ExtractedItem
         if let item = item {
             result = item
         } else {
             result = ExtractedItem()
+        }
+
+        // If the first line is formatted as a heading, use it as the title
+        var lines = md.components(separatedBy: .newlines)
+        if lines.count > 1, lines[0].first == "#" {
+            let mdTitle = lines[0].replacingOccurrences(of: "^#{1,6} ?", with: "", options: .regularExpression)
+            let titleConverter = Down(markdownString: mdTitle)
+            if let title = try? titleConverter.toHTML(.safe) {
+                // remove the wrapping paragraph tags
+                result.title = title.replacingOccurrences(of: "</?p>", with: "", options: .regularExpression)
+                md = lines[1...].joined(separator: "\n")
+            }
+        }
+
+        // convert the body of the post
+        let converter = Down(markdownString: md)
+        guard let html = try? converter.toHTML(.safe) else {
+            return item
         }
         result.importedText = html
 

@@ -3,7 +3,7 @@
 @interface ApiCredentials : NSObject
 + (NSString *)client;
 + (NSString *)secret;
-+ (NSString *)crashlyticsApiKey;
++ (NSString *)sentryDSN;
 + (NSString *)hockeyappAppId;
 + (NSString *)giphyAppId;
 + (NSString *)googleLoginClientId;

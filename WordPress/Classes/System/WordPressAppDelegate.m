@@ -4,7 +4,6 @@
 #import "Constants.h"
 
 // Pods
-#import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressUI/WordPressUI.h>
 
@@ -95,10 +94,7 @@
     [self setupBackgroundRefresh:application];
     [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
-
-    if ([Feature enabled:FeatureFlagQuickStartV2]) {
-        [[PushNotificationsManager shared] deletePendingLocalNotifications];
-    }
+    [[PushNotificationsManager shared] deletePendingLocalNotifications];
 
     return YES;
 }
@@ -258,7 +254,7 @@
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
-    [self configureCrashlytics];
+    [self configureCrashLogging];
     [self configureAppRatingUtility];
 
     // Analytics
@@ -276,7 +272,7 @@
     [ZendeskUtils setup];
 
     // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [self setupNetworkActivityIndicator];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden

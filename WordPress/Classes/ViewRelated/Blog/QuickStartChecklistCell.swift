@@ -30,22 +30,13 @@ class QuickStartChecklistCell: UITableViewCell {
                     return
                 }
 
-                if Feature.enabled(.quickStartV2) {
-                    titleLabel.attributedText = NSAttributedString(string: titleText,
-                                                                   attributes: [.strikethroughStyle: 1,
-                                                                                .foregroundColor: WPStyleGuide.grey()])
-                    descriptionLabel.textColor = WPStyleGuide.grey()
-                } else {
-                    titleLabel.attributedText = NSAttributedString(string: titleText, attributes: [.strikethroughStyle: 1])
-                    accessoryView = UIImageView(image: Gridicon.iconOfType(.checkmark))
-                }
+                titleLabel.attributedText = NSAttributedString(string: titleText,
+                                                               attributes: [.strikethroughStyle: 1,
+                                                                            .foregroundColor: WPStyleGuide.grey()])
+                descriptionLabel.textColor = WPStyleGuide.grey()
             } else {
-                if Feature.enabled(.quickStartV2) {
-                    titleLabel.textColor = WPStyleGuide.darkGrey()
-                    descriptionLabel.textColor = WPStyleGuide.darkGrey()
-                } else {
-                    accessoryView = nil
-                }
+                titleLabel.textColor = WPStyleGuide.darkGrey()
+                descriptionLabel.textColor = WPStyleGuide.darkGrey()
             }
         }
     }
@@ -54,16 +45,12 @@ class QuickStartChecklistCell: UITableViewCell {
             titleLabel.text = tour?.title
             descriptionLabel.text = tour?.description
             iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-
-            if !Feature.enabled(.quickStartV2) {
-                accessoryType = .disclosureIndicator
-            }
         }
     }
 
     public var lastRow: Bool = false {
         didSet {
-            bottomStrokeLeading?.isActive = !lastRow && Feature.enabled(.quickStartV2)
+            bottomStrokeLeading?.isActive = !lastRow
         }
     }
 
@@ -76,10 +63,7 @@ class QuickStartChecklistCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        if Feature.enabled(.quickStartV2) {
-            setupConstraints()
-        }
+        setupConstraints()
     }
 
     static let reuseIdentifier = "QuickStartChecklistCell"
