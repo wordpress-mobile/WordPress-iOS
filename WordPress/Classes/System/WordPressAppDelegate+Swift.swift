@@ -527,7 +527,7 @@ extension WordPressAppDelegate {
 
         let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))
         UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).shadowImage = clearImage
-        UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for:.default)
+        UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for: .default)
 
         UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
         UITabBar.appearance().tintColor = WPStyleGuide.mediumBlue()
