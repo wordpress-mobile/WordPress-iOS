@@ -41,7 +41,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
         title.text = segment.title
         subtitle.text = segment.subtitle
         if let segmentIcon = segment.icon {
-            icon.setImageWith(segmentIcon)
+            icon.downloadImage(from: segmentIcon)
         }
     }
 

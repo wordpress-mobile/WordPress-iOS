@@ -3,6 +3,7 @@ import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
 import WordPressAuthenticator
+import AlamofireNetworkActivityIndicator
 
 // MARK: - Utility Configuration
 
@@ -106,6 +107,10 @@ extension WordPressAppDelegate {
         }
 
         UniversalLinkRouter.shared.handle(url: url)
+    }
+
+    @objc func setupNetworkActivityIndicator() {
+        NetworkActivityIndicatorManager.shared.isEnabled = true
     }
 }
 
