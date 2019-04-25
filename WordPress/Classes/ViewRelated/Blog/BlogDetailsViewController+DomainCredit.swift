@@ -8,7 +8,7 @@ extension BlogDetailsViewController {
                                  image: image, imageColor: WPStyleGuide.warningYellow()) { [weak self] in
                                     self?.showDomainCreditRedemption()
         }
-        row.hasNoAccessory = true
+        row.showsDisclosureIndicator = false
         return BlogDetailsSection(title: nil,
                                   rows: [row],
                                   footerTitle: NSLocalizedString("All WordPress.com plans include a custom domain name. Register your free premium domain now.", comment: "Information about redeeming domain credit on site dashboard."),

@@ -128,7 +128,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         _identifier = identifier;
         _accessibilityIdentifier = accessibilityIdentifier;
         _showsSelectionState = YES;
-        _hasNoAccessory = NO;
+        _showsDisclosureIndicator = YES;
     }
     return self;
 }
@@ -1081,11 +1081,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (row.forDestructiveAction) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewDestructiveActionCell:cell];
-    } else if (row.hasNoAccessory) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [WPStyleGuide configureTableViewCell:cell];
     } else {
-        cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+        if (row.showsDisclosureIndicator) {
+            cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
         [WPStyleGuide configureTableViewCell:cell];
     }
     if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {

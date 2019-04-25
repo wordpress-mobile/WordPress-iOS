@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 @property (nonatomic, strong, nullable) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
-@property (nonatomic) BOOL hasNoAccessory;
+@property (nonatomic) BOOL showsDisclosureIndicator;
 @property (nonatomic, copy, nullable) void (^callback)(void);
 @property (nonatomic) QuickStartTourElement quickStartIdentifier;
 @property (nonatomic) QuickStartTitleState quickStartTitleState;
