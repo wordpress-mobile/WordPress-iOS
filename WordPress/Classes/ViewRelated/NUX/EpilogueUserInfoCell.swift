@@ -18,9 +18,10 @@ extension EpilogueUserInfoCellViewControllerProvider where Self: UIViewControlle
 class EpilogueUserInfoCell: UITableViewCell {
 
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet var gravatarView: UIImageView!
-    @IBOutlet var gravatarAddIcon: UIImageView!
     @IBOutlet var gravatarActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet var gravatarAddIcon: UIImageView!
+    @IBOutlet var gravatarButton: UIButton!
+    @IBOutlet var gravatarView: UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
     open var viewControllerProvider: EpilogueUserInfoCellViewControllerProvider?
@@ -29,7 +30,11 @@ class EpilogueUserInfoCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         gravatarView.image = .gravatarPlaceholderImage
+
+        let accessibilityDescription = NSLocalizedString("Add Image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
+        gravatarButton.accessibilityLabel = accessibilityDescription
     }
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
