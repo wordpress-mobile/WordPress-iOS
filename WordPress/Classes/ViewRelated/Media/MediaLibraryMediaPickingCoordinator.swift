@@ -36,9 +36,7 @@ final class MediaLibraryMediaPickingCoordinator {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
         }
 
-        if FeatureFlag.giphy.enabled {
-            menuAlert.addAction(giphyAction(origin: origin, blog: blog))
-        }
+        menuAlert.addAction(giphyAction(origin: origin, blog: blog))
 
         if #available(iOS 11.0, *) {
             menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))

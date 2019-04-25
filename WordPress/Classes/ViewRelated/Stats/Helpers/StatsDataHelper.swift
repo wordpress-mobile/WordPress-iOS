@@ -216,3 +216,33 @@ extension Date {
         case almostAnHour = 45
     }
 }
+
+extension StatsPeriodUnit {
+
+    var dateFormatTemplate: String {
+        switch self {
+        case .day:
+            return "MMM d, yyyy"
+        case .week:
+            return "MMM d"
+        case .month:
+            return "MMM yyyy"
+        case .year:
+            return "yyyy"
+        }
+    }
+
+    var calendarComponent: Calendar.Component {
+        switch self {
+        case .day:
+            return .day
+        case .week:
+            return .weekOfYear
+        case .month:
+            return .month
+        case .year:
+            return .year
+        }
+    }
+
+}

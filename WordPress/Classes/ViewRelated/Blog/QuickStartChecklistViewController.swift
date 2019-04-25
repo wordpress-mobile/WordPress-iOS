@@ -63,6 +63,10 @@ class QuickStartChecklistViewController: UITableViewController {
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
         cancelButton.setContentHuggingPriority(.required, for: .horizontal)
+
+        let accessibleFormat = NSLocalizedString("Dismiss %@ Quick Start step", comment: "Accessibility description for the %@ step of Quick Start. Tapping this dismisses the checklist for that particular step.")
+        cancelButton.accessibilityLabel = String(format: accessibleFormat, self.configuration.title)
+
         return UIBarButtonItem(customView: cancelButton)
     }()
 
