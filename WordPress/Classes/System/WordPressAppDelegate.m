@@ -37,7 +37,7 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
+@interface WordPressAppDelegate1 () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
@@ -48,50 +48,49 @@
 
 @end
 
-@implementation WordPressAppDelegate
-
+@implementation WordPressAppDelegate1
 
 #pragma mark - UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    [WordPressAppDelegate fixKeychainAccess];
-
-    // Authentication Framework
-    [self configureWordPressAuthenticator];
-
-    // Basic networking setup
-    [self configureReachability];
-    [self configureSelfHostedChallengeHandler];
-
-    // Set the main window up
-    [self.window makeKeyAndVisible];
-
-    WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
-    
-    __weak __typeof(self) weakSelf = self;
-
-    BOOL isFixingAuthTokenIssue = [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
-        [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
-    }];
-
-    self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
-
-    return YES;
-}
+//- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+//{
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//
+//    [WordPressAppDelegate fixKeychainAccess];
+//
+//    // Authentication Framework
+//    [self configureWordPressAuthenticator];
+//
+//    // Basic networking setup
+//    [self configureReachability];
+//    [self configureSelfHostedChallengeHandler];
+//
+//    // Set the main window up
+//    [self.window makeKeyAndVisible];
+//
+//    WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
+//    
+//    __weak __typeof(self) weakSelf = self;
+//
+//    BOOL isFixingAuthTokenIssue = [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
+//        [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
+//    }];
+//
+//    self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
+//
+//    return YES;
+//}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogInfo(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
-    [self showWelcomeScreenIfNeededAnimated:NO];
+//    [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
-    [self setupComponentsAppearance];
+//    [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
 
     if ([Feature enabled:FeatureFlagQuickStartV2]) {
@@ -139,7 +138,7 @@
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
-    return [self application:app open:url options:options];
+    return YES; //[self application:app open:url options:options];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -237,7 +236,7 @@
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
 #endif
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        [self handleWebActivity:userActivity];
+//        [self handleWebActivity:userActivity];
     } else {
         // Spotlight search
         [SearchManager.shared handleWithActivity: userActivity];
@@ -248,8 +247,8 @@
 
 #pragma mark - Application startup
 
-- (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
-{
+- (void)runStartupSequenceWithLaunchOptions1:(NSDictionary *)launchOptions
+{/*
     // Local Notifications
     [self addNotificationObservers];
     
@@ -264,7 +263,7 @@
 
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
-    [self toggleExtraDebuggingIfNeeded];
+    [self toggleExtraDebuggingIfNeeded];*/
 #if DEBUG
     [KeychainTools processKeychainDebugArguments];
     [ZDKCoreLogger setEnabled:YES];
@@ -283,7 +282,7 @@
     // Remove this when #79 is resolved.
     [WPFontManager notoRegularFontOfSize:16.0];
 
-    [self customizeAppearance];
+//    [self customizeAppearance];
 
     // Push notifications
     // This is silent (the user isn't prompted) so we can do it on launch.
@@ -298,7 +297,7 @@
     });
     
     // Configure Extensions
-    [self setupWordPressExtensions];
+//    [self setupWordPressExtensions];
 
     [self.shortcutCreator createShortcutsIf3DTouchAvailable:[AccountHelper isLoggedIn]];
     
@@ -339,10 +338,5 @@
     }
 }
 
-- (BOOL)runningInBackground
-{
-    UIApplicationState state = [UIApplication sharedApplication].applicationState;
-    return state == UIApplicationStateBackground;
-}
 
 @end

@@ -13,7 +13,7 @@
 
 @import CocoaLumberjack;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
+@interface WordPressAppDelegate1 : NSObject <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) WPLogger *logger;

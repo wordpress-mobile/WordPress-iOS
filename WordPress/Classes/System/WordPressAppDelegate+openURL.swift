@@ -59,7 +59,7 @@ import WordPressAuthenticator
     private func handleMagicLogin(url: URL) -> Bool {
         DDLogInfo("App launched with authentication link")
         let allowWordPressComAuth = !AccountHelper.isDotcomAvailable()
-        guard let rvc = window.rootViewController else {
+        guard let rvc = window?.rootViewController else {
             return false
         }
         return WordPressAuthenticator.openAuthenticationURL(url,

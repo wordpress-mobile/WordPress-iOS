@@ -102,6 +102,7 @@
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
+#import "WPAuthTokenIssueSolver.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
 #import "WPCrashlytics.h"

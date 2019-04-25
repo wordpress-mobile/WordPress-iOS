@@ -12,10 +12,6 @@ import WordPressShared
 
 extension WordPressAppDelegate {
 
-    @objc class var shared: WordPressAppDelegate? {
-        return UIApplication.shared.delegate as? WordPressAppDelegate
-    }
-
     @objc func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
@@ -166,7 +162,7 @@ extension WordPressAppDelegate {
 
     @objc var currentlySelectedScreen: String {
         // Check if the post editor or login view is up
-        let rootViewController = window.rootViewController
+        let rootViewController = window?.rootViewController
         if let presentedViewController = rootViewController?.presentedViewController {
             if presentedViewController is EditPostViewController {
                 return "Post Editor"
@@ -180,7 +176,7 @@ extension WordPressAppDelegate {
 
     @objc var isWelcomeScreenVisible: Bool {
         get {
-            guard let presentedViewController = window.rootViewController?.presentedViewController as? UINavigationController else {
+            guard let presentedViewController = window?.rootViewController?.presentedViewController as? UINavigationController else {
                 return false
             }
 
@@ -201,7 +197,7 @@ extension WordPressAppDelegate {
 
         // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
         // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-        if let presenter = window.rootViewController?.presentedViewController,
+        if let presenter = window?.rootViewController?.presentedViewController,
             !(presenter is UIAlertController) {
             presenter.dismiss(animated: animated, completion: { [weak self] in
                 self?.showWelcomeScreen(animated, thenEditor: false)
@@ -212,7 +208,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
-        if let rootViewController = window.rootViewController {
+        if let rootViewController = window?.rootViewController {
             WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
         }
     }
@@ -525,8 +521,8 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
     @objc func customizeAppearance() {
-        window.backgroundColor = WPStyleGuide.itsEverywhereGrey()
-        window.tintColor = WPStyleGuide.wordPressBlue()
+        window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        window?.tintColor = WPStyleGuide.wordPressBlue()
 
         WPStyleGuide.configureNavigationBarAppearance()
 
