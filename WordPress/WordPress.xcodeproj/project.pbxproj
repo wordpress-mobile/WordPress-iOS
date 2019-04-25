@@ -8583,7 +8583,6 @@
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
-				E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
 				37399571B0D91BBEAE911024 /* [CP] Embed Pods Frameworks */,
 				920B9A6DAD47189622A86A9C /* [CP] Copy Pods Resources */,
@@ -9673,22 +9672,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Print commands before executing them (useful for troubleshooting)\nset -x\nDEST=$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\n\nif [[ \"$CONFIGURATION\" = *Debug* && ! \"$PLATFORM_NAME\" == *simulator ]]; then\nIP=$(ipconfig getifaddr en0)\nif [ -z \"$IP\" ]; then\nIP=$(ifconfig | grep 'inet ' | grep -v ' 127.' | cut -d\\   -f2  | awk 'NR==1{print $1}')\nfi\n\necho \"$IP\" > \"$DEST/ip.txt\"\nfi\n\nBUNDLE_FILE=\"$DEST/main.jsbundle\"\ncp ${PODS_ROOT}/Gutenberg/bundle/ios/App.js \"${BUNDLE_FILE}\"\n";
 		};
-		E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"\"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\"",
-			);
-			name = "Run Fabric/Crashlytics";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Fabric\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  \"${PODS_ROOT}/Fabric/run\" $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Fabric API Key not found\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		F9463A7121C05BAF0081F11E /* Copy Screenshot Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -9734,7 +9717,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[ -a $WPCOM_CONFIG ] && source $WPCOM_CONFIG\n touch Info.plist\n echo \"\" > InfoPlist.h\n echo \"\" > InfoPlist-alpha.h\n echo \"\" > InfoPlist-internal.h\n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n echo \"#define FABRIC_API_KEY $CRASHLYTICS_API_KEY\" >> InfoPlist.h\n echo \"#define FABRIC_API_KEY $CRASHLYTICS_API_KEY\" >> InfoPlist-alpha.h\n echo \"#define FABRIC_API_KEY $CRASHLYTICS_API_KEY\" >> InfoPlist-internal.h\n else\n echo \"warning: Crashytics API Key not found\"\n fi\n if [ \"x$GOOGLE_LOGIN_SCHEME_ID\" != \"x\" ]; then\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist.h\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist-alpha.h\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist-internal.h\n else\n echo \"warning: Google Client ID not found\"\n fi";
+			shellScript = "[ -a $WPCOM_CONFIG ] && source $WPCOM_CONFIG\n touch Info.plist\n echo \"\" > InfoPlist.h\n echo \"\" > InfoPlist-alpha.h\n echo \"\" > InfoPlist-internal.h\n if [ \"x$GOOGLE_LOGIN_SCHEME_ID\" != \"x\" ]; then\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist.h\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist-alpha.h\n echo \"#define GOOGLE_LOGIN_SCHEME_ID $GOOGLE_LOGIN_SCHEME_ID\" >> InfoPlist-internal.h\n else\n echo \"warning: Google Client ID not found\"\n fi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
