@@ -204,7 +204,7 @@ PODS:
   - WordPressShared (1.7.4):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.2.0)
+  - WordPressUI (1.2.1)
   - WPMediaPicker (1.3.3)
   - wpxmlrpc (0.8.4)
   - yoga (0.59.3.React)
@@ -255,7 +255,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (~> 1.4.1-beta)
   - WordPressKit (~> 4.1.0-beta.1)
   - WordPressShared (~> 1.7.4)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `500fd609a7cbb541298bfea92d0ac842cf9b468d`)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.1`)
   - WPMediaPicker (= 1.3.3)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.3.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.3.1)
@@ -326,8 +326,8 @@ EXTERNAL SOURCES:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.3.0
   WordPressUI:
-    :commit: 500fd609a7cbb541298bfea92d0ac842cf9b468d
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
+    :tag: 1.2.1
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.3.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -345,8 +345,8 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.3.0
   WordPressUI:
-    :commit: 500fd609a7cbb541298bfea92d0ac842cf9b468d
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
+    :tag: 1.2.1
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -394,13 +394,13 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 06e2da86707fb050b319ad899a038bdceee77f8c
   WordPressKit: ab450fc37b54d8fe6839fb6e4074962980480cc0
   WordPressShared: e707496f12f29d69aa66b1fcd3b55f0b8b70f2f6
-  WordPressUI: 44fe43a9c5c504dfd534286e39e1ce6ebcd69ff5
+  WordPressUI: 6d9dc6d1920ea3626483588413848f456a26a48d
   WPMediaPicker: 6d23120b16c0f66987fd98ec2b294864e1df03bf
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 122aeb799a6817fbf364703da9ec535e946c551e
+PODFILE CHECKSUM: 2bc293e8cee1912cb9023620a073c79e28e96112
 
 COCOAPODS: 1.6.1
