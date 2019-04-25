@@ -232,7 +232,7 @@ extension PostEditor where Self: UIViewController {
         post = originalPost
         post.deleteRevision()
 
-        if shouldRemovePostOnDismiss {
+        if post.hasNeverAttemptedToUpload() && !post.isLocalRevision {
             post.remove()
         } else if shouldCreateDummyRevision {
             post.createRevision()
