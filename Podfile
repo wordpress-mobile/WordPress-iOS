@@ -26,24 +26,24 @@ def aztec
     ## When using a tagged version, feel free to comment out the WordPress-Aztec-iOS line below.
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
-    #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
-    #pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'a916afc713e5d650f47fd03772022c01ca0ac8a8'
-    ##pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '~> 1.6.0'
+    ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
+    ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
+    pod 'WordPress-Editor-iOS', '~> 1.6.1'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.0'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.1'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '9972b8f597328a619a4c0110d89d62f09df3ff82'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '500fd609a7cbb541298bfea92d0ac842cf9b468d'
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.0.0'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/tags-and-categories-limit'
+    pod 'WordPressKit', '~> 4.1.0-beta.1'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -52,20 +52,26 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
+    pod 'Sentry', '4.3.1'
 end
 
-def shared_with_networking_pods
-    pod 'AFNetworking', '3.2.1'
+def shared_with_networking_pods    
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 
-	wordpress_kit
+    wordpress_kit
 end
 
 def shared_test_pods
     pod 'OHHTTPStubs', '6.1.0'
     pod 'OHHTTPStubs/Swift', '6.1.0'
     pod 'OCMock', '~> 3.4'
+end
+
+def shared_with_extension_pods
+    pod 'Gridicons', '~> 0.16'
+    pod 'ZIPFoundation', '~> 0.9.8'
+    pod 'Down', '~> 0.6.6'
 end
 
 def gutenberg(options)
@@ -98,6 +104,7 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
+    shared_with_extension_pods
 
     ## Gutenberg (React Native)
     ## =====================
@@ -112,7 +119,6 @@ target 'WordPress' do
     ##
     pod '1PasswordExtension', '1.8.5'
     pod 'Charts', '~> 3.2.2'
-    pod 'Crashlytics', '3.12.0'
     pod 'Gifu', '3.2.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
     pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -121,8 +127,7 @@ target 'WordPress' do
     pod 'Starscream', '3.0.6'
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
-    pod 'ZIPFoundation', '~> 0.9.8'
-    pod 'Down', '~> 0.6.6'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
 
     ## Automattic libraries
     ## ====================
@@ -134,61 +139,65 @@ target 'WordPress' do
     #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
 
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '1.3.3'
+    pod 'WPMediaPicker', '1.3.4'
     pod 'Gridicons', '~> 0.16'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e546205cd2a992838837b0a4de502507b89b6e63'
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'c05d267c106776f0176d76869a5c6938d963bb75'
 
-    #pod 'WordPressAuthenticator', '~> 1.4.0'
-    #pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
+    # pod 'WordPressAuthenticator', '~> 1.4.1-beta'
+    # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'try/improve-url-validation'
-
 
     aztec
     wordpress_ui
+
     target 'WordPressTest' do
         inherit! :search_paths
 
         shared_test_pods
         pod 'Nimble', '~> 7.3.1'
     end
+end
 
 
-    ## Share Extension
-    ## ===============
-    ##
-    target 'WordPressShareExtension' do
-        inherit! :search_paths
+## Share Extension
+## ===============
+##
+target 'WordPressShareExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        aztec
-        shared_with_all_pods
-        shared_with_networking_pods
-        wordpress_ui
-    end
+    shared_with_extension_pods
 
-
-    ## DraftAction Extension
-    ## =====================
-    ##
-    target 'WordPressDraftActionExtension' do
-        inherit! :search_paths
-
-        aztec
-        shared_with_all_pods
-        shared_with_networking_pods
-        wordpress_ui
-    end
+    aztec
+    shared_with_all_pods
+    shared_with_networking_pods
+    wordpress_ui
+end
 
 
-    ## Today Widget
-    ## ============
-    ##
-    target 'WordPressTodayWidget' do
-        inherit! :search_paths
+## DraftAction Extension
+## =====================
+##
+target 'WordPressDraftActionExtension' do
+    project 'WordPress/WordPress.xcodeproj'
 
-        shared_with_all_pods
-        shared_with_networking_pods
-    end
+    shared_with_extension_pods
+
+    aztec
+    shared_with_all_pods
+    shared_with_networking_pods
+    wordpress_ui
+end
+
+
+## Today Widget
+## ============
+##
+target 'WordPressTodayWidget' do
+    project 'WordPress/WordPress.xcodeproj'
+  
+    shared_with_all_pods
+    shared_with_networking_pods
 end
 
 
@@ -199,9 +208,7 @@ end
 target 'WordPressNotificationContentExtension' do
     project 'WordPress/WordPress.xcodeproj'
 
-    inherit! :search_paths
-
-	wordpress_kit
+    wordpress_kit
     wordpress_shared
     wordpress_ui
 end
@@ -213,8 +220,6 @@ end
 ##
 target 'WordPressNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
-
-    inherit! :search_paths
 
     wordpress_kit
     wordpress_shared

@@ -201,11 +201,11 @@ import MobileCoreServices
     ///
     private func downloadImage(from request: URLRequest) {
         imageView.startLoadingAnimation()
-        imageView.setImageWith(request, placeholderImage: placeholder, success: { [weak self] (_, _, image) in
+        imageView.downloadImage(usingRequest: request, placeholderImage: placeholder, success: { [weak self] (image) in
             // Since a success block is specified, we need to set the image manually.
             self?.imageView.image = image
             self?.callSuccessHandler()
-        }) { [weak self] (_, _, error) in
+        }) { [weak self] (error) in
             self?.callErrorHandler(with: error)
         }
     }
@@ -232,7 +232,7 @@ import MobileCoreServices
     }
 
     private func callErrorHandler(with error: Error?) {
-        guard let error = error, (error as NSError).code != NSURLErrorCancelled else {
+        if let error = error, (error as NSError).code == NSURLErrorCancelled {
             return
         }
 

@@ -46,20 +46,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>${VERSION_LONG}</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>FABRIC_API_KEY</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -121,16 +107,16 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-    <key>NSUserActivityTypes</key>
-    <array>
-        <string>org.wordpress.me</string>
-        <string>org.wordpress.me.appsettings</string>
-        <string>org.wordpress.me.notificationsettings</string>
-        <string>org.wordpress.me.support</string>
-        <string>org.wordpress.mysites</string>
-        <string>org.wordpress.mysites.details</string>
-        <string>org.wordpress.notifications</string>
-        <string>org.wordpress.reader</string>
-    </array>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>org.wordpress.me</string>
+		<string>org.wordpress.me.appsettings</string>
+		<string>org.wordpress.me.notificationsettings</string>
+		<string>org.wordpress.me.support</string>
+		<string>org.wordpress.mysites</string>
+		<string>org.wordpress.mysites.details</string>
+		<string>org.wordpress.notifications</string>
+		<string>org.wordpress.reader</string>
+	</array>
 </dict>
 </plist>

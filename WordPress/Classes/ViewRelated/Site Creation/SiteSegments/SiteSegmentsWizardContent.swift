@@ -44,7 +44,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         initCancelButton()
 
         prepareForVoiceOver()
-	WPAnalytics.track(.enhancedSiteCreationSegmentsViewed)
+        WPAnalytics.track(.enhancedSiteCreationSegmentsViewed)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -196,7 +196,7 @@ final class SiteSegmentsWizardContent: UIViewController {
             errorVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorVC.view.topAnchor.constraint(equalTo: view.topAnchor),
             errorVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            ])
+        ])
         errorVC.didMove(toParent: self)
 
 
@@ -254,7 +254,6 @@ extension SiteSegmentsWizardContent: Accessible {
     }
 
     private func prepareTableForVoiceOver() {
-        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list ")
-        table.accessibilityTraits = UIAccessibilityTraits.allowsDirectInteraction
+        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list")
     }
 }
