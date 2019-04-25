@@ -29,9 +29,4 @@
 
 + (WordPressAppDelegate *)sharedInstance;
 
-///-----------
-/// @name NUX
-///-----------
-- (void)customizeAppearanceForTextElements;
-
 @end
