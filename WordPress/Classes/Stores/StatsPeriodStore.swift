@@ -5,7 +5,6 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
 
     // Period overview
-
     case receivedSummary(_ summary: StatsSummaryTimeIntervalData?)
     case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?)
     case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?)
@@ -26,6 +25,10 @@ enum PeriodAction: Action {
     case refreshSearchTerms(date: Date, period: StatsPeriodUnit)
     case refreshVideos(date: Date, period: StatsPeriodUnit)
     case refreshCountries(date: Date, period: StatsPeriodUnit)
+
+    // Post Stats
+    case receivedPostStats(_ postStats: StatsPostDetails?)
+    case refreshPostStats(postID: Int)
 }
 
 enum PeriodQuery {
@@ -38,6 +41,16 @@ enum PeriodQuery {
     case allReferrers(date: Date, period: StatsPeriodUnit)
     case allCountries(date: Date, period: StatsPeriodUnit)
     case allPublished(date: Date, period: StatsPeriodUnit)
+    case postStats(postID: Int)
+
+    var postID: Int? {
+        switch self {
+        case .postStats(let postID):
+            return postID
+        default:
+            return nil
+        }
+    }
 
     var date: Date {
         switch self {
@@ -59,6 +72,8 @@ enum PeriodQuery {
             return date
         case .allPublished(let date, _):
             return date
+        default:
+            return Date()
         }
     }
 
@@ -82,6 +97,8 @@ enum PeriodQuery {
             return period
         case .allPublished( _, let period):
             return period
+        default:
+            return .day
         }
     }
 }
@@ -116,6 +133,11 @@ struct PeriodStoreState {
 
     var topVideos: StatsTopVideosTimeIntervalData?
     var fetchingVideos = false
+
+    // Post Stats
+
+    var postStats: StatsPostDetails?
+    var fetchingPostStats = false
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -169,6 +191,10 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             refreshCountries(date: date, period: period)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
+        case .receivedPostStats(let postStats):
+            receivedPostStats(postStats)
+        case .refreshPostStats(let postID):
+            refreshPostStats(postID: postID)
         }
 
         if !isFetchingOverview {
@@ -251,6 +277,10 @@ private extension StatsPeriodStore {
             case .allPublished:
                 if shouldFetchPublished() {
                     fetchAllPublished(date: query.date, period: query.period)
+                }
+            case .postStats:
+                if shouldFetchPostStats() {
+                    fetchPostStats(postID: query.postID)
                 }
             }
         }
@@ -640,6 +670,33 @@ private extension StatsPeriodStore {
         fetchAllPublished(date: date, period: period)
     }
 
+    func fetchPostStats(postID: Int?) {
+        guard
+            let postID = postID,
+            let statsRemote = statsRemote() else {
+                return
+        }
+
+        state.fetchingPostStats = true
+
+        statsRemote.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
+            }
+            DDLogInfo("Stats: Finished fetching post stats.")
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats))
+        }
+    }
+
+    func refreshPostStats(postID: Int) {
+        guard shouldFetchPostStats() else {
+            DDLogInfo("Stats Post Stats refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchPostStats(postID: postID)
+    }
+
     // MARK: - Receive data methods
 
     func receivedSummary(_ summaryData: StatsSummaryTimeIntervalData?) {
@@ -732,6 +789,16 @@ private extension StatsPeriodStore {
         }
     }
 
+    func receivedPostStats(_ postStats: StatsPostDetails?) {
+        transaction { state in
+            state.fetchingPostStats = false
+
+            if postStats != nil {
+                state.postStats = postStats
+            }
+        }
+    }
+
     // MARK: - Helpers
 
     func statsRemote() -> StatsServiceRemoteV2? {
@@ -803,6 +870,10 @@ private extension StatsPeriodStore {
         return !isFetchingPublished
     }
 
+    func shouldFetchPostStats() -> Bool {
+        return !isFetchingPostStats
+    }
+
 }
 
 // MARK: - Public Accessors
@@ -843,6 +914,10 @@ extension StatsPeriodStore {
 
     func getTopCountries() -> StatsTopCountryTimeIntervalData? {
         return state.topCountries
+    }
+
+    func getPostStats() -> StatsPostDetails? {
+        return state.postStats
     }
 
     var isFetchingOverview: Bool {
@@ -888,6 +963,10 @@ extension StatsPeriodStore {
 
     var isFetchingPublished: Bool {
         return state.fetchingPublished
+    }
+
+    var isFetchingPostStats: Bool {
+        return state.fetchingPostStats
     }
 
 }

@@ -47,6 +47,7 @@ final class SiteSegmentsCell: UITableViewCell, ModelSettableCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
         styleBackground()
         styleTitle()
         styleSubtitle()
@@ -91,18 +92,5 @@ extension SiteSegmentsCell {
     func preferredContentSizeDidChange() {
         // Title needs to be forced to reset its style, otherwise the types do not change
         styleTitle()
-    }
-}
-
-extension SiteSegmentsCell: Accessible {
-    func prepareForVoiceOver() {
-        prepareIconForVoiceOver()
-    }
-
-    private func prepareIconForVoiceOver() {
-        let format = NSLocalizedString("Icon representing %@", comment: "Accessibility description for Site Segment icon. The %@ is a placeholder for the name of the kind of site. If the kind of site is unknown the phrase 'kind of site' is used.")
-        let site = model?.title ?? NSLocalizedString("Kind of site", comment: "Default accessibilty label for an unknown kind of site.")
-        icon.accessibilityLabel =  String(format: format, site )
-        icon.accessibilityTraits = .image
     }
 }

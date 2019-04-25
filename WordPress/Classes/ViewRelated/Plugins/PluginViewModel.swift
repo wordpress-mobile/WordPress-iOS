@@ -183,7 +183,7 @@ class PluginViewModel: Observable {
                         return
                     }
 
-                    if FeatureFlag.automatedTransfersCustomDomain.enabled && !hasCustomDomain && hasDomainCredits {
+                    if !hasCustomDomain && hasDomainCredits {
                         let alert = self.confirmRegisterDomainAlert(for: directoryEntry)
                         WPAnalytics.track(.automatedTransferCustomDomainDialogShown)
                         self.present?(alert)

@@ -361,6 +361,7 @@ private extension SiteStatsDetailsViewModel {
 
             return StatsTotalRowData(name: $0.title,
                                      data: $0.viewsCount.abbreviatedString(),
+                                     postID: $0.postID,
                                      dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
                                      icon: icon,
                                      showDisclosure: true,
