@@ -1,5 +1,7 @@
 import UIKit
 import Reachability
+import WordPressShared
+import ZendeskCoreSDK
 
 @UIApplicationMain
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +17,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     @objc var connectionAvailable: Bool = true
 
     private var pingHubManager: PingHubManager!
-    private var shortcutCreator: WP3DTouchShortcutCreator!
+    private lazy var shortcutCreator = WP3DTouchShortcutCreator()
     private var noticePresenter: NoticePresenter!
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
@@ -25,7 +27,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UIApplication.shared.delegate as? WordPressAppDelegate
     }
 
-    func application(_ app: UIApplication, willFinishLaunching options: [UIApplication.LaunchOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         WordPressAppDelegate.fixKeychainAccess()
@@ -39,7 +41,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         let solver = WPAuthTokenIssueSolver()
         let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
-            self?.runStartupSequence(with: options)
+            self?.runStartupSequence(with: launchOptions ?? [:])
         }
 
         shouldRestoreApplicationState = !isFixingAuthTokenIssue
@@ -53,7 +55,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         showWelcomeScreenIfNeeded(animated: false)
         setupPingHub()
-        setupShortcutCreator()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
         disableAnimationsForUITests(application)
@@ -163,7 +164,55 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Setup
 
     @objc func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
+        // Local notifications
+        addNotificationObservers()
 
+        logger = WPLogger()
+        configureHockeySDK()
+        configureCrashlytics()
+        configureAppRatingUtility()
+        configureAnalytics()
+
+        printDebugLaunchInfoWithLaunchOptions(launchOptions)
+        toggleExtraDebuggingIfNeeded()
+
+#if DEBUG
+        KeychainTools.processKeychainDebugArguments()
+        CoreLogger.enabled = true
+        CoreLogger.logLevel = .debug
+#endif
+
+        ZendeskUtils.setup()
+
+        WPUserAgent.useWordPressInUIWebViews()
+
+        // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
+        // by any of the Noto varients.  Size is arbitrary.
+        // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
+        // Remove this when #79 is resolved.
+        WPFontManager.notoRegularFont(ofSize: 16.0)
+
+        customizeAppearance()
+
+        // Push notifications
+        // This is silent (the user isn't prompted) so we can do it on launch.
+        // We'll ask for user notification permission after signin.
+        PushNotificationsManager.shared.registerForRemoteNotifications()
+
+        // Deferred tasks to speed up app launch
+        DispatchQueue.global(qos: .background).async {
+            MediaCoordinator.shared.refreshMediaStatus()
+            PostCoordinator.shared.refreshPostStatus()
+            MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
+        }
+
+        setupWordPressExtensions()
+
+        shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
+
+        window?.rootViewController = WPTabBarController.sharedInstance()
+
+        setupNoticePresenter()
     }
 
     private func setupPingHub() {
