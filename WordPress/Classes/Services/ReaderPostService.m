@@ -909,28 +909,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return [NSSet setWithArray:arr];
 }
 
-- (NSSet *)globalIDsOfExistingPostsForTopic:(ReaderAbstractTopic *)topic
-{
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
-    fetchRequest.includesSubentities = NO;
-
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(error.localizedDescription);
-        return [NSSet set];
-    }
-
-    NSMutableArray *arr = [NSMutableArray array];
-    for (ReaderPost *post in results) {
-        NSString *globalID = post.globalID ?: @"";
-        [arr addObject:globalID];
-    }
-    // return non-mutable array
-    return [NSSet setWithArray:arr];
-}
-
 
 #pragma mark Deletion and Clean up
 
