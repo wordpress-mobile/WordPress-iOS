@@ -13,7 +13,6 @@ typedef void (^MeHeaderViewDropCallback)(UIImage * _Nonnull image);
 @property (nonatomic, assign) BOOL showsActivityIndicator;
 
 /// Overrides the current Gravatar Image (set via Email) with a given image reference.
-/// Plus, AFNetworking's internal cache is updated, to prevent undesired glitches upon refresh.
 ///
 - (void)overrideGravatarImage:(UIImage * _Nonnull)gravatarImage;
 
