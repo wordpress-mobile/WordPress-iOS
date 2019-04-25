@@ -71,7 +71,7 @@ class SiteAssemblyServiceTests: XCTestCase {
             }
         }
 
-        wait(for: [inProgressExpectation, successExpectation], timeout: 10, enforceOrder: true)
+        wait(for: [inProgressExpectation, successExpectation], timeout: 3, enforceOrder: true)
     }
 
     func testSiteAssemblyService_StatusPostRequest__WhenMockingError_IsFailure() {
@@ -91,6 +91,6 @@ class SiteAssemblyServiceTests: XCTestCase {
             }
         }
 
-        wait(for: [inProgressExpectation, failureExpectation], timeout: 10, enforceOrder: true)
+        wait(for: [inProgressExpectation, failureExpectation], timeout: 3, enforceOrder: true)
     }
 }
