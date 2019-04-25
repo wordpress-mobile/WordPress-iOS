@@ -50,10 +50,6 @@
 
 @implementation WordPressAppDelegate
 
-+ (WordPressAppDelegate *)sharedInstance
-{
-    return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-}
 
 #pragma mark - UIApplicationDelegate
 

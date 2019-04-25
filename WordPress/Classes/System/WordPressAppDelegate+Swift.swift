@@ -7,9 +7,14 @@ import AutomatticTracks
 import WordPressComStatsiOS
 import WordPressShared
 
+
 // MARK: - Utility Configuration
 
 extension WordPressAppDelegate {
+
+    @objc class var shared: WordPressAppDelegate? {
+        return UIApplication.shared.delegate as? WordPressAppDelegate
+    }
 
     @objc func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext

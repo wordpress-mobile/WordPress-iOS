@@ -27,6 +27,4 @@
 @property (nonatomic, strong, readwrite) WordPressAuthenticationManager *authManager;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 
-+ (WordPressAppDelegate *)sharedInstance;
-
 @end

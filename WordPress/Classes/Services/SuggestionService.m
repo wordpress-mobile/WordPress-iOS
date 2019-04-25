@@ -98,7 +98,7 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
         return NO;
     }
     
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
     
     NSArray *suggestions = [self.suggestionsCache objectForKey:siteID];
     

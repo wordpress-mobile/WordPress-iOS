@@ -37,7 +37,7 @@ extension BlogDetailsViewController {
     }
 
     private var noPresentedViewControllers: Bool {
-        guard let window = WordPressAppDelegate.sharedInstance().window,
+        guard let window = WordPressAppDelegate.shared?.window,
             let rootViewController = window.rootViewController,
             rootViewController.presentedViewController != nil else {
             return true
