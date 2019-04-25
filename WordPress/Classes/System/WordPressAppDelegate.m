@@ -61,8 +61,6 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    [WordPressAppDelegate fixKeychainAccess];
-
     // Authentication Framework
     [self configureWordPressAuthenticator];
 
