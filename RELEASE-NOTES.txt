@@ -1,6 +1,7 @@
 12.4
 -----
 * Fixed crash when searching Free Photo Library.
+* Better URL validation when logging in with a self hosted site.
 
 12.3
 -----

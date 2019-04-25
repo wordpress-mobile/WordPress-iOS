@@ -16,7 +16,7 @@ def wordpress_shared
     # pod 'WordPressShared', '~> 1.7.4'
 
     ## for development:
-    # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
     pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/support-swift-5'
@@ -49,7 +49,7 @@ end
 
 def shared_with_all_pods
     wordpress_shared
-    pod 'CocoaLumberjack', '3.4.2'
+    pod 'CocoaLumberjack', '3.5.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
     pod 'Sentry', '4.3.1'
@@ -134,9 +134,9 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '0.3.4'
+    pod 'Automattic-Tracks-iOS', '0.3.5-beta.1'
     # While in PR
-    #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'f6332b67448a4e9c2661513cbb98fa5bb12b7c8f'
+    # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
 
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3.4'
@@ -144,7 +144,7 @@ target 'WordPress' do
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'c05d267c106776f0176d76869a5c6938d963bb75'
 
-    pod 'WordPressAuthenticator', '~> 1.4.1-beta'
+    pod 'WordPressAuthenticator', '~> 1.4.1-beta.2'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
 
