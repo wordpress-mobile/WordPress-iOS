@@ -33,52 +33,6 @@ class WPRichContentView: UITextView {
     }()
 
 
-    @objc let topMarginAttachment = NSTextAttachment()
-    @objc let bottomMarginAttachment = NSTextAttachment()
-
-    @objc var topMargin: CGFloat {
-        get {
-            return topMarginAttachment.bounds.height
-        }
-
-        set {
-            var bounds = topMarginAttachment.bounds
-            bounds.size.height = max(1, newValue)
-            bounds.size.width = textContainer.size.width
-            topMarginAttachment.bounds = bounds
-
-            if textStorage.length > 0 {
-                let rng = NSRange(location: 0, length: 1)
-                layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
-                layoutManager.ensureLayout(forCharacterRange: rng)
-                attachmentManager.layoutAttachmentViews()
-            }
-        }
-    }
-
-    // NOTE: Avoid setting attachment bounds with a zero height. A zero height
-    // for an attachment at the end of a text run can glitch TextKit's layout
-    // causing glyphs to not be drawn.
-    @objc var bottomMargin: CGFloat {
-        get {
-            return bottomMarginAttachment.bounds.height
-        }
-
-        set {
-            var bounds = bottomMarginAttachment.bounds
-            bounds.size.height = max(1, newValue)
-            bounds.size.width = textContainer.size.width
-            bottomMarginAttachment.bounds = bounds
-
-            if textStorage.length > 1 {
-                let rng = NSRange(location: textStorage.length - 2, length: 1)
-                layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
-                layoutManager.ensureLayout(forCharacterRange: rng)
-                attachmentManager.layoutAttachmentViews()
-            }
-        }
-    }
-
     override var textContainerInset: UIEdgeInsets {
         didSet {
             attachmentManager.layoutAttachmentViews()
@@ -95,42 +49,7 @@ class WPRichContentView: UITextView {
             return text ?? ""
         }
         set {
-            let str = newValue
-            let style = "<style>" +
-                "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #2e4453; }" +
-                "blockquote { color:#4f748e; } " +
-                "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
-                "a { color: #0087be; text-decoration: none; } " +
-                "a:active { color: #005082; } " +
-                "</style>"
-            let html = style + str
-            // Request the font to ensure it's loaded. Otherwise NSAttributedString
-            // falls back to Times New Roman :o
-            // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
-            _ = WPFontManager.notoItalicFont(ofSize: 16)
-            do {
-                if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(html, defaultAttributes: nil) {
-                    let mattrTxt = NSMutableAttributedString(attributedString: attrTxt)
-
-                    // Ensure the starting paragraph style is applied to the topMarginAttachment else the
-                    // first paragraph might not have the correct line height.
-                    var paraStyle = NSParagraphStyle.default
-                    if attrTxt.length > 0 {
-                        if let pstyle = attrTxt.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
-                            paraStyle = pstyle
-                        }
-                    }
-
-                    mattrTxt.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
-                    mattrTxt.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
-                    mattrTxt.append(NSAttributedString(attachment: bottomMarginAttachment))
-
-                    attributedText = mattrTxt
-                }
-            } catch let error {
-                DDLogError("Error converting post content to attributed string: \(error)")
-                text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
-            }
+            attributedText = WPRichContentView.formattedAttributedStringForString(newValue)
         }
     }
 
@@ -138,6 +57,32 @@ class WPRichContentView: UITextView {
         didSet {
             attachmentManager.enumerateAttachments()
         }
+    }
+
+
+    class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
+        let style = "<style>" +
+            "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #2e4453; }" +
+            "blockquote { color:#4f748e; } " +
+            "em, i { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; font-style: italic; line-height:1.6; } " +
+            "a { color: #0087be; text-decoration: none; } " +
+            "a:active { color: #005082; } " +
+        "</style>"
+        let html = style + string
+
+        // Request the font to ensure it's loaded. Otherwise NSAttributedString
+        // falls back to Times New Roman :o
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
+        _ = WPFontManager.notoItalicFont(ofSize: 16)
+        do {
+            if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(html, defaultAttributes: nil) {
+                return attrTxt
+            }
+        } catch let error {
+            DDLogError("Error converting post content to attributed string: \(error)")
+        }
+        let text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
+        return NSAttributedString(string: text)
     }
 
 
@@ -188,6 +133,25 @@ class WPRichContentView: UITextView {
         invalidateIntrinsicContentSize()
     }
 
+
+    func ensureLayoutForAttachment(_ textAttachment: NSTextAttachment) {
+        guard textStorage.length > 0 else {
+            return
+        }
+
+        attributedText.enumerateAttachments { (attachment, range) in
+            if attachment == textAttachment {
+                self.ensureLayoutForAttachment(attachment, at: range)
+            }
+        }
+    }
+
+
+    private func ensureLayoutForAttachment(_ attachment: NSTextAttachment, at range: NSRange) {
+        layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
+        layoutManager.ensureLayout(forCharacterRange: range)
+        attachmentManager.layoutAttachmentViews()
+    }
 }
 
 
