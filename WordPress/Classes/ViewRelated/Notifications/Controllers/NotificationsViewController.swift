@@ -5,6 +5,7 @@ import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
 import Gridicons
+import UserNotifications
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -331,6 +332,16 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
         detailsViewController.onSelectedNoteChange = { note in
             self.selectRow(for: note)
+        }
+    }
+
+
+    fileprivate func configureViewControllerPopover(_ controller: UIViewController, forNote note: Notification) {
+        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: note),
+            let cell = tableView.cellForRow(at: indexPath) {
+            controller.popoverPresentationController?.sourceView = self.view
+            controller.popoverPresentationController?.sourceRect = cell.frame
+            controller.popoverPresentationController?.permittedArrowDirections = .left
         }
     }
 }
@@ -981,8 +992,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // Let "Mark as Read / Unread" expand
         let leadingExpansionButton = 0
 
-        // Let "More" expand
-        let trailingExpansionButton = 0
+        // Don't expand trailing items
+        let trailingExpansionButton = -1
 
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
             cell.leftButtons = leadingButtons(note: note)
@@ -1058,17 +1069,17 @@ private extension NotificationsViewController {
     func trailingButtons(note: Notification) -> [MGSwipeButton] {
         var rightButtons = [MGSwipeButton]()
 
-        if FeatureFlag.notificationActions.enabled {
-            let moreAction = MGSwipeButton(title: "", icon: Gridicon.iconOfType(.ellipsis).imageWithTintColor(.white), backgroundColor: WPStyleGuide.greyDarken20())
-            moreAction.callback = { [weak self] _ in
-                self?.showMoreAlertController(for: note)
-                return true
-            }
-
-            rightButtons.append(moreAction)
+        let moreAction = MGSwipeButton(title: "", icon: Gridicon.iconOfType(.ellipsis).imageWithTintColor(.white), backgroundColor: WPStyleGuide.greyDarken20())
+        moreAction.callback = { [weak self] _ in
+            self?.showMoreAlertController(for: note)
+            return true
         }
 
         guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            if FeatureFlag.notificationActions.enabled {
+                rightButtons.append(moreAction)
+            }
+
             return rightButtons
         }
 
@@ -1098,18 +1109,90 @@ private extension NotificationsViewController {
             rightButtons.append(button)
         }
 
+        if FeatureFlag.notificationActions.enabled {
+            rightButtons.append(moreAction)
+        }
+
         return rightButtons
     }
 
     func showMoreAlertController(for note: Notification) {
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        controller.addActionWithTitle(NSLocalizedString("Remind me...", comment: "Button title. Allows the user to pick a time to schedule a reminder."),
+                                      style: .default,
+                                      handler: { [weak self] action in
+            self?.showReminderAlert(for: note)
+        })
+
+        controller.addActionWithTitle(NSLocalizedString("Share...", comment: "Button title. Allows the user to share the content of a notification."),
+                                      style: .default,
+                                      handler: { [weak self] action in
+                                        self?.showActivityController(for: note)
+        })
+
+        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button title. Dismisses an action sheet."))
+
+        configureViewControllerPopover(controller, forNote: note)
+        present(controller, animated: true, completion: nil)
     }
+
+    func showActivityController(for note: Notification) {
+        guard let url = note.url else {
+            return
         }
 
+        var activityItems = [Any]()
+        if let subject = note.renderSubject() {
+            activityItems.append(subject as Any)
+        }
+        activityItems.append(url)
 
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        configureViewControllerPopover(controller, forNote: note)
+        present(controller, animated: true, completion: nil)
     }
 }
 
 
+// MARK: - Reminders
+//
+private extension NotificationsViewController {
+
+    @objc func didTapRemindersButton() {
+        let vc = NotificationRemindersViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+        present(nav, animated: true, completion: nil)
+    }
+
+    func showReminderAlert(for note: Notification) {
+        let remind: ((NotificationReminderPeriod) -> Void) = { period in
+            let helper = NotificationRemindersHelper()
+            helper.remindMe(in: period, about: note, completion: { [weak self] _ in
+                self?.updateNotificationRemindersButton()
+            })
+        }
+
+        let title = NSLocalizedString("When would you like to be reminded?",
+                                      comment: "Title of an alert that asks the user when they would like to set a reminder for.")
+
+        let controller = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        configureViewControllerPopover(controller, forNote: note)
+
+        for period in NotificationReminderPeriod.allCases {
+            controller.addActionWithTitle(period.displayTitle,
+                                          style: .default,
+                                          handler: { _ in
+                                            remind(period)
+            })
+        }
+
+        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Button title. Dismisses an action sheet"))
+
+        present(controller, animated: true, completion: nil)
+    }
+}
 
 // MARK: - Filter Helpers
 //
