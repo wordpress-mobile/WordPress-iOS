@@ -1,3 +1,6 @@
-- Je gaat sneller van een 'eerste aanmelding' naar een 'volledige website' met een snel aanmaakproces voor sites, waarmee je al met een gepersonaliseerde, aangepaste website begint. Je lanceerschema moet nu mogelijk worden vervroegd, sorry daarvoor! Wat een mooi probleem.
-- Zodra je je nieuwe site aanmaakt, zijn er meer instructievideo's beschikbaar dan ooit om je te helpen je site vorm te geven en uit te breiden, waaronder tips voor het verhogen van je bezoekersaantallen. We doen aanbevelingen op plaatsen waar dit logisch is en je kunt ze allemaal op elk moment op het scherm Mijn sites vinden. Want het lanceren is een begin en niet een einde.
-- Tijdens onze voortdurende inzet om ervoor te zorgen dat je de app met plezier kunt gebruiken (of dat deze in ieder geval gebruiksvriendelijker is) hebben we de indeling van het editor-venster gewijzigd, zodat het typen van langere berichten eenvoudiger is. Daarnaast hebben we de lay-outs en illustraties van foutpagina's aangepast, zodat ze consistenter zijn met de rest van de app en eenvoudiger te begrijpen zijn.
+12.2
+-----
+* Publiceer vol vertrouwen! In voorbeeldweergaven van concepten zie je nu een nauwkeurigere versie van je berichten.
+* Als je liever in apps als Bear of Ulysses schrijft (of elke andere app die gebruikmaakt van de TextBundle- en TextPack-indeling) dan kun je dat nu blijven doen. Je kunt de tekst van die apps importeren naar deze.
+* De hele app heeft een voorjaarsschoonmaak gekregen: we hebben wat visuele bugs in het aanmaakproces van sites gerepareerd, een paar teksten aangepast om duidelijk te maken hoeveel opslagruimte je site gebruikt en we hebben een irritante crash opgelost die soms plaatsvond als je probeerde plugins te beheren.
+

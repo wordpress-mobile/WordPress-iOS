@@ -1,3 +1,6 @@
-- You’ll go from “initial signup” to “complete website” faster with a smart site-creation process that starts you off with a personalised, already-customised website. You might need to push up your launch schedule now, sorry about that! What a nice problem to have.
-- Once you create your new site, there are more tutorials available than ever to help you shape and grow it, including tips on building your audience. We’ll suggest them where it makes sense, and you find them all on the My Sites screen at any time. Because launching is beginning, not an ending.
-- In our ongoing quest to make the app a joy to use — or at least more pleasant — we’ve increased the padding of the editor window so typing longer posts is more comfortable, and given some error pages layouts and illustration that are more consistent with the rest of the app so they’re easier to understand.
+12.2
+-----
+* Publish with confidence! Draft previews will show you a more accurate version of your posts.
+* If you prefer to write in apps like Bear or Ulysses (or any other app using the TextBundle and TextPack formats), great – keep doing it. And now you can import text from the those apps into this one.
+* The whole app got a spring pick-me-up — we fixed up some little visual tics in the site creation process, adjusted some wording to make it clear how much storage space your site is using, and took care of a pesky crash that would sometimes occur when you were trying to manage plugins.
+

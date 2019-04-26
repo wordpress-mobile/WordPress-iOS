@@ -33,6 +33,12 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     ///
     var isOpenedDirectlyForPhotoPost: Bool { get set }
 
+    /// Media items to be inserted on the post after creation
+    ///
+    /// - Parameter media: the media items to add
+    ///
+    func prepopulateMediaItems(_ media: [Media])
+
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
     var shouldRemovePostOnDismiss: Bool { get }
@@ -72,7 +78,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
 
-    /// Error domain used when reporting error to Crashlytics
+    /// Error domain used when reporting error to Crash Logger
     var errorDomain: String { get }
 
     /// Returns true if the site mode is on

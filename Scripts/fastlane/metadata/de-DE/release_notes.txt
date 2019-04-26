@@ -1,3 +1,6 @@
-- Mit einem intelligenten Prozess zur Erstellung einer Website, der mit einer personalisierten, bereits angepassten Website beginnt, wirst du schneller von der ersten Anmeldung zur kompletten Website übergehen. Möglicherweise musst du deinen Startterminplan jetzt erhöhen, tut uns leid!
-- Sobald du deine neue Website erstellt hast, gibt es mehr Tutorials als je zuvor, die dir helfen, sie zu gestalten und zu erweitern, einschließlich Tipps zur Bildung deiner Zielgruppe. Wir schlagen sie dort vor, wo es sinnvoll ist, und du findest sie alle jederzeit auf dem Bildschirm Meine Seiten. Weil es beginnt und nicht endet.
-- In unserem ständigen Bestreben, die App zu einem Vergnügen zu machen - oder zumindest angenehmer - haben wir die Höhe des Editorfensters erhöht, so dass die Eingabe längerer Beiträge komfortabler ist, und wir haben einige Fehlerseiten-Layouts und Illustrationen bereitgestellt, die mit dem Rest der App konsistenter sind, damit sie leichter zu verstehen sind.
+12.2
+-----
+* Veröffentlichen mit Sicherheit! Entwürfe von Voransichten werden dir eine genauere Version deiner Beiträge zeigen.
+* Wenn du es vorziehst, in Apps wie Bear oder Ulysses (oder jeder anderen App, die die Formate TextBundle und TextPack verwendet) zu schreiben, großartig – mach es weiter. Und jetzt kannst du Text aus den Apps in diese importieren.
+* Die ganze App bekam ein Frühlings-Make-up – wir haben einige kleine visuelle Details bei der Erstellung der Website korrigiert, einige Formulierungen angepasst, um deutlich zu machen, wie viel Speicherplatz deine Website nutzt, und uns um einen lästigen Absturz gekümmert, der manchmal auftreten würde, wenn du versucht hast, Plugins zu verwalten.
+

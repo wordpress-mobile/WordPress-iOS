@@ -15,7 +15,7 @@ struct OverviewTabData: FilterTabBarItem {
 
     var attributedTitle: NSAttributedString? {
 
-        let attributedTitle = NSMutableAttributedString(string: tabTitle)
+        let attributedTitle = NSMutableAttributedString(string: tabTitle.localizedUppercase)
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
@@ -67,8 +67,16 @@ class OverviewCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var tabsData = [OverviewTabData]()
 
-    private(set) var chartData: BarChartDataConvertible?
-    private(set) var chartStyling: BarChartStyling?
+    private var chartData: [BarChartDataConvertible] = []
+    private var chartStyling: [BarChartStyling] = []
+
+    private var period: StatsPeriodUnit? {
+        didSet {
+            if chartContainerView.subviews.isEmpty || oldValue != period {
+                configureChartView()
+            }
+        }
+    }
 
     // MARK: - Configure
 
@@ -77,14 +85,14 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: BarChartDataConvertible? = nil, barChartStyling: BarChartStyling? = nil) {
+    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
+        self.period = period
 
         setupFilterBar()
         updateLabels()
-        configureChartViewIfNeeded()
     }
 }
 
@@ -138,7 +146,7 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        // TODO: update chart - configureChartView() - via #11064
+        configureChartView()
         updateLabels()
     }
 
@@ -152,12 +160,22 @@ private extension OverviewCell {
 
     // MARK: Chart support
 
-    func configureChartViewIfNeeded() {
-        guard chartContainerView.subviews.isEmpty, let barChartData = chartData, let barChartStyling = chartStyling else {
+    func configureChartView() {
+        let filterSelectedIndex = filterTabBar.selectedIndex
+
+        guard chartData.count > filterSelectedIndex, chartStyling.count > filterSelectedIndex else {
             return
         }
 
-        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling)
+        let barChartData = chartData[filterSelectedIndex]
+        let barChartStyling = chartStyling[filterSelectedIndex]
+        let analyticsGranularity = period?.analyticsGranularity
+
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
+        }
+
+        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling, analyticsGranularity: analyticsGranularity)
         chartContainerView.addSubview(chartView)
 
         NSLayoutConstraint.activate([

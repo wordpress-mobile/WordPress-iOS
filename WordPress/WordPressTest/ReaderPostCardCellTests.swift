@@ -145,12 +145,11 @@ final class ReaderPostCardCellTests: XCTestCase {
     private var mock: ReaderPostContentProvider?
 
     private struct TestConstants {
-        static let headerLabel = "Post by An author, from A blog name, "
-        static let saveLabel = "Save post"
-        static let shareLabel = "Share"
-        static let moreLabel = "More"
-        static let commentLabel = "2 comments"
-        static let visitLabel = "Visit"
+        static let headerLabel = NSLocalizedString("Post by %@, from %@", comment: "")
+        static let saveLabel = NSLocalizedString("Save post", comment: "Save post")
+        static let moreLabel = NSLocalizedString("More", comment: "More")
+        static let commentsLabelformat = NSLocalizedString("%@ comments", comment: "Number of Comments")
+        static let visitLabel = NSLocalizedString("Visit", comment: "Visit")
     }
 
     override func setUp() {
@@ -167,25 +166,23 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testHeaderLabelMatchesExpectation() {
-        let expectedHeaderLabel = TestConstants.headerLabel + mock!.dateForDisplay().mediumString()
-        XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, expectedHeaderLabel, "Incorrect accessibility label: Header Button ")
+        XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, String(format: TestConstants.headerLabel, "An author", "A blog name" + ", " + mock!.dateForDisplay().mediumString()), "Incorrect accessibility label: Header Button ")
     }
 
     func testSaveForLaterButtonLabelMatchesExpectation() {
-        let validLabelText = TestConstants.saveLabel
-        XCTAssertEqual(cell?.getSaveForLaterButtonForTesting().accessibilityLabel, validLabelText, "Incorrect accessibility label: Save for Later button")
+        XCTAssertEqual(cell?.getSaveForLaterButtonForTesting().accessibilityLabel, String(format: "%@", TestConstants.saveLabel), "Incorrect accessibility label: Save for Later button")
     }
 
     func testCommentsButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, TestConstants.commentLabel, "Incorrect accessibility label: Comments button")
+        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, String(format: TestConstants.commentsLabelformat, "\(2)"), "Incorrect accessibility label: Comments button")
     }
 
     func testMenuButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getMenuButtonForTesting().accessibilityLabel, TestConstants.moreLabel, "Incorrect accessibility label: Menu button")
+        XCTAssertEqual(cell?.getMenuButtonForTesting().accessibilityLabel, String(format: "%@", TestConstants.moreLabel), "Incorrect accessibility label: Menu button")
     }
 
     func testVisitButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getVisitButtonForTesting().accessibilityLabel, TestConstants.visitLabel, "Incorrect accessibility label: Visit button"
+        XCTAssertEqual(cell?.getVisitButtonForTesting().accessibilityLabel, String(format: "%@", TestConstants.visitLabel), "Incorrect accessibility label: Visit button"
     )
     }
 }

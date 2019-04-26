@@ -88,5 +88,17 @@ class StatsChartLegendView: UIView {
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         ])
+
+        prepareForVoiceOver()
+    }
+}
+
+// MARK: - Accessible
+
+extension StatsChartLegendView: Accessible {
+    func prepareForVoiceOver() {
+        // This is the default state for non-control views. We set it explicitly for clarity,
+        // choosing instead to rely on the default a11y support offered by Charts framework.
+        isAccessibilityElement = false
     }
 }

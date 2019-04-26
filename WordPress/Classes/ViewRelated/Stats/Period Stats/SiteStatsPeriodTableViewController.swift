@@ -7,7 +7,7 @@ import WordPressFlux
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
-    @objc optional func showPostStats(withPostTitle postTitle: String?)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 
@@ -67,7 +67,23 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         WPStyleGuide.Stats.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         tableView.estimatedRowHeight = 500
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return SiteStatsTableHeaderView.height
     }
 
 }
@@ -170,7 +186,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController.init(rootViewController: webViewController)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     func displayMediaWithID(_ mediaID: NSNumber) {
@@ -206,10 +222,21 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
-    func showPostStats(withPostTitle postTitle: String?) {
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postTitle: postTitle)
+        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
+    }
+
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        selectedDate = newDate
+        refreshData()
     }
 
 }

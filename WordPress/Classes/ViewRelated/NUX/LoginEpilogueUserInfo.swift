@@ -9,12 +9,12 @@ public struct LoginEpilogueUserInfo {
     var fullName = ""
     var email = ""
     var gravatarUrl: String?
-    var credentials: WordPressCredentials?
+    var credentials: AuthenticatorCredentials?
 
     /// Initializes the EpilogueUserInfo with all of the metadata contained within WPAccount.
     ///
     init(account: WPAccount) {
-        if let name = account.username {
+        if let name = account.username, UUID(uuidString: name) == nil {
             username = name
         }
         if let accountEmail = account.email {

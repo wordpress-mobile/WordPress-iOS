@@ -23,7 +23,6 @@ final class SiteInformationWizardContent: UIViewController {
         static let footerVerticalMargin: CGFloat = 6.0
         static let footerHorizontalMargin: CGFloat = 16.0
         static let rowHeight: CGFloat = 44.0
-        static let separatorInset = UIEdgeInsets(top: 0, left: 64.0, bottom: 0, right: 0)
     }
 
     private let completion: SiteInformationCompletion
@@ -113,7 +112,6 @@ final class SiteInformationWizardContent: UIViewController {
     private func setupCellHeight() {
         table.rowHeight = UITableView.automaticDimension
         table.estimatedRowHeight = Constants.rowHeight
-        table.separatorInset = Constants.separatorInset
     }
 
     private func setupButtonWrapper() {

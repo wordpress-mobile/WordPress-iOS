@@ -1,3 +1,6 @@
-- Pasarás de un «registro inicial» a una «web completa» más rápido con un proceso inteligente de creación de webs que te permitirá comenzar con una web ya personalizada. Puede que necesites aplazar tu programa de lanzamiento ahora, ¡lo siento! Es un bonito problema.
-- Una vez que creas tu nuevo sitio, hay más tutoriales disponibles que nunca para ayudarte a darle forma y hacerlo crecer, incluyendo consejos para aumentar tu audiencia. Les sugeriremos dónde tiene sentido, y los encontrarás todos en la pantalla «Mis sitios» en cualquier momento. Porque el lanzamiento está empezando, no terminando. 
-- En nuestra continua búsqueda de hacer que la aplicación sea un placer de usar - o al menos más agradable - hemos aumentado el relleno de la ventana del editor para que escribir mensajes más largos sea más cómodo, y dado algunos diseños de páginas de error e ilustraciones que son más consistentes con el resto de la aplicación para que sean más fáciles de entender.
+12.2
+-----
+* ¡Publica con confianza! Las vistas preliminares en borrador te mostrarán una versión más precisa de tus entradas.
+* Si prefieres escribir en aplicaciones como Bear o Ulysses (o cualquier otra aplicación que utilice los formatos TextBundle y TextPack), genial, sigue haciéndolo. Y ahora puedes importar texto de esas aplicaciones a esta.
+* Toda la aplicación recibió un estímulo de primavera - arreglamos algunos pequeños fallos visuales en el proceso de creación del sitio, ajustamos algunas palabras para dejar claro cuánto espacio de almacenamiento está usando tu sitio, y nos encargamos de un molesto fallo que a veces se producía cuando estabas tratando de administrar los plugins.
+

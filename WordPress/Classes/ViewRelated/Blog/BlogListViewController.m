@@ -75,11 +75,10 @@ static NSInteger HideSearchMinSites = 3;
                                                                   target:nil
                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
-    
-    self.addSiteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
-                                                                                    style:UIBarButtonItemStylePlain
-                                                                                   target:self
-                                                                                   action:@selector(addSite)];
+
+    self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                       target:self
+                                                                       action:@selector(addSite)];
 
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
@@ -730,7 +729,7 @@ static NSInteger HideSearchMinSites = 3;
         RecentSitesService *recentSites = [RecentSitesService new];
         [recentSites touchBlog:blog];
 
-        if (![blog isEqual:self.selectedBlog] && [Feature enabled:FeatureFlagQuickStartV2]) {
+        if (![blog isEqual:self.selectedBlog]) {
             [[PushNotificationsManager shared] deletePendingLocalNotifications];
         }
 
@@ -890,17 +889,6 @@ static NSInteger HideSearchMinSites = 3;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     return [accountService defaultWordPressComAccount];
-}
-
-- (void)showAddNewWordPressController
-{
-    [self setEditing:NO animated:NO];
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
-    SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
-    SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
-                                                       initWithRootViewController:controller];
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite

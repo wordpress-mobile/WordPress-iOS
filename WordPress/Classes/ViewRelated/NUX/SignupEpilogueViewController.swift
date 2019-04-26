@@ -6,7 +6,7 @@ class SignupEpilogueViewController: NUXViewController {
 
     // MARK: - Public Properties
 
-    var credentials: WordPressCredentials?
+    var credentials: AuthenticatorCredentials?
     var socialService: SocialService?
 
     // MARK: - Outlets
@@ -160,9 +160,7 @@ private extension SignupEpilogueViewController {
             }
         } else {
             if !changesMade {
-                defer {
-                    WordPressAuthenticator.track(.signupEpilogueUnchanged, properties: tracksProperties())
-                }
+                WordPressAuthenticator.track(.signupEpilogueUnchanged, properties: tracksProperties())
             }
             self.refreshAccountDetails() {
                 SVProgressHUD.dismiss()

@@ -123,59 +123,6 @@ class StatsDataHelper {
                                    disclosureURL: $0.url)
         }
     }
-
-    // MARK: - Child Rows Support
-
-    class func childRowsForClicks(_ item: StatsItem) -> [StatsTotalRowData] {
-
-        guard let children = item.children as? [StatsItem] else {
-            return [StatsTotalRowData]()
-        }
-
-        return children.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     showDisclosure: true,
-                                                     disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
-    }
-
-    class func childRowsForAuthor(_ item: StatsItem) -> [StatsTotalRowData] {
-
-        guard let children = item.children as? [StatsItem] else {
-            return [StatsTotalRowData]()
-        }
-
-        return children.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString()) }
-    }
-
-    class func childRowsForReferrers(_ item: StatsItem) -> [StatsTotalRowData] {
-
-        var childRows = [StatsTotalRowData]()
-
-        guard let children = item.children as? [StatsItem] else {
-            return childRows
-        }
-
-        children.forEach { child in
-            var childsChildrenRows = [StatsTotalRowData]()
-            if let childsChildren = child.children as? [StatsItem] {
-                childsChildrenRows = childsChildren.map { StatsTotalRowData.init(name: $0.label,
-                                                                                 data: $0.value.displayString(),
-                                                                                 showDisclosure: true,
-                                                                                 disclosureURL: StatsDataHelper.disclosureUrlForItem($0)) }
-            }
-
-            childRows.append(StatsTotalRowData.init(name: child.label,
-                                                    data: child.value.displayString(),
-                                                    showDisclosure: true,
-                                                    disclosureURL: StatsDataHelper.disclosureUrlForItem(child),
-                                                    childRows: childsChildrenRows,
-                                                    statSection: .periodReferrers))
-        }
-
-        return childRows
-    }
-
 }
 
 /// These methods format stat Strings for display and usage.
@@ -268,4 +215,34 @@ extension Date {
         case halfAnHour = 30
         case almostAnHour = 45
     }
+}
+
+extension StatsPeriodUnit {
+
+    var dateFormatTemplate: String {
+        switch self {
+        case .day:
+            return "MMM d, yyyy"
+        case .week:
+            return "MMM d"
+        case .month:
+            return "MMM yyyy"
+        case .year:
+            return "yyyy"
+        }
+    }
+
+    var calendarComponent: Calendar.Component {
+        switch self {
+        case .day:
+            return .day
+        case .week:
+            return .weekOfYear
+        case .month:
+            return .month
+        case .year:
+            return .year
+        }
+    }
+
 }

@@ -2,12 +2,12 @@ import UIKit
 import WordPressKit
 
 final class AddressCell: UITableViewCell, ModelSettableCell {
-    @IBOutlet weak var title: UILabel!
-
     private struct TextStyleAttributes {
         static let defaults: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: WPStyleGuide.grey()]
         static let customName: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular), .foregroundColor: WPStyleGuide.darkGrey()]
     }
+
+    @IBOutlet weak var title: UILabel!
 
     var model: DomainSuggestion? {
         didSet {

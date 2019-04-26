@@ -2,7 +2,7 @@ import Foundation
 import WordPressFlux
 
 extension ReachabilityUtils {
-    private enum NoConnectionMessage {
+    private enum DefaultNoConnectionMessage {
         static let title = NSLocalizedString("No Connection",
                 comment: "Title of error prompt when no internet connection is available.")
         static let message = noConnectionMessage()
@@ -14,7 +14,7 @@ extension ReachabilityUtils {
     ///
     @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
-            WPError.showAlert(withTitle: NoConnectionMessage.title, message: NoConnectionMessage.message)
+            WPError.showAlert(withTitle: DefaultNoConnectionMessage.title, message: DefaultNoConnectionMessage.message)
             return
         }
         action()
@@ -43,15 +43,14 @@ extension ReachabilityUtils {
     ///
     /// We use a Snackbar instead of a literal Alert because, for internet connection errors,
     /// Alerts can be disruptive.
-    static func showNoInternetConnectionNotice() {
-        let notice = Notice(title: NoConnectionMessage.title,
-                            message: NoConnectionMessage.message,
-                            tag: NoConnectionMessage.tag)
+    @objc static func showNoInternetConnectionNotice(message: String = noConnectionMessage()) {
+        // An empty title is intentional to only show a single regular font message.
+        let notice = Notice(title: "", message: message, tag: DefaultNoConnectionMessage.tag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     /// Dismiss the currently shown Notice if it was created using showNoInternetConnectionNotice()
-    static func dismissNoInternetConnectionNotice() {
-        ActionDispatcher.dispatch(NoticeAction.clearWithTag(NoConnectionMessage.tag))
+    @objc static func dismissNoInternetConnectionNotice() {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(DefaultNoConnectionMessage.tag))
     }
 }

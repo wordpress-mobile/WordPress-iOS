@@ -32,7 +32,7 @@ extension NetworkAwareUI {
     }
 
     func presentNoNetworkAlert() {
-        ReachabilityUtils.showNoInternetConnectionNotice()
+        ReachabilityUtils.showNoInternetConnectionNotice(message: noConnectionMessage())
     }
 
     func dismissNoNetworkAlert() {

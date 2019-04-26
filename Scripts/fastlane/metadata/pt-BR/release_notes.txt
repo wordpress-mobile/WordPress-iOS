@@ -1,3 +1,5 @@
-- Você criará o seu site mais rapidamente com um processo que iniciará seu site já personalizado. Assim você poderá lançar seu site o quanto antes.
-- Assim que você criar um novo site, exibiremos dicas de como melhorar o site e aumentar sua audiência. As sugestões aparecerão quando forem necessárias e você poderá vê-las na tela "Meu site" a qualquer momento.
-- Para continuar a melhor o aplicativo, nós aumentamos a margem no editor para que seja mais confortável escrever posts longos e adicionamos ilustrações em telas de erros consistentes com as outras telas do aplicativo para que seja mais simples de entendê-los.
+12.2
+-----
+* Publique com confiança! Visualizações de rascunhos exibirão versões mais precisas de seus posts.
+* Se você prefere escrever usando aplicativos como Bear ou Ulysses (ou qualquer outro aplicativo que use os formatos TextBundle e TextPack), tudo ótimo!. Agora você pode importar textos desses aplicativos para este.
+* O aplicativo como um todo recebeu ajustes. Fizemos pequenas correções visuais no processo de criação do site, melhoramos os textos para deixar mais claro o quanto de armazenamento seu site está usando e corrigimos um problema que ocorria ocasionalmente ao tentar gerenciar plugins.

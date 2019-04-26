@@ -73,6 +73,8 @@
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
 
+#import "TextBundleWrapper.h"
+
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
@@ -102,7 +104,6 @@
 #import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
-#import "WPCrashlytics.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"

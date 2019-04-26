@@ -10,7 +10,7 @@ class SiteStatsInsightsViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
-    private let siteStatsInsightsDelegate: SiteStatsInsightsDelegate
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private let store: StatsInsightsStore
     private let insightsReceipt: Receipt
     private var changeReceipt: Receipt?
@@ -25,7 +25,9 @@ class SiteStatsInsightsViewModel: Observable {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
         self.store = store
+
         insightsReceipt = store.query(.insights)
+        store.actionDispatcher.dispatch(InsightAction.refreshInsights)
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -93,7 +95,7 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshInsights() {
-        ActionDispatcher.dispatch(InsightAction.refreshInsights())
+        ActionDispatcher.dispatch(InsightAction.refreshInsights)
     }
 
 }
@@ -191,28 +193,27 @@ private extension SiteStatsInsightsViewModel {
 
     func createMostPopularStatsRows() -> [StatsTotalRowData] {
         guard let mostPopularStats = store.getAnnualAndMostPopularTime(),
-                let mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
-                let mostPopularHour = mostPopularStats.mostPopularHour.hour,
-                mostPopularStats.mostPopularDayOfWeekPercentage > 0
-         else {
+            var mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
+            let mostPopularHour = mostPopularStats.mostPopularHour.hour,
+            mostPopularStats.mostPopularDayOfWeekPercentage > 0
+            else {
                 return []
         }
 
         var calendar = Calendar.init(identifier: .gregorian)
         calendar.locale = Locale.autoupdatingCurrent
 
-        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday - 1]
+        // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
+        mostPopularWeekday = mostPopularWeekday == 0 ? calendar.standaloneWeekdaySymbols.count - 1 : mostPopularWeekday - 1
+        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday]
 
-        let nowWithChangedHour = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date())
+        guard let timeModifiedDate = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date()) else {
+            return []
+        }
 
         let timeFormatter = DateFormatter()
         timeFormatter.dateStyle = .none
         timeFormatter.timeStyle = .short
-
-        guard let timeModifiedDate = nowWithChangedHour else {
-
-            return []
-        }
 
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
@@ -224,7 +225,7 @@ private extension SiteStatsInsightsViewModel {
                                   data: String(format: MostPopularStats.percentOfViews,
                                                mostPopularStats.mostPopularHourPercentage),
                                   icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
-        }
+    }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()

@@ -850,6 +850,11 @@ extension NotificationsViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
     }
+
+    func noConnectionMessage() -> String {
+        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
+                                 comment: "Error message shown when the user is browsing Notifications without an internet connection.")
+    }
 }
 
 extension NotificationsViewController: NetworkStatusDelegate {

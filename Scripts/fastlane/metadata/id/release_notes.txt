@@ -1,3 +1,6 @@
-- Proses Anda dari “pendaftaran awal” hingga “situs web selesai” akan berlangsung lebih cepat dengan pembuatan situs cerdas yang membantu Anda memulai dengan situs web personal yang sudah disesuaikan. Maaf, Anda sepertinya perlu memajukan jadwal peluncuran sekarang. Ini masalah yang menyenangkan.
-- Setelah Anda membuat situs baru, ada begitu banyak tutorial yang tersedia untuk membantu Anda membentuk dan menumbuhkannya, termasuk tips mengenai cara menumbuhkan audiens. Kami akan memberikan saran yang sesuai, dan Anda dapat menemukannya di layar Situs Saya kapan pun. Karena peluncuran adalah awal, bukan akhir.
-- Kami terus berupaya membuat aplikasi ini menyenangkan untuk digunakan — atau setidaknya lebih menyenangkan — dan salah satunya adalah dengan menambah margin jendela penyunting sehingga mengetik pos yang panjang menjadi lebih nyaman, dan memberikan tata letak serta ilustrasi halaman error yang lebih konsisten di seluruh bagian aplikasi sehingga lebih mudah dipahami.
+12.2
+-----
+* Publikasikan dengan percaya diri! Pratinjau konsep akan menampilkan versi yang lebih akurat untuk pos Anda.
+* jika Anda lebih suka menulis di aplikasi seperti Bear atau Ulysses (atau aplikasi lain yang menggunakan format TextBundle dan TextPack), tidak masalah, lanjutkan. Dan sekarang Anda dapat mengimpor teks dari aplikasi itu ke sini.
+* Seluruh aplikasi mendapatkan pembaruan musim semi. Kami memperbaiki beberapa gangguan visual dalam proses pembuatan situs, menyesuaikan susunan kata untuk memperjelas detail ruang penyimpanan yang digunakan di situs Anda, dan mengatasi masalah crash mengganggu yang terkadang terjadi saat Anda mencoba mengelola plugin.
+

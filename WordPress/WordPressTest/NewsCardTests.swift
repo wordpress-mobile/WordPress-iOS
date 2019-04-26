@@ -9,8 +9,8 @@ final class NewsCardTests: XCTestCase {
         static let content = "😳😳"
         static let url = URL(string: "http://wordpress.com")!
         static let version = Decimal(floatLiteral: 10.7)
-        static let readMore = "Read More"
-        static let dismiss = "Dismiss"
+        static let readMore = NSLocalizedString("Read More", comment: "Read more")
+        static let dismiss = NSLocalizedString("Dismiss", comment: "Dismiss")
     }
 
     private class MockNewsManager: NewsManager {

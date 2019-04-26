@@ -8,7 +8,6 @@ import WordPressShared
 import MobileCoreServices
 import WordPressEditor
 import WPMediaPicker
-import SVProgressHUD
 import AVKit
 import MobileCoreServices
 
@@ -1061,7 +1060,7 @@ extension AztecPostViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            Crashlytics.sharedInstance().recordError(error)
+            WPCrashLogging.logError(error)
             return
         }
 
@@ -1207,7 +1206,7 @@ private extension AztecPostViewController {
             self.displayPreview()
         }
 
-        if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
+        if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
                 self.displayHistory()
             }
