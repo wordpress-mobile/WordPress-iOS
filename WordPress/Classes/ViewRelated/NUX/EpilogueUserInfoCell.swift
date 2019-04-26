@@ -33,8 +33,11 @@ class EpilogueUserInfoCell: UITableViewCell {
 
         gravatarView.image = .gravatarPlaceholderImage
 
-        let accessibilityDescription = NSLocalizedString("Add Image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
+        let accessibilityDescription = NSLocalizedString("Add account image", comment: "Accessibility description for adding an image to a new user account. Tapping this initiates that flow.")
         gravatarButton.accessibilityLabel = accessibilityDescription
+
+        let accessibilityHint = NSLocalizedString("Adds image, or avatar, to represent this new account.", comment: "Accessibility hint text for adding an image to a new user account.")
+        gravatarButton.accessibilityHint = accessibilityHint
     }
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
