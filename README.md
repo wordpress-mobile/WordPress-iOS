@@ -76,40 +76,20 @@ Then you can compile and run the app on a device or an emulator and log in with 
 
 Read more about [OAuth2](https://developer.wordpress.com/docs/oauth2/) and the [WordPress.com REST endpoint](https://developer.wordpress.com/docs/api/).
 
+## Contributing
 
-## How we work ##
+Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, contributing code, and more ways to contribute.
 
-You can read more about [Code Style Guidelines](https://github.com/wordpress-mobile/WordPress-iOS/wiki/WordPress-for-iOS-Style-Guide) we adopted, and
-how we're organizing branches in our repository in the [Contribution Guide](https://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/).
+## Getting in Touch ##
 
-## Need help to build or hack? ##
+If you have questions or just want to say hi, join the [WordPress Slack]((https://chat.wordpress.org)) and drop a message on the `#mobile` channel.
 
-Say hello on our [Slack](https://chat.wordpress.org) channel: `#mobile`.
+## Resources
+
+- [Wiki](https://github.com/wordpress-mobile/WordPress-iOS/wiki)
+- [WordPress Mobile Blog](http://make.wordpress.org/mobile)
+- [WordPress Mobile Handbook](http://make.wordpress.org/mobile/handbook/)
 
 ## License
 
 WordPress for iOS is an Open Source project covered by the [GNU General Public License version 2](LICENSE).
-
-## Resources
-
-### Developer blog & Handbook
-
-Blog: http://make.wordpress.org/mobile
-
-Handbook: http://make.wordpress.org/mobile/handbook/
-
-### To report an issue
-
-https://github.com/wordpress-mobile/WordPress-iOS/issues
-
-### Source Code
-
-GitHub: https://github.com/wordpress-mobile/WordPress-iOS/
-
-### How to Contribute
-
-http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
-
-### How to help with translations
-
-https://translate.wordpress.org/projects/apps/ios
