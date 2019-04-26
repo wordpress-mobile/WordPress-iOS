@@ -86,7 +86,7 @@ If you have questions or just want to say hi, join the [WordPress Slack](https:/
 
 ## Resources
 
-- [Wiki](https://github.com/wordpress-mobile/WordPress-iOS/wiki)
+- The [Wiki](https://github.com/wordpress-mobile/WordPress-iOS/wiki) contains information about our development practices.
 - [WordPress Mobile Blog](http://make.wordpress.org/mobile)
 - [WordPress Mobile Handbook](http://make.wordpress.org/mobile/handbook/)
 
