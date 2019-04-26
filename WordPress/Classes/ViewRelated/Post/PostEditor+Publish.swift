@@ -197,13 +197,15 @@ extension PostEditor where Self: UIViewController {
     }
 
     func discardUnsavedChangesAndUpdateGUI() {
-        discardChanges()
-        dismissOrPopView()
+        let postDeleted = discardChanges()
+        dismissOrPopView(didSave: !postDeleted)
     }
 
-    func discardChanges() {
+    // Returns true when the post is deleted
+    func discardChanges() -> Bool {
+        var postDeleted = false
         guard let managedObjectContext = post.managedObjectContext, let originalPost = post.original else {
-            return
+            return postDeleted
         }
 
         WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
@@ -233,12 +235,14 @@ extension PostEditor where Self: UIViewController {
 
         if post.hasNeverAttemptedToUpload() && !post.isLocalRevision {
             post.remove()
+            postDeleted = true
         } else if shouldCreateDummyRevision {
             post.createRevision()
         }
 
         cancelUploadOfAllMedia(for: post)
         ContextManager.sharedInstance().save(managedObjectContext)
+        return postDeleted
     }
 
     func showPostHasChangesAlert() {
@@ -373,13 +377,13 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    func dismissOrPopView() {
+    func dismissOrPopView(didSave: Bool = true) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
-            onClose(true, false)
+            onClose(didSave, false)
         } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
