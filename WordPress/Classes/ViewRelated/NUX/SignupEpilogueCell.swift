@@ -24,6 +24,15 @@ class SignupEpilogueCell: UITableViewCell {
     private var cellType: EpilogueCellType?
     open var delegate: SignupEpilogueCellDelegate?
 
+    // MARK: - UITableViewCell
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        accessoryType = .none
+        cellField.textContentType = nil
+    }
+
     // MARK: - Public Methods
 
     func configureCell(forType newCellType: EpilogueCellType,
@@ -38,12 +47,24 @@ class SignupEpilogueCell: UITableViewCell {
         cellField.isSecureTextEntry = (cellType == .password)
         selectionStyle = .none
 
+        configureAccessoryType(for: newCellType)
+        configureTextContentTypeIfNeeded(for: newCellType)
+        configureAccessibility(for: newCellType)
+    }
+
+    // MARK: - Private behavior
+
+    private func configureAccessibility(for cellType: EpilogueCellType) {}
+
+    private func configureAccessoryType(for cellType: EpilogueCellType) {
         if cellType == .username {
             accessoryType = .disclosureIndicator
         } else {
             accessoryType = .none
         }
+    }
 
+    private func configureTextContentTypeIfNeeded(for cellType: EpilogueCellType) {
         if #available(iOS 12.0, *) {
             if cellType == .password {
                 cellField.textContentType = .newPassword
@@ -52,7 +73,6 @@ class SignupEpilogueCell: UITableViewCell {
             }
         }
     }
-
 }
 
 
@@ -87,5 +107,4 @@ extension SignupEpilogueCell: UITextFieldDelegate {
         cellField.endEditing(true)
         return true
     }
-
 }
