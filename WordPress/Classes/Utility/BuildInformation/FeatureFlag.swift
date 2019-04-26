@@ -6,6 +6,7 @@ enum FeatureFlag: Int {
     case jetpackDisconnect
     case statsRefresh
     case domainCredit
+    case notificationActions
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -18,6 +19,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
             return false
+        case .notificationActions:
+            return BuildConfiguration.current != .appStore
         }
     }
 }

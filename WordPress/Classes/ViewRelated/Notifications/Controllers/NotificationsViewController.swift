@@ -436,6 +436,10 @@ private extension NotificationsViewController {
     }
 
     func updateNotificationRemindersButton() {
+        guard FeatureFlag.notificationActions.enabled else {
+            return
+        }
+
         let remindersButton = UIBarButtonItem(image: Gridicon.iconOfType(.time), style: .plain, target: self, action: #selector(didTapRemindersButton))
 
         let helper = NotificationRemindersHelper()
@@ -1054,13 +1058,15 @@ private extension NotificationsViewController {
     func trailingButtons(note: Notification) -> [MGSwipeButton] {
         var rightButtons = [MGSwipeButton]()
 
-        let moreAction = MGSwipeButton(title: "", icon: Gridicon.iconOfType(.ellipsis).imageWithTintColor(.white), backgroundColor: WPStyleGuide.greyDarken20())
-        moreAction.callback = { [weak self] _ in
-            self?.showMoreAlertController(for: note)
-            return true
-        }
+        if FeatureFlag.notificationActions.enabled {
+            let moreAction = MGSwipeButton(title: "", icon: Gridicon.iconOfType(.ellipsis).imageWithTintColor(.white), backgroundColor: WPStyleGuide.greyDarken20())
+            moreAction.callback = { [weak self] _ in
+                self?.showMoreAlertController(for: note)
+                return true
+            }
 
-        rightButtons.append(moreAction)
+            rightButtons.append(moreAction)
+        }
 
         guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
             return rightButtons
