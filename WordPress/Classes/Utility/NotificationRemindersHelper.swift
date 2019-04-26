@@ -215,32 +215,42 @@ enum NotificationReminderPeriod: CaseIterable {
         }
     }
 
-    /// Date components representing the time period. Used to schedule a reminder.
+    /// Date components representing the time period, from the current date.
+    /// Used to schedule a reminder.
     ///
     var dateComponents: DateComponents? {
+        return dateComponents(from: Date.today)
+    }
+
+    /// Date components representing the time period, from the specified date.
+    ///
+    func dateComponents(from date: Date) -> DateComponents? {
         var components = DateComponents()
 
         switch self {
         case .in20minutes:
             components.minute = 20
-            return Date.today.addingComponents(components)?.timeAndDateComponents
+            return date.addingComponents(components)?.timeAndDateComponents
         case .in1hour:
             components.hour = 1
-            return Date.today.addingComponents(components)?.timeAndDateComponents
+            return date.addingComponents(components)?.timeAndDateComponents
         case .in3hours:
             components.hour = 3
-            return Date.today.addingComponents(components)?.timeAndDateComponents
+            return date.addingComponents(components)?.timeAndDateComponents
         case .tomorrow:
             components.day = 1
-            guard let tomorrow = Date.today.addingComponents(components),
+            guard let tomorrow = date.addingComponents(components),
                 let date = Calendar.current.date(bySettingHour: ComponentValues.hours9am, minute: 0, second: 0, of: tomorrow) else {
                     return nil
             }
             return date.timeAndDateComponents
         case .nextWeek:
-            components.weekday = ComponentValues.weekdayMonday
-            components.hour = ComponentValues.hours9am
-            return components
+            guard let nextWeek = Calendar.current.date(bySetting: .weekday, value: ComponentValues.weekdayMonday, of: date),
+                let nextWeek9am = Calendar.current.date(bySettingHour: ComponentValues.hours9am, minute: 0, second: 0, of: nextWeek) else {
+                    return nil
+            }
+
+            return nextWeek9am.timeAndDateComponents
         }
     }
 

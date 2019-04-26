@@ -140,6 +140,7 @@
 		172D7825212D93B800D513F7 /* GiphyPageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172D7824212D93B800D513F7 /* GiphyPageableTests.swift */; };
 		172E27D31FD98135003EA321 /* NoticePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172E27D21FD98135003EA321 /* NoticePresenter.swift */; };
 		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
+		1736E7A622735DBB007B53D9 /* NotificationReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1736E7A522735DBB007B53D9 /* NotificationReminderTests.swift */; };
 		173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */; };
 		173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 173BCE741CEB369900AE8817 /* Domains.storyboard */; };
 		173BCE791CEB780800AE8817 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE781CEB780800AE8817 /* Domain.swift */; };
@@ -2014,6 +2015,7 @@
 		172D7824212D93B800D513F7 /* GiphyPageableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyPageableTests.swift; sourceTree = "<group>"; };
 		172E27D21FD98135003EA321 /* NoticePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticePresenter.swift; sourceTree = "<group>"; };
 		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
+		1736E7A522735DBB007B53D9 /* NotificationReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationReminderTests.swift; sourceTree = "<group>"; };
 		173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsListViewController.swift; sourceTree = "<group>"; };
 		173BCE741CEB369900AE8817 /* Domains.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Domains.storyboard; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
@@ -4452,7 +4454,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -7032,6 +7034,7 @@
 				85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */,
 				B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */,
 				7E987F592108122A00CAFB88 /* NotificationUtility.swift */,
+				1736E7A522735DBB007B53D9 /* NotificationReminderTests.swift */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -8456,7 +8459,6 @@
 		F928EDA1226140430030D451 /* Sentry */ = {
 			isa = PBXGroup;
 			children = (
-				F928EDA2226140620030D451 /* WPCrashLogging.swift */,
 			);
 			path = Sentry;
 			sourceTree = "<group>";
@@ -8886,7 +8888,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11017,6 +11019,7 @@
 				B5772AC61C9C84900031F97E /* GravatarServiceTests.swift in Sources */,
 				937E3AB61E3EBE1600CDA01A /* PostEditorStateTests.swift in Sources */,
 				FF9A6E7121F9361700D36D14 /* MediaUploadHashTests.swift in Sources */,
+				1736E7A622735DBB007B53D9 /* NotificationReminderTests.swift in Sources */,
 				B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */,
 				7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */,
 				40E7FEC82211EEC00032834E /* LastPostStatsRecordValueTests.swift in Sources */,
