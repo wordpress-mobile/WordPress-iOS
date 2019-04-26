@@ -443,6 +443,11 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
+        if notification.request.content.categoryIdentifier == NotificationRemindersHelper.RequestKeys.category {
+            completionHandler(.alert)
+            return
+        }
+
         let userInfo = notification.request.content.userInfo as NSDictionary
 
         // If the app is open, and a Zendesk view is being shown, Zendesk will display an alert allowing the user to view the updated ticket.

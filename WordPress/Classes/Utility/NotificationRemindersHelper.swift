@@ -181,7 +181,7 @@ struct NotificationRemindersHelper {
         static let reminderIds = "notification-reminder-ids"
     }
 
-    private enum RequestKeys {
+    enum RequestKeys {
         static let category = "notification-reminder"
         static let notificationId = "note_id"
         static let type = "type"
