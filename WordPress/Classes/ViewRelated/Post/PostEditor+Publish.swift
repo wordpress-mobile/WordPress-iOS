@@ -232,8 +232,9 @@ extension PostEditor where Self: UIViewController {
 
         post = originalPost
         post.deleteRevision()
+        let shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
-        if post.hasNeverAttemptedToUpload() && !post.isLocalRevision {
+        if shouldRemovePostOnDismiss {
             post.remove()
             postDeleted = true
         } else if shouldCreateDummyRevision {
