@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    # pod 'WordPressShared', '~> 1.7.4'
+    pod 'WordPressShared', '~> 1.7.5-beta.2'
 
     ## for development:
-    #pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
+    # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/support-swift-5'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/support-swift-5'
 end
 
 def aztec
