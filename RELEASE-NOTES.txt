@@ -2,6 +2,7 @@
 -----
 * Fixed crash when searching Free Photo Library.
 * Better URL validation when logging in with a self hosted site.
+* Fix for broken images in posts created by the share extension
 
 12.3
 -----
