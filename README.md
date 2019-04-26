@@ -82,7 +82,7 @@ Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, 
 
 ## Getting in Touch ##
 
-If you have questions or just want to say hi, join the [WordPress Slack]((https://chat.wordpress.org)) and drop a message on the `#mobile` channel.
+If you have questions or just want to say hi, join the [WordPress Slack](https://chat.wordpress.org) and drop a message on the `#mobile` channel.
 
 ## Resources
 
