@@ -4146,7 +4146,6 @@
 		02BF30512271D76F00616558 /* DomainCredit */ = {
 			isa = PBXGroup;
 			children = (
-				02AC3091226FFFAA0018D23B /* BlogDetailsViewController+DomainCredit.swift */,
 				02BF30522271D7F000616558 /* DomainCreditRedemptionSuccessViewController.swift */,
 			);
 			path = DomainCredit;
@@ -6867,6 +6866,7 @@
 				02BF30512271D76F00616558 /* DomainCredit */,
 				4349BFF6221205740084F200 /* BlogDetailsSectionHeaderView.swift */,
 				02761EBF2270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift */,
+				02AC3091226FFFAA0018D23B /* BlogDetailsViewController+DomainCredit.swift */,
 			);
 			path = Blog;
 			sourceTree = "<group>";
