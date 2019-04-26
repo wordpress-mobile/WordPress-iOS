@@ -32,9 +32,6 @@
 ///-----------
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor;
-- (void)trackLogoutIfNeeded;
 - (void)customizeAppearanceForTextElements;
-
-+ (void)setLogLevel:(DDLogLevel)logLevel;
 
 @end

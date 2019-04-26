@@ -3,6 +3,8 @@ import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
 import WordPressAuthenticator
+import AutomatticTracks
+import WordPressComStatsiOS
 import AlamofireNetworkActivityIndicator
 
 // MARK: - Utility Configuration
@@ -186,7 +188,14 @@ extension WordPressAppDelegate {
             return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
         }
     }
+
+    @objc func trackLogoutIfNeeded() {
+        if AccountHelper.isLoggedIn == false {
+            WPAnalytics.track(.logout)
+        }
+    }
 }
+
 
 // MARK: - Debugging
 
@@ -277,6 +286,15 @@ extension WordPressAppDelegate {
                 WordPressAppDelegate.setLogLevel(.verbose)
             }
         }
+    }
+
+    @objc class func setLogLevel(_ level: DDLogLevel) {
+        let rawLevel = Int32(level.rawValue)
+
+        WPSharedSetLoggingLevel(rawLevel)
+        TracksSetLoggingLevel(rawLevel)
+        WPStatsSetLoggingLevel(rawLevel)
+        WPAuthenticatorSetLoggingLevel(rawLevel)
     }
 }
 
