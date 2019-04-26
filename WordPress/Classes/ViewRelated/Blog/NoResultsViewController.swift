@@ -40,7 +40,7 @@ import Reachability
     private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
-    
+
     /// Allows caller to customize subtitle attributed text after default styling.
     typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString
     /// Called after default styling of attributed subtitle, if non nil.
