@@ -150,7 +150,7 @@ class ReaderCommentCell: UITableViewCell {
 
         let placeholder = UIImage(named: "gravatar")
         if let url = comment.avatarURLForDisplay() {
-            avatarImageView.setImageWith(url, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }

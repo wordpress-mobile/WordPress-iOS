@@ -21,6 +21,8 @@ class JetpackConnectionWebViewController: UIViewController {
     fileprivate var pendingDotComRedirect: URL?
     fileprivate var account: WPAccount?
 
+    private var analyticsErrorWasTracked = false
+
     init(blog: Blog) {
         self.blog = blog
         let configuration = WKWebViewConfiguration()
@@ -68,6 +70,8 @@ class JetpackConnectionWebViewController: UIViewController {
 
         let request = URLRequest(url: url)
         webView.load(request)
+
+        WPAnalytics.track(.installJetpackWebviewSelect)
     }
 
     @objc func cancel() {
@@ -106,6 +110,15 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
         default:
             decisionHandler(.allow)
         }
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        if analyticsErrorWasTracked {
+            return
+        }
+
+        WPAnalytics.track(.installJetpackWebviewFailed)
+        analyticsErrorWasTracked.toggle()
     }
 }
 

@@ -101,10 +101,11 @@ extension NSNotification.Name {
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         ZendeskUtils.presentInController = controller
+        let haveUserIdentity = ZendeskUtils.sharedInstance.haveUserIdentity
 
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
-        if !ZendeskUtils.sharedInstance.haveUserIdentity {
+        if !haveUserIdentity {
             let zendeskIdentity = Identity.createAnonymous()
             Zendesk.instance?.setIdentity(zendeskIdentity)
         }
@@ -117,8 +118,16 @@ extension NSNotification.Name {
         helpCenterConfig.groupIds = [Constants.mobileCategoryID as NSNumber]
         helpCenterConfig.labels = [Constants.articleLabel]
 
-        let helpCenterController = HelpCenterUi.buildHelpCenterOverview(withConfigs: [helpCenterConfig])
-        helpCenterController.uiDelegate = self
+        // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
+        helpCenterConfig.hideContactSupport = !haveUserIdentity
+        let articleConfig = ArticleUiConfiguration()
+        articleConfig.hideContactSupport = !haveUserIdentity
+
+        // Get custom request configuration so new tickets from this path have all the necessary information.
+        let newRequestConfig = self.createRequest()
+
+
+        let helpCenterController = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [helpCenterConfig, articleConfig, newRequestConfig])
         ZendeskUtils.showZendeskView(helpCenterController)
     }
 
@@ -156,7 +165,10 @@ extension NSNotification.Name {
             self.sourceTag = sourceTag
             WPAnalytics.track(.supportTicketListViewed)
 
-            let requestListController = RequestUi.buildRequestList()
+            // Get custom request configuration so new tickets from this path have all the necessary information.
+            let newRequestConfig = self.createRequest()
+
+            let requestListController = RequestUi.buildRequestList(with: [newRequestConfig])
             ZendeskUtils.showZendeskView(requestListController)
         }
     }
@@ -906,26 +918,6 @@ private extension ZendeskUtils {
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
-    }
-
-}
-
-// MARK: - ZDKHelpCenterConversationsUIDelegate
-
-extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
-
-    func navBarConversationsUIType() -> ZDKNavBarConversationsUIType {
-        // When ZDKContactUsVisibility is on, use the default right nav bar label.
-        return .localizedLabel
-    }
-
-    func active() -> ZDKContactUsVisibility {
-        // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
-        if !ZendeskUtils.sharedInstance.haveUserIdentity {
-            return .off
-        }
-
-        return .articleListAndArticle
     }
 
 }
