@@ -212,11 +212,16 @@ import "./ScreenshotFastfile"
         dsym: "../build/WordPress.app.dSYM.zip",
     )
     
-    upload_symbols_to_sentry(
+
+    dSYM_PATH = File.dirname(File.dirname(Dir.pwd)) + "/build/WordPress.app.dSYM.zip"
+
+    sentry_upload_dsym(
       auth_token: ENV["SENTRY_AUTH_TOKEN"],
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
+      dsym_path: dSYM_PATH,
     )
+   
   end
 
   #####################################################################################
@@ -257,12 +262,15 @@ import "./ScreenshotFastfile"
     )
 
     sh("cd .. && rm WordPress.ipa")
-    upload_symbols_to_sentry(
-      dsym_path: "./WordPress.app.dSYM.zip",
+    dSYM_PATH = File.dirname(Dir.pwd) + "/WordPress.app.dSYM.zip"
+
+    sentry_upload_dsym(
+      dsym_path: dSYM_PATH,
       auth_token: ENV["SENTRY_AUTH_TOKEN"],
       org_slug: 'a8c',
       project_slug: 'wordpress-ios',
     )
+
     sh("cd .. && rm WordPress.app.dSYM.zip")
   end
 

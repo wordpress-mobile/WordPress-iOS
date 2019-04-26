@@ -83,21 +83,52 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                          image:image
                       callback:callback];
 }
+    
+- (instancetype)initWithTitle:(NSString *)title
+      accessibilityIdentifier:(NSString *)accessibilityIdentifier
+                        image:(UIImage *)image
+                   imageColor:(UIColor *)imageColor
+                     callback:(void (^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:BlogDetailsCellIdentifier
+       accessibilityIdentifier:accessibilityIdentifier
+                         image:image
+                    imageColor:imageColor
+                      callback:callback];
+}
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                    identifier:(NSString * __nonnull)identifier
       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                        image:(UIImage * __nonnull)image                   
+                     callback:(void(^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:identifier
+       accessibilityIdentifier:accessibilityIdentifier
+                         image:image
+                    imageColor:[WPStyleGuide greyLighten10]
+                      callback:callback];
+}
+    
+- (instancetype)initWithTitle:(NSString * __nonnull)title
+                   identifier:(NSString * __nonnull)identifier
+      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                         image:(UIImage * __nonnull)image
+                   imageColor:(UIColor * __nonnull)imageColor
                      callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
         _title = title;
         _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _imageColor = imageColor;
         _callback = callback;
         _identifier = identifier;
         _accessibilityIdentifier = accessibilityIdentifier;
         _showsSelectionState = YES;
+        _showsDisclosureIndicator = YES;
     }
     return self;
 }
@@ -105,12 +136,24 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @end
 
 @implementation BlogDetailsSection
-- (instancetype)initWithTitle:(NSString *)title andRows:(NSArray *)rows
+- (instancetype)initWithTitle:(NSString *)title
+                      andRows:(NSArray *)rows
+                     category:(BlogDetailsSectionCategory)category
+{
+    return [self initWithTitle:title rows:rows footerTitle:nil category:category];
+}
+
+- (instancetype)initWithTitle:(NSString *)title
+                         rows:(NSArray *)rows
+                  footerTitle:(NSString *)footerTitle
+                     category:(BlogDetailsSectionCategory)category
 {
     self = [super init];
     if (self) {
         _title = title;
         _rows = rows;
+        _footerTitle = footerTitle;
+        _category = category;
     }
     return self;
 }
@@ -312,6 +355,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSIndexPath *indexPath = [self indexPathForSubsection:section];
 
     switch (section) {
+        case BlogDetailsSubsectionDomainCredit:
         case BlogDetailsSubsectionQuickStart:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
@@ -403,32 +447,36 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 // MARK: Todo: this needs to adjust based on the existence of the QSv2 section
-- (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)section
+- (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)subsection
 {
-    switch (section) {
+    BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+    NSInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
+    switch (subsection) {
+        case BlogDetailsSubsectionDomainCredit:
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionQuickStart:
-            return [NSIndexPath indexPathForRow:0 inSection:0];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionStats:
-            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:0] : [NSIndexPath indexPathForRow:0 inSection:0];
+            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:section] : [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionActivity:
-            return [NSIndexPath indexPathForRow:1 inSection:0];
+            return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPosts:
-            return [NSIndexPath indexPathForRow:0 inSection:1];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
-            return [NSIndexPath indexPathForRow:0 inSection:2];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionMedia:
-            return [NSIndexPath indexPathForRow:2 inSection:1];
+            return [NSIndexPath indexPathForRow:2 inSection:section];
         case BlogDetailsSubsectionPages:
-            return [NSIndexPath indexPathForRow:0 inSection:0];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionComments:
-            return [NSIndexPath indexPathForRow:3 inSection:1];
+            return [NSIndexPath indexPathForRow:3 inSection:section];
         case BlogDetailsSubsectionSharing:
-            return [NSIndexPath indexPathForRow:0 inSection:3];
+            return [NSIndexPath indexPathForRow:0 inSection:section];
         case BlogDetailsSubsectionPeople:
-            return [NSIndexPath indexPathForRow:1 inSection:3];
+            return [NSIndexPath indexPathForRow:1 inSection:section];
         case BlogDetailsSubsectionPlugins:
-            return [NSIndexPath indexPathForRow:2 inSection:3];
+            return [NSIndexPath indexPathForRow:2 inSection:section];
     }
 }
 
@@ -437,7 +485,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)restorableSelectedIndexPath
 {
     if (!_restorableSelectedIndexPath) {
-        NSUInteger section = [self shouldShowQuickStartChecklist] ? 1 : 0;
+        // If nil, default to stats subsection.
+        BlogDetailsSubsection subsection = BlogDetailsSubsectionStats;
+        BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
+        NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
@@ -488,6 +539,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return view;
     }
 }
+    
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    BlogDetailsSection *detailSection = [self.tableSections objectAtIndex:section];
+    return detailSection.footerTitle;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
+}
 
 #pragma mark - Data Model setup
 
@@ -522,6 +584,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
+    if ([Feature enabled:FeatureFlagDomainCredit]) {
+        [marr addObject:[self domainCreditSectionViewModel]];
+    }
     if ([self shouldShowQuickStartChecklist]) {
         [marr addObject:[self quickStartSectionViewModel]];
     }
@@ -575,7 +640,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [rows addObject:plansRow];
     }
 
-    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryGeneral];
 }
 
 - (BlogDetailsSection *)publishTypeSectionViewModel
@@ -616,7 +681,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [rows addObject:row];
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPublish];
 }
 
 - (BlogDetailsSection *)personalizeSectionViewModel
@@ -640,7 +705,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryPersonalize];
 }
 
 - (BlogDetailsSection *)configurationSectionViewModel
@@ -684,7 +749,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [rows addObject:row];
 
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryConfigure];
 }
 
 - (BlogDetailsSection *)externalSectionViewModel
@@ -716,7 +781,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     NSString *title = NSLocalizedString(@"External", @"Section title for the external table section in the blog details screen");
-    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryExternal];
 }
 
 - (BlogDetailsSection *)removeSiteSectionViewModel
@@ -734,7 +799,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     removeSiteRow.forDestructiveAction = YES;
     [rows addObject:removeSiteRow];
 
-    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows category:BlogDetailsSectionCategoryRemoveSite];
 
 }
 
@@ -973,6 +1038,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     cell.accessibilityIdentifier = row.accessibilityIdentifier ?: row.identifier;
     cell.detailTextLabel.text = row.detail;
     cell.imageView.image = row.image;
+    cell.imageView.tintColor = row.imageColor;
     if (row.accessoryView) {
         cell.accessoryView = row.accessoryView;
     }
@@ -988,12 +1054,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentNatural;
-    cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     if (row.forDestructiveAction) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewDestructiveActionCell:cell];
     } else {
-        cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+        if (row.showsDisclosureIndicator) {
+            cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
         [WPStyleGuide configureTableViewCell:cell];
     }
     if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
@@ -1455,16 +1524,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
 
-    BlogDetailsSection *firstSectionBefore = [self.tableSections objectAtIndex:0];
+    BOOL isQuickStartSectionShownBefore = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self configureTableViewData];
-        BlogDetailsSection *firstSectionAfter = [self.tableSections objectAtIndex:0];
-
+        BOOL isQuickStartSectionShownAfter = [self findSectionIndexWithSections:self.tableSections category:BlogDetailsSectionCategoryQuickStart] != NSNotFound;
+        
         // quick start was just enabled
-        if (!firstSectionBefore.showQuickStartMenu && firstSectionAfter.showQuickStartMenu) {
+        if (!isQuickStartSectionShownBefore && isQuickStartSectionShownAfter) {
             [self showQuickStartCustomize];
         }
         [self reloadTableViewPreservingSelection];
