@@ -1,10 +1,10 @@
 import Gridicons
 
 class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
-    typealias EllipsisCallback = () -> Void
+    typealias EllipsisCallback = (BlogDetailsSectionHeaderView) -> Void
     @IBOutlet private var titleLabel: UILabel?
 
-    @IBOutlet private var ellipsisButton: UIButton? {
+    @objc @IBOutlet private(set) var ellipsisButton: UIButton? {
         didSet {
             ellipsisButton?.setImage(Gridicon.iconOfType(.ellipsis).imageWithTintColor(WPStyleGuide.grey()), for: .normal)
         }
@@ -16,9 +16,9 @@ class BlogDetailsSectionHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    @objc var callback: EllipsisCallback?
+    @objc var ellipsisButtonDidTouch: EllipsisCallback?
 
     @IBAction func ellipsisTapped() {
-        callback?()
+        ellipsisButtonDidTouch?(self)
     }
 }
