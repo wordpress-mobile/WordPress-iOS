@@ -76,6 +76,16 @@ class WPTableViewCellValue1: WPReusableTableViewCell {
     }
 }
 
+class WPTableViewCellValue2: WPReusableTableViewCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .value2, reuseIdentifier: reuseIdentifier)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}
+
 class WPTableViewCellBadge: WPTableViewCellDefault {
     @objc var badgeCount: Int = 0 {
         didSet {
