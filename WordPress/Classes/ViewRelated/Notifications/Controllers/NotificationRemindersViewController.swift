@@ -31,6 +31,7 @@ class NotificationRemindersViewController: UITableViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
+        formatter.doesRelativeDateFormatting = true
         return formatter
     }()
 
@@ -83,9 +84,9 @@ class NotificationRemindersViewController: UITableViewController {
 
         let title = NSLocalizedString("Cancel All Reminders", comment: "Title of button to cancel all reminders set by the user")
         let cancelRow = DestructiveButtonRow(title: title, action: { [weak self] _ in
-            // TODO: Show confirmation
             self?.helper.cancelAllReminders()
             self?.reloadModel()
+            self?.dismiss(animated: true, completion: nil)
             }, accessibilityIdentifier: "cancel reminders row")
         let cancelAllSection = ImmuTableSection(rows: [cancelRow])
 
@@ -100,8 +101,7 @@ class NotificationRemindersViewController: UITableViewController {
 
         let value: String
         if let date = helper.reminderTriggerDate(for: request) {
-            let formatString = NSLocalizedString("Reminder at %@", comment: "Label informing the user of the date and time a reminder is set for.")
-            value = String(format: formatString, formatter.string(from: date))
+            value = formatter.string(from: date)
         } else {
             value = ""
         }
