@@ -38,6 +38,8 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var comment: Comment?
 
+    @objc var attributedString: NSAttributedString?
+
     @objc var showReply: Bool {
         get {
             if let comment = comment, let post = comment.post as? ReaderPost {
@@ -118,8 +120,9 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: - Configuration
 
 
-    @objc func configureCell(comment: Comment) {
+    @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
         self.comment = comment
+        self.attributedString = attributedString
 
         configureAvatar()
         configureAuthorButton()
@@ -175,14 +178,14 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func configureText() {
-        guard let comment = comment else {
+        guard let comment = comment, let attributedString = attributedString else {
             return
         }
 
         textView.isPrivate = comment.isPrivateContent()
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
-        textView.content = comment.content
+        textView.attributedText = attributedString
     }
 
 

@@ -56,6 +56,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 @property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic) BOOL deviceIsRotating;
+@property (nonatomic, strong) NSCache *cachedAttributedStrings;
 
 @end
 
@@ -322,6 +323,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     self.estimatedRowHeights = [[NSCache alloc] init];
+    self.cachedAttributedStrings = [[NSCache alloc] init];
 }
 
 - (void)configureTableViewHandler
@@ -705,7 +707,32 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [self.tableViewHandler refreshTableView];
     [self refreshNoResultsView];
+    [self.managedObjectContext performBlock:^{
+        [self updateCachedContent];
+    }];
+
 }
+
+
+- (void)updateCachedContent
+{
+    NSArray *comments = self.tableViewHandler.resultsController.fetchedObjects;
+    for(Comment *comment in comments) {
+        [self cacheContentForComment:comment];
+    }
+}
+
+
+- (NSAttributedString *)cacheContentForComment:(Comment *)comment
+{
+    NSAttributedString *attrStr = [self.cachedAttributedStrings objectForKey:comment.commentID];
+    if (!attrStr) {
+        attrStr = [WPRichContentView formattedAttributedStringForString: comment.content];
+        [self.cachedAttributedStrings setObject:attrStr forKey:comment.commentID];
+    }
+    return attrStr;
+}
+
 
 #pragma mark - Actions
 
@@ -909,7 +936,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
-    [cell configureCellWithComment:comment];
+    NSAttributedString *attrStr = [self cacheContentForComment:comment];
+    [cell configureCellWithComment:comment attributedString:attrStr];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
