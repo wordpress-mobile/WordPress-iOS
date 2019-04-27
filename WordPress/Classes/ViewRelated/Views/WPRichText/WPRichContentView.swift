@@ -60,7 +60,7 @@ class WPRichContentView: UITextView {
     }
 
 
-    class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
+    @objc class func formattedAttributedStringForString(_ string: String) -> NSAttributedString {
         let style = "<style>" +
             "body { font:-apple-system-body; font-family: 'Noto Serif'; font-weight: normal; line-height:1.6; color: #2e4453; }" +
             "blockquote { color:#4f748e; } " +
