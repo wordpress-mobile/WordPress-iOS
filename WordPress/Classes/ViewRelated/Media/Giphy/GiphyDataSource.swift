@@ -89,7 +89,7 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
 
     func registerGroupChangeObserverBlock(_ callback: @escaping WPMediaGroupChangesBlock) -> NSObjectProtocol {
         // The group never changes
-        return NSNull();
+        return NSNull()
     }
 
     func unregisterGroupChangeObserver(_ blockKey: NSObjectProtocol) {
