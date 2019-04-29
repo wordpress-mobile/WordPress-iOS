@@ -3,6 +3,7 @@
 * You can now mark notifications as unread with just a swipe.
 * Fixed crash when searching Free Photo Library.
 * Better URL validation when logging in with a self hosted site.
+* Account Settings Primary Site now shows the site URL if the site has no name.
 * Implemented incremental improvements to accessibility experience across the app.
 
 12.3
