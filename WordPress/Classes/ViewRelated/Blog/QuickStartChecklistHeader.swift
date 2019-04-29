@@ -1,7 +1,6 @@
 import Gridicons
 
 class QuickStartChecklistHeader: UIView {
-
     var collapseListener: ((Bool) -> Void)?
     var collapse: Bool = false {
         didSet {
@@ -88,7 +87,7 @@ extension QuickStartChecklistHeader: Accessible {
 
         // From an accessibility perspective, this view is essentially monolithic, so we configure it accordingly
         isAccessibilityElement = true
-        accessibilityTraits = [ .header, .button ]
+        accessibilityTraits = [.header, .button]
 
         updateCollapseHeaderAccessibility()
     }
