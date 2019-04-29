@@ -3,7 +3,6 @@ import Reachability
 import WordPressShared
 import ZendeskCoreSDK
 
-@UIApplicationMain
 class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
