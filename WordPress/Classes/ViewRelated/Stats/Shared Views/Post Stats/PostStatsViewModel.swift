@@ -200,7 +200,7 @@ private extension PostStatsViewModel {
     func childRowsForYear(_ months: [StatsPostViews]) -> [StatsTotalRowData] {
         return months.map {
             StatsTotalRowData(name: displayMonth(forDate: $0.date),
-                              data: $0.viewsCount.formatWithCommas())
+                              data: $0.viewsCount.abbreviatedString())
         }
     }
 
