@@ -40,7 +40,7 @@ import WordPressAuthenticator
             hockeyOptions[key.rawValue] = value
         }
 
-        if hockey.handleOpen(url, options: hockeyOptions) {
+        if hockey?.handleOpen(url, options: hockeyOptions) == true {
             return true
         }
         return false
