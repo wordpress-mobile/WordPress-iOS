@@ -13,6 +13,7 @@
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, assign) BOOL ascendingOrdering;
 @property (nonatomic, strong) NSMutableDictionary *observers;
+@property (nonatomic, strong) NSMutableDictionary *groupObservers;
 @property (nonatomic, strong) NSFetchedResultsController *fetchController;
 @property (nonatomic, strong) id groupObserverHandler;
 #pragma mark - change trackers
@@ -32,7 +33,7 @@
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
         _blog = blog;
         _observers = [NSMutableDictionary dictionary];
-
+        _groupObservers = [NSMutableDictionary dictionary];
         _mediaRemoved = [[NSMutableIndexSet alloc] init];
         _mediaInserted = [[NSMutableIndexSet alloc] init];
         _mediaChanged = [[NSMutableIndexSet alloc] init];
@@ -142,6 +143,13 @@
     }
 }
 
+- (void)notifyGroupObservers
+{
+    for ( WPMediaGroupChangesBlock callback in [self.groupObservers allValues]) {
+        callback();
+    }
+}
+
 - (void)notifyObserversReloadData
 {
     [self notifyObserversWithIncrementalChanges:NO
@@ -168,13 +176,15 @@
 
 -(id<NSObject>)registerGroupChangeObserverBlock:(WPMediaGroupChangesBlock)callback
 {
-    // The group never changes
-    return nil;
-}
+    NSUUID *blockKey = [NSUUID UUID];
+    [self.groupObservers setObject:[callback copy] forKey:blockKey];
+    return blockKey;}
 
 -(void)unregisterGroupChangeObserver:(id<NSObject>)blockKey
 {
-    // The group never changes
+    if (blockKey) {
+        [self.groupObservers removeObjectForKey:blockKey];
+    }
 }
 
 - (void)addImage:(UIImage *)image
@@ -457,6 +467,9 @@
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    if ([self.mediaChanged containsIndex:0] || [self.mediaInserted containsIndex:0] || [self.mediaRemoved containsIndex:0]) {
+        [self notifyGroupObservers];
+    }
     [self notifyObserversWithIncrementalChanges:YES
                                         removed:self.mediaRemoved
                                        inserted:self.mediaInserted
