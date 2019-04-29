@@ -91,7 +91,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         let url = URL(string: path)
         if url != nil {
-            avatarImageView.setImageWith(url!, placeholderImage: placeholder)
+            avatarImageView.downloadImage(from: url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }

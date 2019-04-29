@@ -103,7 +103,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     self.gravatarImageView.image = gravatarImage;
     
     // Note:
-    // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
+    // We need to update the internal cache. Otherwise, any upcoming query to refresh the gravatar
     // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
     //
     [self.gravatarImageView overrideGravatarImageCache:gravatarImage rating:GravatarRatingsX email:self.gravatarEmail];

@@ -4,7 +4,6 @@
 #import "Constants.h"
 
 // Pods
-#import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressUI/WordPressUI.h>
 
@@ -17,9 +16,6 @@
 
 // Logging
 #import "WPLogger.h"
-#import <AutomatticTracks/TracksLogging.h>
-#import <WordPressComStatsiOS/WPStatsLogging.h>
-#import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -39,7 +35,6 @@
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
-DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
@@ -64,8 +59,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    [WordPressAppDelegate fixKeychainAccess];
 
     // Authentication Framework
     [self configureWordPressAuthenticator];
@@ -92,7 +85,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    DDLogInfo(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
@@ -101,10 +94,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupBackgroundRefresh:application];
     [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
-
-    if ([Feature enabled:FeatureFlagQuickStartV2]) {
-        [[PushNotificationsManager shared] deletePendingLocalNotifications];
-    }
+    [[PushNotificationsManager shared] deletePendingLocalNotifications];
 
     return YES;
 }
@@ -264,7 +254,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Crash reporting, logging
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
-    [self configureCrashlytics];
+    [self configureCrashLogging];
     [self configureAppRatingUtility];
 
     // Analytics
@@ -282,7 +272,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [ZendeskUtils setup];
 
     // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [self setupNetworkActivityIndicator];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
@@ -440,80 +430,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
     [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline maximumPointSize:maximumPointSize]];
-}
-
-- (void)trackLogoutIfNeeded
-{
-    if (![AccountHelper isLoggedIn]) {
-        [WPAnalytics track:WPAnalyticsStatLogout];
-    }
-}
-
-#pragma mark - Keychain
-
-+ (void)fixKeychainAccess
-{
-    NSDictionary *query = @{
-                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                            (__bridge id)kSecReturnAttributes: @YES,
-                            (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
-                            };
-
-    CFTypeRef result = NULL;
-    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
-    if (status != errSecSuccess) {
-        return;
-    }
-    DDLogVerbose(@"Fixing keychain items with wrong access requirements");
-    for (NSDictionary *item in (__bridge_transfer NSArray *)result) {
-        NSDictionary *itemQuery = @{
-                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                    (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                                    (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
-                                    (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
-                                    (__bridge id)kSecReturnAttributes: @YES,
-                                    (__bridge id)kSecReturnData: @YES,
-                                    };
-
-        CFTypeRef itemResult = NULL;
-        status = SecItemCopyMatching((__bridge CFDictionaryRef)itemQuery, &itemResult);
-        if (status == errSecSuccess) {
-            NSDictionary *itemDictionary = (__bridge NSDictionary *)itemResult;
-            NSDictionary *updateQuery = @{
-                                          (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                          (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                                          (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
-                                          (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
-                                          };
-            NSDictionary *updatedAttributes = @{
-                                                (__bridge id)kSecValueData: itemDictionary[(__bridge id)kSecValueData],
-                                                (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAfterFirstUnlock,
-                                                };
-            status = SecItemUpdate((__bridge CFDictionaryRef)updateQuery, (__bridge CFDictionaryRef)updatedAttributes);
-            if (status == errSecSuccess) {
-                DDLogInfo(@"Migrated keychain item %@", item);
-            } else {
-                DDLogError(@"Error migrating keychain item: %d", status);
-            }
-        } else {
-            DDLogError(@"Error migrating keychain item: %d", status);
-        }
-    }
-    DDLogVerbose(@"End keychain fixing");
-}
-
-#pragma mark - Log Level
-
-+ (void)setLogLevel:(DDLogLevel)logLevel
-{
-    ddLogLevel = logLevel;
-
-    int logLevelInt = (int)logLevel;
-    WPSharedSetLoggingLevel(logLevelInt);
-    TracksSetLoggingLevel(logLevelInt);
-    WPStatsSetLoggingLevel(logLevelInt);
-    WPAuthenticatorSetLoggingLevel(logLevelInt);
 }
 
 @end
