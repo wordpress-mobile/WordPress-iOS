@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import UserNotifications
 
 struct ReminderRow: ImmuTableRow {
@@ -34,6 +35,8 @@ class NotificationRemindersViewController: UITableViewController {
         formatter.doesRelativeDateFormatting = true
         return formatter
     }()
+
+    private lazy var noResultsViewController: NoResultsViewController = NoResultsViewController.controller()
 
     /// Notification reminder requests displayed in the table.
     private var requests: [UNNotificationRequest] = []
@@ -86,7 +89,6 @@ class NotificationRemindersViewController: UITableViewController {
         let cancelRow = DestructiveButtonRow(title: title, action: { [weak self] _ in
             self?.helper.cancelAllReminders()
             self?.reloadModel()
-            self?.dismiss(animated: true, completion: nil)
             }, accessibilityIdentifier: "cancel reminders row")
         let cancelAllSection = ImmuTableSection(rows: [cancelRow])
 
@@ -94,6 +96,12 @@ class NotificationRemindersViewController: UITableViewController {
         let sections = hasReminders ? [remindersSection, cancelAllSection] : []
 
         handler.viewModel = ImmuTable(sections: sections)
+
+        if hasReminders {
+            hideNoResults()
+        } else {
+            displayNoResults()
+        }
     }
 
     private func row(for request: UNNotificationRequest) -> ReminderRow {
@@ -107,6 +115,22 @@ class NotificationRemindersViewController: UITableViewController {
         }
 
         return ReminderRow(title: title, value: value)
+    }
+
+    private func displayNoResults() {
+        noResultsViewController.configure(title: NSLocalizedString("No Reminders", comment: "Message informing user they currently have no reminders set."),
+                                          image: "wp-illustration-stay-in-the-loop")
+        addChild(noResultsViewController)
+        noResultsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        tableView.pinSubviewToAllEdgeMargins(noResultsViewController.view)
+        noResultsViewController.didMove(toParent: self)
+    }
+
+    private func hideNoResults() {
+        noResultsViewController.removeFromView()
+        tableView.reloadData()
     }
 
     // MARK: - UITableViewDelegate
