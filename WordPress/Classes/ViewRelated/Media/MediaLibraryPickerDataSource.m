@@ -175,6 +175,17 @@
     }
 }
 
+-(id<NSObject>)registerGroupChangeObserverBlock:(WPMediaGroupChangesBlock)callback
+{
+    // The group never changes
+    return nil;
+}
+
+-(void)unregisterGroupChangeObserver:(id<NSObject>)blockKey
+{
+    // The group never changes
+}
+
 - (void)addImage:(UIImage *)image
         metadata:(NSDictionary *)metadata
  completionBlock:(WPMediaAddedBlock)completionBlock

@@ -185,6 +185,18 @@
     [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
+-(id<NSObject>)registerGroupChangeObserverBlock:(WPMediaGroupChangesBlock)callback
+{
+    // only the device groups can change
+    return [self.deviceLibraryDataSource registerGroupChangeObserverBlock:callback];
+}
+
+-(void)unregisterGroupChangeObserver:(id<NSObject>)blockKey
+{
+    // only the device groups can change
+    [self.deviceLibraryDataSource unregisterGroupChangeObserver:blockKey];
+}
+
 - (void)loadDataWithOptions:(WPMediaLoadOptions)options
                     success:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock

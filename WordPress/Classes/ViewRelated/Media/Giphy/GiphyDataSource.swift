@@ -87,6 +87,15 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
         observers.removeValue(forKey: key)
     }
 
+    func registerGroupChangeObserverBlock(_ callback: @escaping WPMediaGroupChangesBlock) -> NSObjectProtocol {
+        // The group never changes
+        return NSNull();
+    }
+
+    func unregisterGroupChangeObserver(_ blockKey: NSObjectProtocol) {
+        // The group never changes
+    }
+
     func loadData(with options: WPMediaLoadOptions, success successBlock: WPMediaSuccessBlock?, failure failureBlock: WPMediaFailureBlock? = nil) {
         successBlock?()
     }
