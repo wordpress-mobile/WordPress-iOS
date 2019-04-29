@@ -133,7 +133,7 @@ struct NotificationRemindersHelper {
 
                 return hasReminderId && hasPendingDate
             })
-            
+
             let sorted = self.sorted(requests: filtered)
             completion(sorted)
         }
