@@ -35,7 +35,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Application lifecycle
 
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         WordPressAppDelegate.fixKeychainAccess()
@@ -57,7 +57,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         InteractiveNotificationsManager.shared.registerForUserNotifications()
@@ -270,7 +270,7 @@ extension WordPressAppDelegate {
         PushNotificationsManager.shared.registrationDidFail(error as NSError)
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         DDLogInfo("\(self) \(#function)")
 
         PushNotificationsManager.shared.handleNotification(userInfo as NSDictionary,
