@@ -89,7 +89,7 @@ private class AccountSettingsController: SettingsController {
 
         // If the primary site has no name, then show the URL.
         var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
-        primarySiteName = (primarySiteName == nil || primarySiteName == "") ? settings?.webAddress : primarySiteName
+        primarySiteName = (primarySiteName?.isEmpty ?? true) ? settings?.webAddress : primarySiteName
 
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
