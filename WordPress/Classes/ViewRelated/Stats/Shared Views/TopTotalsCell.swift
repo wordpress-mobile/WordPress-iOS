@@ -149,7 +149,15 @@ private extension TopTotalsCell {
         // store that on the row (for possible removal later),
         // and add the child view to the row stack view.
 
-        let numberOfRowsToAdd = childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
+        let numberOfRowsToAdd: Int = {
+            // If this is on Post Stats, don't limit the number of child rows
+            // as it needs to show a year's worth of data.
+            if postStatsDelegate != nil {
+                return childRows.count
+            }
+            return childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
+        }()
+
         let containingStackView = stackViewContainingRow(row)
         let childRowsView = StatsChildRowsView.loadFromNib()
 
