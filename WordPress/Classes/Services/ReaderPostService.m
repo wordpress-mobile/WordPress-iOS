@@ -1134,7 +1134,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         DDLogError(@"Error fetching an existing reader post. - %@", error);
     } else if ([arr count] > 0) {
         post = (ReaderPost *)[arr objectAtIndex:0];
-        existing = true;
+        existing = YES;
     } else {
         post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                              inManagedObjectContext:self.managedObjectContext];
@@ -1171,12 +1171,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.siteID = remotePost.siteID;
     post.sortDate = remotePost.sortDate;
 
-    if (!existing) {
+    if (existing && [topic isKindOfClass:[ReaderSearchTopic class]]) {
         // Failsafe.  The `read/search` endpoint might return the same post on
         // more than one page. If this happens preserve the *original* sortRank
         // to avoid content jumping around in the UI.
-        // Posts from other endpoints will store a date value which shouldn't
-        // change, ergo they should be unaffected.
+    } else {
         post.sortRank = remotePost.sortRank;
     }
 
