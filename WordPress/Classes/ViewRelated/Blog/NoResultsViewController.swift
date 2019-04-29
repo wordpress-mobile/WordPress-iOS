@@ -42,7 +42,7 @@ import Reachability
     private var hideImage = false
 
     /// Allows caller to customize subtitle attributed text after default styling.
-    typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString
+    typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString?
     /// Called after default styling of attributed subtitle, if non nil.
     private var configureAttributedSubtitle: AttributedSubtitleConfiguration? = nil
 
@@ -272,8 +272,8 @@ private extension NoResultsViewController {
 
         if let attributedSubtitleText = attributedSubtitleText {
             subtitleTextView.attributedText = applyMessageStyleTo(attributedString: attributedSubtitleText)
-            if let configureAttributedSubtitle = configureAttributedSubtitle {
-                subtitleTextView.attributedText = configureAttributedSubtitle(subtitleTextView.attributedText)
+            if let attributedSubtitle = configureAttributedSubtitle?(subtitleTextView.attributedText) {
+                subtitleTextView.attributedText = attributedSubtitle
             }
             subtitleTextView.isSelectable = true
         }

@@ -24,10 +24,10 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         super.viewDidLoad()
         let attributedSubtitleConfiguration: NoResultsViewController.AttributedSubtitleConfiguration = {
             [weak self] attributedText in
-            guard let `self` = self else {
-                fatalError()
+            guard let domain = self?.domain else {
+                return nil
             }
-            return self.applyDomainStyle(to: attributedText, domain: self.domain)
+            return self?.applyDomainStyle(to: attributedText, domain: domain)
         }
         let controller = NoResultsViewController.controllerWith(title: NSLocalizedString("Congratulations", comment: "Title on domain credit redemption success screen"),
                                                                 buttonTitle: NSLocalizedString("Continue", comment: "Action title to dismiss domain credit redemption success screen"),
@@ -43,11 +43,11 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         controller.didMove(toParent: self)
     }
 
-    private func applyDomainStyle(to attributedString: NSAttributedString, domain: String) -> NSAttributedString {
+    private func applyDomainStyle(to attributedString: NSAttributedString, domain: String) -> NSAttributedString? {
         let newAttributedString = NSMutableAttributedString(attributedString: attributedString)
         let range = (newAttributedString.string as NSString).localizedStandardRange(of: domain)
         guard range.location != NSNotFound else {
-            return attributedString
+            return nil
         }
         let font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         newAttributedString.setAttributes([.font: font, .foregroundColor: WPStyleGuide.darkGrey()],
