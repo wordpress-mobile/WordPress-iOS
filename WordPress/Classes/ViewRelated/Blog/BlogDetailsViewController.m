@@ -1110,33 +1110,41 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIView *)quickStartHeaderWithTitle:(NSString *)title
 {
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
+    [view setTitle:title];
+    view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
+        [weakSelf removeQuickStartSection:header];
+    };
+    return view;
+}
+
+- (void)removeQuickStartSection:(BlogDetailsSectionHeaderView *)view
+{
     NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
     NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
     NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
-
+    
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-
+        
         [[QuickStartTourGuide find] removeFrom:self.blog];
     }];
-
+    
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    removeSheet.popoverPresentationController.sourceView = view;
+    removeSheet.popoverPresentationController.sourceRect = view.ellipsisButton.frame;
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
     [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
-
-    BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
-    [view setTitle:title];
-    view.callback = ^{
-        [self presentViewController:removeSheet animated:YES completion:nil];
-    };
-    return view;
+    
+    [self presentViewController:removeSheet animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
