@@ -116,6 +116,7 @@ GEM
       xcodeproj (>= 1.6.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
+    fastlane-plugin-sentry (1.5.0)
     fourflusher (2.2.0)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
@@ -222,6 +223,7 @@ DEPENDENCIES
   cocoapods-repo-update (~> 0.0.3)!
   dotenv!
   fastlane (= 2.103.1)!
+  fastlane-plugin-sentry
   fastlane-plugin-wpmreleasetoolkit!
   octokit (~> 4.0)!
   rake!

@@ -3,6 +3,9 @@ import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
 import WordPressAuthenticator
+import AutomatticTracks
+import WordPressComStatsiOS
+import AlamofireNetworkActivityIndicator
 
 // MARK: - Utility Configuration
 
@@ -33,13 +36,11 @@ extension WordPressAppDelegate {
         })
     }
 
-    @objc func configureCrashlytics() {
+    @objc func configureCrashLogging() {
         #if DEBUG
             return
         #else
-            if let apiKey = ApiCredentials.crashlyticsApiKey() {
-                crashlytics = WPCrashlytics(apiKey: apiKey)
-            }
+            WPCrashLogging.start()
         #endif
     }
 
@@ -108,6 +109,10 @@ extension WordPressAppDelegate {
         }
 
         UniversalLinkRouter.shared.handle(url: url)
+    }
+
+    @objc func setupNetworkActivityIndicator() {
+        NetworkActivityIndicatorManager.shared.isEnabled = true
     }
 }
 
@@ -183,7 +188,14 @@ extension WordPressAppDelegate {
             return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
         }
     }
+
+    @objc func trackLogoutIfNeeded() {
+        if AccountHelper.isLoggedIn == false {
+            WPAnalytics.track(.logout)
+        }
+    }
 }
+
 
 // MARK: - Debugging
 
@@ -274,6 +286,15 @@ extension WordPressAppDelegate {
                 WordPressAppDelegate.setLogLevel(.verbose)
             }
         }
+    }
+
+    @objc class func setLogLevel(_ level: DDLogLevel) {
+        let rawLevel = Int32(level.rawValue)
+
+        WPSharedSetLoggingLevel(rawLevel)
+        TracksSetLoggingLevel(rawLevel)
+        WPStatsSetLoggingLevel(rawLevel)
+        WPAuthenticatorSetLoggingLevel(rawLevel)
     }
 }
 
