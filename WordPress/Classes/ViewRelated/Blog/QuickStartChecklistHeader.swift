@@ -16,29 +16,13 @@ class QuickStartChecklistHeader: UIView {
                 self?.bottomStroke.alpha = CGFloat(alpha)
                 self?.chevronView.transform = CGAffineTransform(rotationAngle: rotate)
             })
-
-            let hintToken: String
-            if collapse {
-                hintToken = NSLocalizedString("Collapses", comment: "This token is used with ~ to format the accessibility hint to reflect the expanded and collapsed state of the list.")
-            } else {
-                hintToken = NSLocalizedString("Expands", comment: "This token is used with ~ to format the accessibility hint to reflect the expanded and collapsed state of the list.")
-            }
-
-            let accessibilityFormat = NSLocalizedString("%@ the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
-            let localizedAccessibilityHint = String(format: accessibilityFormat, hintToken)
-
-            accessibilityHint = localizedAccessibilityHint
+            updateCollapseHeaderAccessibility()
         }
     }
     var count: Int = 0 {
         didSet {
             titleLabel.text = String(format: Constant.title, count)
-
-            // Admittedly pluralization support could be improved here. See also: `paaHJt-c3-p2`
-            let accessibilityFormat = NSLocalizedString("%i completed tasks, toggling expands & contracts the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start.")
-            let localizedAccessibilityDescription = String(format: accessibilityFormat, arguments: [count])
-
-            accessibilityLabel = localizedAccessibilityDescription
+            updateCollapseHeaderAccessibility()
         }
     }
 
@@ -105,5 +89,28 @@ extension QuickStartChecklistHeader: Accessible {
         // From an accessibility perspective, this view is essentially monolithic, so we configure it accordingly
         isAccessibilityElement = true
         accessibilityTraits = [ .header, .button ]
+
+        updateCollapseHeaderAccessibility()
+    }
+
+    func updateCollapseHeaderAccessibility() {
+
+        let accessibilityHintText: String
+        let accessibilityLabelFormat: String
+
+        if collapse {
+            accessibilityHintText = NSLocalizedString("Collapses the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
+
+            accessibilityLabelFormat = NSLocalizedString("Expanded, %i completed tasks, toggling collapses the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
+        } else {
+            accessibilityHintText = NSLocalizedString("Expands the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
+
+            accessibilityLabelFormat = NSLocalizedString("Collapsed, %i completed tasks, toggling expands the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
+        }
+
+        accessibilityHint = accessibilityHintText
+
+        let localizedAccessibilityDescription = String(format: accessibilityLabelFormat, arguments: [count])
+        accessibilityLabel = localizedAccessibilityDescription
     }
 }
