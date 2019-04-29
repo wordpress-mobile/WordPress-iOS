@@ -2,7 +2,19 @@
 
 @class Blog;
 
+typedef NS_ENUM(NSUInteger, BlogDetailsSectionCategory) {
+    BlogDetailsSectionCategoryDomainCredit,
+    BlogDetailsSectionCategoryQuickStart,
+    BlogDetailsSectionCategoryGeneral,
+    BlogDetailsSectionCategoryPublish,
+    BlogDetailsSectionCategoryPersonalize,
+    BlogDetailsSectionCategoryConfigure,
+    BlogDetailsSectionCategoryExternal,
+    BlogDetailsSectionCategoryRemoveSite
+};
+
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
+    BlogDetailsSubsectionDomainCredit,
     BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
     BlogDetailsSubsectionPosts,
@@ -51,11 +63,14 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 
 @interface BlogDetailsSection : NSObject
 
-@property (nonatomic, strong, nonnull) NSString *title;
-@property (nonatomic, strong, nonnull) NSArray *rows;
+@property (nonatomic, strong, nullable, readonly) NSString *title;
+@property (nonatomic, strong, nonnull, readonly) NSArray *rows;
+@property (nonatomic, strong, nullable, readonly) NSString *footerTitle;
+@property (nonatomic, readonly) BlogDetailsSectionCategory category;
 @property (nonatomic) BOOL showQuickStartMenu;
 
-- (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title andRows:(NSArray * __nonnull)rows;
+- (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title andRows:(NSArray * __nonnull)rows category:(BlogDetailsSectionCategory)category;
+- (instancetype _Nonnull)initWithTitle:(NSString * __nullable)title rows:(NSArray * __nonnull)rows footerTitle:(NSString * __nullable)footerTitle category:(BlogDetailsSectionCategory)category;
 
 @end
 
@@ -66,10 +81,12 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 @property (nonatomic, strong, nonnull) NSString *identifier;
 @property (nonatomic, strong, nullable) NSString *accessibilityIdentifier;
 @property (nonatomic, strong, nonnull) UIImage *image;
+@property (nonatomic, strong, nonnull) UIColor *imageColor;
 @property (nonatomic, strong, nullable) UIView *accessoryView;
 @property (nonatomic, strong, nullable) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
+@property (nonatomic) BOOL showsDisclosureIndicator;
 @property (nonatomic, copy, nullable) void (^callback)(void);
 @property (nonatomic) QuickStartTourElement quickStartIdentifier;
 @property (nonatomic) QuickStartTitleState quickStartTitleState;
@@ -79,6 +96,11 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
       accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                         image:(UIImage * __nonnull)image
                      callback:(void(^_Nullable)(void))callback;
+- (instancetype _Nonnull)initWithTitle:(NSString * __nonnull)title
+               accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                                 image:(UIImage * __nonnull)image
+                            imageColor:(UIColor * __nonnull)imageColor
+                              callback:(void(^_Nullable)(void))callback;
 
 @end
 
