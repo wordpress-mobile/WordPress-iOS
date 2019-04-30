@@ -29,7 +29,6 @@ class SignupEpilogueCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        accessibilityTraits = super.accessibilityTraits
         accessoryType = .none
         cellField.textContentType = nil
     }
@@ -55,21 +54,7 @@ class SignupEpilogueCell: UITableViewCell {
 
     // MARK: - Private behavior
 
-    private func configureAccessibility(for cellType: EpilogueCellType) {
-        let labelText = cellLabel.text ?? ""
-        let fieldText = cellField.text ?? ""
-        let defaultAccessibilityLabel = "\(labelText), \(fieldText)"
-
-        switch cellType {
-        case .displayName:
-            accessibilityLabel = defaultAccessibilityLabel
-        case .username:
-            accessibilityLabel = defaultAccessibilityLabel
-            accessibilityTraits.insert(.button)     // selection transitions to SignupUsernameViewController
-        case .password:
-            accessibilityLabel = labelText          // let's refrain from reading the password aloud
-        }
-    }
+    private func configureAccessibility(for cellType: EpilogueCellType) {}
 
     private func configureAccessoryType(for cellType: EpilogueCellType) {
         if cellType == .username {
