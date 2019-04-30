@@ -31,6 +31,34 @@ class SignupEpilogueCell: UITableViewCell {
 
         accessoryType = .none
         cellField.textContentType = nil
+        isAccessibilityElement = false
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            let emptyValue = NSLocalizedString("Empty", comment: "Accessibility value presented in the signup epilogue for an empty value.")
+            let secureTextValue = NSLocalizedString("Secure text", comment: "Accessibility value presented in the signup epilogue for a password value.")
+
+            let labelValue = cellLabel.text ?? emptyValue
+
+            let fieldValue: String
+            if let cellText = cellField.text, !cellText.isEmpty {
+                if cellType == .password {
+                    fieldValue = secureTextValue    // let's refrain from reading the password aloud
+                } else {
+                    fieldValue = cellText
+                }
+            } else {
+                fieldValue = emptyValue
+            }
+
+            let value = "\(labelValue), \(fieldValue)"
+
+            return value
+        }
+        set {
+            super.accessibilityLabel = accessibilityLabel
+        }
     }
 
     // MARK: - Public Methods
@@ -54,7 +82,12 @@ class SignupEpilogueCell: UITableViewCell {
 
     // MARK: - Private behavior
 
-    private func configureAccessibility(for cellType: EpilogueCellType) {}
+    private func configureAccessibility(for cellType: EpilogueCellType) {
+        if cellType == .username {
+            accessibilityTraits.insert(.button) // selection transitions to SignupUsernameViewController
+            isAccessibilityElement = true       // this assures double-tap properly captures cell selection
+        }
+    }
 
     private func configureAccessoryType(for cellType: EpilogueCellType) {
         if cellType == .username {
