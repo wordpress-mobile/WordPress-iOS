@@ -1,6 +1,6 @@
 import UIKit
 
-@objc protocol DomainCreditRedemptionSuccessViewControllerDelegate {
+protocol DomainCreditRedemptionSuccessViewControllerDelegate: class {
     func continueButtonPressed()
 }
 
@@ -31,12 +31,9 @@ class DomainCreditRedemptionSuccessViewController: UIViewController {
         }
         let controller = NoResultsViewController.controllerWith(title: NSLocalizedString("Congratulations", comment: "Title on domain credit redemption success screen"),
                                                                 buttonTitle: NSLocalizedString("Continue", comment: "Action title to dismiss domain credit redemption success screen"),
-                                                                subtitle: nil,
                                                                 attributedSubtitle: generateDomainDetailsAttributedString(domain: domain),
                                                                 attributedSubtitleConfiguration: attributedSubtitleConfiguration,
-                                                                image: "wp-illustration-domain-credit-success",
-                                                                subtitleImage: nil,
-                                                                accessoryView: nil)
+                                                                image: "wp-illustration-domain-credit-success")
         controller.delegate = self
         addChild(controller)
         view.addSubview(controller.view)
