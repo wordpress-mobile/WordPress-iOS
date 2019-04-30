@@ -6,6 +6,9 @@ class StatsDataHelper {
 
     private typealias Style = WPStyleGuide.Stats
 
+    // Max number of rows to display on Insights and Period stat cards.
+    static let maxRowsToDisplay = 6
+
     // MARK: - Expanded Row Handling
 
     // These arrays store the labels for expanded rows.
@@ -123,6 +126,49 @@ class StatsDataHelper {
                                    disclosureURL: $0.url)
         }
     }
+
+    // MARK: - Post Stats Months & Years Support
+
+    class func maxYearFrom(yearsData: [StatsPostViews]) -> Int? {
+        return (yearsData.max(by: { $0.date.year! < $1.date.year! }))?.date.year
+    }
+
+    class func monthsFrom(yearsData: [StatsPostViews], forYear year: Int) -> [StatsPostViews] {
+        // Get months from yearsData for the given year, in descending order.
+        return (yearsData.filter({ $0.date.year == year })).sorted(by: { $0.date.month! > $1.date.month! })
+    }
+
+    class func totalViewsFrom(monthsData: [StatsPostViews]) -> Int {
+        return monthsData.map({$0.viewsCount}).reduce(0, +)
+    }
+
+    class func childRowsForYear(_ months: [StatsPostViews]) -> [StatsTotalRowData] {
+        return months.map {
+            StatsTotalRowData(name: StatsDataHelper.displayMonth(forDate: $0.date),
+                              data: $0.viewsCount.abbreviatedString())
+        }
+    }
+
+    private static var calendar: Calendar = {
+        var cal = Calendar(identifier: .iso8601)
+        cal.timeZone = .autoupdatingCurrent
+        return cal
+    }()
+
+    private static var monthFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("MMM")
+        return df
+    }()
+
+    private class func displayMonth(forDate date: DateComponents) -> String {
+        guard let month = StatsDataHelper.calendar.date(from: date) else {
+            return ""
+        }
+
+        return StatsDataHelper.monthFormatter.string(from: month)
+    }
+
 }
 
 /// These methods format stat Strings for display and usage.
