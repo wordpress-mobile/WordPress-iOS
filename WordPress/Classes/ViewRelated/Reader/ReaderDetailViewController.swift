@@ -58,8 +58,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var textView: WPRichContentView!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
+    private let textView: WPRichContentView = {
+        let textView = WPRichContentView(frame: .zero, textContainer: nil)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.alpha = 0
+
+        return textView
+    }()
 
     // Spacers
     @IBOutlet fileprivate weak var featuredImageBottomPaddingView: UIView!
@@ -216,8 +222,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupTextView()
         setupContentHeaderAndFooter()
-        textView.alpha = 0
         footerView.isHidden = true
 
         // Hide the featured image and its padding until we know there is one to load.
@@ -289,8 +295,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         coordinator.animate(
             alongsideTransition: { (_) in
-                if let position = position, let textRange = self.textView.textRange(from: position, to: position) {
+                if let position = position,
+                    let textRange = self.textView.textRange(from: position, to: position) {
+
                     let rect = self.textView.firstRect(for: textRange)
+
                     if rect.origin.y.isFinite {
                         self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
                     }
@@ -377,6 +386,21 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         })
     }
 
+    /// Setup the Text View.
+    fileprivate func setupTextView() {
+        // This method should be called exactly once.
+        assert(textView.superview == nil)
+
+        textView.delegate = self
+
+        view.addSubview(textView)
+        view.addConstraints([
+            topLayoutGuide.bottomAnchor.constraint(equalTo: textView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
+            textView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            ])
+    }
 
     /// Composes the views for the post header and Discover attribution.
     fileprivate func setupContentHeaderAndFooter() {
@@ -403,8 +427,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     /// Sets the left and right textContainerInset to preserve readable content margins.
     fileprivate func updateContentInsets() {
         var insets = textView.textContainerInset
-
         let margin = view.readableContentGuide.layoutFrame.origin.x
+
         insets.left = margin - DetailConstants.MarginOffset
         insets.right = margin - DetailConstants.MarginOffset
         textView.textContainerInset = insets
@@ -1002,7 +1026,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                             self.view.layoutIfNeeded()
                             self.navigationController?.setNavigationBarHidden(false, animated: animated)
                             if pinToBottom {
-                                let y = self.textView.contentSize.height - self.textView.frame.height
+                                let contentSizeHeight = self.textView.contentSize.height ?? 0
+                                let frameHeight = self.textView.frame.height ?? 0
+                                let y =  contentSizeHeight - frameHeight
                                 self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                             }
 
