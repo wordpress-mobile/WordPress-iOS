@@ -45,6 +45,7 @@ class EditorScreen: BaseScreen {
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
     let discardButton = XCUIApplication().buttons["Discard"]
     let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"]
+    let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"]
 
     init(mode: Mode) {
         var textField = ""
@@ -235,9 +236,13 @@ class EditorScreen: BaseScreen {
 
     // returns void since return screen depends on from which screen it loaded
     func closeEditor() {
-        // Close any interfering elements
+        // Close the More menu if needed
         if actionSheet.exists {
-            moreButton.tap()
+            if isIpad{
+                app.otherElements["PopoverDismissRegion"].tap()
+            } else {
+                keepEditingButton.tap()
+            }
         }
 
         // Close the editor and discard any local changes
