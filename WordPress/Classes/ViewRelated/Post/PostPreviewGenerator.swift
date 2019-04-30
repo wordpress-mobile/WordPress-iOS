@@ -92,7 +92,7 @@ private extension PostPreviewGenerator {
             return false
         }
         switch status {
-        case .draft, .publishPrivate, .pending, .scheduled:
+        case .draft, .publishPrivate, .pending, .scheduled, .publish:
             return true
         default:
             return post.blog.isPrivate()
