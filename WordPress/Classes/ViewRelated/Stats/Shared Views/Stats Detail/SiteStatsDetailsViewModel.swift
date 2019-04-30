@@ -504,11 +504,11 @@ private extension SiteStatsDetailsViewModel {
         let postStats = periodStore.getPostStats()
 
         guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
+            let minYear = StatsDataHelper.minYearFrom(yearsData: yearsData),
             let maxYear = StatsDataHelper.maxYearFrom(yearsData: yearsData) else {
                 return []
         }
 
-        let minYear = maxYear - StatsDataHelper.maxRowsToDisplay
         var yearRows = [StatsTotalRowData]()
 
         // Create Year rows in descending order

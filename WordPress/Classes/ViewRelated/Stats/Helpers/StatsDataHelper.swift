@@ -133,6 +133,10 @@ class StatsDataHelper {
         return (yearsData.max(by: { $0.date.year! < $1.date.year! }))?.date.year
     }
 
+    class func minYearFrom(yearsData: [StatsPostViews]) -> Int? {
+        return (yearsData.max(by: { $0.date.year! > $1.date.year! }))?.date.year
+    }
+
     class func monthsFrom(yearsData: [StatsPostViews], forYear year: Int) -> [StatsPostViews] {
         // Get months from yearsData for the given year, in descending order.
         return (yearsData.filter({ $0.date.year == year })).sorted(by: { $0.date.month! > $1.date.month! })
