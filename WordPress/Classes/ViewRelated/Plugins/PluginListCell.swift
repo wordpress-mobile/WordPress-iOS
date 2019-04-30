@@ -26,7 +26,7 @@ class PluginListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        iconImageView.cancelImageDownloadTask()
+        iconImageView.cancelImageDownload()
         iconImageView.image = nil
     }
 

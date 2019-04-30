@@ -6,6 +6,7 @@ import WordPressAuthenticator
 import AutomatticTracks
 import WordPressComStatsiOS
 import WordPressShared
+import AlamofireNetworkActivityIndicator
 
 // MARK: - Utility Configuration
 
@@ -36,13 +37,11 @@ extension WordPressAppDelegate {
         })
     }
 
-    @objc func configureCrashlytics() {
+    @objc func configureCrashLogging() {
         #if DEBUG
             return
         #else
-            if let apiKey = ApiCredentials.crashlyticsApiKey() {
-                crashlytics = WPCrashlytics(apiKey: apiKey)
-            }
+            WPCrashLogging.start()
         #endif
     }
 
@@ -111,6 +110,10 @@ extension WordPressAppDelegate {
         }
 
         UniversalLinkRouter.shared.handle(url: url)
+    }
+
+    @objc func setupNetworkActivityIndicator() {
+        NetworkActivityIndicatorManager.shared.isEnabled = true
     }
 }
 
@@ -218,78 +221,6 @@ extension WordPressAppDelegate {
         }
     }
 }
-
-// MARK: - Keychain
-
-extension WordPressAppDelegate {
-    @objc class func fixKeychainAccess() {
-        let query: [String: Any] = [String(kSecClass): kSecClassGenericPassword,
-                                    String(kSecAttrAccessible): kSecAttrAccessibleWhenUnlocked,
-                                    String(kSecReturnAttributes): true,
-                                    String(kSecMatchLimit): kSecMatchLimitAll]
-        var result: AnyObject?
-        let status = withUnsafeMutablePointer(to: &result) {
-            SecItemCopyMatching(query as CFDictionary, $0)
-        }
-
-        guard status == errSecSuccess,
-            let resultArray = result as? [[String: Any]] else {
-            return
-        }
-
-        DDLogVerbose("Fixing keychain items with wrong access requirements")
-
-        for itemDict in resultArray {
-            let query: [String: Any] = [SecAttributes.secClass: SecAttributes.genericPassword,
-                                        SecAttributes.accessible: SecAttributes.whenUnlocked,
-                                        SecAttributes.service: itemDict[SecAttributes.service] ?? NSNull(),
-                                        SecAttributes.account: itemDict[SecAttributes.account] ?? NSNull(),
-                                        SecAttributes.returnAttributes: true,
-                                        SecAttributes.returnData: true]
-
-            var result: AnyObject?
-            let status = withUnsafeMutablePointer(to: &result) {
-                SecItemCopyMatching(query as CFDictionary, $0)
-            }
-
-            if status == errSecSuccess,
-                let itemDict = result as? [String: Any] {
-
-                let query: [String: Any] = [SecAttributes.secClass: SecAttributes.genericPassword,
-                                            SecAttributes.accessible: SecAttributes.whenUnlocked,
-                                            SecAttributes.service: itemDict[SecAttributes.service] ?? NSNull(),
-                                            SecAttributes.account: itemDict[SecAttributes.account] ?? NSNull()]
-
-                let updatedAttributes: [String: Any] = [SecAttributes.valueData: itemDict[SecAttributes.valueData] ?? NSNull(),
-                                                        SecAttributes.accessible: SecAttributes.afterFirstUnlock]
-                let status = SecItemUpdate(query as CFDictionary, updatedAttributes as CFDictionary)
-                if status == errSecSuccess {
-                    DDLogInfo("Migrated keychain item \(itemDict)")
-                } else {
-                    DDLogError("Error migrating keychain item: \(status)")
-                }
-            } else {
-                DDLogError("Error migrating keychain item: \(status)")
-            }
-        }
-
-        DDLogVerbose("End keychain fixing")
-    }
-
-    private enum SecAttributes {
-        static let secClass = String(kSecClass)
-        static let genericPassword = String(kSecClassGenericPassword)
-        static let accessible = String(kSecAttrAccessible)
-        static let whenUnlocked = String(kSecAttrAccessibleWhenUnlocked)
-        static let afterFirstUnlock = String(kSecAttrAccessibleAfterFirstUnlock)
-        static let service = String(kSecAttrService)
-        static let account = String(kSecAttrAccount)
-        static let returnAttributes = String(kSecReturnAttributes)
-        static let returnData = String(kSecReturnData)
-        static let valueData = String(kSecValueData)
-    }
-}
-
 
 
 // MARK: - Debugging
