@@ -243,6 +243,20 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
     }
 
+    override func applicationFinishedRestoringState() {
+        super.applicationFinishedRestoringState()
+
+        guard let navigationControllers = navigationController?.children else {
+            return
+        }
+
+        for case let detailVC as NotificationDetailsViewController in navigationControllers {
+            if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
+                configureDetailsViewController(detailVC, withNote: note)
+            }
+        }
+    }
+
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
