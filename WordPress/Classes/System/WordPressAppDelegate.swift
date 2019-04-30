@@ -171,7 +171,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Setup
 
-    @objc func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
+    func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
         // Local notifications
         addNotificationObservers()
 
@@ -295,7 +295,7 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
 
-    @objc func configureAnalytics() {
+    func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
@@ -305,7 +305,7 @@ extension WordPressAppDelegate {
         })
     }
 
-    @objc func configureAppRatingUtility() {
+    func configureAppRatingUtility() {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
             return
@@ -320,7 +320,7 @@ extension WordPressAppDelegate {
         })
     }
 
-    @objc func configureCrashlytics() {
+    func configureCrashlytics() {
         #if DEBUG
         return
         #else
@@ -330,12 +330,12 @@ extension WordPressAppDelegate {
         #endif
     }
 
-    @objc func configureHockeySDK() {
+    func configureHockeySDK() {
         hockey = HockeyManager()
         hockey?.configure()
     }
 
-    @objc func configureReachability() {
+    func configureReachability() {
         internetReachability = Reachability.forInternetConnection()
 
         let reachabilityBlock: NetworkReachable = { [weak self] reachability in
@@ -361,7 +361,7 @@ extension WordPressAppDelegate {
         connectionAvailable = internetReachability?.isReachable() ?? true
     }
 
-    @objc func configureSelfHostedChallengeHandler() {
+    func configureSelfHostedChallengeHandler() {
         /// Note:
         /// WordPressKit, now imported via CocoaPods, has the `AppExtension Safe API Only` flag set to *true*. Meaning that
         /// the host app is, effectively as of now, responsible for presenting any alert onscreen (whenever a HTTP Challenge is
@@ -386,7 +386,7 @@ extension WordPressAppDelegate {
         WordPressAuthenticator.shared.delegate = authManager
     }
 
-    @objc func handleWebActivity(_ activity: NSUserActivity) {
+    func handleWebActivity(_ activity: NSUserActivity) {
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {
@@ -404,7 +404,7 @@ extension WordPressAppDelegate {
 
     /// Sets up all of the shared component(s) Appearance.
     ///
-    @objc func setupComponentsAppearance() {
+    func setupComponentsAppearance() {
         setupFancyAlertAppearance()
         setupFancyButtonAppearance()
     }
@@ -443,7 +443,7 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
 
-    @objc var currentlySelectedScreen: String {
+    var currentlySelectedScreen: String {
         // Check if the post editor or login view is up
         let rootViewController = window?.rootViewController
         if let presentedViewController = rootViewController?.presentedViewController {
@@ -457,7 +457,7 @@ extension WordPressAppDelegate {
         return WPTabBarController.sharedInstance().currentlySelectedScreen()
     }
 
-    @objc var isWelcomeScreenVisible: Bool {
+    var isWelcomeScreenVisible: Bool {
         get {
             guard let presentedViewController = window?.rootViewController?.presentedViewController as? UINavigationController else {
                 return false
@@ -490,7 +490,7 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
+    func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
         if let rootViewController = window?.rootViewController {
             WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
         }
@@ -506,7 +506,7 @@ extension WordPressAppDelegate {
 // MARK: - Keychain
 
 extension WordPressAppDelegate {
-    @objc class func fixKeychainAccess() {
+    class func fixKeychainAccess() {
         let query: [String: Any] = [String(kSecClass): kSecClassGenericPassword,
                                     String(kSecAttrAccessible): kSecAttrAccessibleWhenUnlocked,
                                     String(kSecReturnAttributes): true,
@@ -579,7 +579,7 @@ extension WordPressAppDelegate {
 // MARK: - Debugging
 
 extension WordPressAppDelegate {
-    @objc func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) {
+    func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) {
         let unknown = "Unknown"
 
         let device = UIDevice.current
@@ -637,7 +637,7 @@ extension WordPressAppDelegate {
         DDLogInfo("===========================================================================")
     }
 
-    @objc func toggleExtraDebuggingIfNeeded() {
+    func toggleExtraDebuggingIfNeeded() {
         if !AccountHelper.isLoggedIn {
             // When there are no blogs in the app the settings screen is unavailable.
             // In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -681,7 +681,7 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
 
-    @objc func addNotificationObservers() {
+    func addNotificationObservers() {
         let nc = NotificationCenter.default
 
         nc.addObserver(self,
@@ -736,7 +736,7 @@ extension WordPressAppDelegate {
 
 extension WordPressAppDelegate {
 
-    @objc func setupWordPressExtensions() {
+    func setupWordPressExtensions() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
         accountService.setupAppExtensionsWithDefaultAccount()
@@ -749,13 +749,13 @@ extension WordPressAppDelegate {
 
     // MARK: - Today Extension
 
-    @objc func removeTodayWidgetConfiguration() {
+    func removeTodayWidgetConfiguration() {
         TodayExtensionService().removeTodayWidgetConfiguration()
     }
 
     // MARK: - Share Extension
 
-    @objc func setupShareExtensionToken() {
+    func setupShareExtensionToken() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
@@ -765,7 +765,7 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc func removeShareExtensionConfiguration() {
+    func removeShareExtensionConfiguration() {
         ShareExtensionService.removeShareExtensionConfiguration()
     }
 
@@ -776,7 +776,6 @@ extension WordPressAppDelegate {
 
     // MARK: - Notification Service Extension
 
-    @objc
     func configureNotificationExtension() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
@@ -790,7 +789,6 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc
     func removeNotificationExtensionConfiguration() {
         NotificationSupportService.deleteContentExtensionToken()
         NotificationSupportService.deleteContentExtensionUsername()
@@ -803,7 +801,7 @@ extension WordPressAppDelegate {
 // MARK: - Appearance
 
 extension WordPressAppDelegate {
-    @objc func customizeAppearance() {
+    func customizeAppearance() {
         window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
