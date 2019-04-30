@@ -27,7 +27,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
-    private var postTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
+    private var postTitle = StatSection.noPostTitle
 
     private var actionType: ActionType? {
         didSet {
