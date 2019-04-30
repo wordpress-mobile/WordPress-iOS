@@ -77,6 +77,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
 
+    private let topMarginAttachment = NSTextAttachment()
+
+    private let bottomMarginAttachment = NSTextAttachment()
+
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
@@ -430,9 +434,25 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     /// Updates the bounds of the placeholder top and bottom text attachments so
     /// there is enough vertical space for the text header and footer views.
     fileprivate func updateTextViewMargins() {
-        textView.topMargin = textHeaderStackView.frame.height
-        textView.bottomMargin = textFooterStackView.frame.height
+        updateTopMargin()
+        updateBottomMargin()
         textFooterTopConstraint.constant = textFooterYOffset()
+    }
+
+    fileprivate func updateTopMargin() {
+        var bounds = topMarginAttachment.bounds
+        bounds.size.height = max(1, textHeaderStackView.frame.height)
+        bounds.size.width = textView.textContainer.size.width
+        topMarginAttachment.bounds = bounds
+        textView.ensureLayoutForAttachment(topMarginAttachment)
+    }
+
+    fileprivate func updateBottomMargin() {
+        var bounds = bottomMarginAttachment.bounds
+        bounds.size.height = max(1, textFooterStackView.frame.height)
+        bounds.size.width = textView.textContainer.size.width
+        bottomMarginAttachment.bounds = bounds
+        textView.ensureLayoutForAttachment(bottomMarginAttachment)
     }
 
 
@@ -669,13 +689,35 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
-
     fileprivate func configureRichText() {
         guard let post = post else {
             return
         }
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
+
+        // TODO: Get attributed string
+        // Modify the attributed string. Add top and bottom embeds
+        // Ensure formatting for embeds.
+        // Assign attributed string to textView.
+        // Besure that embed bounds are updated.
+        let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
+        let mAttrStr = NSMutableAttributedString(attributedString: attrStr)
+
+        // Ensure the starting paragraph style is applied to the topMarginAttachment else the
+        // first paragraph might not have the correct line height.
+        var paraStyle = NSParagraphStyle.default
+        if attrStr.length > 0 {
+            if let pstyle = attrStr.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
+                paraStyle = pstyle
+            }
+        }
+
+        mAttrStr.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
+        mAttrStr.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
+        mAttrStr.append(NSAttributedString(attachment: bottomMarginAttachment))
+
+        textView.attributedText = mAttrStr
 
         updateTextViewMargins()
     }

@@ -38,6 +38,11 @@ class PostStatsViewModel: Observable {
         return df
     }()
 
+    private lazy var monthFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.setLocalizedDateFormatFromTemplate("MMM")
+        return df
+    }()
 
     private struct Constants {
         static let maxRowsToDisplay = 6
@@ -47,6 +52,7 @@ class PostStatsViewModel: Observable {
         static let recentWeeks = NSLocalizedString("Recent Weeks", comment: "Post Stats recent weeks header.")
         static let views = NSLocalizedString("Views", comment: "Label for number of views.")
         static let period = NSLocalizedString("Period", comment: "Label for date periods.")
+        static let monthsAndYears = NSLocalizedString("Months and Years", comment: "Post Stats months and years header.")
     }
 
     // MARK: - Init
@@ -76,6 +82,7 @@ class PostStatsViewModel: Observable {
 
         tableRows.append(titleTableRow())
         tableRows.append(contentsOf: overviewTableRows())
+        tableRows.append(contentsOf: yearsTableRows())
         tableRows.append(contentsOf: recentWeeksTableRows())
         tableRows.append(TableFooterRow())
 
@@ -123,6 +130,47 @@ private extension PostStatsViewModel {
         return tableRows
     }
 
+    func yearsTableRows() -> [ImmuTableRow] {
+        var tableRows = [ImmuTableRow]()
+
+        tableRows.append(CellHeaderRow(title: Constants.monthsAndYears))
+        tableRows.append(TopTotalsPostStatsRow(itemSubtitle: Constants.period,
+                                               dataSubtitle: Constants.views,
+                                               dataRows: yearsDataRows(),
+                                               limitRowsDisplayed: true,
+                                               postStatsDelegate: postStatsDelegate))
+
+        return tableRows
+    }
+
+    func yearsDataRows() -> [StatsTotalRowData] {
+
+        guard let monthlyBreakdown = postStats?.monthlyBreakdown,
+            let maxYear = (monthlyBreakdown.max(by: { $0.date.year! < $1.date.year! }))?.date.year else {
+                return []
+        }
+
+        let minYear = maxYear - Constants.maxRowsToDisplay
+        var yearRows = [StatsTotalRowData]()
+
+        // Create Year rows in descending order
+        for year in (minYear...maxYear).reversed() {
+            // Get months for year, in descending order
+            let months = (monthlyBreakdown.filter({ $0.date.year == year })).sorted(by: { $0.date.month! > $1.date.month! })
+            // Sum months views for the year
+            let yearTotalViews = months.map({$0.viewsCount}).reduce(0, +)
+
+            if yearTotalViews > 0 {
+                yearRows.append(StatsTotalRowData(name: String(year),
+                                                  data: yearTotalViews.abbreviatedString(),
+                                                  showDisclosure: true,
+                                                  childRows: childRowsForYear(months)))
+            }
+        }
+
+        return yearRows
+    }
+
     func recentWeeksTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
@@ -145,6 +193,23 @@ private extension PostStatsViewModel {
                               showDisclosure: true,
                               childRows: childRowsForWeek($0))
         }
+    }
+
+    // MARK: - Months & Years Helpers
+
+    func childRowsForYear(_ months: [StatsPostViews]) -> [StatsTotalRowData] {
+        return months.map {
+            StatsTotalRowData(name: displayMonth(forDate: $0.date),
+                              data: $0.viewsCount.abbreviatedString())
+        }
+    }
+
+    func displayMonth(forDate date: DateComponents) -> String {
+        guard let month = calendar.date(from: date) else {
+            return ""
+        }
+
+        return monthFormatter.string(from: month)
     }
 
     // MARK: - Recent Weeks Helpers
