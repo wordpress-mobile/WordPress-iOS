@@ -2,15 +2,15 @@ import Foundation
 import XCTest
 
 class CategoriesComponent: BaseScreen {
-    let header: XCUIElement
+    let categoriesList: XCUIElement
     let backButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        header = app.navigationBars["Azctec Editor Navigation Bar"].otherElements["Post Categories"]
-        backButton = app.buttons["Post Settings"]
+        categoriesList = app.tables["CategoriesList"]
+        backButton = app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
 
-        super.init(element: header)
+        super.init(element: categoriesList)
     }
 
     func selectCategory(name: String) -> CategoriesComponent {
@@ -24,5 +24,9 @@ class CategoriesComponent: BaseScreen {
         backButton.tap()
 
         return EditorPostSettings()
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().tables["CategoriesList"].exists
     }
 }

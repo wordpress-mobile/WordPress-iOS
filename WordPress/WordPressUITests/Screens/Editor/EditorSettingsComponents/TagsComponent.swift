@@ -7,7 +7,7 @@ class TagsComponent: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        backButton = app.buttons["Post Settings"]
+        backButton = app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
         tagsField = app.textViews["add-tags"]
 
         super.init(element: tagsField)
@@ -23,5 +23,9 @@ class TagsComponent: BaseScreen {
         backButton.tap()
 
         return EditorPostSettings()
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().textViews["add-tags"].exists
     }
 }

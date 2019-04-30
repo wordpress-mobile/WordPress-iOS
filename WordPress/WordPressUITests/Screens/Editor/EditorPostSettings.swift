@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 
 class EditorPostSettings: BaseScreen {
-    let header: XCUIElement
     let backButton: XCUIElement
     let settingsTable: XCUIElement
     let categoriesSection: XCUIElement
@@ -12,15 +11,14 @@ class EditorPostSettings: BaseScreen {
 
     init() {
         let app = XCUIApplication()
-        header = app.navigationBars["Azctec Editor Navigation Bar"].otherElements["Post Settings"]
-        backButton = app.buttons["Back"]
+        backButton = app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
         settingsTable = app.tables["SettingsTable"]
         categoriesSection = settingsTable.cells["Categories"]
         tagsSection = settingsTable.cells["Tags"]
-        featuredImageButton = settingsTable.cells.staticTexts["Set Featured Image"]
+        featuredImageButton = settingsTable.cells["SetFeaturedImage"]
         mediaLibrary = app.cells.staticTexts["WordPress Media"]
 
-        super.init(element: header)
+        super.init(element: settingsTable)
     }
 
     func openCategories() -> CategoriesComponent {
@@ -62,5 +60,9 @@ class EditorPostSettings: BaseScreen {
         backButton.tap()
 
         return EditorScreen(mode: .rich)
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().tables["SettingsTable"].exists
     }
 }

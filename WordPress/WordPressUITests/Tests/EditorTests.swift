@@ -21,8 +21,9 @@ class EditorTests: XCTestCase {
     }
 
     override func tearDown() {
-        if editorScreen != nil && editorScreen.isLoaded() {
-            _ = editorScreen.goBack()
+        if editorScreen != nil && !TabNavComponent.isVisible() {
+            EditorFlow.returnToMainEditorScreen()
+            editorScreen.closeEditor()
         }
         super.tearDown()
     }

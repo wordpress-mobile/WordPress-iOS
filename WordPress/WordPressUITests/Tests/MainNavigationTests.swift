@@ -29,7 +29,7 @@ class MainNavigationTests: XCTestCase {
             .tabBar.gotoMeScreen()
             .tabBar.gotoNotificationsScreen()
             .tabBar.gotoEditorScreen()
-            .goBack()
+            .closeEditor()
 
         XCTAssert(NotificationsScreen.isLoaded())
     }

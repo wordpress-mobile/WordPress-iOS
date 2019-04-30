@@ -41,7 +41,8 @@ class EditorScreen: BaseScreen {
     let unorderedListOption = XCUIApplication().buttons["Unordered List"]
     let orderedListOption = XCUIApplication().buttons["Ordered List"]
 
-    // Action sheet buttons
+    // Action sheets
+    let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
     let discardButton = XCUIApplication().buttons["Discard"]
     let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"]
 
@@ -71,10 +72,10 @@ class EditorScreen: BaseScreen {
 
     func showOptionsStrip() {
         textView.coordinate(withNormalizedOffset: .zero).tap()
-        expandOptionsSctrip()
+        expandOptionsStrip()
     }
 
-    func expandOptionsSctrip() {
+    func expandOptionsStrip() {
         let expandButton = app.children(matching: .window).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .button).element
 
         if expandButton.exists && expandButton.isHittable && !sourcecodeButton.exists {
@@ -233,7 +234,13 @@ class EditorScreen: BaseScreen {
     }
 
     // returns void since return screen depends on from which screen it loaded
-    func goBack() {
+    func closeEditor() {
+        // Close any interfering elements
+        if actionSheet.exists {
+            moreButton.tap()
+        }
+
+        // Close the editor and discard any local changes
         editorCloseButton.tap()
         let notSavedState = app.staticTexts["You have unsaved changes."]
         if notSavedState.exists {
@@ -281,5 +288,9 @@ class EditorScreen: BaseScreen {
 
     private func getTextContent() -> String {
         return textView.value as! String
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"].exists
     }
 }
