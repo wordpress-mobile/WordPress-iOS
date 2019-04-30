@@ -680,6 +680,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                          buttonTitle:nil
                                             subtitle:nil
                                   attributedSubtitle:nil
+                     attributedSubtitleConfiguration:nil
                                                image:nil
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
