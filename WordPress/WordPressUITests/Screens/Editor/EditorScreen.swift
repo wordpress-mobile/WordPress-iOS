@@ -238,7 +238,7 @@ class EditorScreen: BaseScreen {
     func closeEditor() {
         // Close the More menu if needed
         if actionSheet.exists {
-            if isIpad{
+            if isIpad {
                 app.otherElements["PopoverDismissRegion"].tap()
             } else {
                 keepEditingButton.tap()
