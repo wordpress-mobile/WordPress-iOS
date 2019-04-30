@@ -99,9 +99,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                         selectedIndex: selectedIndex))
         case .insightsTagsAndCategories:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                      dataRows: tagsAndCategoriesRows(),
-                                                      siteStatsDetailsDelegate: detailsDelegate))
+                                                     dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                     dataRows: tagsAndCategoriesRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         case .periodPostsAndPages:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
@@ -139,6 +139,16 @@ class SiteStatsDetailsViewModel: Observable {
         case .periodPublished:
             tableRows.append(TopTotalsNoSubtitlesPeriodDetailStatsRow(dataRows: publishedRows(),
                                                                       siteStatsDetailsDelegate: detailsDelegate))
+        case .postStatsMonthsYears:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
+                                                     dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle,
+                                                     dataRows: postStatsRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
+        case .postStatsAverageViews:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
+                                                     dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle,
+                                                     dataRows: postStatsRows(forAverages: true),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -225,6 +235,14 @@ class SiteStatsDetailsViewModel: Observable {
                 return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPublished(date: selectedDate, period: selectedPeriod))
+    }
+
+    func refreshPostStats() {
+        guard let postID = postID else {
+            return
+        }
+
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
 }
@@ -479,6 +497,42 @@ private extension SiteStatsDetailsViewModel {
                                                                                      disclosureURL: $0.postURL,
                                                                                      statSection: .periodPublished) }
             ?? []
+    }
+
+    func postStatsRows(forAverages: Bool = false) -> [StatsTotalRowData] {
+
+        let postStats = periodStore.getPostStats()
+
+        guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
+            let maxYear = StatsDataHelper.maxYearFrom(yearsData: yearsData) else {
+                return []
+        }
+
+        let minYear = maxYear - StatsDataHelper.maxRowsToDisplay
+        var yearRows = [StatsTotalRowData]()
+
+        // Create Year rows in descending order
+        for year in (minYear...maxYear).reversed() {
+            let months = StatsDataHelper.monthsFrom(yearsData: yearsData, forYear: year)
+            let yearTotalViews = StatsDataHelper.totalViewsFrom(monthsData: months)
+
+            let rowValue: Int = {
+                if forAverages {
+                    return months.count > 0 ? (yearTotalViews / months.count) : 0
+                }
+                return yearTotalViews
+            }()
+
+            if rowValue > 0 {
+                yearRows.append(StatsTotalRowData(name: String(year),
+                                                  data: rowValue.abbreviatedString(),
+                                                  showDisclosure: true,
+                                                  childRows: StatsDataHelper.childRowsForYear(months),
+                                                  statSection: forAverages ? .postStatsAverageViews : .postStatsMonthsYears))
+            }
+        }
+
+        return yearRows
     }
 
 }
