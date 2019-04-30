@@ -53,6 +53,7 @@ class PostStatsViewModel: Observable {
         static let views = NSLocalizedString("Views", comment: "Label for number of views.")
         static let period = NSLocalizedString("Period", comment: "Label for date periods.")
         static let monthsAndYears = NSLocalizedString("Months and Years", comment: "Post Stats months and years header.")
+        static let averageViewsPerDay = NSLocalizedString("Avg. Views Per Day", comment: "Post Stats average views per day header.")
     }
 
     // MARK: - Init
@@ -83,6 +84,7 @@ class PostStatsViewModel: Observable {
         tableRows.append(titleTableRow())
         tableRows.append(contentsOf: overviewTableRows())
         tableRows.append(contentsOf: yearsTableRows())
+        tableRows.append(contentsOf: yearsTableRows(forAverages: true))
         tableRows.append(contentsOf: recentWeeksTableRows())
         tableRows.append(TableFooterRow())
 
@@ -130,24 +132,24 @@ private extension PostStatsViewModel {
         return tableRows
     }
 
-    func yearsTableRows() -> [ImmuTableRow] {
+    func yearsTableRows(forAverages: Bool = false) -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        tableRows.append(CellHeaderRow(title: Constants.monthsAndYears))
+        tableRows.append(CellHeaderRow(title: forAverages ? Constants.averageViewsPerDay : Constants.monthsAndYears))
         tableRows.append(TopTotalsPostStatsRow(itemSubtitle: Constants.period,
                                                dataSubtitle: Constants.views,
-                                               dataRows: yearsDataRows(),
+                                               dataRows: yearsDataRows(forAverages: forAverages),
                                                limitRowsDisplayed: true,
                                                postStatsDelegate: postStatsDelegate))
 
         return tableRows
     }
 
-    func yearsDataRows() -> [StatsTotalRowData] {
+    func yearsDataRows(forAverages: Bool = false) -> [StatsTotalRowData] {
+        let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown) ?? []
 
-        guard let monthlyBreakdown = postStats?.monthlyBreakdown,
-            let maxYear = (monthlyBreakdown.max(by: { $0.date.year! < $1.date.year! }))?.date.year else {
-                return []
+        guard let maxYear = maxYearFrom(yearsData: yearsData) else {
+            return []
         }
 
         let minYear = maxYear - Constants.maxRowsToDisplay
@@ -155,14 +157,13 @@ private extension PostStatsViewModel {
 
         // Create Year rows in descending order
         for year in (minYear...maxYear).reversed() {
-            // Get months for year, in descending order
-            let months = (monthlyBreakdown.filter({ $0.date.year == year })).sorted(by: { $0.date.month! > $1.date.month! })
-            // Sum months views for the year
-            let yearTotalViews = months.map({$0.viewsCount}).reduce(0, +)
+            let months = monthsFrom(yearsData: yearsData, forYear: year)
+            let yearTotalViews = totalViewsFrom(monthsData: months)
+            let rowValue = forAverages ? (yearTotalViews / months.count) : yearTotalViews
 
-            if yearTotalViews > 0 {
+            if rowValue > 0 {
                 yearRows.append(StatsTotalRowData(name: String(year),
-                                                  data: yearTotalViews.abbreviatedString(),
+                                                  data: rowValue.abbreviatedString(),
                                                   showDisclosure: true,
                                                   childRows: childRowsForYear(months)))
             }
@@ -210,6 +211,19 @@ private extension PostStatsViewModel {
         }
 
         return monthFormatter.string(from: month)
+    }
+
+    func maxYearFrom(yearsData: [StatsPostViews]) -> Int? {
+        return (yearsData.max(by: { $0.date.year! < $1.date.year! }))?.date.year
+    }
+
+    func monthsFrom(yearsData: [StatsPostViews], forYear year: Int) -> [StatsPostViews] {
+        // Get months from yearsData for the given year, in descending order.
+        return (yearsData.filter({ $0.date.year == year })).sorted(by: { $0.date.month! > $1.date.month! })
+    }
+
+    func totalViewsFrom(monthsData: [StatsPostViews]) -> Int {
+        return monthsData.map({$0.viewsCount}).reduce(0, +)
     }
 
     // MARK: - Recent Weeks Helpers
