@@ -49,9 +49,7 @@ extension PostEditor where Self: UIViewController {
                 postService.save(post, success: { [weak self] savedPost, previewURL in
                     self?.post = savedPost
                     SVProgressHUD.dismiss()
-                    self?.createPostRevisionBeforePreview() {
-                        completion(previewURL)
-                    }
+                    completion(previewURL)
                 }) { error in
                     DDLogError("Error while trying to save published post before preview: \(String(describing: error))")
                     SVProgressHUD.dismiss()
