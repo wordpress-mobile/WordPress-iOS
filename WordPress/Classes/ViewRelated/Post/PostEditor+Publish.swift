@@ -202,6 +202,7 @@ extension PostEditor where Self: UIViewController {
     }
 
     // Returns true when the post is deleted
+    @discardableResult
     func discardChanges() -> Bool {
         var postDeleted = false
         guard let managedObjectContext = post.managedObjectContext, let originalPost = post.original else {
