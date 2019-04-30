@@ -22,19 +22,26 @@ class SiteStatsDetailsViewModel: Observable {
     private let periodStore = StoreContainer.shared.statsPeriod
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
+
     private var selectedDate: Date?
     private var selectedPeriod: StatsPeriodUnit?
+    private var postID: Int?
 
     init(detailsDelegate: SiteStatsDetailsDelegate) {
         self.detailsDelegate = detailsDelegate
     }
 
-    func fetchDataFor(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
+    func fetchDataFor(statSection: StatSection,
+                      selectedDate: Date? = nil,
+                      selectedPeriod: StatsPeriodUnit? = nil,
+                      postID: Int? = nil) {
         self.statSection = statSection
         self.selectedDate = selectedDate
         self.selectedPeriod = selectedPeriod
+        self.postID = postID
 
-        if StatSection.allInsights.contains(statSection) {
+        switch statSection {
+        case let statSection where StatSection.allInsights.contains(statSection):
             guard let storeQuery = queryForInsightStatSection(statSection) else {
                 return
             }
@@ -43,7 +50,7 @@ class SiteStatsDetailsViewModel: Observable {
             insightsChangeReceipt = insightsStore.onChange { [weak self] in
                 self?.emitChange()
             }
-        } else {
+        case let statSection where StatSection.allPeriods.contains(statSection):
             guard let storeQuery = queryForPeriodStatSection(statSection) else {
                 return
             }
@@ -52,6 +59,17 @@ class SiteStatsDetailsViewModel: Observable {
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
+        case let statSection where StatSection.allPostStats.contains(statSection):
+            guard let postID = postID else {
+                return
+            }
+
+            periodReceipt = periodStore.query(.postStats(postID: postID))
+            periodChangeReceipt = periodStore.onChange { [weak self] in
+                self?.emitChange()
+            }
+        default:
+            break
         }
     }
 

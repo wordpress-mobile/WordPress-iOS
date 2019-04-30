@@ -131,7 +131,7 @@ extension PostStatsTableViewController: PostStatsDelegate {
         }
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection, postID: postID)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
