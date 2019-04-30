@@ -39,10 +39,6 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     ///
     func prepopulateMediaItems(_ media: [Media])
 
-    /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
-    ///
-    var shouldRemovePostOnDismiss: Bool { get }
-
     /// Cancels all ongoing uploads
     ///
     ///TODO: We won't need this once media uploading is extracted to PostEditorUtil

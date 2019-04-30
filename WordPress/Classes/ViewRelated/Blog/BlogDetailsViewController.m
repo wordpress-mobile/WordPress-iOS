@@ -174,10 +174,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
 @property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
+@property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
 @end
 
 @implementation BlogDetailsViewController
+@synthesize restorableSelectedIndexPath = _restorableSelectedIndexPath;
 
 #pragma mark - State Restoration
 
@@ -487,12 +489,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (!_restorableSelectedIndexPath) {
         // If nil, default to stats subsection.
         BlogDetailsSubsection subsection = BlogDetailsSubsectionStats;
-        BlogDetailsSectionCategory sectionCategory = [self sectionCategoryWithSubsection:subsection];
-        NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:sectionCategory];
+        self.selectedSectionCategory = [self sectionCategoryWithSubsection:subsection];
+        NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
         _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     }
 
     return _restorableSelectedIndexPath;
+}
+
+- (void)setRestorableSelectedIndexPath:(NSIndexPath *)restorableSelectedIndexPath
+{
+    _restorableSelectedIndexPath = restorableSelectedIndexPath;
+
+    if (restorableSelectedIndexPath != nil) {
+        BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
+        self.selectedSectionCategory = section.category;
+    }
 }
 
 - (SiteIconPickerPresenter *)siteIconPickerPresenter
@@ -555,21 +567,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)reloadTableViewPreservingSelection
 {
-    // First, we'll grab the appropriate index path so we can reselect it
-    // after reloading the table
-    NSIndexPath *selectedIndexPath = self.restorableSelectedIndexPath;
-
     // Configure and reload table data when appearing to ensure pending comment count is updated
     [self.tableView reloadData];
 
-    BOOL isValidIndexPath = selectedIndexPath.section < self.tableView.numberOfSections &&
-                            selectedIndexPath.row < [self.tableView numberOfRowsInSection:selectedIndexPath.section];
+    // Check if the last selected category index needs to be updated after a dynamic section is activated and displayed.
+    // QuickStart and Use Domain are dynamic section, which means they can be removed or hidden at any time.
+    NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
+    if (section != NSNotFound && self.restorableSelectedIndexPath.section != section) {
+        NSUInteger row = self.restorableSelectedIndexPath.row;
+        self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    }
+
+    BOOL isValidIndexPath = self.restorableSelectedIndexPath.section < self.tableView.numberOfSections &&
+                            self.restorableSelectedIndexPath.row < [self.tableView numberOfRowsInSection:self.restorableSelectedIndexPath.section];
     if (isValidIndexPath && ![self splitViewControllerIsHorizontallyCompact]) {
         // And finally we'll reselect the selected row, if there is one
 
-        [self.tableView selectRowAtIndexPath:selectedIndexPath
+        [self.tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                     animated:NO
-                              scrollPosition:[self optimumScrollPositionForIndexPath:selectedIndexPath]];
+                              scrollPosition:[self optimumScrollPositionForIndexPath:self.restorableSelectedIndexPath]];
     }
 }
 
@@ -1110,33 +1126,41 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIView *)quickStartHeaderWithTitle:(NSString *)title
 {
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
+    [view setTitle:title];
+    view.ellipsisButtonDidTouch = ^(BlogDetailsSectionHeaderView *header) {
+        [weakSelf removeQuickStartSection:header];
+    };
+    return view;
+}
+
+- (void)removeQuickStartSection:(BlogDetailsSectionHeaderView *)view
+{
     NSString *removeTitle = NSLocalizedString(@"Remove Next Steps", @"Title for action that will remove the next steps/quick start menus.");
     NSString *removeMessage = NSLocalizedString(@"Removing Next Steps will hide all tours on this site. This action cannot be undone.", @"Explanation of what will happen if the user confirms this alert.");
     NSString *confirmationTitle = NSLocalizedString(@"Remove", @"Title for button that will confirm removing the next steps/quick start menus.");
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel button");
-
+    
     UIAlertController *removeConfirmation = [UIAlertController alertControllerWithTitle:removeTitle message:removeMessage preferredStyle:UIAlertControllerStyleAlert];
     [removeConfirmation addCancelActionWithTitle:cancelTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonCancelTapped];
     }];
     [removeConfirmation addDefaultActionWithTitle:confirmationTitle handler:^(UIAlertAction * _Nonnull action) {
         [WPAnalytics track:WPAnalyticsStatQuickStartRemoveDialogButtonRemoveTapped];
-
+        
         [[QuickStartTourGuide find] removeFrom:self.blog];
     }];
-
+    
     UIAlertController *removeSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    removeSheet.popoverPresentationController.sourceView = view;
+    removeSheet.popoverPresentationController.sourceRect = view.ellipsisButton.frame;
     [removeSheet addDestructiveActionWithTitle:removeTitle handler:^(UIAlertAction * _Nonnull action) {
         [self presentViewController:removeConfirmation animated:YES completion:nil];
     }];
     [removeSheet addCancelActionWithTitle:cancelTitle handler:nil];
-
-    BlogDetailsSectionHeaderView *view = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionHeaderViewIdentifier];
-    [view setTitle:title];
-    view.callback = ^{
-        [self presentViewController:removeSheet animated:YES completion:nil];
-    };
-    return view;
+    
+    [self presentViewController:removeSheet animated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section

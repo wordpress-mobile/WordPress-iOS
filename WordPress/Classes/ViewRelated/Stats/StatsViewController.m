@@ -248,6 +248,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                                     buttonTitle:nil
                                                                        subtitle:subtitle
                                                              attributedSubtitle:nil
+                                                attributedSubtitleConfiguration:nil
                                                                           image:nil
                                                                   subtitleImage:nil
                                                                   accessoryView:nil];
