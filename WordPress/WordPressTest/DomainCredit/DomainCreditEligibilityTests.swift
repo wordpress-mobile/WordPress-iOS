@@ -6,12 +6,12 @@ class DomainCreditEligibilityTests: XCTestCase {
     private var mainContext: NSManagedObjectContext {
         return manager.mainContext
     }
-    
+
     override func setUp() {
         super.setUp()
         manager = TestContextManager()
     }
-    
+
     func testDomainCreditEligibilityWithFeatureFlagOff() {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.hasDomainCredit = true
@@ -19,14 +19,14 @@ class DomainCreditEligibilityTests: XCTestCase {
         let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: false)
         XCTAssertFalse(canRedeemDomainCredit)
     }
-    
+
     func testDomainCreditEligibilityOnBlogWithCustomDomain() {
         let blog = ModelTestHelper.insertSelfHostedBlog(context: mainContext)
         blog.hasDomainCredit = true
         let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: true)
         XCTAssertFalse(canRedeemDomainCredit)
     }
-    
+
     func testDomainCreditEligibilityOnSelfHostedBlog() {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.hasDomainCredit = true
@@ -34,7 +34,7 @@ class DomainCreditEligibilityTests: XCTestCase {
         let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: true)
         XCTAssertFalse(canRedeemDomainCredit)
     }
-    
+
     func testDomainCreditEligibilityOnEligibleBlog() {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.hasDomainCredit = true
