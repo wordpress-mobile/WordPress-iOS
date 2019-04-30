@@ -27,6 +27,8 @@ class WPCrashLogging {
             Client.shared?.beforeSerializeEvent = sharedInstance.beforeSerializeEvent
             Client.shared?.shouldSendEvent = sharedInstance.shouldSendEvent
 
+            sharedInstance.applyUserTrackingPreferences()
+
         } catch let error {
             print("\(error)")
         }
