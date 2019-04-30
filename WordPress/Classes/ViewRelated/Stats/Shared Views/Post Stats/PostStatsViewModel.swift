@@ -146,9 +146,9 @@ private extension PostStatsViewModel {
     }
 
     func yearsDataRows(forAverages: Bool = false) -> [StatsTotalRowData] {
-        let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown) ?? []
 
-        guard let maxYear = maxYearFrom(yearsData: yearsData) else {
+        guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
+            let maxYear = maxYearFrom(yearsData: yearsData) else {
             return []
         }
 
@@ -159,7 +159,13 @@ private extension PostStatsViewModel {
         for year in (minYear...maxYear).reversed() {
             let months = monthsFrom(yearsData: yearsData, forYear: year)
             let yearTotalViews = totalViewsFrom(monthsData: months)
-            let rowValue = forAverages ? (yearTotalViews / months.count) : yearTotalViews
+
+            let rowValue: Int = {
+                if forAverages {
+                    return months.count > 0 ? (yearTotalViews / months.count) : 0
+                }
+                return yearTotalViews
+            }()
 
             if rowValue > 0 {
                 yearRows.append(StatsTotalRowData(name: String(year),
