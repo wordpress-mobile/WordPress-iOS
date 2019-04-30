@@ -58,8 +58,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var textView: WPRichContentView!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
+    private let textView: WPRichContentView = {
+        let textView = WPRichContentView(frame: .zero, textContainer: nil)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.alpha = 0
+
+        return textView
+    }()
 
     // Spacers
     @IBOutlet fileprivate weak var featuredImageBottomPaddingView: UIView!
@@ -76,6 +82,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     private let noResultsViewController = NoResultsViewController.controller()
 
     private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
+
+    private let topMarginAttachment = NSTextAttachment()
+
+    private let bottomMarginAttachment = NSTextAttachment()
 
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
@@ -212,8 +222,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupTextView()
         setupContentHeaderAndFooter()
-        textView.alpha = 0
         footerView.isHidden = true
 
         // Hide the featured image and its padding until we know there is one to load.
@@ -285,8 +295,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         coordinator.animate(
             alongsideTransition: { (_) in
-                if let position = position, let textRange = self.textView.textRange(from: position, to: position) {
+                if let position = position,
+                    let textRange = self.textView.textRange(from: position, to: position) {
+
                     let rect = self.textView.firstRect(for: textRange)
+
                     if rect.origin.y.isFinite {
                         self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
                     }
@@ -373,6 +386,21 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         })
     }
 
+    /// Setup the Text View.
+    fileprivate func setupTextView() {
+        // This method should be called exactly once.
+        assert(textView.superview == nil)
+
+        textView.delegate = self
+
+        view.addSubview(textView)
+        view.addConstraints([
+            topLayoutGuide.bottomAnchor.constraint(equalTo: textView.topAnchor),
+            view.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
+            textView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
+            ])
+    }
 
     /// Composes the views for the post header and Discover attribution.
     fileprivate func setupContentHeaderAndFooter() {
@@ -399,8 +427,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     /// Sets the left and right textContainerInset to preserve readable content margins.
     fileprivate func updateContentInsets() {
         var insets = textView.textContainerInset
-
         let margin = view.readableContentGuide.layoutFrame.origin.x
+
         insets.left = margin - DetailConstants.MarginOffset
         insets.right = margin - DetailConstants.MarginOffset
         textView.textContainerInset = insets
@@ -430,9 +458,25 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     /// Updates the bounds of the placeholder top and bottom text attachments so
     /// there is enough vertical space for the text header and footer views.
     fileprivate func updateTextViewMargins() {
-        textView.topMargin = textHeaderStackView.frame.height
-        textView.bottomMargin = textFooterStackView.frame.height
+        updateTopMargin()
+        updateBottomMargin()
         textFooterTopConstraint.constant = textFooterYOffset()
+    }
+
+    fileprivate func updateTopMargin() {
+        var bounds = topMarginAttachment.bounds
+        bounds.size.height = max(1, textHeaderStackView.frame.height)
+        bounds.size.width = textView.textContainer.size.width
+        topMarginAttachment.bounds = bounds
+        textView.ensureLayoutForAttachment(topMarginAttachment)
+    }
+
+    fileprivate func updateBottomMargin() {
+        var bounds = bottomMarginAttachment.bounds
+        bounds.size.height = max(1, textFooterStackView.frame.height)
+        bounds.size.width = textView.textContainer.size.width
+        bottomMarginAttachment.bounds = bounds
+        textView.ensureLayoutForAttachment(bottomMarginAttachment)
     }
 
 
@@ -669,13 +713,35 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
-
     fileprivate func configureRichText() {
         guard let post = post else {
             return
         }
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
+
+        // TODO: Get attributed string
+        // Modify the attributed string. Add top and bottom embeds
+        // Ensure formatting for embeds.
+        // Assign attributed string to textView.
+        // Besure that embed bounds are updated.
+        let attrStr = WPRichContentView.formattedAttributedStringForString(post.contentForDisplay())
+        let mAttrStr = NSMutableAttributedString(attributedString: attrStr)
+
+        // Ensure the starting paragraph style is applied to the topMarginAttachment else the
+        // first paragraph might not have the correct line height.
+        var paraStyle = NSParagraphStyle.default
+        if attrStr.length > 0 {
+            if let pstyle = attrStr.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
+                paraStyle = pstyle
+            }
+        }
+
+        mAttrStr.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
+        mAttrStr.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
+        mAttrStr.append(NSAttributedString(attachment: bottomMarginAttachment))
+
+        textView.attributedText = mAttrStr
 
         updateTextViewMargins()
     }
@@ -960,7 +1026,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                             self.view.layoutIfNeeded()
                             self.navigationController?.setNavigationBarHidden(false, animated: animated)
                             if pinToBottom {
-                                let y = self.textView.contentSize.height - self.textView.frame.height
+                                let contentSizeHeight = self.textView.contentSize.height ?? 0
+                                let frameHeight = self.textView.frame.height ?? 0
+                                let y =  contentSizeHeight - frameHeight
                                 self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                             }
 

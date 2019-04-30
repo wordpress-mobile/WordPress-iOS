@@ -21,14 +21,22 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var enableLoggedInFeatures = false
 
+    @IBOutlet var parentStackView: UIStackView!
     @IBOutlet var avatarImageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
     @IBOutlet var timeLabel: LongPressGestureLabel!
-    @IBOutlet var textView: WPRichContentView!
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
+
+    private let textView: WPRichContentView = {
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
+        newTextView.isScrollEnabled = false
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+
+        return newTextView
+    }()
 
     @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
@@ -37,6 +45,8 @@ class ReaderCommentCell: UITableViewCell {
     }
 
     @objc var comment: Comment?
+
+    @objc var attributedString: NSAttributedString?
 
     @objc var showReply: Bool {
         get {
@@ -68,6 +78,7 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        setupContentView()
         setupReplyButton()
         setupLikeButton()
         applyStyles()
@@ -75,7 +86,6 @@ class ReaderCommentCell: UITableViewCell {
 
 
     // MARK: = Setup
-
 
     @objc func applyStyles() {
         WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
@@ -86,6 +96,12 @@ class ReaderCommentCell: UITableViewCell {
         textView.textContainerInset = Constants.textViewInsets
     }
 
+    func setupContentView() {
+        // This method should be called exactly once.
+        assert(textView.superview == nil)
+
+        parentStackView.insertArrangedSubview(textView, at: 1)
+    }
 
     @objc func setupReplyButton() {
         let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
@@ -118,8 +134,9 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: - Configuration
 
 
-    @objc func configureCell(comment: Comment) {
+    @objc func configureCell(comment: Comment, attributedString: NSAttributedString) {
         self.comment = comment
+        self.attributedString = attributedString
 
         configureAvatar()
         configureAuthorButton()
@@ -175,14 +192,14 @@ class ReaderCommentCell: UITableViewCell {
 
 
     @objc func configureText() {
-        guard let comment = comment else {
+        guard let comment = comment, let attributedString = attributedString else {
             return
         }
 
         textView.isPrivate = comment.isPrivateContent()
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.
-        textView.content = comment.content
+        textView.attributedText = attributedString
     }
 
 

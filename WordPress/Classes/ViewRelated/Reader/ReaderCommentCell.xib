@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,10 +22,10 @@
                         <rect key="frame" x="16" y="11" width="343" height="125"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="PBm-HG-IYD">
-                                <rect key="frame" x="0.0" y="0.0" width="343" height="39.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="343" height="75"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XPU-fY-7js" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="4" width="32" height="32"/>
+                                        <rect key="frame" x="0.0" y="21.5" width="32" height="32"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="28l-JO-bUu"/>
@@ -34,7 +33,7 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OsT-Wk-2aG">
-                                        <rect key="frame" x="40" y="1.5" width="303" height="36.5"/>
+                                        <rect key="frame" x="40" y="19.5" width="303" height="36.5"/>
                                         <subviews>
                                             <button contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
                                                 <rect key="frame" x="0.0" y="0.0" width="303" height="22"/>
@@ -64,13 +63,6 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet, " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MZj-2b-1Xd" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="39.5" width="343" height="35.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                            </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fSc-Wq-XZ6">
                                 <rect key="frame" x="0.0" y="75" width="343" height="50"/>
                                 <subviews>
@@ -130,8 +122,8 @@
                 <outlet property="avatarImageView" destination="XPU-fY-7js" id="4eM-MZ-zDm"/>
                 <outlet property="leadingContentConstraint" destination="U70-GE-VG6" id="5mD-Tg-9LS"/>
                 <outlet property="likeButton" destination="yhR-P3-CEb" id="9Z2-HS-Lqa"/>
+                <outlet property="parentStackView" destination="YXw-gg-IAV" id="CGY-Yg-lt8"/>
                 <outlet property="replyButton" destination="BlX-um-sZ8" id="XaA-1v-rgG"/>
-                <outlet property="textView" destination="MZj-2b-1Xd" id="ObL-MN-eQT"/>
                 <outlet property="timeLabel" destination="srn-Fn-Of7" id="uZB-qi-zhU"/>
             </connections>
             <point key="canvasLocation" x="157.5" y="-325.5"/>

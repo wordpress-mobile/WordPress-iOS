@@ -24,6 +24,43 @@ class SignupEpilogueCell: UITableViewCell {
     private var cellType: EpilogueCellType?
     open var delegate: SignupEpilogueCellDelegate?
 
+    // MARK: - UITableViewCell
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        accessoryType = .none
+        cellField.textContentType = nil
+        isAccessibilityElement = false
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            let emptyValue = NSLocalizedString("Empty", comment: "Accessibility value presented in the signup epilogue for an empty value.")
+            let secureTextValue = NSLocalizedString("Secure text", comment: "Accessibility value presented in the signup epilogue for a password value.")
+
+            let labelValue = cellLabel.text ?? emptyValue
+
+            let fieldValue: String
+            if let cellText = cellField.text, !cellText.isEmpty {
+                if cellType == .password {
+                    fieldValue = secureTextValue    // let's refrain from reading the password aloud
+                } else {
+                    fieldValue = cellText
+                }
+            } else {
+                fieldValue = emptyValue
+            }
+
+            let value = "\(labelValue), \(fieldValue)"
+
+            return value
+        }
+        set {
+            super.accessibilityLabel = accessibilityLabel
+        }
+    }
+
     // MARK: - Public Methods
 
     func configureCell(forType newCellType: EpilogueCellType,
@@ -38,21 +75,42 @@ class SignupEpilogueCell: UITableViewCell {
         cellField.isSecureTextEntry = (cellType == .password)
         selectionStyle = .none
 
+        configureAccessoryType(for: newCellType)
+        configureTextContentTypeIfNeeded(for: newCellType)
+        configureAccessibility(for: newCellType)
+    }
+
+    // MARK: - Private behavior
+
+    private func configureAccessibility(for cellType: EpilogueCellType) {
+        if cellType == .username {
+            accessibilityTraits.insert(.button) // selection transitions to SignupUsernameViewController
+            isAccessibilityElement = true       // this assures double-tap properly captures cell selection
+        }
+    }
+
+    private func configureAccessoryType(for cellType: EpilogueCellType) {
         if cellType == .username {
             accessoryType = .disclosureIndicator
         } else {
             accessoryType = .none
         }
-
-        if #available(iOS 12.0, *) {
-            if cellType == .password {
-                cellField.textContentType = .newPassword
-            } else {
-                cellField.textContentType = nil
-            }
-        }
     }
 
+    private func configureTextContentTypeIfNeeded(for cellType: EpilogueCellType) {
+        guard #available(iOS 12, *) else {
+            return
+        }
+
+        switch cellType {
+        case .displayName:
+            cellField.textContentType = .name
+        case .username:
+            cellField.textContentType = .username
+        case .password:
+            cellField.textContentType = .newPassword
+        }
+    }
 }
 
 
@@ -87,5 +145,4 @@ extension SignupEpilogueCell: UITextFieldDelegate {
         cellField.endEditing(true)
         return true
     }
-
 }
