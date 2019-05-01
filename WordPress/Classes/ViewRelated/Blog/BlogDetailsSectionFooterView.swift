@@ -28,10 +28,10 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
         contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
             // Stack view.
-            stackView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor, constant: 0),
-            stackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor, constant: 0),
-            stackView.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor, constant: 0),
-            stackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor, constant: 0),
+            stackView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor),
             // Spacer view.
             spacerView.heightAnchor.constraint(equalToConstant: 20),
             ])
