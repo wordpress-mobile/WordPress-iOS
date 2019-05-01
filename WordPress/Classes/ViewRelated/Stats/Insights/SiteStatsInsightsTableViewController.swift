@@ -70,8 +70,6 @@ class SiteStatsInsightsTableViewController: UITableViewController, NoResultsView
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    private(set) lazy var noResultsViewController: NoResultsViewController = .controller()
-
     // MARK: - View
 
     override func viewDidLoad() {
