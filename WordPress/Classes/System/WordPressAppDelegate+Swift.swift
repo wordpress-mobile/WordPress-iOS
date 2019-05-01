@@ -468,7 +468,7 @@ extension WordPressAppDelegate {
         navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
         navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
 
-        UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = WPStyleGuide.wordPressBlue()
         UISwitch.appearance().onTintColor = WPStyleGuide.wordPressBlue()
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.grey()], for: .normal)
