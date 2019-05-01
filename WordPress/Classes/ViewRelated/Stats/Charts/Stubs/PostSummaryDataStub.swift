@@ -39,15 +39,6 @@ class LatestPostSummaryDataStub: PostSummaryDataStub {
     }
 }
 
-// MARK: - SelectedPostSummaryDataStub
-
-class SelectedPostSummaryDataStub: PostSummaryDataStub {
-    init() {
-        let chartDescription = "Bar Chart depicting Visitors for the Selected Post"  // NB: we don't localize stub data
-        super.init(fileName: "selectedPost_data", description: chartDescription)
-    }
-}
-
 // MARK: - BarChartDataConvertible
 
 extension PostSummaryDataStub: BarChartDataConvertible {
