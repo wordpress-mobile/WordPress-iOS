@@ -86,7 +86,8 @@ private extension PostStatsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self,
+        return [PostStatsEmptyCellHeaderRow.self,
+                CellHeaderRow.self,
                 PostStatsTitleRow.self,
                 OverviewRow.self,
                 TopTotalsPostStatsRow.self,
@@ -151,6 +152,20 @@ extension PostStatsTableViewController: PostStatsDelegate {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection, postID: postID)
         navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension PostStatsTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        guard let newDate = newDate else {
+            return
+        }
+
+        selectedDate = newDate
     }
 
 }

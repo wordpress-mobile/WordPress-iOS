@@ -100,7 +100,7 @@ private extension PostStatsViewModel {
 
     func overviewTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: ""))
+        tableRows.append(PostStatsEmptyCellHeaderRow())
 
         // TODO: replace with real data
         let data = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle, tabData: 741, difference: 22222, differencePercent: 50)

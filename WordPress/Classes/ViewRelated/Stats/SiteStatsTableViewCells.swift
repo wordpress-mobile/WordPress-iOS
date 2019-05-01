@@ -450,6 +450,26 @@ struct CellHeaderRow: ImmuTableRow {
     }
 }
 
+struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(withTitle: "", adjustHeightForPostStats: true)
+    }
+}
+
 struct TableFooterRow: ImmuTableRow {
 
     typealias CellType = StatsTableFooter
