@@ -1,11 +1,20 @@
-protocol NoResultsViewHost: class {
+protocol NoResultsViewHost: class { }
+
+extension NoResultsViewHost where Self: UIViewController {
     typealias NoResultsCustomizationBlock = (NoResultsViewController) -> Void
     typealias NoResultsAttributedSubtitleConfiguration = NoResultsViewController.AttributedSubtitleConfiguration
 
-    var noResultsViewController: NoResultsViewController { get }
-}
-
-extension NoResultsViewHost where Self: UIViewController {
+    /// The noResultsViewController
+    var noResultsViewController: NoResultsViewController {
+        get {
+            return associatedObject(base: self, key: &NoResultsViewHostAssociatedKeys.associatedObjectKey) {
+                return .controller()
+            }
+        }
+        set {
+            associateObject(base: self, key: &NoResultsViewHostAssociatedKeys.associatedObjectKey, value: newValue)
+        }
+    }
 
     /// Configure and display the no results view controller
     ///
@@ -64,7 +73,8 @@ extension NoResultsViewHost where Self: UIViewController {
                          attributedSubtitleConfiguration: NoResultsAttributedSubtitleConfiguration? = nil,
                          image: String? = nil,
                          subtitleImage: String? = nil,
-                         accessoryView: UIView? = nil) {
+                         accessoryView: UIView? = nil,
+                         customizationBlock: NoResultsCustomizationBlock? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: buttonTitle,
                                           subtitle: subtitle,
@@ -101,6 +111,7 @@ extension NoResultsViewHost where Self: UIViewController {
         noResultsViewController.view.frame = view.frame
         noResultsViewController.view.frame.origin.y = 0
         customizationBlock?(noResultsViewController)
+        print(noResultsViewController)
         addChild(noResultsViewController)
 
         if animated {
@@ -108,4 +119,24 @@ extension NoResultsViewHost where Self: UIViewController {
         }
         noResultsViewController.didMove(toParent: self)
     }
+}
+
+private extension NoResultsViewHost {
+    func associatedObject<Value: AnyObject>(base: AnyObject, key: UnsafePointer<String>, initialiser: () -> Value) -> Value {
+            if let associated = objc_getAssociatedObject(base, key) as? Value {
+                return associated
+            }
+
+            let associated = initialiser()
+            objc_setAssociatedObject(base, key, associated, .OBJC_ASSOCIATION_RETAIN)
+            return associated
+    }
+
+    func associateObject<Value: AnyObject>(base: AnyObject, key: UnsafePointer<String>, value: Value) {
+        objc_setAssociatedObject(base, key, value, .OBJC_ASSOCIATION_RETAIN)
+    }
+}
+
+private struct NoResultsViewHostAssociatedKeys {
+    static var associatedObjectKey = "noResultsKey"
 }
