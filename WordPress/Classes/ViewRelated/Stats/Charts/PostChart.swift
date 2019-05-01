@@ -43,7 +43,6 @@ private extension StatsPostViews {
         let calendar = Calendar.autoupdatingCurrent
 
         if !date.isValidDate(in: calendar) {
-            debugPrint("Invalid date components: \(date)")
             return nil
         }
 
