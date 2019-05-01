@@ -4,6 +4,7 @@ import WordPressFlux
 @objc protocol PostStatsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
 class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
@@ -124,5 +125,14 @@ extension PostStatsTableViewController: PostStatsDelegate {
         applyTableUpdates()
     }
 
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        guard StatSection.allPostStats.contains(statSection) else {
+            return
+        }
+
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection, postID: postID)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
 
 }

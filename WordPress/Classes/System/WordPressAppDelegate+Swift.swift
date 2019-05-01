@@ -5,6 +5,7 @@ import UIDeviceIdentifier
 import WordPressAuthenticator
 import AutomatticTracks
 import WordPressComStatsiOS
+import WordPressShared
 import AlamofireNetworkActivityIndicator
 
 // MARK: - Utility Configuration
@@ -186,6 +187,31 @@ extension WordPressAppDelegate {
             }
 
             return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
+        }
+    }
+
+
+    @objc(showWelcomeScreenIfNeededAnimated:)
+    func showWelcomeScreenIfNeeded(animated: Bool) {
+        guard isWelcomeScreenVisible == false && AccountHelper.isLoggedIn == false else {
+            return
+        }
+
+        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
+        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
+        if let presenter = window.rootViewController?.presentedViewController,
+            !(presenter is UIAlertController) {
+            presenter.dismiss(animated: animated, completion: { [weak self] in
+                self?.showWelcomeScreen(animated, thenEditor: false)
+            })
+        } else {
+            showWelcomeScreen(animated, thenEditor: false)
+        }
+    }
+
+    @objc func showWelcomeScreen(_ animated: Bool, thenEditor: Bool) {
+        if let rootViewController = window.rootViewController {
+            WordPressAuthenticator.showLogin(from: rootViewController, animated: animated)
         }
     }
 
@@ -418,5 +444,75 @@ extension WordPressAppDelegate {
 
         NotificationSupportService.deleteServiceExtensionToken()
         NotificationSupportService.deleteServiceExtensionUsername()
+    }
+}
+
+// MARK: - Appearance
+
+extension WordPressAppDelegate {
+    @objc func customizeAppearance() {
+        window.backgroundColor = WPStyleGuide.itsEverywhereGrey()
+        window.tintColor = WPStyleGuide.wordPressBlue()
+
+        WPStyleGuide.configureNavigationBarAppearance()
+
+        let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))
+        UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).shadowImage = clearImage
+        UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for: .default)
+
+        UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
+        UITabBar.appearance().tintColor = WPStyleGuide.mediumBlue()
+
+        let navigationAppearance = UINavigationBar.appearance()
+        navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
+        navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
+        navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
+
+        UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
+        UIToolbar.appearance().barTintColor = WPStyleGuide.wordPressBlue()
+        UISwitch.appearance().onTintColor = WPStyleGuide.wordPressBlue()
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.grey()], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.wordPressBlue()], for: .selected)
+
+        let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
+        navReferenceAppearance.setBackgroundImage(nil, for: .default)
+        navReferenceAppearance.barTintColor = WPStyleGuide.wordPressBlue()
+
+        UIToolbar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self]).barTintColor = .darkGray
+
+        WPStyleGuide.configureSearchBarAppearance()
+
+        // SVProgressHUD
+        SVProgressHUD.setBackgroundColor(WPStyleGuide.littleEddieGrey().withAlphaComponent(0.95))
+        SVProgressHUD.setForegroundColor(.white)
+        SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
+        SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
+
+        // Media Picker styles
+        let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
+        barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
+        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = WPStyleGuide.greyLighten30()
+
+
+        let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
+        cellAppearance.loadingBackgroundColor = WPStyleGuide.lightGrey()
+        cellAppearance.placeholderBackgroundColor = WPStyleGuide.darkGrey()
+        cellAppearance.placeholderTintColor = WPStyleGuide.greyLighten30()
+        cellAppearance.setCellTintColor(WPStyleGuide.wordPressBlue())
+
+        UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = WPStyleGuide.wordPressBlue()
+
+        customizeAppearanceForTextElements()
+    }
+
+    private func customizeAppearanceForTextElements() {
+        let maximumPointSize = WPStyleGuide.maxFontSize
+
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white,
+                                                            NSAttributedString.Key.font: WPStyleGuide.fixedFont(for: UIFont.TextStyle.headline, weight: UIFont.Weight.bold)]
+
+        WPStyleGuide.configureSearchBarTextAppearance()
+
+        SVProgressHUD.setFont(WPStyleGuide.fontForTextStyle(UIFont.TextStyle.headline, maximumPointSize: maximumPointSize))
     }
 }
