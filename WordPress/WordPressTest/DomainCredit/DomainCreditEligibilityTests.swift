@@ -12,18 +12,10 @@ class DomainCreditEligibilityTests: XCTestCase {
         manager = TestContextManager()
     }
 
-    func testDomainCreditEligibilityWithFeatureFlagOff() {
-        let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
-        blog.hasDomainCredit = true
-        blog.isHostedAtWPcom = true
-        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: false)
-        XCTAssertFalse(canRedeemDomainCredit)
-    }
-
     func testDomainCreditEligibilityOnBlogWithCustomDomain() {
         let blog = ModelTestHelper.insertSelfHostedBlog(context: mainContext)
         blog.hasDomainCredit = true
-        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: true)
+        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
         XCTAssertFalse(canRedeemDomainCredit)
     }
 
@@ -31,7 +23,7 @@ class DomainCreditEligibilityTests: XCTestCase {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.hasDomainCredit = true
         blog.isHostedAtWPcom = false
-        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: true)
+        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
         XCTAssertFalse(canRedeemDomainCredit)
     }
 
@@ -39,7 +31,7 @@ class DomainCreditEligibilityTests: XCTestCase {
         let blog = ModelTestHelper.insertDotComBlog(context: mainContext)
         blog.hasDomainCredit = true
         blog.isHostedAtWPcom = true
-        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog, isFeatureFlagOn: true)
+        let canRedeemDomainCredit = DomainCreditEligibilityChecker.canRedeemDomainCredit(blog: blog)
         XCTAssertTrue(canRedeemDomainCredit)
     }
 }
