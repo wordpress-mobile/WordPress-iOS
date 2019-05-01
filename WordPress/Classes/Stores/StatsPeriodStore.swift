@@ -437,12 +437,8 @@ private extension StatsPeriodStore {
         persistToCoreData()
 
         if forceRefresh {
-            // Stop existing queries and start fresh.
-            statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
             setAllAsFetchingOverview(fetching: false)
-            // invalidateAndCancelTasks invalidates the SessionManager, 
-            // so we need to recreate it to run queries.
-            initializeStatsRemote()
+            cancelQueries()
         }
 
         fetchPeriodOverviewData(date: date, period: period)
@@ -689,11 +685,8 @@ private extension StatsPeriodStore {
     }
 
     func refreshPostStats(postID: Int) {
-        guard shouldFetchPostStats() else {
-            DDLogInfo("Stats Post Stats refresh triggered while one was in progress.")
-            return
-        }
-
+        state.fetchingPostStats = false
+        cancelQueries()
         fetchPostStats(postID: postID)
     }
 
@@ -821,6 +814,13 @@ private extension StatsPeriodStore {
 
         let wpApi = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
         statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
+    }
+
+    func cancelQueries() {
+        statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
+        // `invalidateAndCancelTasks` invalidates the SessionManager,
+        // so we need to recreate it to run queries.
+        initializeStatsRemote()
     }
 
     func shouldFetchOverview() -> Bool {
