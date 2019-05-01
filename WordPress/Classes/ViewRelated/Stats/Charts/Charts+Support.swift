@@ -53,7 +53,11 @@ protocol BarChartStyling {
 /// Transforms a given data set for consumption by BarChartView in the Charts framework.
 ///
 protocol BarChartDataConvertible {
+
+    /// Describe the chart for VoiceOver usage
     var accessibilityDescription: String { get }
+
+    /// Adapts the original data format for consumption by the Charts framework.
     var barChartData: BarChartData { get }
 }
 
