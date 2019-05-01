@@ -31,8 +31,9 @@ class EditorPostSettings: BaseScreen {
 
     func setFeaturedImage() -> EditorPostSettings {
         featuredImageButton.tap()
-        app.cells.element(boundBy: 0).tap() // Select first album (WordPress Media Library)
-        app.collectionViews.cells.element(boundBy: 0).tap() // Select latest uploaded image in media library
+        MediaPickerAlbumListScreen()
+            .selectAlbum(atIndex: 0) // Select media library
+            .selectImage(atIndex: 0) // Select latest uploaded image
 
         return EditorPostSettings()
     }

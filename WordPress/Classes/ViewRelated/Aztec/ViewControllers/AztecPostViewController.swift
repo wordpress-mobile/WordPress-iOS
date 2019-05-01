@@ -3157,6 +3157,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             formatBar.trailingItem = nil
         } else {
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
+            insertToolbarItem.accessibilityIdentifier = "insert_media_button"
 
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem

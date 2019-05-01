@@ -26,6 +26,7 @@ class EditorScreen: BaseScreen {
     let contentPlaceholder = XCUIApplication().staticTexts["aztec-content-placeholder"]
 
     let mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
+    let insertMediaButton = XCUIApplication().buttons["insert_media_button"]
     let headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
     let boldButton = XCUIApplication().buttons["format_toolbar_toggle_bold"]
     let italicButton = XCUIApplication().buttons["format_toolbar_toggle_italic"]
@@ -225,8 +226,8 @@ class EditorScreen: BaseScreen {
         }
 
         // Inject the first picture
-        app.cells.element(boundBy: 0).tap()
-        app.buttons["Insert 1"].tap()
+        MediaPickerAlbumScreen().selectImage(atIndex: 0)
+        insertMediaButton.tap()
 
         // Wait for upload to finish
         waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
