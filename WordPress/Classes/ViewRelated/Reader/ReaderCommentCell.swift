@@ -21,14 +21,22 @@ class ReaderCommentCell: UITableViewCell {
 
     @objc var enableLoggedInFeatures = false
 
+    @IBOutlet var parentStackView: UIStackView!
     @IBOutlet var avatarImageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
     @IBOutlet var timeLabel: LongPressGestureLabel!
-    @IBOutlet var textView: WPRichContentView!
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
+
+    private let textView: WPRichContentView = {
+        let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
+        newTextView.isScrollEnabled = false
+        newTextView.translatesAutoresizingMaskIntoConstraints = false
+
+        return newTextView
+    }()
 
     @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
@@ -70,6 +78,7 @@ class ReaderCommentCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        setupContentView()
         setupReplyButton()
         setupLikeButton()
         applyStyles()
@@ -77,7 +86,6 @@ class ReaderCommentCell: UITableViewCell {
 
 
     // MARK: = Setup
-
 
     @objc func applyStyles() {
         WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
@@ -88,6 +96,12 @@ class ReaderCommentCell: UITableViewCell {
         textView.textContainerInset = Constants.textViewInsets
     }
 
+    func setupContentView() {
+        // This method should be called exactly once.
+        assert(textView.superview == nil)
+
+        parentStackView.insertArrangedSubview(textView, at: 1)
+    }
 
     @objc func setupReplyButton() {
         let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
