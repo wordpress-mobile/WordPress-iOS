@@ -340,7 +340,7 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.configureTableViewSuggestionCell(cell)
-        cell.textLabel?.text = NSLocalizedString("Couldn't load tags. Tap to retry.", comment: "Error message when tag loading failed")
+        cell.textLabel?.text = NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed")
         return cell
     }
 }
