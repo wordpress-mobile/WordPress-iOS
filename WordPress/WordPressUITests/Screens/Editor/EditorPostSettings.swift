@@ -2,21 +2,17 @@ import Foundation
 import XCTest
 
 class EditorPostSettings: BaseScreen {
-    let backButton: XCUIElement
     let settingsTable: XCUIElement
     let categoriesSection: XCUIElement
     let tagsSection: XCUIElement
     let featuredImageButton: XCUIElement
-    let mediaLibrary: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        backButton = app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
         settingsTable = app.tables["SettingsTable"]
         categoriesSection = settingsTable.cells["Categories"]
         tagsSection = settingsTable.cells["Tags"]
         featuredImageButton = settingsTable.cells["SetFeaturedImage"]
-        mediaLibrary = app.cells.staticTexts["WordPress Media"]
 
         super.init(element: settingsTable)
     }
@@ -35,7 +31,7 @@ class EditorPostSettings: BaseScreen {
 
     func setFeaturedImage() -> EditorPostSettings {
         featuredImageButton.tap()
-        mediaLibrary.tap()
+        app.cells.element(boundBy: 0).tap() // Select first album (WordPress Media Library)
         app.collectionViews.cells.element(boundBy: 0).tap() // Select latest uploaded image in media library
 
         return EditorPostSettings()
@@ -57,7 +53,7 @@ class EditorPostSettings: BaseScreen {
     }
 
     func closePostSettings() -> EditorScreen {
-        backButton.tap()
+        navBackButton.tap()
 
         return EditorScreen(mode: .rich)
     }

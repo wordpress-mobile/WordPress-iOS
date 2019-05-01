@@ -3,12 +3,10 @@ import XCTest
 
 class CategoriesComponent: BaseScreen {
     let categoriesList: XCUIElement
-    let backButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
         categoriesList = app.tables["CategoriesList"]
-        backButton = app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
 
         super.init(element: categoriesList)
     }
@@ -21,7 +19,7 @@ class CategoriesComponent: BaseScreen {
     }
 
     func goBackToSettings() -> EditorPostSettings {
-        backButton.tap()
+        navBackButton.tap()
 
         return EditorPostSettings()
     }

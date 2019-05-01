@@ -1,5 +1,15 @@
 import XCTest
 
+var isIPhone: Bool {
+    return UIDevice.current.userInterfaceIdiom == .phone
+}
+
+var isIpad: Bool {
+    return UIDevice.current.userInterfaceIdiom == .pad
+}
+
+let navBackButton = XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
+
 extension XCUIElement {
     /**
      Removes any current text in the field
@@ -24,14 +34,6 @@ extension XCUIElement {
         self.tap()
         self.typeText(text)
     }
-}
-
-var isIPhone: Bool {
-    return UIDevice.current.userInterfaceIdiom == .phone
-}
-
-var isIpad: Bool {
-    return UIDevice.current.userInterfaceIdiom == .pad
 }
 
 extension XCTestCase {

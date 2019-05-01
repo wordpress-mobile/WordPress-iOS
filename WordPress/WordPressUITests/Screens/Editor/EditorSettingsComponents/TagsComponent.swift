@@ -2,12 +2,10 @@ import Foundation
 import XCTest
 
 class TagsComponent: BaseScreen {
-    let backButton: XCUIElement
     let tagsField: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        backButton = app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
         tagsField = app.textViews["add-tags"]
 
         super.init(element: tagsField)
@@ -20,7 +18,7 @@ class TagsComponent: BaseScreen {
     }
 
     func goBackToSettings() -> EditorPostSettings {
-        backButton.tap()
+        navBackButton.tap()
 
         return EditorPostSettings()
     }
