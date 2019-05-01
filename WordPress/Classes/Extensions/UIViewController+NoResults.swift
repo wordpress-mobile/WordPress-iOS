@@ -55,10 +55,6 @@ extension NoResultsViewHost where Self: UIViewController {
     ///
     /// - Parameter completion: Block called as soon the view controller has been removed.
     func hideNoResults(_ completion: (() -> Void)? = nil) {
-        if noResultsViewController.view.superview == nil {
-            return
-        }
-
         noResultsViewController.removeFromView()
         completion?()
     }
