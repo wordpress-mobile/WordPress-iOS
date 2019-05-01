@@ -38,23 +38,7 @@ class PostStatsViewModel: Observable {
         return df
     }()
 
-    private lazy var monthFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.setLocalizedDateFormatFromTemplate("MMM")
-        return df
-    }()
-
-    private struct Constants {
-        static let maxRowsToDisplay = 6
-        static let noTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
-        static let unknown = NSLocalizedString("Unknown", comment: "Displayed when date cannot be determined.")
-        static let weekFormat = NSLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
-        static let recentWeeks = NSLocalizedString("Recent Weeks", comment: "Post Stats recent weeks header.")
-        static let views = NSLocalizedString("Views", comment: "Label for number of views.")
-        static let period = NSLocalizedString("Period", comment: "Label for date periods.")
-        static let monthsAndYears = NSLocalizedString("Months and Years", comment: "Post Stats months and years header.")
-        static let averageViewsPerDay = NSLocalizedString("Avg. Views Per Day", comment: "Post Stats average views per day header.")
-    }
+    private let weekFormat = NSLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
 
     // MARK: - Init
 
@@ -109,7 +93,7 @@ private extension PostStatsViewModel {
     // MARK: - Create Table Rows
 
     func titleTableRow() -> ImmuTableRow {
-        return PostStatsTitleRow(postTitle: postTitle ?? Constants.noTitle,
+        return PostStatsTitleRow(postTitle: postTitle ?? StatSection.noPostTitle,
                                  postURL: postURL,
                                  postStatsDelegate: postStatsDelegate)
     }
@@ -135,9 +119,16 @@ private extension PostStatsViewModel {
     func yearsTableRows(forAverages: Bool = false) -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        tableRows.append(CellHeaderRow(title: forAverages ? Constants.averageViewsPerDay : Constants.monthsAndYears))
-        tableRows.append(TopTotalsPostStatsRow(itemSubtitle: Constants.period,
-                                               dataSubtitle: Constants.views,
+        let title = forAverages ? StatSection.postStatsAverageViews.title :
+                                  StatSection.postStatsMonthsYears.title
+        let itemSubtitle = forAverages ? StatSection.postStatsAverageViews.itemSubtitle :
+                                         StatSection.postStatsMonthsYears.itemSubtitle
+        let dataSubtitle = forAverages ? StatSection.postStatsAverageViews.dataSubtitle :
+                                         StatSection.postStatsMonthsYears.dataSubtitle
+
+        tableRows.append(CellHeaderRow(title: title))
+        tableRows.append(TopTotalsPostStatsRow(itemSubtitle: itemSubtitle,
+                                               dataSubtitle: dataSubtitle,
                                                dataRows: yearsDataRows(forAverages: forAverages),
                                                limitRowsDisplayed: true,
                                                postStatsDelegate: postStatsDelegate))
@@ -148,17 +139,17 @@ private extension PostStatsViewModel {
     func yearsDataRows(forAverages: Bool = false) -> [StatsTotalRowData] {
 
         guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
-            let maxYear = maxYearFrom(yearsData: yearsData) else {
+            let maxYear = StatsDataHelper.maxYearFrom(yearsData: yearsData) else {
             return []
         }
 
-        let minYear = maxYear - Constants.maxRowsToDisplay
+        let minYear = maxYear - StatsDataHelper.maxRowsToDisplay
         var yearRows = [StatsTotalRowData]()
 
         // Create Year rows in descending order
         for year in (minYear...maxYear).reversed() {
-            let months = monthsFrom(yearsData: yearsData, forYear: year)
-            let yearTotalViews = totalViewsFrom(monthsData: months)
+            let months = StatsDataHelper.monthsFrom(yearsData: yearsData, forYear: year)
+            let yearTotalViews = StatsDataHelper.totalViewsFrom(monthsData: months)
 
             let rowValue: Int = {
                 if forAverages {
@@ -171,7 +162,8 @@ private extension PostStatsViewModel {
                 yearRows.append(StatsTotalRowData(name: String(year),
                                                   data: rowValue.abbreviatedString(),
                                                   showDisclosure: true,
-                                                  childRows: childRowsForYear(months)))
+                                                  childRows: StatsDataHelper.childRowsForYear(months),
+                                                  statSection: forAverages ? .postStatsAverageViews : .postStatsMonthsYears))
             }
         }
 
@@ -181,9 +173,9 @@ private extension PostStatsViewModel {
     func recentWeeksTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        tableRows.append(CellHeaderRow(title: Constants.recentWeeks))
-        tableRows.append(TopTotalsPostStatsRow(itemSubtitle: Constants.period,
-                                               dataSubtitle: Constants.views,
+        tableRows.append(CellHeaderRow(title: StatSection.postStatsRecentWeeks.title))
+        tableRows.append(TopTotalsPostStatsRow(itemSubtitle: StatSection.postStatsRecentWeeks.itemSubtitle,
+                                               dataSubtitle: StatSection.postStatsRecentWeeks.dataSubtitle,
                                                dataRows: recentWeeksDataRows(),
                                                limitRowsDisplayed: false,
                                                postStatsDelegate: postStatsDelegate))
@@ -194,42 +186,13 @@ private extension PostStatsViewModel {
     func recentWeeksDataRows() -> [StatsTotalRowData] {
         let recentWeeks = postStats?.recentWeeks ?? []
 
-        return recentWeeks.reversed().prefix(Constants.maxRowsToDisplay).map {
+        return recentWeeks.reversed().prefix(StatsDataHelper.maxRowsToDisplay).map {
             StatsTotalRowData(name: displayWeek(startDay: $0.startDay, endDay: $0.endDay),
                               data: $0.totalViewsCount.formatWithCommas(),
                               showDisclosure: true,
-                              childRows: childRowsForWeek($0))
+                              childRows: childRowsForWeek($0),
+                              statSection: .postStatsRecentWeeks)
         }
-    }
-
-    // MARK: - Months & Years Helpers
-
-    func childRowsForYear(_ months: [StatsPostViews]) -> [StatsTotalRowData] {
-        return months.map {
-            StatsTotalRowData(name: displayMonth(forDate: $0.date),
-                              data: $0.viewsCount.abbreviatedString())
-        }
-    }
-
-    func displayMonth(forDate date: DateComponents) -> String {
-        guard let month = calendar.date(from: date) else {
-            return ""
-        }
-
-        return monthFormatter.string(from: month)
-    }
-
-    func maxYearFrom(yearsData: [StatsPostViews]) -> Int? {
-        return (yearsData.max(by: { $0.date.year! < $1.date.year! }))?.date.year
-    }
-
-    func monthsFrom(yearsData: [StatsPostViews], forYear year: Int) -> [StatsPostViews] {
-        // Get months from yearsData for the given year, in descending order.
-        return (yearsData.filter({ $0.date.year == year })).sorted(by: { $0.date.month! > $1.date.month! })
-    }
-
-    func totalViewsFrom(monthsData: [StatsPostViews]) -> Int {
-        return monthsData.map({$0.viewsCount}).reduce(0, +)
     }
 
     // MARK: - Recent Weeks Helpers
@@ -255,7 +218,7 @@ private extension PostStatsViewModel {
         }
 
         // If there are multiple days in the week, show the date range.
-        return String.localizedStringWithFormat(Constants.weekFormat,
+        return String.localizedStringWithFormat(weekFormat,
                                                 weekDateFormatter.string(from: startDate),
                                                 weekDateFormatter.string(from: endDate),
                                                 String(year))

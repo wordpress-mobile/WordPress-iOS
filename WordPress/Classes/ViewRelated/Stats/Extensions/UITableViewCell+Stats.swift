@@ -28,7 +28,7 @@ extension UITableViewCell {
             return
         }
 
-        let maxRows = maxRowsToDisplay()
+        let maxRows = StatsDataHelper.maxRowsToDisplay
 
         let numberOfRowsToAdd: Int = {
             if limitRowsDisplayed {
@@ -70,10 +70,6 @@ extension UITableViewCell {
         let row = ViewMoreRow.loadFromNib()
         row.configure(statSection: statSection, delegate: delegate)
         rowsStackView.addArrangedSubview(row)
-    }
-
-    func maxRowsToDisplay() -> Int {
-        return 6
     }
 
 }
