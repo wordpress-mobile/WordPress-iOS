@@ -19,13 +19,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="406" height="70.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kpL-Db-PKI" userLabel="Top Separator Line">
-                        <rect key="frame" x="0.0" y="0.0" width="406" height="0.5"/>
-                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="beV-Kg-kx9"/>
-                        </constraints>
-                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Showing stats for:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQc-hL-Bbc">
                         <rect key="frame" x="16" y="16" width="374" height="16"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -54,14 +47,11 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="kpL-Db-PKI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="1GA-ej-kPX"/>
-                    <constraint firstItem="kpL-Db-PKI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="2Ru-Rj-qeU"/>
                     <constraint firstAttribute="bottom" secondItem="dJu-H6-3qo" secondAttribute="bottom" id="MKS-QE-IDd"/>
                     <constraint firstAttribute="bottom" secondItem="IAo-11-r7k" secondAttribute="bottom" constant="16" id="OAe-F1-q3m"/>
                     <constraint firstAttribute="trailing" secondItem="dJu-H6-3qo" secondAttribute="trailing" id="QCn-b6-3ob"/>
                     <constraint firstItem="VQc-hL-Bbc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="TIp-2M-tkj"/>
                     <constraint firstItem="q7F-mg-QOb" firstAttribute="bottom" secondItem="IAo-11-r7k" secondAttribute="bottom" id="Tom-tr-1Cc"/>
-                    <constraint firstAttribute="trailing" secondItem="kpL-Db-PKI" secondAttribute="trailing" id="XhD-xV-KoQ"/>
                     <constraint firstItem="q7F-mg-QOb" firstAttribute="top" secondItem="IAo-11-r7k" secondAttribute="top" id="Xpe-ec-0aG"/>
                     <constraint firstItem="IAo-11-r7k" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Yni-Dp-MXW"/>
                     <constraint firstItem="IAo-11-r7k" firstAttribute="top" secondItem="VQc-hL-Bbc" secondAttribute="bottom" constant="2" id="Zcd-Qe-cRI"/>
@@ -78,7 +68,6 @@
                 <outlet property="bottomSeparatorLine" destination="dJu-H6-3qo" id="9aa-at-qTn"/>
                 <outlet property="postTitleLabel" destination="IAo-11-r7k" id="Vq3-Qu-ku2"/>
                 <outlet property="titleLabel" destination="VQc-hL-Bbc" id="4KO-Om-16S"/>
-                <outlet property="topSeparatorLine" destination="kpL-Db-PKI" id="G6k-Xz-9tR"/>
             </connections>
             <point key="canvasLocation" x="68.799999999999997" y="174.96251874062969"/>
         </tableViewCell>

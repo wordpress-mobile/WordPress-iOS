@@ -10,6 +10,7 @@ class PostStatsViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
+    private var selectedDate = Date()
     private var postID: Int?
     private var postTitle: String?
     private var postURL: URL?
@@ -43,9 +44,11 @@ class PostStatsViewModel: Observable {
     // MARK: - Init
 
     init(postID: Int,
+         selectedDate: Date,
          postTitle: String?,
          postURL: URL?,
          postStatsDelegate: PostStatsDelegate) {
+        self.selectedDate = selectedDate
         self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
@@ -80,7 +83,8 @@ class PostStatsViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPostStats(postID: Int) {
+    func refreshPostStats(postID: Int, selectedDate: Date) {
+        self.selectedDate = selectedDate
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
@@ -100,18 +104,22 @@ private extension PostStatsViewModel {
 
     func overviewTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
-        tableRows.append(CellHeaderRow(title: ""))
+        tableRows.append(PostStatsEmptyCellHeaderRow())
 
-        // TODO: replace with real data
-        let data = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle, tabData: 741, difference: 22222, differencePercent: 50)
+        let lastTwoWeeks = postStats?.lastTwoWeeks ?? []
+        let dayData = dayDataFrom(lastTwoWeeks)
+
+        let overviewData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
+                                           tabData: dayData.viewCount,
+                                           difference: dayData.difference,
+                                           differencePercent: dayData.percentage)
 
         // Introduced via #11062, to be replaced with real data via #11068
         let stubbedData = SelectedPostSummaryDataStub()
         let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
         let styling = SelectedPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
 
-        let row = OverviewRow(tabsData: [data], chartData: [stubbedData], chartStyling: [styling], period: nil)
-        tableRows.append(row)
+        tableRows.append(OverviewRow(tabsData: [overviewData], chartData: [stubbedData], chartStyling: [styling], period: nil))
 
         return tableRows
     }
@@ -230,6 +238,34 @@ private extension PostStatsViewModel {
         }
 
         return weekDateFormatter.string(from: day)
+    }
+
+    // MARK: - Overview Helpers
+
+    func dayDataFrom(_ daysData: [StatsPostViews]) -> (viewCount: Int, difference: Int, percentage: Int) {
+        // Use date without time
+        let date = selectedDate.normalizedDate()
+        let matchingDay = daysData.first { calendar.date(from: $0.date) == date }
+
+        guard let currentDay = matchingDay else {
+            return (0, 0, 0)
+        }
+
+        let currentCount = currentDay.viewsCount
+
+        let previousDate = calendar.date(byAdding: .day, value: -1, to: date)
+        let previousDay = daysData.first { calendar.date(from: $0.date) == previousDate }
+        let previousCount = previousDay?.viewsCount ?? 0
+
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
+
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return (currentCount, difference, roundedPercentage)
     }
 
 }

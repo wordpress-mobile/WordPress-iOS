@@ -4,7 +4,6 @@ class PostStatsTitleCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var postTitleLabel: UILabel!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -31,7 +30,6 @@ private extension PostStatsTitleCell {
 
         Style.configureLabelAsPostStatsTitle(titleLabel)
         Style.configureLabelAsPostTitle(postTitleLabel)
-        Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
 
         guard let postTitle = postTitle else {

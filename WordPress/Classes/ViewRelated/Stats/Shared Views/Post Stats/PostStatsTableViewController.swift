@@ -18,6 +18,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var postTitle: String?
     private var postURL: URL?
     private var postID: Int?
+    private var selectedDate = Date()
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
     private let store = StoreContainer.shared.statsPeriod
@@ -35,6 +36,8 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         initViewModel()
     }
 
@@ -43,6 +46,21 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         self.postTitle = postTitle
         self.postURL = postURL
     }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        cell.configure(date: selectedDate, period: .day, delegate: self)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return SiteStatsTableHeaderView.height
+    }
+
 }
 
 // MARK: - Table Methods
@@ -55,7 +73,11 @@ private extension PostStatsTableViewController {
             return
         }
 
-        viewModel = PostStatsViewModel(postID: postID, postTitle: postTitle, postURL: postURL, postStatsDelegate: self)
+        viewModel = PostStatsViewModel(postID: postID,
+                                       selectedDate: selectedDate,
+                                       postTitle: postTitle,
+                                       postURL: postURL,
+                                       postStatsDelegate: self)
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
@@ -68,7 +90,8 @@ private extension PostStatsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [CellHeaderRow.self,
+        return [PostStatsEmptyCellHeaderRow.self,
+                CellHeaderRow.self,
                 PostStatsTitleRow.self,
                 OverviewRow.self,
                 TopTotalsPostStatsRow.self,
@@ -96,7 +119,7 @@ private extension PostStatsTableViewController {
             return
         }
 
-        viewModel?.refreshPostStats(postID: postID)
+        viewModel?.refreshPostStats(postID: postID, selectedDate: selectedDate)
     }
 
     func applyTableUpdates() {
@@ -133,6 +156,21 @@ extension PostStatsTableViewController: PostStatsDelegate {
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection, postID: postID)
         navigationController?.pushViewController(detailTableViewController, animated: true)
+    }
+
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension PostStatsTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        guard let newDate = newDate else {
+            return
+        }
+
+        selectedDate = newDate
+        refreshData()
     }
 
 }
