@@ -3,13 +3,14 @@ import Foundation
 @objc
 protocol PostPreviewGeneratorDelegate {
     func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest)
+    func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest, previewURL: URL?)
     func preview(_ generator: PostPreviewGenerator, loadHTML html: String)
     func previewFailed(_ generator: PostPreviewGenerator, message: String)
 }
 
 class PostPreviewGenerator: NSObject {
     @objc let post: AbstractPost
-    @objc var previewURLString: String?
+    @objc var previewURL: URL?
     @objc weak var delegate: PostPreviewGeneratorDelegate?
     fileprivate let authenticator: WebViewAuthenticator?
 
@@ -19,9 +20,9 @@ class PostPreviewGenerator: NSObject {
         super.init()
     }
     
-    @objc convenience init(post: AbstractPost, previewURLString: String) {
+    @objc convenience init(post: AbstractPost, previewURL: URL) {
         self.init(post: post)
-        self.previewURLString = previewURLString
+        self.previewURL = previewURL
     }
 
     @objc func generate() {
@@ -30,8 +31,8 @@ class PostPreviewGenerator: NSObject {
             return
         }
 
-        if let previewURLString = previewURLString, let url = URL(string: previewURLString) {
-            attemptPreview(url: url)
+        if let previewURL = previewURL {
+            attemptPreview(url: previewURL)
         } else {
             guard let url = post.permaLink.flatMap(URL.init(string:)) else {
                 showFakePreview()
@@ -111,7 +112,8 @@ private extension PostPreviewGenerator {
                 return
         }
         let request = URLRequest(url: authenticatedUrl)
-        delegate?.preview(self, attemptRequest: request)
+        let authenticatedPreviewURL = (previewURL != nil) ? authenticatedUrl : nil
+        delegate?.preview(self, attemptRequest: request, previewURL: authenticatedPreviewURL)
     }
 
     func attemptCookieAuthenticatedRequest(url: URL) {

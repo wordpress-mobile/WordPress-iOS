@@ -64,12 +64,12 @@ extension PostEditor where Self: UIViewController {
     }
 
     func displayPreview() {
-        savePostBeforePreview() { [weak self] previewURL in
+        savePostBeforePreview() { [weak self] previewURLString in
             guard let post = self?.post else {
                 return
             }
             var previewController: PostPreviewViewController
-            if let previewURL = previewURL {
+            if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
                 previewController = PostPreviewViewController(post: post, previewURL: previewURL)
             } else {
                 previewController = PostPreviewViewController(post: post)

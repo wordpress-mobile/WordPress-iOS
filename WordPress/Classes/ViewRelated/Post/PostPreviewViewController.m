@@ -23,6 +23,7 @@
 @property (nonatomic, strong) PostPreviewGenerator *generator;
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) id reachabilityObserver;
+@property (nonatomic, copy, nullable) NSURL *previewURL;
 
 @end
 
@@ -49,12 +50,12 @@
     return self;
 }
 
-- (instancetype)initWithPost:(AbstractPost *)aPost previewURL:(NSString *)previewURLString
+- (instancetype)initWithPost:(AbstractPost *)aPost previewURL:(NSURL *)previewURL
 {
     self = [super init];
     if (self) {
         self.apost = aPost;
-        self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost previewURLString:previewURLString];
+        self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost previewURL:previewURL];
         self.generator.delegate = self;
         self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
@@ -188,6 +189,10 @@
         shouldStartLoadWithRequest:(NSURLRequest *)request
         navigationType:(UIWebViewNavigationType)navigationType
 {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    for(NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies]) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
     NSURLRequest *redirectRequest = [self.generator interceptRedirectWithRequest:request];
     if (redirectRequest != NULL) {
         DDLogInfo(@"Found redirect to %@", redirectRequest);
@@ -226,6 +231,13 @@
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
+    [self startLoading];
+    [self.webView loadRequest:request];
+    [self.noResultsViewController removeFromView];
+}
+
+- (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request previewURL:(NSURL *)previewURL {
+    self.previewURL = previewURL;
     [self startLoading];
     [self.webView loadRequest:request];
     [self.noResultsViewController removeFromView];
