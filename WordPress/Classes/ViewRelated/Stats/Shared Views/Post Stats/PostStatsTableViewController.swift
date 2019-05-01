@@ -73,7 +73,11 @@ private extension PostStatsTableViewController {
             return
         }
 
-        viewModel = PostStatsViewModel(postID: postID, postTitle: postTitle, postURL: postURL, postStatsDelegate: self)
+        viewModel = PostStatsViewModel(postID: postID,
+                                       selectedDate: selectedDate,
+                                       postTitle: postTitle,
+                                       postURL: postURL,
+                                       postStatsDelegate: self)
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
@@ -115,7 +119,7 @@ private extension PostStatsTableViewController {
             return
         }
 
-        viewModel?.refreshPostStats(postID: postID)
+        viewModel?.refreshPostStats(postID: postID, selectedDate: selectedDate)
     }
 
     func applyTableUpdates() {
@@ -166,6 +170,7 @@ extension PostStatsTableViewController: SiteStatsTableHeaderDelegate {
         }
 
         selectedDate = newDate
+        refreshData()
     }
 
 }
