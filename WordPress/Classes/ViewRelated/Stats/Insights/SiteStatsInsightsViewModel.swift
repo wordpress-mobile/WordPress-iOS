@@ -40,6 +40,10 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
+        if store.fetchingOverviewHasFailed {
+            return ImmuTable(sections: [])
+        }
+
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
