@@ -1,4 +1,6 @@
-- Das Diktieren funktioniert nun im Block-Editor.
-- Offline-Fehlermeldungen werden nun in kleineren Popup-Dialogen unten auf der Seite angezeigt. 
-- Es wurde ein Fehler behoben, bei dem die Adressleiste der Seitenvorschau im Prozess der Seitenerstellung bearbeitet werden konnte.
-- Es wurde ein Problem im Block-Editor behoben, bei dem Bilder nicht auf private Seiten hochgeladen werden konnten.
+12.2
+-----
+* Veröffentlichen mit Sicherheit! Entwürfe von Voransichten werden dir eine genauere Version deiner Beiträge zeigen.
+* Wenn du es vorziehst, in Apps wie Bear oder Ulysses (oder jeder anderen App, die die Formate TextBundle und TextPack verwendet) zu schreiben, großartig – mach es weiter. Und jetzt kannst du Text aus den Apps in diese importieren.
+* Die ganze App bekam ein Frühlings-Make-up – wir haben einige kleine visuelle Details bei der Erstellung der Website korrigiert, einige Formulierungen angepasst, um deutlich zu machen, wie viel Speicherplatz deine Website nutzt, und uns um einen lästigen Absturz gekümmert, der manchmal auftreten würde, wenn du versucht hast, Plugins zu verwalten.
+

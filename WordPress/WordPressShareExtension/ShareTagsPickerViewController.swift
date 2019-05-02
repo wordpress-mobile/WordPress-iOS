@@ -353,7 +353,7 @@ fileprivate extension ShareTagsPickerViewController {
         presentationController.resetViewUsingKeyboardFrame(keyboardFrame)
     }
 
-    fileprivate func reloadTableData() {
+    func reloadTableData() {
         tableView.reloadData()
         textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
     }

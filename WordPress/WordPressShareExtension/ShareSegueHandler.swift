@@ -6,7 +6,7 @@ protocol ShareSegueHandler {
 }
 
 extension ShareSegueHandler where Self: ShareExtensionAbstractViewController {
-    func performSegue(withIdentifier identifier: SegueIdentifier, sender: AnyObject?) {
+    func performSegue(withIdentifier identifier: ShareExtensionAbstractViewController.SegueIdentifier, sender: AnyObject?) {
         performSegue(withIdentifier: identifier.rawValue, sender: sender)
     }
 }

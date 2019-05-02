@@ -533,7 +533,7 @@ fileprivate extension AppExtensionsService {
         }
     }
 
-    fileprivate func mediaService(siteID: Int, api: WordPressComRestApi) -> MediaServiceRemoteREST {
+    func mediaService(siteID: Int, api: WordPressComRestApi) -> MediaServiceRemoteREST {
         return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
     }
 }

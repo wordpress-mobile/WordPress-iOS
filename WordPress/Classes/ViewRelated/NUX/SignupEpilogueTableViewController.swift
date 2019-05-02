@@ -23,7 +23,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
     open var dataSource: SignupEpilogueTableViewControllerDataSource?
     open var delegate: SignupEpilogueTableViewControllerDelegate?
-    open var credentials: WordPressCredentials?
+    open var credentials: AuthenticatorCredentials?
     open var socialService: SocialService?
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?

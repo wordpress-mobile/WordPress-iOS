@@ -59,9 +59,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
-
-    var shouldRemovePostOnDismiss: Bool = false
-
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {
@@ -216,7 +213,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
@@ -349,7 +345,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-
     func gutenbergDidRequestMediaFromSiteMediaLibrary(with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentMediaPickerFullScreen(animated: true,
                                                        dataSourceType: .mediaLibrary,
@@ -383,6 +378,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                             }
                                                             self.mediaInserterHelper.insertFromDevice(asset: phAsset, callback: callback)
         })
+    }
+
+    func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaPickerDidPickMediaCallback) {
+        mediaInserterHelper.insertFromDevice(url: url, callback: callback)
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -476,6 +475,19 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         startAutoSave()
         if !editorSession.started {
             editorSession.start(hasUnsupportedBlocks: hasUnsupportedBlocks)
+        }
+    }
+
+    func gutenbergDidEmitLog(message: String, logLevel: LogLevel) {
+        switch logLevel {
+        case .trace:
+            DDLogDebug(message)
+        case .info:
+            DDLogInfo(message)
+        case .warn:
+            DDLogWarn(message)
+        case .error:
+            DDLogError(message)
         }
     }
 }

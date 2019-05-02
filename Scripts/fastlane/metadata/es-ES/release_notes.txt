@@ -1,4 +1,6 @@
-- El dictado ahora funciona en el editor de bloques.
-- Los mensajes de error desconectado se mostrarán ahora en ventanas emergentes más pequeñas en la parte inferior de la página.
-- Se ha corregido un error por el que la barra de direcciones de la vista previa del sitio se podía editar en el flujo de creación del sitio.
-- Se ha corregido un problema en el editor de bloques por el que no se podían cargar imágenes en sitios privados.
+12.2
+-----
+* ¡Publica con confianza! Las vistas preliminares en borrador te mostrarán una versión más precisa de tus entradas.
+* Si prefieres escribir en aplicaciones como Bear o Ulysses (o cualquier otra aplicación que utilice los formatos TextBundle y TextPack), genial, sigue haciéndolo. Y ahora puedes importar texto de esas aplicaciones a esta.
+* Toda la aplicación recibió un estímulo de primavera - arreglamos algunos pequeños fallos visuales en el proceso de creación del sitio, ajustamos algunas palabras para dejar claro cuánto espacio de almacenamiento está usando tu sitio, y nos encargamos de un molesto fallo que a veces se producía cuando estabas tratando de administrar los plugins.
+

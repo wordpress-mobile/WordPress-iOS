@@ -27,7 +27,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
-    private var postTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
+    private var postTitle = StatSection.noPostTitle
 
     private var actionType: ActionType? {
         didSet {
@@ -51,7 +51,12 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        removeRowsFromStackView(rowsStackView)
+    }
+
+    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
 
@@ -219,9 +224,14 @@ private extension LatestPostSummaryCell {
 
         switch actionType {
         case .viewMore:
-            siteStatsInsightsDelegate?.showPostStats?(withPostTitle: postTitle)
+            guard let postID = lastPostInsight?.postID else {
+                DDLogInfo("No postID available to show Post Stats.")
+                return
+            }
+            siteStatsInsightsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: lastPostInsight?.url)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
+                DDLogInfo("No postID available to share post.")
                 return
             }
             siteStatsInsightsDelegate?.showShareForPost?(postID: postID as NSNumber, fromView: actionStackView)

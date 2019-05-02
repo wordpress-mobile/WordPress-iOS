@@ -1,4 +1,6 @@
-- Dictation now works in the block editor.
-- Offline error messages will now display in smaller popup dialogs on the bottom of the page.
-- Fixed a bug where the site preview address bar could be edited in the Site Creation flow.
-- Fixed an issue in the block editor where images could not be uploaded to private sites.
+12.2
+-----
+* Publish with confidence! Draft previews will show you a more accurate version of your posts.
+* If you prefer to write in apps like Bear or Ulysses (or any other app using the TextBundle and TextPack formats), great – keep doing it. And now you can import text from the those apps into this one.
+* The whole app got a spring pick-me-up — we fixed up some little visual tics in the site creation process, adjusted some wording to make it clear how much storage space your site is using, and took care of a pesky crash that would sometimes occur when you were trying to manage plugins.
+

@@ -22,19 +22,26 @@ class SiteStatsDetailsViewModel: Observable {
     private let periodStore = StoreContainer.shared.statsPeriod
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
+
     private var selectedDate: Date?
     private var selectedPeriod: StatsPeriodUnit?
+    private var postID: Int?
 
     init(detailsDelegate: SiteStatsDetailsDelegate) {
         self.detailsDelegate = detailsDelegate
     }
 
-    func fetchDataFor(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
+    func fetchDataFor(statSection: StatSection,
+                      selectedDate: Date? = nil,
+                      selectedPeriod: StatsPeriodUnit? = nil,
+                      postID: Int? = nil) {
         self.statSection = statSection
         self.selectedDate = selectedDate
         self.selectedPeriod = selectedPeriod
+        self.postID = postID
 
-        if StatSection.allInsights.contains(statSection) {
+        switch statSection {
+        case let statSection where StatSection.allInsights.contains(statSection):
             guard let storeQuery = queryForInsightStatSection(statSection) else {
                 return
             }
@@ -43,7 +50,7 @@ class SiteStatsDetailsViewModel: Observable {
             insightsChangeReceipt = insightsStore.onChange { [weak self] in
                 self?.emitChange()
             }
-        } else {
+        case let statSection where StatSection.allPeriods.contains(statSection):
             guard let storeQuery = queryForPeriodStatSection(statSection) else {
                 return
             }
@@ -52,6 +59,17 @@ class SiteStatsDetailsViewModel: Observable {
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
+        case let statSection where StatSection.allPostStats.contains(statSection):
+            guard let postID = postID else {
+                return
+            }
+
+            periodReceipt = periodStore.query(.postStats(postID: postID))
+            periodChangeReceipt = periodStore.onChange { [weak self] in
+                self?.emitChange()
+            }
+        default:
+            break
         }
     }
 
@@ -81,9 +99,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                         selectedIndex: selectedIndex))
         case .insightsTagsAndCategories:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                      dataRows: tagsAndCategoriesRows(),
-                                                      siteStatsDetailsDelegate: detailsDelegate))
+                                                     dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
+                                                     dataRows: tagsAndCategoriesRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         case .periodPostsAndPages:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
@@ -121,6 +139,16 @@ class SiteStatsDetailsViewModel: Observable {
         case .periodPublished:
             tableRows.append(TopTotalsNoSubtitlesPeriodDetailStatsRow(dataRows: publishedRows(),
                                                                       siteStatsDetailsDelegate: detailsDelegate))
+        case .postStatsMonthsYears:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
+                                                     dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle,
+                                                     dataRows: postStatsRows(),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
+        case .postStatsAverageViews:
+            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
+                                                     dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle,
+                                                     dataRows: postStatsRows(forAverages: true),
+                                                     siteStatsDetailsDelegate: detailsDelegate))
         default:
             break
         }
@@ -134,15 +162,15 @@ class SiteStatsDetailsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshFollowers() {
-        ActionDispatcher.dispatch(InsightAction.refreshFollowers())
+        ActionDispatcher.dispatch(InsightAction.refreshFollowers)
     }
 
     func refreshComments() {
-        ActionDispatcher.dispatch(InsightAction.refreshComments())
+        ActionDispatcher.dispatch(InsightAction.refreshComments)
     }
 
     func refreshTagsAndCategories() {
-        ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories())
+        ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
     }
 
     func refreshPostsAndPages() {
@@ -209,6 +237,14 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPublished(date: selectedDate, period: selectedPeriod))
     }
 
+    func refreshPostStats() {
+        guard let postID = postID else {
+            return
+        }
+
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+    }
+
 }
 
 // MARK: - Private Extension
@@ -259,26 +295,26 @@ private extension SiteStatsDetailsViewModel {
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
-        var followers: [StatsItem]?
+        var followers: [StatsFollower] = []
         var totalFollowers: Int?
 
         switch followerType {
         case .insightsFollowersWordPress:
-            followers = insightsStore.getAllDotComFollowers()
+            followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
             totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
-            followers = insightsStore.getAllEmailFollowers()
-            totalFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount
+            followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
+            totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
         default:
             break
         }
 
         let totalCount = String(format: followerType.totalFollowers, (totalFollowers ?? 0).abbreviatedString())
 
-        let followersData = followers?.compactMap {
-            return StatsTotalRowData(name: $0.label,
-                                     data: $0.value,
-                                     userIconURL: $0.iconURL,
+        let followersData = followers.compactMap {
+            return StatsTotalRowData(name: $0.name,
+                                     data: $0.subscribedDate.relativeStringInPast(),
+                                     userIconURL: $0.avatarURL,
                                      statSection: followerType)
         }
 
@@ -286,14 +322,11 @@ private extension SiteStatsDetailsViewModel {
                        itemSubtitle: followerType.itemSubtitle,
                        dataSubtitle: followerType.dataSubtitle,
                        totalCount: totalCount,
-                       dataRows: followersData ?? [])
+                       dataRows: followersData)
     }
 
     func tabDataForCommentType(_ commentType: StatSection) -> TabData {
-
-        // TODO: replace this Store call to get actual Authors and Posts comments
-        // when the api supports it.
-        let commentsInsight = insightsStore.getTopCommentsInsight()
+        let commentsInsight = insightsStore.getAllCommentsInsight()
 
         var rowItems: [StatsTotalRowData] = []
 
@@ -346,95 +379,160 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func postsAndPagesRows() -> [StatsTotalRowData] {
-        let postsAndPages = periodStore.getAllPostsAndPages()
-        var dataRows = [StatsTotalRowData]()
+        let postsAndPages = periodStore.getTopPostsAndPages()?.topPosts ?? []
 
-        postsAndPages?.forEach { item in
+        return postsAndPages.map {
+            let icon: UIImage?
 
-            // TODO: when the backend provides the item type, set the icon to either pages or posts depending that.
-            let icon = Style.imageForGridiconType(.posts)
+            switch $0.kind {
+            case .homepage:
+                icon = Style.imageForGridiconType(.house)
+            case .page:
+                icon = Style.imageForGridiconType(.pages)
+            case .post:
+                icon = Style.imageForGridiconType(.posts)
+            case .unknown:
+                icon = Style.imageForGridiconType(.posts)
+            }
 
-            let dataBarPercent = StatsDataHelper.dataBarPercentForRow(item, relativeToRow: postsAndPages?.first)
-
-            let row = StatsTotalRowData.init(name: item.label,
-                                             data: item.value.displayString(),
-                                             dataBarPercent: dataBarPercent,
-                                             icon: icon,
-                                             showDisclosure: true,
-                                             disclosureURL: StatsDataHelper.disclosureUrlForItem(item),
-                                             statSection: .periodPostsAndPages)
-
-            dataRows.append(row)
+            return StatsTotalRowData(name: $0.title,
+                                     data: $0.viewsCount.abbreviatedString(),
+                                     postID: $0.postID,
+                                     dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
+                                     icon: icon,
+                                     showDisclosure: true,
+                                     disclosureURL: $0.postURL,
+                                     statSection: .periodPostsAndPages)
         }
-
-        return dataRows
     }
 
     func searchTermsRows() -> [StatsTotalRowData] {
-        return periodStore.getAllSearchTerms()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                             data: $0.value.displayString(),
-                                                                             statSection: .periodSearchTerms) }
-            ?? []
+        guard let searchTerms = periodStore.getTopSearchTerms() else {
+            return []
+        }
+
+
+        var mappedSearchTerms = searchTerms.searchTerms.map { StatsTotalRowData(name: $0.term,
+                                                                                data: $0.viewsCount.abbreviatedString(),
+                                                                                statSection: .periodSearchTerms) }
+
+        if !mappedSearchTerms.isEmpty && searchTerms.hiddenSearchTermsCount > 0 {
+            // We want to insert the "Unknown search terms" item only if there's anything to show in the first place — if the
+            // section is empty, it doesn't make sense to insert it here.
+
+            let unknownSearchTerm = StatsTotalRowData(name: NSLocalizedString("Unknown search terms",
+                                                                              comment: "Search Terms label for 'unknown search terms'."),
+                                                      data: searchTerms.hiddenSearchTermsCount.abbreviatedString(),
+                                                      statSection: .periodSearchTerms)
+
+            mappedSearchTerms.insert(unknownSearchTerm, at: 0)
+        }
+
+        return mappedSearchTerms
     }
 
     func videosRows() -> [StatsTotalRowData] {
-        return periodStore.getAllVideos()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                        data: $0.value.displayString(),
-                                                                        mediaID: $0.itemID,
-                                                                        icon: Style.imageForGridiconType(.video),
-                                                                        showDisclosure: true,
-                                                                        statSection: .periodVideos) }
+        return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
+                                                                          data: $0.playsCount.abbreviatedString(),
+                                                                          mediaID: $0.postID as NSNumber,
+                                                                          icon: Style.imageForGridiconType(.video),
+                                                                          showDisclosure: true,
+                                                                          statSection: .periodVideos) }
             ?? []
     }
 
     func clicksRows() -> [StatsTotalRowData] {
-        return periodStore.getAllClicks()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                        data: $0.value.displayString(),
-                                                                        showDisclosure: true,
-                                                                        disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                        childRows: StatsDataHelper.childRowsForClicks($0),
-                                                                        statSection: .periodClicks) }
+        return periodStore.getTopClicks()?.clicks.map { StatsTotalRowData(name: $0.title,
+                                                                          data: $0.clicksCount.abbreviatedString(),
+                                                                          showDisclosure: true,
+                                                                          disclosureURL: $0.iconURL,
+                                                                          childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                                                                         data: $0.clicksCount.abbreviatedString(),
+                                                                                                                         showDisclosure: true,
+                                                                                                                         disclosureURL: $0.clickedURL) },
+                                                                          statSection: .periodClicks) }
             ?? []
     }
 
     func authorsRows() -> [StatsTotalRowData] {
-        let authors = periodStore.getAllAuthors()
-        return authors?.map { StatsTotalRowData.init(name: $0.label,
-                                                     data: $0.value.displayString(),
-                                                     dataBarPercent: StatsDataHelper.dataBarPercentForRow($0, relativeToRow: authors?.first),
-                                                     userIconURL: $0.iconURL,
-                                                     showDisclosure: true,
-                                                     childRows: StatsDataHelper.childRowsForAuthor($0),
-                                                     statSection: .periodAuthors) }
-            ?? []
+        let authors = periodStore.getTopAuthors()?.topAuthors ?? []
+
+        return authors.map { StatsTotalRowData(name: $0.name,
+                                               data: $0.viewsCount.abbreviatedString(),
+                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                                               userIconURL: $0.iconURL,
+                                               showDisclosure: true,
+                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                                               statSection: .periodAuthors) }
     }
 
     func referrersRows() -> [StatsTotalRowData] {
-        return periodStore.getAllReferrers()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                           data: $0.value.displayString(),
-                                                                           socialIconURL: $0.iconURL,
-                                                                           showDisclosure: true,
-                                                                           disclosureURL: StatsDataHelper.disclosureUrlForItem($0),
-                                                                           childRows: StatsDataHelper.childRowsForReferrers($0),
-                                                                           statSection: .periodReferrers) }
-            ?? []
+        let referrers = periodStore.getTopReferrers()?.referrers ?? []
+
+        func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            return StatsTotalRowData(name: referrer.title,
+                                     data: referrer.viewsCount.abbreviatedString(),
+                                     socialIconURL: referrer.iconURL,
+                                     showDisclosure: true,
+                                     disclosureURL: referrer.url,
+                                     childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
+                                     statSection: .periodReferrers)
+        }
+
+        return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
     func countriesRows() -> [StatsTotalRowData] {
-        return periodStore.getAllCountries()?.map { StatsTotalRowData.init(name: $0.label,
-                                                                           data: $0.value.displayString(),
-                                                                           countryIconURL: $0.iconURL,
-                                                                           statSection: .periodCountries) }
+        return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
+                                                                                data: $0.viewsCount.abbreviatedString(),
+                                                                                icon: UIImage(named: $0.code),
+                                                                                statSection: .periodCountries) }
             ?? []
     }
 
     func publishedRows() -> [StatsTotalRowData] {
-        return periodStore.getAllPublished()?.map { StatsTotalRowData.init(name: $0.title,
-                                                                           data: "",
-                                                                           showDisclosure: true,
-                                                                           disclosureURL: $0.postURL,
-                                                                           statSection: .periodPublished) }
+        return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
+                                                                                     data: "",
+                                                                                     showDisclosure: true,
+                                                                                     disclosureURL: $0.postURL,
+                                                                                     statSection: .periodPublished) }
             ?? []
+    }
+
+    func postStatsRows(forAverages: Bool = false) -> [StatsTotalRowData] {
+
+        let postStats = periodStore.getPostStats()
+
+        guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
+            let minYear = StatsDataHelper.minYearFrom(yearsData: yearsData),
+            let maxYear = StatsDataHelper.maxYearFrom(yearsData: yearsData) else {
+                return []
+        }
+
+        var yearRows = [StatsTotalRowData]()
+
+        // Create Year rows in descending order
+        for year in (minYear...maxYear).reversed() {
+            let months = StatsDataHelper.monthsFrom(yearsData: yearsData, forYear: year)
+            let yearTotalViews = StatsDataHelper.totalViewsFrom(monthsData: months)
+
+            let rowValue: Int = {
+                if forAverages {
+                    return months.count > 0 ? (yearTotalViews / months.count) : 0
+                }
+                return yearTotalViews
+            }()
+
+            if rowValue > 0 {
+                yearRows.append(StatsTotalRowData(name: String(year),
+                                                  data: rowValue.abbreviatedString(),
+                                                  showDisclosure: true,
+                                                  childRows: StatsDataHelper.childRowsForYear(months),
+                                                  statSection: forAverages ? .postStatsAverageViews : .postStatsMonthsYears))
+            }
+        }
+
+        return yearRows
     }
 
 }

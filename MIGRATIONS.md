@@ -3,6 +3,34 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 87
+@klausa 2019-02-15
+
+- Added following entities:
+
+* `StatsRecordValue`
+* `StatsRecord`
+
+* `AllTimeStatsRecordValue` 
+* `AnnualAndMostPopularTimeStatsRecordValue` 
+* `ClicksStatsRecordValue`
+* `CountryStatsRecordValue`
+* `FollowersStatsRecordValue`
+* `LastPostStatsRecordValue`
+* `PublicizeConnectionStatsRecordValue`
+* `ReferrerStatsRecordValue`
+* `SearchResultsStatsRecordValue`
+* `StreakInsightStatsRecordValue`
+* `StreakStatsRecordValue`
+* `TagsCategoriesStatsRecordValue`
+* `TopCommentedPostStatsRecordValue`
+* `TopCommentsAuthorStatsRecordValue`
+* `TopViewedAuthorStatsRecordValue`
+* `TopViewedPostStatsRecordValue`
+* `TopViewedVideoStatsRecordValue`
+* `VisitsSummaryStatsRecordValue`
+
+
 ## WordPress 86
 @aerych 2018-12-08
 - Added `Plan`, `PlanGroup`, and `PlanFeature` entities and properties.

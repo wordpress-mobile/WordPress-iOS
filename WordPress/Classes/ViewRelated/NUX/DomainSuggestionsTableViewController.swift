@@ -60,7 +60,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let bundle = Bundle(for: WordPressAuthenticator.self)
+        let bundle = WordPressAuthenticator.bundle
         tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
@@ -285,7 +285,7 @@ extension DomainSuggestionsTableViewController {
         }
         styledDomain.addAttribute(.foregroundColor,
                                   value: WPStyleGuide.darkGrey(),
-                                  range: NSMakeRange(0, dotPosition.encodedOffset))
+                                  range: NSMakeRange(0, dotPosition.utf16Offset(in: domain)))
         return styledDomain
     }
 }

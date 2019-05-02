@@ -16,7 +16,7 @@ private final class EnhancedSiteCreationNavigationController: UINavigationContro
 
 final class WizardNavigation {
     private let steps: [WizardStep]
-    private let pointer = WizardNavigationPointer()
+    private let pointer: WizardNavigationPointer
 
     private lazy var navigationController: UINavigationController? = {
         guard let root = self.firstContentViewController else {
@@ -38,6 +38,8 @@ final class WizardNavigation {
 
     init(steps: [WizardStep]) {
         self.steps = steps
+        self.pointer = WizardNavigationPointer(capacity: steps.count)
+
         configureSteps()
     }
 
@@ -54,37 +56,45 @@ final class WizardNavigation {
 
 extension WizardNavigation: WizardDelegate {
     func nextStep() {
-        guard !steps.isEmpty, let nextIndex = pointer.next(maxIndex: steps.count - 1) else {
+        guard let navigationController = navigationController, let nextStepIndex = pointer.nextIndex else {
+            // If we find this statement in Fabric, it suggests 11388 might not have been resolved
+            DDLogInfo("We've exceeded the max index of our wizard navigation steps (i.e., \(pointer.currentIndex)")
+
             return
         }
 
-        let nextStep = steps[nextIndex]
+        let nextStep = steps[nextStepIndex]
+        let nextViewController = nextStep.content
 
-        navigationController?.pushViewController(nextStep.content, animated: true)
+        // If we find this statement in Fabric, it's likely that we haven't resolved 11388
+        if navigationController.viewControllers.contains(nextViewController) {
+            DDLogInfo("Attempting to push \(String(describing: nextViewController.title)) when it's already on the navigation stack!")
+        }
+
+        navigationController.pushViewController(nextViewController, animated: true)
     }
 }
 
 final class WizardNavigationPointer: NSObject, UINavigationControllerDelegate {
-    private var value: Int = 0
 
-    func next(maxIndex max: Int) -> Int? {
-        guard value < max else {
+    private let maxIndex: Int
+    private(set) var currentIndex = 0
+
+    init(capacity: Int = 1) {
+        self.maxIndex = max(capacity - 1, 0)
+    }
+
+    var nextIndex: Int? {
+        guard currentIndex < maxIndex else {
             return nil
         }
-
-        increaseValue()
-
-        return value
+        return (currentIndex + 1)
     }
 
-    private func increaseValue() {
-        value = value + 1
-    }
-
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        let viewControllers = navigationController.viewControllers
-        if let index = viewControllers.index(of: viewController) {
-            value = index
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        guard let index = navigationController.viewControllers.index(of: viewController) else {
+            return
         }
+        currentIndex = index
     }
 }

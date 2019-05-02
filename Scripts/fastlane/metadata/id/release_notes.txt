@@ -1,4 +1,6 @@
-- Fungsi dikte kini dapat digunakan di blok penyunting.
-- Pesan error offline kini ditampilkan dalam dialog pop-up yang lebih kecil di bagian bawah halaman.
-- Memperbaiki bug yang menyebabkan bilah alamat pratinjau situs dapat disunting di alur Pembuatan Situs.
-- Memperbaiki masalah pada penyunting blok yang menyebabkan gambar tidak dapat diunggah ke situs pribadi.
+12.2
+-----
+* Publikasikan dengan percaya diri! Pratinjau konsep akan menampilkan versi yang lebih akurat untuk pos Anda.
+* jika Anda lebih suka menulis di aplikasi seperti Bear atau Ulysses (atau aplikasi lain yang menggunakan format TextBundle dan TextPack), tidak masalah, lanjutkan. Dan sekarang Anda dapat mengimpor teks dari aplikasi itu ke sini.
+* Seluruh aplikasi mendapatkan pembaruan musim semi. Kami memperbaiki beberapa gangguan visual dalam proses pembuatan situs, menyesuaikan susunan kata untuk memperjelas detail ruang penyimpanan yang digunakan di situs Anda, dan mengatasi masalah crash mengganggu yang terkadang terjadi saat Anda mencoba mengelola plugin.
+

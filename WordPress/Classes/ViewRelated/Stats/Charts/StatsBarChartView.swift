@@ -5,6 +5,8 @@ import Charts
 
 // MARK: - StatsBarChartView
 
+private let BarChartAnalyticsPropertyGranularityKey = "granularity"
+
 class StatsBarChartView: BarChartView {
 
     // MARK: Properties
@@ -14,6 +16,7 @@ class StatsBarChartView: BarChartView {
         static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
         static let highlightAlpha       = CGFloat(1)
         static let markerAlpha          = CGFloat(0.2)
+        static let topOffsetSansLegend  = CGFloat(5)
         static let trailingOffset       = CGFloat(20)
     }
 
@@ -24,6 +27,10 @@ class StatsBarChartView: BarChartView {
     /// This influences the visual appearance of the chart to be rendered.
     ///
     private let styling: BarChartStyling
+
+    /// This informs the analytics event captured via user interaction.
+    ///
+    private let analyticsGranularity: BarChartAnalyticsPropertyGranularityValue?
 
     /// When set, this stock `UIView` serves as a legend for the rendered chart.
     ///
@@ -37,9 +44,10 @@ class StatsBarChartView: BarChartView {
         }
     }
 
-    init(data: BarChartDataConvertible, styling: BarChartStyling) {
+    init(data: BarChartDataConvertible, styling: BarChartStyling, analyticsGranularity: BarChartAnalyticsPropertyGranularityValue? = nil) {
         self.barChartData = data
         self.styling = styling
+        self.analyticsGranularity = analyticsGranularity
 
         super.init(frame: .zero)
 
@@ -89,6 +97,16 @@ class StatsBarChartView: BarChartView {
         let offset = CGPoint(x: offsetWidth, y: offsetHeight)
 
         return (rect, offset)
+    }
+
+    private func captureAnalyticsEvent() {
+        var properties = [String: String]()
+
+        if let specifiedAnalyticsGranularity = analyticsGranularity {
+            properties[BarChartAnalyticsPropertyGranularityKey] = specifiedAnalyticsGranularity.rawValue
+        }
+
+        WPAnalytics.track(.statsOverviewBarChartTapped, withProperties: properties)
     }
 
     private func configureAndPopulateData() {
@@ -160,7 +178,6 @@ class StatsBarChartView: BarChartView {
     }
 
     private func configureChartForSingleDataSet(_ dataSet: BarChartDataSet) {
-
         dataSet.colors = [ styling.primaryBarColor ]
         dataSet.drawValuesEnabled = false
 
@@ -176,7 +193,6 @@ class StatsBarChartView: BarChartView {
 
     private func configureChartViewBaseProperties() {
         dragDecelerationEnabled = false
-
         extraRightOffset = Constants.trailingOffset
 
         animate(yAxisDuration: Constants.animationDuration)
@@ -195,7 +211,7 @@ class StatsBarChartView: BarChartView {
         NSLayoutConstraint.activate([
             chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
         ])
-        extraTopOffset += chartLegend.intrinsicContentSize.height
+        extraTopOffset = chartLegend.intrinsicContentSize.height
 
         self.legendView = chartLegend
     }
@@ -214,13 +230,17 @@ class StatsBarChartView: BarChartView {
     private func configureYAxis() {
         let yAxis = leftAxis
 
-        xAxis.axisLineColor = styling.lineColor
+        yAxis.axisLineColor = styling.lineColor
         yAxis.gridColor = styling.lineColor
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
         yAxis.labelTextColor = styling.labelColor
         yAxis.valueFormatter = styling.yAxisValueFormatter
+
+        // This adjustment is intended to prevent clipping observed with some labels
+        // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
+        extraTopOffset = Constants.topOffsetSansLegend
     }
 
     private func drawChartMarker(for entry: ChartDataEntry) {
@@ -241,6 +261,7 @@ class StatsBarChartView: BarChartView {
 
     private func drawSecondaryHighlightIfNeeded(for primaryEntry: ChartDataEntry, with primaryHighlight: Highlight) {
         guard let chartData = data, chartData.dataSets.count > 1 else {
+            highlightValues([primaryHighlight])
             return
         }
 
@@ -265,6 +286,7 @@ class StatsBarChartView: BarChartView {
         delegate = self
 
         applyStyling()
+        prepareForVoiceOver()
         configureAndPopulateData()
     }
 
@@ -277,8 +299,8 @@ class StatsBarChartView: BarChartView {
 
         let postRotationDelay = DispatchTime.now() + TimeInterval(0.35)
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
-            self.drawChartMarker(for: entry)
             self.drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
+            self.drawChartMarker(for: entry)
         }
     }
 }
@@ -289,7 +311,21 @@ private typealias StatsBarChartMarker = MarkerView
 
 extension StatsBarChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        captureAnalyticsEvent()
         drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
         drawChartMarker(for: entry)
+    }
+}
+
+// MARK: - Accessible
+
+extension StatsBarChartView: Accessible {
+    func prepareForVoiceOver() {
+        // ChartDataRendererBase creates a meaningful a11y description, relying on the chart description
+        guard let chartDescription = chartDescription else {
+            return
+        }
+        chartDescription.text = barChartData.accessibilityDescription
+        chartDescription.enabled = false    // disabling the description hides a corresponding label
     }
 }

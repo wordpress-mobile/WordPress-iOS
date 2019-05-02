@@ -1,4 +1,6 @@
-- Dicteren werkt nu in de blokeditor.
-- Offline foutmeldingen worden nu weergegeven in kleinere pop-updialoogvensters onderaan de pagina.
-- Een bug gerepareerd waarbij de adresbalk in de voorbeeldweergave van de site kon worden bewerkt in de Site aanmaak-workflow.
-- Een fout opgelost in de blokeditor waarbij afbeeldingen niet naar privésites konden worden geüpload.
+12.2
+-----
+* Publiceer vol vertrouwen! In voorbeeldweergaven van concepten zie je nu een nauwkeurigere versie van je berichten.
+* Als je liever in apps als Bear of Ulysses schrijft (of elke andere app die gebruikmaakt van de TextBundle- en TextPack-indeling) dan kun je dat nu blijven doen. Je kunt de tekst van die apps importeren naar deze.
+* De hele app heeft een voorjaarsschoonmaak gekregen: we hebben wat visuele bugs in het aanmaakproces van sites gerepareerd, een paar teksten aangepast om duidelijk te maken hoeveel opslagruimte je site gebruikt en we hebben een irritante crash opgelost die soms plaatsvond als je probeerde plugins te beheren.
+

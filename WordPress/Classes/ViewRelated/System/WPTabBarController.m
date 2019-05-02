@@ -170,29 +170,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex
-{
-    [super setSelectedIndex:selectedIndex];
-
-    // Bumping the stat in this method works for cases where the selected tab is
-    // set in response to other feature behavior (e.g. a notifications), and
-    // when set via state restoration.
-    switch (selectedIndex) {
-        case WPTabMe:
-            [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
-            break;
-        case WPTabMySites:
-            [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
-            break;
-        case WPTabReader:
-            [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
-            break;
-
-        default:
-            break;
-    }
-}
-
 #pragma mark - UIViewControllerRestoration methods
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -376,9 +353,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _blogListSplitViewController = [WPSplitViewController new];
         _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
         _blogListSplitViewController.presentsWithGesture = NO;
-        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
         [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
 
@@ -394,6 +370,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.presentsWithGesture = NO;
+        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
         _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
         _readerSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
 
@@ -406,8 +383,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             [_readerSplitViewController setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
         }
 
-        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
-
         _readerSplitViewController.tabBarItem = self.readerNavigationController.tabBarItem;
     }
 
@@ -419,9 +394,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
         _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
-        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
     }
@@ -434,10 +408,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_notificationsSplitViewController) {
         _notificationsSplitViewController = [WPSplitViewController new];
         _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
+         [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
         _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
         _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
-
-        [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
 
         _notificationsSplitViewController.tabBarItem = self.notificationsNavigationController.tabBarItem;
     }
@@ -837,22 +810,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (newIndex != tabBarController.selectedIndex) {
         switch (newIndex) {
             case WPTabMySites: {
-                [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
                 [self bypassBlogListViewControllerIfNecessary];
                 break;
             }
             case WPTabReader: {
-                [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
                 [self alertQuickStartThatReaderWasTapped];
-                break;
-            }
-            case WPTabMe: {
-                [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
                 break;
             }
             default: break;
         }
 
+        [self trackTabAccessForTabIndex:newIndex];
         [self alertQuickStartThatOtherTabWasTapped];
     } else {
         // If the current view controller is selected already and it's at its root then scroll to the top
@@ -996,11 +964,18 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Handling Layout
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self startObserversForTabAccessTracking];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self updateNotificationBadgeVisibility];
     [self startWatchingQuickTours];
+
+    [self trackTabAccessOnViewDidAppear];
 }
 
 - (void)viewDidLayoutSubviews

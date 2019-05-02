@@ -57,13 +57,13 @@ class MyProfileHeaderView: WPTableViewCell {
     }
 
     /// Overrides the current Gravatar Image (set via Email) with a given image reference.
-    /// Plus, AFNetworking's internal cache is updated, to prevent undesired glitches upon refresh.
+    /// Plus, the internal image cache is updated, to prevent undesired glitches upon refresh.
     ///
     func overrideGravatarImage(_ image: UIImage) {
         gravatarImageView.image = image
 
         // Note:
-        // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
+        // We need to update the image internal cache. Otherwise, any upcoming query to refresh the gravatar
         // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
         //
         if let email = gravatarEmail {

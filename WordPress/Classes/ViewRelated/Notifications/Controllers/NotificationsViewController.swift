@@ -243,6 +243,20 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
     }
 
+    override func applicationFinishedRestoringState() {
+        super.applicationFinishedRestoringState()
+
+        guard let navigationControllers = navigationController?.children else {
+            return
+        }
+
+        for case let detailVC as NotificationDetailsViewController in navigationControllers {
+            if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
+                configureDetailsViewController(detailVC, withNote: note)
+            }
+        }
+    }
+
     // MARK: - UITableView Methods
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -691,6 +705,14 @@ private extension NotificationsViewController {
 
         NotificationSyncMediator()?.markAsRead(note)
     }
+
+    func markAsUnread(note: Notification) {
+        guard note.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsUnread(note)
+    }
 }
 
 
@@ -952,7 +974,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     @objc func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
-        // Let "Mark as Read" expand
+        // Let "Mark as Read / Unread" expand
         let leadingExpansionButton = 0
 
         // Don't expand "Trash"
@@ -1011,15 +1033,19 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 //
 private extension NotificationsViewController {
     func leadingButtons(note: Notification) -> [MGSwipeButton] {
-        guard !note.read else {
-            return []
-        }
+        let isRead = note.read
+
+        let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") : NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
 
         return [
-            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"),
+            MGSwipeButton(title: title,
                           backgroundColor: WPStyleGuide.greyDarken20(),
                           callback: { _ in
-                            self.markAsRead(note: note)
+                            if isRead {
+                                self.markAsUnread(note: note)
+                            } else {
+                                self.markAsRead(note: note)
+                            }
                             return true
             })
         ]

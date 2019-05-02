@@ -1,32 +1,5 @@
-12.1
------
-* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
-* Improved text import from other apps, such as Bear or Ulysses 🥰
-* Added support on the editor for video elements that use the source elements. For example:
-```<video alt="Another video with bunnies">
-<source src="https://videos.files.wordpress.com/kUJmAcSf/bbb_sunflower_1080p_30fps_normal.mp4" type="video/mp4">
-</video>```
-* Block editor now supports the creation of posts with pre-inserted photos and the the 3touch action of starting a post with photo.
-
-12.1
------
-* Improve messages when updates to user account details fail because of server logic, for exanple email being used for another account.
-* Improved text import from other apps, such as Bear or Ulysses 🥰
-* Reader: fixed issue where empty state buttons were not functional.
-
-12.0
------
-* Redesigned Notices
-* Changed offline error messages to be less disruptive.
-* Resolved a defect in the new Site Creation flow where the site preview address bar could be edited.
-* Made it easier to find a domain for your new site, by moving the best match to the top of the search results.
- 
-11.9
-------
-* Quick Start v2: After creating a new site with WordPress.com there are more tutorials available, now including tips to improve growth.
-* Quick Start will also be suggested less often, but when it's more likely to be helpful.
-* Added connection error alert in Sharing screen.
-* Increased padding at the bottom of the share extension's editor, to make typing a longer post a bit more comfortable.
-* Removes the white background color applied to the site icon on the site details screen.
-* Updated No Results View illustration and copy displayed on connectivity issue.
-* Enhanced Site Creation flow for smarter, more personalized sites.
+Love apps like iA Writer, 1Writer, Bear, and Ulysses? Move from app to WordPress draft fast — the app now imports images from TextBundle and TextPack files and supports importing Markdown files, too.
+Notifications for internet connectivity problems no longer eat up your entire device screen. Now there’s a small popup instead, so you can keep using offline abilities (like deleting posts, which now happens more reliably if you’re offline).
+Some text in Activity Log would sometimes show up in a wrong language. Not useful! And now fixed.
+Also not useful: crashes. Crashes that sometimes occurred during site creation or when loading stats are resolved.
+Jetpack Remote Install is supported, so you can install and activate Jetpack on a self-hosted site right from the app.

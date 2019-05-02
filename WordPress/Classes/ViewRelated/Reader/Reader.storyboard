@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -44,16 +44,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ix7-KK-iap" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="553"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="p0j-e1-c0h" id="gCA-aD-r7r"/>
-                                </connections>
-                            </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LMp-cd-vT3">
                                 <rect key="frame" x="-4" y="0.0" width="383" height="200"/>
                                 <subviews>
@@ -405,18 +395,14 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="LMp-cd-vT3" secondAttribute="trailing" constant="-20" id="AwW-TO-zxs"/>
-                            <constraint firstAttribute="trailing" secondItem="Ix7-KK-iap" secondAttribute="trailing" id="FZQ-3g-Gaw"/>
                             <constraint firstItem="LMp-cd-vT3" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-20" id="It3-hw-kn5"/>
-                            <constraint firstItem="vSH-j9-J3c" firstAttribute="top" secondItem="Ix7-KK-iap" secondAttribute="bottom" id="IwI-ud-rTf"/>
-                            <constraint firstItem="LMp-cd-vT3" firstAttribute="top" secondItem="Ix7-KK-iap" secondAttribute="top" placeholder="YES" id="M2i-cs-a6x"/>
-                            <constraint firstItem="Ix7-KK-iap" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leading" id="Th3-Nk-ejG"/>
+                            <constraint firstItem="LMp-cd-vT3" firstAttribute="top" secondItem="hvd-Zh-euc" secondAttribute="bottom" placeholder="YES" id="JNq-wG-ZoU"/>
+                            <constraint firstItem="fO8-Q5-Boc" firstAttribute="top" secondItem="hvd-Zh-euc" secondAttribute="bottom" placeholder="YES" id="PBv-oK-tOT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="fO8-Q5-Boc" secondAttribute="trailing" id="UYP-vl-LPm"/>
                             <constraint firstItem="zkd-Io-waS" firstAttribute="top" secondItem="vSH-j9-J3c" secondAttribute="bottom" id="Vka-Mb-bVI"/>
-                            <constraint firstItem="fO8-Q5-Boc" firstAttribute="top" secondItem="Ix7-KK-iap" secondAttribute="top" placeholder="YES" id="WVL-tU-5F1"/>
                             <constraint firstItem="fO8-Q5-Boc" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-2" id="ZZ3-Gn-695"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vSH-j9-J3c" secondAttribute="trailing" constant="-20" id="b2V-TS-HZt"/>
                             <constraint firstItem="vSH-j9-J3c" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-20" id="nJ2-D6-1HV"/>
-                            <constraint firstItem="Ix7-KK-iap" firstAttribute="top" secondItem="hvd-Zh-euc" secondAttribute="bottom" id="smk-m1-FPg"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -442,7 +428,6 @@
                         <outlet property="tagButton" destination="mBC-NT-IsJ" id="fV5-hf-glc"/>
                         <outlet property="textFooterStackView" destination="fO8-Q5-Boc" id="wu2-Zu-2kO"/>
                         <outlet property="textHeaderStackView" destination="LMp-cd-vT3" id="yIB-Sr-eeU"/>
-                        <outlet property="textView" destination="Ix7-KK-iap" id="QgD-HL-wLx"/>
                         <outlet property="titleBottomPaddingView" destination="MYy-Lu-AaC" id="Law-vf-rPU"/>
                         <outlet property="titleLabel" destination="ut9-jn-WNM" id="4Rg-AX-Wgl"/>
                         <outletCollection property="bylineGradientViews" destination="OvZ-NX-X1v" collectionClass="NSMutableArray" id="yKE-rH-Nnk"/>

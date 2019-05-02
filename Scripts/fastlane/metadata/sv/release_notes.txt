@@ -1,4 +1,6 @@
-- Nu går det att diktera i blockredigeraren.
-- Felmeddelanden om offline-läge kommer nu att visas i ett mindre popup-fönster i slutet av sidan.
-- Rättat ett fel där det gick att redigera fältet för förhandsvisning av webbplatsens adress i flödet för skapande av ny webbplats.
-- Rättat ett problem i blockredigeraren där det inte gick att ladda upp bilder till privata webbplatser..
+12.2
+-----
+* Publicera tillförlitligt! Förhandsvisningar av utkast kommer att ge en mer korrekt version av dina inlägg.
+* Om du föredrar att skriva i sådana appar som Bear eller Ulysses (eller någon annan app som använder formaten TextBundle eller TextPack) är det perfekt – fortsätt så. Och nu kan du även importera din text i de apparna till den här appen.
+* Vi har snyggat upp hela appen nu inför våren – rättat till några visuella störningen i processen för att skapa en ny webbplats, justerad vissa fraser för att tydliggöra hur stort lagringsutrymme webbplatsen använder. Dessutom har vi tagit hand om en jobbig krasch som ibland inträffade när man försökte att hantera sina tillägg.
+

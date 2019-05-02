@@ -38,12 +38,13 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v12.0-whats-new"
+msgctxt "v12.3-whats-new"
 msgid ""
-"- Dictation now works in the block editor.\n"
-"- Offline error messages will now display in smaller popup dialogs on the bottom of the page.\n"
-"- Fixed a bug where the site preview address bar could be edited in the Site Creation flow.\n"
-"- Fixed an issue in the block editor where images could not be uploaded to private sites.\n"
+"Love apps like iA Writer, 1Writer, Bear, and Ulysses? Move from app to WordPress draft fast — the app now imports images from TextBundle and TextPack files and supports importing Markdown files, too.\n"
+"Notifications for internet connectivity problems no longer eat up your entire device screen. Now there’s a small popup instead, so you can keep using offline abilities (like deleting posts, which now happens more reliably if you’re offline).\n"
+"Some text in Activity Log would sometimes show up in a wrong language. Not useful! And now fixed.\n"
+"Also not useful: crashes. Crashes that sometimes occurred during site creation or when loading stats are resolved.\n"
+"Jetpack Remote Install is supported, so you can install and activate Jetpack on a self-hosted site right from the app.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

@@ -35,6 +35,7 @@ class SupportTableViewController: UITableViewController {
         WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
+        checkForAutomatticEmail()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +84,7 @@ private extension SupportTableViewController {
     func setupNavBar() {
         title = LocalizedText.viewTitle
 
-        if  splitViewController == nil {
+        if isModal() {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
                                                                style: WPStyleGuide.barButtonStyleForBordered(),
                                                                target: self,
@@ -220,8 +221,27 @@ private extension SupportTableViewController {
                 // if the value changed.
                 WPAnalytics.track(.supportIdentitySet)
                 self.reloadViewModel()
+                self.checkForAutomatticEmail()
             }
         }
+    }
+
+    /// Zendesk does not allow agents to submit tickets, and displays a 'Message failed to send' error upon attempt.
+    /// If the user email address is a8c, display a warning.
+    ///
+    func checkForAutomatticEmail() {
+        guard let email = ZendeskUtils.userSupportEmail(),
+            (Constants.automatticEmails.first { email.contains($0) }) != nil else {
+                return
+        }
+
+        let alert = UIAlertController(title: "Warning",
+                                      message: "Automattic email account detected. Please log in with a non-Automattic email to submit or view support tickets.",
+                                      preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(cancel)
+
+        present(alert, animated: true, completion: nil)
     }
 
     func extraDebugToggled() -> (_ newValue: Bool) -> Void {
@@ -312,6 +332,7 @@ private extension SupportTableViewController {
     struct Constants {
         static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
+        static let automatticEmails = ["@automattic.com", "@a8c.com"]
     }
 
 }

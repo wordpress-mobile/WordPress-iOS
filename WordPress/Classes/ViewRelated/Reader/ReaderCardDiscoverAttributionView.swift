@@ -101,7 +101,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func configurePostAttribution(_ contentProvider: ReaderPostContentProvider) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: gravatarImageName)
-        imageView.setImageWith(url!, placeholderImage: placeholder)
+        imageView.downloadImage(from: url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = true
 
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
@@ -116,7 +116,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
-        imageView.setImageWith(url!, placeholderImage: placeholder)
+        imageView.downloadImage(from: url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = false
 
         let blogName = contentProvider.sourceBlogNameForDisplay()

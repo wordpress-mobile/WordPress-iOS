@@ -18,7 +18,10 @@ struct PostSummaryDatum: Decodable {
 // MARK: - PostSummaryDataStub
 
 class PostSummaryDataStub: DataStub<[PostSummaryDatum]> {
-    init(fileName: String) {
+    private let postSummaryChartDescription: String
+
+    init(fileName: String, description: String) {
+        self.postSummaryChartDescription = description
         super.init([PostSummaryDatum].self, fileName: fileName)
     }
 
@@ -31,21 +34,18 @@ class PostSummaryDataStub: DataStub<[PostSummaryDatum]> {
 
 class LatestPostSummaryDataStub: PostSummaryDataStub {
     init() {
-        super.init(fileName: "latestPost_data")
-    }
-}
-
-// MARK: - SelectedPostSummaryDataStub
-
-class SelectedPostSummaryDataStub: PostSummaryDataStub {
-    init() {
-        super.init(fileName: "selectedPost_data")
+        let chartDescription = "Bar Chart depicting Views for the Latest Post"  // NB: we don't localize stub data
+        super.init(fileName: "latestPost_data", description: chartDescription)
     }
 }
 
 // MARK: - BarChartDataConvertible
 
 extension PostSummaryDataStub: BarChartDataConvertible {
+    var accessibilityDescription: String {
+        return postSummaryChartDescription
+    }
+
     var barChartData: BarChartData {
 
         let data = summaryData

@@ -305,8 +305,14 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         let size = avatarImageView.frame.size.width * UIScreen.main.scale
         if let url = provider.siteIconForDisplay(ofSize: Int(size)) {
-            avatarImageView.setImageWith(url)
+            if provider.isPrivate() {
+                let request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
+                avatarImageView.downloadImage(usingRequest: request)
+            } else {
+                avatarImageView.downloadImage(from: url)
+            }
             avatarImageView.isHidden = false
+
         } else {
             avatarImageView.isHidden = true
         }
