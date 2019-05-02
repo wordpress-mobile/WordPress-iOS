@@ -51,6 +51,7 @@ class NoticePresenter: NSObject {
     private var storeReceipt: Receipt?
 
     private var currentNoticePresentation: NoticePresentation?
+    private var currentOffsetForKeyboard: CGFloat = 0
 
     private init(store: NoticeStore) {
         self.store = store
@@ -96,21 +97,26 @@ class NoticePresenter: NSObject {
     private func listenToKeyboardEvents() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
-                let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
-                let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-                let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
+                let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
                     return
             }
-            let keyboardFrame = keyboardFrameValue.cgRectValue
-            let keyboardHeight = keyboardFrame.size.height
+
+            self.currentOffsetForKeyboard = keyboardFrameValue.cgRectValue.size.height
+
+            guard let currentContainer = self.currentNoticePresentation?.containerView,
+                let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
+                return
+            }
 
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = -keyboardHeight
+                currentContainer.bottomConstraint?.constant = -self.currentOffsetForKeyboard
                 self.view.layoutIfNeeded()
             })
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.currentOffsetForKeyboard = 0
+
             guard let self = self,
                 let currentContainer = self.currentNoticePresentation?.containerView,
                 let userInfo = notification.userInfo,
