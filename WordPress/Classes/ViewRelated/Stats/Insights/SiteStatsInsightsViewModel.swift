@@ -108,13 +108,9 @@ class SiteStatsInsightsViewModel: Observable {
 
     func refreshInsights() {
         ActionDispatcher.dispatch(InsightAction.refreshInsights)
-    }
 
-    private func fetchStatsForInsightsLatestPost(postID: Int) {
-        self.periodReceipt = periodStore.query(.postStats(postID: postID))
-        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
-        periodChangeReceipt = periodStore.onChange { [weak self] in
-            self?.emitChange()
+        if let postID = insightsStore.getLastPostInsight()?.postID {
+            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
         }
     }
 }
@@ -468,4 +464,11 @@ private extension SiteStatsInsightsViewModel {
                        dataRows: followersData ?? [])
     }
 
+    func fetchStatsForInsightsLatestPost(postID: Int) {
+        self.periodReceipt = periodStore.query(.postStats(postID: postID))
+        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        periodChangeReceipt = periodStore.onChange { [weak self] in
+            self?.emitChange()
+        }
+    }
 }
