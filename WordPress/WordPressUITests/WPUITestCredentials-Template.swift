@@ -3,6 +3,7 @@
 // you can read more here: https://github.com/wordpress-mobile/WordPress-iOS#setup-credentials
 struct WPUITestCredentials {
     static let testWPcomUserEmail: String = <# Your WordPress.com Account Email #>
+    static let testWPcomUsername: String = <# Your WordPress.com Account Username #>
     static let testWPcomPassword: String = <# Your WordPress.com Account Password #>
     static let testWPcomSiteAddress: String =  <# Your WordPress.com Site Address #>
     static let selfHostedUsername: String = <# Your Self Hosted Account Username #>
