@@ -171,9 +171,9 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         case .checkMarkRowsUpdated:
             tableView.reloadData()
         case .registerSucceeded(let domain):
-
-            viewModel.domainPurchasedCallback(domain)
-            dismiss(animated: true)
+            dismiss(animated: true) { [weak self] in
+                self?.viewModel.domainPurchasedCallback(domain)
+            }
         case .unexpectedError(let message):
             showAlert(message: message)
         case .loading(let isLoading):

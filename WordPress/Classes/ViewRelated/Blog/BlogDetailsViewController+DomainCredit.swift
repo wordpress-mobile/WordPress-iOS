@@ -18,10 +18,15 @@ extension BlogDetailsViewController {
     }
 
     @objc func showDomainCreditRedemption() {
-        // TODO-#11467 - subtask - integration with domain registration.
-        // Temporarily shows success screen before domain registration is integrated.
-        let domain = "lifeoftea.com"
-        presentDomainCreditRedemptionSuccess(domain: domain)
+        guard let site = JetpackSiteRef(blog: blog) else {
+            return
+        }
+        let controller = RegisterDomainSuggestionsViewController
+            .instance(site: site, domainPurchasedCallback: { [weak self] domain in
+                self?.presentDomainCreditRedemptionSuccess(domain: domain)
+            })
+        let navigationController = UINavigationController(rootViewController: controller)
+        present(navigationController, animated: true)
     }
 
     private func presentDomainCreditRedemptionSuccess(domain: String) {
