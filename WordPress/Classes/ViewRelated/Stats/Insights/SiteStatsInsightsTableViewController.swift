@@ -40,7 +40,7 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class SiteStatsInsightsTableViewController: UITableViewController {
+class SiteStatsInsightsTableViewController: UITableViewController, NoResultsViewHost {
 
     // MARK: - Properties
 
@@ -81,6 +81,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
+        displayLoadingViewIfNecessary()
         tableView.estimatedRowHeight = 500
     }
 
@@ -88,7 +89,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
     }
-
 }
 
 // MARK: - Private Extension
@@ -119,6 +119,14 @@ private extension SiteStatsInsightsTableViewController {
                 TableFooterRow.self]
     }
 
+    func displayLoadingViewIfNecessary() {
+        if tableHandler.viewModel.sections.isEmpty {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.successTitle,
+                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
+    }
+
     // MARK: - Table Refreshing
 
     func refreshTableView() {
@@ -129,6 +137,9 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
+
+        hideNoResults()
+
         refreshControl?.endRefreshing()
     }
 
@@ -173,6 +184,9 @@ private extension SiteStatsInsightsTableViewController {
         UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsKey)
     }
 
+    enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+    }
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
