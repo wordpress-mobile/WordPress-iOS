@@ -4,6 +4,7 @@ import WordPressFlux
 
 extension WPError {
     private static let noticeTag: Notice.Tag = "WPError.Networking"
+    private static let noticeErrorTag: Notice.Tag = "WPError.anyError"
 
     /// Show a Notice with the message taken from the given `error`
     ///
@@ -23,9 +24,25 @@ extension WPError {
                             tag: noticeTag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
+    
+    static func showNotice(title: String, message: String? = nil, error: Error) {
+        if showWPComSigninIfErrorIsInvalidAuth(error) {
+            return
+        }
+
+        let notice = Notice(title: title,
+                            message: message ?? "",
+                            tag: noticeErrorTag)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
 
     /// Dismiss the currently shown Notice if it was created using showNetworkingNotice()
     static func dismissNetworkingNotice() {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
+    }
+    
+    static func dismissNotice() {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeErrorTag))
     }
 }

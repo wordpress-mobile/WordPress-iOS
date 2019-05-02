@@ -105,6 +105,7 @@ class PostTagPickerViewController: UIViewController {
         if originalTags != tags {
             onValueChanged?(tags.joined(separator: ", "))
         }
+        WPError.dismissNotice()
     }
 
     fileprivate func reloadTableData() {
@@ -141,6 +142,8 @@ private extension PostTagPickerViewController {
     func tagsFailedLoading(error: Error) {
         DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
+        WPError.showNotice(title: NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error)
+        
     }
 }
 
@@ -340,7 +343,7 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.configureTableViewSuggestionCell(cell)
-        cell.textLabel?.text = NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed")
+        cell.textLabel?.text = ""
         return cell
     }
 }
