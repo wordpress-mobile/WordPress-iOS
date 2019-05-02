@@ -6,16 +6,16 @@ import WordPressComStatsiOS
 enum InsightAction: Action {
 
     // Insights overview
-    case receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?)
-    case receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?)
-    case receivedAnnualAndMostPopularTimeStats(_ annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?)
-    case receivedDotComFollowers(_ followerStats: StatsDotComFollowersInsight?)
-    case receivedEmailFollowers(_ followerStats: StatsEmailFollowersInsight?)
-    case receivedPublicize(_ publicizeStats: StatsPublicizeInsight?)
-    case receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?)
-    case receivedTodaysStats(_ todaysStats: StatsTodayInsight?)
-    case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?)
-    case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?)
+    case receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?, _ error: Error?)
+    case receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?, _ error: Error?)
+    case receivedAnnualAndMostPopularTimeStats(_ annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?, _ error: Error?)
+    case receivedDotComFollowers(_ followerStats: StatsDotComFollowersInsight?, _ error: Error?)
+    case receivedEmailFollowers(_ followerStats: StatsEmailFollowersInsight?, _ error: Error?)
+    case receivedPublicize(_ publicizeStats: StatsPublicizeInsight?, _ error: Error?)
+    case receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?, _ error: Error?)
+    case receivedTodaysStats(_ todaysStats: StatsTodayInsight?, _ error: Error?)
+    case receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?, _ error: Error?)
+    case receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
     case refreshInsights
 
     // Insights details
@@ -43,33 +43,43 @@ struct InsightStoreState {
 
     var lastPostInsight: StatsLastPostInsight?
     var fetchingLastPostInsight = false
+    var fetchingLastPostInsightHasFailed = false
 
     var allTimeStats: StatsAllTimesInsight?
     var fetchingAllTimeStats = false
+    var fetchingAllTimeStatsHasFailed = false
 
     var annualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?
     var fetchingAnnualAndMostPopularTime = false
+    var fetchingAnnualAndMostPopularTimeHasFailed = false
 
     var dotComFollowers: StatsDotComFollowersInsight?
     var fetchingDotComFollowers = false
+    var fetchingDotComFollowersHasFailed = false
 
     var emailFollowers: StatsEmailFollowersInsight?
     var fetchingEmailFollowers = false
+    var fetchingEmailFollowersHasFailed = false
 
     var publicizeFollowers: StatsPublicizeInsight?
     var fetchingPublicize = false
+    var fetchingPublicizeHasFailed = false
 
     var topCommentsInsight: StatsCommentsInsight?
     var fetchingCommentsInsight = false
+    var fetchingCommentsInsightHasFailed = false
 
     var todaysStats: StatsTodayInsight?
     var fetchingTodaysStats = false
+    var fetchingTodaysStatsHasFailed = false
 
     var postingActivity: StatsPostingStreakInsight?
     var fetchingPostingActivity = false
+    var fetchingPostingActivityHasFailed = false
 
     var topTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingTagsAndCategories = false
+    var fetchingTagsAndCategoriesHasFailed = false
 
     // Insights details
 
@@ -99,26 +109,26 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         }
 
         switch insightAction {
-        case .receivedLastPostInsight(let lastPostInsight):
-            receivedLastPostInsight(lastPostInsight)
-        case .receivedAllTimeStats(let allTimeStats):
-            receivedAllTimeStats(allTimeStats)
-        case .receivedAnnualAndMostPopularTimeStats(let mostPopularStats):
-            receivedAnnualAndMostPopularTimeStats(mostPopularStats)
-        case .receivedDotComFollowers(let followerStats):
-            receivedDotComFollowers(followerStats)
-        case .receivedEmailFollowers(let followerStats):
-            receivedEmailFollowers(followerStats)
-        case .receivedCommentsInsight(let commentsInsight):
-            receivedCommentsInsight(commentsInsight)
-        case .receivedPublicize(let items):
-            receivedPublicizeFollowers(items)
-        case .receivedTodaysStats(let todaysStats):
-            receivedTodaysStats(todaysStats)
-        case .receivedPostingActivity(let postingActivity):
-            receivedPostingActivity(postingActivity)
-        case .receivedTagsAndCategories(let tagsAndCategories):
-            receivedTagsAndCategories(tagsAndCategories)
+        case .receivedLastPostInsight(let lastPostInsight, let error):
+            receivedLastPostInsight(lastPostInsight, error)
+        case .receivedAllTimeStats(let allTimeStats, let error):
+            receivedAllTimeStats(allTimeStats, error)
+        case .receivedAnnualAndMostPopularTimeStats(let mostPopularStats, let error):
+            receivedAnnualAndMostPopularTimeStats(mostPopularStats, error)
+        case .receivedDotComFollowers(let followerStats, let error):
+            receivedDotComFollowers(followerStats, error)
+        case .receivedEmailFollowers(let followerStats, let error):
+            receivedEmailFollowers(followerStats, error)
+        case .receivedCommentsInsight(let commentsInsight, let error):
+            receivedCommentsInsight(commentsInsight, error)
+        case .receivedPublicize(let items, let error):
+            receivedPublicizeFollowers(items, error)
+        case .receivedTodaysStats(let todaysStats, let error):
+            receivedTodaysStats(todaysStats, error)
+        case .receivedPostingActivity(let postingActivity, let error):
+            receivedPostingActivity(postingActivity, error)
+        case .receivedTagsAndCategories(let tagsAndCategories, let error):
+            receivedTagsAndCategories(tagsAndCategories, error)
         case .refreshInsights:
             refreshInsights()
         case .receivedAllDotComFollowers(let allDotComFollowers):
@@ -217,42 +227,42 @@ private extension StatsInsightsStore {
             if error != nil {
                 DDLogInfo("Error fetching last posts insights: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost))
+            self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
         }
 
         api.getInsight { (allTimesStats: StatsAllTimesInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching all time insights: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats))
+            self.actionDispatcher.dispatch(InsightAction.receivedAllTimeStats(allTimesStats, error))
         }
 
         api.getInsight { (wpComFollowers: StatsDotComFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching WP.com followers: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers))
+            self.actionDispatcher.dispatch(InsightAction.receivedDotComFollowers(wpComFollowers, error))
         }
 
         api.getInsight { (emailFollowers: StatsEmailFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching email followers: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers))
+            self.actionDispatcher.dispatch(InsightAction.receivedEmailFollowers(emailFollowers, error))
         }
 
         api.getInsight { (publicizeInsight: StatsPublicizeInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching publicize insights: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight))
+            self.actionDispatcher.dispatch(InsightAction.receivedPublicize(publicizeInsight, error))
         }
 
         api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching most popular time: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime))
+            self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
         }
 
         api.getInsight { (todayInsight: StatsTodayInsight?, error) in
@@ -260,14 +270,14 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching today's insight: \(String(describing: error?.localizedDescription))")
             }
 
-            self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight))
+            self.actionDispatcher.dispatch(InsightAction.receivedTodaysStats(todayInsight, error))
         }
 
         api.getInsight { (commentsInsights: StatsCommentsInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching comment insights: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights))
+            self.actionDispatcher.dispatch(InsightAction.receivedCommentsInsight(commentsInsights, error))
         }
 
         api.getInsight { (tagsAndCategoriesInsight: StatsTagsAndCategoriesInsight?, error) in
@@ -275,7 +285,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
             }
 
-            self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight))
+            self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
         }
 
         api.getInsight { (streak: StatsPostingStreakInsight?, error) in
@@ -283,7 +293,7 @@ private extension StatsInsightsStore {
                 DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
             }
 
-            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak))
+            self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
         }
     }
 
@@ -326,93 +336,103 @@ private extension StatsInsightsStore {
         fetchInsights()
     }
 
-    func receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?) {
+    func receivedLastPostInsight(_ lastPostInsight: StatsLastPostInsight?, _ error: Error?) {
         transaction { state in
             if lastPostInsight != nil {
                 state.lastPostInsight = lastPostInsight
             }
             state.fetchingLastPostInsight = false
+            state.fetchingLastPostInsightHasFailed = error != nil
         }
     }
 
-    func receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?) {
+    func receivedAllTimeStats(_ allTimeStats: StatsAllTimesInsight?, _ error: Error?) {
         transaction { state in
             if allTimeStats != nil {
                 state.allTimeStats = allTimeStats
             }
             state.fetchingAllTimeStats = false
+            state.fetchingAllTimeStatsHasFailed = error != nil
         }
     }
 
-    func receivedAnnualAndMostPopularTimeStats(_ mostPopularStats: StatsAnnualAndMostPopularTimeInsight?) {
+    func receivedAnnualAndMostPopularTimeStats(_ mostPopularStats: StatsAnnualAndMostPopularTimeInsight?, _ error: Error?) {
         transaction { state in
             if mostPopularStats != nil {
                 state.annualAndMostPopularTime = mostPopularStats
             }
             state.fetchingAnnualAndMostPopularTime = false
+            state.fetchingAnnualAndMostPopularTimeHasFailed = error != nil
         }
     }
 
-    func receivedDotComFollowers(_ followerStats: StatsDotComFollowersInsight?) {
+    func receivedDotComFollowers(_ followerStats: StatsDotComFollowersInsight?, _ error: Error?) {
         transaction { state in
             if followerStats != nil {
                 state.dotComFollowers = followerStats
             }
             state.fetchingDotComFollowers = false
+            state.fetchingDotComFollowersHasFailed = error != nil
         }
     }
 
-    func receivedEmailFollowers(_ followerStats: StatsEmailFollowersInsight?) {
+    func receivedEmailFollowers(_ followerStats: StatsEmailFollowersInsight?, _ error: Error?) {
         transaction { state in
             if followerStats != nil {
                 state.emailFollowers = followerStats
             }
             state.fetchingEmailFollowers = false
+            state.fetchingEmailFollowersHasFailed = error != nil
         }
     }
 
-    func receivedPublicizeFollowers(_ followerStats: StatsPublicizeInsight?) {
+    func receivedPublicizeFollowers(_ followerStats: StatsPublicizeInsight?, _ error: Error?) {
         transaction { state in
             if followerStats != nil {
                 state.publicizeFollowers = followerStats
             }
             state.fetchingPublicize = false
+            state.fetchingPublicizeHasFailed = error != nil
         }
     }
 
-    func receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?) {
+    func receivedCommentsInsight(_ commentsInsight: StatsCommentsInsight?, _ error: Error?) {
         transaction { state in
             if commentsInsight != nil {
                 state.topCommentsInsight = commentsInsight
             }
             state.fetchingCommentsInsight = false
+            state.fetchingCommentsInsightHasFailed = error != nil
         }
     }
 
-    func receivedTodaysStats(_ todaysStats: StatsTodayInsight?) {
+    func receivedTodaysStats(_ todaysStats: StatsTodayInsight?, _ error: Error?) {
         transaction { state in
             if todaysStats != nil {
                 state.todaysStats = todaysStats
             }
             state.fetchingTodaysStats = false
+            state.fetchingTodaysStatsHasFailed = error != nil
         }
     }
 
-    func receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?) {
+    func receivedPostingActivity(_ postingActivity: StatsPostingStreakInsight?, _ error: Error?) {
         transaction { state in
             if postingActivity != nil {
                 state.postingActivity = postingActivity
             }
             state.fetchingPostingActivity = false
+            state.fetchingPostingActivityHasFailed = error != nil
         }
     }
 
-    func receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?) {
+    func receivedTagsAndCategories(_ tagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?) {
         transaction { state in
             if tagsAndCategories != nil {
                 state.topTagsAndCategories = tagsAndCategories
             }
             state.fetchingTagsAndCategories = false
+            state.fetchingTagsAndCategoriesHasFailed = error != nil
         }
     }
 
@@ -719,6 +739,16 @@ extension StatsInsightsStore {
     }
 
     var fetchingOverviewHasFailed: Bool {
-        return true
+        return
+            state.fetchingLastPostInsightHasFailed &&
+            state.fetchingAllTimeStatsHasFailed &&
+            state.fetchingAnnualAndMostPopularTimeHasFailed &&
+            state.fetchingDotComFollowersHasFailed &&
+            state.fetchingEmailFollowersHasFailed &&
+            state.fetchingPublicizeHasFailed &&
+            state.fetchingTodaysStatsHasFailed &&
+            state.fetchingPostingActivityHasFailed &&
+            state.fetchingCommentsInsightHasFailed &&
+            state.fetchingTagsAndCategoriesHasFailed
     }
 }
