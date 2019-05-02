@@ -9,7 +9,7 @@ class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
         titleLabel.textColor = WPStyleGuide.greyDarken10()
         return titleLabel
     }()
-    private let spacerView: UIView = UIView(frame: .zero)
+    private let spacerView = UIView(frame: .zero)
 
     override public init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)

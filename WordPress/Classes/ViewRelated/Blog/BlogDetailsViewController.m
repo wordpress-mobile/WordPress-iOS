@@ -547,8 +547,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if (footerTitle != nil) {
         BlogDetailsSectionFooterView *footerView = (BlogDetailsSectionFooterView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:BlogDetailsSectionFooterIdentifier];
         // If the next section has title, gives extra spacing between two sections.
-        BOOL doesNextSectionHaveTitle = (self.tableSections.count > section + 1) ? (self.tableSections[section + 1].title != nil): NO;
-        [footerView updateUIWithTitle:footerTitle shouldShowExtraSpacing:doesNextSectionHaveTitle];
+        BOOL shouldShowExtraSpacing = (self.tableSections.count > section + 1) ? (self.tableSections[section + 1].title != nil): NO;
+        [footerView updateUIWithTitle:footerTitle shouldShowExtraSpacing:shouldShowExtraSpacing];
         return footerView;
     }
     if (@available(iOS 11, *)) {
