@@ -114,7 +114,6 @@ class NoticeView: UIView {
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
         labelStackView.spacing = Metrics.labelLineSpacing
-        //labelStackView.isBaselineRelativeArrangement = true
         labelStackView.isLayoutMarginsRelativeArrangement = true
         labelStackView.layoutMargins = notice.style.layoutMargins
 
