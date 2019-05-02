@@ -26,7 +26,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
 
     private lazy var formatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM dd")
+        formatter.setLocalizedDateFormatFromTemplate("MMM d")
 
         return formatter
     }()
