@@ -41,7 +41,7 @@ public struct NormalNoticeStyle: NoticeStyle {
 public struct QuickStartNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString?
 
-    public let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+    public let titleLabelFont = titleFont()
     public let messageLabelFont = WPStyleGuide.fontForTextStyle(.subheadline)
     public let actionButtonFont: UIFont? = WPStyleGuide.fontForTextStyle(.headline)
     public let cancelButtonFont: UIFont? = WPStyleGuide.fontForTextStyle(.body)
@@ -53,6 +53,18 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
     public let isDismissable = false
+
+    static func titleFont() -> UIFont {
+        let font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        if #available(iOS 11.0, *) {
+            // setting adjustsFontForContentSizeCategory=true is not working with fonts with custom fontWeight
+            // so we are using UIFontMetrics to get it work
+            let metrics = UIFontMetrics(forTextStyle: .subheadline)
+            return metrics.scaledFont(for: font)
+        } else {
+            return font
+        }
+    }
 }
 
 private extension UIColor {
