@@ -356,11 +356,11 @@ private extension SiteStatsInsightsViewModel {
 
         // Averages rows
         let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                                                   data: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString())
+                                                   data: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString())
         let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                                                data: annualInsights.annualInsightsAverageLikesCount.abbreviatedString())
+                                                data: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString())
         let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                                                data: annualInsights.annualInsightsAverageWordsCount.abbreviatedString())
+                                                data: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString())
         let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
 
         return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
