@@ -14,6 +14,7 @@ class NoticeView: UIView {
     private let cancelButton = UIButton(type: .system)
 
     internal let notice: Notice
+    internal var dualButtonsStackView: UIStackView?
 
     var dismissHandler: (() -> Void)?
 
@@ -123,9 +124,8 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(labelStackView)
 
         labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor).isActive = true
-
-        titleLabel.font = notice.style.titleLabelFont
-        messageLabel.font = notice.style.messageLabelFont
+        titleLabel.adjustsFontForContentSizeCategory = true
+        messageLabel.adjustsFontForContentSizeCategory = true
         messageLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         titleLabel.textColor = notice.style.titleColor
@@ -161,7 +161,7 @@ class NoticeView: UIView {
 
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
-        actionButton.titleLabel?.font = notice.style.actionButtonFont
+        actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
         actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -182,19 +182,12 @@ class NoticeView: UIView {
         let cancelBackgroundView = UIView()
         let buttonStackView = UIStackView(arrangedSubviews: [cancelBackgroundView, actionBackgroundView])
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        if #available(iOS 11.0, *) {
-            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-                buttonStackView.axis = .vertical
-                actionButton.titleLabel?.textAlignment = .center
-                cancelButton.titleLabel?.textAlignment = .center
-            }
-        } else {
-            buttonStackView.axis = .horizontal
-        }
+        buttonStackView.axis = .horizontal
 
         buttonStackView.distribution = .fillEqually
         contentStackView.addArrangedSubview(buttonStackView)
+
+        dualButtonsStackView = buttonStackView
 
         actionButton.titleLabel?.lineBreakMode = .byWordWrapping
         cancelButton.titleLabel?.lineBreakMode = .byWordWrapping
@@ -223,19 +216,44 @@ class NoticeView: UIView {
         cancelBackgroundView.addTopBorder()
         cancelBackgroundView.addTrailingBorder()
 
-        actionButton.titleLabel?.font = notice.style.actionButtonFont
+        actionButton.titleLabel?.adjustsFontForContentSizeCategory = true
         actionButton.setTitleColor(.white, for: .normal)
         actionButton.on(.touchUpInside) { [weak self] _ in
             self?.actionButtonTapped()
         }
         actionButton.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
+        cancelButton.titleLabel?.adjustsFontForContentSizeCategory = true
         cancelButton.setTitleColor(notice.style.messageColor, for: .normal)
         cancelButton.on(.touchUpInside) { [weak self] _ in
             self?.cancelButtonTapped()
         }
         cancelButton.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            preferredContentSizeDidChange()
+        }
+    }
+
+    private func preferredContentSizeDidChange() {
+        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
+        titleLabel.font = notice.style.titleLabelFont
+        messageLabel.font = notice.style.messageLabelFont
+
+        if #available(iOS 11.0, *),
+            traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            dualButtonsStackView?.axis = .vertical
+            actionButton.titleLabel?.textAlignment = .center
+            cancelButton.titleLabel?.textAlignment = .center
+        } else {
+            dualButtonsStackView?.axis = .horizontal
+            actionButton.titleLabel?.textAlignment = .natural
+            cancelButton.titleLabel?.textAlignment = .natural
+        }
     }
 
     private func configureDismissRecognizer() {
