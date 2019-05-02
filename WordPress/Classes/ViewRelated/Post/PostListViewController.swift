@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
-import WordPressFlux
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -110,11 +109,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
         configureFilterBarTopConstraint()
-        let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
-        let notice = Notice.init(title: "Title of the screen ", message: "Title of the screen showing the list of posts for a blog. Title of the screen showing the list of posts for a blog.", feedbackType: UINotificationFeedbackGenerator.FeedbackType.warning, notificationInfo: nil, style: noticeStyle, actionTitle: "Yes, I want to see", cancelTitle: "Not now", tag: "notice12") { (switch1) in
-
-        }
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     // MARK: - Configuration
