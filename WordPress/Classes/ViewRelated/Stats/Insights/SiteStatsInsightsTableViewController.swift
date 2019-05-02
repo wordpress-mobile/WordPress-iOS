@@ -120,10 +120,37 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func displayLoadingViewIfNecessary() {
-        if tableHandler.viewModel.sections.isEmpty {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] (noResults) in
+                                        noResults.delegate = self
+        }
+    }
+
+    func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        let customizationBlock: NoResultsCustomizationBlock = { [weak self] (noResults) in
+            noResults.delegate = self
+        }
+
+        if noResultsViewController.view.superview != nil {
+            updateNoResults(title: NoResultConstants.errorTitle,
+                            subtitle: NoResultConstants.errorSubtitle,
+                            buttonTitle: NoResultConstants.refreshButtonTitle,
+                            customizationBlock: customizationBlock)
+        } else {
             configureAndDisplayNoResults(on: tableView,
-                                         title: NoResultConstants.successTitle,
-                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+                                         title: NoResultConstants.errorTitle,
+                                         subtitle: NoResultConstants.errorSubtitle,
+                                         buttonTitle: NoResultConstants.refreshButtonTitle,
+                                         customizationBlock: customizationBlock)
         }
     }
 
@@ -138,7 +165,11 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        hideNoResults()
+        if store.fetchingOverviewHasFailed {
+            displayFailureViewIfNecessary()
+        } else {
+            hideNoResults()
+        }
 
         refreshControl?.endRefreshing()
     }
@@ -186,6 +217,9 @@ private extension SiteStatsInsightsTableViewController {
 
     enum NoResultConstants {
         static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
     }
 }
 
@@ -257,4 +291,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
+}
+
+extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView())
+        viewModel?.refreshInsights()
+    }
 }
