@@ -114,12 +114,9 @@ private extension PostStatsViewModel {
                                            difference: dayData.difference,
                                            differencePercent: dayData.percentage)
 
-        // Introduced via #11062, to be replaced with real data via #11068
-        let stubbedData = SelectedPostSummaryDataStub()
-        let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = SelectedPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
+        let chart = PostChart(postViews: lastTwoWeeks)
 
-        tableRows.append(OverviewRow(tabsData: [overviewData], chartData: [stubbedData], chartStyling: [styling], period: nil))
+        tableRows.append(OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil))
 
         return tableRows
     }
