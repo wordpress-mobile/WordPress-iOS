@@ -113,7 +113,7 @@ class NoticeView: UIView {
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
         labelStackView.spacing = Metrics.labelLineSpacing
-        labelStackView.isBaselineRelativeArrangement = true
+        //labelStackView.isBaselineRelativeArrangement = true
         labelStackView.isLayoutMarginsRelativeArrangement = true
         labelStackView.layoutMargins = notice.style.layoutMargins
 
@@ -182,9 +182,30 @@ class NoticeView: UIView {
         let cancelBackgroundView = UIView()
         let buttonStackView = UIStackView(arrangedSubviews: [cancelBackgroundView, actionBackgroundView])
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonStackView.axis = .horizontal
+
+        if #available(iOS 11.0, *) {
+            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+                buttonStackView.axis = .vertical
+                actionButton.titleLabel?.textAlignment = .center
+                cancelButton.titleLabel?.textAlignment = .center
+            }
+        } else {
+            buttonStackView.axis = .horizontal
+        }
+
         buttonStackView.distribution = .fillEqually
         contentStackView.addArrangedSubview(buttonStackView)
+
+        actionButton.titleLabel?.lineBreakMode = .byWordWrapping
+        cancelButton.titleLabel?.lineBreakMode = .byWordWrapping
+        actionButton.titleLabel?.numberOfLines = 0
+        cancelButton.titleLabel?.numberOfLines = 0
+        if let label = actionButton.titleLabel {
+            actionButton.pinSubviewToAllEdgeMargins(label)
+        }
+        if let label = cancelButton.titleLabel {
+            cancelButton.pinSubviewToAllEdgeMargins(label)
+        }
 
         actionButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -260,7 +281,7 @@ class NoticeView: UIView {
     private enum Metrics {
         static let cornerRadius: CGFloat = 4.0
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
-        static let labelLineSpacing: CGFloat = 18.0
+        static let labelLineSpacing: CGFloat = 3.0
     }
 
     private enum Appearance {
