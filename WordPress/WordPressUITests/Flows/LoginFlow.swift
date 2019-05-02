@@ -2,13 +2,13 @@ import XCTest
 
 class LoginFlow {
 
-    static func login(email: String, password: String) -> MySiteScreen {
+    static func login(siteUrl: String, username: String, password: String) -> MySiteScreen {
         logoutIfNeeded()
 
         return WelcomeScreen().login()
-            .proceedWith(email: email)
-            .proceedWithPassword()
-            .proceedWith(password: password)
+            .goToSiteAddressLogin()
+            .proceedWith(siteUrl: siteUrl)
+            .proceedWith(username: username, password: password)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
     }
