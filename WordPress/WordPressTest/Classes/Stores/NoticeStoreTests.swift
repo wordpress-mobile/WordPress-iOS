@@ -103,7 +103,7 @@ class NoticeStoreTests: XCTestCase {
 
     func testClearWithTagActionRemovesNoticesWithTheMatchingTag() {
         // Given
-        let tagToClear: Notice.Tag = "quae"
+        let tagToClear: NoticeTag = .general
         let alpha = Notice(title: "Alpha", tag: tagToClear)
         let bravo = Notice(title: "Bravo")
         let charlie = Notice(title: "Charlie", tag: tagToClear)
