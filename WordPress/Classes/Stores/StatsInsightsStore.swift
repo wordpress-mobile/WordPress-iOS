@@ -718,4 +718,7 @@ extension StatsInsightsStore {
         return state.fetchingAllTagsAndCategories
     }
 
+    var fetchingOverviewHasFailed: Bool {
+        return true
+    }
 }
