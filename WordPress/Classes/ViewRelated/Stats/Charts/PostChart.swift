@@ -15,12 +15,12 @@ class PostChart {
     let barChartStyling: BarChartStyling
 
     init(postViews: [StatsPostViews]) {
-        self.rawPostViews = postViews
+        rawPostViews = postViews
 
         let (data, styling) = PostChartDataTransformer.transform(postViews: postViews)
 
-        self.transformedPostData = data
-        self.barChartStyling = styling
+        transformedPostData = data
+        barChartStyling = styling
     }
 }
 
