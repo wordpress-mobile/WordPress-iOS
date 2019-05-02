@@ -3,7 +3,6 @@ import Foundation
 @objc
 protocol PostPreviewGeneratorDelegate {
     func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest)
-    func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest, previewURL: URL?)
     func preview(_ generator: PostPreviewGenerator, loadHTML html: String)
     func previewFailed(_ generator: PostPreviewGenerator, message: String)
 }
@@ -112,8 +111,7 @@ private extension PostPreviewGenerator {
                 return
         }
         let request = URLRequest(url: authenticatedUrl)
-        let authenticatedPreviewURL = (previewURL != nil) ? authenticatedUrl : nil
-        delegate?.preview(self, attemptRequest: request, previewURL: authenticatedPreviewURL)
+        delegate?.preview(self, attemptRequest: request)
     }
 
     func attemptCookieAuthenticatedRequest(url: URL) {
