@@ -795,7 +795,7 @@ class AbstractPostListViewController: UIViewController,
             handleConnectionError()
         } else {
             let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            WPError.showNetworkingNotice(title: title, error: error)
+            WPError.showNetworkingNotice(title: title, error: error, tag: .networking)
         }
     }
 
@@ -1063,7 +1063,7 @@ class AbstractPostListViewController: UIViewController,
 
     private func dismissAllNetworkErrorNotices() {
         dismissNoNetworkAlert()
-        WPError.dismissNetworkingNotice()
+        WPError.dismissNetworkingNotice(tag: .networking)
     }
 
     // MARK: - Post Actions

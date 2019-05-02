@@ -3,7 +3,6 @@ import Foundation
 import WordPressFlux
 
 extension WPError {
-    private static let noticeTag: Notice.Tag = "WPError.Networking"
 
     /// Show a Notice with the message taken from the given `error`
     ///
@@ -11,7 +10,7 @@ extension WPError {
     /// an Alert.
     ///
     /// - parameter error: Assumed to be an error from a networking call
-    static func showNetworkingNotice(title: String, error: NSError) {
+    static func showNetworkingNotice(title: String, error: Error, tag: NoticeTag) {
         if showWPComSigninIfErrorIsInvalidAuth(error) {
             return
         }
@@ -20,12 +19,13 @@ extension WPError {
 
         let notice = Notice(title: titleAndMessage["title"] ?? "",
                             message: titleAndMessage["message"],
-                            tag: noticeTag)
+                            tag: tag)
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     /// Dismiss the currently shown Notice if it was created using showNetworkingNotice()
-    static func dismissNetworkingNotice() {
-        ActionDispatcher.dispatch(NoticeAction.clearWithTag(noticeTag))
+    static func dismissNetworkingNotice(tag: NoticeTag) {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(tag))
     }
+
 }

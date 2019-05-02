@@ -4,10 +4,14 @@ import WordPressFlux
 /// Notice represents a small notification that that can be displayed within
 /// the app, much like Android toasts or snackbars.
 /// Once you've created a Notice, you can dispatch a `NoticeAction` to display it.
+enum NoticeTag: String {
+    case networking = "WPError.Networking"
+    case noConnection = "ReachabilityUtils.NoConnection"
+    case general = "WPError.general"
+}
 ///
 struct Notice {
     typealias ActionHandlerFunction = ((_ accepted: Bool) -> Void)
-    typealias Tag = String
 
     private let identifier = UUID().uuidString
 
@@ -40,7 +44,7 @@ struct Notice {
     /// An optional value that can be used as a reference by consumers.
     ///
     /// This is not used in the Notice system at all.
-    let tag: Tag?
+    let tag: NoticeTag?
 
     /// An optional handler closure that will be called when the action button
     /// is tapped, if you've provided an action title
@@ -53,7 +57,7 @@ struct Notice {
          style: NoticeStyle = NormalNoticeStyle(),
          actionTitle: String? = nil,
          cancelTitle: String? = nil,
-         tag: String? = nil,
+         tag: NoticeTag? = nil,
          actionHandler: ActionHandlerFunction? = nil) {
         self.title = title
         self.message = message
@@ -127,7 +131,7 @@ enum NoticeAction: Action {
     /// Removes all Notices that have the given tag.
     ///
     /// - SeeAlso: `Notice.tag`
-    case clearWithTag(Notice.Tag)
+    case clearWithTag(NoticeTag)
     /// Removes all Notices except the current one.
     case empty
 }
@@ -202,7 +206,7 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         }
     }
 
-    private func clear(tag: Notice.Tag) {
+    private func clear(tag: NoticeTag) {
         pending.removeAll { $0.tag == tag }
 
         if state.notice?.tag == tag {

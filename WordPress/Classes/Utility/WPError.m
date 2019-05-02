@@ -71,18 +71,10 @@ NSInteger const SupportButtonIndex = 0;
 {
     NSString *message = nil;
     NSString *title = nil;
-    
-    if (desiredTitle != nil) {
-        title = desiredTitle;
-    } else if (title == nil) {
-        title = NSLocalizedString(@"Error", @"Generic error alert title");
-    }
-    
-    if (message == nil) {
-        message = [error localizedDescription];
-        message = [NSString decodeXMLCharactersIn:message];
-    }
-    
+    title = desiredTitle != nil ? desiredTitle : NSLocalizedString(@"Error", @"Generic error alert title");
+    message = [error localizedDescription];
+    message = [NSString decodeXMLCharactersIn:message];
+
     return @{@"title": title, @"message": message};
 }
 

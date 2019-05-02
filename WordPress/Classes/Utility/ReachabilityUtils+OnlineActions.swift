@@ -2,11 +2,11 @@ import Foundation
 import WordPressFlux
 
 extension ReachabilityUtils {
-    private enum DefaultNoConnectionMessage {
+    private struct DefaultNoConnectionMessage {
         static let title = NSLocalizedString("No Connection",
                 comment: "Title of error prompt when no internet connection is available.")
         static let message = noConnectionMessage()
-        static let tag: Notice.Tag = "ReachabilityUtils.NoConnection"
+        static let tag: NoticeTag = .noConnection
     }
 
     /// Performs the action when an internet connection is available
