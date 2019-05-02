@@ -126,8 +126,9 @@ private extension SiteStatsInsightsTableViewController {
 
         configureAndDisplayNoResults(on: tableView,
                                      title: NoResultConstants.successTitle,
-                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] (noResults) in
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
                                         noResults.delegate = self
+                                        noResults.hideImageView(false)
         }
     }
 
@@ -136,8 +137,9 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        let customizationBlock: NoResultsCustomizationBlock = { [weak self] (noResults) in
+        let customizationBlock: NoResultsCustomizationBlock = { [weak self] noResults in
             noResults.delegate = self
+            noResults.hideImageView()
         }
 
         if noResultsViewController.view.superview != nil {
@@ -296,7 +298,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         updateNoResults(title: NoResultConstants.successTitle,
-                        accessoryView: NoResultsViewController.loadingAccessoryView())
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
         viewModel?.refreshInsights()
     }
 }
