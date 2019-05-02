@@ -44,8 +44,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    private let store = StoreContainer.shared.statsInsights
-    private var changeReceipt: Receipt?
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsChangeReceipt: Receipt?
+
+    private let periodStore = StoreContainer.shared.statsPeriod
 
     // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
@@ -96,10 +98,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, store: store)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, insightsStore: insightsStore, periodStore: periodStore)
 
-        changeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.store,
+        insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.insightsStore,
                 !store.isFetchingOverview else {
                 return
             }
@@ -214,7 +216,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showPostingActivityDetails() {
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
-        postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
+        postingActivityViewController.yearData = insightsStore.getYearlyPostingActivityFrom(date: Date())
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
 
