@@ -12,6 +12,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
     }()
 
     let summaryData: StatsLastPostInsight?
+    let chartData: StatsPostDetails?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
@@ -21,7 +22,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
             return
         }
 
-        cell.configure(withData: summaryData, andDelegate: siteStatsInsightsDelegate)
+        cell.configure(withInsightData: summaryData, chartData: chartData, andDelegate: siteStatsInsightsDelegate)
 
     }
 }
