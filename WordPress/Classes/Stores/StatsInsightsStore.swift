@@ -751,4 +751,21 @@ extension StatsInsightsStore {
             state.fetchingCommentsInsightHasFailed &&
             state.fetchingTagsAndCategoriesHasFailed
     }
+
+    var containsCachedData: Bool {
+        if state.lastPostInsight != nil ||
+            state.allTimeStats != nil ||
+            state.annualAndMostPopularTime != nil ||
+            state.publicizeFollowers != nil ||
+            state.todaysStats != nil ||
+            state.postingActivity != nil ||
+            state.topTagsAndCategories != nil ||
+            state.topCommentsInsight != nil ||
+            state.dotComFollowers != nil ||
+            state.emailFollowers != nil {
+                return true
+        }
+
+        return false
+    }
 }
