@@ -1,6 +1,5 @@
-12.2
------
-* Publicera tillförlitligt! Förhandsvisningar av utkast kommer att ge en mer korrekt version av dina inlägg.
-* Om du föredrar att skriva i sådana appar som Bear eller Ulysses (eller någon annan app som använder formaten TextBundle eller TextPack) är det perfekt – fortsätt så. Och nu kan du även importera din text i de apparna till den här appen.
-* Vi har snyggat upp hela appen nu inför våren – rättat till några visuella störningen i processen för att skapa en ny webbplats, justerad vissa fraser för att tydliggöra hur stort lagringsutrymme webbplatsen använder. Dessutom har vi tagit hand om en jobbig krasch som ibland inträffade när man försökte att hantera sina tillägg.
-
+Gillar du appar av typen iA Writer, 1Writer, Bear och Ulysses? Du kan snabbt flytta utkast från din app till WordPress — nu importerar vår app bilder från TextBundle- och TextPack-filer och har även stöd för import av Markdown-filer.
+Notiser om problem med internetanslutningen fyller inte längre hela skärmen. I stället är det ett litet popup-fönster, så att du kan fortsätta arbeta med hjälp av offline-möjligheterna (till exempel att radera inlägg, något som nu fungerar mer tillförlitligt om du skulle vara utan internetanslutning).
+En del text i aktivitetsloggen visades ibland på fel språk. Inte så användbart. Nu ett minne blott.
+En annan inte så användbar sak är när programmet kraschar. Ibland kunde de inträffa när man höll på att skapa en ny webbplats eller när man skulle ladda statistik, men nu är det rättat.
+Fjärrinstallation av Jetpack fungerar, så du kan installera och aktivera Jetpack direkt inifrån appen på din WordPress-webbplats, om den körs på egen server.

@@ -1,5 +1,5 @@
-12.2
------ 
-* Güvenle yayınlayın! Taslak önizlemeler, yazılarınız daha doğru bir sürümünü gösterir.
-* Bear veya Ulysses (veya TextBundle ve TextPack formatlarını kullanan başka bir uygulama) gibi uygulamalarda yazmayı tercih ederseniz, harika - yapmaya devam edin. Artık bu uygulamalardan metin içeriğini buraya aktarabilirsiniz.
-* Tüm uygulamada bir bahar tespit edildi; site oluşturma sürecinde bazı küçük görsel tikleri düzeltdik, sitenizin ne kadar depolama alanı kullandığını netleştirmek için bazı ifadeler ayarlandı ve eklentileri yönetmeye çalışırken bazen ortaya çıkan bir hata düzeltildi.
+iA Writer, 1Writer, Bear ve Ulysses gibi uygulamaları sever misiniz? Hızlı bir şekilde uygulamadan WordPress taslağına geçiş yapın - uygulama artık TextBundle ve TextPack dosyalarından görüntüleri içeri aktarıyor ve Markdown dosyalarını da içe aktarmayı destekliyor.
+İnternet bağlantısı sorunları için bildirimler artık tüm cihaz ekranınızı tüketmiyor. Şimdi bunun yerine küçük bir açılır pencere var, bu nedenle çevrimdışı yetenekleri kullanmaya devam edebilirsiniz (çevrimdışı durumdayken yazıları silmek gibi).
+Etkinlik Günlüğü'ndeki bazı metinler bazen yanlış bir dilde görünebilir. Yararlı değil! Ve şimdi düzeltildi.
+Çökmeler. Bazen site oluşturma sırasında veya istatistikler yüklenirken ortaya çıkan çökmeler çözüldü.
+Jetpack Remote Install desteklenir, böylece Jetpack'i kendiliğinden barındırılan bir siteye doğrudan uygulamadan yükleyebilir ve etkinleştirebilirsiniz.
