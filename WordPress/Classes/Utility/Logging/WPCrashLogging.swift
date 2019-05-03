@@ -25,16 +25,11 @@ class WPCrashLogging {
             try Client.shared?.startCrashHandler()
 
             // Override event serialization to append the logs, if needed
-            Client.shared?.beforeSerializeEvent = sharedInstance.beforeSerializeEvent
             Client.shared?.shouldSendEvent = sharedInstance.shouldSendEvent
 
         } catch let error {
             print("\(error)")
         }
-    }
-
-    func beforeSerializeEvent(_ event: Event) {
-        event.extra = ["b": "c"]
     }
 
     func shouldSendEvent(_ event: Event?) -> Bool {
