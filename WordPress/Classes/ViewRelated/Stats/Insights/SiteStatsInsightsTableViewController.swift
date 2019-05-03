@@ -40,7 +40,7 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class SiteStatsInsightsTableViewController: UITableViewController, NoResultsViewHost {
+class SiteStatsInsightsTableViewController: UITableViewController {
 
     // MARK: - Properties
 
@@ -121,32 +121,6 @@ private extension SiteStatsInsightsTableViewController {
                 TableFooterRow.self]
     }
 
-    func displayLoadingViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
-            return
-        }
-
-        configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.successTitle,
-                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
-                                        noResults.delegate = self
-                                        noResults.hideImageView(false)
-        }
-    }
-
-    func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
-            return
-        }
-
-        updateNoResults(title: NoResultConstants.errorTitle,
-                        subtitle: NoResultConstants.errorSubtitle,
-                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
-                            noResults.delegate = self
-                            noResults.hideImageView()
-        }
-    }
-
     // MARK: - Table Refreshing
 
     func refreshTableView() {
@@ -158,8 +132,8 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if store.fetchingOverviewHasFailed &&
-            !store.containsCachedData {
+        if insightsStore.fetchingOverviewHasFailed &&
+            !insightsStore.containsCachedData {
             displayFailureViewIfNecessary()
         } else {
             hideNoResults()
@@ -208,8 +182,36 @@ private extension SiteStatsInsightsTableViewController {
         let insightTypesInt = insightsToShow.compactMap { $0.rawValue }
         UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsKey)
     }
+}
 
-    enum NoResultConstants {
+extension SiteStatsInsightsTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
+    }
+
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
+        }
+    }
+
+    private enum NoResultConstants {
         static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
         static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
         static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
