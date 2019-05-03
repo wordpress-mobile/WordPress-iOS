@@ -51,8 +51,8 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        if store.fetchingOverviewHasFailed &&
-            !store.containsCachedData {
+        if insightsStore.fetchingOverviewHasFailed &&
+            !insightsStore.containsCachedData {
             return ImmuTable(sections: [])
         }
 

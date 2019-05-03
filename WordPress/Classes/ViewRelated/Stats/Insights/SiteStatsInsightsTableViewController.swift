@@ -158,8 +158,8 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if store.fetchingOverviewHasFailed &&
-            !store.containsCachedData {
+        if insightsStore.fetchingOverviewHasFailed &&
+            !insightsStore.containsCachedData {
             displayFailureViewIfNecessary()
         } else {
             hideNoResults()
