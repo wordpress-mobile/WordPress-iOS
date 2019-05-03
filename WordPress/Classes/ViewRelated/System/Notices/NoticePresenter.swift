@@ -57,7 +57,7 @@ class NoticePresenter: NSObject {
     private var storeReceipt: Receipt?
 
     private var currentNoticePresentation: NoticePresentation?
-    private var currentKeyboardPresentation = KeyboardPresentation(isPresent: false, height: 0)
+    private var currentKeyboardPresentation: KeyboardPresentation = .notPresent
 
     private init(store: NoticeStore) {
         self.store = store
