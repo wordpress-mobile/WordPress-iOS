@@ -3,21 +3,50 @@ import Foundation
 
 import Charts
 
+// MARK: - PostChartType
+
+enum PostChartType {
+    case latest
+    case selected
+}
+
+extension PostChartType {
+    var accessibleDescription: String {
+        switch self {
+        case .latest:
+            return NSLocalizedString("Bar Chart depicting visitors for your latest post", comment: "This description is used to set the accessibility label for the chart in the Insights view.")
+        case .selected:
+            return NSLocalizedString("Bar Chart depicting visitors for this post", comment: "This description is used to set the accessibility label for the chart in the Post Stats view.")
+        }
+    }
+}
+
+extension PostChartType {
+    var highlightColor: UIColor? {
+        switch self {
+        case .latest:
+            return nil
+        case .selected:
+            return WPStyleGuide.jazzyOrange()
+        }
+    }
+}
+
 // MARK: - PostChart
 
 class PostChart {
 
-    private static let chartDescription = NSLocalizedString("Bar Chart depicting visitors for this post", comment: "This description is used to set the accessibility label for the chart in the Post Stats view.")
-
+    private let chartType: PostChartType
     private let rawPostViews: [StatsPostViews]
     private let transformedPostData: BarChartData
 
     let barChartStyling: BarChartStyling
 
-    init(postViews: [StatsPostViews]) {
+    init(type: PostChartType = .selected, postViews: [StatsPostViews]) {
+        chartType = type
         rawPostViews = postViews
 
-        let (data, styling) = PostChartDataTransformer.transform(postViews: postViews)
+        let (data, styling) = PostChartDataTransformer.transform(type: type, postViews: postViews)
 
         transformedPostData = data
         barChartStyling = styling
@@ -28,7 +57,7 @@ class PostChart {
 
 extension PostChart: BarChartDataConvertible {
     var accessibilityDescription: String {
-        return PostChart.chartDescription
+        return chartType.accessibleDescription
     }
 
     var barChartData: BarChartData {
@@ -52,7 +81,7 @@ private extension StatsPostViews {
 }
 
 class PostChartDataTransformer {
-    static func transform(postViews: [StatsPostViews]) -> (barChartData: BarChartData, barChartStyling: BarChartStyling) {
+    static func transform(type: PostChartType, postViews: [StatsPostViews]) -> (barChartData: BarChartData, barChartStyling: BarChartStyling) {
         let data = postViews
 
         let firstDateInterval: TimeInterval
@@ -90,7 +119,7 @@ class PostChartDataTransformer {
         chartData.barWidth = effectiveWidth
 
         let xAxisFormatter: IAxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
-        let styling = PostChartStyling(xAxisValueFormatter: xAxisFormatter)
+        let styling = PostChartStyling(primaryHighlightColor: type.highlightColor, xAxisValueFormatter: xAxisFormatter)
 
         return (chartData, styling)
     }
@@ -101,7 +130,7 @@ class PostChartDataTransformer {
 private struct PostChartStyling: BarChartStyling {
     let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
     let secondaryBarColor: UIColor?                 = nil
-    let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
+    let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
     let labelColor: UIColor                         = WPStyleGuide.grey()
     let legendTitle: String?                        = nil

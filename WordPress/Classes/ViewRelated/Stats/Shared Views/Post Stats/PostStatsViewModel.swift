@@ -193,7 +193,7 @@ private extension PostStatsViewModel {
 
         return recentWeeks.reversed().prefix(StatsDataHelper.maxRowsToDisplay).map {
             StatsTotalRowData(name: displayWeek(startDay: $0.startDay, endDay: $0.endDay),
-                              data: $0.totalViewsCount.formatWithCommas(),
+                              data: $0.totalViewsCount.abbreviatedString(),
                               showDisclosure: true,
                               childRows: childRowsForWeek($0),
                               statSection: .postStatsRecentWeeks)
@@ -205,7 +205,7 @@ private extension PostStatsViewModel {
     func childRowsForWeek(_ week: StatsWeeklyBreakdown) -> [StatsTotalRowData] {
         return week.days.reversed().map {
             StatsTotalRowData(name: displayDay(forDate: $0.date),
-                              data: $0.viewsCount.formatWithCommas())
+                              data: $0.viewsCount.abbreviatedString())
         }
     }
 
