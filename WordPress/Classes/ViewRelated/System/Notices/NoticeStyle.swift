@@ -24,9 +24,10 @@ public protocol NoticeStyle {
 public struct NormalNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString? = nil
 
-    public let titleLabelFont = UIFont.boldSystemFont(ofSize: 14.0)
-    public let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
-    public let actionButtonFont: UIFont? = UIFont.systemFont(ofSize: 14.0, weight: .medium)
+    // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
+    public var titleLabelFont: UIFont { return UIFont.boldSystemFont(ofSize: 14.0) }
+    public var messageLabelFont: UIFont { return UIFont.systemFont(ofSize: 14.0) }
+    public var actionButtonFont: UIFont? { return UIFont.systemFont(ofSize: 14.0, weight: .medium) }
     public let cancelButtonFont: UIFont? = nil
 
     public let titleColor: UIColor = .white
@@ -41,10 +42,11 @@ public struct NormalNoticeStyle: NoticeStyle {
 public struct QuickStartNoticeStyle: NoticeStyle {
     public let attributedMessage: NSAttributedString?
 
-    public let titleLabelFont = titleFont()
-    public let messageLabelFont = WPStyleGuide.fontForTextStyle(.subheadline)
-    public let actionButtonFont: UIFont? = WPStyleGuide.fontForTextStyle(.headline)
-    public let cancelButtonFont: UIFont? = WPStyleGuide.fontForTextStyle(.body)
+    // Return new UIFont instance everytime in order to be responsive to accessibility font size changes
+    public var titleLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold) }
+    public var messageLabelFont: UIFont { return WPStyleGuide.fontForTextStyle(.subheadline) }
+    public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
+    public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
     public let titleColor: UIColor = .white
     public let messageColor: UIColor = WPStyleGuide.greyLighten20()
@@ -53,18 +55,6 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 
     public let isDismissable = false
-
-    static func titleFont() -> UIFont {
-        let font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        if #available(iOS 11.0, *) {
-            // setting adjustsFontForContentSizeCategory=true is not working with fonts with custom fontWeight
-            // so we are using UIFontMetrics to get it work
-            let metrics = UIFontMetrics(forTextStyle: .subheadline)
-            return metrics.scaledFont(for: font)
-        } else {
-            return font
-        }
-    }
 }
 
 private extension UIColor {
