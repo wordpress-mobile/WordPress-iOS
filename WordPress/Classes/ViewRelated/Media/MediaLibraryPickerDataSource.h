@@ -10,10 +10,6 @@
 
 - (instancetype)initWithBlog:(Blog *)blog;
 
--(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback;
-
--(void)unregisterChangeObserver:(id<NSObject>)blockKey;
-
 @property (nonatomic, assign) WPMediaType filter;
 
 @end

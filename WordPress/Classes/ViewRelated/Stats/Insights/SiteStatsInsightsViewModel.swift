@@ -11,25 +11,36 @@ class SiteStatsInsightsViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
 
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
-    private let store: StatsInsightsStore
+
+    private let insightsStore: StatsInsightsStore
     private let insightsReceipt: Receipt
-    private var changeReceipt: Receipt?
+    private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
+
+    private let periodStore: StatsPeriodStore
+    private var periodReceipt: Receipt?
+    private var periodChangeReceipt: Receipt?
+
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Constructor
 
     init(insightsToShow: [InsightType],
          insightsDelegate: SiteStatsInsightsDelegate,
-         store: StatsInsightsStore = StoreContainer.shared.statsInsights) {
+         insightsStore: StatsInsightsStore = StoreContainer.shared.statsInsights,
+         periodStore: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.insightsToShow = insightsToShow
-        self.store = store
+        self.insightsStore = insightsStore
+        self.periodStore = periodStore
 
-        insightsReceipt = store.query(.insights)
-        store.actionDispatcher.dispatch(InsightAction.refreshInsights)
+        insightsReceipt = insightsStore.query(.insights)
+        insightsStore.actionDispatcher.dispatch(InsightAction.refreshInsights)
+        insightsChangeReceipt = insightsStore.onChange { [weak self] in
+            if let lastPostID = insightsStore.getLastPostInsight()?.postID {
+                self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
+            }
 
-        changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
         }
     }
@@ -44,7 +55,8 @@ class SiteStatsInsightsViewModel: Observable {
             switch insightType {
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
-                tableRows.append(LatestPostSummaryRow(summaryData: store.getLastPostInsight(),
+                tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
+                                                      chartData: periodStore.getPostStats(),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
@@ -96,8 +108,11 @@ class SiteStatsInsightsViewModel: Observable {
 
     func refreshInsights() {
         ActionDispatcher.dispatch(InsightAction.refreshInsights)
-    }
 
+        if let postID = insightsStore.getLastPostInsight()?.postID {
+            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        }
+    }
 }
 
 // MARK: - Private Extension
@@ -150,7 +165,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createAllTimeStatsRows() -> [StatsTotalRowData] {
-        guard let allTimeInsight = store.getAllTimeStats() else {
+        guard let allTimeInsight = insightsStore.getAllTimeStats() else {
             return []
         }
 
@@ -192,29 +207,28 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createMostPopularStatsRows() -> [StatsTotalRowData] {
-        guard let mostPopularStats = store.getAnnualAndMostPopularTime(),
-                let mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
-                let mostPopularHour = mostPopularStats.mostPopularHour.hour,
-                mostPopularStats.mostPopularDayOfWeekPercentage > 0
-         else {
+        guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
+            var mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
+            let mostPopularHour = mostPopularStats.mostPopularHour.hour,
+            mostPopularStats.mostPopularDayOfWeekPercentage > 0
+            else {
                 return []
         }
 
         var calendar = Calendar.init(identifier: .gregorian)
         calendar.locale = Locale.autoupdatingCurrent
 
-        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday - 1]
+        // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
+        mostPopularWeekday = mostPopularWeekday == 0 ? calendar.standaloneWeekdaySymbols.count - 1 : mostPopularWeekday - 1
+        let dayString = calendar.standaloneWeekdaySymbols[mostPopularWeekday]
 
-        let nowWithChangedHour = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date())
+        guard let timeModifiedDate = calendar.date(bySettingHour: mostPopularHour, minute: 0, second: 0, of: Date()) else {
+            return []
+        }
 
         let timeFormatter = DateFormatter()
         timeFormatter.dateStyle = .none
         timeFormatter.timeStyle = .short
-
-        guard let timeModifiedDate = nowWithChangedHour else {
-
-            return []
-        }
 
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
@@ -226,26 +240,26 @@ private extension SiteStatsInsightsViewModel {
                                   data: String(format: MostPopularStats.percentOfViews,
                                                mostPopularStats.mostPopularHourPercentage),
                                   icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
-        }
+    }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
         var dataRows = [StatsTotalRowData]()
 
-        if let totalDotComFollowers = store.getDotComFollowers()?.dotComFollowersCount,
+        if let totalDotComFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount,
             totalDotComFollowers > 0 {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPress,
                                                    data: totalDotComFollowers.abbreviatedString(),
                                                    icon: FollowerTotals.wordPressIcon))
         }
 
-        if let totalEmailFollowers = store.getEmailFollowers()?.emailFollowersCount,
+        if let totalEmailFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount,
             totalEmailFollowers > 0 {
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.email,
                                                    data: totalEmailFollowers.abbreviatedString(),
                                                    icon: FollowerTotals.emailIcon))
         }
 
-        if let publicize = store.getPublicize(), !publicize.publicizeServices.isEmpty {
+        if let publicize = insightsStore.getPublicize(), !publicize.publicizeServices.isEmpty {
             let publicizeSum = publicize.publicizeServices.reduce(0) { $0 + $1.followers }
 
             dataRows.append(StatsTotalRowData.init(name: FollowerTotals.social,
@@ -257,7 +271,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createPublicizeRows() -> [StatsTotalRowData] {
-        guard let services = store.getPublicize()?.publicizeServices else {
+        guard let services = insightsStore.getPublicize()?.publicizeServices else {
             return []
         }
 
@@ -269,7 +283,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createTodaysStatsRows() -> [StatsTotalRowData] {
-        guard let todaysStats = store.getTodaysStats() else {
+        guard let todaysStats = insightsStore.getTodaysStats() else {
             return []
         }
         var dataRows = [StatsTotalRowData]()
@@ -305,20 +319,20 @@ private extension SiteStatsInsightsViewModel {
         var monthsData = [[PostingStreakEvent]]()
 
         if let twoMonthsAgo = Calendar.current.date(byAdding: .month, value: -2, to: Date()) {
-            monthsData.append(store.getMonthlyPostingActivityFor(date: twoMonthsAgo))
+            monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: twoMonthsAgo))
         }
 
         if let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
-            monthsData.append(store.getMonthlyPostingActivityFor(date: oneMonthAgo))
+            monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: oneMonthAgo))
         }
 
-        monthsData.append(store.getMonthlyPostingActivityFor(date: Date()))
+        monthsData.append(insightsStore.getMonthlyPostingActivityFor(date: Date()))
 
         return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 
     func createTagsAndCategoriesRows() -> [StatsTotalRowData] {
-        guard let tagsAndCategories = store.getTopTagsAndCategories()?.topTagsAndCategories else {
+        guard let tagsAndCategories = insightsStore.getTopTagsAndCategories()?.topTagsAndCategories else {
             return []
         }
 
@@ -337,7 +351,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
-        guard let annualInsights = store.getAnnualAndMostPopularTime(),
+        guard let annualInsights = insightsStore.getAnnualAndMostPopularTime(),
             annualInsights.annualInsightsTotalPostsCount > 0 else {
                 return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
         }
@@ -357,11 +371,11 @@ private extension SiteStatsInsightsViewModel {
 
         // Averages rows
         let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                                                   data: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString())
+                                                   data: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString())
         let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                                                data: annualInsights.annualInsightsAverageLikesCount.abbreviatedString())
+                                                data: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString())
         let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                                                data: annualInsights.annualInsightsAverageWordsCount.abbreviatedString())
+                                                data: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString())
         let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
 
         return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
@@ -378,7 +392,7 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func tabDataForCommentType(_ commentType: StatSection) -> TabData {
-        let commentsInsight = store.getTopCommentsInsight()
+        let commentsInsight = insightsStore.getTopCommentsInsight()
 
         var rowItems: [StatsTotalRowData] = []
 
@@ -425,11 +439,11 @@ private extension SiteStatsInsightsViewModel {
 
         switch followerType {
         case .insightsFollowersWordPress:
-            followers = store.getDotComFollowers()?.topDotComFollowers
-            totalFollowers = store.getDotComFollowers()?.dotComFollowersCount
+            followers = insightsStore.getDotComFollowers()?.topDotComFollowers
+            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
-            followers = store.getEmailFollowers()?.topEmailFollowers
-            totalFollowers = store.getEmailFollowers()?.emailFollowersCount
+            followers = insightsStore.getEmailFollowers()?.topEmailFollowers
+            totalFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount
         default:
             break
         }
@@ -450,4 +464,11 @@ private extension SiteStatsInsightsViewModel {
                        dataRows: followersData ?? [])
     }
 
+    func fetchStatsForInsightsLatestPost(postID: Int) {
+        self.periodReceipt = periodStore.query(.postStats(postID: postID))
+        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        periodChangeReceipt = periodStore.onChange { [weak self] in
+            self?.emitChange()
+        }
+    }
 }

@@ -329,10 +329,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var activeMediaRequests = [ImageDownloader.Task]()
 
-    /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
-    ///
-    fileprivate(set) var shouldRemovePostOnDismiss = false
-
     /// Media Library Data Source
     ///
     lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
@@ -439,7 +435,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
-        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
@@ -1061,7 +1056,7 @@ extension AztecPostViewController {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            Crashlytics.sharedInstance().recordError(error)
+            WPCrashLogging.logError(error)
             return
         }
 
@@ -1207,7 +1202,7 @@ private extension AztecPostViewController {
             self.displayPreview()
         }
 
-        if Feature.enabled(.revisions) && (post.revisions ?? []).count > 0 {
+        if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
                 self.displayHistory()
             }
@@ -3312,7 +3307,6 @@ extension AztecPostViewController {
     struct Restoration {
         static let restorationIdentifier    = "AztecPostViewController"
         static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
-        static let shouldRemovePostKey      = "shouldRemovePostOnDismiss"
     }
 
     struct MediaUploadingCancelAlert {

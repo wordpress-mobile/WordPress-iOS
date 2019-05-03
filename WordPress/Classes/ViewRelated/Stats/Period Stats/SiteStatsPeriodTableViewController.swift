@@ -7,7 +7,7 @@ import WordPressFlux
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
-    @objc optional func showPostStats(withPostTitle postTitle: String?)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 
@@ -186,7 +186,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController.init(rootViewController: webViewController)
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true)
     }
 
     func displayMediaWithID(_ mediaID: NSNumber) {
@@ -222,9 +222,9 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
-    func showPostStats(withPostTitle postTitle: String?) {
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postTitle: postTitle)
+        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 

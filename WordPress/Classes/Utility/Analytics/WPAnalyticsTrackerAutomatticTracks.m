@@ -679,6 +679,33 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatInstallJetpackCompleted:
             eventName = @"install_jetpack_completed";
             break;
+        case WPAnalyticsStatInstallJetpackRemoteStart:
+            eventName = @"install_jetpack_remote_start";
+            break;
+        case WPAnalyticsStatInstallJetpackRemoteCompleted:
+            eventName = @"install_jetpack_remote_completed";
+            break;
+        case WPAnalyticsStatInstallJetpackRemoteFailed:
+            eventName = @"install_jetpack_remote_failed";
+            break;
+        case WPAnalyticsStatInstallJetpackRemoteRetry:
+            eventName = @"install_jetpack_remote_restart";
+            break;
+        case WPAnalyticsStatInstallJetpackRemoteConnect:
+            eventName = @"install_jetpack_remote_connect";
+            break;
+        case WPAnalyticsStatInstallJetpackRemoteLogin:
+            eventName = @"install_jetpack_remote_login";
+            break;
+        case WPAnalyticsStatInstallJetpackRemoteStartManualFlow:
+            eventName = @"install_jetpack_remote_start_manual_flow";
+            break;
+        case WPAnalyticsStatInstallJetpackWebviewSelect:
+            eventName = @"connect_jetpack_selected";
+            break;
+        case WPAnalyticsStatInstallJetpackWebviewFailed:
+            eventName = @"connect_jetpack_failed";
+            break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
             break;

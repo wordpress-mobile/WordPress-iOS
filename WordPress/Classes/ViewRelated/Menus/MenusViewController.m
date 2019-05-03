@@ -532,6 +532,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                          buttonTitle:nil
                                             subtitle:nil
                                   attributedSubtitle:nil
+                     attributedSubtitleConfiguration:nil
                                                image:nil
                                        subtitleImage:nil
                                        accessoryView:accessoryView];

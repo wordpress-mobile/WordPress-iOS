@@ -16,7 +16,8 @@ class EditorTests: XCTestCase {
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
 
         editorScreen = LoginFlow
-            .loginIfNeeded(email: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+            .login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
+            .tabBar
             .gotoEditorScreen()
     }
 

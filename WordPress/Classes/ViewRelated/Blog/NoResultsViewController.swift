@@ -41,6 +41,11 @@ import Reachability
     private var accessorySubview: UIView?
     private var hideImage = false
 
+    /// Allows caller to customize subtitle attributed text after default styling.
+    typealias AttributedSubtitleConfiguration = (_ attributedText: NSAttributedString) -> NSAttributedString?
+    /// Called after default styling of attributed subtitle, if non nil.
+    private var configureAttributedSubtitle: AttributedSubtitleConfiguration? = nil
+
     private var displayTitleViewOnly = false
     private var titleOnlyLabel: UILabel?
     // To adjust title view on rotation.
@@ -101,6 +106,7 @@ import Reachability
     ///   - buttonTitle:        Title of action button. Optional.
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
+    ///   - attributedSubtitleConfiguration: Called after default styling, for subtitle attributed text customization.
     ///   - image:              Name of image file to use. Optional.
     ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
@@ -109,11 +115,12 @@ import Reachability
                                     buttonTitle: String? = nil,
                                     subtitle: String? = nil,
                                     attributedSubtitle: NSAttributedString? = nil,
+                                    attributedSubtitleConfiguration: AttributedSubtitleConfiguration? = nil,
                                     image: String? = nil,
                                     subtitleImage: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
-        controller.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, attributedSubtitle: attributedSubtitle, image: image, subtitleImage: subtitleImage, accessoryView: accessoryView)
+        controller.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, attributedSubtitle: attributedSubtitle, attributedSubtitleConfiguration: attributedSubtitleConfiguration, image: image, subtitleImage: subtitleImage, accessoryView: accessoryView)
         return controller
     }
 
@@ -134,6 +141,7 @@ import Reachability
     ///   - buttonTitle:        Title of action button. Optional.
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
+    ///   - attributedSubtitleConfiguration: Called after default styling, for subtitle attributed text customization.
     ///   - image:              Name of image file to use. Optional.
     ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
@@ -142,6 +150,7 @@ import Reachability
                          buttonTitle: String? = nil,
                          subtitle: String? = nil,
                          attributedSubtitle: NSAttributedString? = nil,
+                         attributedSubtitleConfiguration: AttributedSubtitleConfiguration? = nil,
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
@@ -149,6 +158,7 @@ import Reachability
         titleText = isReachable == false ? NoConnection.title : title
         subtitleText = isReachable == false ? NoConnection.subTitle : subtitle
         attributedSubtitleText = isReachable == false ? NSAttributedString(string: NoConnection.subTitle) : attributedSubtitle
+        configureAttributedSubtitle = attributedSubtitleConfiguration
         buttonText = buttonTitle
         imageName = isReachable == false ? NoConnection.imageName : image
         subtitleImageName = subtitleImage
@@ -169,9 +179,7 @@ import Reachability
     /// Public method to remove No Results View from parent view.
     ///
     @objc func removeFromView() {
-        willMove(toParent: nil)
-        view.removeFromSuperview()
-        removeFromParent()
+        remove()
     }
 
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
@@ -232,7 +240,9 @@ import Reachability
     /// Public method to expose the private configure view method
     ///
     func updateView() {
+        stopAnimatingIfNeeded()
         configureView()
+        startAnimatingIfNeeded()
     }
 
     /// Public method to expose the private set accessory views method
@@ -262,6 +272,9 @@ private extension NoResultsViewController {
 
         if let attributedSubtitleText = attributedSubtitleText {
             subtitleTextView.attributedText = applyMessageStyleTo(attributedString: attributedSubtitleText)
+            if let attributedSubtitle = configureAttributedSubtitle?(subtitleTextView.attributedText) {
+                subtitleTextView.attributedText = attributedSubtitle
+            }
             subtitleTextView.isSelectable = true
         }
 
@@ -328,6 +341,10 @@ private extension NoResultsViewController {
         imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
     }
 
+    func viewIsVisible() -> Bool {
+        return isViewLoaded && view.window != nil
+    }
+
     // MARK: - Configure for Title View Only
 
     func configureForTitleViewOnly() {
@@ -359,7 +376,8 @@ private extension NoResultsViewController {
 
     func configureTitleViewConstraints() {
 
-        guard displayTitleViewOnly == true else {
+        guard self.viewIsVisible(),
+            displayTitleViewOnly == true else {
             return
         }
 

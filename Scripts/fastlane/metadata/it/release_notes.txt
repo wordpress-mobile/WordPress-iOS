@@ -1,3 +1,6 @@
-- Ognuno ha il proprio flusso di lavoro. Ora la condivisione del testo dalle app di scrittura e annotazione su WordPress è più affidabile.
-- Alcune volte gli aggiornamenti nei dettagli dell’account utente non riescono, anche se ci auguriamo che ciò non accada. Abbiamo aggiunto messaggi di errore più dettagliati e chiari per permetterti di comprendere cosa è andato storto e come procedere.
-- Sono disponibili più modi per creare articoli con le immagini: l’editor Blocco supporta articoli con foto pre-inserite ed è possibile utilizzare l’azione 3D touch di Apple per lanciare l’app e iniziare un nuovo articolo immagine con una singola pressione..
+12.2
+-----
+*Pubblica con fiducia! Le anteprime della bozza ti mostreranno una versione più accurata dei tuoi articoli.
+*Se preferisci scrivere in app come Bear o Ulysses (oppure qualsiasi altra app che utilizzi i formati TextBundle e TextPack), continua a farlo! Ora puoi importare il testo da quelle app a questa.
+*L'intera app è stata rimessa a nuovo: abbiamo risolto alcuni tic visuali durante la procedura di creazione del sito, sistemato alcune formulazioni per rendere più chiaro quanto spazio di archiviazione viene utilizzato dal tuo sito e ci siamo occupati di un fastidioso arresto anomalo che sarebbe avvenuto qualche volta durante i tentativi di gestione dei plugin.
+

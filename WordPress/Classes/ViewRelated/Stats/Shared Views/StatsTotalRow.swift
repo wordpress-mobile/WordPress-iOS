@@ -4,6 +4,7 @@ struct StatsTotalRowData {
     var name: String
     var data: String
     var mediaID: NSNumber?
+    var postID: Int?
     var dataBarPercent: Float?
     var icon: UIImage?
     var socialIconURL: URL?
@@ -17,6 +18,7 @@ struct StatsTotalRowData {
     init(name: String,
          data: String,
          mediaID: NSNumber? = nil,
+         postID: Int? = nil,
          dataBarPercent: Float? = nil,
          icon: UIImage? = nil,
          socialIconURL: URL? = nil,
@@ -29,6 +31,7 @@ struct StatsTotalRowData {
         self.name = name
         self.data = data
         self.mediaID = mediaID
+        self.postID = postID
         self.dataBarPercent = dataBarPercent
         self.nameDetail = nameDetail
         self.icon = icon
@@ -45,7 +48,7 @@ struct StatsTotalRowData {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
-    @objc optional func showPostStats(withPostTitle postTitle: String?)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
 class StatsTotalRow: UIView, NibLoadable {
@@ -279,7 +282,11 @@ private extension StatsTotalRow {
         if let disclosureURL = rowData?.disclosureURL {
             if let statSection = rowData?.statSection,
                 statSection == .periodPostsAndPages {
-                delegate?.showPostStats?(withPostTitle: rowData?.name)
+                guard let postID = rowData?.postID else {
+                    DDLogInfo("No postID available to show Post Stats.")
+                    return
+                }
+                delegate?.showPostStats?(postID: postID, postTitle: rowData?.name, postURL: rowData?.disclosureURL)
             } else {
                 delegate?.displayWebViewWithURL?(disclosureURL)
             }

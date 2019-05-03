@@ -90,16 +90,16 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
+    if (self.presentingViewController == nil) {
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    }
+
     if ([Feature enabled:FeatureFlagStatsRefresh]) {
         [self addChildViewController:self.siteStatsDashboardVC];
         [self.view addSubview:self.siteStatsDashboardVC.view];
         [self.siteStatsDashboardVC didMoveToParentViewController:self];
     } else {
-        if (self.presentingViewController == nil) {
-            UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-            self.navigationItem.rightBarButtonItem = settingsButton;
-        }
-        
         [self addChildViewController:self.statsVC];
         [self.view addSubview:self.statsVC.view];
         self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -167,10 +167,18 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)saveSiteDetailsForTodayWidget
 {
     TodayExtensionService *service = [TodayExtensionService new];
-    [service configureTodayWidgetWithSiteID:self.statsVC.siteID
-                                   blogName:self.blog.settings.name
-                               siteTimeZone:self.statsVC.siteTimeZone
-                             andOAuth2Token:self.statsVC.oauth2Token];
+    
+    if ([Feature enabled:FeatureFlagStatsRefresh]) {
+        [service configureTodayWidgetWithSiteID:SiteStatsInformation.sharedInstance.siteID
+                                       blogName:self.blog.settings.name
+                                   siteTimeZone:SiteStatsInformation.sharedInstance.siteTimeZone
+                                 andOAuth2Token:SiteStatsInformation.sharedInstance.oauth2Token];
+    } else {
+        [service configureTodayWidgetWithSiteID:self.statsVC.siteID
+                                       blogName:self.blog.settings.name
+                                   siteTimeZone:self.statsVC.siteTimeZone
+                                 andOAuth2Token:self.statsVC.oauth2Token];
+    }
 }
 
 
@@ -183,7 +191,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
     __weak JetpackLoginViewController *safeController = controller;
     [controller setCompletionBlock:^(){
-            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties: @{@"source": @"stats"} withBlog:self.blog];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
@@ -249,6 +256,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                                     buttonTitle:nil
                                                                        subtitle:subtitle
                                                              attributedSubtitle:nil
+                                                attributedSubtitleConfiguration:nil
                                                                           image:nil
                                                                   subtitleImage:nil
                                                                   accessoryView:nil];
