@@ -137,22 +137,11 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        let customizationBlock: NoResultsCustomizationBlock = { [weak self] noResults in
-            noResults.delegate = self
-            noResults.hideImageView()
-        }
-
-        if noResultsViewController.view.superview != nil {
-            updateNoResults(title: NoResultConstants.errorTitle,
-                            subtitle: NoResultConstants.errorSubtitle,
-                            buttonTitle: NoResultConstants.refreshButtonTitle,
-                            customizationBlock: customizationBlock)
-        } else {
-            configureAndDisplayNoResults(on: tableView,
-                                         title: NoResultConstants.errorTitle,
-                                         subtitle: NoResultConstants.errorSubtitle,
-                                         buttonTitle: NoResultConstants.refreshButtonTitle,
-                                         customizationBlock: customizationBlock)
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
         }
     }
 
@@ -167,7 +156,8 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if store.fetchingOverviewHasFailed {
+        if store.fetchingOverviewHasFailed &&
+            !store.containsCachedData {
             displayFailureViewIfNecessary()
         } else {
             hideNoResults()
