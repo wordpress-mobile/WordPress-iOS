@@ -40,12 +40,14 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class SiteStatsInsightsTableViewController: UITableViewController {
+class SiteStatsInsightsTableViewController: UITableViewController, NoResultsViewHost {
 
     // MARK: - Properties
 
-    private let store = StoreContainer.shared.statsInsights
-    private var changeReceipt: Receipt?
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsChangeReceipt: Receipt?
+
+    private let periodStore = StoreContainer.shared.statsPeriod
 
     // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
@@ -81,6 +83,7 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         loadInsightsFromUserDefaults()
         initViewModel()
+        displayLoadingViewIfNecessary()
         tableView.estimatedRowHeight = 500
     }
 
@@ -88,7 +91,6 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
     }
-
 }
 
 // MARK: - Private Extension
@@ -96,10 +98,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, store: store)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, insightsStore: insightsStore, periodStore: periodStore)
 
-        changeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.store,
+        insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.insightsStore,
                 !store.isFetchingOverview else {
                 return
             }
@@ -119,6 +121,14 @@ private extension SiteStatsInsightsTableViewController {
                 TableFooterRow.self]
     }
 
+    func displayLoadingViewIfNecessary() {
+        if tableHandler.viewModel.sections.isEmpty {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.successTitle,
+                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
+    }
+
     // MARK: - Table Refreshing
 
     func refreshTableView() {
@@ -129,6 +139,9 @@ private extension SiteStatsInsightsTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
+
+        hideNoResults()
+
         refreshControl?.endRefreshing()
     }
 
@@ -173,6 +186,9 @@ private extension SiteStatsInsightsTableViewController {
         UserDefaults.standard.set(insightTypesInt, forKey: userDefaultsKey)
     }
 
+    enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+    }
 }
 
 // MARK: - SiteStatsInsightsDelegate Methods
@@ -214,7 +230,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showPostingActivityDetails() {
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
-        postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
+        postingActivityViewController.yearData = insightsStore.getYearlyPostingActivityFrom(date: Date())
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
 

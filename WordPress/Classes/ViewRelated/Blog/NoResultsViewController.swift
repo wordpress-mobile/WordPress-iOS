@@ -179,9 +179,7 @@ import Reachability
     /// Public method to remove No Results View from parent view.
     ///
     @objc func removeFromView() {
-        willMove(toParent: nil)
-        view.removeFromSuperview()
-        removeFromParent()
+        remove()
     }
 
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
@@ -242,7 +240,9 @@ import Reachability
     /// Public method to expose the private configure view method
     ///
     func updateView() {
+        stopAnimatingIfNeeded()
         configureView()
+        startAnimatingIfNeeded()
     }
 
     /// Public method to expose the private set accessory views method

@@ -53,7 +53,7 @@ extension Double {
         }
     }
 
-    func formatWithCommas() -> String {
+    private func formatWithCommas() -> String {
         return numberFormatter.string(for: self) ?? ""
     }
 
@@ -74,9 +74,5 @@ extension Float {
 extension Int {
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
-    }
-
-    func formatWithCommas() -> String {
-        return Double(self).formatWithCommas()
     }
 }

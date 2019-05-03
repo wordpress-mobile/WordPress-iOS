@@ -27,6 +27,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
     private var lastPostInsight: StatsLastPostInsight?
+    private var lastPostDetails: StatsPostDetails?
     private var postTitle = StatSection.noPostTitle
 
     private var actionType: ActionType? {
@@ -34,15 +35,6 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
             configureViewForAction()
         }
     }
-
-    // Introduced via #11061, to be replaced with real data via #11067
-    private lazy var latestPostSummaryStub: (data: BarChartDataConvertible, styling: BarChartStyling) = {
-        let stubbedData = LatestPostSummaryDataStub()
-        let firstStubbedDateInterval = stubbedData.summaryData.first?.date.timeIntervalSince1970 ?? 0
-        let styling = LatestPostSummaryStyling(initialDateInterval: firstStubbedDateInterval)
-
-        return (stubbedData, styling)
-    }()
 
     // MARK: - View
 
@@ -56,7 +48,7 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
         removeRowsFromStackView(rowsStackView)
     }
 
-    func configure(withData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?) {
 
         siteStatsInsightsDelegate = delegate
 
@@ -74,6 +66,8 @@ class LatestPostSummaryCell: UITableViewCell, NibLoadable {
             actionType = .sharePost
             return
         }
+
+        lastPostDetails = chartData
 
         // If there is a post and post data, show View More option.
         actionType = .viewMore
@@ -247,9 +241,14 @@ private extension LatestPostSummaryCell {
     }
 
     func configureChartView() {
-        resetChartView()
+        guard let lastTwoWeeks = lastPostDetails?.lastTwoWeeks, !lastTwoWeeks.isEmpty else {
+            return
+        }
 
-        let chartView = StatsBarChartView(data: latestPostSummaryStub.data, styling: latestPostSummaryStub.styling)
+        let chart = PostChart(type: .latest, postViews: lastTwoWeeks)
+        let chartView = StatsBarChartView(data: chart, styling: chart.barChartStyling)
+
+        resetChartView()
         chartStackView.addArrangedSubview(chartView)
 
         NSLayoutConstraint.activate([

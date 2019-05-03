@@ -140,7 +140,7 @@
             return ItemSubtitles.country
         case .periodSearchTerms:
             return ItemSubtitles.searchTerm
-        case .postStatsMonthsYears, .postStatsAverageViews:
+        case .postStatsMonthsYears, .postStatsAverageViews, .postStatsRecentWeeks:
             return ItemSubtitles.period
         default:
             return ""
@@ -160,7 +160,8 @@
              .periodSearchTerms,
              .periodVideos,
              .postStatsMonthsYears,
-             .postStatsAverageViews:
+             .postStatsAverageViews,
+             .postStatsRecentWeeks:
             return DataSubtitles.views
         case .insightsPublicize:
             return DataSubtitles.followers
