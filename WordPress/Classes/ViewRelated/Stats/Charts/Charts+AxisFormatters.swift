@@ -26,7 +26,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
 
     private lazy var formatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM dd")
+        formatter.setLocalizedDateFormatFromTemplate("MMM d")
 
         return formatter
     }()
@@ -56,7 +56,6 @@ class VerticalAxisFormatter: IAxisValueFormatter {
 
     private lazy var formatter: NumberFormatter = {
         let formatter = NumberFormatter()
-
         formatter.maximumFractionDigits = 0
 
         return formatter
@@ -65,20 +64,34 @@ class VerticalAxisFormatter: IAxisValueFormatter {
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        let threshold = Double(1000)
+        let formattedValue = chartAbbreviatedString(value)
+        return formattedValue
+    }
 
-        let formattedValue: String
-        if value > threshold {
-            let numericValue = NSNumber(value: value/threshold)
-            let rawFormattedValue = formatter.string(from: numericValue) ?? "\(numericValue)"
-
-            // This is, admittedly NOT locale-sensitive formatting approach. It will be improved via #11143.
-            formattedValue = "\(rawFormattedValue)k"
-        } else {
-            let numericValue = NSNumber(value: value)
-            formattedValue = formatter.string(from: numericValue) ?? "\(value)"
+    /// Implementation was informed by Double.abbreviatedString(forHeroNumber:)
+    ///
+    private func chartAbbreviatedString(_ value: Double) -> String {
+        if value < 0 {
+            return "0"
+        }
+        if value < 1 {
+            return "1"
         }
 
-        return formattedValue
+        let formatThreshold = Double(1000)
+        if value < formatThreshold {
+            return formatter.string(for: value) ?? "\(value)"
+        }
+
+        let exp: Int = Int(log10(value) / 3.0)
+        let units: [String] = ["k", "m", "b", "t", "p", "e"]
+        let roundedNum: Double = Foundation.round(10 * value / pow(1000.0, Double(exp))) / 10
+
+        if roundedNum == 1000.0 {
+            return "\(1)\(units[exp])"
+        } else {
+            let formatted = formatter.string(for: roundedNum) ?? "\(value)"
+            return "\(formatted)\(units[exp-1])"
+        }
     }
 }
