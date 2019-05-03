@@ -322,7 +322,11 @@ extension WordPressAppDelegate {
         })
     }
 
-    func configureHockeySDK() {
+    @objc func configureCrashLogging() {
+        WPCrashLogging.start()
+    }
+
+    @objc func configureHockeySDK() {
         hockey = HockeyManager()
         hockey?.configure()
     }
