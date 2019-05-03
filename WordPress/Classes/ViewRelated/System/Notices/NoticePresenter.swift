@@ -37,6 +37,7 @@ class NoticePresenter: NSObject {
         let notice: Notice
         let containerView: NoticeContainerView?
     }
+    /// Used to determine if the keyboard is currently shown and what its height is.
     private struct KeyboardPresentation {
         let isPresent: Bool
         let height: CGFloat
