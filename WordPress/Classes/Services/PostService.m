@@ -274,6 +274,12 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
          success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
+    if(![post.blog supports:BlogFeatureWPComRESTAPI]) {
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Blog does not support WPCom REST API" };
+        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+        return;
+    }
+
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
     RemotePost *remotePost = [self remotePostWithPost:post];
     NSManagedObjectID *postObjectID = post.objectID;
@@ -286,7 +292,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                     [postInContext applyRevision];
                     [postInContext deleteRevision];
                 }
-                postInContext.remoteStatus = AbstractPostRemoteStatusSyncedUpdated;
+                postInContext.remoteStatus = AbstractPostRemoteStatusSaved;
                 NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
                 NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
                 for (Media *media in mediaToUpdate) {

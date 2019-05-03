@@ -25,11 +25,6 @@ class PostPreviewGenerator: NSObject {
     }
 
     @objc func generate() {
-        guard ReachabilityUtils.isInternetReachable() else {
-            ReachabilityUtils.showNoInternetConnectionNotice()
-            return
-        }
-
         if let previewURL = previewURL {
             attemptPreview(url: previewURL)
         } else {

@@ -562,7 +562,7 @@
 {
     if(self.remoteStatus == AbstractPostRemoteStatusLocal ||
        self.remoteStatus == AbstractPostRemoteStatusFailed ||
-       self.remoteStatus == AbstractPostRemoteStatusSyncedUpdated) {
+       self.remoteStatus == AbstractPostRemoteStatusSaved) {
         return YES;
     }
     
