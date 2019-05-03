@@ -40,7 +40,9 @@ extension XCTestCase {
 
     public func systemAlertHandler(alertTitle: String, alertButton: String) {
         addUIInterruptionMonitor(withDescription: alertTitle) { (alert) -> Bool in
-            alert.buttons[alertButton].tap()
+            let alertButtonElement = alert.buttons[alertButton]
+            self.waitForElementToExist(element: alertButtonElement)
+            alertButtonElement.tap()
             return true
         }
     }
