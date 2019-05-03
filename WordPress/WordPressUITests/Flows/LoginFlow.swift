@@ -13,9 +13,9 @@ class LoginFlow {
             .dismissNotificationAlertIfNeeded()
     }
 
-    static func loginIfNeeded(email: String, password: String) -> TabNavComponent {
+    static func loginIfNeeded(siteUrl: String, username: String, password: String) -> TabNavComponent {
         guard TabNavComponent.isLoaded() else {
-            return login(email: email, password: password).tabBar
+            return login(siteUrl: siteUrl, username: username, password: password).tabBar
         }
         return TabNavComponent()
     }
