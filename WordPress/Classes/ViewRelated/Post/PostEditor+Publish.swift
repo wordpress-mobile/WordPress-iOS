@@ -232,6 +232,7 @@ extension PostEditor where Self: UIViewController {
         }
 
         post = originalPost
+        post.remoteStatus = originalPost.remoteStatus
         post.deleteRevision()
         let shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
@@ -243,7 +244,7 @@ extension PostEditor where Self: UIViewController {
         }
 
         cancelUploadOfAllMedia(for: post)
-        ContextManager.sharedInstance().save(managedObjectContext)
+        ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
         return postDeleted
     }
 

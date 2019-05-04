@@ -287,11 +287,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                if ([postInContext isRevision]) {
-                    postInContext = postInContext.original;
-                    [postInContext applyRevision];
-                    [postInContext deleteRevision];
-                }
                 postInContext.remoteStatus = AbstractPostRemoteStatusSaved;
                 NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
                 NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
