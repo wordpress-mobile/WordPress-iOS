@@ -18,7 +18,7 @@ class PostPreviewGenerator: NSObject {
         authenticator = WebViewAuthenticator(blog: post.blog)
         super.init()
     }
-    
+
     @objc convenience init(post: AbstractPost, previewURL: URL) {
         self.init(post: post)
         self.previewURL = previewURL

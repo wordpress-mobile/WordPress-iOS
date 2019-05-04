@@ -62,7 +62,7 @@ extension PostEditor where Self: UIViewController {
             completion(nil, nil)
         }
     }
-    
+
     private func displayPreviewNotAvialble() {
         let title = NSLocalizedString("Preview not available", comment: "Title on display preview error" )
         let noResultsController = NoResultsViewController.controllerWith(title: title)
