@@ -83,7 +83,7 @@ extension NoResultsViewHost where Self: UIViewController {
                                           image: image,
                                           subtitleImage: subtitleImage,
                                           accessoryView: accessoryView)
-        noResultsViewController.hideImageView(accessoryView == nil)
+        customizationBlock?(noResultsViewController)
         noResultsViewController.updateView()
     }
 

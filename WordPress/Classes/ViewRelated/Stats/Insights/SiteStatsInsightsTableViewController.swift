@@ -44,8 +44,10 @@ class SiteStatsInsightsTableViewController: UITableViewController, NoResultsView
 
     // MARK: - Properties
 
-    private let store = StoreContainer.shared.statsInsights
-    private var changeReceipt: Receipt?
+    private let insightsStore = StoreContainer.shared.statsInsights
+    private var insightsChangeReceipt: Receipt?
+
+    private let periodStore = StoreContainer.shared.statsPeriod
 
     // TODO: update this array when Manage Insights is implemented.
     // Types of Insights to display. The array order dictates the display order.
@@ -96,10 +98,10 @@ class SiteStatsInsightsTableViewController: UITableViewController, NoResultsView
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, store: store)
+        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, insightsStore: insightsStore, periodStore: periodStore)
 
-        changeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.store,
+        insightsChangeReceipt = viewModel?.onChange { [weak self] in
+            guard let store = self?.insightsStore,
                 !store.isFetchingOverview else {
                 return
             }
@@ -120,10 +122,28 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func displayLoadingViewIfNecessary() {
-        if tableHandler.viewModel.sections.isEmpty {
-            configureAndDisplayNoResults(on: tableView,
-                                         title: NoResultConstants.successTitle,
-                                         accessoryView: NoResultsViewController.loadingAccessoryView())
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
+    }
+
+    func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
         }
     }
 
@@ -138,7 +158,12 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        hideNoResults()
+        if insightsStore.fetchingOverviewHasFailed &&
+            !insightsStore.containsCachedData {
+            displayFailureViewIfNecessary()
+        } else {
+            hideNoResults()
+        }
 
         refreshControl?.endRefreshing()
     }
@@ -186,6 +211,9 @@ private extension SiteStatsInsightsTableViewController {
 
     enum NoResultConstants {
         static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
     }
 }
 
@@ -228,7 +256,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showPostingActivityDetails() {
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard()
-        postingActivityViewController.yearData = store.getYearlyPostingActivityFrom(date: Date())
+        postingActivityViewController.yearData = insightsStore.getYearlyPostingActivityFrom(date: Date())
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
 
@@ -257,4 +285,14 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
+}
+
+extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
+        viewModel?.refreshInsights()
+    }
 }
