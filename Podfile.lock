@@ -245,7 +245,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.6.1)
-  - WordPressAuthenticator (from `../WordPressAuthenticator-iOS`)
+  - WordPressAuthenticator (~> 1.4.1-beta.3)
   - WordPressKit (~> 4.1.0-beta.1)
   - WordPressShared (~> 1.7.5-beta.2)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.1`)
@@ -290,6 +290,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
     - WPMediaPicker
@@ -316,8 +317,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.3.0
-  WordPressAuthenticator:
-    :path: "../WordPressAuthenticator-iOS"
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
     :tag: 1.2.1
@@ -393,6 +392,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 51535a85db67f6613c093f34daa7370f457572da
+PODFILE CHECKSUM: cbc8fafa1b514880438ff86d07490f2d1295cfde
 
 COCOAPODS: 1.6.1
