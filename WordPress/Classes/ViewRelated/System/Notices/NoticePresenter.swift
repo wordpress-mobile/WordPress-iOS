@@ -38,11 +38,9 @@ class NoticePresenter: NSObject {
         let containerView: NoticeContainerView?
     }
     /// Used to determine if the keyboard is currently shown and what its height is.
-    private struct KeyboardPresentation {
-        let isPresent: Bool
-        let height: CGFloat
-
-        static let notPresent = KeyboardPresentation(isPresent: false, height: 0)
+    private enum KeyboardPresentation {
+        case present(height: CGFloat)
+        case notPresent
     }
 
     private let store: NoticeStore
@@ -109,10 +107,7 @@ class NoticePresenter: NSObject {
                     return
             }
 
-            self.currentKeyboardPresentation = KeyboardPresentation(
-                isPresent: true,
-                height: keyboardFrameValue.cgRectValue.size.height
-            )
+            self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
 
             guard let currentContainer = self.currentNoticePresentation?.containerView,
                 let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
@@ -298,9 +293,10 @@ class NoticePresenter: NSObject {
 
             noticeContainer.noticeView.alpha = WPAlphaZero
             noticeContainer.bottomConstraint?.constant = {
-                if self.currentKeyboardPresentation.isPresent {
-                    return -self.currentKeyboardPresentation.height + noticeContainer.bounds.height
-                } else {
+                switch self.currentKeyboardPresentation {
+                case .present(let keyboardHeight):
+                    return -keyboardHeight + noticeContainer.bounds.height
+                case .notPresent:
                     return self.window.untouchableViewController.offsetOffscreen
                 }
             }()
@@ -323,9 +319,10 @@ class NoticePresenter: NSObject {
     }
 
     private func onscreenNoticeContainerBottomConstraintConstant() -> CGFloat {
-        if currentKeyboardPresentation.isPresent {
-            return -currentKeyboardPresentation.height
-        } else {
+        switch self.currentKeyboardPresentation {
+        case .present(let keyboardHeight):
+            return -keyboardHeight
+        case .notPresent:
             return -window.untouchableViewController.offsetOnscreen
         }
     }
