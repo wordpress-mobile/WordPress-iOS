@@ -103,14 +103,14 @@ class NoticePresenter: NSObject {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] (notification) in
             guard let self = self,
                 let userInfo = notification.userInfo,
-                let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+                let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+                let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
                     return
             }
 
             self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
 
-            guard let currentContainer = self.currentNoticePresentation?.containerView,
-                let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
+            guard let currentContainer = self.currentNoticePresentation?.containerView else {
                 return
             }
 
