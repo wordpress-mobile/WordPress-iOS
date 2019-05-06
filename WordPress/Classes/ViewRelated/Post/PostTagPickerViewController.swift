@@ -143,7 +143,6 @@ private extension PostTagPickerViewController {
         DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
         WPError.showNetworkingNotice(title: NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error as NSError)
-        
     }
 }
 
