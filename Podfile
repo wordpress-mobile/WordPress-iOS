@@ -43,7 +43,7 @@ end
 
 def wordpress_kit
   #pod 'WordPressKit', '~> 4.1.0-beta.1'
-  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/add_autosave_api_call'
+  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/add_autosave_call'
   #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
