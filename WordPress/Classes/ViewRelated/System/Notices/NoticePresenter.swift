@@ -115,7 +115,7 @@ class NoticePresenter: NSObject {
             }
 
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant()
+                currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
                 self.view.layoutIfNeeded()
             })
         }
@@ -130,7 +130,7 @@ class NoticePresenter: NSObject {
             }
 
             UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant()
+                currentContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
                 self.view.layoutIfNeeded()
             })
         }
@@ -312,13 +312,13 @@ class NoticePresenter: NSObject {
             }
 
             noticeContainer.noticeView.alpha = WPAlphaFull
-            noticeContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant()
+            noticeContainer.bottomConstraint?.constant = self.onscreenNoticeContainerBottomConstraintConstant
 
             self.view.layoutIfNeeded()
         }
     }
 
-    private func onscreenNoticeContainerBottomConstraintConstant() -> CGFloat {
+    private var onscreenNoticeContainerBottomConstraintConstant: CGFloat {
         switch self.currentKeyboardPresentation {
         case .present(let keyboardHeight):
             return -keyboardHeight
