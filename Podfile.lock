@@ -112,6 +112,11 @@ PODS:
     - React
   - react-native-safe-area (0.5.0):
     - React
+  - react-native-video (4.4.1):
+    - React
+    - react-native-video/Video (= 4.4.1)
+  - react-native-video/Video (4.4.1):
+    - React
   - React/Core (0.59.3):
     - yoga (= 0.59.3.React)
   - React/CxxBridge (0.59.3):
@@ -238,6 +243,7 @@ DEPENDENCIES:
   - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1a420d50aa704a888c5cf4230f8dfb77ca1f898b/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
   - react-native-keyboard-aware-scroll-view (from `https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git`, tag `gb-v0.8.7`)
   - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1a420d50aa704a888c5cf4230f8dfb77ca1f898b/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
+  - react-native-video (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1a420d50aa704a888c5cf4230f8dfb77ca1f898b/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `9.3.3-gb`)
   - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `1a420d50aa704a888c5cf4230f8dfb77ca1f898b`)
   - Sentry (= 4.3.1)
@@ -311,6 +317,8 @@ EXTERNAL SOURCES:
     :tag: gb-v0.8.7
   react-native-safe-area:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1a420d50aa704a888c5cf4230f8dfb77ca1f898b/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
+  react-native-video:
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/1a420d50aa704a888c5cf4230f8dfb77ca1f898b/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 9.3.3-gb
@@ -373,6 +381,7 @@ SPEC CHECKSUMS:
   React: b52fdb80565505b7e4592b313a38868f5df51641
   react-native-keyboard-aware-scroll-view: 01c4b2303c4ef1c49c4d239c9c5856f0393104df
   react-native-safe-area: 7dc92953fce43bf36ab5ecae2fb4ffa2bda9a203
+  react-native-video: 9aecbfc4628128838187df9d9c9f630670cfb1d1
   RNSVG: 978db19eaef499d9ebffb74a091ca0abf209c8c1
   RNTAztecView: cc0af5f745f75e475fd1a8bafa8b1051c0c63efd
   Sentry: 5267d493a398663538317e4dcc438c12c66202ed
@@ -392,6 +401,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 54bcf844adcd81967ecc663932e0cfe9ef4dad2c
+PODFILE CHECKSUM: 2db5f7b4db271e26ace1255e9e2086760af00b0e
 
 COCOAPODS: 1.6.1

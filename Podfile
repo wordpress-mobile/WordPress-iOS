@@ -88,6 +88,7 @@ def gutenberg_dependencies(options)
         'yoga',
         'Folly',
         'react-native-safe-area',
+        'react-native-video',
     ]
     tag_or_commit = options[:tag] || options[:commit]
 
