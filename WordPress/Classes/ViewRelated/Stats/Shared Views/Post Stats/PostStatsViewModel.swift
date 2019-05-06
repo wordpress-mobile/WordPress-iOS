@@ -10,11 +10,15 @@ class PostStatsViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
     private var postTitle: String?
+    private var postURL: URL?
+    private weak var postStatsDelegate: PostStatsDelegate?
 
     // MARK: - Init
 
-    init(postTitle: String?) {
+    init(postTitle: String?, postURL: URL?, postStatsDelegate: PostStatsDelegate) {
         self.postTitle = postTitle
+        self.postURL = postURL
+        self.postStatsDelegate = postStatsDelegate
     }
 
     // MARK: - Table View
@@ -42,7 +46,9 @@ private extension PostStatsViewModel {
     // MARK: - Create Table Rows
 
     func titleTableRow() -> ImmuTableRow {
-        return PostStatsTitleRow(postTitle: postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title"))
+        return PostStatsTitleRow(postTitle: postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title"),
+                                 postURL: postURL,
+                                 postStatsDelegate: postStatsDelegate)
     }
 
     func overviewTableRows() -> [ImmuTableRow] {

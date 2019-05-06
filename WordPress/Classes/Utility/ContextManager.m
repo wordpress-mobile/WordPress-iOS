@@ -116,8 +116,9 @@ static ContextManager *_override;
         }
 
         if (![context save:&error]) {
+            DDLogError(@"Fatal Core Data Error encountered — throwing an exception. Underlying error is:\n %@", error);
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
-                                           reason:@"Unresolved Core Data save error - derived context"
+                                           reason:[NSString stringWithFormat:@"Unresolved Core Data save error - derived context. Core Data Error Domain: %@, code: %i", error.domain, error.code]
                                          userInfo:error.userInfo];
         }
 

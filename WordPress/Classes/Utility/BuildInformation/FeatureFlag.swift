@@ -35,7 +35,7 @@ enum FeatureFlag: Int {
         case .quickStartV2:
             return true
         case .jetpackRemoteInstallation:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }

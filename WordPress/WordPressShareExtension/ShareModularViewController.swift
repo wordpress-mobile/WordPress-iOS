@@ -123,12 +123,13 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
                 self.shareData.title = share.title
                 self.shareData.contentBody = share.combinedContentHTML
 
-                share.images.forEach({ image in
-                    if let fileURL = self.saveImageToSharedContainer(image) {
-                        self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: fileURL)
+                share.images.forEach({ extractedImage in
+                    let imageURL = extractedImage.url
+                    self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: imageURL)
 
-                         // Use the filename as the uploadID here.
-                        self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(mediaURL: fileURL.absoluteString, uploadID: fileURL.lastPathComponent)
+                    // Use the filename as the uploadID here.
+                    if extractedImage.insertionState == .requiresInsertion {
+                        self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(mediaURL: imageURL.absoluteString, uploadID: imageURL.lastPathComponent)
                     }
                 })
 
@@ -773,7 +774,7 @@ fileprivate extension ShareModularViewController {
         }
     }
 
-    fileprivate func prepareForPublishing() {
+    func prepareForPublishing() {
         // We are preemptively logging the Tracks posted event here because if handled in a completion handler,
         // there is a good chance iOS will invalidate that network call and the event is never received server-side.
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/9789 for more details.

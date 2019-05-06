@@ -1,6 +1,5 @@
 import WordPressAuthenticator
 
-
 protocol JetpackRemoteInstallDelegate: class {
     func jetpackRemoteInstallCompleted()
     func jetpackRemoteInstallCanceled()
@@ -8,14 +7,13 @@ protocol JetpackRemoteInstallDelegate: class {
 }
 
 class JetpackRemoteInstallViewController: UIViewController {
+    private typealias JetpackInstallBlock = (String, String, String, WPAnalyticsStat) -> Void
+
     private weak var delegate: JetpackRemoteInstallDelegate?
     private var promptType: JetpackLoginPromptType
     private var blog: Blog
-    private let jetpackView = JetpackRemoteInstallView()
+    private let jetpackView = JetpackRemoteInstallStateView()
     private let viewModel: JetpackRemoteInstallViewModel
-
-    #warning("This is for manual testing purpose only. Remove after this PR is merged.")
-    @IBOutlet private var segmented: UISegmentedControl!
 
     init(blog: Blog, delegate: JetpackRemoteInstallDelegate?, promptType: JetpackLoginPromptType) {
         self.blog = blog
@@ -58,11 +56,9 @@ private extension JetpackRemoteInstallViewController {
 
         jetpackView.delegate = self
         add(jetpackView)
+        jetpackView.view.frame = view.bounds
 
         jetpackView.toggleHidingImageView(for: traitCollection)
-
-        #warning("This is for manual testing purpose only. Remove after this PR is merged.")
-        view.bringSubviewToFront(segmented)
 
         viewModel.viewReady()
     }
@@ -73,18 +69,32 @@ private extension JetpackRemoteInstallViewController {
                 self?.jetpackView.setupView(for: state)
             }
 
-            if case let .failure(error) = state {
+            switch state {
+            case .success:
+                WPAnalytics.track(.installJetpackRemoteCompleted)
+            case .failure(let error):
+                WPAnalytics.track(.installJetpackRemoteFailed)
                 if error.isBlockingError {
                     self?.delegate?.jetpackRemoteInstallWebviewFallback()
                 }
+            default:
+                break
             }
         }
     }
 
     func openInstallJetpackURL() {
+        let event: WPAnalyticsStat = AccountHelper.isLoggedIn ? .installJetpackRemoteConnect : .installJetpackRemoteLogin
+        WPAnalytics.track(event)
+
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func installJetpack(with url: String, username: String, password: String, event: WPAnalyticsStat) {
+        WPAnalytics.track(event)
+        viewModel.installJetpack(with: url, username: username, password: password)
     }
 
     @objc func cancel() {
@@ -106,19 +116,27 @@ extension JetpackRemoteInstallViewController: JetpackConnectionWebDelegate {
 
 // MARK: - Jetpack View delegate
 
-extension JetpackRemoteInstallViewController: JetpackRemoteInstallViewDelegate {
+extension JetpackRemoteInstallViewController: JetpackRemoteInstallStateViewDelegate {
     func mainButtonDidTouch() {
+        guard let url = blog.url,
+            let username = blog.username,
+            let password = blog.password else {
+            return
+        }
 
+        switch viewModel.state {
+        case .install:
+            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteStart)
+        case .failure:
+            installJetpack(with: url, username: username, password: password, event: .installJetpackRemoteRetry)
+        case .success:
+            openInstallJetpackURL()
+        default:
+            break
+        }
     }
 
     func customerSupportButtonDidTouch() {
         navigationController?.pushViewController(SupportTableViewController(), animated: true)
-    }
-}
-
-#warning("This is for manual testing purpose only")
-private extension JetpackRemoteInstallViewController {
-    @IBAction func stateChange(_ sender: UISegmentedControl) {
-        viewModel.testState(sender.selectedSegmentIndex)
     }
 }

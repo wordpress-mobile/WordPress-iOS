@@ -27,6 +27,7 @@ class SiteStatsPeriodViewModel: Observable {
         self.store = store
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod, forceRefresh: false))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -59,7 +60,7 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
         self.lastRequestedPeriod = period
     }
 }
@@ -74,11 +75,31 @@ private extension SiteStatsPeriodViewModel {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: ""))
 
-        // TODO: replace with real data
-        let one = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle, tabData: 987654321, difference: -987, differencePercent: 5)
-        let two = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle, tabData: 987654321, difference: 22222, differencePercent: 50)
-        let three = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle, tabData: 987654321, difference: 75324, differencePercent: 27)
-        let four = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle, tabData: 987654321, difference: -258547987, differencePercent: -125999)
+        let summaryData = store.getSummary()?.summaryData ?? []
+
+        let viewsData = intervalData(summaryData: summaryData, summaryType: .views)
+        let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
+                                           tabData: viewsData.count,
+                                           difference: viewsData.difference,
+                                           differencePercent: viewsData.percentage)
+
+        let visitorsData = intervalData(summaryData: summaryData, summaryType: .visitors)
+        let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
+                                              tabData: visitorsData.count,
+                                              difference: visitorsData.difference,
+                                              differencePercent: visitorsData.percentage)
+
+        let likesData = intervalData(summaryData: summaryData, summaryType: .likes)
+        let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
+                                           tabData: likesData.count,
+                                           difference: likesData.difference,
+                                           differencePercent: likesData.percentage)
+
+        let commentsData = intervalData(summaryData: summaryData, summaryType: .comments)
+        let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
+                                              tabData: commentsData.count,
+                                              difference: commentsData.difference,
+                                              differencePercent: commentsData.percentage)
 
         // Introduced via #11063, to be replaced with real data via #11069
         let viewsPeriodStub = ViewsPeriodDataStub()
@@ -111,10 +132,50 @@ private extension SiteStatsPeriodViewModel {
             commentsStyling
         ]
 
-        let row = OverviewRow(tabsData: [one, two, three, four], chartData: chartData, chartStyling: chartStyling, period: lastRequestedPeriod)
+
+        let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
+                              chartData: chartData, chartStyling: chartStyling, period: lastRequestedPeriod)
         tableRows.append(row)
 
         return tableRows
+    }
+
+    func intervalData(summaryData: [StatsSummaryData],
+                      summaryType: StatsSummaryType) ->
+        (count: Int, difference: Int, percentage: Int) {
+
+        guard let currentInterval = summaryData.last else {
+            return (0, 0, 0)
+        }
+
+        let previousInterval = summaryData.count >= 2 ? summaryData[summaryData.count-2] : nil
+
+        let currentCount: Int
+        let previousCount: Int
+        switch summaryType {
+        case .views:
+            currentCount = currentInterval.viewsCount
+            previousCount = previousInterval?.viewsCount ?? 0
+        case .visitors:
+            currentCount = currentInterval.visitorsCount
+            previousCount = previousInterval?.visitorsCount ?? 0
+        case .likes:
+            currentCount = currentInterval.likesCount
+            previousCount = previousInterval?.likesCount ?? 0
+        case .comments:
+            currentCount = currentInterval.commentsCount
+            previousCount = previousInterval?.commentsCount ?? 0
+        }
+
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
+
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return (currentCount, difference, roundedPercentage)
     }
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
@@ -144,8 +205,8 @@ private extension SiteStatsPeriodViewModel {
             case .unknown:
                 icon = Style.imageForGridiconType(.posts)
             }
-
             return StatsTotalRowData(name: $0.title,
+
                                      data: $0.viewsCount.abbreviatedString(),
                                      dataBarPercent: Float($0.viewsCount) / Float(postsAndPages.first!.viewsCount),
                                      icon: icon,
@@ -246,7 +307,7 @@ private extension SiteStatsPeriodViewModel {
     func countriesDataRows() -> [StatsTotalRowData] {
         return store.getTopCountries()?.countries.prefix(10).map { StatsTotalRowData(name: $0.name,
                                                                                      data: $0.viewsCount.abbreviatedString(),
-                                                                                     countryIconURL: nil, // TODO Move this from WPStatsiOS.
+                                                                                     icon: UIImage(named: $0.code),
                                                                                      statSection: .periodCountries) }
             ?? []
     }

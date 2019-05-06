@@ -1,6 +1,5 @@
-12.2
------
-*Pubblica con fiducia! Le anteprime della bozza ti mostreranno una versione più accurata dei tuoi articoli.
-*Se preferisci scrivere in app come Bear o Ulysses (oppure qualsiasi altra app che utilizzi i formati TextBundle e TextPack), continua a farlo! Ora puoi importare il testo da quelle app a questa.
-*L'intera app è stata rimessa a nuovo: abbiamo risolto alcuni tic visuali durante la procedura di creazione del sito, sistemato alcune formulazioni per rendere più chiaro quanto spazio di archiviazione viene utilizzato dal tuo sito e ci siamo occupati di un fastidioso arresto anomalo che sarebbe avvenuto qualche volta durante i tentativi di gestione dei plugin.
-
+Adori le app come iA Writer, 1Writer, Bear e Ulysses? Passa rapidamente dall'app alla bozza di WordPress: ora l'app importa immagini da file TextBundle e TextPack e supporta anche l'importazione dei file Markdown.
+Le notifiche per i problemi di connessione a Internet non occupano più l'intero schermo del dispositivo. Ora, invece, appare un piccolo pop-up, così puoi continuare a utilizzare le funzionalità offline (come la cancellazione degli articoli, che ora viene eseguita in modo più affidabile se sei offline).
+A volte una parte del testo del log attività appare in una lingua sbagliata. Questa caratteristica non è utile e ora è stata corretta.
+Altri elementi non utili: gli arresti. Gli arresti che a volte si verificano durante la creazione del sito o il caricamento delle statistiche sono stati risolti.
+L'installazione da remoto di Jetpack è ora supportata, quindi puoi installare e attivare Jetpack su un sito ospitato personalmente direttamente dall'app.

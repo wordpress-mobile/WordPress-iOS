@@ -15,7 +15,7 @@ enum PeriodAction: Action {
     case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?)
     case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?)
     case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?)
-    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit)
+    case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
 
     // Period details
     case refreshPostsAndPages(date: Date, period: StatsPeriodUnit)
@@ -120,6 +120,8 @@ struct PeriodStoreState {
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
+    private var statsServiceRemote: StatsServiceRemoteV2?
+
     init() {
         super.init(initialState: PeriodStoreState())
     }
@@ -149,8 +151,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             receivedVideos(videos)
         case .receivedCountries(let countries):
             receivedCountries(countries)
-        case .refreshPeriodOverviewData(let date, let period):
-            refreshPeriodOverviewData(date: date, period: period)
+        case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
+            refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshPostsAndPages(let date, let period):
             refreshPostsAndPages(date: date, period: period)
         case .refreshSearchTerms(let date, let period):
@@ -217,9 +219,7 @@ private extension StatsPeriodStore {
         activeQueries.forEach { query in
             switch query {
             case .periods:
-                if shouldFetchOverview() {
-                    fetchPeriodOverviewData(date: query.date, period: query.period)
-                }
+                loadFromCache(date: query.date, period: query.period)
             case .allPostsAndPages:
                 if shouldFetchPostsAndPages() {
                     fetchAllPostsAndPages(date: query.date, period: query.period)
@@ -273,6 +273,16 @@ private extension StatsPeriodStore {
         }
 
         setAllAsFetchingOverview()
+
+        statsRemote.getData(for: period, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching summary.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary))
+        }
 
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
             if error != nil {
@@ -389,12 +399,22 @@ private extension StatsPeriodStore {
         }
     }
 
-    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit) {
+    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
         // The call to `persistToCoreData()` might seem unintuitive here, at a first glance.
         // It's here because call to this method will usually happen after user selects a different
         // time period they're interested in. If we only relied on calls to `persistToCoreData()`
         // when user has left the screen/app, we would possibly lose on storing A LOT of data.
         persistToCoreData()
+
+        if forceRefresh {
+            // Stop existing queries and start fresh.
+            statsServiceRemote?.wordPressComRestApi.invalidateAndCancelTasks()
+            setAllAsFetchingOverview(fetching: false)
+            // invalidateAndCancelTasks invalidates the SessionManager, 
+            // so we need to recreate it to run queries.
+            initializeStatsRemote()
+        }
+
         fetchPeriodOverviewData(date: date, period: period)
     }
 
@@ -715,30 +735,40 @@ private extension StatsPeriodStore {
     // MARK: - Helpers
 
     func statsRemote() -> StatsServiceRemoteV2? {
+
+        if statsServiceRemote == nil {
+            initializeStatsRemote()
+        }
+
+        return statsServiceRemote
+    }
+
+    func initializeStatsRemote() {
         guard
             let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
             let timeZone = SiteStatsInformation.sharedInstance.siteTimeZone
             else {
-                return nil
+                statsServiceRemote = nil
+                return
         }
 
         let wpApi = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
-        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
+        statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
     }
 
     func shouldFetchOverview() -> Bool {
         return !isFetchingOverview
     }
 
-    func setAllAsFetchingOverview() {
-        state.fetchingPostsAndPages = true
-        state.fetchingReferrers = true
-        state.fetchingClicks = true
-        state.fetchingPublished = true
-        state.fetchingAuthors = true
-        state.fetchingSearchTerms = true
-        state.fetchingVideos = true
-        state.fetchingCountries = true
+    func setAllAsFetchingOverview(fetching: Bool = true) {
+        state.fetchingPostsAndPages = fetching
+        state.fetchingReferrers = fetching
+        state.fetchingClicks = fetching
+        state.fetchingPublished = fetching
+        state.fetchingAuthors = fetching
+        state.fetchingSearchTerms = fetching
+        state.fetchingVideos = fetching
+        state.fetchingCountries = fetching
     }
 
     func shouldFetchPostsAndPages() -> Bool {

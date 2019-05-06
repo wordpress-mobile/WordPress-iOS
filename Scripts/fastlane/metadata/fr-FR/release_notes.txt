@@ -1,6 +1,11 @@
-12.2
------
-* Publier en toute confiance ! L'affichage en mode brouillon vous donnera un aperçu plus précis de vos articles.
-* Si vous préférez rédiger dans des applications comme Bear ou Ulysses (ou toute autre application utilisant les formats TextBundle et TextPack), n'hésitez surtout pas, continuez. Vous pouvez à présent importer du texte de ces applications vers celle-ci.
-* L'application a subi un lifting de printemps : nous avons résolu certains petits défauts visuels lors du processus de création de sites, modifié certains termes pour indiquer plus clairement l'espace de stockage utilisé par votre site et corrigé une défaillance ennuyeuse qui se produisait parfois lorsque vous tentiez de gérer des extensions.
+Vous aimez les apps comme iA Writer, 1Writer, Bear, et Ulysses ? Passer de l’application à un brouillon WordPress rapidement. L’application importe maintenant des images à partir de fichiers TextBundle et TextPack et prend en charge l’importation de fichiers Markdown, aussi.
 
+Les notifications pour les problèmes de connectivité internet ne prennent plus l’intégralité de l’écran de votre appareil. Maintenant, il ya une petite popup à la place, de sorte que vous puissiez continuer à utiliser des capacités hors ligne (comme la suppression de messages, qui est maintenant plus fiable si vous êtes hors ligne).
+
+Certains textes dans le journal d’activité apparaissent parfois dans une langue erronée. Pas utile ! C’est maintenant réparé.
+
+Également pas utile : les plantages. Les plantages qui se produisent parfois lors de la création du site ou lors du chargement des statistiques sont résolus.
+
+L’installation à distance Jetpack est prise en charge, vous pouvez donc installer et activer Jetpack sur un site auto-hébergé directement depuis l’application.
+
+Les statistiques sont plus accessibles: Si vous utilisez VoiceOver dans l’application, il vous lira vos statistiques.
