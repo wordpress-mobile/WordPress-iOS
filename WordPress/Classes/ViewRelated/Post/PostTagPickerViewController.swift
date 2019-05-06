@@ -105,7 +105,7 @@ class PostTagPickerViewController: UIViewController {
         if originalTags != tags {
             onValueChanged?(tags.joined(separator: ", "))
         }
-        WPError.dismissNotice()
+        WPError.dismissNetworkingNotice()
     }
 
     fileprivate func reloadTableData() {
@@ -142,7 +142,7 @@ private extension PostTagPickerViewController {
     func tagsFailedLoading(error: Error) {
         DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
-        WPError.showNotice(title: NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error)
+        WPError.showNetworkingNotice(title: NSLocalizedString("Couldn't load tags.", comment: "Error message when tag loading failed"), error: error as NSError)
         
     }
 }
