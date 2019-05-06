@@ -8,18 +8,24 @@ class StatsCellHeader: UITableViewCell, NibLoadable {
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var manageInsightButton: UIButton!
     @IBOutlet weak var stackViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var stackViewHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
     private var defaultStackViewTopConstraint: CGFloat = 0
+    private var defaultStackViewHeightConstraint: CGFloat = 0
+    private var adjustHeightForPostStats = false
+    private let emptyPostStatsHeight: CGFloat = 20
 
     // MARK: - Configure
 
     override func awakeFromNib() {
         defaultStackViewTopConstraint = stackViewTopConstraint.constant
+        defaultStackViewHeightConstraint = stackViewHeightConstraint.constant
     }
 
-    func configure(withTitle title: String) {
+    func configure(withTitle title: String, adjustHeightForPostStats: Bool = false) {
         headerLabel.text = title
+        self.adjustHeightForPostStats = adjustHeightForPostStats
         applyStyles()
     }
 
@@ -38,6 +44,9 @@ private extension StatsCellHeader {
     func updateStackView() {
         // Only show the top padding if there is actually a label.
         stackViewTopConstraint.constant = headerLabel.text == "" ? 0 : defaultStackViewTopConstraint
+
+        // Adjust the height if displaying on Post Stats with no title.
+        stackViewHeightConstraint.constant = adjustHeightForPostStats ? emptyPostStatsHeight : defaultStackViewHeightConstraint
     }
 
     func configureManageInsightButton() {

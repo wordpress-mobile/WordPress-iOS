@@ -311,10 +311,6 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 private extension AppSettingsViewController {
 
     func editorTableSection() -> ImmuTableSection? {
-        guard Feature.enabled(.gutenberg) else {
-            return nil
-        }
-
         let gutenbergSettings = GutenbergSettings()
         let enabled = gutenbergSettings.isGutenbergEnabled()
         let gutenbergEditor = SwitchRow(

@@ -192,19 +192,21 @@ extension PostEditor where Self: UIViewController {
             showPostHasChangesAlert()
         } else {
             editorSession.end(outcome: .cancel)
-            discardChangesAndUpdateGUI()
+            discardUnsavedChangesAndUpdateGUI()
         }
     }
 
-    func discardChangesAndUpdateGUI() {
-        discardChanges()
-
-        dismissOrPopView(didSave: false)
+    func discardUnsavedChangesAndUpdateGUI() {
+        let postDeleted = discardChanges()
+        dismissOrPopView(didSave: !postDeleted)
     }
 
-    func discardChanges() {
+    // Returns true when the post is deleted
+    @discardableResult
+    func discardChanges() -> Bool {
+        var postDeleted = false
         guard let managedObjectContext = post.managedObjectContext, let originalPost = post.original else {
-            return
+            return postDeleted
         }
 
         WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
@@ -231,15 +233,18 @@ extension PostEditor where Self: UIViewController {
 
         post = originalPost
         post.deleteRevision()
+        let shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
         if shouldRemovePostOnDismiss {
             post.remove()
+            postDeleted = true
         } else if shouldCreateDummyRevision {
             post.createRevision()
         }
 
         cancelUploadOfAllMedia(for: post)
         ContextManager.sharedInstance().save(managedObjectContext)
+        return postDeleted
     }
 
     func showPostHasChangesAlert() {
@@ -283,7 +288,7 @@ extension PostEditor where Self: UIViewController {
         // Button: Discard
         alertController.addDestructiveActionWithTitle(discardTitle) { _ in
             self.editorSession.end(outcome: .discard)
-            self.discardChangesAndUpdateGUI()
+            self.discardUnsavedChangesAndUpdateGUI()
         }
 
         alertController.popoverPresentationController?.barButtonItem = navigationBarManager.closeBarButtonItem
@@ -334,7 +339,7 @@ extension PostEditor where Self: UIViewController {
             }
 
             if dismissWhenDone {
-                strongSelf.dismissOrPopView(didSave: true)
+                strongSelf.dismissOrPopView()
             } else {
                 strongSelf.createRevisionOfPost()
             }
@@ -352,7 +357,7 @@ extension PostEditor where Self: UIViewController {
 
         PostCoordinator.shared.save(post: post)
 
-        dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
+        dismissOrPopView()
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
@@ -374,13 +379,13 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
+    func dismissOrPopView(didSave: Bool = true) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
         if let onClose = onClose {
-            onClose(didSave, shouldShowPostEpilogue)
+            onClose(didSave, false)
         } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {

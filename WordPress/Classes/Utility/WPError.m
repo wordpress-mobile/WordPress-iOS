@@ -71,53 +71,6 @@ NSInteger const SupportButtonIndex = 0;
 {
     NSString *message = nil;
     NSString *title = nil;
-
-    if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] ||
-            [error.domain isEqual:AFURLResponseSerializationErrorDomain])
-    {
-        NSHTTPURLResponse *response = (NSHTTPURLResponse *)[error.userInfo objectForKey:AFNetworkingOperationFailingURLResponseErrorKey];
-        switch (error.code) {
-            case NSURLErrorBadServerResponse:
-                if (response) {
-                    switch (response.statusCode) {
-                        case 400:
-                        case 405:
-                        case 406:
-                        case 411:
-                        case 412:
-                        case 413:
-                        case 414:
-                        case 415:
-                        case 416:
-                        case 417:
-                            title = NSLocalizedString(@"Incompatible site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site.");
-                            message = [NSString stringWithFormat:NSLocalizedString(@"Your site returned a %d error.\nThis is usually due to an incompatible server configuration.\nPlease contact your hosting provider, or reach out to us using our in-app support.", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site."), response.statusCode];
-                            break;
-                        case 403:
-                            title = NSLocalizedString(@"Forbidden Access", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site.");
-                            message = NSLocalizedString(@"Received 'Forbidden Access'.\nIt seems there is a problem with your WordPress site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site.");
-                            break;
-                        case 500:
-                        case 501:
-                            title = NSLocalizedString(@"Internal Server Error", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install.");
-                            message = NSLocalizedString(@"Received 'Internal Server Error'.\nIt seems there is a problem with your WordPress site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install.");
-                            break;
-                        case 502:
-                        case 503:
-                        case 504:
-                            title = NSLocalizedString(@"Temporary Server Error", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install, but may be a temporary issue.");
-                            message = NSLocalizedString(@"It seems your WordPress site is not accessible at this time, please try again later", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install, but may be a temporary issue.");
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
     
     if (desiredTitle != nil) {
         title = desiredTitle;

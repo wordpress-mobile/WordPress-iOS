@@ -710,16 +710,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             if (!deleteEarlier) {
                 // Before processing the new posts, check if there is an overlap between
                 // what is currently cached, and what is being synced.
-                NSSet *existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
-                NSSet *newGlobalIDs = [self globalIDsOfRemotePosts:posts];
-                overlap = [existingGlobalIDs intersectsSet:newGlobalIDs];
+                overlap = [self checkIfRemotePosts:posts overlapExistingPostsinTopic:readerTopic];
 
                 // A strategy to avoid false positives in gap detection is to sync
                 // one extra post. Only remove the extra post if we received a
                 // full set of results. A partial set means we've reached
                 // the end of syncable content.
                 if ([posts count] == [self numberToSyncForTopic:readerTopic] && ![ReaderHelpers isTopicSearchTopic:readerTopic]) {
-                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
+                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 1)];
                     postsCount = [posts count];
                 }
 
@@ -780,6 +778,37 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
+- (BOOL)checkIfRemotePosts:(NSArray *)remotePosts overlapExistingPostsinTopic:(ReaderAbstractTopic *)readerTopic
+{
+    // Get global IDs of new posts to use as part of the predicate.
+    NSSet *remoteGlobalIDs = [self globalIDsOfRemotePosts:remotePosts];
+
+    // Fetch matching existing posts.
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND globalID in %@", readerTopic, remoteGlobalIDs];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return NO;
+    }
+
+    // For each match, check that the dates are the same.  If at least one date is the same then there is an overlap so return true.
+    // If the dates are different then the existing cached post will be updated. Don't treat this as overlap.
+    for (ReaderPost *post in results) {
+        for (RemoteReaderPost *remotePost in remotePosts) {
+            if (![remotePost.globalID isEqualToString:post.globalID]) {
+                continue;
+            }
+            if ([post.sortDate isEqualToDate:remotePost.sortDate]) {
+                return YES;
+            }
+        }
+    }
+
+    return NO;
+}
 
 #pragma mark Gap Detection Methods
 
@@ -875,28 +904,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSMutableArray *arr = [NSMutableArray array];
     for (RemoteReaderPost *post in remotePosts) {
         [arr addObject:post.globalID];
-    }
-    // return non-mutable array
-    return [NSSet setWithArray:arr];
-}
-
-- (NSSet *)globalIDsOfExistingPostsForTopic:(ReaderAbstractTopic *)topic
-{
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
-    fetchRequest.includesSubentities = NO;
-
-    NSError *error;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        DDLogError(error.localizedDescription);
-        return [NSSet set];
-    }
-
-    NSMutableArray *arr = [NSMutableArray array];
-    for (ReaderPost *post in results) {
-        NSString *globalID = post.globalID ?: @"";
-        [arr addObject:globalID];
     }
     // return non-mutable array
     return [NSSet setWithArray:arr];
@@ -1127,7 +1134,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         DDLogError(@"Error fetching an existing reader post. - %@", error);
     } else if ([arr count] > 0) {
         post = (ReaderPost *)[arr objectAtIndex:0];
-        existing = true;
+        existing = YES;
     } else {
         post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                              inManagedObjectContext:self.managedObjectContext];
@@ -1164,12 +1171,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.siteID = remotePost.siteID;
     post.sortDate = remotePost.sortDate;
 
-    if (!existing) {
+    if (existing && [topic isKindOfClass:[ReaderSearchTopic class]]) {
         // Failsafe.  The `read/search` endpoint might return the same post on
         // more than one page. If this happens preserve the *original* sortRank
         // to avoid content jumping around in the UI.
-        // Posts from other endpoints will store a date value which shouldn't
-        // change, ergo they should be unaffected.
+    } else {
         post.sortRank = remotePost.sortRank;
     }
 

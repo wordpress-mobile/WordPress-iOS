@@ -13,6 +13,7 @@
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, assign) BOOL ascendingOrdering;
 @property (nonatomic, strong) NSMutableDictionary *observers;
+@property (nonatomic, strong) NSMutableDictionary *groupObservers;
 @property (nonatomic, strong) NSFetchedResultsController *fetchController;
 @property (nonatomic, strong) id groupObserverHandler;
 #pragma mark - change trackers
@@ -25,23 +26,14 @@
 
 @implementation MediaLibraryPickerDataSource
 
-- (void)dealloc
-{
-    [_mediaGroup unregisterChangeObserver:_groupObserverHandler];
-}
-
 - (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
-        __weak __typeof__(self) weakSelf = self;
-        _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
-            [weakSelf notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
-        }];
         _blog = blog;
         _observers = [NSMutableDictionary dictionary];
-
+        _groupObservers = [NSMutableDictionary dictionary];
         _mediaRemoved = [[NSMutableIndexSet alloc] init];
         _mediaInserted = [[NSMutableIndexSet alloc] init];
         _mediaChanged = [[NSMutableIndexSet alloc] init];
@@ -160,6 +152,13 @@
     }
 }
 
+- (void)notifyGroupObservers
+{
+    for ( WPMediaGroupChangesBlock callback in [self.groupObservers allValues]) {
+        callback();
+    }
+}
+
 - (void)notifyObserversReloadData
 {
     [self notifyObserversWithIncrementalChanges:NO
@@ -181,6 +180,19 @@
 {
     if (blockKey) {
         [self.observers removeObjectForKey:blockKey];
+    }
+}
+
+-(id<NSObject>)registerGroupChangeObserverBlock:(WPMediaGroupChangesBlock)callback
+{
+    NSUUID *blockKey = [NSUUID UUID];
+    [self.groupObservers setObject:[callback copy] forKey:blockKey];
+    return blockKey;}
+
+-(void)unregisterGroupChangeObserver:(id<NSObject>)blockKey
+{
+    if (blockKey) {
+        [self.groupObservers removeObjectForKey:blockKey];
     }
 }
 
@@ -464,6 +476,9 @@
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    if ([self.mediaChanged containsIndex:0] || [self.mediaInserted containsIndex:0] || [self.mediaRemoved containsIndex:0]) {
+        [self notifyGroupObservers];
+    }
     [self notifyObserversWithIncrementalChanges:YES
                                         removed:self.mediaRemoved
                                        inserted:self.mediaInserted
@@ -476,7 +491,6 @@
 @interface MediaLibraryGroup()
     @property (nonatomic, strong) Blog *blog;
     @property (nonatomic, assign) NSInteger itemsCount;
-    @property (nonatomic, strong) NSMutableDictionary *observers;
 @end
 
 @implementation MediaLibraryGroup
@@ -487,30 +501,9 @@
     if (self) {
         _blog = blog;
         _filter = WPMediaTypeAll;
-        _itemsCount = NSNotFound;
-        _observers = [NSMutableDictionary dictionary];
+        _itemsCount = NSNotFound;        
     }
     return self;
-}
-
-- (void)notifyObserversWithIncrementalChanges:(BOOL)incrementalChanges removed:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moved
-{
-    for ( WPMediaChangesBlock callback in [self.observers allValues]) {
-        callback(incrementalChanges, removed, inserted, changed, moved);
-    }
-}
-
--(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
-{
-    NSUUID *blockKey = [NSUUID UUID];
-    [self.observers setObject:[callback copy] forKey:blockKey];
-    return blockKey;
-    
-}
-
--(void)unregisterChangeObserver:(id<NSObject>)blockKey
-{
-    [self.observers removeObjectForKey:blockKey];
 }
 
 - (id)baseGroup

@@ -59,9 +59,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
     var isOpenedDirectlyForPhotoPost: Bool = false
 
-
-    var shouldRemovePostOnDismiss: Bool = false
-
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {
@@ -217,7 +214,6 @@ class GutenbergViewController: UIViewController, PostEditor {
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
-        shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .gutenberg, post: post)
 
         super.init(nibName: nil, bundle: nil)
