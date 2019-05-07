@@ -620,7 +620,7 @@ private extension ZendeskUtils {
             return Constants.noValue
         }
 
-        let blogInfo:[String] = allBlogs.map {
+        let blogInfo: [String] = allBlogs.map {
             var desc = $0.supportDescription()
             if let blogID = $0.dotComID, let plan = ZendeskUtils.sharedInstance.sitePlansCache[blogID.intValue] {
                 desc = desc + "<Unlocalized Plan: \(plan.name) (\(plan.planID))>" // Do not localize this. :)
