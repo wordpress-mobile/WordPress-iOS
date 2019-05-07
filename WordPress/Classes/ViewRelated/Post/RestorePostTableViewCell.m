@@ -71,8 +71,8 @@
 
 - (IBAction)restorePostAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleRestorePost:)]) {
-        [self.delegate cell:self handleRestorePost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleRestorePost:)]) {
+        [self.delegate handleRestorePost:self.post];
     }
 }
 

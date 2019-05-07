@@ -4,11 +4,11 @@
 ///
 @protocol InteractivePostViewDelegate <NSObject>
 @optional
-- (void)cell:(nonnull UITableViewCell *)cell handleEditPost:(nonnull AbstractPost *)post;
-- (void)cell:(nonnull UITableViewCell *)cell handleViewPost:(nonnull AbstractPost *)post;
-- (void)cell:(nonnull UITableViewCell *)cell handleStatsForPost:(nonnull AbstractPost *)post;
-- (void)cell:(nonnull UITableViewCell *)cell handleTrashPost:(nonnull AbstractPost *)post;
-- (void)cell:(nonnull UITableViewCell *)cell handlePublishPost:(nonnull AbstractPost *)post;
-- (void)cell:(nonnull UITableViewCell *)cell handleSchedulePost:(nonnull AbstractPost *)post;
-- (void)cell:(nonnull UITableViewCell *)cell handleRestorePost:(nonnull AbstractPost *)post;
+- (void)handleEditPost:(nonnull AbstractPost *)post;
+- (void)handleViewPost:(nonnull AbstractPost *)post;
+- (void)handleStatsForPost:(nonnull AbstractPost *)post;
+- (void)handleTrashPost:(nonnull AbstractPost *)post;
+- (void)handlePublishPost:(nonnull AbstractPost *)post;
+- (void)handleSchedulePost:(nonnull AbstractPost *)post;
+- (void)handleRestorePost:(nonnull AbstractPost *)post;
 @end
