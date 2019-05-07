@@ -983,7 +983,7 @@ private extension NotificationDetailsViewController {
     }
 
     func spamCommentWithBlock(_ block: FormattableCommentContent) {
-        guard let onDeletionRequestCallback = onDeletionRequestCallback else {
+        guard onDeletionRequestCallback != nil else {
             // callback probably missing due to state restoration. at least by
             // not crashing the user can tap the back button and try again
             return
@@ -1008,7 +1008,7 @@ private extension NotificationDetailsViewController {
     }
 
     func trashCommentWithBlock(_ block: FormattableCommentContent) {
-        guard let onDeletionRequestCallback = onDeletionRequestCallback else {
+        guard onDeletionRequestCallback != nil else {
             // callback probably missing due to state restoration. at least by
             // not crashing the user can tap the back button and try again
             return
