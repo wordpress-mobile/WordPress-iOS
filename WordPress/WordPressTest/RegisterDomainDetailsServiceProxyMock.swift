@@ -1,6 +1,8 @@
 import Foundation
 @testable import WordPress
 
+fileprivate struct CartResponseMock: CartResponseProtocol {}
+
 class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyProtocol {
 
     enum MockData {
@@ -20,11 +22,26 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         static let postalCode = "12345"
     }
 
-    var success: Bool
-    var emptyPrefillData: Bool
+    private let validateDomainContactInformationSuccess: Bool
+    private let validateDomainContactInformationResponseSuccess: Bool
+    private let createShoppingCartSuccess: Bool
+    private let redeemCartUsingCreditsSuccess: Bool
+    private let changePrimaryDomainSuccess: Bool
 
-    init(success: Bool, emptyPrefillData: Bool = false) {
-        self.success = success
+    private let emptyPrefillData: Bool
+
+    init(validateDomainContactInformationSuccess: Bool = true,
+         validateDomainContactInformationResponseSuccess: Bool = true,
+         createShoppingCartSuccess: Bool = true,
+         emptyPrefillDataSuccess: Bool = true,
+         redeemCartUsingCreditsSuccess: Bool = true,
+         changePrimaryDomainSuccess: Bool = true,
+         emptyPrefillData: Bool = false) {
+        self.validateDomainContactInformationSuccess = validateDomainContactInformationSuccess
+        self.validateDomainContactInformationResponseSuccess = validateDomainContactInformationResponseSuccess
+        self.createShoppingCartSuccess = createShoppingCartSuccess
+        self.redeemCartUsingCreditsSuccess = redeemCartUsingCreditsSuccess
+        self.changePrimaryDomainSuccess = changePrimaryDomainSuccess
         self.emptyPrefillData = emptyPrefillData
     }
 
@@ -32,19 +49,19 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
                                           domainNames: [String],
                                           success: @escaping (ValidateDomainContactInformationResponse) -> Void,
                                           failure: @escaping (Error) -> Void) {
-        guard self.success else {
+        guard validateDomainContactInformationSuccess else {
             failure(NSError())
             return
         }
         var response = ValidateDomainContactInformationResponse()
-        response.success = true
+        response.success = validateDomainContactInformationResponseSuccess
         success(response)
 
     }
 
     func getDomainContactInformation(success: @escaping (DomainContactInformation) -> Void,
                                      failure: @escaping (Error) -> Void) {
-        guard self.success else {
+        guard validateDomainContactInformationSuccess else {
             failure(NSError())
             return
         }
@@ -69,7 +86,7 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
 
     func getSupportedCountries(success: @escaping ([Country]) -> Void,
                                failure: @escaping (Error) -> Void) {
-        guard self.success else {
+        guard validateDomainContactInformationSuccess else {
             failure(NSError())
             return
         }
@@ -85,7 +102,7 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
     func getStates(for countryCode: String,
                    success: @escaping ([State]) -> Void,
                    failure: @escaping (Error) -> Void) {
-        guard self.success else {
+        guard validateDomainContactInformationSuccess else {
             failure(NSError())
             return
         }
@@ -101,19 +118,35 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
     func createShoppingCart(siteID: Int,
                             domainSuggestion: DomainSuggestion,
                             privacyProtectionEnabled: Bool,
-                            success: @escaping (CartResponse) -> Void,
+                            success: @escaping (CartResponseProtocol) -> Void,
                             failure: @escaping (Error) -> Void) {
-        fatalError("not implemented")
+        guard createShoppingCartSuccess else {
+            failure(NSError())
+            return
+        }
+        let response = CartResponseMock()
+        success(response)
     }
 
-    func redeemCartUsingCredits(cart: CartResponse, domainContactInformation: [String: String], success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        fatalError("not implemented")
+    func redeemCartUsingCredits(cart: CartResponseProtocol,
+                                domainContactInformation: [String: String],
+                                success: @escaping () -> Void,
+                                failure: @escaping (Error) -> Void) {
+        guard redeemCartUsingCreditsSuccess else {
+            failure(NSError())
+            return
+        }
+        success()
     }
 
-    func changePrimaryDomain(siteID: Int, newDomain: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-         fatalError("not implemented")
+    func changePrimaryDomain(siteID: Int,
+                             newDomain: String,
+                             success: @escaping () -> Void,
+                             failure: @escaping (Error) -> Void) {
+        guard changePrimaryDomainSuccess else {
+            failure(NSError())
+            return
+        }
+        success()
     }
-
-
-
 }
