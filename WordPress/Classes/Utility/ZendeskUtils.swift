@@ -641,7 +641,10 @@ private extension ZendeskUtils {
         }
 
         // Get all unique site plans
-        var tags = allBlogs.compactMap { $0.planTitle }.unique
+        var tags = ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }.unique
+        if tags.count == 0 {
+            tags = allBlogs.compactMap { $0.planTitle }.unique
+        }
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
