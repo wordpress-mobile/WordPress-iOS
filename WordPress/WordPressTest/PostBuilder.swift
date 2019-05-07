@@ -29,6 +29,11 @@ class PostBuilder {
         return self
     }
 
+    func drafted() -> PostBuilder {
+        post.status = .draft
+        return self
+    }
+
     func build() -> Post {
         return NSEntityDescription.insertNewObject(forEntityName: "Post", into: inMemoryManagedObjectContext) as! Post
     }
