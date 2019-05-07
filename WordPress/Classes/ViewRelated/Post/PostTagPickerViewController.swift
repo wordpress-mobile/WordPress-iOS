@@ -332,17 +332,16 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
     typealias Cell = UITableViewCell
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.configureTableViewSuggestionCell(cell)
-        cell.textLabel?.text = ""
         return cell
     }
 }
