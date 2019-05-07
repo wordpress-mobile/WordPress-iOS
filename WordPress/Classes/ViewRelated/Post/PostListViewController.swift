@@ -481,33 +481,33 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - InteractivePostViewDelegate
 
-    func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
+    func handleEdit(_ post: AbstractPost) {
         editPost(apost: post)
     }
 
-    func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
+    func handleViewPost(_ post: AbstractPost) {
         viewPost(post)
     }
 
-    func cell(_ cell: UITableViewCell, handleStatsFor post: AbstractPost) {
+    func handleStats(for post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             viewStatsForPost(post)
         }
     }
 
-    func cell(_ cell: UITableViewCell, handlePublishPost post: AbstractPost) {
+    func handlePublishPost(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             publishPost(post)
         }
     }
 
-    func cell(_ cell: UITableViewCell, handleSchedulePost post: AbstractPost) {
+    func handleSchedulePost(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             schedulePost(post)
         }
     }
 
-    func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
+    func handleTrashPost(_ post: AbstractPost) {
         guard ReachabilityUtils.isInternetReachable() else {
             let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
             ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
@@ -538,10 +538,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             self?.deletePost(post)
         }
         alertController.presentFromRootViewController()
-
     }
 
-    func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
+    func handleRestore(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             restorePost(post)
         }

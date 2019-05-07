@@ -685,50 +685,50 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)editPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleEditPost:)]) {
-        [self.delegate cell:self handleEditPost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleEditPost:)]) {
+        [self.delegate handleEditPost:self.post];
     }
 }
 
 - (void)viewPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleViewPost:)]) {
-        [self.delegate cell:self handleViewPost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleViewPost:)]) {
+        [self.delegate handleViewPost:self.post];
     }
 }
 
 - (void)publishPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handlePublishPost:)]) {
-        [self.delegate cell:self handlePublishPost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handlePublishPost:)]) {
+        [self.delegate handlePublishPost:self.post];
     }
 }
 
 - (void)schedulePostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleSchedulePost:)]) {
-        [self.delegate cell:self handleSchedulePost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleSchedulePost:)]) {
+        [self.delegate handleSchedulePost:self.post];
     }
 }
 
 - (void)trashPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleTrashPost:)]) {
-        [self.delegate cell:self handleTrashPost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleTrashPost:)]) {
+        [self.delegate handleTrashPost:self.post];
     }
 }
 
 - (void)restorePostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleRestorePost:)]) {
-        [self.delegate cell:self handleRestorePost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleRestorePost:)]) {
+        [self.delegate handleRestorePost:self.post];
     }
 }
 
 - (void)statsPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(cell:handleStatsForPost:)]) {
-        [self.delegate cell:self handleStatsForPost:self.post];
+    if ([self.delegate respondsToSelector:@selector(handleStatsForPost:)]) {
+        [self.delegate handleStatsForPost:self.post];
     }
 }
 
