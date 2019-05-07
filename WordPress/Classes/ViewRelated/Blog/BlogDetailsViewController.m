@@ -1098,11 +1098,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (row.showsSelectionState) {
         self.restorableSelectedIndexPath = indexPath;
-    } else if (![self splitViewControllerIsHorizontallyCompact]) {
-        // Reselect the previous row
-        [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
-                               animated:YES
-                         scrollPosition:UITableViewScrollPositionNone];
+    } else {
+        if ([self splitViewControllerIsHorizontallyCompact]) {
+            // Deselect current row when not in split view layout
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        } else {
+            // Reselect the previous row
+            [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
+                                   animated:YES
+                             scrollPosition:UITableViewScrollPositionNone];
+        }
     }
 }
 
