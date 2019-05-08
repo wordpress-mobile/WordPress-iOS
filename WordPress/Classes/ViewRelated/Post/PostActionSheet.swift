@@ -27,10 +27,17 @@ class PostActionSheet {
         }
         actionSheetController.addAction(draftsActionButton)
 
-        let trashActionButton = UIAlertAction(title: "Move to trash", style: .destructive) { _ in
-            // move to trash
+        if post.status == BasePost.Status.trash {
+            let deleteActionButton = UIAlertAction(title: "Delete permanently", style: .destructive) { _ in
+                print("Delete")
+            }
+            actionSheetController.addAction(deleteActionButton)
+        } else {
+            let trashActionButton = UIAlertAction(title: "Move to trash", style: .destructive) { _ in
+                // move to trash
+            }
+            actionSheetController.addAction(trashActionButton)
         }
-        actionSheetController.addAction(trashActionButton)
 
         viewController?.present(actionSheetController, animated: true)
     }
