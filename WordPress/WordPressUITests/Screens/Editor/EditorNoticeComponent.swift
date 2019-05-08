@@ -12,7 +12,7 @@ class EditorNoticeComponent: BaseScreen {
     }
 
     func viewPublishedPost(withTitle title: String) -> EditorPublishEpilogueScreen {
-        XCTAssert(XCUIApplication().staticTexts[title].exists)
+        XCTAssert(XCUIApplication().staticTexts[title].exists, "Post title not visible on published post notice")
         noticeAction.tap()
 
         return EditorPublishEpilogueScreen()

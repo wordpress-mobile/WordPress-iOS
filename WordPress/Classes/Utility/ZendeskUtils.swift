@@ -44,6 +44,7 @@ extension NSNotification.Name {
     private var deviceID: String?
     private var haveUserIdentity = false
     private var alertNameField: UITextField?
+    private var sitePlansCache = [Int: RemotePlanSimpleDescription]()
 
     private static var zdAppID: String?
     private static var zdUrl: String?
@@ -181,6 +182,24 @@ extension NSNotification.Name {
         ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
             completion(success)
         }
+    }
+
+    func cacheUnlocalizedSitePlans() {
+        guard !WordPressComLanguageDatabase().deviceLanguage.slug.hasPrefix("en") else {
+            // Don't fetch if its already "en".
+            return
+        }
+
+        let context = ContextManager.shared.mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount() else {
+            return
+        }
+
+        let planService = PlanService(managedObjectContext: context)
+        planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
+            self.sitePlansCache = plans
+        }, failure: { error in })
     }
 
     // MARK: - Device Registration
@@ -601,7 +620,14 @@ private extension ZendeskUtils {
             return Constants.noValue
         }
 
-        return (allBlogs.map { $0.supportDescription() }).joined(separator: Constants.blogSeperator)
+        let blogInfo: [String] = allBlogs.map {
+            var desc = $0.supportDescription()
+            if let blogID = $0.dotComID, let plan = ZendeskUtils.sharedInstance.sitePlansCache[blogID.intValue] {
+                desc = desc + "<Unlocalized Plan: \(plan.name) (\(plan.planID))>" // Do not localize this. :)
+            }
+            return desc
+        }
+        return blogInfo.joined(separator: Constants.blogSeperator)
     }
 
     static func getTags() -> [String] {
@@ -615,7 +641,10 @@ private extension ZendeskUtils {
         }
 
         // Get all unique site plans
-        var tags = allBlogs.compactMap { $0.planTitle }.unique
+        var tags = ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name }.unique
+        if tags.count == 0 {
+            tags = allBlogs.compactMap { $0.planTitle }.unique
+        }
 
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }

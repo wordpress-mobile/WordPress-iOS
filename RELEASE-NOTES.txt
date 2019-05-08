@@ -12,6 +12,7 @@
 * Better URL validation when logging in with a self hosted site.
 * Account Settings Primary Site now shows the site URL if the site has no name.
 * Implemented incremental improvements to accessibility experience across the app.
+* Updated error message when tag loading failed.
 
 12.3
 -----

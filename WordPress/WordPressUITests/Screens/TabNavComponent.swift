@@ -53,4 +53,8 @@ class TabNavComponent: BaseScreen {
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons["mySitesTabButton"].exists
     }
+
+    static func isVisible() -> Bool {
+        return XCUIApplication().buttons["mySitesTabButton"].isHittable
+    }
 }
