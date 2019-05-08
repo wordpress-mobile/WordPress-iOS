@@ -60,6 +60,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
     }
 
+    func testCallDelegateWhenMoveToDraftTapped() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post)
+        viewControllerMock.viewControllerPresented?.tap("Move to Draft")
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleDraft)
+    }
+
 }
 
 class UIViewControllerMock: UIViewController {
@@ -76,8 +85,13 @@ class UIViewControllerMock: UIViewController {
 class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
 
     var didCallHandleStats = false
+    var didCallHandleDraft = false
 
     func handleStats(for post: AbstractPost) {
         didCallHandleStats = true
+    }
+
+    func handleDraftPost(_ post: AbstractPost) {
+        didCallHandleDraft = true
     }
 }
