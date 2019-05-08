@@ -413,6 +413,7 @@
 		570BFD8B22823D7B007859A8 /* PostActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8A22823D7B007859A8 /* PostActionSheet.swift */; };
 		570BFD8D22823DE5007859A8 /* PostActionSheetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */; };
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
+		570BFD92228272BC007859A8 /* UIAlertController+tap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD91228272BC007859A8 /* UIAlertController+tap.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
 		57BAD50C225CCE1A006139EC /* WPTabBarController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */; };
 		57D5812D2228526C002BAAD7 /* WPError+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D5812C2228526C002BAAD7 /* WPError+Swift.swift */; };
@@ -2327,6 +2328,7 @@
 		570BFD8A22823D7B007859A8 /* PostActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionSheet.swift; sourceTree = "<group>"; };
 		570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostActionSheetTests.swift; sourceTree = "<group>"; };
 		570BFD8F2282418A007859A8 /* PostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBuilder.swift; sourceTree = "<group>"; };
+		570BFD91228272BC007859A8 /* UIAlertController+tap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+tap.swift"; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
 		57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+Swift.swift"; sourceTree = "<group>"; };
 		57D5812C2228526C002BAAD7 /* WPError+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPError+Swift.swift"; sourceTree = "<group>"; };
@@ -7009,6 +7011,7 @@
 			children = (
 				B532ACD21DC3AE1200FFFA57 /* OHHTTPStubs+Helpers.swift */,
 				D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */,
+				570BFD91228272BC007859A8 /* UIAlertController+tap.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -10984,6 +10987,7 @@
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
 				08B6E51C1F037ADD00268F57 /* MediaFileManagerTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
+				570BFD92228272BC007859A8 /* UIAlertController+tap.swift in Sources */,
 				73178C2C21BEE09300E37C9A /* SiteCreationHeaderDataTests.swift in Sources */,
 				400199AD22259FF300EB0906 /* AnnualAndMostPopularTimeStatsRecordValueTests.swift in Sources */,
 				08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */,

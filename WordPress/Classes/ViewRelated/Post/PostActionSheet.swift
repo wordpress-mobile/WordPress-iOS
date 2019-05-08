@@ -5,8 +5,9 @@ class PostActionSheet {
     weak var viewController: UIViewController?
     weak var interactivePostViewDelegate: InteractivePostViewDelegate?
 
-    init(viewController: UIViewController) {
+    init(viewController: UIViewController, interactivePostViewDelegate: InteractivePostViewDelegate) {
         self.viewController = viewController
+        self.interactivePostViewDelegate = interactivePostViewDelegate
     }
 
     func show(for post: Post) {
@@ -16,8 +17,8 @@ class PostActionSheet {
         actionSheetController.addAction(cancelActionButton)
 
         if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
-            let statsActionButton = UIAlertAction(title: NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post."), style: .default) { _ in
-                // show stats
+            let statsActionButton = UIAlertAction(title: NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post."), style: .default) { [weak self] _ in
+                self?.interactivePostViewDelegate?.handleStats?(for: post)
             }
             actionSheetController.addAction(statsActionButton)
         }
