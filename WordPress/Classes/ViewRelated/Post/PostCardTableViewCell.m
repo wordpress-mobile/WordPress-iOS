@@ -4,6 +4,7 @@
 #import <WordPressShared/WordPressShared.h>
 #import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
+#import "PostActionSheetDelegate.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
@@ -52,6 +53,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
+@property (nonatomic, weak) id<PostActionSheetDelegate> actionSheetDelegate;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostCardStatusViewModel *viewModel;
 @property (nonatomic, strong) ImageLoader *imageLoader;
@@ -258,6 +260,18 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)setInteractionDelegate:(id<InteractivePostViewDelegate>)delegate
 {
     self.delegate = delegate;
+}
+
+#pragma mark - ActionSheetDelegate
+
+- (void)setActionSheetDelegate:(id<PostActionSheetDelegate>)delegate
+{
+    self.actionSheetDelegate = delegate;
+
+    __weak __typeof(self) weakSelf = self;
+    [self.actionBar setMoreAction:^{
+        [weakSelf showActionSheet];
+    }];
 }
 
 #pragma mark - Configuration
@@ -738,6 +752,15 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
         [self applyStyles];
         [self arrangeStackViews];
+    }
+}
+
+#pragma mark - Post Action Sheet
+
+- (void)showActionSheet
+{
+    if ([self.actionSheetDelegate respondsToSelector:@selector(showActionSheet:)]) {
+        [self.actionSheetDelegate showActionSheet:self.post];
     }
 }
 
