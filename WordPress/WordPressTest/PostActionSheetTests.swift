@@ -7,10 +7,12 @@ class PostActionSheetTests: XCTestCase {
 
     var postActionSheet: PostActionSheet!
     var viewControllerMock: UIViewControllerMock!
+    var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
 
     override func setUp() {
         viewControllerMock = UIViewControllerMock()
-        postActionSheet = PostActionSheet(viewController: viewControllerMock)
+        interactivePostViewDelegateMock = InteractivePostViewDelegateMock()
+        postActionSheet = PostActionSheet(viewController: viewControllerMock, interactivePostViewDelegate: interactivePostViewDelegateMock)
     }
 
     func testPublishedPostOptions() {
@@ -49,6 +51,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertEqual(["Cancel", "Move to Draft", "Delete Permanently"], options)
     }
 
+    func testCallDelegateWhenStatsTapped() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post)
+        viewControllerMock.viewControllerPresented?.tap("Stats")
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
+    }
+
 }
 
 class UIViewControllerMock: UIViewController {
@@ -59,5 +70,14 @@ class UIViewControllerMock: UIViewController {
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         didCallPresent = true
         viewControllerPresented = viewControllerToPresent as? UIAlertController
+    }
+}
+
+class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
+
+    var didCallHandleStats = false
+
+    func handleStats(for post: AbstractPost) {
+        didCallHandleStats = true
     }
 }
