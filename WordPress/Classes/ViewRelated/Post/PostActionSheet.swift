@@ -23,8 +23,8 @@ class PostActionSheet {
             actionSheetController.addAction(statsActionButton)
         }
 
-        let draftsActionButton = UIAlertAction(title: NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder"), style: .default) { _ in
-            // move to drafts
+        let draftsActionButton = UIAlertAction(title: NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder"), style: .default) { [weak self] _ in
+            self?.interactivePostViewDelegate?.handleDraftPost?(post)
         }
         actionSheetController.addAction(draftsActionButton)
 

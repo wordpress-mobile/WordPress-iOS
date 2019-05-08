@@ -546,6 +546,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
+    func handleDraftPost(_ post: AbstractPost) {
+        // TODO: move to draft
+    }
+
     // MARK: - UISearchControllerDelegate
 
     override func willPresentSearchController(_ searchController: UISearchController) {

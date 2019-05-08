@@ -11,4 +11,5 @@
 - (void)handlePublishPost:(nonnull AbstractPost *)post;
 - (void)handleSchedulePost:(nonnull AbstractPost *)post;
 - (void)handleRestorePost:(nonnull AbstractPost *)post;
+- (void)handleDraftPost:(nonnull AbstractPost *)post;
 @end
