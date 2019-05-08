@@ -69,6 +69,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleDraft)
     }
 
+    func testCallDelegateWhenDeletePermanentlyTapped() {
+        let post = PostBuilder().trashed().build()
+
+        postActionSheet.show(for: post)
+        viewControllerMock.viewControllerPresented?.tap("Delete Permanently")
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
+    }
+
 }
 
 class UIViewControllerMock: UIViewController {
@@ -86,6 +95,7 @@ class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
 
     var didCallHandleStats = false
     var didCallHandleDraft = false
+    var didCallHandleTrashPost = false
 
     func handleStats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -93,5 +103,9 @@ class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
 
     func handleDraftPost(_ post: AbstractPost) {
         didCallHandleDraft = true
+    }
+
+    func handleTrashPost(_ post: AbstractPost) {
+        didCallHandleTrashPost = true
     }
 }

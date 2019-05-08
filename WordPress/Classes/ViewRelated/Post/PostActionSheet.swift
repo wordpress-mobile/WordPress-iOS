@@ -29,8 +29,8 @@ class PostActionSheet {
         actionSheetController.addAction(draftsActionButton)
 
         if post.status == BasePost.Status.trash {
-            let deleteActionButton = UIAlertAction(title: NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post."), style: .destructive) { _ in
-                print("Delete")
+            let deleteActionButton = UIAlertAction(title: NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post."), style: .destructive) { [weak self] _ in
+                self?.interactivePostViewDelegate?.handleTrashPost?(post)
             }
             actionSheetController.addAction(deleteActionButton)
         } else {
