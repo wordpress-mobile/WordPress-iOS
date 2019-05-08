@@ -26,7 +26,7 @@ extension BlogDetailsViewController {
             )
             let alertController = UIAlertController(
                 title: NSLocalizedString("Unable to register domain", comment: "Alert title when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption."),
-                message: NSLocalizedString("Something went wrong. Please try again.", comment: "Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption."),
+                message: NSLocalizedString("Something went wrong, please try again.", comment: "Alert message when `JetpackSiteRef` cannot be initialized from a blog during domain credit redemption."),
                 preferredStyle: .alert
             )
             alertController.addCancelActionWithTitle(cancelActionTitle, handler: nil)
