@@ -5,5 +5,5 @@
 @protocol ConfigurablePostView;
 
 @interface PostCardTableViewCell : UITableViewCell <ConfigurablePostView, InteractivePostView>
-
+- (void)setActionSheetDelegate:(nonnull id<PostActionSheetDelegate>)delegate;
 @end
