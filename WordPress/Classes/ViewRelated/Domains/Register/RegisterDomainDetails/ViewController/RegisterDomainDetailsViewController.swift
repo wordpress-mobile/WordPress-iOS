@@ -57,8 +57,8 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         configureTableView()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
-        viewModel.onChange = { [unowned self] (change) in
-            self.handle(change: change)
+        viewModel.onChange = { [weak self] (change) in
+            self?.handle(change: change)
         }
 
         viewModel.prefill()
