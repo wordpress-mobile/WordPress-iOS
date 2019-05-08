@@ -34,8 +34,8 @@ class PostActionSheet {
             }
             actionSheetController.addAction(deleteActionButton)
         } else {
-            let trashActionButton = UIAlertAction(title: NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder"), style: .destructive) { _ in
-                // move to trash
+            let trashActionButton = UIAlertAction(title: NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder"), style: .destructive) { [weak self] _ in
+                self?.interactivePostViewDelegate?.handleTrashPost?(post)
             }
             actionSheetController.addAction(trashActionButton)
         }
