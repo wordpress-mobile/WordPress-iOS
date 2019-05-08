@@ -25,6 +25,11 @@ class PostBuilder {
         return self
     }
 
+    func trashed() -> PostBuilder {
+        post.status = .trash
+        return self
+    }
+
     func build() -> Post {
         return post
     }

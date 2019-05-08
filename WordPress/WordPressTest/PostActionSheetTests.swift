@@ -40,6 +40,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertEqual(["Cancel", "Move to drafts", "Move to trash"], options)
     }
 
+    func testTrashedPostOptions() {
+        let post = PostBuilder().trashed().build()
+
+        postActionSheet.show(for: post)
+
+        let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
+        XCTAssertEqual(["Cancel", "Move to drafts", "Delete permanently"], options)
+    }
+
 }
 
 class UIViewControllerMock: UIViewController {
