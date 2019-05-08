@@ -19,7 +19,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: post)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Stats", "Move to drafts", "Move to trash"], options)
+        XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash"], options)
     }
 
     func testDraftedPostOptions() {
@@ -28,7 +28,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: post)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Stats", "Move to drafts", "Move to trash"], options)
+        XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash"], options)
     }
 
     func testScheduledPostOptions() {
@@ -37,7 +37,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: post)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Move to drafts", "Move to trash"], options)
+        XCTAssertEqual(["Cancel", "Move to Draft", "Move to Trash"], options)
     }
 
     func testTrashedPostOptions() {
@@ -46,7 +46,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: post)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Move to drafts", "Delete permanently"], options)
+        XCTAssertEqual(["Cancel", "Move to Draft", "Delete Permanently"], options)
     }
 
 }
