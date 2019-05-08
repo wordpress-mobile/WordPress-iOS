@@ -78,6 +78,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
     }
 
+    func testCallDelegateWhenMoveToTrashTapped() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post)
+        viewControllerMock.viewControllerPresented?.tap("Move to Trash")
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
+    }
+
 }
 
 class UIViewControllerMock: UIViewController {
