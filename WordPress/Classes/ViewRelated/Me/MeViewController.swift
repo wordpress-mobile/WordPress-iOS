@@ -56,6 +56,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        tableView.accessibilityIdentifier = "Me Table"
     }
 
     override func viewDidLayoutSubviews() {
@@ -139,7 +140,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: RowTitles.appSettings,
             icon: Gridicon.iconOfType(.phone),
             accessoryType: accessoryType,
-            action: pushAppSettings())
+            action: pushAppSettings(),
+            accessibilityIdentifier: "appSettings")
     }
 
     fileprivate func tableViewModel(_ loggedIn: Bool) -> ImmuTable {
@@ -149,19 +151,22 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: RowTitles.myProfile,
             icon: Gridicon.iconOfType(.user),
             accessoryType: accessoryType,
-            action: pushMyProfile())
+            action: pushMyProfile(),
+            accessibilityIdentifier: "myProfile")
 
         let accountSettings = NavigationItemRow(
             title: RowTitles.accountSettings,
             icon: Gridicon.iconOfType(.cog),
             accessoryType: accessoryType,
-            action: pushAccountSettings())
+            action: pushAccountSettings(),
+            accessibilityIdentifier: "accountSettings")
 
         let notificationSettings = NavigationItemRow(
             title: RowTitles.notificationSettings,
             icon: Gridicon.iconOfType(.bell),
             accessoryType: accessoryType,
-            action: pushNotificationSettings())
+            action: pushNotificationSettings(),
+            accessibilityIdentifier: "notificationSettings")
 
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
