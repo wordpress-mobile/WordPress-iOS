@@ -110,8 +110,8 @@ import WordPressAuthenticator
             return false
         }
 
-        if debugKey == ApiCredentials.debuggingKey(), debugType == "crashlytics_crash" {
-            Crashlytics.sharedInstance().crash()
+        if debugKey == ApiCredentials.debuggingKey(), debugType == "force_crash" {
+            WPCrashLogging.crash()
         }
 
         return true

@@ -1,8 +1,7 @@
 #import "WPLogger.h"
+#import "WordPress-Swift.h"
 
 @import CocoaLumberjack;
-#import "WPCrashlyticsLogger.h"
-#import "WordPress-Swift.h"
 
 @interface WPLogger ()
 @property (nonatomic, strong, readwrite) DDFileLogger *fileLogger;
@@ -41,11 +40,6 @@
 #ifdef DEBUG
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
-    
-#ifndef DEBUG
-    [DDLog addLogger:[WPCrashlyticsLogger sharedInstance]];
-#endif
-    
     [DDLog addLogger:self.fileLogger];
 
     [WPLogger configureLoggerLevelWithExtraDebug];

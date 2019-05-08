@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -53,20 +53,20 @@
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="LBU-zb-iai" secondAttribute="bottom" id="6uy-tW-55g"/>
-                                <constraint firstItem="LBU-zb-iai" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leading" id="9sh-kF-RQv"/>
+                                <constraint firstItem="LBU-zb-iai" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leading" priority="999" id="9sh-kF-RQv"/>
                                 <constraint firstItem="LBU-zb-iai" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" id="Ib2-7V-nPZ"/>
-                                <constraint firstAttribute="trailing" secondItem="LBU-zb-iai" secondAttribute="trailing" id="Zhl-Rn-WR6"/>
+                                <constraint firstAttribute="trailing" secondItem="LBU-zb-iai" secondAttribute="trailing" priority="999" id="Zhl-Rn-WR6"/>
                             </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="pEF-oN-cih" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" identifier="FiltersLeading" id="0TE-M7-WfE"/>
-                        <constraint firstAttribute="trailing" secondItem="pEF-oN-cih" secondAttribute="trailing" identifier="FiltersTrailing" id="222-MX-igM"/>
-                        <constraint firstItem="ZnY-3K-upT" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" identifier="RatingsLeading" id="27p-cV-siE"/>
+                        <constraint firstItem="pEF-oN-cih" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" priority="999" identifier="FiltersLeading" id="0TE-M7-WfE"/>
+                        <constraint firstAttribute="trailing" secondItem="pEF-oN-cih" secondAttribute="trailing" priority="999" identifier="FiltersTrailing" id="222-MX-igM"/>
+                        <constraint firstItem="ZnY-3K-upT" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" priority="999" identifier="RatingsLeading" id="27p-cV-siE"/>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="top" secondItem="ZnY-3K-upT" secondAttribute="bottom" identifier="FiltersTop" id="MBK-Ez-h7B"/>
                         <constraint firstItem="ZnY-3K-upT" firstAttribute="top" secondItem="Uvo-9e-l6I" secondAttribute="top" priority="750" identifier="RatingsTop" id="SJu-PU-nzt"/>
-                        <constraint firstAttribute="trailing" secondItem="ZnY-3K-upT" secondAttribute="trailing" identifier="RatingsTrailing" id="b8L-0Q-JCB"/>
+                        <constraint firstAttribute="trailing" secondItem="ZnY-3K-upT" secondAttribute="trailing" priority="999" identifier="RatingsTrailing" id="b8L-0Q-JCB"/>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uvo-9e-l6I" secondAttribute="top" id="iOI-vG-EsO"/>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="centerX" secondItem="Uvo-9e-l6I" secondAttribute="centerX" identifier="FiltersCenter" id="rGu-9k-JxJ"/>
                         <constraint firstAttribute="bottom" secondItem="pEF-oN-cih" secondAttribute="bottom" identifier="FiltersBottom" id="zwD-z0-d6i"/>

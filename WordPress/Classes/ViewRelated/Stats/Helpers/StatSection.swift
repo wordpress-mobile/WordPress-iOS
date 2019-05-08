@@ -24,10 +24,10 @@
     case insightsTodaysStats
     case insightsPostingActivity
     case insightsPublicize
-    case postDetailsGraph
-    case postDetailsMonthsYears
-    case postDetailsAveragePerDay
-    case postDetailsRecentWeeks
+    case postStatsGraph
+    case postStatsMonthsYears
+    case postStatsAverageViews
+    case postStatsRecentWeeks
 
     static let allInsights = [StatSection.insightsLatestPostSummary,
                               .insightsAllTime,
@@ -56,6 +56,12 @@
                              .periodSearchTerms,
                              .periodPublished,
                              .periodVideos
+    ]
+
+    static let allPostStats = [StatSection.postStatsGraph,
+                               .postStatsMonthsYears,
+                               .postStatsAverageViews,
+                               .postStatsRecentWeeks
     ]
 
     // MARK: - String Accessors
@@ -100,6 +106,12 @@
             return PeriodHeaders.published
         case .periodVideos:
             return PeriodHeaders.videos
+        case .postStatsMonthsYears:
+            return PostStatsHeaders.monthsAndYears
+        case .postStatsAverageViews:
+            return PostStatsHeaders.averageViewsPerDay
+        case .postStatsRecentWeeks:
+            return PostStatsHeaders.recentWeeks
         default:
             return ""
         }
@@ -128,6 +140,8 @@
             return ItemSubtitles.country
         case .periodSearchTerms:
             return ItemSubtitles.searchTerm
+        case .postStatsMonthsYears, .postStatsAverageViews, .postStatsRecentWeeks:
+            return ItemSubtitles.period
         default:
             return ""
         }
@@ -144,7 +158,10 @@
              .periodAuthors,
              .periodCountries,
              .periodSearchTerms,
-             .periodVideos:
+             .periodVideos,
+             .postStatsMonthsYears,
+             .postStatsAverageViews,
+             .postStatsRecentWeeks:
             return DataSubtitles.views
         case .insightsPublicize:
             return DataSubtitles.followers
@@ -219,6 +236,12 @@
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
     }
 
+    struct PostStatsHeaders {
+        static let recentWeeks = NSLocalizedString("Recent Weeks", comment: "Post Stats recent weeks header.")
+        static let monthsAndYears = NSLocalizedString("Months and Years", comment: "Post Stats months and years header.")
+        static let averageViewsPerDay = NSLocalizedString("Avg. Views Per Day", comment: "Post Stats average views per day header.")
+    }
+
     struct ItemSubtitles {
         static let author = NSLocalizedString("Author", comment: "Label for list of stats by content author.")
         static let title = NSLocalizedString("Title", comment: "Label for list of stats by content title.")
@@ -228,6 +251,7 @@
         static let link = NSLocalizedString("Link", comment: "Label for link title in Clicks stat.")
         static let country = NSLocalizedString("Country", comment: "Label for list of countries.")
         static let searchTerm = NSLocalizedString("Search Term", comment: "Label for list of search term")
+        static let period = NSLocalizedString("Period", comment: "Label for date periods.")
     }
 
     struct DataSubtitles {
@@ -254,4 +278,5 @@
         static let email = NSLocalizedString("Total Email Followers: %@", comment: "Label displaying total number of Email followers. %@ is the total.")
     }
 
+    static let noPostTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
 }

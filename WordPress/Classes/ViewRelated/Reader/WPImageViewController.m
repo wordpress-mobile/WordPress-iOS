@@ -1,6 +1,4 @@
 #import "WPImageViewController.h"
-
-#import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPress-Swift.h"
 @import Gridicons;
 
@@ -252,13 +250,13 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.isLoadingImage = YES;
     __weak __typeof__(self) weakSelf = self;
-    [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
+    [_imageView downloadImageUsingRequest:[NSURLRequest requestWithURL:self.url]
                       placeholderImage:self.image
-                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                               success:^(UIImage *image) {
                                    weakSelf.image = image;
                                    [weakSelf updateImageView];
                                    weakSelf.isLoadingImage = NO;
-                               } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                               } failure:^(NSError *error) {
                                    DDLogError(@"Error loading image: %@", error);
                                    [weakSelf.activityIndicatorView showError];
                                }];

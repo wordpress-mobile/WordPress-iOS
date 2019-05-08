@@ -11,6 +11,7 @@ protocol QuickStartTour {
     var suggestionNoText: String { get }
     var suggestionYesText: String { get }
     var waypoints: [WayPoint] { get }
+    var accessibilityHintText: String { get }
 }
 
 extension QuickStartTour {
@@ -40,6 +41,8 @@ struct QuickStartChecklistTour: QuickStartTour {
         let descriptionTarget = NSLocalizedString("Quick Start", comment: "The menu item to tap during a guided tour.")
         return [(element: .checklist, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.listCheckmark)))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of setting up your site.", comment: "This value is used to set the accessibility hint text for setting up the user's site.")
 }
 
 struct QuickStartCreateTour: QuickStartTour {
@@ -52,6 +55,8 @@ struct QuickStartCreateTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
 
     let waypoints: [QuickStartTour.WayPoint] = [(element: .noSuchElement, description: NSAttributedString(string: "This tour should never display as interactive."))]
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of creating your site.", comment: "This value is used to set the accessibility hint text for creating the user's site.")
 }
 
 /// This is used to track when users from v1 are shown the v2 upgrade notice
@@ -66,6 +71,8 @@ struct QuickStartUpgradeToV2Tour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
 
     let waypoints: [QuickStartTour.WayPoint] = []
+
+    let accessibilityHintText = ""  // not applicable for this tour type
 }
 
 struct QuickStartViewTour: QuickStartTour {
@@ -82,6 +89,8 @@ struct QuickStartViewTour: QuickStartTour {
         let descriptionTarget = NSLocalizedString("View Site", comment: "The menu item to tap during a guided tour.")
         return [(element: .viewSite, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.house)))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of previewing your site.", comment: "This value is used to set the accessibility hint text for previewing a user's site.")
 }
 
 struct QuickStartThemeTour: QuickStartTour {
@@ -98,6 +107,8 @@ struct QuickStartThemeTour: QuickStartTour {
         let descriptionTarget = NSLocalizedString("Themes", comment: "The menu item to tap during a guided tour.")
         return [(element: .themes, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.themes)))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of choosing a theme for your site.", comment: "This value is used to set the accessibility hint text for choosing a theme for the user's site.")
 }
 
 struct QuickStartCustomizeTour: QuickStartTour {
@@ -120,6 +131,8 @@ struct QuickStartCustomizeTour: QuickStartTour {
 
         return [step1, step2]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of customizing your site.", comment: "This value is used to set the accessibility hint text for customizing a user's site.")
 }
 
 struct QuickStartShareTour: QuickStartTour {
@@ -142,6 +155,8 @@ struct QuickStartShareTour: QuickStartTour {
 
         return [step1, step2]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
 }
 
 struct QuickStartPublishTour: QuickStartTour {
@@ -157,6 +172,8 @@ struct QuickStartPublishTour: QuickStartTour {
         let descriptionBase = NSLocalizedString("Tap %@ to create a new post", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
         return [(element: .newpost, description: descriptionBase.highlighting(phrase: "", icon: Gridicon.iconOfType(.create)))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of publishing a new post on your site.", comment: "This value is used to set the accessibility hint text for publishing a new post on the user's site.")
 }
 
 struct QuickStartFollowTour: QuickStartTour {
@@ -184,6 +201,8 @@ struct QuickStartFollowTour: QuickStartTour {
         return [step1, step2, step3]
     }()
 
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of following other sites.", comment: "This value is used to set the accessibility hint text for following the sites of other users.")
+
     func setupReaderTab() {
         guard let tabBar = WPTabBarController.sharedInstance() else {
             return
@@ -207,6 +226,8 @@ struct QuickStartSiteIconTour: QuickStartTour {
         let descriptionTarget = NSLocalizedString("Your Site Icon", comment: "The item to tap during a guided tour.")
         return [(element: .siteIcon, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: nil))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of uploading an icon for your site.", comment: "This value is used to set the accessibility hint text for uploading a site icon.")
 }
 
 struct QuickStartNewPageTour: QuickStartTour {
@@ -229,6 +250,8 @@ struct QuickStartNewPageTour: QuickStartTour {
             (element: .newPage, description: newStepDesc.highlighting(phrase: "", icon: Gridicon.iconOfType(.plus)))
         ]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of creating a new page for your site.", comment: "This value is used to set the accessibility hint text for creating a new page for the user's site.")
 }
 
 struct QuickStartCheckStatsTour: QuickStartTour {
@@ -245,6 +268,8 @@ struct QuickStartCheckStatsTour: QuickStartTour {
         let descriptionTarget = NSLocalizedString("Stats", comment: "The item to tap during a guided tour.")
         return [(element: .stats, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.stats)))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of reviewing statistics for your site.", comment: "This value is used to set the accessibility hint text for viewing Stats on the user's site.")
 }
 
 struct QuickStartExplorePlansTour: QuickStartTour {
@@ -261,6 +286,8 @@ struct QuickStartExplorePlansTour: QuickStartTour {
         let descriptionTarget = NSLocalizedString("Plan", comment: "The item to tap during a guided tour.")
         return [(element: .plans, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.plans)))]
     }()
+
+    let accessibilityHintText = NSLocalizedString("Guides you through the process of exploring plans for your site.", comment: "This value is used to set the accessibility hint text for exploring plans on the user's site.")
 }
 
 private let congratsTitle = NSLocalizedString("Congrats on finishing Quick Start  🎉", comment: "Title of a Quick Start Tour")
@@ -275,6 +302,8 @@ struct QuickStartCongratulationsTour: QuickStartTour {
     let suggestionYesText = Strings.yesShowMe
 
     let waypoints: [QuickStartTour.WayPoint] = [(element: .congratulations, description: NSAttributedString(string: congratsTitle))]
+
+    let accessibilityHintText = ""  // Not applicable for this tour type
 }
 
 private extension String {

@@ -12,8 +12,7 @@ extension BlogDetailsViewController {
             self?.configureTableViewData()
             self?.reloadTableViewPreservingSelection()
             if let index = QuickStartTourGuide.find()?.currentElementInt(),
-                let element = QuickStartTourElement(rawValue: index),
-                Feature.enabled(.quickStartV2) {
+                let element = QuickStartTourElement(rawValue: index) {
                 self?.scroll(to: element)
             }
         }
@@ -66,10 +65,6 @@ extension BlogDetailsViewController {
         return QuickStartTourGuide.shouldShowChecklist(for: blog)
     }
 
-    @objc func showQuickStartV1() {
-        showQuickStart()
-    }
-
     @objc func showQuickStartCustomize() {
         showQuickStart(with: .customize)
     }
@@ -78,15 +73,10 @@ extension BlogDetailsViewController {
         showQuickStart(with: .grow)
     }
 
-    private func showQuickStart(with type: QuickStartType? = nil) {
-        if let type = type, Feature.enabled(.quickStartV2) {
-            let checklist = QuickStartChecklistViewController(blog: blog, type: type)
-            let navigationViewController = UINavigationController(rootViewController: checklist)
-            present(navigationViewController, animated: true, completion: nil)
-        } else {
-            let checklist = QuickStartChecklistViewControllerV1(blog: blog)
-            navigationController?.showDetailViewController(checklist, sender: self)
-        }
+    private func showQuickStart(with type: QuickStartType) {
+        let checklist = QuickStartChecklistViewController(blog: blog, type: type)
+        let navigationViewController = UINavigationController(rootViewController: checklist)
+        present(navigationViewController, animated: true, completion: nil)
 
         QuickStartTourGuide.find()?.visited(.checklist)
     }
@@ -121,7 +111,7 @@ extension BlogDetailsViewController {
         }
 
         let sectionTitle = NSLocalizedString("Next Steps", comment: "Table view title for the quick start section.")
-        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow])
+        let section = BlogDetailsSection(title: sectionTitle, andRows: [customizeRow, growRow], category: .quickStart)
         section.showQuickStartMenu = true
         return section
     }

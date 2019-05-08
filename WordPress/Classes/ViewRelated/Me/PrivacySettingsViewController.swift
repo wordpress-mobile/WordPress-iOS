@@ -113,8 +113,7 @@ class PrivacySettingsViewController: UITableViewController {
             let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
 
-            let crashlytics = WordPressAppDelegate.shared?.crashlytics
-            crashlytics?.setUserHasOptedOut(!enabled)
+            WPCrashLogging.userHasOptedOut = !enabled
         }
     }
 

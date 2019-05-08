@@ -352,9 +352,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _blogListSplitViewController = [WPSplitViewController new];
         _blogListSplitViewController.restorationIdentifier = WPBlogListSplitViewRestorationID;
         _blogListSplitViewController.presentsWithGesture = NO;
-        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
         [_blogListSplitViewController setInitialPrimaryViewController:self.blogListNavigationController];
+        _blogListSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _blogListSplitViewController.dimsDetailViewControllerAutomatically = YES;
 
@@ -370,6 +369,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.presentsWithGesture = NO;
+        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
         _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
         _readerSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
 
@@ -382,8 +382,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             [_readerSplitViewController setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
         }
 
-        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
-
         _readerSplitViewController.tabBarItem = self.readerNavigationController.tabBarItem;
     }
 
@@ -395,9 +393,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
         _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
-        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
-
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
+        _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
 
         _meSplitViewController.tabBarItem = self.meNavigationController.tabBarItem;
     }
@@ -410,10 +407,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_notificationsSplitViewController) {
         _notificationsSplitViewController = [WPSplitViewController new];
         _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
+         [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
         _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
         _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
-
-        [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
 
         _notificationsSplitViewController.tabBarItem = self.notificationsNavigationController.tabBarItem;
     }

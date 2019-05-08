@@ -236,6 +236,7 @@
                                                                     buttonTitle:NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load")
                                                                        subtitle:nil
                                                              attributedSubtitle:nil
+                                                attributedSubtitleConfiguration:nil
                                                                           image:nil
                                                                   subtitleImage:nil
                                                                   accessoryView:nil];

@@ -266,6 +266,7 @@ static NSInteger HideSearchMinSites = 3;
                                                  buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
                                                     subtitle:nil
                                           attributedSubtitle:nil
+                             attributedSubtitleConfiguration:nil
                                                        image:@"mysites-nosites"
                                                subtitleImage:nil
                                                accessoryView:nil];
@@ -293,6 +294,7 @@ static NSInteger HideSearchMinSites = 3;
                                              buttonTitle:buttonTitle
                                                 subtitle:singularSubtitle
                                       attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
                                                    image:imageName
                                            subtitleImage:nil
                                            accessoryView:nil];
@@ -301,6 +303,7 @@ static NSInteger HideSearchMinSites = 3;
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
                                       attributedSubtitle:nil
+                         attributedSubtitleConfiguration:nil
                                                    image:imageName
                                            subtitleImage:nil
                                            accessoryView:nil];
@@ -729,7 +732,7 @@ static NSInteger HideSearchMinSites = 3;
         RecentSitesService *recentSites = [RecentSitesService new];
         [recentSites touchBlog:blog];
 
-        if (![blog isEqual:self.selectedBlog] && [Feature enabled:FeatureFlagQuickStartV2]) {
+        if (![blog isEqual:self.selectedBlog]) {
             [[PushNotificationsManager shared] deletePendingLocalNotifications];
         }
 

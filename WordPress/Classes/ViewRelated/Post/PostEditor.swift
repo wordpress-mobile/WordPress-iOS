@@ -39,10 +39,6 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     ///
     func prepopulateMediaItems(_ media: [Media])
 
-    /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
-    ///
-    var shouldRemovePostOnDismiss: Bool { get }
-
     /// Cancels all ongoing uploads
     ///
     ///TODO: We won't need this once media uploading is extracted to PostEditorUtil
@@ -78,7 +74,7 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
 
-    /// Error domain used when reporting error to Crashlytics
+    /// Error domain used when reporting error to Crash Logger
     var errorDomain: String { get }
 
     /// Returns true if the site mode is on
