@@ -25,6 +25,7 @@ class LoginTests: XCTestCase {
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSiteAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
             .tabBar.gotoMeScreen()
@@ -51,6 +52,7 @@ class LoginTests: XCTestCase {
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: "WordPress.com")
             .proceedWith(username: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSiteAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
 
@@ -62,6 +64,7 @@ class LoginTests: XCTestCase {
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelectedSite()
             .removeSelfHostedSite()
 
