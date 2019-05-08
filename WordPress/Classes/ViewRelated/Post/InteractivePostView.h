@@ -9,6 +9,5 @@
 /// Sets the delegate that will handle all post interaction.
 ///
 - (void)setInteractionDelegate:(nonnull id<InteractivePostViewDelegate>)delegate;
-- (void)setActionSheetDelegate:(nonnull id<PostActionSheetDelegate>)delegate;
 
 @end

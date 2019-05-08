@@ -348,9 +348,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
-        interactivePostView.setActionSheetDelegate(self)
 
         configurablePostView.configure(with: post)
+
+        setActionSheetDelegate(cell)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
@@ -363,6 +364,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         return identifier
+    }
+
+    private func setActionSheetDelegate(_ cell: UITableViewCell) {
+        guard let cell = cell as? PostCardTableViewCell else { return }
+
+        cell.setActionSheetDelegate(self)
     }
 
     // MARK: - Post Actions
