@@ -291,6 +291,10 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     [self configureButtons];
 }
 
+- (void)setMoreAction:(MoreActionCallback)callback {
+    self.moreActionCallback = callback;
+}
+
 #pragma mark - Accessors
 
 - (NSInteger)indexOfItem:(PostCardActionBarItem *)item

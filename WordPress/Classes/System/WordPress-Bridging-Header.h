@@ -33,6 +33,7 @@
 
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
+#import "PostActionSheetDelegate.h"
 
 #import "LocalCoreDataService.h"
 

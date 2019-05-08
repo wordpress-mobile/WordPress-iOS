@@ -49,6 +49,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    private lazy var postActionSheet: PostActionSheet = {
+        return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
+    }()
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -344,6 +348,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
+        interactivePostView.setActionSheetDelegate(self)
 
         configurablePostView.configure(with: post)
     }
@@ -641,5 +646,13 @@ private extension PostListViewController {
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+    }
+}
+
+extension PostListViewController: PostActionSheetDelegate {
+    func showActionSheet(_ post: AbstractPost) {
+        guard let post = post as? Post else { return }
+        
+        postActionSheet.show(for: post)
     }
 }

@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
-@property (nonatomic, weak) id<PostActionSheetDelegate> actionSheetDelegate;
+@property (nonatomic, weak) id<PostActionSheetDelegate> postActionSheetDelegate;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostCardStatusViewModel *viewModel;
 @property (nonatomic, strong) ImageLoader *imageLoader;
@@ -258,11 +258,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.delegate = delegate;
 }
 
-#pragma mark - ActionSheetDelegate
-
 - (void)setActionSheetDelegate:(id<PostActionSheetDelegate>)delegate
 {
-    self.actionSheetDelegate = delegate;
+    self.postActionSheetDelegate = delegate;
 
     __weak __typeof(self) weakSelf = self;
     [self.actionBar setMoreAction:^{
@@ -755,8 +753,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)showActionSheet
 {
-    if ([self.actionSheetDelegate respondsToSelector:@selector(showActionSheet:)]) {
-        [self.actionSheetDelegate showActionSheet:self.post];
+    if ([self.postActionSheetDelegate respondsToSelector:@selector(showActionSheet:)]) {
+        [self.postActionSheetDelegate showActionSheet:self.post];
     }
 }
 
