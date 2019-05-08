@@ -2,17 +2,17 @@ import Foundation
 import XCTest
 
 class MeTabScreen: BaseScreen {
-    let navBar: XCUIElement
+    let meTable: XCUIElement
     let tabBar: TabNavComponent
     let logOutButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
-        navBar = app.navigationBars["Me"].otherElements["Me"]
+        meTable = app.tables["Me Table"]
         tabBar = TabNavComponent()
         logOutButton = app.cells["logOutFromWPcomButton"]
 
-        super.init(element: navBar)
+        super.init(element: meTable)
     }
 
     func isLoggedInToWpcom() -> Bool {
