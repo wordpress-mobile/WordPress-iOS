@@ -319,7 +319,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 - (BOOL)checkIfShouldShowMoreButton
 {
-    return [self maxButtonsToDisplay] < [self.items count];
+    return [self maxButtonsToDisplay] < [self.items count] || _moreActionCallback;
 }
 
 - (void)setItems:(NSArray *)items
