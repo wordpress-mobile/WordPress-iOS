@@ -103,7 +103,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  succeeds.
  @param failure A failure block
  */
-- (void)savePost:(AbstractPost *)post
+- (void)autoSave:(AbstractPost *)post
          success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
            failure:(void (^)(NSError * _Nullable error))failure;
 

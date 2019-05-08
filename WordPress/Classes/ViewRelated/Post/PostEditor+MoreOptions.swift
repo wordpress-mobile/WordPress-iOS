@@ -46,7 +46,7 @@ extension PostEditor where Self: UIViewController {
                 })
             } else {
                 SVProgressHUD.show(withStatus: publishedStatus)
-                postService.save(post, success: { [weak self] savedPost, previewURL in
+                postService.autoSave(post, success: { [weak self] savedPost, previewURL in
                     self?.post = savedPost
                     ContextManager.sharedInstance().save(context)
                     SVProgressHUD.dismiss()

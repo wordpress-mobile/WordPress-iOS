@@ -339,7 +339,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.4.0
   WordPressKit:
-    :commit: 3d458fd5a1cd1c84fa0d840fdfc35b7563d0fcbf
+    :commit: d9a3d7c10edb1768e0fb988c0f94e18e9f0c8527
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git

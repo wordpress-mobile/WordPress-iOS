@@ -270,7 +270,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     }
 }
 
-- (void)savePost:(AbstractPost *)post
+- (void)autoSave:(AbstractPost *)post
          success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
          failure:(void (^)(NSError * _Nullable error))failure
 {
@@ -280,7 +280,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         return;
     }
 
-    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    PostServiceRemoteREST *remote = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:post.blog.wordPressComRestApi siteID:post.blog.dotComID];
     RemotePost *remotePost = [self remotePostWithPost:post];
     NSManagedObjectID *postObjectID = post.objectID;
     void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
@@ -320,7 +320,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
      };
     
     if ([post.postID longLongValue] > 0) {
-        [remote savePost:remotePost
+        [remote autoSave:remotePost
                    success:successBlock
                    failure:failureBlock];
     }
