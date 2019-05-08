@@ -20,8 +20,8 @@ extension XCUIElement {
 
         if content.count > 0 && content != self.placeholderValue {
             self.press(forDuration: 1.2)
-            app.menuItems["Select All"].tap()
-            app.menuItems["Cut"].tap()
+            app.menuItems.element(boundBy: 1).tap() // Select All (in the text edit menu)
+            app.menuItems.element(boundBy: 0).tap() // Cut (in the text edit menu)
         }
     }
 

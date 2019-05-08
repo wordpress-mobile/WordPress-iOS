@@ -3,7 +3,7 @@ import XCTest
 
 private struct ElementStringIDs {
     static let navBar = "WordPressAuthenticator.LoginSelfHostedView"
-    static let usernameTextField = "Username"
+    static let usernameTextField = "usernameField"
     static let passwordTextField = "passwordField"
     static let nextButton = "submitButton"
 }
