@@ -3,7 +3,33 @@ import Foundation
 @testable import WordPress
 
 class PostBuilder {
-    private let inMemoryManagedObjectContext: NSManagedObjectContext = {
+
+    var post: Post!
+
+    init() {
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: setUpInMemoryManagedObjectContext()) as? Post
+    }
+
+    func published() -> PostBuilder {
+        post.status = .publish
+        return self
+    }
+
+    func drafted() -> PostBuilder {
+        post.status = .draft
+        return self
+    }
+
+    func scheduled() -> PostBuilder {
+        post.status = .scheduled
+        return self
+    }
+
+    func build() -> Post {
+        return post
+    }
+
+    private func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
 
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
@@ -18,23 +44,5 @@ class PostBuilder {
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
 
         return managedObjectContext
-    }()
-
-    lazy var post = {
-        return NSEntityDescription.insertNewObject(forEntityName: "Post", into: inMemoryManagedObjectContext) as! Post
-    }()
-
-    func published() -> PostBuilder {
-        post.status = .publish
-        return self
-    }
-
-    func drafted() -> PostBuilder {
-        post.status = .draft
-        return self
-    }
-
-    func build() -> Post {
-        return NSEntityDescription.insertNewObject(forEntityName: "Post", into: inMemoryManagedObjectContext) as! Post
     }
 }

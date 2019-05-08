@@ -15,10 +15,12 @@ class PostActionSheet {
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
         actionSheetController.addAction(cancelActionButton)
 
-        let statsActionButton = UIAlertAction(title: "Stats", style: .default) { _ in
-            // show stats
+        if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
+            let statsActionButton = UIAlertAction(title: "Stats", style: .default) { _ in
+                // show stats
+            }
+            actionSheetController.addAction(statsActionButton)
         }
-        actionSheetController.addAction(statsActionButton)
 
         let draftsActionButton = UIAlertAction(title: "Move to drafts", style: .default) { _ in
             // move to drafts
