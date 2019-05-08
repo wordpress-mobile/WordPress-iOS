@@ -9,15 +9,14 @@ class PostStatsTitleCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
     private typealias Style = WPStyleGuide.Stats
-    private var postTitle: String?
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
     // MARK: - Configure
 
     func configure(postTitle: String, postURL: URL?, postStatsDelegate: PostStatsDelegate? = nil) {
-        self.postTitle = postTitle
         self.postURL = postURL
+        postTitleLabel.text = postTitle
         self.postStatsDelegate = postStatsDelegate
         applyStyles()
     }
@@ -31,12 +30,6 @@ private extension PostStatsTitleCell {
         Style.configureLabelAsPostStatsTitle(titleLabel)
         Style.configureLabelAsPostTitle(postTitleLabel)
         Style.configureViewAsSeparator(bottomSeparatorLine)
-
-        guard let postTitle = postTitle else {
-            return
-        }
-
-        postTitleLabel.attributedText = Style.highlightString(postTitle, inString: postTitle)
     }
 
     @IBAction func didTapPostTitle(_ sender: UIButton) {

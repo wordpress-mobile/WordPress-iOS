@@ -33,6 +33,7 @@ class ReaderCommentCell: UITableViewCell {
     private let textView: WPRichContentView = {
         let newTextView = WPRichContentView(frame: .zero, textContainer: nil)
         newTextView.isScrollEnabled = false
+        newTextView.isEditable = false
         newTextView.translatesAutoresizingMaskIntoConstraints = false
 
         return newTextView

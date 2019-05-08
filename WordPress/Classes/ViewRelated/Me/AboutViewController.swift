@@ -210,7 +210,7 @@ open class AboutViewController: UITableViewController {
 
                 Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
                     details: nil,
-                    handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.prependLocaleAsSubdomain()) }),
+                    handler: { self.displayWebView(URL(string: WPAutomatticTermsOfServiceURL)?.appendingLocale()) }),
 
                 Row(title: NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
                     details: nil,

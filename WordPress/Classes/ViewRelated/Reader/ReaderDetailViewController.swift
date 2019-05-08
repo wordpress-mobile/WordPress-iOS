@@ -63,6 +63,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let textView = WPRichContentView(frame: .zero, textContainer: nil)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.alpha = 0
+        textView.isEditable = false
 
         return textView
     }()

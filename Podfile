@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.5-beta.2'
+    pod 'WordPressShared', '~> 1.7.5'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -42,7 +42,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1.0-beta.1'
+    pod 'WordPressKit', '~> 4.1.0'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -109,7 +109,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.3.0'
+    gutenberg :tag => 'v1.4.0'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
@@ -134,7 +134,7 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '0.3.5-beta.1'
+    pod 'Automattic-Tracks-iOS', '0.3.5'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
 
@@ -146,9 +146,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.4.1-beta.2'
+    pod 'WordPressAuthenticator', '~> 1.4.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 
     aztec
     wordpress_ui
