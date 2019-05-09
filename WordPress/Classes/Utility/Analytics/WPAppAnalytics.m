@@ -5,7 +5,6 @@
 #import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"
 #import "ApiCredentials.h"
-#import "WordPressAppDelegate.h"
 #import "AccountService.h"
 #import "Blog.h"
 #import "AbstractPost.h"

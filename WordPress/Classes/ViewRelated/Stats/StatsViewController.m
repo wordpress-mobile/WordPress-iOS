@@ -4,7 +4,6 @@
 
 #import "StatsViewController.h"
 #import "Blog.h"
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -76,7 +75,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.title = self.blog.settings.name;
     }
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:appDelegate.internetReachability];
 
     [self initStats];
@@ -111,7 +110,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
     if (!appDelegate.connectionAvailable) {
         [self showNoResults];
         self.offline = YES;

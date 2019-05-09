@@ -768,7 +768,7 @@ import WordPressFlux
     }
 
     @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.sharedInstance()!.connectionAvailable
+        return WordPressAppDelegate.shared!.connectionAvailable
     }
 
 
@@ -785,7 +785,7 @@ import WordPressFlux
             return
         }
 
-        guard WordPressAppDelegate.sharedInstance().runningInBackground == false else {
+        guard WordPressAppDelegate.shared?.runningInBackground == false else {
             return
         }
 

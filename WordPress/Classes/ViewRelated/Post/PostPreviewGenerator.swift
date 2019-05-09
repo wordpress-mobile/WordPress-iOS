@@ -25,7 +25,7 @@ class PostPreviewGenerator: NSObject {
                 return
         }
 
-        guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
+        guard WordPressAppDelegate.shared?.connectionAvailable == true else {
             delegate?.previewFailed(self, message: NSLocalizedString("The internet connection appears to be offline.", comment: "An error message."))
             return
         }
