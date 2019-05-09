@@ -157,7 +157,7 @@ class GutenbergMediaInserterHelper: NSObject {
             case .image:
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
             case .video:
-                post.fetchRemoteVideoURL(for: media) { [weak self] (result) in
+                EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
                     guard let strongSelf = self else {
                         return
                     }

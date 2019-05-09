@@ -59,7 +59,7 @@ class PostCoordinator: NSObject {
                     }
                     switch media.mediaType {
                     case .video:
-                        post.fetchRemoteVideoURL(for: media) { [weak self] (result) in
+                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
                             switch result {
                             case .error:
                                 self?.change(post: post, status: .failed)
