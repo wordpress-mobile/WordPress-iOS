@@ -35,7 +35,7 @@ class PostActionSheet {
         if let presentationController = actionSheetController.popoverPresentationController {
             presentationController.permittedArrowDirections = .any
             presentationController.sourceView = view
-            presentationController.sourceRect = view.bounds;
+            presentationController.sourceRect = view.bounds
         }
 
         viewController?.present(actionSheetController, animated: true)
