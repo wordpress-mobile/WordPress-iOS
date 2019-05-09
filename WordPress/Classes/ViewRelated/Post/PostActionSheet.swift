@@ -13,21 +13,21 @@ class PostActionSheet {
     func show(for post: Post, from view: UIView) {
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        actionSheetController.addCancelActionWithTitle(OptionTitle.cancel)
+        actionSheetController.addCancelActionWithTitle(Titles.cancel)
 
         if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
-            actionSheetController.addDefaultActionWithTitle(OptionTitle.stats) { [weak self] _ in
+            actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
                 self?.interactivePostViewDelegate?.handleStats?(for: post)
             }
         }
 
         if post.status != BasePost.Status.draft {
-            actionSheetController.addDefaultActionWithTitle(OptionTitle.draft) { [weak self] _ in
+            actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
                 self?.interactivePostViewDelegate?.handleDraftPost?(post)
             }
         }
 
-        let destructiveTitle = post.status == BasePost.Status.trash ? OptionTitle.delete : OptionTitle.trash
+        let destructiveTitle = post.status == BasePost.Status.trash ? Titles.delete : Titles.trash
         actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
             self?.interactivePostViewDelegate?.handleTrashPost?(post)
         }
@@ -41,7 +41,7 @@ class PostActionSheet {
         viewController?.present(actionSheetController, animated: true)
     }
 
-    struct OptionTitle {
+    struct Titles {
         static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
         static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
         static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
