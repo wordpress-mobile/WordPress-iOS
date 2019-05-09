@@ -179,6 +179,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         case .loading(let isLoading):
             if isLoading {
                 footerView.submitButton.isEnabled = false
+                SVProgressHUD.setDefaultMaskType(.clear)
                 SVProgressHUD.show()
             } else {
                 footerView.submitButton.isEnabled = true
