@@ -925,6 +925,14 @@ class AbstractPostListViewController: UIViewController,
         updateFilterWithPostStatus(.scheduled)
     }
 
+    @objc func moveToDraft(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
+
+        apost.status = .draft
+        uploadPost(apost)
+        updateFilterWithPostStatus(.draft)
+    }
+
     fileprivate func uploadPost(_ apost: AbstractPost) {
         PostCoordinator.shared.save(post: apost)
     }

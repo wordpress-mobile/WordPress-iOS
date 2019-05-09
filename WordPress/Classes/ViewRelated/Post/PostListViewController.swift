@@ -559,7 +559,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func handleDraftPost(_ post: AbstractPost) {
-        // TODO: move to draft
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            moveToDraft(post)
+        }
     }
 
     // MARK: - UISearchControllerDelegate
