@@ -172,8 +172,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         addNotificationObservers()
 
         logger = WPLogger()
+
+        WPCrashLogging.start()
+
         configureHockeySDK()
-        configureCrashLogging()
         configureAppRatingUtility()
         configureAnalytics()
 
@@ -315,14 +317,6 @@ extension WordPressAppDelegate {
         utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
             DDLogError("Was unable to retrieve data about throttling")
         })
-    }
-
-    func configureCrashLogging() {
-        #if DEBUG
-            return
-        #else
-            WPCrashLogging.start()
-        #endif
     }
 
     func configureHockeySDK() {
