@@ -4,7 +4,6 @@
 #import <WordPressShared/WordPressShared.h>
 #import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
-#import "PostActionSheetDelegate.h"
 #import "WordPress-Swift.h"
 
 @import Gridicons;
@@ -752,9 +751,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 #pragma mark - Post Action Sheet
 
 - (void)showActionSheet:(UIView *)view {
-    if ([self.postActionSheetDelegate respondsToSelector:@selector(showActionSheet:from:)]) {
-        [self.postActionSheetDelegate showActionSheet:self.post from: view];
-    }
+    [self.postActionSheetDelegate showActionSheet:self.post from: view];
 }
 
 @end

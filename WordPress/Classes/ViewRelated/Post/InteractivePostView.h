@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "InteractivePostViewDelegate.h"
-#import "PostActionSheetDelegate.h"
 
 /// Protocol that any view offering post interaction can implement.
 ///

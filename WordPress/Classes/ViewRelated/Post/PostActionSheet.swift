@@ -1,5 +1,9 @@
 import Foundation
 
+@objc protocol PostActionSheetDelegate {
+    func showActionSheet(_ post: AbstractPost, from view: UIView)
+}
+
 class PostActionSheet {
 
     weak var viewController: UIViewController?
