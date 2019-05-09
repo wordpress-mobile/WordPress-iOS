@@ -13,33 +13,23 @@ class PostActionSheet {
     func show(for post: Post, from view: UIView) {
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let cancelActionButton = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Dismiss the post action sheet"), style: .cancel) { _ in }
-        actionSheetController.addAction(cancelActionButton)
+        actionSheetController.addCancelActionWithTitle(OptionTitle.cancel)
 
         if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
-            let statsActionButton = UIAlertAction(title: NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post."), style: .default) { [weak self] _ in
+            actionSheetController.addDefaultActionWithTitle(OptionTitle.stats) { [weak self] _ in
                 self?.interactivePostViewDelegate?.handleStats?(for: post)
             }
-            actionSheetController.addAction(statsActionButton)
         }
 
         if post.status != BasePost.Status.draft {
-            let draftsActionButton = UIAlertAction(title: NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder"), style: .default) { [weak self] _ in
+            actionSheetController.addDefaultActionWithTitle(OptionTitle.draft) { [weak self] _ in
                 self?.interactivePostViewDelegate?.handleDraftPost?(post)
             }
-            actionSheetController.addAction(draftsActionButton)
         }
 
-        if post.status == BasePost.Status.trash {
-            let deleteActionButton = UIAlertAction(title: NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post."), style: .destructive) { [weak self] _ in
-                self?.interactivePostViewDelegate?.handleTrashPost?(post)
-            }
-            actionSheetController.addAction(deleteActionButton)
-        } else {
-            let trashActionButton = UIAlertAction(title: NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder"), style: .destructive) { [weak self] _ in
-                self?.interactivePostViewDelegate?.handleTrashPost?(post)
-            }
-            actionSheetController.addAction(trashActionButton)
+        let destructiveTitle = post.status == BasePost.Status.trash ? OptionTitle.delete : OptionTitle.trash
+        actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
+            self?.interactivePostViewDelegate?.handleTrashPost?(post)
         }
 
         if let presentationController = actionSheetController.popoverPresentationController {
@@ -49,5 +39,13 @@ class PostActionSheet {
         }
 
         viewController?.present(actionSheetController, animated: true)
+    }
+
+    struct OptionTitle {
+        static let cancel = NSLocalizedString("Cancel", comment: "Dismiss the post action sheet")
+        static let stats = NSLocalizedString("Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
+        static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
+        static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
+        static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
     }
 }
