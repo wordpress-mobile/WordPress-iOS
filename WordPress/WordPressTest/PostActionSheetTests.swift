@@ -89,22 +89,6 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
     }
 
-    func testActionSheetSourceView() {
-        let post = PostBuilder().published().build()
-
-        postActionSheet.show(for: post, from: view)
-
-        XCTAssertEqual(viewControllerMock.viewControllerPresented?.popoverPresentationController?.sourceView, view)
-    }
-
-    func testActionSheetSourceRect() {
-        let post = PostBuilder().published().build()
-
-        postActionSheet.show(for: post, from: view)
-
-        XCTAssertEqual(viewControllerMock.viewControllerPresented?.popoverPresentationController?.sourceRect, view.bounds)
-    }
-
 }
 
 class UIViewControllerMock: UIViewController {
