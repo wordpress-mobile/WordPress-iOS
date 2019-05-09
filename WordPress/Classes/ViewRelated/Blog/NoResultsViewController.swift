@@ -236,6 +236,11 @@ import Reachability
     /// Public method to hide/show the image view.
     ///
     @objc func hideImageView(_ hide: Bool = true) {
+        if let isReachable = reachability?.isReachable(),
+            !isReachable {
+            hideImage = false
+            return
+        }
         hideImage = hide
     }
 
