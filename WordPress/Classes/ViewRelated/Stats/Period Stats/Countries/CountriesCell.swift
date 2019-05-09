@@ -26,7 +26,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
-                   limitRowsDisplayed: Bool = true,
                    forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
@@ -38,7 +37,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
         addRows(dataRows,
                 toStackView: rowsStackView,
                 forType: .period,
-                limitRowsDisplayed: limitRowsDisplayed,
+                limitRowsDisplayed: true,
                 viewMoreDelegate: self)
         }
 
