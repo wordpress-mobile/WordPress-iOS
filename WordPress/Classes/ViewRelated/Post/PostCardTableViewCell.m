@@ -267,8 +267,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.postActionSheetDelegate = delegate;
 
     __weak __typeof(self) weakSelf = self;
-    [self.actionBar setMoreAction:^{
-        [weakSelf showActionSheet];
+    [self.actionBar setMoreAction:^(UIView *view) {
+        [weakSelf showActionSheet:view];
     }];
 }
 
@@ -755,10 +755,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 #pragma mark - Post Action Sheet
 
-- (void)showActionSheet
-{
-    if ([self.postActionSheetDelegate respondsToSelector:@selector(showActionSheet:)]) {
-        [self.postActionSheetDelegate showActionSheet:self.post];
+- (void)showActionSheet:(UIView *)view {
+    if ([self.postActionSheetDelegate respondsToSelector:@selector(showActionSheet:from:)]) {
+        [self.postActionSheetDelegate showActionSheet:self.post from: view];
     }
 }
 

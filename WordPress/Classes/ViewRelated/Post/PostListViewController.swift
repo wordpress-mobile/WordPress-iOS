@@ -688,9 +688,9 @@ private extension PostListViewController {
 }
 
 extension PostListViewController: PostActionSheetDelegate {
-    func showActionSheet(_ post: AbstractPost) {
+    func showActionSheet(_ post: AbstractPost, from view: UIView) {
         guard let post = post as? Post else { return }
-        
-        postActionSheet.show(for: post)
+
+        postActionSheet.show(for: post, from: view)
     }
 }

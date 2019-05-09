@@ -10,7 +10,7 @@ class PostActionSheet {
         self.interactivePostViewDelegate = interactivePostViewDelegate
     }
 
-    func show(for post: Post) {
+    func show(for post: Post, from view: UIView) {
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let cancelActionButton = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Dismiss the post action sheet"), style: .cancel) { _ in }
@@ -40,6 +40,12 @@ class PostActionSheet {
                 self?.interactivePostViewDelegate?.handleTrashPost?(post)
             }
             actionSheetController.addAction(trashActionButton)
+        }
+
+        if let presentationController = actionSheetController.popoverPresentationController {
+            presentationController.permittedArrowDirections = .any
+            presentationController.sourceView = view
+            presentationController.sourceRect = view.bounds;
         }
 
         viewController?.present(actionSheetController, animated: true)
