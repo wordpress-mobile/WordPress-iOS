@@ -979,6 +979,8 @@
 		9872CB30203B8A730066A293 /* SignupEpilogueTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9872CB2F203B8A730066A293 /* SignupEpilogueTableViewController.swift */; };
 		9874766F219630240080967F /* SiteStatsTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874766E219630240080967F /* SiteStatsTableViewCells.swift */; };
 		9874767321963D330080967F /* SiteStatsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9874767221963D320080967F /* SiteStatsInformation.swift */; };
+		987535632282682D001661B4 /* DetailDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987535612282682D001661B4 /* DetailDataCell.swift */; };
+		987535642282682D001661B4 /* DetailDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 987535622282682D001661B4 /* DetailDataCell.xib */; };
 		98797DBC222F434500128C21 /* OverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98797DBA222F434500128C21 /* OverviewCell.swift */; };
 		98797DBD222F434500128C21 /* OverviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98797DBB222F434500128C21 /* OverviewCell.xib */; };
 		988056032183CCE50083B643 /* SiteStatsInsightsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */; };
@@ -2993,6 +2995,8 @@
 		9872CB2F203B8A730066A293 /* SignupEpilogueTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueTableViewController.swift; sourceTree = "<group>"; };
 		9874766E219630240080967F /* SiteStatsTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsTableViewCells.swift; sourceTree = "<group>"; };
 		9874767221963D320080967F /* SiteStatsInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsInformation.swift; sourceTree = "<group>"; };
+		987535612282682D001661B4 /* DetailDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDataCell.swift; sourceTree = "<group>"; };
+		987535622282682D001661B4 /* DetailDataCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailDataCell.xib; sourceTree = "<group>"; };
 		98797DBA222F434500128C21 /* OverviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewCell.swift; sourceTree = "<group>"; };
 		98797DBB222F434500128C21 /* OverviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OverviewCell.xib; sourceTree = "<group>"; };
 		988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsInsightsTableViewController.swift; sourceTree = "<group>"; };
@@ -6469,6 +6473,8 @@
 				98467A42221CD74D00DF51AE /* SiteStatsDetailTableViewController.storyboard */,
 				98467A3E221CD48500DF51AE /* SiteStatsDetailTableViewController.swift */,
 				9829162E2224BC1C008736C0 /* SiteStatsDetailsViewModel.swift */,
+				987535612282682D001661B4 /* DetailDataCell.swift */,
+				987535622282682D001661B4 /* DetailDataCell.xib */,
 			);
 			path = "Stats Detail";
 			sourceTree = "<group>";
@@ -9092,6 +9098,7 @@
 				98812967219CE42A0075FF33 /* StatsTotalRow.xib in Resources */,
 				98B3FA8621C05BF000148DD4 /* ViewMoreRow.xib in Resources */,
 				D865722F2186F96D0023A99C /* SiteSegmentsWizardContent.xib in Resources */,
+				987535642282682D001661B4 /* DetailDataCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9951,6 +9958,7 @@
 				D8071631203DA23700B32FD9 /* Accessible.swift in Sources */,
 				9826AE9021B5D3CD00C851FA /* PostingActivityCell.swift in Sources */,
 				98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */,
+				987535632282682D001661B4 /* DetailDataCell.swift in Sources */,
 				E17E67031FA22C93009BDC9A /* PluginViewModel.swift in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
