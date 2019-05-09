@@ -80,6 +80,10 @@ Read more about [OAuth2](https://developer.wordpress.com/docs/oauth2/) and the [
 
 Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, contributing code, and more ways to contribute.
 
+## Security
+
+Need to report a security vulnerability? Go to https://automattic.com/security/ or directly to our security bug bounty site https://hackerone.com/automattic.
+
 ## Getting in Touch ##
 
 If you have questions or just want to say hi, join the [WordPress Slack](https://chat.wordpress.org) and drop a message on the `#mobile` channel.
