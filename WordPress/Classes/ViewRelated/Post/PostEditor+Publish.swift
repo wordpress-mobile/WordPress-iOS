@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 extension PostEditor where Self: UIViewController {
 
@@ -318,10 +319,10 @@ extension PostEditor where Self: UIViewController {
         postEditorStateContext.updated(isBeingPublished: true)
 
         uploadPost() { [weak self] uploadedPost, error in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.postEditorStateContext.updated(isBeingPublished: false)
+            self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
             let generator = UINotificationFeedbackGenerator()
@@ -329,19 +330,20 @@ extension PostEditor where Self: UIViewController {
 
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
+                SVProgressHUD.dismiss()
+                let model = PostNoticeViewModel(post: self.post)
+                ActionDispatcher.dispatch(NoticeAction.post(model.notice))
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
-                strongSelf.post = uploadedPost
+                self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
             }
 
             if dismissWhenDone {
-                strongSelf.dismissOrPopView()
+                self.dismissOrPopView()
             } else {
-                strongSelf.createRevisionOfPost()
+                self.createRevisionOfPost()
             }
         }
     }
