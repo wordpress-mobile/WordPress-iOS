@@ -246,7 +246,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.6.1)
   - WordPressAuthenticator (~> 1.4.1)
-  - WordPressKit (~> 4.1.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/add_autosave_call`)
   - WordPressShared (~> 1.7.5)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.1`)
   - WPMediaPicker (= 1.4.1-beta.1)
@@ -339,7 +339,7 @@ CHECKOUT OPTIONS:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.4.0
   WordPressKit:
-    :commit: d9a3d7c10edb1768e0fb988c0f94e18e9f0c8527
+    :commit: 89c061d7eac41005554dc31b41f4720d6e3f7cd9
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -397,6 +397,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 674917c5b711f57fc1c150d77d25b54a1dbb0ea1
+PODFILE CHECKSUM: 339ac8cb928350855946ff5d838fac3382ed3f3d
 
 COCOAPODS: 1.6.1
