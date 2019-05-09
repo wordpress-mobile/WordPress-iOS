@@ -103,10 +103,10 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataRows: tagsAndCategoriesRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
         case .periodPostsAndPages:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                                     dataRows: postsAndPagesRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
+            tableRows.append(contentsOf: postsAndPagesRows())
+
         case .periodSearchTerms:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                      dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
@@ -378,7 +378,20 @@ private extension SiteStatsDetailsViewModel {
         }
     }
 
-    func postsAndPagesRows() -> [StatsTotalRowData] {
+    func postsAndPagesRows() -> [DetailDataRow] {
+        let rowsData = postsAndPagesRowData()
+        var detailDataRows = [DetailDataRow]()
+
+        for (idx, rowData) in rowsData.enumerated() {
+            detailDataRows.append(DetailDataRow(rowData: rowData,
+                                                detailsDelegate: detailsDelegate,
+                                                hideSeparator: idx == rowsData.endIndex-1))
+        }
+
+        return detailDataRows
+    }
+
+    func postsAndPagesRowData() -> [StatsTotalRowData] {
         let postsAndPages = periodStore.getTopPostsAndPages()?.topPosts ?? []
 
         return postsAndPages.map {
