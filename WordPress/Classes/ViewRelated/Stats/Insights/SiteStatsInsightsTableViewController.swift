@@ -142,8 +142,10 @@ private extension SiteStatsInsightsTableViewController {
         updateNoResults(title: NoResultConstants.errorTitle,
                         subtitle: NoResultConstants.errorSubtitle,
                         buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            let appDelegate = WordPressAppDelegate.sharedInstance()
+
                             noResults.delegate = self
-                            noResults.hideImageView()
+                            noResults.hideImageView(appDelegate?.connectionAvailable ?? true)
         }
     }
 
