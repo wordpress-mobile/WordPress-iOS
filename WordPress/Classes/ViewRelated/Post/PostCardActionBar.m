@@ -387,7 +387,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     UIButton *button = (UIButton *)sender;
     NSInteger index = button.tag;
     if (index == ActionBarMoreButtonIndex) {
-        [self handleMoreButtonTap];
+        [self handleMoreButtonTap:sender];
         return;
     }
     PostCardActionBarItem *item = [self.items objectAtIndex:index];
@@ -396,10 +396,10 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     }
 }
 
-- (void)handleMoreButtonTap
+- (void)handleMoreButtonTap: (UIButton *)sender
 {
     if (_moreActionCallback) {
-        _moreActionCallback();
+        _moreActionCallback(sender);
     } else {
         self.currentBatch++;
         [self configureButtonsWithAnimation];

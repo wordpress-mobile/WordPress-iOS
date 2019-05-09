@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-typedef void(^MoreActionCallback)(void);
+typedef void(^MoreActionCallback)(UIView* view);
 
 @interface PostCardActionBar : UIView
 

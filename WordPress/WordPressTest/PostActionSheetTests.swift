@@ -8,17 +8,19 @@ class PostActionSheetTests: XCTestCase {
     var postActionSheet: PostActionSheet!
     var viewControllerMock: UIViewControllerMock!
     var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
+    var view: UIView!
 
     override func setUp() {
         viewControllerMock = UIViewControllerMock()
         interactivePostViewDelegateMock = InteractivePostViewDelegateMock()
+        view = UIView()
         postActionSheet = PostActionSheet(viewController: viewControllerMock, interactivePostViewDelegate: interactivePostViewDelegateMock)
     }
 
     func testPublishedPostOptions() {
         let post = PostBuilder().published().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash"], options)
@@ -27,7 +29,7 @@ class PostActionSheetTests: XCTestCase {
     func testDraftedPostOptions() {
         let post = PostBuilder().drafted().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Stats", "Move to Trash"], options)
@@ -36,7 +38,7 @@ class PostActionSheetTests: XCTestCase {
     func testScheduledPostOptions() {
         let post = PostBuilder().scheduled().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Move to Draft", "Move to Trash"], options)
@@ -45,7 +47,7 @@ class PostActionSheetTests: XCTestCase {
     func testTrashedPostOptions() {
         let post = PostBuilder().trashed().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
         XCTAssertEqual(["Cancel", "Move to Draft", "Delete Permanently"], options)
@@ -54,7 +56,7 @@ class PostActionSheetTests: XCTestCase {
     func testCallDelegateWhenStatsTapped() {
         let post = PostBuilder().published().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
         viewControllerMock.viewControllerPresented?.tap("Stats")
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
@@ -63,7 +65,7 @@ class PostActionSheetTests: XCTestCase {
     func testCallDelegateWhenMoveToDraftTapped() {
         let post = PostBuilder().published().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
         viewControllerMock.viewControllerPresented?.tap("Move to Draft")
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleDraft)
@@ -72,7 +74,7 @@ class PostActionSheetTests: XCTestCase {
     func testCallDelegateWhenDeletePermanentlyTapped() {
         let post = PostBuilder().trashed().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
         viewControllerMock.viewControllerPresented?.tap("Delete Permanently")
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
@@ -81,10 +83,26 @@ class PostActionSheetTests: XCTestCase {
     func testCallDelegateWhenMoveToTrashTapped() {
         let post = PostBuilder().published().build()
 
-        postActionSheet.show(for: post)
+        postActionSheet.show(for: post, from: view)
         viewControllerMock.viewControllerPresented?.tap("Move to Trash")
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
+    }
+
+    func testActionSheetSourceView() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post, from: view)
+
+        XCTAssertEqual(viewControllerMock.viewControllerPresented?.popoverPresentationController?.sourceView, view)
+    }
+
+    func testActionSheetSourceRect() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post, from: view)
+
+        XCTAssertEqual(viewControllerMock.viewControllerPresented?.popoverPresentationController?.sourceRect, view.bounds)
     }
 
 }
