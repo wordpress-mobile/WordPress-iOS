@@ -29,7 +29,7 @@ extension PostEditor where Self: UIViewController {
         let draftStatus = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
         let publishedStatus = NSLocalizedString("Generating Preview...", comment: "Text displayed in HUD while a post is being saved.")
         SVProgressHUD.setDefaultMaskType(.clear)
-        
+
         if !post.hasUnsavedChanges() {
             completion(nil, nil)
             return

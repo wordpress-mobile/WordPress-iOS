@@ -1,7 +1,6 @@
 import Foundation
 
 extension PostService {
-    
     @objc func updateMediaFor(post: AbstractPost, success: @escaping (() -> Void)) {
         let mediaToUpdate = Array(post.media).filter { media in
             guard let postID = media.postID else { return false }
