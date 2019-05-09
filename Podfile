@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.5-beta.2'
+    pod 'WordPressShared', '~> 1.7.5'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -42,9 +42,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  #pod 'WordPressKit', '~> 4.1.0'
-  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/add_autosave_call'
-  #pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    pod 'WordPressKit', '~> 4.1.0'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -134,19 +134,19 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '0.3.5-beta.1'
+    pod 'Automattic-Tracks-iOS', '0.3.5'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
 
     pod 'NSURL+IDN', '0.3'
 
-    pod 'WPMediaPicker', '1.4.0'
+    pod 'WPMediaPicker', '1.4.1-beta.1'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'f3835ab5e729279b0ecfe05cd943282229d4605a'
-
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e55438187d464763efd0b6bf11a0afa1964d9037'
+    
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.4.1-beta.3'
+    pod 'WordPressAuthenticator', '~> 1.4.1'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 

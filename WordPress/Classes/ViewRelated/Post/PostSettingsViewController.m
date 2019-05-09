@@ -782,6 +782,7 @@ FeaturedImageViewControllerDelegate>
 {
     WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
     activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+    activityCell.accessibilityIdentifier = @"SetFeaturedImage";
     activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
     return activityCell;

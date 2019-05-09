@@ -3,7 +3,7 @@ PODS:
   - Alamofire (4.7.3)
   - AlamofireNetworkActivityIndicator (2.3.0):
     - Alamofire (~> 4.7)
-  - Automattic-Tracks-iOS (0.3.5-beta.1):
+  - Automattic-Tracks-iOS (0.3.5):
     - CocoaLumberjack (~> 3.5.2)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 1.1.4)
@@ -174,7 +174,7 @@ PODS:
   - WordPress-Aztec-iOS (1.6.1)
   - WordPress-Editor-iOS (1.6.1):
     - WordPress-Aztec-iOS (= 1.6.1)
-  - WordPressAuthenticator (1.4.1-beta.3):
+  - WordPressAuthenticator (1.4.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -186,18 +186,18 @@ PODS:
     - WordPressKit (~> 4.1.0-beta)
     - WordPressShared (~> 1.7.5-beta.1)
     - WordPressUI (~> 1.0)
-  - WordPressKit (4.1.0-beta.3):
+  - WordPressKit (4.1.0):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.4)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.7.5-beta.2):
+  - WordPressShared (1.7.5):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.2.1)
-  - WPMediaPicker (1.4.0)
+  - WPMediaPicker (1.4.1-beta.1)
   - wpxmlrpc (0.8.4)
   - yoga (0.59.3.React)
   - ZendeskSDK (2.3.1):
@@ -215,7 +215,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - Alamofire (= 4.7.3)
   - AlamofireNetworkActivityIndicator (~> 2.3)
-  - Automattic-Tracks-iOS (= 0.3.5-beta.1)
+  - Automattic-Tracks-iOS (= 0.3.5)
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
@@ -245,11 +245,11 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.6.1)
-  - WordPressAuthenticator (~> 1.4.1-beta.3)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `issue/add_autosave_call`)
-  - WordPressShared (~> 1.7.5-beta.2)
+  - WordPressAuthenticator (~> 1.4.1)
+  - WordPressKit (~> 4.1.0)
+  - WordPressShared (~> 1.7.5)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, tag `1.2.1`)
-  - WPMediaPicker (= 1.4.0)
+  - WPMediaPicker (= 1.4.1-beta.1)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.4.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.3.1)
   - ZIPFoundation (~> 0.9.8)
@@ -349,7 +349,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   AlamofireNetworkActivityIndicator: 18346ff6d770d9513d0ac6f2d99706f40f93dbaa
-  Automattic-Tracks-iOS: 3032acd3450dcd397b06acd9853292534343674a
+  Automattic-Tracks-iOS: 1ba339ac16d6aff577b7f0ec16546be2a7ccd64a
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Charts: f69cf0518b6d1d62608ca504248f1bbe0b6ae77e
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
@@ -387,16 +387,16 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: fecf8f0b8f7711c54de727bd597e449386bea094
   WordPress-Editor-iOS: 8392c6acb0c8a155f5db3b1a6c85c3ef7631d3a1
-  WordPressAuthenticator: 09b587594adf81a5d4ab2a75e1f6174ba002f9f1
-  WordPressKit: e31a58b7a6de62a1e5046db50c5720e5e6bd70a0
-  WordPressShared: 6949d39fefa19e5bed98fa482d1be29fea77849a
+  WordPressAuthenticator: 1741b00c58c4e57a0505cbff32528c7a049b24e6
+  WordPressKit: 78208a27c24f4f6eaf6bcfdf0ed4978de3bd080a
+  WordPressShared: 2389d30388fd89660aeb4ae26bd28484639db959
   WordPressUI: 6d9dc6d1920ea3626483588413848f456a26a48d
-  WPMediaPicker: fdb0ce41d7eb002132a6844b2dad26290b84ce78
+  WPMediaPicker: c6873fefaee96c4cae808a3e9401f50ee694075e
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 175dc96836c795f8f410438f26a8bd5ccd7c248d
+PODFILE CHECKSUM: 674917c5b711f57fc1c150d77d25b54a1dbb0ea1
 
 COCOAPODS: 1.6.1
