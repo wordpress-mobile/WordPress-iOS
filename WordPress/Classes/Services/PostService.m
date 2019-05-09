@@ -215,20 +215,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
-                NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
-                NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
-                for (Media *media in mediaToUpdate) {
-                    media.postID = post.postID;
-                }
-
-                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                [mediaService updateMedia:mediaToUpdate overallSuccess:^{
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                    if (success) {
-                        success(postInContext);
-                    }
-                } failure:^(NSError *error){
-                    // Sergio Estevao (2018-02-27): even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed was attaching the media to it.
+                [self updateMediaForPost:postInContext success:^{
                     if (success) {
                         success(postInContext);
                     }
@@ -288,20 +275,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
                 postInContext.remoteStatus = AbstractPostRemoteStatusSaved;
-                NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
-                NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
-                for (Media *media in mediaToUpdate) {
-                    media.postID = post.postID;
-                }
-                
-                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                [mediaService updateMedia:mediaToUpdate overallSuccess:^{
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                    if (success) {
-                        success(postInContext, previewURL);
-                    }
-                } failure:^(NSError *error){
-                    // Sergio Estevao (2018-02-27): even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed was attaching the media to it.
+                [self updateMediaForPost:postInContext success:^{
                     if (success) {
                         success(postInContext, previewURL);
                     }
