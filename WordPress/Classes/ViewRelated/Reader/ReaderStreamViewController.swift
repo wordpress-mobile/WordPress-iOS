@@ -1570,6 +1570,7 @@ private extension ReaderStreamViewController {
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
         resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
+        resultsStatusView.updateView()
         footerView.isHidden = true
     }
 
