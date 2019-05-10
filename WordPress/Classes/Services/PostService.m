@@ -293,7 +293,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                     }
                 }];
             } else {
-                // This can happen if the post was deleted right after triggering the upload.
+                // This can happen if the post was deleted right after triggering the auto-save.
                 if (success) {
                     success(nil, nil);
                 }
