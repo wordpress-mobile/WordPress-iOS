@@ -20,12 +20,11 @@ class GutenbergVideoUploadProcessor: Processor {
         guard let originalSrcValue = attributes["src"]?.value,
             case let .string(originalSrc) = originalSrcValue,
             let srcURL = URL(string: originalSrc),
-            let mediaUploadID = srcURL.lastPathComponent.split(separator:".").first,
-            mediaUploadID == "\(self.mediaUploadID)"
-            else {
+            let mediaUploadID = srcURL.lastPathComponent.split(separator: ".").first,
+            mediaUploadID == "\(self.mediaUploadID)" else {
             return nil
         }
-        
+
         attributes.set(.string(self.remoteURLString), forKey: "src")
 
         var html = "<video "
