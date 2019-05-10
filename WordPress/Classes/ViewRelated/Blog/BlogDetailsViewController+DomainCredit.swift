@@ -6,7 +6,8 @@ extension BlogDetailsViewController {
         let image = Gridicon.iconOfType(.info)
         let row = BlogDetailsRow(title: NSLocalizedString("Register Domain", comment: "Action to redeem domain credit."),
                                  accessibilityIdentifier: "Register domain from site dashboard",
-                                 image: image, imageColor: WPStyleGuide.warningYellow()) { [weak self] in
+                                 image: image,
+                                 imageColor: WPStyleGuide.warningYellow()) { [weak self] in
                                     WPAnalytics.track(.domainCreditRedemptionTapped)
                                     self?.showDomainCreditRedemption()
         }
