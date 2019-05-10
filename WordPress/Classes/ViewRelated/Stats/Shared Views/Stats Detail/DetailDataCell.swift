@@ -37,6 +37,10 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
 extension DetailDataCell: StatsTotalRowDelegate {
 
+    func displayWebViewWithURL(_ url: URL) {
+        detailsDelegate?.displayWebViewWithURL?(url)
+    }
+
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         detailsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
     }

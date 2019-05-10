@@ -204,30 +204,6 @@ struct CountriesDetailStatsRow: ImmuTableRow {
     }
 }
 
-struct TopTotalsNoSubtitlesPeriodDetailStatsRow: ImmuTableRow {
-
-    typealias CellType = TopTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let dataRows: [StatsTotalRowData]
-    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(dataRows: dataRows,
-                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
-                       limitRowsDisplayed: false)
-    }
-}
-
 struct TopTotalsInsightStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell

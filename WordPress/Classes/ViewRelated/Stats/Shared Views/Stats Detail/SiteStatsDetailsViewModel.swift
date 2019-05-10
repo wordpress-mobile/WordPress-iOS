@@ -142,8 +142,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                                      dataRows: countriesRows()))
         case .periodPublished:
-            tableRows.append(TopTotalsNoSubtitlesPeriodDetailStatsRow(dataRows: publishedRows(),
-                                                                      siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
                                                      dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle,
@@ -525,7 +524,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Published
 
-    func publishedRows() -> [StatsTotalRowData] {
+    func publishedRows() -> [DetailDataRow] {
+        return dataRowsFor(publishedRowData())
+    }
+
+    func publishedRowData() -> [StatsTotalRowData] {
         return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
                                                                                      data: "",
                                                                                      showDisclosure: true,
