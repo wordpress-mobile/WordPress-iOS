@@ -47,7 +47,7 @@ class GutenbergMediaInserterHelper: NSObject {
                 callback(mediaUploadID, nil)
                 return
             }
-            let filePath = NSTemporaryDirectory() + UUID().uuidString + ".jpg"
+            let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
                 try resizedImage.writeJPEGToURL(url)
