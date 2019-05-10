@@ -37,6 +37,10 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
 extension DetailDataCell: StatsTotalRowDelegate {
 
+    func displayMediaWithID(_ mediaID: NSNumber) {
+        detailsDelegate?.displayMediaWithID?(mediaID)
+    }
+
     func displayWebViewWithURL(_ url: URL) {
         detailsDelegate?.displayWebViewWithURL?(url)
     }

@@ -118,10 +118,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
             tableRows.append(contentsOf: searchTermsRows())
         case .periodVideos:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodVideos.dataSubtitle,
-                                                     dataRows: videosRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodVideos.dataSubtitle))
+            tableRows.append(contentsOf: videosRows())
         case .periodClicks:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle,
@@ -455,7 +454,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Videos
 
-    func videosRows() -> [StatsTotalRowData] {
+    func videosRows() -> [DetailDataRow] {
+        return dataRowsFor(videosRowData())
+    }
+
+    func videosRowData() -> [StatsTotalRowData] {
         return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
                                                                           data: $0.playsCount.abbreviatedString(),
                                                                           mediaID: $0.postID as NSNumber,
