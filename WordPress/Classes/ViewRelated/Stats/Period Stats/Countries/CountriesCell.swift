@@ -63,7 +63,7 @@ private extension CountriesCell {
 
     func setSubtitleVisibility() {
 
-        guard !forDetails else {
+        if forDetails {
             subtitleStackView.isHidden = false
             rowsStackView.isHidden = true
             return
