@@ -1,8 +1,7 @@
 #import "WPLogger.h"
+#import "WordPress-Swift.h"
 
 @import CocoaLumberjack;
-#import "WordPressAppDelegate.h"
-#import "WordPress-Swift.h"
 
 @interface WPLogger ()
 @property (nonatomic, strong, readwrite) DDFileLogger *fileLogger;

@@ -86,7 +86,7 @@ struct TimeZoneSelectorViewModel: Observable {
         case .ready:
             return nil
         case .error:
-            let appDelegate = WordPressAppDelegate.sharedInstance()
+            let appDelegate = WordPressAppDelegate.shared
             if (appDelegate?.connectionAvailable)! {
                 return NoResultsViewController.Model(title: LocalizedText.errorTitle,
                                                      subtitle: LocalizedText.errorSubtitle,

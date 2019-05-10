@@ -1093,7 +1093,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
 {
 
-    if (![WordPressAppDelegate sharedInstance].connectionAvailable) {
+    if (![WordPressAppDelegate shared].connectionAvailable) {
         NSString *title = NSLocalizedString(@"No Connection", @"Title of error prompt when no internet connection is available.");
         NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"Message of error prompt shown when a user tries to perform an action without an internet connection.");
         [WPError showAlertWithTitle:title message:message];
