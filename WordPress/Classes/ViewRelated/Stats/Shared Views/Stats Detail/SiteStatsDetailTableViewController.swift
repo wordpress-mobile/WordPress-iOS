@@ -119,7 +119,7 @@ private extension SiteStatsDetailTableViewController {
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [DetailDataRow.self,
                 DetailSubtitlesHeaderRow.self,
-                TabbedTotalsDetailStatsRow.self,
+                DetailSubtitlesTabbedHeaderRow.self,
                 TopTotalsDetailStatsRow.self,
                 DetailSubtitlesCountriesHeaderRow.self]
     }
