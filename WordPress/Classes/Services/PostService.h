@@ -99,8 +99,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  @param success A success block.  If the post object exists locally (in CoreData) when the upload
  succeeds, then this block will also return a pointer to the updated local AbstractPost
  object.  It's important to note this object may not be the same one as the `post` input
- parameter, since if the input post was a revision, it will no longer exist once the upload
- succeeds.
+ parameter
  @param failure A failure block
  */
 - (void)autoSave:(AbstractPost *)post
