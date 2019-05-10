@@ -116,6 +116,8 @@ extension NoResultsViewHost where Self: UIViewController {
 
         if animated {
             view.addSubview(withFadeAnimation: noResultsViewController.view)
+        } else {
+            view.addSubview(noResultsViewController.view)
         }
         noResultsViewController.didMove(toParent: self)
     }

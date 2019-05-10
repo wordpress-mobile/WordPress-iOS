@@ -27,9 +27,13 @@ class SiteStatsDetailsViewModel: Observable {
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
 
+    // MARK: - Init
+
     init(detailsDelegate: SiteStatsDetailsDelegate) {
         self.detailsDelegate = detailsDelegate
     }
+
+    // MARK: - Data Fetching
 
     func fetchDataFor(statSection: StatSection,
                       selectedDate: Date? = nil,
@@ -73,6 +77,8 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    // MARK: - Table Model
+
     func tableViewModel() -> ImmuTable {
 
         guard let statSection = statSection,
@@ -103,15 +109,14 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataRows: tagsAndCategoriesRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
         case .periodPostsAndPages:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                                     dataRows: postsAndPagesRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
+            tableRows.append(contentsOf: postsAndPagesRows())
+
         case .periodSearchTerms:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
-                                                     dataRows: searchTermsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
+            tableRows.append(contentsOf: searchTermsRows())
         case .periodVideos:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle,
@@ -251,6 +256,8 @@ class SiteStatsDetailsViewModel: Observable {
 
 private extension SiteStatsDetailsViewModel {
 
+    // MARK: - Store Queries
+
     func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
@@ -292,6 +299,8 @@ private extension SiteStatsDetailsViewModel {
             return nil
         }
     }
+
+    // MARK: - Tabbed Cards
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
@@ -359,6 +368,8 @@ private extension SiteStatsDetailsViewModel {
                        dataRows: rowItems)
     }
 
+    // MARK: - Tags and Categories
+
     func tagsAndCategoriesRows() -> [StatsTotalRowData] {
         guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
             return []
@@ -378,7 +389,13 @@ private extension SiteStatsDetailsViewModel {
         }
     }
 
-    func postsAndPagesRows() -> [StatsTotalRowData] {
+    // MARK: - Posts and Pages
+
+    func postsAndPagesRows() -> [DetailDataRow] {
+        return dataRowsFor(postsAndPagesRowData())
+    }
+
+    func postsAndPagesRowData() -> [StatsTotalRowData] {
         let postsAndPages = periodStore.getTopPostsAndPages()?.topPosts ?? []
 
         return postsAndPages.map {
@@ -406,7 +423,13 @@ private extension SiteStatsDetailsViewModel {
         }
     }
 
-    func searchTermsRows() -> [StatsTotalRowData] {
+    // MARK: - Search Terms
+
+    func searchTermsRows() -> [DetailDataRow] {
+        return dataRowsFor(searchTermsRowData())
+    }
+
+    func searchTermsRowData() -> [StatsTotalRowData] {
         guard let searchTerms = periodStore.getTopSearchTerms() else {
             return []
         }
@@ -431,6 +454,8 @@ private extension SiteStatsDetailsViewModel {
         return mappedSearchTerms
     }
 
+    // MARK: - Videos
+
     func videosRows() -> [StatsTotalRowData] {
         return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
                                                                           data: $0.playsCount.abbreviatedString(),
@@ -440,6 +465,8 @@ private extension SiteStatsDetailsViewModel {
                                                                           statSection: .periodVideos) }
             ?? []
     }
+
+    // MARK: - Clicks
 
     func clicksRows() -> [StatsTotalRowData] {
         return periodStore.getTopClicks()?.clicks.map { StatsTotalRowData(name: $0.title,
@@ -454,6 +481,8 @@ private extension SiteStatsDetailsViewModel {
             ?? []
     }
 
+    // MARK: - Authors
+
     func authorsRows() -> [StatsTotalRowData] {
         let authors = periodStore.getTopAuthors()?.topAuthors ?? []
 
@@ -465,6 +494,8 @@ private extension SiteStatsDetailsViewModel {
                                                childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
                                                statSection: .periodAuthors) }
     }
+
+    // MARK: - Referrers
 
     func referrersRows() -> [StatsTotalRowData] {
         let referrers = periodStore.getTopReferrers()?.referrers ?? []
@@ -482,6 +513,8 @@ private extension SiteStatsDetailsViewModel {
         return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
+    // MARK: - Countries
+
     func countriesRows() -> [StatsTotalRowData] {
         return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                                 data: $0.viewsCount.abbreviatedString(),
@@ -489,6 +522,8 @@ private extension SiteStatsDetailsViewModel {
                                                                                 statSection: .periodCountries) }
             ?? []
     }
+
+    // MARK: - Published
 
     func publishedRows() -> [StatsTotalRowData] {
         return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
@@ -498,6 +533,8 @@ private extension SiteStatsDetailsViewModel {
                                                                                      statSection: .periodPublished) }
             ?? []
     }
+
+    // MARK: - Post Stats
 
     func postStatsRows(forAverages: Bool = false) -> [StatsTotalRowData] {
 
@@ -533,6 +570,20 @@ private extension SiteStatsDetailsViewModel {
         }
 
         return yearRows
+    }
+
+    // MARK: - Helpers
+
+    func dataRowsFor(_ rowsData: [StatsTotalRowData]) -> [DetailDataRow] {
+        var detailDataRows = [DetailDataRow]()
+
+        for (idx, rowData) in rowsData.enumerated() {
+            detailDataRows.append(DetailDataRow(rowData: rowData,
+                                                detailsDelegate: detailsDelegate,
+                                                hideSeparator: idx == rowsData.endIndex-1))
+        }
+
+        return detailDataRows
     }
 
 }
