@@ -136,6 +136,6 @@ private class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDele
     }
 
     func restore(_ post: AbstractPost) {
-        
+
     }
 }
