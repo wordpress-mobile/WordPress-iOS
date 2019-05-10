@@ -330,9 +330,8 @@ extension PostEditor where Self: UIViewController {
 
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
-                SVProgressHUD.dismiss()
-                let model = PostNoticeViewModel(post: self.post)
-                ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+                let notice = Notice(title: action.publishingErrorLabel)
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 self.post = uploadedPost

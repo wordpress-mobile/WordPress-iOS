@@ -88,11 +88,11 @@ public enum PostEditorAction {
     var publishingErrorLabel: String {
         switch self {
         case .publish, .publishNow:
-            return NSLocalizedString("Error occurred\nduring publishing", comment: "Text displayed in HUD while a post is being published.")
+            return NSLocalizedString("Error occurred during publishing", comment: "Text displayed in notice while a post is being published.")
         case .schedule:
-            return NSLocalizedString("Error occurred\nduring scheduling", comment: "Text displayed in HUD while a post is being scheduled to be published.")
+            return NSLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
         case .save, .saveAsDraft, .submitForReview, .update:
-            return NSLocalizedString("Error occurred\nduring saving", comment: "Text displayed in HUD after attempting to save a draft post and an error occurred.")
+            return NSLocalizedString("Error occurred during saving", comment: "Text displayed in notice after attempting to save a draft post and an error occurred.")
         }
     }
 
