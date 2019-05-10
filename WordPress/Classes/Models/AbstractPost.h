@@ -13,7 +13,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusLocal,       // Only local version
     AbstractPostRemoteStatusSync,       // Post uploaded
     AbstractPostRemoteStatusPushingMedia, // Push Media
-    AbstractPostRemoteStatusSaved,       // Post saved
+    AbstractPostRemoteStatusAutoSaved,       // Post remote auto-saved
 };
 
 @interface AbstractPost : BasePost

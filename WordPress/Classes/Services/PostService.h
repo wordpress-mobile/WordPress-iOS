@@ -105,7 +105,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  */
 - (void)autoSave:(AbstractPost *)post
          success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
-           failure:(void (^)(NSError * _Nullable error))failure;
+         failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Attempts to delete the specified post outright vs moving it to the 

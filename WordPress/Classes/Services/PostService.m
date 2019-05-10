@@ -219,6 +219,12 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                     if (success) {
                         success(postInContext);
                     }
+                } failure:^(NSError * _Nullable error) {
+                    DDLogInfo(@"Error in updateMediaForPost while uploading post. description: %@", error.localizedDescription);
+                    // even if media fails to attach we are answering with success because the post upload was successful.
+                    if (success) {
+                        success(postInContext);
+                    }
                 }];
             } else {
                 // This can happen if the post was deleted right after triggering the upload.
@@ -274,8 +280,14 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                postInContext.remoteStatus = AbstractPostRemoteStatusSaved;
+                postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
                 [self updateMediaForPost:postInContext success:^{
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                } failure:^(NSError * _Nullable error) {
+                    DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
+                    // even if media fails to attach we are answering with success because the post auto-save was successful.
                     if (success) {
                         success(postInContext, previewURL);
                     }
