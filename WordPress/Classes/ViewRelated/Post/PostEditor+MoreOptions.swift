@@ -65,8 +65,8 @@ extension PostEditor where Self: UIViewController {
     }
 
     private func displayPreviewNotAvialble() {
-        let title = NSLocalizedString("Preview Unavailable for Self-Hosted Sites", comment: "Title on display preview error" )
-        let subtitle = NSLocalizedString("To view the changes, publish the updates to your post.", comment: "subtitle on display preview error" )
+        let title = NSLocalizedString("Preview Unavailable for Published Posts", comment: "Title on display preview error" )
+        let subtitle = NSLocalizedString("Update the published post to view your changes.", comment: "subtitle on display preview error" )
         let noResultsController = NoResultsViewController.controllerWith(title: title, subtitle: subtitle)
         noResultsController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(noResultsController, animated: true)
