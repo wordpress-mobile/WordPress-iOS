@@ -692,51 +692,37 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)editPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handleEditPost:)]) {
-        [self.delegate handleEditPost:self.post];
-    }
+    [self.delegate edit:self.post];
 }
 
 - (void)viewPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handleViewPost:)]) {
-        [self.delegate handleViewPost:self.post];
-    }
+    [self.delegate view:self.post];
 }
 
 - (void)publishPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handlePublishPost:)]) {
-        [self.delegate handlePublishPost:self.post];
-    }
+    [self.delegate publish:self.post];
 }
 
 - (void)schedulePostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handleSchedulePost:)]) {
-        [self.delegate handleSchedulePost:self.post];
-    }
+    [self.delegate schedule:self.post];
 }
 
 - (void)trashPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handleTrashPost:)]) {
-        [self.delegate handleTrashPost:self.post];
-    }
+    [self.delegate trash:self.post];
 }
 
 - (void)restorePostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handleRestorePost:)]) {
-        [self.delegate handleRestorePost:self.post];
-    }
+    [self.delegate restore:self.post];
 }
 
 - (void)statsPostAction
 {
-    if ([self.delegate respondsToSelector:@selector(handleStatsForPost:)]) {
-        [self.delegate handleStatsForPost:self.post];
-    }
+    [self.delegate statsFor:self.post];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
