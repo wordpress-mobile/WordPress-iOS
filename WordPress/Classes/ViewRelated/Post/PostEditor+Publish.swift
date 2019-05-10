@@ -187,6 +187,7 @@ extension PostEditor where Self: UIViewController {
     // MARK: - Close button handling
 
     func cancelEditing() {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
         if post.canSave() {
@@ -330,8 +331,7 @@ extension PostEditor where Self: UIViewController {
 
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
-                let notice = Notice(title: action.publishingErrorLabel)
-                ActionDispatcher.dispatch(NoticeAction.post(notice))
+                ActionDispatcher.dispatch(NoticeAction.post(self.uploadFailureNotice))
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 self.post = uploadedPost
