@@ -5,10 +5,10 @@ import XCTest
 
 class PostActionSheetTests: XCTestCase {
 
-    var postActionSheet: PostActionSheet!
-    var viewControllerMock: UIViewControllerMock!
-    var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
-    var view: UIView!
+    private var postActionSheet: PostActionSheet!
+    private var viewControllerMock: UIViewControllerMock!
+    private var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
+    private var view: UIView!
 
     override func setUp() {
         viewControllerMock = UIViewControllerMock()
@@ -102,21 +102,40 @@ class UIViewControllerMock: UIViewController {
     }
 }
 
-class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
-
+private class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
     var didCallHandleStats = false
     var didCallHandleDraft = false
     var didCallHandleTrashPost = false
 
-    func handleStats(for post: AbstractPost) {
+    func stats(for post: AbstractPost) {
         didCallHandleStats = true
     }
 
-    func handleDraftPost(_ post: AbstractPost) {
+    func draft(_ post: AbstractPost) {
         didCallHandleDraft = true
     }
 
-    func handleTrashPost(_ post: AbstractPost) {
+    func trash(_ post: AbstractPost) {
         didCallHandleTrashPost = true
+    }
+
+    func edit(_ post: AbstractPost) {
+
+    }
+
+    func view(_ post: AbstractPost) {
+
+    }
+
+    func publish(_ post: AbstractPost) {
+
+    }
+
+    func schedule(_ post: AbstractPost) {
+
+    }
+
+    func restore(_ post: AbstractPost) {
+        
     }
 }

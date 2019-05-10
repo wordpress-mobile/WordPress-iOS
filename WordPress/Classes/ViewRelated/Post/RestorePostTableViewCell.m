@@ -1,5 +1,4 @@
 #import "RestorePostTableViewCell.h"
-#import "InteractivePostViewDelegate.h"
 #import "WordPress-Swift.h"
 #import "WPStyleGuide+Posts.h"
 
@@ -71,9 +70,7 @@
 
 - (IBAction)restorePostAction:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(handleRestorePost:)]) {
-        [self.delegate handleRestorePost:self.post];
-    }
+    [self.delegate restore:self.post];
 }
 
 @end

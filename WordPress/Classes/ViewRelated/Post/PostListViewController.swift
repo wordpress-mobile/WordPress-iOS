@@ -493,33 +493,33 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - InteractivePostViewDelegate
 
-    func handleEdit(_ post: AbstractPost) {
+    func edit(_ post: AbstractPost) {
         editPost(apost: post)
     }
 
-    func handleViewPost(_ post: AbstractPost) {
+    func view(_ post: AbstractPost) {
         viewPost(post)
     }
 
-    func handleStats(for post: AbstractPost) {
+    func stats(for post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             viewStatsForPost(post)
         }
     }
 
-    func handlePublishPost(_ post: AbstractPost) {
+    func publish(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             publishPost(post)
         }
     }
 
-    func handleSchedulePost(_ post: AbstractPost) {
+    func schedule(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             schedulePost(post)
         }
     }
 
-    func handleTrashPost(_ post: AbstractPost) {
+    func trash(_ post: AbstractPost) {
         guard ReachabilityUtils.isInternetReachable() else {
             let offlineMessage = NSLocalizedString("Unable to trash posts while offline. Please try again later.", comment: "Message that appears when a user tries to trash a post while their device is offline.")
             ReachabilityUtils.showNoInternetConnectionNotice(message: offlineMessage)
@@ -552,13 +552,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         alertController.presentFromRootViewController()
     }
 
-    func handleRestore(_ post: AbstractPost) {
+    func restore(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             restorePost(post)
         }
     }
 
-    func handleDraftPost(_ post: AbstractPost) {
+    func draft(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             moveToDraft(post)
         }

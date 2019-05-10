@@ -21,19 +21,19 @@ class PostActionSheet {
 
         if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
             actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
-                self?.interactivePostViewDelegate?.handleStats?(for: post)
+                self?.interactivePostViewDelegate?.stats(for: post)
             }
         }
 
         if post.status != BasePost.Status.draft {
             actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
-                self?.interactivePostViewDelegate?.handleDraftPost?(post)
+                self?.interactivePostViewDelegate?.draft(post)
             }
         }
 
         let destructiveTitle = post.status == BasePost.Status.trash ? Titles.delete : Titles.trash
         actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
-            self?.interactivePostViewDelegate?.handleTrashPost?(post)
+            self?.interactivePostViewDelegate?.trash(post)
         }
 
         if let presentationController = actionSheetController.popoverPresentationController {
