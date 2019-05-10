@@ -57,7 +57,7 @@ class PostActionSheetTests: XCTestCase {
         let post = PostBuilder().published().build()
 
         postActionSheet.show(for: post, from: view)
-        viewControllerMock.viewControllerPresented?.tap("Stats")
+        tap("Stats", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleStats)
     }
@@ -66,7 +66,7 @@ class PostActionSheetTests: XCTestCase {
         let post = PostBuilder().published().build()
 
         postActionSheet.show(for: post, from: view)
-        viewControllerMock.viewControllerPresented?.tap("Move to Draft")
+        tap("Move to Draft", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleDraft)
     }
@@ -75,7 +75,7 @@ class PostActionSheetTests: XCTestCase {
         let post = PostBuilder().trashed().build()
 
         postActionSheet.show(for: post, from: view)
-        viewControllerMock.viewControllerPresented?.tap("Delete Permanently")
+        tap("Delete Permanently", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
     }
@@ -84,9 +84,20 @@ class PostActionSheetTests: XCTestCase {
         let post = PostBuilder().published().build()
 
         postActionSheet.show(for: post, from: view)
-        viewControllerMock.viewControllerPresented?.tap("Move to Trash")
+        tap("Move to Trash", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
+    }
+
+    func tap(_ label: String, in alertController: UIAlertController?) {
+        typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
+
+        if let action = alertController?.actions.first(where: { $0.title == label }) {
+            let block = action.value(forKey: "handler")
+            let blockPtr = UnsafeRawPointer(Unmanaged<AnyObject>.passUnretained(block as AnyObject).toOpaque())
+            let handler = unsafeBitCast(blockPtr, to: AlertHandler.self)
+            handler(action)
+        }
     }
 
 }
