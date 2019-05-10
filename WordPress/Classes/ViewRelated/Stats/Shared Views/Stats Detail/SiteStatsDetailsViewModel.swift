@@ -501,9 +501,22 @@ private extension SiteStatsDetailsViewModel {
         let referrers = periodStore.getTopReferrers()?.referrers ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            let icon: UIImage?
+            let iconURL: URL?
+
+            switch referrer.iconURL?.lastPathComponent {
+            case "search-engine.png":
+                icon = Style.imageForGridiconType(.search)
+                iconURL = nil
+            default:
+                icon = nil
+                iconURL = referrer.iconURL
+            }
+
             return StatsTotalRowData(name: referrer.title,
                                      data: referrer.viewsCount.abbreviatedString(),
-                                     socialIconURL: referrer.iconURL,
+                                     icon: icon,
+                                     socialIconURL: iconURL,
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
