@@ -397,6 +397,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatDeepLinkFailed:
             eventName = @"deep_link_failed";
             break;
+        case WPAnalyticsStatDomainCreditPromptShown:
+            eventName = @"domain_credit_prompt_shown";
+            break;
+        case WPAnalyticsStatDomainCreditRedemptionSuccess:
+            eventName = @"domain_credit_redemption_success";
+            break;
+        case WPAnalyticsStatDomainCreditRedemptionTapped:
+            eventName = @"domain_credit_redemption_tapped";
+            break;
         case WPAnalyticsStatEditorAddedPhotoViaGiphy:
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"giphy" };

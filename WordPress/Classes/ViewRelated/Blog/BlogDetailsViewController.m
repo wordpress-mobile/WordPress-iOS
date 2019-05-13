@@ -177,6 +177,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
 @property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
+@property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
+
 @end
 
 @implementation BlogDetailsViewController
@@ -283,6 +285,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
     self.clearsSelectionOnViewWillAppear = NO;
+    self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -601,6 +604,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
     if ([Feature enabled:FeatureFlagDomainCredit] && [DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
+        if (!self.hasLoggedDomainCreditPromptShownEvent) {
+            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
+            self.hasLoggedDomainCreditPromptShownEvent = YES;
+        }
         [marr addObject:[self domainCreditSectionViewModel]];
     }
     if ([self shouldShowQuickStartChecklist]) {
