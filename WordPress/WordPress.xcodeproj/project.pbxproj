@@ -208,6 +208,7 @@
 		2611CC62A62F9E6BC25350FE /* Pods_WordPressScreenshotGeneration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB390AA9C94F16E78184E9D1 /* Pods_WordPressScreenshotGeneration.framework */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
+		2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */; };
 		2FA37B1A215724E900C80377 /* LongPressGestureLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */; };
 		2FA6511321F26949009AA935 /* SiteVerticalsPromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511221F26949009AA935 /* SiteVerticalsPromptService.swift */; };
 		2FA6511521F269A6009AA935 /* VerticalsTableViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA6511421F269A6009AA935 /* VerticalsTableViewProvider.swift */; };
@@ -2095,6 +2096,7 @@
 		292CECFE1027259000BD407D /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+UnattachedMedia.swift"; sourceTree = "<group>"; };
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongPressGestureLabel.swift; sourceTree = "<group>"; };
 		2FA6511221F26949009AA935 /* SiteVerticalsPromptService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteVerticalsPromptService.swift; sourceTree = "<group>"; };
@@ -6375,6 +6377,7 @@
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
 				FF0F722B206E5345000DAAB5 /* PostService+RefreshStatus.swift */,
+				2F08ECFB2283A4FB000F8E11 /* PostService+UnattachedMedia.swift */,
 				9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */,
 				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
 				08472A1F1C727E020040769D /* PostServiceOptions.m */,
@@ -10424,6 +10427,7 @@
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
 				E1DAC8FA221F1C8D00833FFC /* GutenbergTranslator.swift in Sources */,
+				2F08ECFC2283A4FB000F8E11 /* PostService+UnattachedMedia.swift in Sources */,
 				E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */,
 				D816C1F220E0894D00C4D82F /* ReplyToComment.swift in Sources */,
 				E1BB92321FDAAFFA00F2D817 /* TextWithAccessoryButtonCell.swift in Sources */,
