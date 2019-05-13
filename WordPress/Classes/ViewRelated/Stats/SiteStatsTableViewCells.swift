@@ -122,34 +122,6 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }
 }
 
-struct TabbedTotalsDetailStatsRow: ImmuTableRow {
-
-    typealias CellType = TabbedTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let tabsData: [TabData]
-    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
-    let showTotalCount: Bool
-    let selectedIndex: Int
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(tabsData: tabsData,
-                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
-                       showTotalCount: showTotalCount,
-                       selectedIndex: selectedIndex,
-                       limitRowsDisplayed: false)
-    }
-}
-
 struct TopTotalsDetailStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
@@ -504,5 +476,33 @@ struct DetailSubtitlesCountriesHeaderRow: ImmuTableRow {
         }
 
         cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: [], forDetails: true)
+    }
+}
+
+struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
+
+    typealias CellType = TabbedTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let tabsData: [TabData]
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
+    let showTotalCount: Bool
+    let selectedIndex: Int
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(tabsData: tabsData,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
+                       showTotalCount: showTotalCount,
+                       selectedIndex: selectedIndex,
+                       forDetails: true)
     }
 }
