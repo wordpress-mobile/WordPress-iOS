@@ -11,7 +11,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
@@ -782,6 +781,7 @@ FeaturedImageViewControllerDelegate>
 {
     WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
     activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+    activityCell.accessibilityIdentifier = @"SetFeaturedImage";
     activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
     return activityCell;

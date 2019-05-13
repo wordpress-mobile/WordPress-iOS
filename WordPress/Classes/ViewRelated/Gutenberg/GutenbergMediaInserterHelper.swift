@@ -47,7 +47,7 @@ class GutenbergMediaInserterHelper: NSObject {
                 callback(mediaUploadID, nil)
                 return
             }
-            let filePath = NSTemporaryDirectory() + UUID().uuidString + ".jpg"
+            let filePath = NSTemporaryDirectory() + "\(mediaUploadID).jpg"
             let url = URL(fileURLWithPath: filePath)
             do {
                 try resizedImage.writeJPEGToURL(url)
@@ -153,7 +153,24 @@ class GutenbergMediaInserterHelper: NSObject {
             guard let urlString = media.remoteURL, let url = URL(string: urlString), let mediaServerID = media.mediaID?.int32Value else {
                 break
             }
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
+            switch media.mediaType {
+            case .image:
+                gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: url, serverID: mediaServerID)
+            case .video:
+                EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    switch result {
+                    case .error:
+                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: nil, serverID: nil)
+                    case .success(let value):
+                        strongSelf.gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .succeeded, progress: 1, url: value.videoURL, serverID: mediaServerID)
+                    }
+                }
+            default:
+                break
+            }
         case .failed(let error):
             if error.code == NSURLErrorCancelled {
                 gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .reset, progress: 0, url: nil, serverID: nil)

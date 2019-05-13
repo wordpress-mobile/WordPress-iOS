@@ -107,7 +107,7 @@ class PrivacySettingsViewController: UITableViewController {
 
     func usageTrackingChanged() -> (Bool) -> Void {
         return { enabled in
-            let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
+            let appAnalytics = WordPressAppDelegate.shared?.analytics
             appAnalytics?.setUserHasOptedOut(!enabled)
 
             let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)

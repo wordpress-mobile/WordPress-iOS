@@ -1,5 +1,4 @@
 #import "WPAnalyticsTrackerWPCom.h"
-#import "WordPressAppDelegate.h"
 #import "WPUserAgent.h"
 #import "Constants.h"
 
