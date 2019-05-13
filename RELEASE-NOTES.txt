@@ -4,6 +4,7 @@
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
 
 12.4
 -----
