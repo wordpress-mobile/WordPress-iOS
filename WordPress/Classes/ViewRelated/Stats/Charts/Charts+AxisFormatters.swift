@@ -54,44 +54,15 @@ class VerticalAxisFormatter: IAxisValueFormatter {
 
     // MARK: Properties
 
-    private lazy var formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = 0
-
-        return formatter
-    }()
+    private let largeValueFormatter = LargeValueFormatter()
 
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        let formattedValue = chartAbbreviatedString(value)
-        return formattedValue
-    }
-
-    /// Implementation was informed by Double.abbreviatedString(forHeroNumber:)
-    ///
-    private func chartAbbreviatedString(_ value: Double) -> String {
-        if value < 0 {
+        if value <= 0.0 {
             return "0"
         }
-        if value < 1 {
-            return "1"
-        }
 
-        let formatThreshold = Double(1000)
-        if value < formatThreshold {
-            return formatter.string(for: value) ?? "\(value)"
-        }
-
-        let exp: Int = Int(log10(value) / 3.0)
-        let units: [String] = ["k", "m", "b", "t", "p", "e"]
-        let roundedNum: Double = Foundation.round(10 * value / pow(1000.0, Double(exp))) / 10
-
-        if roundedNum == 1000.0 {
-            return "\(1)\(units[exp])"
-        } else {
-            let formatted = formatter.string(for: roundedNum) ?? "\(value)"
-            return "\(formatted)\(units[exp-1])"
-        }
+        return largeValueFormatter.stringForValue(value, axis: axis)
     }
 }
