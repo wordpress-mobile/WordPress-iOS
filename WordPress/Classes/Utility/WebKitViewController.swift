@@ -128,10 +128,9 @@ class WebKitViewController: UIViewController {
             self.dismiss(animated: false)
         }
 
-        guard let authenticator = authenticator,
-            #available(iOS 11, *) else {
-                load(request: URLRequest(url: url))
-                return
+        guard let authenticator = authenticator else {
+            load(request: URLRequest(url: url))
+            return
         }
 
         DispatchQueue.main.async { [weak self] in

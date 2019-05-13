@@ -417,13 +417,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
 
-    // there is a display problem when showing this popup alert on iOS 10,
-    // so we show it from the empty screen's action button instead
-    if (@available(iOS 11, *)) {
-        [self showAddSiteAlertFrom:sourceView];
-    } else {
-        [self actionButtonPressed];
-    }
+    [self showAddSiteAlertFrom:sourceView];
 }
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar

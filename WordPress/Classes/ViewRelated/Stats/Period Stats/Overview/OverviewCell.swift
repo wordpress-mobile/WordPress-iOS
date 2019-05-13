@@ -115,13 +115,7 @@ private extension OverviewCell {
     ///
     func configureFonts() {
 
-        let prevailingFont: UIFont
-        if #available(iOS 11.0, *) {
-            prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
-        } else {
-            let fontSize = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1).pointSize
-            prevailingFont = WPFontManager.systemRegularFont(ofSize: fontSize)
-        }
+        let prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
         selectedData.font = prevailingFont
 
         selectedData.adjustsFontForContentSizeCategory = true   // iOS 10

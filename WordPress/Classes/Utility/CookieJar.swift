@@ -68,7 +68,6 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
     }
 }
 
-@available(iOS 11.0, *)
 extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
 
@@ -126,9 +125,8 @@ extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func __removeAllWordPressComCookies() {
         var jars = [CookieJarSharedImplementation]()
         jars.append(HTTPCookieStorage.shared)
-        if #available(iOS 11.0, *) {
-            jars.append(WKWebsiteDataStore.default().httpCookieStore)
-        }
+        jars.append(WKWebsiteDataStore.default().httpCookieStore)
+
         let group = DispatchGroup()
         jars.forEach({ jar in
             group.enter()

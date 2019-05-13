@@ -152,12 +152,9 @@ extension PluginDirectoryViewController: UISearchControllerDelegate {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
-        if #available(iOS 11.0, *) {
-            updateTableHeaderSize()
-
-            tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
-            tableView.contentInset.top = 0
-        }
+        updateTableHeaderSize()
+        tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+        tableView.contentInset.top = 0
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {

@@ -695,12 +695,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)updateTableViewForAttachments
 {
-    if (@available(iOS 11, *)) {
-        [self.tableView performBatchUpdates:nil completion:nil];
-    } else {
-        [self.tableView beginUpdates];
-        [self.tableView endUpdates];
-    }
+    [self.tableView performBatchUpdates:nil completion:nil];
 }
 
 

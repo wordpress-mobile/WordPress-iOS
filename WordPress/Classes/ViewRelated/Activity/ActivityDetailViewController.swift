@@ -130,26 +130,24 @@ class ActivityDetailViewController: UIViewController {
         textLabel.isAccessibilityElement = false
         summaryLabel.isAccessibilityElement = false
 
-        if #available(iOS 11.0, *) {
-            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
-                headerStackView.axis = .vertical
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+            headerStackView.axis = .vertical
 
-                dateLabel.textAlignment = .center
-                timeLabel.textAlignment = .center
+            dateLabel.textAlignment = .center
+            timeLabel.textAlignment = .center
+        } else {
+            headerStackView.axis = .horizontal
+
+            if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+                // swiftlint:disable:next inverse_text_alignment
+                dateLabel.textAlignment = .right
+                // swiftlint:disable:next inverse_text_alignment
+                timeLabel.textAlignment = .right
             } else {
-                headerStackView.axis = .horizontal
-
-                if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
-                    // swiftlint:disable:next inverse_text_alignment
-                    dateLabel.textAlignment = .right
-                    // swiftlint:disable:next inverse_text_alignment
-                    timeLabel.textAlignment = .right
-                } else {
-                    // swiftlint:disable:next natural_text_alignment
-                    dateLabel.textAlignment = .left
-                    // swiftlint:disable:next natural_text_alignment
-                    timeLabel.textAlignment = .left
-                }
+                // swiftlint:disable:next natural_text_alignment
+                dateLabel.textAlignment = .left
+                // swiftlint:disable:next natural_text_alignment
+                timeLabel.textAlignment = .left
             }
         }
     }

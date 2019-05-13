@@ -112,17 +112,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     
     // Clear WordPress.com cookies
-    NSArray<id<CookieJar>> *cookieJars;
-    if (@available(iOS 11.0, *)) {
-        cookieJars = @[
-                       (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage],
-                       (id<CookieJar>)[[WKWebsiteDataStore defaultDataStore] httpCookieStore]
-                       ];
-    } else {
-        cookieJars = @[
-                       (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage]
-                       ];
-    }
+    NSArray<id<CookieJar>> *cookieJars = @[
+        (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage],
+        (id<CookieJar>)[[WKWebsiteDataStore defaultDataStore] httpCookieStore]
+    ];
+
     for (id<CookieJar> cookieJar in cookieJars) {
         [cookieJar removeWordPressComCookiesWithCompletion:^{}];
     }

@@ -63,32 +63,12 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
         viewModel.prefill()
 
-        changeBottomSafeAreaInset()
         setupEditingEndingTapGestureRecognizer()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureTableFooterView(width: size.width)
 
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        changeBottomSafeAreaInset()
-    }
-
-    private func changeBottomSafeAreaInset() {
-        guard #available(iOS 11.0, *) else {
-            return
-        }
-
-        // Footer in this case is the submit button. We want the background to extend under the home "buttom".
-        // The bar at the bottom of the screen. Whatever that thing's called? Home indicator? That thing.
-        // Hence this bit of dark magic.
-        let safeAreaInsets = tableView.safeAreaInsets.bottom
-
-        var newInsets = tableView.contentInset
-        newInsets.bottom = -safeAreaInsets
-        tableView.contentInset = newInsets
     }
 
     private func configureTableView() {
