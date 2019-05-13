@@ -17,6 +17,7 @@ class StatsBarChartView: BarChartView {
         static let highlightAlpha       = CGFloat(1)
         static let markerAlpha          = CGFloat(0.2)
         static let topOffsetSansLegend  = CGFloat(5)
+        static let topOffsetWithLegend  = CGFloat(16)
         static let trailingOffset       = CGFloat(20)
     }
 
@@ -211,7 +212,7 @@ class StatsBarChartView: BarChartView {
         NSLayoutConstraint.activate([
             chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
         ])
-        extraTopOffset = Constants.topOffsetSansLegend + chartLegend.intrinsicContentSize.height
+        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
 
         self.legendView = chartLegend
     }
