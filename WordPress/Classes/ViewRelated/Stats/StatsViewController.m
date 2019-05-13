@@ -111,7 +111,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)initStats
 {
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
-    if (!appDelegate.connectionAvailable) {
+    if (!appDelegate.connectionAvailable && ![Feature enabled:FeatureFlagStatsRefresh]) {
         [self showNoResults];
         self.offline = YES;
         return;

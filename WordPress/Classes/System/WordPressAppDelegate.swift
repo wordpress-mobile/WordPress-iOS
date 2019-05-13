@@ -38,6 +38,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
+        // Configure WPCom API overrides
+        configureWordPressComApi()
+
         configureWordPressAuthenticator()
 
         configureReachability()
@@ -388,6 +391,12 @@ extension WordPressAppDelegate {
 
     @objc func setupNetworkActivityIndicator() {
         NetworkActivityIndicatorManager.shared.isEnabled = true
+    }
+
+    @objc func configureWordPressComApi() {
+        if let baseUrl = UserDefaults.standard.string(forKey: "wpcom-api-base-url") {
+            Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
+        }
     }
 }
 
