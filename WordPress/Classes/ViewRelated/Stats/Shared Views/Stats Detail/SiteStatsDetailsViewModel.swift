@@ -118,10 +118,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
             tableRows.append(contentsOf: searchTermsRows())
         case .periodVideos:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodVideos.dataSubtitle,
-                                                     dataRows: videosRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodVideos.dataSubtitle))
+            tableRows.append(contentsOf: videosRows())
         case .periodClicks:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle,
@@ -142,8 +141,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                                      dataRows: countriesRows()))
         case .periodPublished:
-            tableRows.append(TopTotalsNoSubtitlesPeriodDetailStatsRow(dataRows: publishedRows(),
-                                                                      siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
                                                      dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle,
@@ -456,7 +454,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Videos
 
-    func videosRows() -> [StatsTotalRowData] {
+    func videosRows() -> [DetailDataRow] {
+        return dataRowsFor(videosRowData())
+    }
+
+    func videosRowData() -> [StatsTotalRowData] {
         return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
                                                                           data: $0.playsCount.abbreviatedString(),
                                                                           mediaID: $0.postID as NSNumber,
@@ -525,7 +527,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Published
 
-    func publishedRows() -> [StatsTotalRowData] {
+    func publishedRows() -> [DetailDataRow] {
+        return dataRowsFor(publishedRowData())
+    }
+
+    func publishedRowData() -> [StatsTotalRowData] {
         return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
                                                                                      data: "",
                                                                                      showDisclosure: true,
