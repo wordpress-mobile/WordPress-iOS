@@ -21,6 +21,13 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lk7-nZ-b0t">
                         <rect key="frame" x="0.0" y="16" width="326" height="449.5"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sev-PH-HG8">
+                                <rect key="frame" x="0.0" y="0.0" width="326" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" placeholder="YES" id="Gnj-Ai-hml"/>
+                                </constraints>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="JqA-of-VBn">
                                 <rect key="frame" x="0.0" y="15" width="326" height="434.5"/>
                                 <subviews>
@@ -169,13 +176,26 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eW-ex-CSu">
+                                <rect key="frame" x="0.0" y="448.5" width="326" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" placeholder="YES" id="FoL-Rc-HfI"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="sev-PH-HG8" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" id="08c-Fo-h0W"/>
+                            <constraint firstItem="9eW-ex-CSu" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="3u1-2g-wAg"/>
+                            <constraint firstAttribute="trailing" secondItem="9eW-ex-CSu" secondAttribute="trailing" id="HUj-hh-Ili"/>
                             <constraint firstAttribute="trailing" secondItem="JqA-of-VBn" secondAttribute="trailing" id="MY8-mP-ASa"/>
                             <constraint firstAttribute="bottom" secondItem="JqA-of-VBn" secondAttribute="bottom" id="NwA-tt-aRf"/>
+                            <constraint firstItem="sev-PH-HG8" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="Yrw-8m-Cu0"/>
+                            <constraint firstAttribute="bottom" secondItem="9eW-ex-CSu" secondAttribute="bottom" id="a2Y-qy-DA8"/>
                             <constraint firstItem="JqA-of-VBn" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="bPW-Sv-fZu"/>
                             <constraint firstItem="JqA-of-VBn" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" constant="15" id="hLL-be-nDD"/>
+                            <constraint firstAttribute="trailing" secondItem="sev-PH-HG8" secondAttribute="trailing" id="uus-mZ-ErN"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -194,7 +214,9 @@
             </tableViewCellContentView>
             <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
+                <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
+                <outlet property="upperBorder" destination="sev-PH-HG8" id="fe9-3Q-8go"/>
             </connections>
             <point key="canvasLocation" x="-128" y="454.27286356821594"/>
         </tableViewCell>

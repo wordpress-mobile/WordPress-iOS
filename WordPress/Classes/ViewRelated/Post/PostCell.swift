@@ -2,6 +2,8 @@ import UIKit
 
 class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
+    @IBOutlet weak var upperBorder: UIView!
+    @IBOutlet weak var bottomBorder: UIView!
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -13,6 +15,16 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         self.post = post
 
         configureFeaturedImage()
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        WPStyleGuide.applyPostCardStyle(self)
+
+        [upperBorder, bottomBorder].forEach { border in
+            border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+            border?.backgroundColor = WPStyleGuide.postCardBorderColor()
+        }
     }
 
     override func prepareForReuse() {
