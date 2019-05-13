@@ -5,6 +5,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
+    @IBOutlet weak var topSpace: NSLayoutConstraint!
+
+    private let topSpaceWithImage: CGFloat = 15
+    private let topSpaceWithoutImage: CGFloat = 7
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -42,9 +46,11 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         if let url = post.featuredImageURLForDisplay(),
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
             featuredImage.isHidden = false
+            topSpace.constant = topSpaceWithImage
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImage.isHidden = true
+            topSpace.constant = topSpaceWithoutImage
         }
     }
 

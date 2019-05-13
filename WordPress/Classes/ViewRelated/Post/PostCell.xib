@@ -217,6 +217,7 @@
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="7oq-fK-MSR"/>
+                <outlet property="topSpace" destination="hLL-be-nDD" id="EBS-Du-PzL"/>
                 <outlet property="upperBorder" destination="sev-PH-HG8" id="fe9-3Q-8go"/>
             </connections>
             <point key="canvasLocation" x="-128" y="454.27286356821594"/>
