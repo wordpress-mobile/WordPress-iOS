@@ -33,6 +33,11 @@ class CountriesCell: UITableViewCell, NibLoadable {
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.forDetails = forDetails
 
+        // TODO: in xib when add map:
+        // - unhide Map View
+        // - Separator Line: enable Top Space to Map View constraint
+        // - Separator Line: remove Top Space to Superview constraint
+
         if !forDetails {
         addRows(dataRows,
                 toStackView: rowsStackView,
