@@ -4,6 +4,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -23,6 +24,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureFeaturedImage()
         configureTitle()
         configureSnippet()
+        configureDate()
     }
 
     override func awakeFromNib() {
@@ -30,6 +32,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostCardStyle(self)
         WPStyleGuide.applyPostTitleStyle(titleLabel)
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
+        WPStyleGuide.applyPostDateStyle(dateLabel)
 
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
@@ -71,5 +74,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes() as? [NSAttributedString.Key : Any])
             snippetLabel.lineBreakMode = .byTruncatingTail
         }
+    }
+
+    private func configureDate() {
+        let post = self.post.latest()
+        dateLabel.text = post.dateStringForDisplay()
     }
 }

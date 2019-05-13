@@ -45,6 +45,11 @@ class PostBuilder {
         return self
     }
 
+    func with(dateCreated: Date) -> PostBuilder {
+        post.dateCreated = dateCreated
+        return self
+    }
+
     func build() -> Post {
         return post
     }

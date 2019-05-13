@@ -63,7 +63,7 @@
 
 + (void)applyPostDateStyle:(UILabel *)label
 {
-    [self configureLabelForDeviceDependantStyle:label];
+    [self configureLabelForRegularFontStyle:label];
     label.textColor = [self grey];
 }
 
