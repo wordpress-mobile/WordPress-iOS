@@ -211,7 +211,7 @@ class StatsBarChartView: BarChartView {
         NSLayoutConstraint.activate([
             chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
         ])
-        extraTopOffset = chartLegend.intrinsicContentSize.height
+        extraTopOffset = Constants.topOffsetSansLegend + chartLegend.intrinsicContentSize.height
 
         self.legendView = chartLegend
     }
@@ -231,12 +231,15 @@ class StatsBarChartView: BarChartView {
         let yAxis = leftAxis
 
         yAxis.axisLineColor = styling.lineColor
-        yAxis.gridColor = styling.lineColor
+        yAxis.axisMinimum = 0.0
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
+        yAxis.gridColor = styling.lineColor
         yAxis.labelTextColor = styling.labelColor
+        yAxis.setLabelCount(6, force: true)
         yAxis.valueFormatter = styling.yAxisValueFormatter
+        yAxis.zeroLineColor = styling.lineColor
 
         // This adjustment is intended to prevent clipping observed with some labels
         // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
