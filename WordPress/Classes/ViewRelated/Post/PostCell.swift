@@ -3,6 +3,7 @@ import UIKit
 class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -21,12 +22,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         configureFeaturedImage()
         configureTitle()
+        configureSnippet()
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         WPStyleGuide.applyPostCardStyle(self)
         WPStyleGuide.applyPostTitleStyle(titleLabel)
+        WPStyleGuide.applyPostSnippetStyle(snippetLabel)
 
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
@@ -59,6 +62,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         if let titleForDisplay = post.titleForDisplay() {
             titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes() as? [NSAttributedString.Key : Any])
             titleLabel.lineBreakMode = .byTruncatingTail
+        }
+    }
+
+    private func configureSnippet() {
+        let post = self.post.latest()
+        if let contentPreviewForDisplay = post.contentPreviewForDisplay() {
+            snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes() as? [NSAttributedString.Key : Any])
+            snippetLabel.lineBreakMode = .byTruncatingTail
         }
     }
 }

@@ -40,6 +40,11 @@ class PostBuilder {
         return self
     }
 
+    func with(snippet: String) -> PostBuilder {
+        post.content = snippet
+        return self
+    }
+
     func build() -> Post {
         return post
     }
