@@ -2,6 +2,7 @@ import UIKit
 
 class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
 
@@ -15,11 +16,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         self.post = post
 
         configureFeaturedImage()
+        configureTitle()
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         WPStyleGuide.applyPostCardStyle(self)
+        WPStyleGuide.applyPostTitleStyle(titleLabel)
 
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
@@ -42,6 +45,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImage.isHidden = true
+        }
+    }
+
+    private func configureTitle() {
+        let post = self.post.latest()
+        if let titleForDisplay = post.titleForDisplay() {
+            titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes() as? [NSAttributedString.Key : Any])
+            titleLabel.lineBreakMode = .byTruncatingTail
         }
     }
 }

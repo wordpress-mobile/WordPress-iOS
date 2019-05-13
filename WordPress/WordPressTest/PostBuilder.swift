@@ -35,6 +35,11 @@ class PostBuilder {
         return self
     }
 
+    func with(title: String) -> PostBuilder {
+        post.postTitle = title
+        return self
+    }
+
     func build() -> Post {
         return post
     }

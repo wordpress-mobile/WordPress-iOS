@@ -31,6 +31,14 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.featuredImage.isHidden)
     }
 
+    func testShowPostTitle() {
+        let post = PostBuilder().with(title: "Foo bar").build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.titleLabel.text, "Foo bar")
+    }
+
     private func postCellFromNib() -> PostCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {
