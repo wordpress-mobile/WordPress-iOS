@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.5'
+    pod 'WordPressShared', '~> 1.8.0-beta'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -42,9 +42,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  #pod 'WordPressKit', '~> 4.1.0'
-  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'issue/add_autosave_call'
-  #pod 'WordPressKit', :path => '../WordPressKit-iOS'
+    pod 'WordPressKit', '~> 4.1.1-beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
+    #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
 def shared_with_all_pods
@@ -88,6 +88,7 @@ def gutenberg_dependencies(options)
         'yoga',
         'Folly',
         'react-native-safe-area',
+        'react-native-video',
     ]
     tag_or_commit = options[:tag] || options[:commit]
 
@@ -109,7 +110,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.4.0'
+    gutenberg :commit => '92be0c592eda8d02fd6a792baf17bcb0b8a606e8'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
@@ -146,7 +147,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.4.1'
+    pod 'WordPressAuthenticator', '~> 1.5.0-beta'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 

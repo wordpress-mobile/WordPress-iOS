@@ -56,6 +56,6 @@ open class WP3DTouchShortcutHandler: NSObject {
     }
 
     fileprivate func clearCurrentViewController() {
-        WordPressAppDelegate.sharedInstance().window!.rootViewController?.dismiss(animated: false)
+        WordPressAppDelegate.shared?.window?.rootViewController?.dismiss(animated: false)
     }
 }

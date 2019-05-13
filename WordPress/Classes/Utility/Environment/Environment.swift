@@ -1,5 +1,6 @@
 
 import Foundation
+import WordPressKit
 
 /// A collection of global variables and singletons that the app wants access to.
 ///
@@ -12,6 +13,9 @@ struct Environment {
 
     /// A type to create derived context, save context, etc...
     let contextManager: ContextManagerType
+
+    /// The base url to use for WP.com api requests
+    let wordPressComApiBase: String
 
     /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
     /// for UI elements and fetched results controllers.
@@ -29,10 +33,12 @@ struct Environment {
 
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
-        contextManager: ContextManagerType = ContextManager.shared) {
+        contextManager: ContextManagerType = ContextManager.shared,
+        wordPressComApiBase: String = WordPressComRestApi.apiBaseURLString) {
 
         self.appRatingUtility = appRatingUtility
         self.contextManager = contextManager
+        self.wordPressComApiBase = wordPressComApiBase
     }
 }
 
@@ -42,11 +48,13 @@ extension Environment {
     @discardableResult
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
-        contextManager: ContextManagerType = Environment.current.contextManager) -> Environment {
+        contextManager: ContextManagerType = Environment.current.contextManager,
+        wordPressComApiBase: String = Environment.current.wordPressComApiBase) -> Environment {
 
         current = Environment(
             appRatingUtility: appRatingUtility,
-            contextManager: contextManager
+            contextManager: contextManager,
+            wordPressComApiBase: wordPressComApiBase
         )
         return current
     }

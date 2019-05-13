@@ -17,7 +17,7 @@ enum FeatureFlag: Int {
         case .statsRefresh:
             return BuildConfiguration.current == .localDeveloper
         case .domainCredit:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }

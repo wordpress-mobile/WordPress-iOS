@@ -117,10 +117,11 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [TabbedTotalsDetailStatsRow.self,
+        return [DetailDataRow.self,
+                DetailSubtitlesHeaderRow.self,
+                TabbedTotalsDetailStatsRow.self,
                 TopTotalsDetailStatsRow.self,
-                CountriesDetailStatsRow.self,
-                TopTotalsNoSubtitlesPeriodDetailStatsRow.self]
+                CountriesDetailStatsRow.self]
     }
 
     func storeIsFetching(statSection: StatSection) -> Bool {

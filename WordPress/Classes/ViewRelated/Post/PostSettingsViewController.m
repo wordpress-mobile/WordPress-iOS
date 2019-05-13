@@ -11,7 +11,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
