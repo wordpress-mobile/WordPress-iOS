@@ -53,6 +53,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
     }()
 
+    private var isAllPostsMine: Bool {
+        return filterSettings.currentPostAuthorFilter() == .mine
+    }
+
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -350,7 +354,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         configurablePostView.configure(with: post)
 
-        setActionSheetDelegate(cell)
+        configurePostCell(cell)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
@@ -365,10 +369,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return identifier
     }
 
-    private func setActionSheetDelegate(_ cell: UITableViewCell) {
+    private func configurePostCell(_ cell: UITableViewCell) {
         guard let cell = cell as? PostCell else { return }
 
         cell.setActionSheetDelegate(self)
+        cell.isAuthorHidden = isAllPostsMine
     }
 
     // MARK: - Post Actions

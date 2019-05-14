@@ -210,6 +210,24 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.viewButton.isHidden)
     }
 
+    func testHideAuthor() {
+        let post = PostBuilder().with(author: "John Doe").build()
+        postCell.configure(with: post)
+
+        postCell.isAuthorHidden = true
+
+        XCTAssertTrue(postCell.authorLabel.isHidden)
+    }
+
+    func testDoesNotHideAuthor() {
+        let post = PostBuilder().with(author: "John Doe").build()
+        postCell.configure(with: post)
+
+        postCell.isAuthorHidden = false
+
+        XCTAssertFalse(postCell.authorLabel.isHidden)
+    }
+
     private func postCellFromNib() -> PostCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {

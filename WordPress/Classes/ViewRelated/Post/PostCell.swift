@@ -36,6 +36,11 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     var viewModel: PostCardStatusViewModel!
     weak var interactivePostViewDelegate: InteractivePostViewDelegate?
     weak var actionSheetDelegate: PostActionSheetDelegate?
+    var isAuthorHidden: Bool = false {
+        didSet {
+            authorLabel.isHidden = isAuthorHidden
+        }
+    }
 
     func configure(with post: Post) {
         if post != self.post {
