@@ -11,6 +11,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var statusAndStickySeparator: UILabel!
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var actionBarView: UIStackView!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -25,6 +26,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     var post: Post!
     var viewModel: PostCardStatusViewModel!
+    weak var interactivePostViewDelegate: InteractivePostViewDelegate?
 
     func configure(with post: Post) {
         if post != self.post {
@@ -42,6 +44,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureStickyPost()
         configureStatusView()
         configureProgressView()
+        configureActionBar()
     }
 
     override func awakeFromNib() {
@@ -69,6 +72,17 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         super.prepareForReuse()
         imageLoader.prepareForReuse()
         setNeedsDisplay()
+    }
+
+    @IBAction func edit() {
+        interactivePostViewDelegate?.edit(post)
+    }
+
+    @IBAction func view() {
+        interactivePostViewDelegate?.view(post)
+    }
+
+    @IBAction func more() {
     }
 
     private func configureFeaturedImage() {
@@ -144,5 +158,19 @@ class PostCell: UITableViewCell, ConfigurablePostView {
                 }
             }
         }
+    }
+
+    private func configureActionBar() {
+        actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
+            button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
+            button.setTitleColor(WPStyleGuide.grey(), for: .normal)
+            button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
+        }
+    }
+}
+
+extension PostCell: InteractivePostView {
+    func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
+        self.interactivePostViewDelegate = delegate
     }
 }

@@ -6,9 +6,12 @@ import XCTest
 class PostCellTests: XCTestCase {
 
     var postCell: PostCell!
+    var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
 
     override func setUp() {
         postCell = postCellFromNib()
+        interactivePostViewDelegateMock = InteractivePostViewDelegateMock()
+        postCell.setInteractionDelegate(interactivePostViewDelegateMock)
     }
 
     func testIsAUITableViewCell() {
@@ -155,6 +158,24 @@ class PostCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertTrue(postCell.progressView.isHidden)
+    }
+
+    func testEditAction() {
+        let post = PostBuilder().published().build()
+        postCell.configure(with: post)
+
+        postCell.edit()
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallEdit)
+    }
+
+    func testViewAction() {
+        let post = PostBuilder().published().build()
+        postCell.configure(with: post)
+
+        postCell.view()
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallView)
     }
 
     private func postCellFromNib() -> PostCell {

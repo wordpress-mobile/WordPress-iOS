@@ -158,6 +158,9 @@
                                                         <state key="normal" title="Edit" image="icon-post-actionbar-edit">
                                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="edit" destination="sqZ-hd-ibO" eventType="touchUpInside" id="lRa-y2-x2L"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zSW-B3-aWT">
                                                         <rect key="frame" x="108.5" y="0.0" width="109" height="44"/>
@@ -166,6 +169,9 @@
                                                         <state key="normal" title="View" image="icon-post-actionbar-view">
                                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="view" destination="sqZ-hd-ibO" eventType="touchUpInside" id="5C7-kf-h5q"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ud6-kQ-Qkb">
                                                         <rect key="frame" x="217.5" y="0.0" width="108.5" height="44"/>
@@ -174,6 +180,9 @@
                                                         <state key="normal" title="More" image="icon-post-actionbar-more">
                                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="more" destination="sqZ-hd-ibO" eventType="touchUpInside" id="7HH-aD-Awq"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -233,6 +242,7 @@
             </tableViewCellContentView>
             <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
+                <outlet property="actionBarView" destination="6Zz-tH-1DC" id="BX0-Jw-TD9"/>
                 <outlet property="authorLabel" destination="l4E-Qn-Vgl" id="13b-bv-tba"/>
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>

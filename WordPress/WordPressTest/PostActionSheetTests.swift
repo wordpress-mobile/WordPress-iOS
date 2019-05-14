@@ -113,10 +113,12 @@ class UIViewControllerMock: UIViewController {
     }
 }
 
-private class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDelegate {
+class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     var didCallHandleStats = false
     var didCallHandleDraft = false
     var didCallHandleTrashPost = false
+    var didCallEdit = false
+    var didCallView = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -131,11 +133,11 @@ private class InteractivePostViewDelegateMock: NSObject, InteractivePostViewDele
     }
 
     func edit(_ post: AbstractPost) {
-
+        didCallEdit = true
     }
 
     func view(_ post: AbstractPost) {
-
+        didCallView = true
     }
 
     func publish(_ post: AbstractPost) {
