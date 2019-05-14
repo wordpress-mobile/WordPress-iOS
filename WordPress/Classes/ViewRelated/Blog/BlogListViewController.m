@@ -541,7 +541,7 @@ static NSInteger HideSearchMinSites = 3;
     UIEdgeInsets insets = self.tableView.contentInset;
 
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, insets.left, keyboardHeight, insets.right);
-    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.view.safeAreaInsets.top, insets.left, keyboardHeight, insets.right);
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification

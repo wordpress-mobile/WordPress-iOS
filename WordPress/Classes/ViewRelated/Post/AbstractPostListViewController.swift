@@ -169,7 +169,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate var searchBarHeight: CGFloat {
-        return searchController.searchBar.bounds.height + topLayoutGuide.length
+        return searchController.searchBar.bounds.height + view.safeAreaInsets.top
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
