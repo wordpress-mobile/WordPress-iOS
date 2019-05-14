@@ -76,8 +76,8 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-Qn-Vgl">
-                                                        <rect key="frame" x="210" y="1" width="46.5" height="18"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-Qn-Vgl">
+                                                        <rect key="frame" x="210" y="1" width="84" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -86,6 +86,7 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="l4E-Qn-Vgl" secondAttribute="trailing" id="Cbe-Nu-PmP"/>
                                                     <constraint firstItem="l4E-Qn-Vgl" firstAttribute="leading" secondItem="q5D-nc-yvr" secondAttribute="trailing" id="Nqw-eS-fcl"/>
                                                     <constraint firstItem="q5D-nc-yvr" firstAttribute="leading" secondItem="c55-4m-uvT" secondAttribute="leading" id="PEu-54-Dh3"/>
                                                     <constraint firstItem="l4E-Qn-Vgl" firstAttribute="centerY" secondItem="q5D-nc-yvr" secondAttribute="centerY" id="SlK-2N-1iP"/>
@@ -235,6 +236,7 @@
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>
                 <outlet property="statusAndStickySeparator" destination="5oV-ui-0Mx" id="Zvf-fU-HF5"/>
                 <outlet property="statusLabel" destination="Dbu-l3-L8G" id="MDp-Ba-Uon"/>
+                <outlet property="statusView" destination="Qxw-fl-tZF" id="LgT-lv-fng"/>
                 <outlet property="stickyLabel" destination="GWM-0Z-zAX" id="7Gc-ev-9hc"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="7oq-fK-MSR"/>
                 <outlet property="topSpace" destination="hLL-be-nDD" id="EBS-Du-PzL"/>

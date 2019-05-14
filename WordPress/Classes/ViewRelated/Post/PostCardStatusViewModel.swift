@@ -48,10 +48,10 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var shouldHideStatusView: Bool {
         guard let status = status else {
-            return true
+            return !post.isStickyPost
         }
 
-        return status.count == 0
+        return status.count == 0 && !post.isStickyPost
     }
 
     @objc
@@ -84,7 +84,7 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var statusColor: UIColor {
         guard let status = postStatus else {
-            return WPStyleGuide.darkGrey()
+            return WPStyleGuide.grey()
         }
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
@@ -97,13 +97,13 @@ class PostCardStatusViewModel: NSObject {
 
         switch status {
         case .pending:
-            return WPStyleGuide.validGreen()
+            return WPStyleGuide.jazzyOrange()
         case .scheduled:
             return WPStyleGuide.mediumBlue()
         case .trash:
             return WPStyleGuide.errorRed()
         default:
-            return WPStyleGuide.darkGrey()
+            return WPStyleGuide.grey()
         }
     }
 

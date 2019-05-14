@@ -102,7 +102,7 @@ class PostCellTests: XCTestCase {
     func testHideSeparatorWhenHasOnlyStatusLabel() {
         let post = PostBuilder()
             .with(remoteStatus: .sync)
-            .published().build()
+            .private().build()
 
         postCell.configure(with: post)
 
@@ -115,6 +115,26 @@ class PostCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.statusLabel.text, "Privately published")
+    }
+
+    func testHideHideStatusView() {
+        let post = PostBuilder()
+            .with(remoteStatus: .sync)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.statusView.isHidden)
+    }
+
+    func testShowHideStatusView() {
+        let post = PostBuilder()
+            .with(remoteStatus: .failed)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertFalse(postCell.statusView.isHidden)
     }
 
     private func postCellFromNib() -> PostCell {

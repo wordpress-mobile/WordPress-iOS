@@ -9,6 +9,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var stickyLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var statusAndStickySeparator: UILabel!
+    @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -38,6 +39,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureAuthor()
         configureStatusLabel()
         configureStickyPost()
+        configureStatusView()
     }
 
     override func awakeFromNib() {
@@ -105,10 +107,19 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureStickyPost() {
         stickyLabel.isHidden = !post.isStickyPost
-        statusAndStickySeparator.isHidden = statusLabel.text?.isEmpty ?? true
+        statusAndStickySeparator.isHidden = stickyLabel.isHidden || (statusLabel.text?.isEmpty ?? true)
+
     }
 
     private func configureStatusLabel() {
         statusLabel.text = viewModel.status
+    }
+
+    private func configureStatusView() {
+        statusView.isHidden = viewModel.shouldHideStatusView
+
+        [statusLabel, statusAndStickySeparator, stickyLabel].forEach { label in
+            label?.textColor = viewModel.statusColor
+        }
     }
 }
