@@ -55,6 +55,11 @@ class PostBuilder {
         return self
     }
 
+    func `is`(sticked: Bool) -> PostBuilder {
+        post.isStickyPost = sticked
+        return self
+    }
+
     func build() -> Post {
         return post
     }

@@ -6,12 +6,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var stickyLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
 
-    private let topSpaceWithImage: CGFloat = 15
-    private let topSpaceWithoutImage: CGFloat = 7
+    private let topSpaceWithImage: CGFloat = 16
+    private let topSpaceWithoutImage: CGFloat = 8
     private let separator = "·"
 
     lazy var imageLoader: ImageLoader = {
@@ -28,6 +29,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureSnippet()
         configureDate()
         configureAuthor()
+        configureStickyPost()
     }
 
     override func awakeFromNib() {
@@ -42,6 +44,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
             border?.backgroundColor = WPStyleGuide.postCardBorderColor()
         }
+
+        stickyLabel.text = " \(separator) \(NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky"))"
     }
 
     override func prepareForReuse() {
@@ -88,5 +92,9 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private func configureAuthor() {
         guard let author = post.authorForDisplay() else { return }
         authorLabel.text = " \(separator) \(author)"
+    }
+
+    private func configureStickyPost() {
+        stickyLabel.isHidden = !post.isStickyPost
     }
 }
