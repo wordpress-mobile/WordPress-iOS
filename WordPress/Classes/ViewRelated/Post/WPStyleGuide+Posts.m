@@ -88,13 +88,13 @@
 
 + (void)applyRestorePostLabelStyle:(UILabel *)label
 {
-    [self configureLabelForDeviceDependantStyle:label];
+    [self configureLabelForRegularFontStyle:label];
     label.textColor = [self grey];
 }
 
 + (void)applyRestorePostButtonStyle:(UIButton *)button
 {
-    [self configureLabelForSmallFontStyle:button.titleLabel];
+    [self configureLabelForRegularFontStyle:button.titleLabel];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
 }
