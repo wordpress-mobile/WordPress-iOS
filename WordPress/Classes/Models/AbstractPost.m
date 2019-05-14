@@ -506,11 +506,7 @@
 
 - (NSString *)dateStringForDisplay
 {
-    if ([self isDraft] || [self.status isEqualToString:PostStatusPending]) {
-        NSString *shortDate = [[self dateModified] mediumString];
-        NSString *lastModified = NSLocalizedString(@"last-modified",@"A label for a post's last-modified date.");
-        return [NSString stringWithFormat:@"%@ (%@)", shortDate, lastModified];
-    } else if ([self isScheduled]) {
+    if ([self isScheduled]) {
         return [[self dateCreated] mediumStringWithTime];
     } else if ([self shouldPublishImmediately]) {
         return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
