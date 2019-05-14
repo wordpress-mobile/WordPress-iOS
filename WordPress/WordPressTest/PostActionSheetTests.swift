@@ -119,6 +119,7 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
     var didCallHandleTrashPost = false
     var didCallEdit = false
     var didCallView = false
+    var didCallRetry = false
 
     func stats(for post: AbstractPost) {
         didCallHandleStats = true
@@ -150,5 +151,9 @@ class InteractivePostViewDelegateMock: InteractivePostViewDelegate {
 
     func restore(_ post: AbstractPost) {
 
+    }
+
+    func retry(_ post: AbstractPost) {
+        didCallRetry = true
     }
 }

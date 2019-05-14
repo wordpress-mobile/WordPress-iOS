@@ -192,6 +192,24 @@ class PostCellTests: XCTestCase {
         XCTAssertEqual(postActionSheetDelegateMock.calledWithView, button)
     }
 
+    func testRetryAction() {
+        let post = PostBuilder().published().build()
+        postCell.configure(with: post)
+
+        postCell.retry()
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallRetry)
+    }
+
+    func testShowRetryButtonAndHideViewButton() {
+        let post = PostBuilder().with(remoteStatus: .failed).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertFalse(postCell.retryButton.isHidden)
+        XCTAssertTrue(postCell.viewButton.isHidden)
+    }
+
     private func postCellFromNib() -> PostCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {

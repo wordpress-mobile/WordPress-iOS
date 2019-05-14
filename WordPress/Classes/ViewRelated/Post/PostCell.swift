@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
@@ -11,6 +12,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var statusAndStickySeparator: UILabel!
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var retryButton: UIButton! {
+        didSet {
+            retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
+            retryButton.isHidden = true
+        }
+    }
+    @IBOutlet weak var viewButton: UIButton!
     @IBOutlet weak var actionBarView: UIStackView!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
@@ -86,6 +94,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBAction func more(_ sender: Any) {
         guard let button = sender as? UIButton else { return }
         actionSheetDelegate?.showActionSheet(post, from: button)
+    }
+
+    @IBAction func retry() {
+        interactivePostViewDelegate?.retry(post)
     }
 
     private func configureFeaturedImage() {
@@ -168,7 +180,11 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
             button.setTitleColor(WPStyleGuide.grey(), for: .normal)
             button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
+            button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
         }
+
+        retryButton.isHidden = !post.isFailed
+        viewButton.isHidden = post.isFailed
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
