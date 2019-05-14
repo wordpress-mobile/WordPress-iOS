@@ -40,6 +40,11 @@ class SiteStatsPeriodViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
+        if !store.containsCachedData &&
+            (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
+            return ImmuTable(sections: [])
+        }
+
         tableRows.append(contentsOf: overviewTableRows())
         tableRows.append(contentsOf: postsAndPagesTableRows())
         tableRows.append(contentsOf: referrersTableRows())
