@@ -6,7 +6,7 @@ import Gridicons
 class PostCardStatusViewModel: NSObject {
     private let post: Post
     private var progressObserverUUID: UUID? = nil
-    @objc var progressBlock: ((Double) -> Void)? = nil {
+    @objc var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
                 MediaCoordinator.shared.removeObserver(withUUID: uuid)
@@ -15,7 +15,7 @@ class PostCardStatusViewModel: NSObject {
             if let progressBlock = progressBlock {
                 progressObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (_, _) in
                     if let post = self?.post {
-                        progressBlock(MediaCoordinator.shared.totalProgress(for: post))
+                        progressBlock(Float(MediaCoordinator.shared.totalProgress(for: post)))
                     }
                 }, forMediaFor: post)
             }
@@ -113,11 +113,11 @@ class PostCardStatusViewModel: NSObject {
     }
 
     @objc
-    var progress: Double {
+    var progress: Float {
         if post.remoteStatus == .pushing {
             return 1.0
         } else {
-            return MediaCoordinator.shared.totalProgress(for: post)
+            return Float(MediaCoordinator.shared.totalProgress(for: post))
         }
     }
 }

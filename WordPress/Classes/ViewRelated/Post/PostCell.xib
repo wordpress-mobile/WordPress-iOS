@@ -44,17 +44,17 @@
                                         <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8a8-4i-YeE">
-                                        <rect key="frame" x="0.0" y="108" width="326" height="213.5"/>
+                                        <rect key="frame" x="0.0" y="108" width="326" height="209.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Post Title" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="xIT-FJ-g43">
-                                                <rect key="frame" x="16" y="0.0" width="294" height="188.5"/>
+                                                <rect key="frame" x="16" y="0.0" width="294" height="184.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="POV-pe-wu8">
-                                                <rect key="frame" x="16" y="196.5" width="294" height="17"/>
+                                                <rect key="frame" x="16" y="192.5" width="294" height="17"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -64,7 +64,7 @@
                                         <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="lQh-4z-2Tt">
-                                        <rect key="frame" x="0.0" y="329.5" width="326" height="20"/>
+                                        <rect key="frame" x="0.0" y="325.5" width="326" height="20"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c55-4m-uvT">
                                                 <rect key="frame" x="16" y="0.0" width="294" height="20"/>
@@ -100,7 +100,7 @@
                                         <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="Qxw-fl-tZF">
-                                        <rect key="frame" x="0.0" y="357.5" width="326" height="20"/>
+                                        <rect key="frame" x="0.0" y="353.5" width="326" height="20"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N3U-yS-Q2q">
                                                 <rect key="frame" x="16" y="0.0" width="294" height="20"/>
@@ -146,17 +146,10 @@
                                         <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="j4z-aU-Xng">
-                                        <rect key="frame" x="0.0" y="385.5" width="326" height="48"/>
+                                        <rect key="frame" x="0.0" y="381.5" width="326" height="52"/>
                                         <subviews>
-                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="33v-Uz-9S6">
-                                                <rect key="frame" x="0.0" y="0.0" width="326" height="5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="4" id="gFE-it-kOj"/>
-                                                </constraints>
-                                                <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </progressView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="6Zz-tH-1DC">
-                                                <rect key="frame" x="0.0" y="4" width="326" height="44"/>
+                                                <rect key="frame" x="0.0" y="8" width="326" height="44"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8f-pJ-oKt">
                                                         <rect key="frame" x="0.0" y="0.0" width="108.5" height="44"/>
@@ -188,9 +181,17 @@
                                                 </constraints>
                                             </stackView>
                                         </subviews>
+                                        <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="0.0" right="0.0"/>
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="33v-Uz-9S6">
+                                <rect key="frame" x="0.0" y="445.5" width="326" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="gFE-it-kOj"/>
+                                </constraints>
+                                <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </progressView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eW-ex-CSu">
                                 <rect key="frame" x="0.0" y="448.5" width="326" height="1"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -203,6 +204,8 @@
                         <constraints>
                             <constraint firstItem="sev-PH-HG8" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" id="08c-Fo-h0W"/>
                             <constraint firstItem="9eW-ex-CSu" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="3u1-2g-wAg"/>
+                            <constraint firstAttribute="bottom" secondItem="33v-Uz-9S6" secondAttribute="bottom" id="6IU-Qy-TAU"/>
+                            <constraint firstItem="33v-Uz-9S6" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="84P-oH-EZa"/>
                             <constraint firstAttribute="trailing" secondItem="9eW-ex-CSu" secondAttribute="trailing" id="HUj-hh-Ili"/>
                             <constraint firstAttribute="trailing" secondItem="JqA-of-VBn" secondAttribute="trailing" id="MY8-mP-ASa"/>
                             <constraint firstAttribute="bottom" secondItem="JqA-of-VBn" secondAttribute="bottom" id="NwA-tt-aRf"/>
@@ -211,6 +214,7 @@
                             <constraint firstItem="JqA-of-VBn" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" id="bPW-Sv-fZu"/>
                             <constraint firstItem="JqA-of-VBn" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" constant="16" id="hLL-be-nDD"/>
                             <constraint firstAttribute="trailing" secondItem="sev-PH-HG8" secondAttribute="trailing" id="uus-mZ-ErN"/>
+                            <constraint firstAttribute="trailing" secondItem="33v-Uz-9S6" secondAttribute="trailing" id="xYe-gc-ksZ"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -233,6 +237,7 @@
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
+                <outlet property="progressView" destination="33v-Uz-9S6" id="Ie3-MT-W3v"/>
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>
                 <outlet property="statusAndStickySeparator" destination="5oV-ui-0Mx" id="Zvf-fU-HF5"/>
                 <outlet property="statusLabel" destination="Dbu-l3-L8G" id="MDp-Ba-Uon"/>

@@ -127,7 +127,7 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.statusView.isHidden)
     }
 
-    func testShowHideStatusView() {
+    func testShowStatusView() {
         let post = PostBuilder()
             .with(remoteStatus: .failed)
             .published().build()
@@ -135,6 +135,26 @@ class PostCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertFalse(postCell.statusView.isHidden)
+    }
+
+    func testShowProgressView() {
+        let post = PostBuilder()
+            .with(remoteStatus: .pushing)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertFalse(postCell.progressView.isHidden)
+    }
+
+    func testHideProgressView() {
+        let post = PostBuilder()
+            .with(remoteStatus: .sync)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.progressView.isHidden)
     }
 
     private func postCellFromNib() -> PostCell {

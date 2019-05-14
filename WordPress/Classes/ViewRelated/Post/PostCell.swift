@@ -10,6 +10,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var statusAndStickySeparator: UILabel!
     @IBOutlet weak var statusView: UIStackView!
+    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -40,6 +41,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureStatusLabel()
         configureStickyPost()
         configureStatusView()
+        configureProgressView()
     }
 
     override func awakeFromNib() {
@@ -49,6 +51,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
         WPStyleGuide.applyPostDateStyle(dateLabel)
         WPStyleGuide.applyPostDateStyle(authorLabel)
+        WPStyleGuide.applyPostProgressViewStyle(progressView)
 
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
@@ -120,6 +123,23 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         [statusLabel, statusAndStickySeparator, stickyLabel].forEach { label in
             label?.textColor = viewModel.statusColor
+        }
+    }
+
+    private func configureProgressView() {
+        let shouldHide = viewModel.shouldHideProgressView
+
+        progressView.isHidden = shouldHide
+
+        progressView.progress = viewModel.progress
+
+        if !shouldHide && viewModel.progressBlock == nil {
+            viewModel.progressBlock = { [weak self] progress in
+                self?.progressView.setProgress(progress, animated: true)
+                if progress >= 1.0, let post = self?.post {
+                    self?.configure(with: post)
+                }
+            }
         }
     }
 }
