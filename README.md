@@ -12,20 +12,22 @@ Please refer to the sections below for more detailed information.
 1. Download and install Xcode.
 1. `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
 1. `cd WordPress-iOS` to enter the working directory.
-1. `rake dependencies` this may take some time to complete.
-1. `rake xcode` to launch the workspace.
+1. `rake dependencies` to install all dependencies required to run the project (this may take some time to complete).
+1. `rake xcode` to open the project in Xcode. 
 1. Compile and run the app on a device or an emulator.
 
 In order to login to WordPress.com using the app:
 
 1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
-1. Create an application at https://developer.wordpress.com/apps/ 
-1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create".
+1. Create an application at https://developer.wordpress.com/apps/.
+1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
 1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
 1. `mkdir -p ~/.mobile-secrets/iOS/WPiOS/` to create a place to store app credentials.
 1. `cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` to copy the sample credentials file to your home folder.
 1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials`.
-1. Compile and run the app on a device or an emulator.
+1. Recompile and run the app on a device or an emulator.
+
+You can only log in with the WordPress.com account that you used to create the WordPress application.
 
 ### Download Xcode
 
