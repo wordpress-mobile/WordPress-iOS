@@ -7,7 +7,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var stickyLabel: UILabel!
-    @IBOutlet weak var privateLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var statusAndStickySeparator: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -21,8 +22,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }()
 
     var post: Post!
+    var viewModel: PostCardStatusViewModel!
 
     func configure(with post: Post) {
+        if post != self.post {
+            viewModel = PostCardStatusViewModel(post: post)
+        }
+
         self.post = post
 
         configureFeaturedImage()
@@ -30,8 +36,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureSnippet()
         configureDate()
         configureAuthor()
+        configureStatusLabel()
         configureStickyPost()
-        configurePrivateLabel()
     }
 
     override func awakeFromNib() {
@@ -47,8 +53,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             border?.backgroundColor = WPStyleGuide.postCardBorderColor()
         }
 
-        stickyLabel.text = " \(separator) \(NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky"))"
-        privateLabel.text = " \(separator) \(NSLocalizedString("Private", comment: "Label text that defines a post marked as Private"))"
+        stickyLabel.text = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+        statusAndStickySeparator.text = " \(separator) "
     }
 
     override func prepareForReuse() {
@@ -99,10 +105,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureStickyPost() {
         stickyLabel.isHidden = !post.isStickyPost
+        statusAndStickySeparator.isHidden = statusLabel.text?.isEmpty ?? true
     }
 
-    private func configurePrivateLabel() {
-        let isPrivate = post.status == BasePost.Status.publishPrivate
-        privateLabel.isHidden = !isPrivate
+    private func configureStatusLabel() {
+        statusLabel.text = viewModel.status
     }
 }

@@ -60,6 +60,11 @@ class PostBuilder {
         return self
     }
 
+    func with(remoteStatus: AbstractPostRemoteStatus) -> PostBuilder {
+        post.remoteStatus = remoteStatus
+        return self
+    }
+
     func `is`(sticked: Bool) -> PostBuilder {
         post.isStickyPost = sticked
         return self

@@ -79,20 +79,42 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.stickyLabel.isHidden)
     }
 
-    func testHidePrivateLabelWhenPostIsPublic() {
-        let post = PostBuilder().published().build()
+    func testShowSeparatorWhenPostHasStatusAndItIsSticky() {
+        let post = PostBuilder()
+                    .with(remoteStatus: .sync).private()
+                    .is(sticked: true).build()
 
         postCell.configure(with: post)
 
-        XCTAssertTrue(postCell.privateLabel.isHidden)
+        XCTAssertFalse(postCell.statusAndStickySeparator.isHidden)
+    }
+
+    func testHideSeparatorWhenHasOnlyStickyLabel() {
+        let post = PostBuilder()
+            .with(remoteStatus: .sync)
+            .is(sticked: true).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.statusAndStickySeparator.isHidden)
+    }
+
+    func testHideSeparatorWhenHasOnlyStatusLabel() {
+        let post = PostBuilder()
+            .with(remoteStatus: .sync)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.statusAndStickySeparator.isHidden)
     }
 
     func testShowPrivateLabelWhenPostIsPrivate() {
-        let post = PostBuilder().private().build()
+        let post = PostBuilder().with(remoteStatus: .sync).private().build()
 
         postCell.configure(with: post)
 
-        XCTAssertFalse(postCell.privateLabel.isHidden)
+        XCTAssertEqual(postCell.statusLabel.text, "Privately published")
     }
 
     private func postCellFromNib() -> PostCell {

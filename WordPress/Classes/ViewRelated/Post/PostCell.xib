@@ -105,7 +105,7 @@
                                                 <rect key="frame" x="16" y="0.0" width="294" height="20"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9LZ-hr-u9O">
-                                                        <rect key="frame" x="0.0" y="0.0" width="133.5" height="20"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="136" height="20"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dbu-l3-L8G">
                                                                 <rect key="frame" x="0.0" y="0.0" width="44" height="20"/>
@@ -114,15 +114,15 @@
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Sticky" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GWM-0Z-zAX">
-                                                                <rect key="frame" x="44" y="0.0" width="42" height="20"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5oV-ui-0Mx">
+                                                                <rect key="frame" x="44" y="0.0" width="50" height="20"/>
                                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Private" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aur-OM-eNr">
-                                                                <rect key="frame" x="86" y="0.0" width="47.5" height="20"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="Sticky" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GWM-0Z-zAX">
+                                                                <rect key="frame" x="94" y="0.0" width="42" height="20"/>
                                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -232,8 +232,9 @@
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
-                <outlet property="privateLabel" destination="aur-OM-eNr" id="0UO-MP-jH3"/>
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>
+                <outlet property="statusAndStickySeparator" destination="5oV-ui-0Mx" id="Zvf-fU-HF5"/>
+                <outlet property="statusLabel" destination="Dbu-l3-L8G" id="MDp-Ba-Uon"/>
                 <outlet property="stickyLabel" destination="GWM-0Z-zAX" id="7Gc-ev-9hc"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="7oq-fK-MSR"/>
                 <outlet property="topSpace" destination="hLL-be-nDD" id="EBS-Du-PzL"/>
