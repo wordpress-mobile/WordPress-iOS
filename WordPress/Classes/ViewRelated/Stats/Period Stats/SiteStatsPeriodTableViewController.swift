@@ -109,11 +109,6 @@ private extension SiteStatsPeriodTableViewController {
                                              periodDelegate: self)
 
         changeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.store,
-                !store.isFetchingOverview else {
-                    return
-            }
-
             self?.refreshTableView()
         }
     }
@@ -130,20 +125,27 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-
         guard let viewModel = viewModel,
         viewIsVisible() else {
             return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-        refreshControl?.endRefreshing()
 
-        hideNoResults()
+        if !store.isFetchingOverview {
+            refreshControl?.endRefreshing()
+        }
 
-        // Scroll to the top of the table.
-        // TODO: look at removing this when loading view is added.
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        if store.containsCachedData {
+            hideNoResults()
+            return
+        }
+
+        if store.isFetchingOverview {
+            displayLoadingViewIfNecessary()
+        } else if store.fetchingOverviewHasFailed {
+            displayFailureViewIfNecessary()
+        }
     }
 
     @objc func userInitiatedRefresh() {
@@ -191,11 +193,20 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
             return
         }
 
-        configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.successTitle,
-                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
-                                        noResults.delegate = self
-                                        noResults.hideImageView(false)
+        let customizationBlock: NoResultsCustomizationBlock = { [weak self] noResults in
+            noResults.delegate = self
+            noResults.hideImageView(false)
+        }
+
+        if noResultsViewController.view.superview != nil {
+            updateNoResults(title: NoResultConstants.successTitle,
+                            accessoryView: NoResultsViewController.loadingAccessoryView(),
+                            customizationBlock: customizationBlock)
+        } else {
+            configureAndDisplayNoResults(on: tableView,
+                                         title: NoResultConstants.successTitle,
+                                         accessoryView: NoResultsViewController.loadingAccessoryView(),
+                                         customizationBlock: customizationBlock)
         }
     }
 
