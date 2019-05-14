@@ -50,6 +50,11 @@ class PostBuilder {
         return self
     }
 
+    func with(author: String) -> PostBuilder {
+        post.author = author
+        return self
+    }
+
     func build() -> Post {
         return post
     }

@@ -5,12 +5,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
 
     private let topSpaceWithImage: CGFloat = 15
     private let topSpaceWithoutImage: CGFloat = 7
+    private let separator = "·"
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -25,6 +27,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureTitle()
         configureSnippet()
         configureDate()
+        configureAuthor()
     }
 
     override func awakeFromNib() {
@@ -33,6 +36,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostTitleStyle(titleLabel)
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
         WPStyleGuide.applyPostDateStyle(dateLabel)
+        WPStyleGuide.applyPostDateStyle(authorLabel)
 
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
@@ -79,5 +83,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private func configureDate() {
         let post = self.post.latest()
         dateLabel.text = post.dateStringForDisplay()
+    }
+
+    private func configureAuthor() {
+        guard let author = post.authorForDisplay() else { return }
+        authorLabel.text = " \(separator) \(author)"
     }
 }
