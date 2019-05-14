@@ -30,10 +30,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
     }()
 
-    var post: Post!
-    var viewModel: PostCardStatusViewModel!
-    weak var interactivePostViewDelegate: InteractivePostViewDelegate?
-    weak var actionSheetDelegate: PostActionSheetDelegate?
+    private var post: Post!
+    private var viewModel: PostCardStatusViewModel!
+    private weak var interactivePostViewDelegate: InteractivePostViewDelegate?
+    private weak var actionSheetDelegate: PostActionSheetDelegate?
     var isAuthorHidden: Bool = false {
         didSet {
             authorLabel.isHidden = isAuthorHidden
@@ -63,25 +63,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         super.awakeFromNib()
 
         applyStyles()
-
-        [upperBorder, bottomBorder].forEach { border in
-            border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
-            border?.backgroundColor = WPStyleGuide.postCardBorderColor()
-        }
-
-        stickyLabel.text = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
-        statusAndStickySeparator.text = " \(separator) "
-
-        retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
-        retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
-        retryButton.isHidden = true
-
-        editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
-
-        viewButton.setTitle(NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web."), for: .normal)
-
-        moreButton.setTitle(NSLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
-
+        applyBorder()
+        setLabels()
         configureSelectedBackgroundView()
     }
 
@@ -224,16 +207,38 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         viewButton.isHidden = post.isFailed
     }
 
+    private func applyBorder() {
+        [upperBorder, bottomBorder].forEach { border in
+            border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+            border?.backgroundColor = WPStyleGuide.postCardBorderColor()
+        }
+    }
+
+    private func setLabels() {
+        stickyLabel.text = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+        statusAndStickySeparator.text = " \(separator) "
+
+        retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
+        retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
+        retryButton.isHidden = true
+
+        editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
+
+        viewButton.setTitle(NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web."), for: .normal)
+
+        moreButton.setTitle(NSLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
+    }
+
     private func configureSelectedBackgroundView() {
         if let selectedBackgroundView = selectedBackgroundView {
-            let mask = UIView()
-            selectedBackgroundView.addSubview(mask)
-            mask.translatesAutoresizingMaskIntoConstraints = false
-            mask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
-            mask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
-            mask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
-            mask.heightAnchor.constraint(equalToConstant: topSpaceWithImage).isActive = true
-            mask.backgroundColor = WPStyleGuide.greyLighten30()
+            let marginMask = UIView()
+            selectedBackgroundView.addSubview(marginMask)
+            marginMask.translatesAutoresizingMaskIntoConstraints = false
+            marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
+            marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
+            marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
+            marginMask.heightAnchor.constraint(equalToConstant: topSpaceWithImage).isActive = true
+            marginMask.backgroundColor = WPStyleGuide.greyLighten30()
         }
     }
 
