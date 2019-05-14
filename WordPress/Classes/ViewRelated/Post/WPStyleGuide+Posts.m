@@ -73,9 +73,9 @@
     label.textColor = [self grey];
 }
 
-+ (void)applyPostMetaButtonStyle:(UIButton *)button
++ (void)applyPostButtonStyle:(UIButton *)button
 {
-    [self configureLabelForDeviceDependantStyle:button.titleLabel];
+    [self configureLabelForRegularFontStyle:button.titleLabel];
     [button setTitleColor:[self grey] forState:UIControlStateNormal];
 }
 

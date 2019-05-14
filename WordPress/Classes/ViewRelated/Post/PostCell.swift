@@ -61,15 +61,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        WPStyleGuide.applyPostCardStyle(self)
-        WPStyleGuide.applyPostTitleStyle(titleLabel)
-        WPStyleGuide.applyPostSnippetStyle(snippetLabel)
-        WPStyleGuide.applyPostDateStyle(dateLabel)
-        WPStyleGuide.applyPostDateStyle(authorLabel)
-        WPStyleGuide.applyPostDateStyle(statusLabel)
-        WPStyleGuide.applyPostDateStyle(statusAndStickySeparator)
-        WPStyleGuide.applyPostDateStyle(stickyLabel)
-        WPStyleGuide.applyPostProgressViewStyle(progressView)
+
+        applyStyles()
 
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
@@ -90,6 +83,12 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         moreButton.setTitle(NSLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
 
         configureSelectedBackgroundView()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            applyStyles()
+        }
     }
 
     override func prepareForReuse() {
@@ -120,6 +119,22 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     @IBAction func retry() {
         interactivePostViewDelegate?.retry(post)
+    }
+
+    private func applyStyles() {
+        WPStyleGuide.applyPostCardStyle(self)
+        WPStyleGuide.applyPostTitleStyle(titleLabel)
+        WPStyleGuide.applyPostSnippetStyle(snippetLabel)
+        WPStyleGuide.applyPostDateStyle(dateLabel)
+        WPStyleGuide.applyPostDateStyle(authorLabel)
+        WPStyleGuide.applyPostDateStyle(statusLabel)
+        WPStyleGuide.applyPostDateStyle(statusAndStickySeparator)
+        WPStyleGuide.applyPostDateStyle(stickyLabel)
+        WPStyleGuide.applyPostProgressViewStyle(progressView)
+        WPStyleGuide.applyPostButtonStyle(editButton)
+        WPStyleGuide.applyPostButtonStyle(retryButton)
+        WPStyleGuide.applyPostButtonStyle(viewButton)
+        WPStyleGuide.applyPostButtonStyle(moreButton)
     }
 
     private func configureFeaturedImage() {
