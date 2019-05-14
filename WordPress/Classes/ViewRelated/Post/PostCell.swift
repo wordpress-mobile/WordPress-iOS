@@ -98,6 +98,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         setNeedsDisplay()
     }
 
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if !containerView.frame.contains(point) {
+            return nil
+        }
+        return super.hitTest(point, with: event)
+    }
+
     @IBAction func edit() {
         interactivePostViewDelegate?.edit(post)
     }
