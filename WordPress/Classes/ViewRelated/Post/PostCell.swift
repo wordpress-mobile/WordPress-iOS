@@ -7,6 +7,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var stickyLabel: UILabel!
+    @IBOutlet weak var privateLabel: UILabel!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -30,6 +31,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureDate()
         configureAuthor()
         configureStickyPost()
+        configurePrivateLabel()
     }
 
     override func awakeFromNib() {
@@ -46,6 +48,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         }
 
         stickyLabel.text = " \(separator) \(NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky"))"
+        privateLabel.text = " \(separator) \(NSLocalizedString("Private", comment: "Label text that defines a post marked as Private"))"
     }
 
     override func prepareForReuse() {
@@ -96,5 +99,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureStickyPost() {
         stickyLabel.isHidden = !post.isStickyPost
+    }
+
+    private func configurePrivateLabel() {
+        let isPrivate = post.status == BasePost.Status.publishPrivate
+        privateLabel.isHidden = !isPrivate
     }
 }

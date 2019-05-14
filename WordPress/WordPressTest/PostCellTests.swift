@@ -79,6 +79,22 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.stickyLabel.isHidden)
     }
 
+    func testHidePrivateLabelWhenPostIsPublic() {
+        let post = PostBuilder().published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.privateLabel.isHidden)
+    }
+
+    func testShowPrivateLabelWhenPostIsPrivate() {
+        let post = PostBuilder().private().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertFalse(postCell.privateLabel.isHidden)
+    }
+
     private func postCellFromNib() -> PostCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {

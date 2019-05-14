@@ -30,6 +30,11 @@ class PostBuilder {
         return self
     }
 
+    func `private`() -> PostBuilder {
+        post.status = .publishPrivate
+        return self
+    }
+
     func withImage() -> PostBuilder {
         post.pathForDisplayImage = "https://localhost/image.png"
         return self

@@ -232,6 +232,7 @@
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
+                <outlet property="privateLabel" destination="aur-OM-eNr" id="0UO-MP-jH3"/>
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>
                 <outlet property="stickyLabel" destination="GWM-0Z-zAX" id="7Gc-ev-9hc"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="7oq-fK-MSR"/>
