@@ -51,6 +51,9 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
         WPStyleGuide.applyPostDateStyle(dateLabel)
         WPStyleGuide.applyPostDateStyle(authorLabel)
+        WPStyleGuide.applyPostDateStyle(statusLabel)
+        WPStyleGuide.applyPostDateStyle(statusAndStickySeparator)
+        WPStyleGuide.applyPostDateStyle(stickyLabel)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
 
         [upperBorder, bottomBorder].forEach { border in
