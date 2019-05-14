@@ -91,18 +91,28 @@ class SiteStatsDetailsViewModel: Observable {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
-            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
-                                                                   tabDataForFollowerType(.insightsFollowersEmail)],
-                                                        siteStatsDetailsDelegate: detailsDelegate,
-                                                        showTotalCount: true,
-                                                        selectedIndex: selectedIndex))
+            let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
+            let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
+
+            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
+                                                            siteStatsDetailsDelegate: detailsDelegate,
+                                                            showTotalCount: true,
+                                                            selectedIndex: selectedIndex))
+
+            let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
+            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
-            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
-                                                                   tabDataForCommentType(.insightsCommentsPosts)],
-                                                        siteStatsDetailsDelegate: detailsDelegate,
-                                                        showTotalCount: false,
-                                                        selectedIndex: selectedIndex))
+            let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
+            let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
+
+            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
+                                                            siteStatsDetailsDelegate: detailsDelegate,
+                                                            showTotalCount: false,
+                                                            selectedIndex: selectedIndex))
+
+            let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
+            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
         case .insightsTagsAndCategories:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
@@ -137,9 +147,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataRows: referrersRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
         case .periodCountries:
-            tableRows.append(CountriesDetailStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                                     dataRows: countriesRows()))
+            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodCountries.dataSubtitle))
+            tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
             tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
@@ -299,6 +309,10 @@ private extension SiteStatsDetailsViewModel {
     }
 
     // MARK: - Tabbed Cards
+
+    func tabbedRowsFrom(_ commentsRowData: [StatsTotalRowData]) -> [DetailDataRow] {
+        return dataRowsFor(commentsRowData)
+    }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
         let tabTitle = followerType.tabTitle
@@ -517,7 +531,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Countries
 
-    func countriesRows() -> [StatsTotalRowData] {
+    func countriesRows() -> [DetailDataRow] {
+        return dataRowsFor(countriesRowData())
+    }
+
+    func countriesRowData() -> [StatsTotalRowData] {
         return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                                 data: $0.viewsCount.abbreviatedString(),
                                                                                 icon: UIImage(named: $0.code),

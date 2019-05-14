@@ -5,6 +5,8 @@
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
 
 12.4
 -----

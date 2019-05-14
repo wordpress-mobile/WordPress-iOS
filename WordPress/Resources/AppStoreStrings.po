@@ -44,7 +44,6 @@ msgid ""
 "* That occasional crash when searching the free photo library? Fixed!\n"
 "* Logging in to self-hosted sites is now smoother than ever.\n"
 "* Blockquotes in the Reader got a new, sleek look.\n"
-"* Improves how quotes look in reader\n"
 "* We’ve made lots of small improvements to visual and hearing accessibility throughout the app.\n"
 msgstr ""
 

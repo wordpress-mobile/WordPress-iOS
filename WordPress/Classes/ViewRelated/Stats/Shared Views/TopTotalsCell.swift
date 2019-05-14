@@ -112,7 +112,7 @@ private extension TopTotalsCell {
     ///
     func setSubtitleVisibility() {
 
-        guard !forDetails else {
+        if forDetails {
             subtitleStackView.isHidden = !subtitlesProvided
             rowsStackView.isHidden = true
             bottomSeparatorLine.isHidden = true
