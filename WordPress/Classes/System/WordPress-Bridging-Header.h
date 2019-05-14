@@ -48,7 +48,6 @@
 #import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"
 #import "PostContentProvider.h"
-#import "PostCardTableViewCell.h"
 #import "PostCategory.h"
 #import "PostContentProvider.h"
 #import "PostListFooterView.h"
