@@ -27,6 +27,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     var post: Post!
     var viewModel: PostCardStatusViewModel!
     weak var interactivePostViewDelegate: InteractivePostViewDelegate?
+    weak var actionSheetDelegate: PostActionSheetDelegate?
 
     func configure(with post: Post) {
         if post != self.post {
@@ -82,7 +83,9 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         interactivePostViewDelegate?.view(post)
     }
 
-    @IBAction func more() {
+    @IBAction func more(_ sender: Any) {
+        guard let button = sender as? UIButton else { return }
+        actionSheetDelegate?.showActionSheet(post, from: button)
     }
 
     private func configureFeaturedImage() {
@@ -167,10 +170,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
         }
     }
+
+    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
+        actionSheetDelegate = delegate
+    }
 }
 
 extension PostCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
-        self.interactivePostViewDelegate = delegate
+        interactivePostViewDelegate = delegate
     }
 }

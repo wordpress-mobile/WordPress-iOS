@@ -7,11 +7,14 @@ class PostCellTests: XCTestCase {
 
     var postCell: PostCell!
     var interactivePostViewDelegateMock: InteractivePostViewDelegateMock!
+    var postActionSheetDelegateMock: PostActionSheetDelegateMock!
 
     override func setUp() {
         postCell = postCellFromNib()
         interactivePostViewDelegateMock = InteractivePostViewDelegateMock()
+        postActionSheetDelegateMock = PostActionSheetDelegateMock()
         postCell.setInteractionDelegate(interactivePostViewDelegateMock)
+        postCell.setActionSheetDelegate(postActionSheetDelegateMock)
     }
 
     func testIsAUITableViewCell() {
@@ -178,6 +181,17 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(interactivePostViewDelegateMock.didCallView)
     }
 
+    func testMoreAction() {
+        let button = UIButton()
+        let post = PostBuilder().published().build()
+        postCell.configure(with: post)
+
+        postCell.more(button)
+
+        XCTAssertEqual(postActionSheetDelegateMock.calledWithPost, post)
+        XCTAssertEqual(postActionSheetDelegateMock.calledWithView, button)
+    }
+
     private func postCellFromNib() -> PostCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {
@@ -187,4 +201,14 @@ class PostCellTests: XCTestCase {
         return postCell
     }
 
+}
+
+class PostActionSheetDelegateMock: PostActionSheetDelegate {
+    var calledWithPost: AbstractPost?
+    var calledWithView: UIView?
+
+    func showActionSheet(_ post: AbstractPost, from view: UIView) {
+        calledWithPost = post
+        calledWithView = view
+    }
 }
