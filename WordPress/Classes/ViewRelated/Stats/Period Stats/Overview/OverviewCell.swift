@@ -182,6 +182,8 @@ private extension OverviewCell {
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
+
+        chartView.present()
     }
 
     func resetChartContainerView() {

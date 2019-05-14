@@ -257,5 +257,7 @@ private extension LatestPostSummaryCell {
             chartView.topAnchor.constraint(equalTo: chartStackView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartStackView.bottomAnchor)
         ])
+
+        chartView.present()
     }
 }
