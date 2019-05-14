@@ -236,7 +236,7 @@ private extension LatestPostSummaryCell {
 
     // MARK: - Chart support
 
-    func resetChartView() {
+    func resetChartContainerView() {
         chartStackView.removeAllSubviews()
     }
 
@@ -248,7 +248,7 @@ private extension LatestPostSummaryCell {
         let chart = PostChart(type: .latest, postViews: lastTwoWeeks)
         let chartView = StatsBarChartView(data: chart, styling: chart.barChartStyling)
 
-        resetChartView()
+        resetChartContainerView()
         chartStackView.addArrangedSubview(chartView)
 
         NSLayoutConstraint.activate([
