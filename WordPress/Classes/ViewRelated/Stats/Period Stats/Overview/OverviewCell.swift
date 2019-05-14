@@ -171,11 +171,9 @@ private extension OverviewCell {
         let barChartStyling = chartStyling[filterSelectedIndex]
         let analyticsGranularity = period?.analyticsGranularity
 
-        for subview in chartContainerView.subviews {
-            subview.removeFromSuperview()
-        }
-
         let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling, analyticsGranularity: analyticsGranularity)
+
+        resetChartContainerView()
         chartContainerView.addSubview(chartView)
 
         NSLayoutConstraint.activate([
@@ -184,6 +182,14 @@ private extension OverviewCell {
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
+
+        chartView.present()
+    }
+
+    func resetChartContainerView() {
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
+        }
     }
 
     enum ChartBottomMargin {
