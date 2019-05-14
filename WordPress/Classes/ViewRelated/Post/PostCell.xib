@@ -241,13 +241,9 @@
                 <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="Lk7-nZ-b0t" firstAttribute="centerX" secondItem="MWK-lj-FaS" secondAttribute="centerX" id="C0w-iB-YSX"/>
-                    <constraint firstItem="Lk7-nZ-b0t" firstAttribute="top" secondItem="MWK-lj-FaS" secondAttribute="topMargin" constant="8" id="FdQ-h9-rr5">
-                        <variation key="widthClass=regular" constant="0.0"/>
-                    </constraint>
                     <constraint firstItem="Lk7-nZ-b0t" firstAttribute="width" secondItem="MWK-lj-FaS" secondAttribute="width" id="Rs7-KA-zaF"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="Lk7-nZ-b0t" secondAttribute="bottom" constant="-8" id="XHc-Nc-QKK">
-                        <variation key="widthClass=regular" constant="0.0"/>
-                    </constraint>
+                    <constraint firstItem="Lk7-nZ-b0t" firstAttribute="top" secondItem="MWK-lj-FaS" secondAttribute="top" constant="16" id="se6-ym-EJT"/>
+                    <constraint firstAttribute="bottom" secondItem="Lk7-nZ-b0t" secondAttribute="bottom" id="zqe-C9-N5A"/>
                 </constraints>
                 <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             </tableViewCellContentView>
@@ -256,8 +252,11 @@
                 <outlet property="actionBarView" destination="6Zz-tH-1DC" id="BX0-Jw-TD9"/>
                 <outlet property="authorLabel" destination="l4E-Qn-Vgl" id="13b-bv-tba"/>
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
+                <outlet property="containerView" destination="Lk7-nZ-b0t" id="HE0-8u-U5e"/>
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>
+                <outlet property="editButton" destination="A8f-pJ-oKt" id="yvk-OZ-rMk"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
+                <outlet property="moreButton" destination="ud6-kQ-Qkb" id="gGi-Ty-OCg"/>
                 <outlet property="progressView" destination="33v-Uz-9S6" id="Ie3-MT-W3v"/>
                 <outlet property="retryButton" destination="ZFa-Ih-GYE" id="eqD-Eb-Qmj"/>
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>

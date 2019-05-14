@@ -341,7 +341,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         cell.accessoryType = .none
-        cell.selectionStyle = .none
 
         let post = postAtIndexPath(indexPath)
 

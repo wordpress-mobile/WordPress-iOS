@@ -12,14 +12,12 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var statusAndStickySeparator: UILabel!
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var retryButton: UIButton! {
-        didSet {
-            retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
-            retryButton.isHidden = true
-        }
-    }
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var retryButton: UIButton!
     @IBOutlet weak var viewButton: UIButton!
+    @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var actionBarView: UIStackView!
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
@@ -80,6 +78,18 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         stickyLabel.text = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
         statusAndStickySeparator.text = " \(separator) "
+
+        retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
+        retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
+        retryButton.isHidden = true
+
+        editButton.setTitle(NSLocalizedString("Edit", comment: "Label for the edit post button. Tapping displays the editor."), for: .normal)
+
+        viewButton.setTitle(NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web."), for: .normal)
+
+        moreButton.setTitle(NSLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
+
+        configureSelectedBackgroundView()
     }
 
     override func prepareForReuse() {
@@ -190,6 +200,19 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         retryButton.isHidden = !post.isFailed
         viewButton.isHidden = post.isFailed
+    }
+
+    private func configureSelectedBackgroundView() {
+        if let selectedBackgroundView = selectedBackgroundView {
+            let mask = UIView()
+            selectedBackgroundView.addSubview(mask)
+            mask.translatesAutoresizingMaskIntoConstraints = false
+            mask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
+            mask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
+            mask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
+            mask.heightAnchor.constraint(equalToConstant: topSpaceWithImage).isActive = true
+            mask.backgroundColor = WPStyleGuide.greyLighten30()
+        }
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
