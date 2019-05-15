@@ -20,7 +20,7 @@ extension CLPlacemark {
         }
         if let country = country {
             address.append(", " + country)
-        }        
+        }
         return address
     }
 }
