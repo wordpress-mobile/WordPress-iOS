@@ -396,7 +396,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         view.addSubview(textView)
         view.addConstraints([
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: textView.safeAreaLayoutGuide.topAnchor),
+            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: textView.topAnchor),
             view.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
             textView.bottomAnchor.constraint(equalTo: footerView.topAnchor),
