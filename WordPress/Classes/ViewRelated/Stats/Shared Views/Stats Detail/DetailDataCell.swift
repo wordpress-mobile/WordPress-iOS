@@ -37,20 +37,19 @@ class DetailDataCell: UITableViewCell, NibLoadable {
         let row = StatsTotalRow.loadFromNib()
         row.configure(rowData: rowData, delegate: self)
 
-        // If the row is expanded, the separators are set accordingly.
-        row.expanded = expanded
-
-        // If not expanded, then update showSeparator.
-        if !expanded {
-            row.showSeparator = !hideSeparator
+        if expanded {
+            // If the row is expanded, the separators are set accordingly.
+            row.expanded = expanded
         }
+        else {
+            // If this is a child row, don't show the the indented separator.
+            // Instead, toggle this cell's full width separator line.
+            row.showSeparator = isChildRow ? false : !hideSeparator
+            bottomExpandedSeparatorLine.isHidden = isChildRow ? hideSeparator : true
 
-        // If this is a child row, don't show the StatsTotalRow bottom separator (i.e. the indented line).
-        // Instead, toggle this cell's full width separator line.
-        if isChildRow {
-            row.showSeparator = false
-            bottomExpandedSeparatorLine.isHidden = hideSeparator
-            Style.configureLabelAsChildRowTitle(row.itemLabel)
+            if isChildRow {
+                Style.configureLabelAsChildRowTitle(row.itemLabel)
+            }
         }
 
         dataView.addSubview(row)
