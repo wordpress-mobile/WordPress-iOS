@@ -120,7 +120,7 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.statusLabel.text, "Privately published")
+        XCTAssertEqual(postCell.statusLabel.text, "Private")
     }
 
     func testHideHideStatusView() {

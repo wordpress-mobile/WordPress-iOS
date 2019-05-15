@@ -41,7 +41,7 @@
         return NSLocalizedString(@"Pending review", @"Name for the status of a post pending review.");
 
     } else if ([status isEqualToString:PostStatusPrivate]) {
-        return NSLocalizedString(@"Privately published", @"Name for the status of a post that is marked private.");
+        return NSLocalizedString(@"Private", @"Name for the status of a post that is marked private.");
 
     } else if ([status isEqualToString:PostStatusPublish]) {
         return NSLocalizedString(@"Published", @"Name for the status of a published post.");
