@@ -150,6 +150,8 @@ struct PeriodStoreState {
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
+    var fetchingOverviewListener: ((_ fetching: Bool, _ success: Bool) -> Void)?
+    var cachedDataListener: ((_ hasCachedData: Bool) -> Void)?
 
     private var statsServiceRemote: StatsServiceRemoteV2?
 
@@ -208,7 +210,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
 
         if !isFetchingOverview {
             DDLogInfo("Stats: All fetching operations finished.")
-            emitChange()
+            fetchingOverviewListener?(false, fetchingOverviewHasFailed)
         }
     }
 
@@ -237,7 +239,6 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         try? ContextManager.shared.mainContext.save()
         DDLogInfo("Stats: finished persisting Stats to disk.")
     }
-
 }
 
 // MARK: - Private Methods
@@ -313,6 +314,8 @@ private extension StatsPeriodStore {
         }
 
         setAllAsFetchingOverview()
+
+        fetchingOverviewListener?(true, false)
 
         statsRemote.getData(for: period, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
@@ -437,6 +440,8 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished setting data to store from Core Data.")
         }
+
+        cachedDataListener?(containsCachedData)
     }
 
     func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
@@ -847,6 +852,7 @@ private extension StatsPeriodStore {
     }
 
     func setAllAsFetchingOverview(fetching: Bool = true) {
+        state.fetchingSummary = fetching
         state.fetchingPostsAndPages = fetching
         state.fetchingReferrers = fetching
         state.fetchingClicks = fetching
@@ -1001,14 +1007,14 @@ extension StatsPeriodStore {
     }
 
     var containsCachedData: Bool {
-        if state.summary != nil ||
-            state.topPostsAndPages != nil ||
-            state.topReferrers != nil ||
-            state.topClicks != nil ||
-            state.topPublished != nil ||
-            state.topAuthors != nil ||
-            state.topSearchTerms != nil ||
-            state.topCountries != nil ||
+        if state.summary != nil &&
+            state.topPostsAndPages != nil &&
+            state.topReferrers != nil &&
+            state.topClicks != nil &&
+            state.topPublished != nil &&
+            state.topAuthors != nil &&
+            state.topSearchTerms != nil &&
+            state.topCountries != nil &&
             state.topVideos != nil {
             return true
         }
