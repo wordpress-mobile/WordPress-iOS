@@ -430,8 +430,7 @@ struct DetailDataRow: ImmuTableRow {
             return
         }
 
-        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideSeparator: hideSeparator)
-
+        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideIndentedSeparator: hideSeparator)
     }
 }
 
@@ -445,7 +444,8 @@ struct DetailExpandableDataRow: ImmuTableRow {
 
     let rowData: StatsTotalRowData
     weak var detailsDelegate: SiteStatsDetailsDelegate?
-    let hideSeparator: Bool
+    let hideIndentedSeparator: Bool
+    let hideFullSeparator: Bool
     let expanded: Bool
     let isChildRow: Bool
     let action: ImmuTableAction? = nil
@@ -456,7 +456,12 @@ struct DetailExpandableDataRow: ImmuTableRow {
             return
         }
 
-        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideSeparator: hideSeparator, expanded: expanded, isChildRow: isChildRow)
+        cell.configure(rowData: rowData,
+                       detailsDelegate: detailsDelegate,
+                       hideIndentedSeparator: hideIndentedSeparator,
+                       hideFullSeparator: hideFullSeparator,
+                       expanded: expanded,
+                       isChildRow: isChildRow)
 
     }
 }
