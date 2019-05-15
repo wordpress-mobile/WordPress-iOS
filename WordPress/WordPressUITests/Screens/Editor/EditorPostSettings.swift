@@ -17,6 +17,18 @@ class EditorPostSettings: BaseScreen {
         super.init(element: settingsTable)
     }
 
+    func selectCategory(name: String) -> EditorPostSettings {
+        return openCategories()
+            .selectCategory(name: name)
+            .goBackToSettings()
+    }
+
+    func addTag(name: String) -> EditorPostSettings {
+        return openTags()
+            .addTag(name: name)
+            .goBackToSettings()
+    }
+
     func openCategories() -> CategoriesComponent {
         categoriesSection.tap()
 
@@ -53,10 +65,9 @@ class EditorPostSettings: BaseScreen {
         return EditorPostSettings()
     }
 
-    func closePostSettings() -> EditorScreen {
+    // returns void since return screen depends on which editor you're in
+    func closePostSettings() {
         navBackButton.tap()
-
-        return EditorScreen(mode: .rich)
     }
 
     static func isLoaded() -> Bool {

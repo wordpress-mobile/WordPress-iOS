@@ -13,8 +13,12 @@ class MainNavigationTests: XCTestCase {
         app.launchArguments = ["NoAnimations"]
         app.activate()
 
-        mySiteScreen = LoginFlow
+        _ = LoginFlow
             .login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
+        mySiteScreen = EditorFlow
+            .toggleBlockEditor(to: .on)
+            .tabBar.gotoMeScreen()
+            .tabBar.gotoMySiteScreen()
     }
 
     override func tearDown() {
@@ -28,7 +32,7 @@ class MainNavigationTests: XCTestCase {
             .tabBar.gotoReaderScreen()
             .tabBar.gotoMeScreen()
             .tabBar.gotoNotificationsScreen()
-            .tabBar.gotoEditorScreen()
+            .tabBar.gotoBlockEditorScreen()
             .closeEditor()
 
         XCTAssert(NotificationsScreen.isLoaded())

@@ -35,9 +35,14 @@ class TabNavComponent: BaseScreen {
         return MySitesScreen()
     }
 
-    func gotoEditorScreen() -> EditorScreen {
+    func gotoAztecEditorScreen() -> AztecEditorScreen {
         writeTabButton.tap()
-        return EditorScreen(mode: .rich)
+        return AztecEditorScreen(mode: .rich)
+    }
+
+    func gotoBlockEditorScreen() -> BlockEditorScreen {
+        writeTabButton.tap()
+        return BlockEditorScreen()
     }
 
     func gotoReaderScreen() -> ReaderScreen {
