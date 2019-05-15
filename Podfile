@@ -76,8 +76,9 @@ end
 
 def gutenberg(options)
     options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
-    if ENV['LOCAL_GUTENBERG']
-      options = { :path => ENV['LOCAL_GUTENBERG'] }
+    local_gutenberg = ENV['LOCAL_GUTENBERG']
+    if local_gutenberg
+      options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
     end
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
