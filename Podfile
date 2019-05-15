@@ -76,6 +76,10 @@ end
 
 def gutenberg(options)
     options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    local_gutenberg = ENV['LOCAL_GUTENBERG']
+    if local_gutenberg
+      options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
+    end
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
 
@@ -90,10 +94,15 @@ def gutenberg_dependencies(options)
         'react-native-safe-area',
         'react-native-video',
     ]
-    tag_or_commit = options[:tag] || options[:commit]
+    if options[:path]
+        podspec_prefix = options[:path]
+    else
+        tag_or_commit = options[:tag] || options[:commit]
+        podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
+    end
 
     for pod_name in dependencies do
-        pod pod_name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
+        pod pod_name, :podspec => "#{podspec_prefix}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
     end
 end
 
