@@ -111,6 +111,31 @@ private extension SiteStatsPeriodTableViewController {
         changeReceipt = viewModel?.onChange { [weak self] in
             self?.refreshTableView()
         }
+
+        viewModel?.overviewStoreStatusOnChange = { [weak self] status in
+            guard let self = self,
+                let viewModel = self.viewModel,
+                self.viewIsVisible() else {
+                return
+            }
+
+            self.tableHandler.viewModel = viewModel.tableViewModel()
+
+            switch status {
+            case .fetchingData:
+                self.displayLoadingViewIfNecessary()
+            case .fetchingCacheData(let hasCache):
+                if hasCache {
+                    self.hideNoResults()
+                }
+            case .fetchingDataCompleted(let error):
+                if error {
+                    self.displayFailureViewIfNecessary()
+                } else {
+                    self.hideNoResults()
+                }
+            }
+        }
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -126,26 +151,13 @@ private extension SiteStatsPeriodTableViewController {
 
     func refreshTableView() {
         guard let viewModel = viewModel,
-        viewIsVisible() else {
+            viewIsVisible(),
+            !store.isFetchingOverview else {
             return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-
-        if !store.isFetchingOverview {
-            refreshControl?.endRefreshing()
-        }
-
-        if store.containsCachedData {
-            hideNoResults()
-            return
-        }
-
-        if store.isFetchingOverview {
-            displayLoadingViewIfNecessary()
-        } else if store.fetchingOverviewHasFailed {
-            displayFailureViewIfNecessary()
-        }
+        refreshControl?.endRefreshing()
     }
 
     @objc func userInitiatedRefresh() {
@@ -193,20 +205,15 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
             return
         }
 
-        let customizationBlock: NoResultsCustomizationBlock = { [weak self] noResults in
-            noResults.delegate = self
-            noResults.hideImageView(false)
+        if noResultsViewController.view.superview != nil {
+            return
         }
 
-        if noResultsViewController.view.superview != nil {
-            updateNoResults(title: NoResultConstants.successTitle,
-                            accessoryView: NoResultsViewController.loadingAccessoryView(),
-                            customizationBlock: customizationBlock)
-        } else {
-            configureAndDisplayNoResults(on: tableView,
-                                         title: NoResultConstants.successTitle,
-                                         accessoryView: NoResultsViewController.loadingAccessoryView(),
-                                         customizationBlock: customizationBlock)
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
         }
     }
 
