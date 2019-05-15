@@ -73,6 +73,10 @@ import UIKit
                 attachmentsAndRanges.append((attachment, range))
         })
 
+        guard attachmentsAndRanges.count > 0 else {
+            return
+        }
+
         // Invalidate the layout wherever attachments are
         let combinedRange = attachmentsAndRanges.reduce(NSRange(location: 0, length: Int.max)) {
             $0.union($1.1)
