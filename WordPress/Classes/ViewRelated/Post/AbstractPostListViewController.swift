@@ -307,7 +307,7 @@ class AbstractPostListViewController: UIViewController,
     fileprivate func configureSearchBackingView() {
         // This mask view is required to cover the area between the top of the search
         // bar and the top of the screen on an iPhone X and on iOS 10.
-        var topAnchor = view.safeAreaLayoutGuide.topAnchor
+        let topAnchor = view.safeAreaLayoutGuide.topAnchor
 
         let backingView = UIView()
         view.addSubview(backingView)
