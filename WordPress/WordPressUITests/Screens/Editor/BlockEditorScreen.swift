@@ -11,23 +11,21 @@ class BlockEditorScreen: BaseScreen {
 
     // Editor area
     // Title
-//    let titleView = XCUIApplication().textViews.containing(.staticText, identifier: "Add title").element(boundBy: 0) // identifier is localizable
-    let titleView = XCUIApplication().textViews.containing(.staticText, identifier: localizedString("Add title")).element(boundBy: 0)
+    let titleView = XCUIApplication().textViews.containing(.staticText, identifier: "Add title").element(boundBy: 0) // Uses a localized string
     // Paragraph block
     let paragraphView = XCUIApplication().otherElements["block-0-core/paragraph"].textViews.element(boundBy: 0)
     // Image block
-    let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // identifier is localizable
+    let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
 
     // Toolbar
-//    let addBlockButton = XCUIApplication().buttons["Add block"] // identifier is localizable
-    let addBlockButton = XCUIApplication().buttons[localizedString("Add block")]
+    let addBlockButton = XCUIApplication().buttons["Add block"] // Uses a localized string
 
     // Action sheets
     let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
-    let imageDeviceButton = XCUIApplication().sheets.buttons["Choose from device"] // identifier is localizable
-    let discardButton = XCUIApplication().buttons["Discard"] // identifier is localizable
-    let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"] // identifier is localizable
-    let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"] // identifier is localizable
+    let imageDeviceButton = XCUIApplication().sheets.buttons["Choose from device"] // Uses a localized string
+    let discardButton = XCUIApplication().buttons["Discard"] // Uses a localized string
+    let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"] // Uses a localized string
+    let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"] // Uses a localized string
 
     init() {
         super.init(element: editorNavBar)
