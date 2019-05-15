@@ -51,6 +51,15 @@ class PostCellTests: XCTestCase {
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.snippetLabel.text, "Post content")
+        XCTAssertFalse(postCell.snippetLabel.isHidden)
+    }
+
+    func testHidePostSnippet() {
+        let post = PostBuilder().with(snippet: "").build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.snippetLabel.isHidden)
     }
 
     func testShowDate() {

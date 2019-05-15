@@ -144,9 +144,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureSnippet() {
         let post = self.post.latest()
-        if let contentPreviewForDisplay = post.contentPreviewForDisplay() {
+        if let contentPreviewForDisplay = post.contentPreviewForDisplay(),
+            !contentPreviewForDisplay.isEmpty {
             snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes() as? [NSAttributedString.Key : Any])
+            snippetLabel.isHidden = false
             snippetLabel.lineBreakMode = .byTruncatingTail
+        } else {
+            snippetLabel.isHidden = true
         }
     }
 
