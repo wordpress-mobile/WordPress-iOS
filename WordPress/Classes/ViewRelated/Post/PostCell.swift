@@ -165,7 +165,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureStickyPost() {
-        stickyLabel.isHidden = !post.isStickyPost
+        stickyLabel.isHidden = !viewModel.shouldShowStickyLabel
         statusAndStickySeparator.isHidden = stickyLabel.isHidden || (statusLabel.text?.isEmpty ?? true)
 
     }

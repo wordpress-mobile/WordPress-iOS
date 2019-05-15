@@ -79,7 +79,7 @@ class PostCellTests: XCTestCase {
     }
 
     func testShowStickyLabelWhenPostIsSticky() {
-        let post = PostBuilder().is(sticked: true).build()
+        let post = PostBuilder().is(sticked: true).with(remoteStatus: .sync).build()
 
         postCell.configure(with: post)
 
@@ -88,6 +88,22 @@ class PostCellTests: XCTestCase {
 
     func testHideStickyLabelWhenPostIsntSticky() {
         let post = PostBuilder().is(sticked: false).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.stickyLabel.isHidden)
+    }
+
+    func testHideStickyLabelWhenPostIsUploading() {
+        let post = PostBuilder().is(sticked: true).with(remoteStatus: .pushing).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.stickyLabel.isHidden)
+    }
+
+    func testHideStickyLabelWhenPostIsFailed() {
+        let post = PostBuilder().is(sticked: true).with(remoteStatus: .failed).build()
 
         postCell.configure(with: post)
 

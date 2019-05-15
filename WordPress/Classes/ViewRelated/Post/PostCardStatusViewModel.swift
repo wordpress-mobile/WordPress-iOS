@@ -43,6 +43,14 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
+    var isUploadingOrFailed: Bool {
+        return MediaCoordinator.shared.isUploadingMedia(for: post) || post.isFailed || post.remoteStatus == .pushing
+    }
+
+    var shouldShowStickyLabel: Bool {
+        return post.isStickyPost && !isUploadingOrFailed
+    }
+
     private var postStatus: BasePost.Status? {
         return post.status
     }
@@ -86,7 +94,7 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var statusColor: UIColor {
         guard let status = postStatus else {
-            return WPStyleGuide.grey()
+            return WPStyleGuide.jazzyOrange()
         }
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
@@ -105,7 +113,7 @@ class PostCardStatusViewModel: NSObject {
         case .trash:
             return WPStyleGuide.errorRed()
         default:
-            return WPStyleGuide.grey()
+            return WPStyleGuide.jazzyOrange()
         }
     }
 
