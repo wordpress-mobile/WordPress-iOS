@@ -4,7 +4,7 @@ import CoreLocation
 extension CLPlacemark {
     /// Returns a single string with the address information of a placemark formatted
     @objc func formattedAddress() -> String? {
-        var address = "";
+        var address = ""
         if let number = subThoroughfare {
             address.append(number + " ")
         }
