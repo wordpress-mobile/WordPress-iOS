@@ -639,7 +639,7 @@ private extension SiteStatsDetailsViewModel {
             detailDataRows.append(DetailExpandableDataRow(rowData: rowData,
                                                           detailsDelegate: detailsDelegate,
                                                           hideIndentedSeparator: hideIndentedSeparator,
-                                                          hideFullSeparator: true,
+                                                          hideFullSeparator: !isLastRow,
                                                           expanded: expanded,
                                                           isChildRow: false))
 
