@@ -300,8 +300,10 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate func configureInitialScrollInsets() {
-        tableView.scrollIndicatorInsets.top = 0
-        tableView.contentInset.top = 0
+        tableView.layoutIfNeeded()
+        tableView.contentInset = .zero
+        tableView.scrollIndicatorInsets = .zero
+        tableView.contentOffset = .zero
     }
 
     fileprivate func configureSearchBackingView() {
@@ -1065,6 +1067,8 @@ class AbstractPostListViewController: UIViewController,
 
         refreshAndReload()
         syncItemsWithUserInteraction(false)
+
+        configureInitialScrollInsets()
 
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
