@@ -435,6 +435,32 @@ struct DetailDataRow: ImmuTableRow {
     }
 }
 
+struct DetailExpandableDataRow: ImmuTableRow {
+
+    typealias CellType = DetailDataCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let rowData: StatsTotalRowData
+    weak var detailsDelegate: SiteStatsDetailsDelegate?
+    let hideSeparator: Bool
+    let expanded: Bool
+    let isChildRow: Bool
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideSeparator: hideSeparator, expanded: expanded, isChildRow: isChildRow)
+
+    }
+}
+
 struct DetailSubtitlesHeaderRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell

@@ -114,10 +114,9 @@ class SiteStatsDetailsViewModel: Observable {
             let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
             tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
         case .insightsTagsAndCategories:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                     dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                     dataRows: tagsAndCategoriesRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
+            tableRows.append(contentsOf: tagsAndCategoriesRows())
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                       dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
@@ -382,7 +381,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Tags and Categories
 
-    func tagsAndCategoriesRows() -> [StatsTotalRowData] {
+    func tagsAndCategoriesRows() -> [DetailExpandableDataRow] {
+        return expandableDataRowsFor(tagsAndCategoriesRowData(), forStat: .insightsTagsAndCategories)
+    }
+
+    func tagsAndCategoriesRowData() -> [StatsTotalRowData] {
         guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
             return []
         }
@@ -605,6 +608,53 @@ private extension SiteStatsDetailsViewModel {
             detailDataRows.append(DetailDataRow(rowData: rowData,
                                                 detailsDelegate: detailsDelegate,
                                                 hideSeparator: idx == rowsData.endIndex-1))
+        }
+
+        return detailDataRows
+    }
+
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [DetailExpandableDataRow] {
+        var detailDataRows = [DetailExpandableDataRow]()
+
+        for (idx, rowData) in rowsData.enumerated() {
+            let expanded = StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
+            let isLastRow = idx == rowsData.endIndex-1
+
+            // Toggle the indented separator line based on expanded states.
+            let hideSeparator: Bool = {
+                if expanded {
+                    return expanded || isLastRow
+                }
+
+                // If the current row is not expanded, hide the separator if the next row is.
+                var nextExpanded = false
+                let nextIndex = idx + 1
+                if nextIndex < rowsData.count {
+                    let nextRow = rowsData[nextIndex]
+                    nextExpanded = StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(nextRow.name) ?? false
+                }
+
+                return nextExpanded || isLastRow
+            }()
+
+            // Add current row
+            detailDataRows.append(DetailExpandableDataRow(rowData: rowData,
+                                                          detailsDelegate: detailsDelegate,
+                                                          hideSeparator: hideSeparator,
+                                                          expanded: expanded,
+                                                          isChildRow: false))
+
+            // Add child rows
+            if expanded {
+                let childRowsData = rowData.childRows ?? []
+                for (idx, childRowData) in childRowsData.enumerated() {
+                    detailDataRows.append(DetailExpandableDataRow(rowData: childRowData,
+                                                                  detailsDelegate: detailsDelegate,
+                                                                  hideSeparator: idx < childRowsData.endIndex-1,
+                                                                  expanded: false,
+                                                                  isChildRow: true))
+                }
+            }
         }
 
         return detailDataRows

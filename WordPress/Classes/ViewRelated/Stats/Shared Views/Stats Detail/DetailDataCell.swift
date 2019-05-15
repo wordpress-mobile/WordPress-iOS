@@ -10,25 +10,52 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var dataView: UIView!
+
+    // Line shown at the bottom of the view, spanning the entire width.
+    // It is shown on the last child row of an expanded row.
+    // Used to indicate the bottom of the expanded rows section. Hidden by default.
+    @IBOutlet weak var bottomExpandedSeparatorLine: UIView!
+
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private var rowData: StatsTotalRowData?
+    private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
 
     func configure(rowData: StatsTotalRowData,
                    detailsDelegate: SiteStatsDetailsDelegate?,
-                   hideSeparator: Bool = false) {
+                   hideSeparator: Bool = false,
+                   expanded: Bool = false,
+                   isChildRow: Bool = false) {
+
+        Style.configureViewAsSeparator(bottomExpandedSeparatorLine)
 
         self.rowData = rowData
         self.detailsDelegate = detailsDelegate
 
         let row = StatsTotalRow.loadFromNib()
         row.configure(rowData: rowData, delegate: self)
-        row.showSeparator = !hideSeparator
 
-        contentView.addSubview(row)
+        // If the row is expanded, the separators are set accordingly.
+        row.expanded = expanded
+
+        // If not expanded, then update showSeparator.
+        if !expanded {
+            row.showSeparator = !hideSeparator
+        }
+
+        // If this is a child row, don't show the StatsTotalRow bottom separator (i.e. the indented line).
+        // Instead, toggle this cell's full width separator line.
+        if isChildRow {
+            row.showSeparator = false
+            bottomExpandedSeparatorLine.isHidden = hideSeparator
+            Style.configureLabelAsChildRowTitle(row.itemLabel)
+        }
+
+        dataView.addSubview(row)
         row.translatesAutoresizingMaskIntoConstraints = false
-        contentView.pinSubviewToAllEdges(row)
+        dataView.pinSubviewToAllEdges(row)
     }
 
 }
@@ -47,6 +74,10 @@ extension DetailDataCell: StatsTotalRowDelegate {
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         detailsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
+    }
+
+    func toggleChildRowsForRow(_ row: StatsTotalRow) {
+        detailsDelegate?.toggleChildRowsForRow?(row)
     }
 
 }
