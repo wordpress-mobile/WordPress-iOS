@@ -36,6 +36,8 @@ class PostCardStatusViewModel: NSObject {
             return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
+        } else if post.status == BasePost.Status.trash || post.status == BasePost.Status.scheduled {
+            return ""
         } else {
             return post.statusForDisplay()
         }
@@ -51,7 +53,7 @@ class PostCardStatusViewModel: NSObject {
             return !post.isStickyPost
         }
 
-        return status.count == 0 && !post.isStickyPost
+        return status.isEmpty && !post.isStickyPost
     }
 
     @objc

@@ -123,6 +123,22 @@ class PostCellTests: XCTestCase {
         XCTAssertEqual(postCell.statusLabel.text, "Private")
     }
 
+    func testDoNotShowTrashedLabel() {
+        let post = PostBuilder().with(remoteStatus: .sync).trashed().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.statusLabel.text, "")
+    }
+
+    func testDoNotShowScheduledLabel() {
+        let post = PostBuilder().with(remoteStatus: .sync).scheduled().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.statusLabel.text, "")
+    }
+
     func testHideHideStatusView() {
         let post = PostBuilder()
             .with(remoteStatus: .sync)
