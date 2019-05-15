@@ -24,7 +24,10 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
-    private let backLimit = -12
+    private static let expectedPeriodCount = 14
+    private var backLimit: Int {
+        return -(SiteStatsTableHeaderView.expectedPeriodCount - 1)
+    }
 
     private lazy var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
@@ -182,5 +185,18 @@ private extension SiteStatsTableHeaderView {
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
-    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {}
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.expectedPeriodCount else {
+            return
+        }
+
+        let periodShift = -((entryCount - 1) - entryIndex)
+
+        let currentDate = Date().normalizedDate()
+
+        self.date = calendar.date(byAdding: period.calendarComponent, value: periodShift, to: currentDate)
+        delegate?.dateChangedTo(self.date)
+        dateLabel.text = displayDate()
+        updateButtonStates()
+    }
 }
