@@ -41,7 +41,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let statsCacheInterval = TimeInterval(300) // 5 minutes
 
     static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
-    static fileprivate let postListHeightForFooterView = CGFloat(34.0)
+    static fileprivate let postListHeightForFooterView = CGFloat(50.0)
 
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
