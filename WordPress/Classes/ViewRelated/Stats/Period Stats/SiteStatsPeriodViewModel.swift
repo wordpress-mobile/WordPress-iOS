@@ -17,6 +17,8 @@ class SiteStatsPeriodViewModel: Observable {
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
     // MARK: - Constructor
 
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
@@ -111,7 +113,7 @@ private extension SiteStatsPeriodViewModel {
         }
 
         let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
-                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod)
+                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate)
         tableRows.append(row)
 
         return tableRows

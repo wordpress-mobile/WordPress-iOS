@@ -180,3 +180,7 @@ private extension SiteStatsTableHeaderView {
         return calendar.component(.year, from: date)
     }
 }
+
+extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {}
+}

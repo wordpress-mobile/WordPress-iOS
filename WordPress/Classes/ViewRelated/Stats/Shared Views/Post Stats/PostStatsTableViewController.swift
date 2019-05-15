@@ -53,6 +53,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         }
 
         cell.configure(date: selectedDate, period: .day, delegate: self)
+        viewModel?.statsBarChartViewDelegate = cell
 
         return cell
     }
