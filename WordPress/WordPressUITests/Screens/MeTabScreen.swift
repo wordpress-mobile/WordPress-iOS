@@ -7,7 +7,7 @@ class MeTabScreen: BaseScreen {
     let appSettingsButton: XCUIElement
     let myProfileButton: XCUIElement
     let accountSettingsButton: XCUIElement
-    let notificationSettingsButton:XCUIElement
+    let notificationSettingsButton: XCUIElement
 
     init() {
         let app = XCUIApplication()

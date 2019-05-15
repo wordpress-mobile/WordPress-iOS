@@ -59,7 +59,7 @@ class BlockEditorScreen: BaseScreen {
     func addImage() -> BlockEditorScreen {
         addBlock("Image")
         addImageByOrder(id: 0)
-        
+
         return self
     }
 
