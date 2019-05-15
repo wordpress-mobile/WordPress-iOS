@@ -3,6 +3,12 @@ import UIKit
 
 import Charts
 
+// MARK: - StatsBarChartViewDelegate
+
+protocol StatsBarChartViewDelegate: class {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int)
+}
+
 // MARK: - StatsBarChartView
 
 private let BarChartAnalyticsPropertyGranularityKey = "granularity"
@@ -38,6 +44,10 @@ class StatsBarChartView: BarChartView {
     ///
     private var legendView: UIView?
 
+    /// When set, the delegate is advised of user-initiated bar selections
+    ///
+    private weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
     // MARK: StatsBarChartView
 
     override var bounds: CGRect {
@@ -46,10 +56,11 @@ class StatsBarChartView: BarChartView {
         }
     }
 
-    init(data: BarChartDataConvertible, styling: BarChartStyling, analyticsGranularity: BarChartAnalyticsPropertyGranularityValue? = nil) {
+    init(data: BarChartDataConvertible, styling: BarChartStyling, analyticsGranularity: BarChartAnalyticsPropertyGranularityValue? = nil, delegate: StatsBarChartViewDelegate? = nil) {
         self.barChartData = data
         self.styling = styling
         self.analyticsGranularity = analyticsGranularity
+        self.statsBarChartViewDelegate = delegate
 
         super.init(frame: .zero)
 
@@ -82,6 +93,17 @@ private extension StatsBarChartView {
 
         configureXAxis()
         configureYAxis()
+    }
+
+    func broadcastBarSelectionIfNeeded(for entry: ChartDataEntry) {
+        guard let delegate = statsBarChartViewDelegate, let dataSet = data?.dataSets.first else {
+            return
+        }
+
+        let entryIndex = dataSet.entryIndex(entry: entry)
+        let entryCount = dataSet.entryCount
+
+        delegate.statsBarChartValueSelected(self, entryIndex: entryIndex, entryCount: entryCount)
     }
 
     /// Unfortunately the framework doesn't offer much in the way of Auto Layout support,
@@ -348,6 +370,7 @@ extension StatsBarChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         captureAnalyticsEvent()
         selectBar(for: entry, with: highlight)
+        broadcastBarSelectionIfNeeded(for: entry)
     }
 }
 
