@@ -552,7 +552,7 @@ class AbstractPostListViewController: UIViewController,
         }
 
         // Do not start auto-sync if connection is down
-        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let appDelegate = WordPressAppDelegate.shared
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()

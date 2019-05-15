@@ -57,8 +57,8 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         configureTableView()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
-        viewModel.onChange = { [unowned self] (change) in
-            self.handle(change: change)
+        viewModel.onChange = { [weak self] (change) in
+            self?.handle(change: change)
         }
 
         viewModel.prefill()
@@ -169,14 +169,15 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         case .checkMarkRowsUpdated:
             tableView.reloadData()
         case .registerSucceeded(let domain):
-
-            viewModel.domainPurchasedCallback(domain)
-            dismiss(animated: true)
+            dismiss(animated: true) { [weak self] in
+                self?.viewModel.domainPurchasedCallback(domain)
+            }
         case .unexpectedError(let message):
             showAlert(message: message)
         case .loading(let isLoading):
             if isLoading {
                 footerView.submitButton.isEnabled = false
+                SVProgressHUD.setDefaultMaskType(.clear)
                 SVProgressHUD.show()
             } else {
                 footerView.submitButton.isEnabled = true

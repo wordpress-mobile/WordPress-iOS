@@ -122,34 +122,6 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }
 }
 
-struct TabbedTotalsDetailStatsRow: ImmuTableRow {
-
-    typealias CellType = TabbedTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let tabsData: [TabData]
-    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
-    let showTotalCount: Bool
-    let selectedIndex: Int
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(tabsData: tabsData,
-                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
-                       showTotalCount: showTotalCount,
-                       selectedIndex: selectedIndex,
-                       limitRowsDisplayed: false)
-    }
-}
-
 struct TopTotalsDetailStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
@@ -173,56 +145,6 @@ struct TopTotalsDetailStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
-                       limitRowsDisplayed: false)
-    }
-}
-
-struct CountriesDetailStatsRow: ImmuTableRow {
-
-    typealias CellType = CountriesCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let itemSubtitle: String
-    let dataSubtitle: String
-    let dataRows: [StatsTotalRowData]
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(itemSubtitle: itemSubtitle,
-                       dataSubtitle: dataSubtitle,
-                       dataRows: dataRows,
-                       limitRowsDisplayed: false)
-    }
-}
-
-struct TopTotalsNoSubtitlesPeriodDetailStatsRow: ImmuTableRow {
-
-    typealias CellType = TopTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let dataRows: [StatsTotalRowData]
-    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(dataRows: dataRows,
                        siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        limitRowsDisplayed: false)
     }
@@ -367,6 +289,7 @@ struct OverviewRow: ImmuTableRow {
     let chartData: [BarChartDataConvertible]
     let chartStyling: [BarChartStyling]
     let period: StatsPeriodUnit?
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -374,7 +297,7 @@ struct OverviewRow: ImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period)
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate)
     }
 }
 
@@ -484,5 +407,103 @@ struct TableFooterRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         // No configuration needed.
         // This method is needed to satisfy ImmuTableRow protocol requirements.
+    }
+}
+
+// MARK: - Site Stats Detail Table cells
+
+struct DetailDataRow: ImmuTableRow {
+
+    typealias CellType = DetailDataCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let rowData: StatsTotalRowData
+    weak var detailsDelegate: SiteStatsDetailsDelegate?
+    let hideSeparator: Bool
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideSeparator: hideSeparator)
+
+    }
+}
+
+struct DetailSubtitlesHeaderRow: ImmuTableRow {
+
+    typealias CellType = TopTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: [], forDetails: true)
+    }
+}
+
+struct DetailSubtitlesCountriesHeaderRow: ImmuTableRow {
+
+    typealias CellType = CountriesCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let itemSubtitle: String
+    let dataSubtitle: String
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: [], forDetails: true)
+    }
+}
+
+struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
+
+    typealias CellType = TabbedTotalsCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let tabsData: [TabData]
+    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
+    let showTotalCount: Bool
+    let selectedIndex: Int
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(tabsData: tabsData,
+                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
+                       showTotalCount: showTotalCount,
+                       selectedIndex: selectedIndex,
+                       forDetails: true)
     }
 }

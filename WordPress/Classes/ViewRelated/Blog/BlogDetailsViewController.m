@@ -177,6 +177,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
 @property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
+@property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
+
 @end
 
 @implementation BlogDetailsViewController
@@ -283,6 +285,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
     self.clearsSelectionOnViewWillAppear = NO;
+    self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -584,6 +587,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
     if ([Feature enabled:FeatureFlagDomainCredit] && [DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
+        if (!self.hasLoggedDomainCreditPromptShownEvent) {
+            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
+            self.hasLoggedDomainCreditPromptShownEvent = YES;
+        }
         [marr addObject:[self domainCreditSectionViewModel]];
     }
     if ([self shouldShowQuickStartChecklist]) {
@@ -1081,11 +1088,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (row.showsSelectionState) {
         self.restorableSelectedIndexPath = indexPath;
-    } else if (![self splitViewControllerIsHorizontallyCompact]) {
-        // Reselect the previous row
-        [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
-                               animated:YES
-                         scrollPosition:UITableViewScrollPositionNone];
+    } else {
+        if ([self splitViewControllerIsHorizontallyCompact]) {
+            // Deselect current row when not in split view layout
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        } else {
+            // Reselect the previous row
+            [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
+                                   animated:YES
+                             scrollPosition:UITableViewScrollPositionNone];
+        }
     }
 }
 
@@ -1167,7 +1179,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)preloadBlogData
 {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate shared];
     BOOL isOnWifi = [appDelegate.internetReachability isReachableViaWiFi];
 
     // only preload on wifi
@@ -1516,7 +1528,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:self.blog];
-    [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
+    [[WordPressAppDelegate shared] trackLogoutIfNeeded];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

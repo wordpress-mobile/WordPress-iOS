@@ -173,6 +173,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .natural
+        label.accessibilityIdentifier = "aztec-content-placeholder"
         return label
     }()
 
@@ -3110,6 +3111,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             formatBar.trailingItem = nil
         } else {
             insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
+            insertToolbarItem.accessibilityIdentifier = "insert_media_button"
 
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem

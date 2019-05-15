@@ -24,6 +24,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private var forDetails = false
     private var limitRowsDisplayed = true
     private let maxChildRowsToDisplay = 10
     private var dataRows = [StatsTotalRowData]()
@@ -43,7 +44,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    postStatsDelegate: PostStatsDelegate? = nil,
-                   limitRowsDisplayed: Bool = true) {
+                   limitRowsDisplayed: Bool = true,
+                   forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
@@ -53,19 +55,20 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.postStatsDelegate = postStatsDelegate
         self.limitRowsDisplayed = limitRowsDisplayed
+        self.forDetails = forDetails
 
-        let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
+        if !forDetails {
+            addRows(dataRows,
+                    toStackView: rowsStackView,
+                    forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+                    limitRowsDisplayed: limitRowsDisplayed,
+                    rowDelegate: self,
+                    viewMoreDelegate: self)
 
-        addRows(dataRows,
-                toStackView: rowsStackView,
-                forType: statType,
-                limitRowsDisplayed: limitRowsDisplayed,
-                rowDelegate: self,
-                viewMoreDelegate: self)
+            initChildRows()
+        }
 
         setSubtitleVisibility()
-        initChildRows()
-
         applyStyles()
     }
 
@@ -102,9 +105,20 @@ private extension TopTotalsCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    /// Hide the subtitles if there is no data or Subtitles.
+    /// For Overview tables: Hide the subtitles if there is no data or subtitles.
+    /// For Details table:
+    /// - Hide the subtitles if none provided.
+    /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
+
+        if forDetails {
+            subtitleStackView.isHidden = !subtitlesProvided
+            rowsStackView.isHidden = true
+            bottomSeparatorLine.isHidden = true
+            return
+        }
+
         let showSubtitles = dataRows.count > 0 && subtitlesProvided
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.isActive = !showSubtitles

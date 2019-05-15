@@ -248,7 +248,7 @@ class PluginViewModel: Observable {
     }
 
     private func getNoResultsErrorModel() -> NoResultsViewController.Model {
-        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let appDelegate = WordPressAppDelegate.shared
         let hasConnection = appDelegate?.connectionAvailable ?? true //defaults to unknown error.
         if hasConnection {
             return noResultsUnknownErrorModel

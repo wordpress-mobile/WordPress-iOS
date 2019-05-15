@@ -1,6 +1,4 @@
 #import "WPImageViewController.h"
-
-#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 @import Gridicons;
 

@@ -78,6 +78,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
         }
 
         cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
+        viewModel?.statsBarChartViewDelegate = cell
 
         return cell
     }

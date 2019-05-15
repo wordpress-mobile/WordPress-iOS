@@ -179,7 +179,9 @@ import Reachability
     /// Public method to remove No Results View from parent view.
     ///
     @objc func removeFromView() {
-        remove()
+        willMove(toParent: nil)
+        view.removeFromSuperview()
+        removeFromParent()
     }
 
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.

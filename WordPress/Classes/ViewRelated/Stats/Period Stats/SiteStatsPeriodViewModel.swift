@@ -17,6 +17,8 @@ class SiteStatsPeriodViewModel: Observable {
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
     // MARK: - Constructor
 
     init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
@@ -101,40 +103,17 @@ private extension SiteStatsPeriodViewModel {
                                               difference: commentsData.difference,
                                               differencePercent: commentsData.percentage)
 
-        // Introduced via #11063, to be replaced with real data via #11069
-        let viewsPeriodStub = ViewsPeriodDataStub()
-        let viewsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let viewsStyling = ViewsPeriodPerformanceStyling(initialDateInterval: viewsPeriodStubDateInterval)
+        var barChartData = [BarChartDataConvertible]()
+        var barChartStyling = [BarChartStyling]()
+        if let chartData = store.getSummary() {
+            let chart = PeriodChart(data: chartData, period: lastRequestedPeriod)
 
-        let visitorsPeriodStub = VisitorsPeriodDataStub()
-        let visitorsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let visitorsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: visitorsPeriodStubDateInterval)
-
-        let likesPeriodStub = LikesPeriodDataStub()
-        let likesPeriodStubDateInterval = likesPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let likesStyling = DefaultPeriodPerformanceStyling(initialDateInterval: likesPeriodStubDateInterval)
-
-        let commentsPeriodStub = CommentsPeriodDataStub()
-        let commentsPeriodStubDateInterval = commentsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let commentsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: commentsPeriodStubDateInterval)
-
-        let chartData: [BarChartDataConvertible] = [
-            viewsPeriodStub,
-            visitorsPeriodStub,
-            likesPeriodStub,
-            commentsPeriodStub
-        ]
-
-        let chartStyling: [BarChartStyling] = [
-            viewsStyling,
-            visitorsStyling,
-            likesStyling,
-            commentsStyling
-        ]
-
+            barChartData.append(contentsOf: chart.barChartData)
+            barChartStyling.append(contentsOf: chart.barChartStyling)
+        }
 
         let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
-                              chartData: chartData, chartStyling: chartStyling, period: lastRequestedPeriod)
+                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate)
         tableRows.append(row)
 
         return tableRows

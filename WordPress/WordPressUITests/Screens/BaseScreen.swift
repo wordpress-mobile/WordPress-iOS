@@ -14,9 +14,10 @@ class BaseScreen {
         app = XCUIApplication()
         expectedElement = element
         waitTimeout = 20
-        _ = try! waitForPage()
+        try! waitForPage()
     }
 
+    @discardableResult
     func waitForPage() throws -> BaseScreen {
         let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
         XCTAssert(result, "Page \(self) is not loaded.")
@@ -24,6 +25,7 @@ class BaseScreen {
         return self
     }
 
+    @discardableResult
     func waitFor(element: XCUIElement, predicate: String, timeout: Int? = nil) -> Bool {
         let timeoutValue = timeout ?? 5
 

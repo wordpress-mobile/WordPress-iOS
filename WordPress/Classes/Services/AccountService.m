@@ -292,7 +292,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (id<AccountServiceRemote>)remoteForAnonymous
 {
-    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:[AccountServiceRemoteREST anonymousWordPressComRestApiWithUserAgent:WPUserAgent.wordPressUserAgent]];
+    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:nil
+                                                                   userAgent:nil
+                                                                   localeKey:[WordPressComRestApi LocaleKeyDefault]];
+    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:api];
 }
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account

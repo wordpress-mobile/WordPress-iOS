@@ -5,10 +5,24 @@ import WordPressKit
 
 open class PlanService: LocalCoreDataService {
 
+    public func getAllSitesNonLocalizedPlanDescriptionsForAccount(_ account: WPAccount,
+                                                                  success: @escaping ([Int: RemotePlanSimpleDescription]) -> Void,
+                                                                  failure: @escaping (Error?) -> Void) {
+        guard let api = account.wordPressComRestApi else {
+            success([Int: RemotePlanSimpleDescription]())
+            return
+        }
+
+        let remote = PlanServiceRemote(wordPressComRestApi: api)
+        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { result in
+            success(result)
+        }, failure: failure)
+    }
+
     @objc public func getWpcomPlans(_ success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
 
-        let wpcomAPI = WordPressComRestApi(localeKey: WordPressComRestApi.LocaleKeyDefault) // locale, not _locale
+        let wpcomAPI = WordPressComRestApi.defaultApi(localeKey: WordPressComRestApi.LocaleKeyDefault) // locale, not _locale
         let remote = PlanServiceRemote(wordPressComRestApi: wpcomAPI)
         remote.getWpcomPlans({ plans in
 
