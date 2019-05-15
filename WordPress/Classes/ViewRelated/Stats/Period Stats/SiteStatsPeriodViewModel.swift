@@ -9,6 +9,7 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Properties
 
     let changeDispatcher = Dispatcher<Void>()
+    var overviewStoreStatusOnChange: ((Status) -> Void)?
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
@@ -31,6 +32,15 @@ class SiteStatsPeriodViewModel: Observable {
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
+        }
+
+        store.cachedDataListener = { [weak self] hasCacheData in
+            self?.overviewStoreStatusOnChange?(.fetchingCacheData(hasCacheData))
+        }
+
+        store.fetchingOverviewListener = { [weak self] fetching, success in
+            let status: Status = fetching ? .fetchingData : .fetchingDataCompleted(success)
+            self?.overviewStoreStatusOnChange?(status)
         }
     }
 
@@ -67,6 +77,14 @@ class SiteStatsPeriodViewModel: Observable {
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
         self.lastRequestedPeriod = period
+    }
+
+    // MARK: - State
+
+    enum Status {
+        case fetchingData
+        case fetchingCacheData(_ hasCachedData: Bool)
+        case fetchingDataCompleted(_ success: Bool)
     }
 }
 
