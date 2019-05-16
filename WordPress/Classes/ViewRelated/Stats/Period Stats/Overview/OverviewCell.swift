@@ -73,9 +73,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     private var period: StatsPeriodUnit? {
         didSet {
-            if chartContainerView.subviews.isEmpty || oldValue != period {
-                configureChartView()
-            }
+            configureChartView()
         }
     }
 
