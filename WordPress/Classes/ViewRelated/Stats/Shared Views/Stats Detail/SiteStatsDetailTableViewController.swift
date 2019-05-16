@@ -5,6 +5,7 @@ import WordPressFlux
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
@@ -118,6 +119,7 @@ private extension SiteStatsDetailTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [DetailDataRow.self,
+                DetailExpandableDataRow.self,
                 DetailSubtitlesHeaderRow.self,
                 DetailSubtitlesTabbedHeaderRow.self,
                 TopTotalsDetailStatsRow.self,
@@ -261,6 +263,11 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
     func expandedRowUpdated(_ row: StatsTotalRow) {
         applyTableUpdates()
         StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
+    }
+
+    func toggleChildRowsForRow(_ row: StatsTotalRow) {
+        StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
+        refreshTableView()
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {

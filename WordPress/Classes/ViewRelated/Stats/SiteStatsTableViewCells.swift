@@ -431,7 +431,38 @@ struct DetailDataRow: ImmuTableRow {
             return
         }
 
-        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideSeparator: hideSeparator)
+        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideIndentedSeparator: hideSeparator)
+    }
+}
+
+struct DetailExpandableDataRow: ImmuTableRow {
+
+    typealias CellType = DetailDataCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let rowData: StatsTotalRowData
+    weak var detailsDelegate: SiteStatsDetailsDelegate?
+    let hideIndentedSeparator: Bool
+    let hideFullSeparator: Bool
+    let expanded: Bool
+    let isChildRow: Bool
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(rowData: rowData,
+                       detailsDelegate: detailsDelegate,
+                       hideIndentedSeparator: hideIndentedSeparator,
+                       hideFullSeparator: hideFullSeparator,
+                       expanded: expanded,
+                       isChildRow: isChildRow)
 
     }
 }
