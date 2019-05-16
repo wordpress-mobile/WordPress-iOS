@@ -5,15 +5,31 @@
 
 ## Build Instructions
 
-### Download Xcode
+Please refer to the sections below for more detailed information.
 
-At the moment *WordPress for iOS* uses Swift 4.2 and requires Xcode 10 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+1. [Download](https://developer.apple.com/downloads/index.action) and install Xcode. *WordPress for iOS* requires Xcode 10.2 or newer.
+1. `git clone git@github.com:wordpress-mobile/WordPress-iOS.git` in the folder of your preference.
+1. `cd WordPress-iOS` to enter the working directory.
+1. `rake dependencies` to install all dependencies required to run the project (this may take some time to complete).
+1. `rake xcode` to open the project in Xcode. 
+1. Compile and run the app on a device or an simulator.
+
+In order to login to WordPress.com using the app:
+
+1. Create a WordPress.com account at https://wordpress.com/start/user (if you don't already have one).
+1. Create an application at https://developer.wordpress.com/apps/.
+1. Set "Redirect URLs"= `https://localhost` and "Type" = `Native` and click "Create" then "Update".
+1. Copy the `Client ID` and `Client Secret` from the OAuth Information. 
+1. `mkdir -p ~/.mobile-secrets/iOS/WPiOS/` to create a place to store app credentials.
+1. `cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials` to copy the sample credentials file to your home folder.
+1. Paste `Client ID` and `Client Secret` from the app you created into `WPCOM_APP_ID` and `WPCOM_APP_SECRET` in `~/.mobile-secrets/iOS/WPiOS/wpcom_app_credentials`.
+1. Recompile and run the app on a device or an simulator.
+
+You can only log in with the WordPress.com account that you used to create the WordPress application.
 
 ### Third party tools
 
-We use a few tools to help with development. To install or update the required dependencies, run the follow command on the command line:
-
-`rake dependencies`
+We use a few tools to help with development. Running `rake dependencies` will configure them for you.
 
 #### CocoaPods
 
@@ -82,7 +98,7 @@ Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, 
 
 ## Getting in Touch ##
 
-If you have questions or just want to say hi, join the [WordPress Slack](https://chat.wordpress.org) and drop a message on the `#mobile` channel.
+If you have questions about getting setup or just want to say hi, join the [WordPress Slack](https://chat.wordpress.org) and drop a message on the `#mobile` channel.
 
 ## Resources
 
