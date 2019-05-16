@@ -12,7 +12,7 @@ Please refer to the sections below for more detailed information.
 1. `cd WordPress-iOS` to enter the working directory.
 1. `rake dependencies` to install all dependencies required to run the project (this may take some time to complete).
 1. `rake xcode` to open the project in Xcode. 
-1. Compile and run the app on a device or an emulator.
+1. Compile and run the app on a device or an simulator.
 
 In order to login to WordPress.com using the app:
 
