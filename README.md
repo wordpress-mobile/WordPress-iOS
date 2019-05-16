@@ -82,7 +82,7 @@ Read our [Contributing Guide](CONTRIBUTING.md) to learn about reporting issues, 
 
 ## Security
 
-Need to report a security vulnerability? Go to https://automattic.com/security/ or directly to our security bug bounty site https://hackerone.com/automattic.
+If you happen to find a security vulnerability, we would appreciate you letting us know at https://hackerone.com/automattic and allowing us to respond before disclosing the issue publicly.
 
 ## Getting in Touch ##
 
