@@ -83,7 +83,7 @@ class SiteStatsDetailsViewModel: Observable {
 
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
-                return ImmuTable(sections: [])
+                return ImmuTable.Empty
         }
 
         var tableRows = [ImmuTableRow]()
