@@ -46,6 +46,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
             } else {
                 refreshData()
             }
+
+            displayLoadingViewIfNecessary()
         }
     }
 
@@ -108,12 +110,32 @@ private extension SiteStatsPeriodTableViewController {
                                              periodDelegate: self)
 
         changeReceipt = viewModel?.onChange { [weak self] in
-            guard let store = self?.store,
-                !store.isFetchingOverview else {
-                    return
+            self?.refreshTableView()
+        }
+
+        viewModel?.overviewStoreStatusOnChange = { [weak self] status in
+            guard let self = self,
+                let viewModel = self.viewModel,
+                self.viewIsVisible() else {
+                return
             }
 
-            self?.refreshTableView()
+            self.tableHandler.viewModel = viewModel.tableViewModel()
+
+            switch status {
+            case .fetchingData:
+                self.displayLoadingViewIfNecessary()
+            case .fetchingCacheData(let hasCache):
+                if hasCache {
+                    self.hideNoResults()
+                }
+            case .fetchingDataCompleted(let error):
+                if error {
+                    self.displayFailureViewIfNecessary()
+                } else {
+                    self.hideNoResults()
+                }
+            }
         }
     }
 
@@ -129,18 +151,14 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-
         guard let viewModel = viewModel,
-        viewIsVisible() else {
+            viewIsVisible(),
+            !store.isFetchingOverview else {
             return
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
-
-        // Scroll to the top of the table.
-        // TODO: look at removing this when loading view is added.
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 
     @objc func userInitiatedRefresh() {
@@ -178,6 +196,59 @@ private extension SiteStatsPeriodTableViewController {
         return isViewLoaded && view.window != nil
     }
 
+}
+
+// MARK: - NoResultsViewHost
+
+extension SiteStatsPeriodTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        if noResultsViewController.view.superview != nil {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
+    }
+
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
+        }
+    }
+
+    private enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate methods
+
+extension SiteStatsPeriodTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
+        refreshData()
+    }
 }
 
 // MARK: - SiteStatsPeriodDelegate Methods
