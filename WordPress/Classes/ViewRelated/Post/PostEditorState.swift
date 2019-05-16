@@ -131,7 +131,7 @@ public enum PostEditorAction {
         case .publish:
             return .editorPublishedPost
         case .publishNow:
-            return .editorQuickPublishedPost
+            return .editorPublishedPost
         case .update:
             return .editorUpdatedPost
         case .submitForReview:
