@@ -77,10 +77,6 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     }
 
     private func changeBottomSafeAreaInset() {
-        guard #available(iOS 11.0, *) else {
-            return
-        }
-
         // Footer in this case is the submit button. We want the background to extend under the home indicator.
         let safeAreaInsets = tableView.safeAreaInsets.bottom
 
