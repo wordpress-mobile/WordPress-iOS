@@ -195,6 +195,7 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         let currentDate = Date().normalizedDate()
 
         self.date = calendar.date(byAdding: period.calendarComponent, value: periodShift, to: currentDate)
+        delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
     }

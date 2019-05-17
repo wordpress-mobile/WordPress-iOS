@@ -14,12 +14,20 @@ class SiteStatsPeriodViewModel: Observable {
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
     private var lastRequestedDate: Date
-    private var lastRequestedPeriod: StatsPeriodUnit
+    private var lastRequestedPeriod: StatsPeriodUnit {
+        didSet {
+            if lastRequestedPeriod != oldValue {
+                mostRecentChartData = nil
+            }
+        }
+    }
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
+    private var mostRecentChartData: StatsSummaryTimeIntervalData?
 
     // MARK: - Constructor
 
@@ -103,7 +111,14 @@ private extension SiteStatsPeriodViewModel {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: ""))
 
-        let summaryData = store.getSummary()?.summaryData ?? []
+        let periodSummary = store.getSummary()
+        let summaryData = periodSummary?.summaryData ?? []
+
+        if mostRecentChartData == nil {
+            mostRecentChartData = periodSummary
+        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
+            mostRecentChartData = chartData
+        }
 
         let viewsData = intervalData(summaryData: summaryData, summaryType: .views)
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
@@ -131,16 +146,17 @@ private extension SiteStatsPeriodViewModel {
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [BarChartStyling]()
-        if let chartData = store.getSummary() {
+        var indexToHighlight: Int?
+        if let chartData = mostRecentChartData {
             let chart = PeriodChart(data: chartData)
 
             barChartData.append(contentsOf: chart.barChartData)
             barChartStyling.append(contentsOf: chart.barChartStyling)
-        }
 
-        let indexToHighlight = summaryData.lastIndex(where: {
-            lastRequestedDate >= $0.periodStartDate
-        })
+            indexToHighlight = chartData.summaryData.lastIndex(where: {
+                lastRequestedDate >= $0.periodStartDate
+            })
+        }
 
         let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
                               chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
