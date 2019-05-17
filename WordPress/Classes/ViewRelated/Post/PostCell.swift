@@ -118,6 +118,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostButtonStyle(retryButton)
         WPStyleGuide.applyPostButtonStyle(viewButton)
         WPStyleGuide.applyPostButtonStyle(moreButton)
+        applyActionBarStyle()
     }
 
     private func configureFeaturedImage() {
@@ -200,13 +201,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureActionBar() {
-        actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
-            button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
-            button.setTitleColor(WPStyleGuide.grey(), for: .normal)
-            button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
-            button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
-        }
-
         retryButton.isHidden = !post.isFailed
         viewButton.isHidden = post.isFailed
     }
@@ -215,6 +209,15 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
             border?.backgroundColor = WPStyleGuide.postCardBorderColor()
+        }
+    }
+
+    private func applyActionBarStyle() {
+        actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
+            button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
+            button.setTitleColor(WPStyleGuide.grey(), for: .normal)
+            button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
+            button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
         }
     }
 
