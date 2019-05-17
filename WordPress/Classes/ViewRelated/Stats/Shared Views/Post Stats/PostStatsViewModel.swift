@@ -118,7 +118,12 @@ private extension PostStatsViewModel {
 
         let chart = PostChart(postViews: lastTwoWeeks)
 
-        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate)
+        let selectedDateComponents = calendar.dateComponents([.year, .month, .day], from: selectedDate)
+        let indexToHighlight = lastTwoWeeks.lastIndex(where: {
+            $0.date == selectedDateComponents
+        })
+
+        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
         tableRows.append(row)
 
         return tableRows

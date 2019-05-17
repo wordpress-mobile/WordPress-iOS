@@ -23,7 +23,9 @@ class StatsBarChartView: BarChartView {
         static let horizontalAxisLabelCount = 2
         static let markerAlpha              = CGFloat(0.2)
         static let presentationDelay        = TimeInterval(0.01)
+        static let primaryDataSetIndex      = 0
         static let rotationDelay            = TimeInterval(0.35)
+        static let secondaryDataSetIndex    = 1
         static let topOffsetSansLegend      = CGFloat(5)
         static let topOffsetWithLegend      = CGFloat(16)
         static let trailingOffset           = CGFloat(20)
@@ -42,13 +44,43 @@ class StatsBarChartView: BarChartView {
     ///
     private let analyticsGranularity: BarChartAnalyticsPropertyGranularityValue?
 
-    /// When set, this stock `UIView` serves as a legend for the rendered chart.
+    /// Highlights the bar for the specified index; unspecified, the last bar is highlighted
     ///
-    private var legendView: UIView?
+    private var highlightIndex: Int?
 
     /// When set, the delegate is advised of user-initiated bar selections
     ///
     private weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
+    /// When set, this stock `UIView` serves as a legend for the rendered chart.
+    ///
+    private var legendView: UIView?
+
+    private var isHighlightNeeded: Bool {
+        guard let primaryDataSet = primaryDataSet, primaryDataSet.isHighlightEnabled else {
+            return false
+        }
+        return styling.primaryHighlightColor != nil
+    }
+
+    private var prevailingHighlightIndex: Int {
+        if let specifiedHighlightIndex = highlightIndex {
+            return specifiedHighlightIndex
+        }
+
+        let lastEntryIndex: Int
+        if let barCount = primaryDataSet?.entryCount, barCount > 1 {
+            lastEntryIndex = barCount - 1
+        } else {
+            lastEntryIndex = 0
+        }
+
+        return lastEntryIndex
+    }
+
+    private var primaryDataSet: IChartDataSet? {
+        return data?.dataSets.first
+    }
 
     // MARK: StatsBarChartView
 
@@ -58,11 +90,12 @@ class StatsBarChartView: BarChartView {
         }
     }
 
-    init(data: BarChartDataConvertible, styling: BarChartStyling, analyticsGranularity: BarChartAnalyticsPropertyGranularityValue? = nil, delegate: StatsBarChartViewDelegate? = nil) {
-        self.barChartData = data
-        self.styling = styling
-        self.analyticsGranularity = analyticsGranularity
-        self.statsBarChartViewDelegate = delegate
+    init(configuration: StatsBarChartConfiguration) {
+        self.barChartData = configuration.data
+        self.styling = configuration.styling
+        self.analyticsGranularity = configuration.analyticsGranularity
+        self.statsBarChartViewDelegate = configuration.delegate
+        self.highlightIndex = configuration.indexToHighlight
 
         super.init(frame: .zero)
 
@@ -75,13 +108,6 @@ class StatsBarChartView: BarChartView {
 
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric, height: Constants.intrinsicHeight)
-    }
-
-    func present() {
-        let postPresentationDelay = DispatchTime.now() + Constants.presentationDelay
-        DispatchQueue.main.asyncAfter(deadline: postPresentationDelay) {
-            self.selectLastBarIfNeeded()
-        }
     }
 }
 
@@ -97,8 +123,8 @@ private extension StatsBarChartView {
         configureYAxis()
     }
 
-    func broadcastBarSelectionIfNeeded(for entry: ChartDataEntry) {
-        guard let delegate = statsBarChartViewDelegate, let dataSet = data?.dataSets.first else {
+    func broadcastBarHighlightIfNeeded(for entry: ChartDataEntry) {
+        guard let delegate = statsBarChartViewDelegate, let dataSet = primaryDataSet else {
             return
         }
 
@@ -301,19 +327,44 @@ private extension StatsBarChartView {
             return
         }
 
-        let primaryDataSet = chartData.dataSets[0]
+        let primaryDataSet = chartData.dataSets[Constants.primaryDataSetIndex]
         let primaryIndex = primaryDataSet.entryIndex(entry: primaryEntry)
 
-        let secondaryIndex = 1
-        let secondaryDataSet = chartData.dataSets[secondaryIndex]
+        let secondaryDataSet = chartData.dataSets[Constants.secondaryDataSetIndex]
         guard let secondaryEntry = secondaryDataSet.entryForIndex(primaryIndex) as? BarChartDataEntry else {
             return
         }
 
-        let secondaryHighlight = Highlight(x: secondaryEntry.x, y: secondaryEntry.y, dataSetIndex: secondaryIndex)
+        let secondaryHighlight = Highlight(x: secondaryEntry.x, y: secondaryEntry.y, dataSetIndex: Constants.secondaryDataSetIndex)
         let values: [Highlight] = [primaryHighlight, secondaryHighlight]
 
         highlightValues(values)
+    }
+
+    func highlightEntry(at index: Int) {
+        guard let entry = primaryDataSet?.entryForIndex(index) else {
+            return
+        }
+
+        let highlight = Highlight(x: entry.x, y: entry.y, dataSetIndex: Constants.primaryDataSetIndex)
+        highlightBar(for: entry, with: highlight)
+    }
+
+    func highlightBar(for entry: ChartDataEntry, with highlight: Highlight) {
+        drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
+        drawChartMarker(for: entry)
+    }
+
+    func highlightBarIfNeeded() {
+        guard isHighlightNeeded else {
+            return
+        }
+
+        // This delay mitigates a visual artifact observed drawing the highlight
+        let postPresentationDelay = DispatchTime.now() + Constants.presentationDelay
+        DispatchQueue.main.asyncAfter(deadline: postPresentationDelay) {
+            self.highlightEntry(at: self.prevailingHighlightIndex)
+        }
     }
 
     func initialize() {
@@ -324,6 +375,7 @@ private extension StatsBarChartView {
         applyStyling()
         prepareForVoiceOver()
         configureAndPopulateData()
+        highlightBarIfNeeded()
     }
 
     func redrawChartMarkersIfNeeded() {
@@ -335,31 +387,7 @@ private extension StatsBarChartView {
 
         let postRotationDelay = DispatchTime.now() + Constants.rotationDelay
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
-            self.selectBar(for: entry, with: highlight)
-        }
-    }
-
-    func selectBar(for entry: ChartDataEntry, with highlight: Highlight) {
-        drawSecondaryHighlightIfNeeded(for: entry, with: highlight)
-        drawChartMarker(for: entry)
-    }
-
-    func selectLastBarIfNeeded() {
-        guard let primaryDataSet = data?.dataSets.first, primaryDataSet.isHighlightEnabled else {
-            return
-        }
-
-        let lastEntryIndex: Int
-        if primaryDataSet.entryCount > 1 {
-            lastEntryIndex = primaryDataSet.entryCount - 1
-        } else {
-            lastEntryIndex = 0
-        }
-
-        let primaryDataSetIndex = 0
-        if let lastEntry = primaryDataSet.entryForIndex(lastEntryIndex) {
-            let lastHighlight = Highlight(x: lastEntry.x, y: lastEntry.y, dataSetIndex: primaryDataSetIndex)
-            selectBar(for: lastEntry, with: lastHighlight)
+            self.highlightBar(for: entry, with: highlight)
         }
     }
 }
@@ -371,8 +399,8 @@ private typealias StatsBarChartMarker = MarkerView
 extension StatsBarChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         captureAnalyticsEvent()
-        selectBar(for: entry, with: highlight)
-        broadcastBarSelectionIfNeeded(for: entry)
+        highlightBar(for: entry, with: highlight)
+        broadcastBarHighlightIfNeeded(for: entry)
     }
 }
 
