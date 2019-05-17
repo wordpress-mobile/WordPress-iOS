@@ -1326,6 +1326,7 @@ FeaturedImageViewControllerDelegate>
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
     options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
+    options.preferredStatusBarStyle = UIStatusBarStyleLightContent;
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                              initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];

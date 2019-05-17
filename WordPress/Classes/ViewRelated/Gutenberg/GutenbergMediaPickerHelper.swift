@@ -35,6 +35,7 @@ class GutenbergMediaPickerHelper: NSObject {
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
         options.allowMultipleSelection = false
+        options.preferredStatusBarStyle = .lightContent
         return options
     }()
 
