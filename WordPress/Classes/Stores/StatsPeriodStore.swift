@@ -1007,14 +1007,14 @@ extension StatsPeriodStore {
     }
 
     var containsCachedData: Bool {
-        if state.summary != nil &&
-            state.topPostsAndPages != nil &&
-            state.topReferrers != nil &&
-            state.topClicks != nil &&
-            state.topPublished != nil &&
-            state.topAuthors != nil &&
-            state.topSearchTerms != nil &&
-            state.topCountries != nil &&
+        if state.summary != nil ||
+            state.topPostsAndPages != nil ||
+            state.topReferrers != nil ||
+            state.topClicks != nil ||
+            state.topPublished != nil ||
+            state.topAuthors != nil ||
+            state.topSearchTerms != nil ||
+            state.topCountries != nil ||
             state.topVideos != nil {
             return true
         }
