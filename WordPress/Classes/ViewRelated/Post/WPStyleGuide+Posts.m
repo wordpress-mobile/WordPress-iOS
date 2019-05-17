@@ -124,7 +124,7 @@
 + (NSDictionary *)postCardTitleAttributes
 {
     UIFont *font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
-    CGFloat lineHeight = font.pointSize * 1.5;
+    CGFloat lineHeight = font.pointSize * 1.4;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
@@ -135,7 +135,7 @@
 {
     UIFontTextStyle textStyle = [UIDevice isPad] ? UIFontTextStyleCallout : UIFontTextStyleSubheadline;
     UIFont *font = [WPStyleGuide notoFontForTextStyle:textStyle];
-    CGFloat lineHeight = font.pointSize * 1.5;
+    CGFloat lineHeight = font.pointSize * 1.6;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
