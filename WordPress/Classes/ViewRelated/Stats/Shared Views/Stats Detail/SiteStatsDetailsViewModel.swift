@@ -380,7 +380,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Tags and Categories
 
-    func tagsAndCategoriesRows() -> [DetailExpandableDataRow] {
+    func tagsAndCategoriesRows() -> [ImmuTableRow] {
         return expandableDataRowsFor(tagsAndCategoriesRowData(), forStat: .insightsTagsAndCategories)
     }
 
@@ -486,7 +486,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Clicks
 
-    func clicksRows() -> [DetailExpandableDataRow] {
+    func clicksRows() -> [ImmuTableRow] {
         return expandableDataRowsFor(clicksRowData(), forStat: .periodClicks)
     }
 
@@ -617,8 +617,8 @@ private extension SiteStatsDetailsViewModel {
         return detailDataRows
     }
 
-    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [DetailExpandableDataRow] {
-        var detailDataRows = [DetailExpandableDataRow]()
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [ImmuTableRow] {
+        var detailDataRows = [ImmuTableRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
             let isLastRow = idx == rowsData.endIndex-1
@@ -640,12 +640,11 @@ private extension SiteStatsDetailsViewModel {
             let hideIndentedSeparator = expanded ? (expanded || isLastRow) : (nextExpanded || isLastRow)
 
             // Add current row
-            detailDataRows.append(DetailExpandableDataRow(rowData: rowData,
+            detailDataRows.append(DetailExpandableRow(rowData: rowData,
                                                           detailsDelegate: detailsDelegate,
                                                           hideIndentedSeparator: hideIndentedSeparator,
                                                           hideFullSeparator: !isLastRow,
-                                                          expanded: expanded,
-                                                          isChildRow: false))
+                                                          expanded: expanded))
 
             // Add child rows
             if expanded {
@@ -655,12 +654,15 @@ private extension SiteStatsDetailsViewModel {
                     // next parent's expanded state to prevent duplicate lines.
                     let hideFullSeparator = (idx == childRowsData.endIndex-1) ? nextExpanded : true
 
-                    detailDataRows.append(DetailExpandableDataRow(rowData: childRowData,
-                                                                  detailsDelegate: detailsDelegate,
-                                                                  hideIndentedSeparator: true,
-                                                                  hideFullSeparator: hideFullSeparator,
-                                                                  expanded: false,
-                                                                  isChildRow: true))
+                    // If the parent row has an icon, show the image view for the child
+                    // to make the child row appear "indented".
+                    let showImage = rowData.hasIcon
+
+                    detailDataRows.append(DetailExpandableChildRow(rowData: childRowData,
+                                                                   detailsDelegate: detailsDelegate,
+                                                                   hideIndentedSeparator: true,
+                                                                   hideFullSeparator: hideFullSeparator,
+                                                                   showImage: showImage))
                 }
             }
         }
