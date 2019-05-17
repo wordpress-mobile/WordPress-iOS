@@ -251,6 +251,23 @@ class PostCellTests: XCTestCase {
         XCTAssertFalse(postCell.separatorLabel.isHidden)
     }
 
+    // GhostCellDelegate
+
+    func testConfigureCellToBeDisplayedAsAGhost() {
+        postCell.willStartGhostAnimation()
+
+        XCTAssertTrue(postCell.featuredImage.isHidden)
+        XCTAssertEqual(postCell.titleLabel?.text, " ")
+        XCTAssertEqual(postCell.snippetLabel?.text, " ")
+        XCTAssertFalse(postCell.snippetLabel.isHidden)
+        XCTAssertEqual(postCell.dateLabel?.text, "dateGhostPlaceholder")
+        XCTAssertTrue(postCell.authorLabel.isHidden)
+        XCTAssertTrue(postCell.statusView.isHidden)
+        XCTAssertTrue(postCell.progressView.isHidden)
+        XCTAssertFalse(postCell.isUserInteractionEnabled)
+        XCTAssertEqual(postCell.actionBarView.layer.opacity, 0.5)
+    }
+
     private func postCellFromNib() -> PostCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCell", owner: nil)?.first as? PostCell else {
