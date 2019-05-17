@@ -1,5 +1,0 @@
-12.2
------ 
-* Güvenle yayınlayın! Taslak önizlemeler, yazılarınız daha doğru bir sürümünü gösterir.
-* Bear veya Ulysses (veya TextBundle ve TextPack formatlarını kullanan başka bir uygulama) gibi uygulamalarda yazmayı tercih ederseniz, harika - yapmaya devam edin. Artık bu uygulamalardan metin içeriğini buraya aktarabilirsiniz.
-* Tüm uygulamada bir bahar tespit edildi; site oluşturma sürecinde bazı küçük görsel tikleri düzeltdik, sitenizin ne kadar depolama alanı kullandığını netleştirmek için bazı ifadeler ayarlandı ve eklentileri yönetmeye çalışırken bazen ortaya çıkan bir hata düzeltildi.

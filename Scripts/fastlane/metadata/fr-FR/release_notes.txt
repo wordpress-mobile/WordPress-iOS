@@ -1,6 +1,0 @@
-12.2
------
-* Publier en toute confiance ! L'affichage en mode brouillon vous donnera un aperçu plus précis de vos articles.
-* Si vous préférez rédiger dans des applications comme Bear ou Ulysses (ou toute autre application utilisant les formats TextBundle et TextPack), n'hésitez surtout pas, continuez. Vous pouvez à présent importer du texte de ces applications vers celle-ci.
-* L'application a subi un lifting de printemps : nous avons résolu certains petits défauts visuels lors du processus de création de sites, modifié certains termes pour indiquer plus clairement l'espace de stockage utilisé par votre site et corrigé une défaillance ennuyeuse qui se produisait parfois lorsque vous tentiez de gérer des extensions.
-

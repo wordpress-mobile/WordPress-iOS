@@ -1,6 +1,5 @@
-12.2
------
-* Publiceer vol vertrouwen! In voorbeeldweergaven van concepten zie je nu een nauwkeurigere versie van je berichten.
-* Als je liever in apps als Bear of Ulysses schrijft (of elke andere app die gebruikmaakt van de TextBundle- en TextPack-indeling) dan kun je dat nu blijven doen. Je kunt de tekst van die apps importeren naar deze.
-* De hele app heeft een voorjaarsschoonmaak gekregen: we hebben wat visuele bugs in het aanmaakproces van sites gerepareerd, een paar teksten aangepast om duidelijk te maken hoeveel opslagruimte je site gebruikt en we hebben een irritante crash opgelost die soms plaatsvond als je probeerde plugins te beheren.
-
+* Markeer meldingen als ongelezen met een simpele veegbeweging.
+* Die incidentele crash wanneer je zoekt naar de gratis fotobibliotheek? Opgelost!
+* Inloggen in zelf-gehoste sites gaat nu soepeler dan ooit.
+* Blockquotes in de leesfunctie hebben een nieuwe, strakke uitstraling.
+* We hebben door de hele app heel veel kleine verbeteringen doorgevoerd voor de visuele en auditieve toegankelijkheid.

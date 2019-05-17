@@ -1,6 +1,5 @@
-12.2
------
-* Publicera tillförlitligt! Förhandsvisningar av utkast kommer att ge en mer korrekt version av dina inlägg.
-* Om du föredrar att skriva i sådana appar som Bear eller Ulysses (eller någon annan app som använder formaten TextBundle eller TextPack) är det perfekt – fortsätt så. Och nu kan du även importera din text i de apparna till den här appen.
-* Vi har snyggat upp hela appen nu inför våren – rättat till några visuella störningen i processen för att skapa en ny webbplats, justerad vissa fraser för att tydliggöra hur stort lagringsutrymme webbplatsen använder. Dessutom har vi tagit hand om en jobbig krasch som ibland inträffade när man försökte att hantera sina tillägg.
-
+* Markera aviseringar som olästa genom att helt enkelt svepa.
+* Kraschade appen ibland när du sökte fria bilder? Nu har vi löst det!
+* Smidigare än någonsin att logga in till webbplatser på webbhotell eller egen server.
+* Blockcitat i läsaren har fått ny, stilig utformning.
+* Vi har gjort en lång rad små förbättringar i hela appen för åtkomlighet för syn och hörsel.
