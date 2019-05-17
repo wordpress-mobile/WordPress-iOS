@@ -119,7 +119,8 @@ private extension SiteStatsDetailTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [DetailDataRow.self,
-                DetailExpandableDataRow.self,
+                DetailExpandableRow.self,
+                DetailExpandableChildRow.self,
                 DetailSubtitlesHeaderRow.self,
                 DetailSubtitlesTabbedHeaderRow.self,
                 TopTotalsDetailStatsRow.self,
