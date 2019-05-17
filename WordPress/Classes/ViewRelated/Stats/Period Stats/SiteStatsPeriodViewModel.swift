@@ -13,12 +13,21 @@ class SiteStatsPeriodViewModel: Observable {
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
-    private var lastRequestedPeriod: StatsPeriodUnit
+    private var lastRequestedDate: Date
+    private var lastRequestedPeriod: StatsPeriodUnit {
+        didSet {
+            if lastRequestedPeriod != oldValue {
+                mostRecentChartData = nil
+            }
+        }
+    }
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
+    private var mostRecentChartData: StatsSummaryTimeIntervalData?
 
     // MARK: - Constructor
 
@@ -28,6 +37,7 @@ class SiteStatsPeriodViewModel: Observable {
          periodDelegate: SiteStatsPeriodDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
+        self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
         store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod, forceRefresh: false))
@@ -78,6 +88,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        self.lastRequestedDate = date
         self.lastRequestedPeriod = period
     }
 
@@ -100,7 +111,14 @@ private extension SiteStatsPeriodViewModel {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: ""))
 
-        let summaryData = store.getSummary()?.summaryData ?? []
+        let periodSummary = store.getSummary()
+        let summaryData = periodSummary?.summaryData ?? []
+
+        if mostRecentChartData == nil {
+            mostRecentChartData = periodSummary
+        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
+            mostRecentChartData = chartData
+        }
 
         let viewsData = intervalData(summaryData: summaryData, summaryType: .views)
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
@@ -128,15 +146,20 @@ private extension SiteStatsPeriodViewModel {
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [BarChartStyling]()
-        if let chartData = store.getSummary() {
-            let chart = PeriodChart(data: chartData, period: lastRequestedPeriod)
+        var indexToHighlight: Int?
+        if let chartData = mostRecentChartData {
+            let chart = PeriodChart(data: chartData)
 
             barChartData.append(contentsOf: chart.barChartData)
             barChartStyling.append(contentsOf: chart.barChartStyling)
+
+            indexToHighlight = chartData.summaryData.lastIndex(where: {
+                lastRequestedDate >= $0.periodStartDate
+            })
         }
 
         let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
-                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate)
+                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
         tableRows.append(row)
 
         return tableRows

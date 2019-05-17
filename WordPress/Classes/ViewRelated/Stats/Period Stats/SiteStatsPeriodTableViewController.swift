@@ -79,7 +79,8 @@ class SiteStatsPeriodTableViewController: UITableViewController {
             return nil
         }
 
-        cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
+        let periodCount = 10
+        cell.configure(date: selectedDate, period: .day, delegate: self, expectedPeriodCount: periodCount)
         viewModel?.statsBarChartViewDelegate = cell
 
         return cell

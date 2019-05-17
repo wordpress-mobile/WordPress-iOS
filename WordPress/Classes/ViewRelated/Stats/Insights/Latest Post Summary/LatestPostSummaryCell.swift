@@ -246,7 +246,8 @@ private extension LatestPostSummaryCell {
         }
 
         let chart = PostChart(type: .latest, postViews: lastTwoWeeks)
-        let chartView = StatsBarChartView(data: chart, styling: chart.barChartStyling)
+        let configuration = StatsBarChartConfiguration(data: chart, styling: chart.barChartStyling)
+        let chartView = StatsBarChartView(configuration: configuration)
 
         resetChartContainerView()
         chartStackView.addArrangedSubview(chartView)
@@ -257,7 +258,5 @@ private extension LatestPostSummaryCell {
             chartView.topAnchor.constraint(equalTo: chartStackView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartStackView.bottomAnchor)
         ])
-
-        chartView.present()
     }
 }

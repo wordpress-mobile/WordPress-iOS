@@ -24,9 +24,10 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
 
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
-    private static let expectedPeriodCount = 14
+    static let defaultPeriodCount = 14
+    private var expectedPeriodCount = SiteStatsTableHeaderView.defaultPeriodCount
     private var backLimit: Int {
-        return -(SiteStatsTableHeaderView.expectedPeriodCount - 1)
+        return -(expectedPeriodCount - 1)
     }
 
     private lazy var calendar: Calendar = {
@@ -42,10 +43,11 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate) {
+    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount) {
         self.date = date
         self.period = period
         self.delegate = delegate
+        self.expectedPeriodCount = expectedPeriodCount
         dateLabel.text = displayDate()
         updateButtonStates()
     }
@@ -186,7 +188,7 @@ private extension SiteStatsTableHeaderView {
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
-        guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.expectedPeriodCount else {
+        guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.defaultPeriodCount else {
             return
         }
 
