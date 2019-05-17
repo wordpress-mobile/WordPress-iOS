@@ -117,6 +117,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
         configureFilterBarTopConstraint()
+        configureGhost()
     }
 
     // MARK: - Configuration
@@ -127,6 +128,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func configureFilterBarTopConstraint() {
         filterTabBariOS10TopConstraint.isActive = false
+    }
+
+    private func configureGhost() {
+        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: type(of: self).postCardTextCellIdentifier, rowsPerSection: [10])
     }
 
     override func configureTableView() {
