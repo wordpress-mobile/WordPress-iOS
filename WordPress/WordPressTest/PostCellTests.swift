@@ -175,6 +175,15 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.progressView.isHidden)
     }
 
+    func testIsUserInteractionEnabled() {
+        let post = PostBuilder().withImage().build()
+        postCell.isUserInteractionEnabled = false
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.isUserInteractionEnabled)
+    }
+
     func testEditAction() {
         let post = PostBuilder().published().build()
         postCell.configure(with: post)
@@ -240,6 +249,23 @@ class PostCellTests: XCTestCase {
 
         XCTAssertFalse(postCell.authorLabel.isHidden)
         XCTAssertFalse(postCell.separatorLabel.isHidden)
+    }
+
+    // GhostCellDelegate
+
+    func testConfigureCellToBeDisplayedAsAGhost() {
+        postCell.willStartGhostAnimation()
+
+        XCTAssertTrue(postCell.featuredImage.isHidden)
+        XCTAssertEqual(postCell.titleLabel?.text, " ")
+        XCTAssertEqual(postCell.snippetLabel?.text, " ")
+        XCTAssertFalse(postCell.snippetLabel.isHidden)
+        XCTAssertEqual(postCell.dateLabel?.text, "dateGhostPlaceholder")
+        XCTAssertTrue(postCell.authorLabel.isHidden)
+        XCTAssertTrue(postCell.statusView.isHidden)
+        XCTAssertTrue(postCell.progressView.isHidden)
+        XCTAssertFalse(postCell.isUserInteractionEnabled)
+        XCTAssertEqual(postCell.actionBarView.layer.opacity, 0.5)
     }
 
     private func postCellFromNib() -> PostCell {

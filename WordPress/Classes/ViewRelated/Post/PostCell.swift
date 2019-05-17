@@ -49,6 +49,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         self.post = post
 
+        configureItself()
         configureFeaturedImage()
         configureTitleAndSnippetView()
         configureTitle()
@@ -145,6 +146,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func setupFeaturedImage() {
         featuredImageHeight.constant = Constants.featuredImageHeightConstant
+    }
+
+    private func configureItself() {
+        isUserInteractionEnabled = true
     }
 
     private func configureFeaturedImage() {
@@ -342,5 +347,20 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 extension PostCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
+    }
+}
+
+extension PostCell: GhostCellDelegate {
+    func willStartGhostAnimation() {
+        featuredImage.isHidden = true
+        titleLabel.text = " "
+        snippetLabel.isHidden = false
+        snippetLabel.text = " "
+        dateLabel.text = "dateGhostPlaceholder"
+        authorLabel.isHidden = true
+        statusView.isHidden = true
+        progressView.isHidden = true
+        actionBarView.layer.opacity = 0.5
+        isUserInteractionEnabled = false
     }
 }
