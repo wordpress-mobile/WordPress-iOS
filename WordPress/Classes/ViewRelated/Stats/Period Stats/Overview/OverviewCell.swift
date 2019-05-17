@@ -70,12 +70,9 @@ class OverviewCell: UITableViewCell, NibLoadable {
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [BarChartStyling] = []
     private weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+    private var chartHighlightIndex: Int?
 
-    private var period: StatsPeriodUnit? {
-        didSet {
-            configureChartView()
-        }
-    }
+    private var period: StatsPeriodUnit?
 
     // MARK: - Configure
 
@@ -84,13 +81,15 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil, statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil) {
+    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil, statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil, barChartHighlightIndex: Int? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
-        self.statsBarChartViewDelegate = statsBarChartViewDelegate  // we set this first, as setting period has side effects
+        self.statsBarChartViewDelegate = statsBarChartViewDelegate
+        self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        configureChartView()
         setupFilterBar()
         updateLabels()
     }
@@ -161,11 +160,8 @@ private extension OverviewCell {
             return
         }
 
-        let barChartData = chartData[filterSelectedIndex]
-        let barChartStyling = chartStyling[filterSelectedIndex]
-        let analyticsGranularity = period?.analyticsGranularity
-
-        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling, analyticsGranularity: analyticsGranularity, delegate: statsBarChartViewDelegate)
+        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex], styling: chartStyling[filterSelectedIndex], analyticsGranularity: period?.analyticsGranularity, delegate: statsBarChartViewDelegate, indexToHighlight: chartHighlightIndex)
+        let chartView = StatsBarChartView(configuration: configuration)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)
@@ -176,8 +172,6 @@ private extension OverviewCell {
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
-
-        chartView.present()
     }
 
     func resetChartContainerView() {

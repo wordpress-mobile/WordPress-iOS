@@ -29,15 +29,13 @@ extension StatsPeriodFilterDimension {
 final class PeriodChart {
 
     private let rawChartData: StatsSummaryTimeIntervalData
-    private let period: StatsPeriodUnit
     private var filterDimension: StatsPeriodFilterDimension
 
     private(set) var barChartData: [BarChartDataConvertible]
     private(set) var barChartStyling: [BarChartStyling]
 
-    init(data: StatsSummaryTimeIntervalData, period: StatsPeriodUnit, filterDimension: StatsPeriodFilterDimension = .views) {
+    init(data: StatsSummaryTimeIntervalData, filterDimension: StatsPeriodFilterDimension = .views) {
         rawChartData = data
-        self.period = period
         self.filterDimension = filterDimension
 
         let (data, styling) = PeriodChartDataTransformer.transform(data: data)
