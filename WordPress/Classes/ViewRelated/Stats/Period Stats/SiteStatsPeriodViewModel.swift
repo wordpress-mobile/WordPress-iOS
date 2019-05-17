@@ -13,6 +13,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
+    private var currentDate = Date()
     private var lastRequestedDate: Date
     private var lastRequestedPeriod: StatsPeriodUnit
     private let periodReceipt: Receipt
@@ -79,7 +80,7 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: currentDate, period: period, forceRefresh: true))
         self.lastRequestedDate = date
         self.lastRequestedPeriod = period
     }
