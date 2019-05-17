@@ -52,7 +52,8 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
             return nil
         }
 
-        cell.configure(date: selectedDate, period: .day, delegate: self)
+        let periodCount = SiteStatsTableHeaderView.defaultPeriodCount
+        cell.configure(date: selectedDate, period: .day, delegate: self, expectedPeriodCount: periodCount)
         viewModel?.statsBarChartViewDelegate = cell
 
         return cell
