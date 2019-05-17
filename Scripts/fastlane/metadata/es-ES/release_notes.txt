@@ -1,6 +1,5 @@
-12.2
------
-* ¡Publica con confianza! Las vistas preliminares en borrador te mostrarán una versión más precisa de tus entradas.
-* Si prefieres escribir en aplicaciones como Bear o Ulysses (o cualquier otra aplicación que utilice los formatos TextBundle y TextPack), genial, sigue haciéndolo. Y ahora puedes importar texto de esas aplicaciones a esta.
-* Toda la aplicación recibió un estímulo de primavera - arreglamos algunos pequeños fallos visuales en el proceso de creación del sitio, ajustamos algunas palabras para dejar claro cuánto espacio de almacenamiento está usando tu sitio, y nos encargamos de un molesto fallo que a veces se producía cuando estabas tratando de administrar los plugins.
-
+* Marca los avisos como no leídos con un simple deslizamiento.
+* ¿Esa caída ocasional cuando buscas en la biblioteca de fotos gratis? ¡Arreglada!
+* El inicio de sesión en sitios auto-alojados es ahora más fácil que nunca.
+* Mejora el aspecto de las citas en el lector
+* Hemos hecho un montón de pequeñas mejoras en la accesibilidad visual y auditiva a través de la aplicación.
