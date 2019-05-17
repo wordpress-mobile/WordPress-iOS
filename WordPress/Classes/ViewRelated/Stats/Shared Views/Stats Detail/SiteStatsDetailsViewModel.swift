@@ -135,10 +135,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodClicks.dataSubtitle))
             tableRows.append(contentsOf: clicksRows())
         case .periodAuthors:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodAuthors.dataSubtitle,
-                                                     dataRows: authorsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle))
+            tableRows.append(contentsOf: authorsRows())
         case .periodReferrers:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle,
@@ -506,16 +505,22 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Authors
 
-    func authorsRows() -> [StatsTotalRowData] {
+    func authorsRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(authorsRowData(), forStat: .periodAuthors)
+    }
+
+    func authorsRowData() -> [StatsTotalRowData] {
         let authors = periodStore.getTopAuthors()?.topAuthors ?? []
 
-        return authors.map { StatsTotalRowData(name: $0.name,
-                                               data: $0.viewsCount.abbreviatedString(),
-                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
-                                               userIconURL: $0.iconURL,
-                                               showDisclosure: true,
-                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
-                                               statSection: .periodAuthors) }
+        return authors.map {
+            StatsTotalRowData(name: $0.name,
+                              data: $0.viewsCount.abbreviatedString(),
+                              dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                              userIconURL: $0.iconURL,
+                              showDisclosure: true,
+                              childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                              statSection: .periodAuthors)
+        }
     }
 
     // MARK: - Referrers
