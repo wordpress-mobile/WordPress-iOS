@@ -43,7 +43,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int) {
+    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount) {
         self.date = date
         self.period = period
         self.delegate = delegate
