@@ -30,14 +30,14 @@ PODS:
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.2.0):
-    - GoogleToolboxForMac/Defines (= 2.2.0)
-  - GoogleToolboxForMac/Defines (2.2.0)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.0)":
-    - GoogleToolboxForMac/DebugUtils (= 2.2.0)
-    - GoogleToolboxForMac/Defines (= 2.2.0)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
+  - GoogleToolboxForMac/DebugUtils (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - Gridicons (0.18)
   - GTMSessionFetcher/Core (1.2.1)
   - Gutenberg (1.5.1):
@@ -179,7 +179,7 @@ PODS:
   - WordPress-Aztec-iOS (1.6.3)
   - WordPress-Editor-iOS (1.6.3):
     - WordPress-Aztec-iOS (= 1.6.3)
-  - WordPressAuthenticator (1.5.0-beta.3):
+  - WordPressAuthenticator (1.5.0-beta.4):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -359,7 +359,7 @@ SPEC CHECKSUMS:
   GiphyCoreSDK: 1a89e03e55dc6b636b9d40fde76107867dbb9da5
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   Gridicons: 04261236382e9c62c62c9a104f2f532c1bdf6a78
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
   Gutenberg: 9594aa8c1b07acd3e9401d5e7252b6d3cfc32290
@@ -386,7 +386,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 2b33d54cc2dd3f02bc5aad49810f955d0726dd4e
   WordPress-Editor-iOS: b5f2a352dc2b68b1a622ba83bdc716b7e346d556
-  WordPressAuthenticator: 67eaa9979402888c4e20763588b60e4b75cb0491
+  WordPressAuthenticator: 2abd159bf1757f118ddf10e3b5ab5483fb5bf4ea
   WordPressKit: 18480c8de3ab69ce8e4ad979dbe138b1421cf3f1
   WordPressShared: c77c0fc4840d5694a1a684f8c541224dfdb147f2
   WordPressUI: 0370acdee9a3ab8452a99d229b10479855430ee9
