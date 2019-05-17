@@ -72,6 +72,13 @@ extension WPCrashLogging {
         Client.shared?.appendStacktrace(to: event)
         Client.shared?.send(event: event)
     }
+
+    static func logMessage(_ message: String) {
+        let event = Event(level: .info)
+        event.message = message
+
+        Client.shared?.send(event: event)
+    }
 }
 
 // User Tracking

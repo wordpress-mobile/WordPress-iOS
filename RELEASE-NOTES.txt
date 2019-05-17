@@ -12,6 +12,7 @@
 * Implemented auto saving a post on preview  
 * The app now launches a bit more quickly.
 * Fixed broken images in posts created by the share extension.
+* Deprecated local previews
 
 12.4
 -----
