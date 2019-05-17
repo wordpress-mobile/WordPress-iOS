@@ -254,6 +254,7 @@
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>
                 <outlet property="editButton" destination="A8f-pJ-oKt" id="yvk-OZ-rMk"/>
                 <outlet property="featuredImage" destination="doZ-n4-W7C" id="Jd2-4a-6Zs"/>
+                <outlet property="featuredImageHeight" destination="a2g-RS-Lb9" id="hcy-Ow-AXq"/>
                 <outlet property="moreButton" destination="ud6-kQ-Qkb" id="gGi-Ty-OCg"/>
                 <outlet property="progressView" destination="33v-Uz-9S6" id="Ie3-MT-W3v"/>
                 <outlet property="retryButton" destination="ZFa-Ih-GYE" id="eqD-Eb-Qmj"/>

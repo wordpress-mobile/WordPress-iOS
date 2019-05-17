@@ -21,7 +21,9 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
+    @IBOutlet weak var featuredImageHeight: NSLayoutConstraint!
 
+    private let featuredMediaHeightConstraintConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
     private let topSpaceWithImage: CGFloat = 16
     private let topSpaceWithoutImage: CGFloat = 0
     private let separator = "·"
@@ -63,9 +65,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         super.awakeFromNib()
 
         applyStyles()
-        applyBorder()
-        setLabels()
-        configureSelectedBackgroundView()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -118,7 +117,16 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostButtonStyle(retryButton)
         WPStyleGuide.applyPostButtonStyle(viewButton)
         WPStyleGuide.applyPostButtonStyle(moreButton)
-        applyActionBarStyle()
+
+        setupActionBar()
+        setupFeaturedImage()
+        setupBorders()
+        setupLabels()
+        setupSelectedBackgroundView()
+    }
+
+    private func setupFeaturedImage() {
+        featuredImageHeight.constant = featuredMediaHeightConstraintConstant
     }
 
     private func configureFeaturedImage() {
@@ -205,14 +213,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         viewButton.isHidden = post.isFailed
     }
 
-    private func applyBorder() {
+    private func setupBorders() {
         [upperBorder, bottomBorder].forEach { border in
             border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
             border?.backgroundColor = WPStyleGuide.postCardBorderColor()
         }
     }
 
-    private func applyActionBarStyle() {
+    private func setupActionBar() {
         actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
             button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
             button.setTitleColor(WPStyleGuide.grey(), for: .normal)
@@ -221,7 +229,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         }
     }
 
-    private func setLabels() {
+    private func setupLabels() {
         stickyLabel.text = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
         statusAndStickySeparator.text = " \(separator) "
 
@@ -236,7 +244,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         moreButton.setTitle(NSLocalizedString("More", comment: "Label for the more post button. Tapping displays an action sheet with post options."), for: .normal)
     }
 
-    private func configureSelectedBackgroundView() {
+    private func setupSelectedBackgroundView() {
         if let selectedBackgroundView = selectedBackgroundView {
             let marginMask = UIView()
             selectedBackgroundView.addSubview(marginMask)
