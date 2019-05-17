@@ -23,7 +23,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var topSpace: NSLayoutConstraint!
 
     private let topSpaceWithImage: CGFloat = 16
-    private let topSpaceWithoutImage: CGFloat = 8
+    private let topSpaceWithoutImage: CGFloat = 0
     private let separator = "·"
 
     lazy var imageLoader: ImageLoader = {
