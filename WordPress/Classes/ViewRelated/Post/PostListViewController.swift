@@ -134,6 +134,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: type(of: self).postCardTextCellIdentifier, rowsPerSection: [10])
     }
 
+    private func configureGhost() {
+        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: type(of: self).postCardTextCellIdentifier, rowsPerSection: [10])
+    }
+
     override func configureTableView() {
 
         tableView.accessibilityIdentifier = "PostsTable"
