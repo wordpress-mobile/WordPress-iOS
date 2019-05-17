@@ -60,10 +60,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
-        if #available(iOS 11, *) {
-            textView.smartDashesType = .no
-            textView.smartQuotesType = .no
-        }
+        textView.smartDashesType = .no
+        textView.smartQuotesType = .no
 
         return textView
     }()

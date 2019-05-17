@@ -202,14 +202,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (BOOL)shouldAlignVertically
 {
-    if (@available(iOS 11.0, *)) {
-        UIContentSizeCategory currentCategory = self.traitCollection.preferredContentSizeCategory;
-        NSComparisonResult result = UIContentSizeCategoryCompareToCategory(currentCategory, UIContentSizeCategoryExtraExtraLarge);
-        // True if it's bigger than XXL
-        return result == NSOrderedDescending;
-    } else {
-        return NO;
-    }
+    UIContentSizeCategory currentCategory = self.traitCollection.preferredContentSizeCategory;
+    NSComparisonResult result = UIContentSizeCategoryCompareToCategory(currentCategory, UIContentSizeCategoryExtraExtraLarge);
+    // True if it's bigger than XXL
+    return result == NSOrderedDescending;
 }
 
 - (void)arrangeStackViews

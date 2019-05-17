@@ -124,13 +124,8 @@ private extension PostStatsTableViewController {
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-            })
-        } else {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
+        tableView.performBatchUpdates({
+        })
     }
 
 }

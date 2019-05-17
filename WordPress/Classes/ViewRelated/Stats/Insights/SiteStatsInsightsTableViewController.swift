@@ -149,13 +149,8 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-            })
-        } else {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
+        tableView.performBatchUpdates({
+        })
     }
 
     func clearExpandedRows() {

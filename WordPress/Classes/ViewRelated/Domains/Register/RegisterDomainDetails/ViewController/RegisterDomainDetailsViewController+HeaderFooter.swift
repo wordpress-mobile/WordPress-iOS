@@ -11,9 +11,7 @@ extension RegisterDomainDetailsViewController {
 
         var safeAreaInset: CGFloat = 0
 
-        if #available(iOS 11.0, *) {
-            safeAreaInset = tableView.safeAreaInsets.bottom
-        }
+        safeAreaInset = tableView.safeAreaInsets.bottom
 
         //Creating a UIView with a custom frame because table tableFooterView doesn't support autolayout
         let footer = UIView(frame: CGRect(x: 0,

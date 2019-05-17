@@ -207,15 +207,9 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-                updateStatSectionForFilterChange()
-            })
-        } else {
-            tableView.beginUpdates()
+        tableView.performBatchUpdates({
             updateStatSectionForFilterChange()
-            tableView.endUpdates()
-        }
+        })
     }
 
     func clearExpandedRows() {
