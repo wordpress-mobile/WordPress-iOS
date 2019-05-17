@@ -53,7 +53,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         if insightsStore.fetchingOverviewHasFailed &&
             !insightsStore.containsCachedData {
-            return ImmuTable(sections: [])
+            return ImmuTable.Empty
         }
 
         insightsToShow.forEach { insightType in

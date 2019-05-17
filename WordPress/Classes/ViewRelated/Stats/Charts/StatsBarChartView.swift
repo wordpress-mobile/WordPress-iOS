@@ -18,14 +18,16 @@ class StatsBarChartView: BarChartView {
     // MARK: Properties
 
     private struct Constants {
-        static let intrinsicHeight      = CGFloat(170)      // height via Zeplin
-        static let highlightAlpha       = CGFloat(1)
-        static let markerAlpha          = CGFloat(0.2)
-        static let presentationDelay    = TimeInterval(0.01)
-        static let rotationDelay        = TimeInterval(0.35)
-        static let topOffsetSansLegend  = CGFloat(5)
-        static let topOffsetWithLegend  = CGFloat(16)
-        static let trailingOffset       = CGFloat(20)
+        static let intrinsicHeight          = CGFloat(170)      // height via Zeplin
+        static let highlightAlpha           = CGFloat(1)
+        static let horizontalAxisLabelCount = 2
+        static let markerAlpha              = CGFloat(0.2)
+        static let presentationDelay        = TimeInterval(0.01)
+        static let rotationDelay            = TimeInterval(0.35)
+        static let topOffsetSansLegend      = CGFloat(5)
+        static let topOffsetWithLegend      = CGFloat(16)
+        static let trailingOffset           = CGFloat(20)
+        static let verticalAxisLabelCount   = 5
     }
 
     /// This adapts the data set for presentation by the Charts framework.
@@ -254,7 +256,7 @@ private extension StatsBarChartView {
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
         xAxis.labelTextColor = styling.labelColor
-        xAxis.setLabelCount(2, force: true)
+        xAxis.setLabelCount(Constants.horizontalAxisLabelCount, force: true)
         xAxis.valueFormatter = styling.xAxisValueFormatter
     }
 
@@ -268,7 +270,7 @@ private extension StatsBarChartView {
         yAxis.drawZeroLineEnabled = true
         yAxis.gridColor = styling.lineColor
         yAxis.labelTextColor = styling.labelColor
-        yAxis.setLabelCount(6, force: true)
+        yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         yAxis.valueFormatter = styling.yAxisValueFormatter
         yAxis.zeroLineColor = styling.lineColor
 
