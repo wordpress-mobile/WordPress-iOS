@@ -24,7 +24,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 wpcomSecret: ApiCredentials.secret(),
                                                                 wpcomScheme: WPComScheme,
                                                                 wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
-                                                                wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultApiBaseUrl,
+                                                                wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,
                                                                 wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
                                                                 googleLoginClientId: ApiCredentials.googleLoginClientId(),
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
