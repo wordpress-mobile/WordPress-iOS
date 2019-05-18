@@ -15,7 +15,7 @@ enum FeatureFlag: Int {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .statsRefresh:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cPrereleaseTesting]
         case .domainCredit:
             return true
         }
