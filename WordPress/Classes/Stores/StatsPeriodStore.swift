@@ -145,8 +145,8 @@ struct PeriodStoreState {
 
     // Post Stats
 
-    var postStats: [Int: StatsPostDetails?] = [:]
-    var fetchingPostStats: [Int: Bool] = [:]
+    var postStats = Dictionary<Int, StatsPostDetails?>()
+    var fetchingPostStats = Dictionary<Int, Bool>()
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
