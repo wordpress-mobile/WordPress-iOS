@@ -352,8 +352,8 @@ extension PostCell: InteractivePostView {
     }
 }
 
-extension PostCell: GhostCellDelegate {
-    func willStartGhostAnimation() {
+extension PostCell: GhostableView {
+    func ghostAnimationWillStart() {
         featuredImage.isHidden = true
         titleLabel.attributedText = NSAttributedString(string: " ")
         snippetLabel.isHidden = false
