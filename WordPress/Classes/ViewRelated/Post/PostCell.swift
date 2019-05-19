@@ -357,7 +357,7 @@ extension PostCell: GhostableView {
         featuredImage.isHidden = true
         titleLabel.attributedText = NSAttributedString(string: " ")
         snippetLabel.isHidden = false
-        snippetLabel.attributedText = NSAttributedString(string: " ", attributes: WPStyleGuide.postCardDateAttributes() as? [NSAttributedString.Key: Any])
+        snippetLabel.attributedText = dateLabel.attributedText
         dateLabel.text = "dateGhostPlaceholder"
         authorLabel.isHidden = true
         statusView.isHidden = true
