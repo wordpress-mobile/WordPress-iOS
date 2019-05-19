@@ -67,7 +67,7 @@ class PostStatsViewModel: Observable {
 
     func tableViewModel() -> ImmuTable {
 
-        postStats = store.getPostStats()
+        postStats = store.getPostStats(for: postID)
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(titleTableRow())

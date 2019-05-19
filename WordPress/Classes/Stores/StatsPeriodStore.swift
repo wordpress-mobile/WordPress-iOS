@@ -27,7 +27,7 @@ enum PeriodAction: Action {
     case refreshCountries(date: Date, period: StatsPeriodUnit)
 
     // Post Stats
-    case receivedPostStats(_ postStats: StatsPostDetails?)
+    case receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int)
     case refreshPostStats(postID: Int)
 }
 
@@ -145,8 +145,8 @@ struct PeriodStoreState {
 
     // Post Stats
 
-    var postStats: StatsPostDetails?
-    var fetchingPostStats = false
+    var postStats = [Int: StatsPostDetails?]()
+    var fetchingPostStats = [Int: Bool]()
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -202,8 +202,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             refreshCountries(date: date, period: period)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
-        case .receivedPostStats(let postStats):
-            receivedPostStats(postStats)
+        case .receivedPostStats(let postStats, let postId):
+            receivedPostStats(postStats, postId)
         case .refreshPostStats(let postID):
             refreshPostStats(postID: postID)
         }
@@ -290,7 +290,7 @@ private extension StatsPeriodStore {
                     fetchAllPublished(date: query.date, period: query.period)
                 }
             case .postStats:
-                if shouldFetchPostStats() {
+                if shouldFetchPostStats(for: query.postID) {
                     fetchPostStats(postID: query.postID)
                 }
             }
@@ -688,19 +688,19 @@ private extension StatsPeriodStore {
                 return
         }
 
-        state.fetchingPostStats = true
+        state.fetchingPostStats[postID] = true
 
         statsRemote.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
             }
             DDLogInfo("Stats: Finished fetching post stats.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats, postID))
         }
     }
 
     func refreshPostStats(postID: Int) {
-        state.fetchingPostStats = false
+        state.fetchingPostStats[postID] = false
         cancelQueries()
         fetchPostStats(postID: postID)
     }
@@ -806,13 +806,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedPostStats(_ postStats: StatsPostDetails?) {
+    func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int) {
         transaction { state in
-            state.fetchingPostStats = false
-
-            if postStats != nil {
-                state.postStats = postStats
-            }
+            state.fetchingPostStats[postId] = false
+            state.postStats[postId] = postStats
         }
     }
 
@@ -895,10 +892,9 @@ private extension StatsPeriodStore {
         return !isFetchingPublished
     }
 
-    func shouldFetchPostStats() -> Bool {
-        return !isFetchingPostStats
+    func shouldFetchPostStats(for postId: Int?) -> Bool {
+        return !isFetchingPostStats(for: postId)
     }
-
 }
 
 // MARK: - Public Accessors
@@ -941,8 +937,11 @@ extension StatsPeriodStore {
         return state.topCountries
     }
 
-    func getPostStats() -> StatsPostDetails? {
-        return state.postStats
+    func getPostStats(for postId: Int?) -> StatsPostDetails? {
+        guard let postId = postId else {
+            return nil
+        }
+        return state.postStats[postId] ?? nil
     }
 
     var isFetchingOverview: Bool {
@@ -990,10 +989,6 @@ extension StatsPeriodStore {
         return state.fetchingPublished
     }
 
-    var isFetchingPostStats: Bool {
-        return state.fetchingPostStats
-    }
-
     var fetchingOverviewHasFailed: Bool {
         return state.fetchingSummaryHasFailed &&
             state.fetchingPostsAndPagesHasFailed &&
@@ -1020,5 +1015,12 @@ extension StatsPeriodStore {
         }
 
         return false
+    }
+
+    func isFetchingPostStats(for postId: Int?) -> Bool {
+        guard let postId = postId else {
+            return false
+        }
+        return state.fetchingPostStats[postId] ?? false
     }
 }

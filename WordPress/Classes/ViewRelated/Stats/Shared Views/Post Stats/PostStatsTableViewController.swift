@@ -82,7 +82,7 @@ private extension PostStatsTableViewController {
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
-                !store.isFetchingPostStats else {
+                !store.isFetchingPostStats(for: self?.postID) else {
                     return
             }
 
