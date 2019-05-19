@@ -150,6 +150,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureItself() {
         isUserInteractionEnabled = true
+        verticalContentStackView.spacing = 8
+        titleAndSnippetView.spacing = 3
     }
 
     private func configureFeaturedImage() {
@@ -180,7 +182,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitleAndSnippetView() {
-        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin)
+        titleAndSnippetView.setLayoutMargin(top: Constants.titleTopMargin, bottom: 0)
     }
 
     private func configureTitle() {
@@ -353,14 +355,23 @@ extension PostCell: InteractivePostView {
 extension PostCell: GhostCellDelegate {
     func willStartGhostAnimation() {
         featuredImage.isHidden = true
-        titleLabel.text = " "
+        titleLabel.attributedText = NSAttributedString(string: " ")
         snippetLabel.isHidden = false
-        snippetLabel.text = " "
+        snippetLabel.attributedText = NSAttributedString(string: " ", attributes: WPStyleGuide.postCardDateAttributes() as? [NSAttributedString.Key: Any])
         dateLabel.text = "dateGhostPlaceholder"
         authorLabel.isHidden = true
         statusView.isHidden = true
         progressView.isHidden = true
         actionBarView.layer.opacity = 0.5
         isUserInteractionEnabled = false
+
+        topSpace.constant = margin
+        contentStackView.spacing = 0
+        titleAndSnippetView.spacing = 16
+        titleAndSnippetView.setLayoutMargin(top: 0, bottom: 8)
+
+        actionBarView.isGhostableDisabled = true
+        upperBorder.isGhostableDisabled = true
+        bottomBorder.isGhostableDisabled = true
     }
 }
