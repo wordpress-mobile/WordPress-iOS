@@ -283,6 +283,7 @@ class AbstractPostListViewController: UIViewController,
 
         hideNoResultsView()
         if emptyResults {
+            stopGhostIfConnectionIsNotAvailable()
             showNoResultsView()
         }
     }
@@ -722,22 +723,6 @@ class AbstractPostListViewController: UIViewController,
         atLeastSyncedOnce = true
     }
 
-    func startGhost() {
-        guard let ghostOptions = ghostOptions, emptyResults else {
-            return
-        }
-
-        tableView.displayGhostContent(options: ghostOptions)
-        tableView.isScrollEnabled = false
-        noResultsViewController.view.isHidden = true
-    }
-
-    func stopGhost() {
-        tableView.removeGhostContent()
-        tableView.isScrollEnabled = true
-        noResultsViewController.view.isHidden = false
-    }
-
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
@@ -763,6 +748,8 @@ class AbstractPostListViewController: UIViewController,
             promptForPassword()
             return
         }
+
+        stopGhost()
 
         dismissAllNetworkErrorNotices()
 
@@ -794,6 +781,32 @@ class AbstractPostListViewController: UIViewController,
         }
     }
 
+    // MARK: - Ghost cells
+
+    func startGhost() {
+        guard let ghostOptions = ghostOptions, emptyResults else {
+            return
+        }
+
+        tableView.displayGhostContent(options: ghostOptions)
+        tableView.isScrollEnabled = false
+        noResultsViewController.view.isHidden = true
+    }
+
+    func stopGhost() {
+        tableView.removeGhostContent()
+        tableView.isScrollEnabled = true
+        noResultsViewController.view.isHidden = false
+    }
+
+    func stopGhostIfConnectionIsNotAvailable() {
+        guard WordPressAppDelegate.shared?.connectionAvailable == false else {
+            return
+        }
+
+        atLeastSyncedOnce = true
+        stopGhost()
+    }
 
     // MARK: - Searching
 
