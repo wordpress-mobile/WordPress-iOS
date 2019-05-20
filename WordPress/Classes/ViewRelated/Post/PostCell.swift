@@ -24,14 +24,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImageHeight: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var titleAndSnippetView: UIStackView!
-    @IBOutlet weak var cellMarginTop: NSLayoutConstraint!
+    @IBOutlet weak var topPadding: NSLayoutConstraint!
 
-    private let featuredMediaHeightConstraintConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
-    private let topSpaceWithImage: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
-    private let topSpaceWithoutImage: CGFloat = WPDeviceIdentification.isiPad() ? 3 : 0
+    private let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
+    private let topPaddingWithoutImage: CGFloat = WPDeviceIdentification.isiPad() ? 3 : 0
     private let actionBarTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 12 : 8
-    private let topSpaceOfTitleWithImage: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 1
-    private let topSpaceOfTitleWithoutImage: CGFloat = WPDeviceIdentification.isiPad() ? 3 : 2
+    private let titleTopMarginWithImage: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 1
+    private let titleTopMarginWithoutImage: CGFloat = WPDeviceIdentification.isiPad() ? 3 : 2
+    private let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
 
     private let separator = "·"
 
@@ -136,7 +136,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupFeaturedImage() {
-        featuredImageHeight.constant = featuredMediaHeightConstraintConstant
+        featuredImageHeight.constant = featuredImageHeightConstant
     }
 
     private func configureFeaturedImage() {
@@ -145,16 +145,16 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         if let url = post.featuredImageURLForDisplay(),
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
             featuredImage.isHidden = false
-            topSpace.constant = topSpaceWithImage
+            topSpace.constant = margin
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImage.isHidden = true
-            topSpace.constant = topSpaceWithoutImage
+            topSpace.constant = topPaddingWithoutImage
         }
     }
 
     private func configureTitleAndSnippetView() {
-        let topMargin = featuredImage.isHidden ? topSpaceOfTitleWithoutImage : topSpaceOfTitleWithImage
+        let topMargin = featuredImage.isHidden ? titleTopMarginWithoutImage: titleTopMarginWithImage
         titleAndSnippetView.setLayoutMargin(top: topMargin)
     }
 
@@ -269,7 +269,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
             marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
             marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
-            marginMask.heightAnchor.constraint(equalToConstant: topSpaceWithImage).isActive = true
+            marginMask.heightAnchor.constraint(equalToConstant: margin).isActive = true
             marginMask.backgroundColor = WPStyleGuide.greyLighten30()
         }
     }
@@ -282,7 +282,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         contentStackView.subviews.forEach { $0.setLayoutMargin(left: 0, right: 0) }
 
-        cellMarginTop.constant = topSpaceWithImage
+        topPadding.constant = margin
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {

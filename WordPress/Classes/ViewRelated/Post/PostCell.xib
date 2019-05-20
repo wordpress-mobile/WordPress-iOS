@@ -245,7 +245,6 @@
                 <outlet property="actionBarView" destination="6Zz-tH-1DC" id="BX0-Jw-TD9"/>
                 <outlet property="authorLabel" destination="l4E-Qn-Vgl" id="13b-bv-tba"/>
                 <outlet property="bottomBorder" destination="9eW-ex-CSu" id="wXM-fE-LEN"/>
-                <outlet property="cellMarginTop" destination="se6-ym-EJT" id="ixh-60-3zn"/>
                 <outlet property="containerView" destination="Lk7-nZ-b0t" id="HE0-8u-U5e"/>
                 <outlet property="contentStackView" destination="JqA-of-VBn" id="U2Y-P0-mKR"/>
                 <outlet property="dateLabel" destination="q5D-nc-yvr" id="YIc-Y6-DJY"/>
@@ -262,6 +261,7 @@
                 <outlet property="stickyLabel" destination="GWM-0Z-zAX" id="7Gc-ev-9hc"/>
                 <outlet property="titleAndSnippetView" destination="8a8-4i-YeE" id="RiQ-4D-z0x"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="7oq-fK-MSR"/>
+                <outlet property="topPadding" destination="se6-ym-EJT" id="ixh-60-3zn"/>
                 <outlet property="topSpace" destination="hLL-be-nDD" id="EBS-Du-PzL"/>
                 <outlet property="upperBorder" destination="sev-PH-HG8" id="fe9-3Q-8go"/>
                 <outlet property="viewButton" destination="zSW-B3-aWT" id="UnQ-NG-EJJ"/>
