@@ -38,6 +38,20 @@ extension XCUIElement {
 
 extension XCTestCase {
 
+    public func setUpTestSuite() {
+        super.setUp()
+
+        // In UI tests it is usually best to stop immediately when a failure occurs.
+        continueAfterFailure = false
+
+        let app = XCUIApplication()
+        app.launchArguments = ["NoAnimations"]
+        app.activate()
+
+        // Media permissions alert handler
+        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
+    }
+
     public func systemAlertHandler(alertTitle: String, alertButton: String) {
         addUIInterruptionMonitor(withDescription: alertTitle) { (alert) -> Bool in
             let alertButtonElement = alert.buttons[alertButton]

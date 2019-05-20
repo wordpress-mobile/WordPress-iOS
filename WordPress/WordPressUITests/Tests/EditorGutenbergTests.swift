@@ -4,16 +4,7 @@ class EditorGutenbergTests: XCTestCase {
     private var editorScreen: BlockEditorScreen!
 
     override func setUp() {
-        super.setUp()
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        let app = XCUIApplication()
-        app.launchArguments = ["NoAnimations"]
-        app.activate()
-
-        // Media permissions alert handler
-        systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
+        setUpTestSuite()
 
         _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
         editorScreen = EditorFlow
