@@ -27,7 +27,7 @@ enum PeriodAction: Action {
     case refreshCountries(date: Date, period: StatsPeriodUnit)
 
     // Post Stats
-    case receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int)
+    case receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?)
     case refreshPostStats(postID: Int)
 }
 
@@ -147,6 +147,7 @@ struct PeriodStoreState {
 
     var postStats = [Int: StatsPostDetails?]()
     var fetchingPostStats = [Int: Bool]()
+    var fetchingPostStatsHasFailed = [Int: Bool]()
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
@@ -202,8 +203,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             refreshCountries(date: date, period: period)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
-        case .receivedPostStats(let postStats, let postId):
-            receivedPostStats(postStats, postId)
+        case .receivedPostStats(let postStats, let postId, let error):
+            receivedPostStats(postStats, postId, error)
         case .refreshPostStats(let postID):
             refreshPostStats(postID: postID)
         }
@@ -695,7 +696,7 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
             }
             DDLogInfo("Stats: Finished fetching post stats.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats, postID))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats, postID, error))
         }
     }
 
@@ -806,9 +807,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int) {
+    func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?) {
         transaction { state in
             state.fetchingPostStats[postId] = false
+            state.fetchingPostStatsHasFailed[postId] = error != nil
             state.postStats[postId] = postStats
         }
     }
@@ -999,6 +1001,31 @@ extension StatsPeriodStore {
             state.fetchingSearchTermsHasFailed &&
             state.fetchingVideosHasFailed &&
             state.fetchingCountriesHasFailed
+    }
+
+    func fetchingFailed(for query: PeriodQuery) -> Bool {
+        switch query {
+        case .periods:
+            return fetchingOverviewHasFailed
+        case .allPostsAndPages:
+            return state.fetchingPostsAndPagesHasFailed
+        case .allSearchTerms:
+            return state.fetchingSearchTermsHasFailed
+        case .allVideos:
+            return state.fetchingVideosHasFailed
+        case .allClicks:
+            return state.fetchingClicksHasFailed
+        case .allAuthors:
+            return state.fetchingAuthorsHasFailed
+        case .allReferrers:
+            return state.fetchingReferrersHasFailed
+        case .allCountries:
+            return state.fetchingCountriesHasFailed
+        case .allPublished:
+            return state.fetchingPublishedHasFailed
+        case .postStats(let postId):
+            return state.fetchingPostStatsHasFailed[postId] ?? true
+        }
     }
 
     var containsCachedData: Bool {
