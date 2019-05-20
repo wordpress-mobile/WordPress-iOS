@@ -180,7 +180,7 @@
 
     [self stopLoading];
 
-    [self.generator previewRequestFailedWithMessage:error.localizedDescription];
+    [self.generator previewRequestFailedWithReason:@"Generic web view error"];
 }
 
 - (BOOL)webView:(UIWebView *)awebView
