@@ -1,12 +1,13 @@
 12.6
 -----
-* The app now launches a bit more quickly.
 
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
 * Implemented Domain Credit feature
 * Implemented auto saving a post on preview  
+* The app now launches a bit more quickly.
+* Fixes a crash in reader on posts with no images
 
 12.4
 -----
