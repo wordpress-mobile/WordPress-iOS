@@ -34,7 +34,7 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertTrue(postCell.featuredImage.isHidden)
+        XCTAssertTrue(postCell.featuredImageStackView.isHidden)
     }
 
     func testShowPostTitle() {
