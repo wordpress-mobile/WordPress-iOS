@@ -15,9 +15,11 @@ class EditorAztecTests: XCTestCase {
         // Media permissions alert handler
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
 
-        editorScreen = LoginFlow
+        _ = LoginFlow
             .loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
-            .gotoAztecEditorScreen()
+        editorScreen = EditorFlow
+            .toggleBlockEditor(to: .off)
+            .tabBar.gotoAztecEditorScreen()
     }
 
     override func tearDown() {
