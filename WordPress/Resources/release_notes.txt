@@ -1,15 +1,21 @@
+12.6
+-----
+* The app now launches a bit more quickly.
+
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
 
 12.4
 -----
-* Mark notifications as unread with a simple swipe.
-* That occasional crash when searching the free photo library? Fixed!
-* Logging in to self-hosted sites is now smoother than ever.
-* Blockquotes in the Reader got a new, sleek look.
-* Improves how quotes look in reader
-* We’ve made lots of small improvements to visual and hearing accessibility throughout the app.
+* You can now mark notifications as unread with just a swipe.
+* Fixed crash when searching Free Photo Library.
+* Better URL validation when logging in with a self hosted site.
+* Account Settings Primary Site now shows the site URL if the site has no name.
+* Implemented incremental improvements to accessibility experience across the app.
+* Updated error message when tag loading failed.
 
 12.3
 -----

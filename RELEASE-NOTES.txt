@@ -1,5 +1,8 @@
 12.6
 -----
+ 
+12.6
+-----
 * The app now launches a bit more quickly.
 
 12.5
