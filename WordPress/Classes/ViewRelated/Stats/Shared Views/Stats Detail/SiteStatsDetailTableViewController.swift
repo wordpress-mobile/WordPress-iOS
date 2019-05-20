@@ -152,7 +152,7 @@ private extension SiteStatsDetailTableViewController {
         case .periodPublished:
             return periodStore.isFetchingPublished
         case .postStatsMonthsYears, .postStatsAverageViews:
-            return periodStore.isFetchingPostStats
+            return periodStore.isFetchingPostStats(for: postID)
         default:
             return false
         }

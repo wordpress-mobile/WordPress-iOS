@@ -576,7 +576,7 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func postStatsRowData(forAverages: Bool) -> [StatsTotalRowData] {
-        let postStats = periodStore.getPostStats()
+        let postStats = periodStore.getPostStats(for: postID)
 
         guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
             let minYear = StatsDataHelper.minYearFrom(yearsData: yearsData),
