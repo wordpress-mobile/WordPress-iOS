@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+* Marca los avisos como no leídos con un simple deslizamiento.
+* ¿Esa caída ocasional cuando buscas en la biblioteca de fotos gratis? ¡Arreglada!
+* El inicio de sesión en sitios auto-alojados es ahora más fácil que nunca.
+* Mejora el aspecto de las citas en el lector
+* Hemos hecho un montón de pequeñas mejoras en la accesibilidad visual y auditiva a través de la aplicación.
+=======
 ¿Te gustan las aplicaciones como iA Writer, 1Writer, Bear y Ulysses? Cambia rápidamente de la aplicación a borrador de WordPress - la aplicación ahora importa imágenes de archivos TextBundle y TextPack y es compatible también con la importación de archivos Markdown.
 
 Los avisos de problemas de conectividad a Internet ya no consumen toda la pantalla del dispositivo. Ahora hay una pequeña ventana emergente en su lugar, por lo que puedes seguir usando las capacidades sin conexión (como borrar mensajes, lo que ahora ocurre de forma más fiable si estás sin conexión). 
@@ -10,3 +17,4 @@ Compatibilidad con Jetpack Remote Install, por lo que puedes instalar y activar 
 
 Las estadísticas son más accesibles - si usas voiceover en la aplicación, te leerá tus estadísticas.
 
+>>>>>>> origin/master

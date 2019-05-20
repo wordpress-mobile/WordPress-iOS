@@ -22,10 +22,7 @@ final class AztecMediaPickingCoordinator {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
 
-        if FeatureFlag.giphy.enabled {
-            alertController.addAction(giphyAction(origin: origin, blog: blog))
-        }
-
+        alertController.addAction(giphyAction(origin: origin, blog: blog))
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
 

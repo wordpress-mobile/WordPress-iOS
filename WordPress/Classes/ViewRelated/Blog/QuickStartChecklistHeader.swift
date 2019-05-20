@@ -15,11 +15,13 @@ class QuickStartChecklistHeader: UIView {
                 self?.bottomStroke.alpha = CGFloat(alpha)
                 self?.chevronView.transform = CGAffineTransform(rotationAngle: rotate)
             })
+            updateCollapseHeaderAccessibility()
         }
     }
     var count: Int = 0 {
         didSet {
             titleLabel.text = String(format: Constant.title, count)
+            updateCollapseHeaderAccessibility()
         }
     }
 
@@ -60,8 +62,54 @@ class QuickStartChecklistHeader: UIView {
     @IBAction private func headerDidTouch(_ sender: UIButton) {
         collapse.toggle()
     }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        prepareForVoiceOver()
+    }
 }
 
 private enum Constant {
     static let title = NSLocalizedString("Complete (%i)", comment: "The table view header title that displays the number of completed tasks")
+}
+
+// MARK: - Accessible
+
+extension QuickStartChecklistHeader: Accessible {
+    func prepareForVoiceOver() {
+        // Here we explicit configure the subviews, to prepare for the desired composite behavior
+        bottomStroke.isAccessibilityElement = false
+        contentView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = false
+        chevronView.isAccessibilityElement = false
+
+        // Neither the top stroke nor the button (overlay) are outlets, so we configured them in the nib
+
+        // From an accessibility perspective, this view is essentially monolithic, so we configure it accordingly
+        isAccessibilityElement = true
+        accessibilityTraits = [.header, .button]
+
+        updateCollapseHeaderAccessibility()
+    }
+
+    func updateCollapseHeaderAccessibility() {
+
+        let accessibilityHintText: String
+        let accessibilityLabelFormat: String
+
+        if collapse {
+            accessibilityHintText = NSLocalizedString("Collapses the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
+
+            accessibilityLabelFormat = NSLocalizedString("Expanded, %i completed tasks, toggling collapses the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
+        } else {
+            accessibilityHintText = NSLocalizedString("Expands the list of completed tasks.", comment: "Accessibility hint for the list of completed tasks presented during Quick Start.")
+
+            accessibilityLabelFormat = NSLocalizedString("Collapsed, %i completed tasks, toggling expands the list of these tasks", comment: "Accessibility description for the list of completed tasks presented during Quick Start. Parameter is a number representing the count of completed tasks.")
+        }
+
+        accessibilityHint = accessibilityHintText
+
+        let localizedAccessibilityDescription = String(format: accessibilityLabelFormat, arguments: [count])
+        accessibilityLabel = localizedAccessibilityDescription
+    }
 }

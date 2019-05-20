@@ -1,12 +1,25 @@
-12.4
+12.5
 -----
  
+12.5
+-----
+* Fixed Notices sometimes showing behind the keyboard
+
+12.4
+-----
+* You can now mark notifications as unread with just a swipe.
+* Fixed crash when searching Free Photo Library.
+* Better URL validation when logging in with a self hosted site.
+* Account Settings Primary Site now shows the site URL if the site has no name.
+* Implemented incremental improvements to accessibility experience across the app.
+
 12.3
 -----
 * Images are now imported from TextBundle and TextPack files shared from other apps
 * Added support for importing Markdown files shared from other apps
 * Resolved a crash that might occur during the new Site Creation flow.
 * Improved connectivity errors messaging in sharing screen.
+* Quotes in Reader are now easier to read, thanks to a vertical bar on the left making them more visually distinct
 * Fixed an issue where some text in Activity Log would show up in a wrong language
 * Jetpack Remote Install: enabled the native feature to install and activate Jetpack on a self-hosted site
 

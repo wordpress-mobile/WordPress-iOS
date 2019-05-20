@@ -27,6 +27,11 @@ class WPCrashLogging {
             Client.shared?.beforeSerializeEvent = sharedInstance.beforeSerializeEvent
             Client.shared?.shouldSendEvent = sharedInstance.shouldSendEvent
 
+            // Apply Sentry Tags
+            Client.shared?.releaseName = sharedInstance.releaseName
+            Client.shared?.environment = sharedInstance.buildType
+
+            // Do user tracking
             sharedInstance.applyUserTrackingPreferences()
 
         } catch let error {
@@ -35,11 +40,15 @@ class WPCrashLogging {
     }
 
     func beforeSerializeEvent(_ event: Event) {
-        event.extra = ["b": "c"]
+        event.tags?["locale"] = NSLocale.current.languageCode
     }
 
     func shouldSendEvent(_ event: Event?) -> Bool {
+        #if DEBUG
+        return false
+        #else
         return !userHasOptedOut
+        #endif
     }
 
     var userHasOptedOut: Bool = false
@@ -86,9 +95,6 @@ extension WPCrashLogging {
         else {
             disableUserTracking()
         }
-
-        Client.shared?.releaseName = releaseName
-        Client.shared?.environment = buildType
     }
 
     func enableUserTracking() {
@@ -108,8 +114,8 @@ extension WPCrashLogging {
             "display_name": displayName,
             "user_id": userID,
             "number_of_blogs": blogService.blogCountForAllAccounts(),
-            "logged_in": defaultAccount == nil,
-            "connected_to_dotcom": defaultAccount == nil,
+            "logged_in": defaultAccount != nil,
+            "connected_to_dotcom": defaultAccount != nil,
         ]
 
         Client.shared?.user = user
@@ -119,14 +125,11 @@ extension WPCrashLogging {
         Client.shared?.clearContext()
     }
 
-    var releaseName: String {
-        let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let buildNumber = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-
-        return "\(bundleVersion) (\(buildNumber)"
+    fileprivate var releaseName: String {
+        return Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
     }
 
-    var buildType: String {
-        return Mirror(reflecting: BuildConfiguration.current).children.first?.label ?? "unknown"
+    fileprivate var buildType: String {
+        return BuildConfiguration.current.rawValue
     }
 }

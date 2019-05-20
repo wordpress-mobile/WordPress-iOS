@@ -159,15 +159,32 @@ class NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
+        mark(notification, asRead: true, completion: completion)
+    }
+
+    /// Marks a Notification as Unead.
+    ///
+    /// - Note: This method should only be used on the main thread.
+    ///
+    /// - Parameters:
+    ///     - notification: The notification that should be marked unread.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func markAsUnread(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
+        mark(notification, asRead: false, completion: completion)
+    }
+
+    private func mark(_ notification: Notification, asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
         assert(Thread.isMainThread)
 
         let noteID = notification.notificationId
-        remote.updateReadStatus(noteID, read: true) { error in
+        remote.updateReadStatus(noteID, read: read) { error in
             if let error = error {
-                DDLogError("Error marking note as read: \(error)")
-                // Ideally, we'd want to revert to the unread status if this
+                let readState = read ? "read" : "unread"
+                DDLogError("Error marking note as \(readState): \(error)")
+                // Ideally, we'd want to revert to the previous status if this
                 // fails, but if the note is visible, the UI layer will keep
-                // trying to mark this as read and fail.
+                // trying to mark this note and fail.
                 //
                 // While not a perfect UX, the easy way out is to pretend it
                 // worked, but invalidate the cache so it can be reverted in the
@@ -180,7 +197,7 @@ class NotificationSyncMediator {
             completion?(error)
         }
 
-        updateReadStatus(true, forNoteWithObjectID: notification.objectID)
+        updateReadStatus(read, forNoteWithObjectID: notification.objectID)
     }
 
     /// Invalidates the cache for a notification, marks it as read and syncs it.

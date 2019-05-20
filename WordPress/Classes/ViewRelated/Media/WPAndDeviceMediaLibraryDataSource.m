@@ -7,6 +7,7 @@
     @property (nonatomic, strong) WPPHAssetDataSource *deviceLibraryDataSource;
     @property (nonatomic, strong) id<WPMediaCollectionDataSource> currentDataSource;
     @property (nonatomic, strong) NSMutableDictionary *observers;
+    @property (nonatomic, strong) NSMutableDictionary *groupObservers;
     @property (nonatomic, readwrite, copy) NSString *searchQuery;
 @end
 
@@ -53,15 +54,10 @@
     _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
 
     _observers = [[NSMutableDictionary alloc] init];
+    _groupObservers = [[NSMutableDictionary alloc] init];
     _searchQuery = @"";
     
     [self setDataSourceType:sourceType];
-
-    // If we're showing the media library first, ensure that we have
-    // the groups loaded for the device library so that the user can switch.
-    if (self.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
-        [_deviceLibraryDataSource loadDataWithOptions:WPMediaLoadOptionsGroups success:nil failure:nil];
-    }
 }
 
 - (MediaPickerDataSourceType)dataSourceType
@@ -185,12 +181,35 @@
     [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
+-(id<NSObject>)registerGroupChangeObserverBlock:(WPMediaGroupChangesBlock)callback
+{
+    NSUUID *blockKey = [NSUUID UUID];
+    id<NSObject> deviceKey = [self.deviceLibraryDataSource registerGroupChangeObserverBlock:callback];
+    id<NSObject> mediaLibraryKey = [self.mediaLibraryDataSource registerGroupChangeObserverBlock:callback];
+    self.groupObservers[blockKey] = @[deviceKey, mediaLibraryKey];
+    return blockKey;
+}
+
+-(void)unregisterGroupChangeObserver:(id<NSObject>)blockKey
+{
+    NSArray *keys = self.groupObservers[blockKey];
+    if (!keys) {
+        return;
+    }
+    [self.deviceLibraryDataSource unregisterGroupChangeObserver:keys[0]];
+    [self.mediaLibraryDataSource unregisterGroupChangeObserver:keys[1]];
+}
+
 - (void)loadDataWithOptions:(WPMediaLoadOptions)options
                     success:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock
 {
     if (options == WPMediaLoadOptionsGroups || options == WPMediaLoadOptionsGroupsAndAssets) {
         [self.deviceLibraryDataSource loadDataWithOptions:options success:^{
+            if (successBlock) {
+                // the moment we have device data available show it
+                successBlock();
+            }
             [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
         } failure:^(NSError *error) {
             [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];

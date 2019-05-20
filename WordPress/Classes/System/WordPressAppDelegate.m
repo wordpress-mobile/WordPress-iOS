@@ -16,9 +16,6 @@
 
 // Logging
 #import "WPLogger.h"
-#import <AutomatticTracks/TracksLogging.h>
-#import <WordPressComStatsiOS/WPStatsLogging.h>
-#import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -38,7 +35,6 @@
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
-DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
@@ -63,8 +59,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    [WordPressAppDelegate fixKeychainAccess];
 
     // Authentication Framework
     [self configureWordPressAuthenticator];
@@ -91,7 +85,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
+    DDLogInfo(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
@@ -100,10 +94,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupBackgroundRefresh:application];
     [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
-
-    if ([Feature enabled:FeatureFlagQuickStartV2]) {
-        [[PushNotificationsManager shared] deletePendingLocalNotifications];
-    }
+    [[PushNotificationsManager shared] deletePendingLocalNotifications];
 
     return YES;
 }
@@ -281,7 +272,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [ZendeskUtils setup];
 
     // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [self setupNetworkActivityIndicator];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
@@ -350,169 +341,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 {
     UIApplicationState state = [UIApplication sharedApplication].applicationState;
     return state == UIApplicationStateBackground;
-}
-
-#pragma mark - Custom methods
-
-- (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
-{
-    if ([self isWelcomeScreenVisible] || AccountHelper.isLoggedIn) {
-        return;
-    }
-    
-    UIViewController *presenter = self.window.rootViewController;
-    // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
-    // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
-    if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
-        [presenter dismissViewControllerAnimated:animated completion:^{
-            [self showWelcomeScreenAnimated:animated thenEditor:NO];
-        }];
-    } else {
-        [self showWelcomeScreenAnimated:animated thenEditor:NO];
-    }
-}
-
-- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
-{
-    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated];
-}
-
-- (void)customizeAppearance
-{
-    self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.window.tintColor = [WPStyleGuide wordPressBlue];
-    [WPStyleGuide configureNavigationBarAppearance];
-
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)]];
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];
-
-    [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
-    [[UITabBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
-
-    [[UINavigationBar appearance] setBackgroundImage:[WPStyleGuide navigationBarBackgroundImage] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setShadowImage:[WPStyleGuide navigationBarShadowImage]];
-    [[UINavigationBar appearance] setBarStyle:[WPStyleGuide navigationBarBarStyle]];
-
-    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
-    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
-    [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide grey]} forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide wordPressBlue]} forState:UIControlStateSelected];
-
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[WPStyleGuide wordPressBlue]];
-    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[UIColor darkGrayColor]];
-
-    // Search
-    [WPStyleGuide configureSearchBarAppearance];
-
-    // SVProgressHUD styles
-    [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
-    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
-    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
-    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
-    
-    // Media Picker styles
-    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
-    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
-
-    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setLoadingBackgroundColor:[WPStyleGuide lightGrey]];
-    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderBackgroundColor:[WPStyleGuide darkGrey]];
-    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderTintColor:[WPStyleGuide greyLighten30]];
-    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setCellTintColor:[WPStyleGuide wordPressBlue]];
-
-    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[ [WPActionBar class] ]] setTintColor:[WPStyleGuide wordPressBlue]];
-
-    // Customize the appearence of the text elements
-    [self customizeAppearanceForTextElements];
-}
-
-- (void)customizeAppearanceForTextElements
-{
-    CGFloat maximumPointSize = [WPStyleGuide maxFontSize];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{
-                                                           NSForegroundColorAttributeName: [UIColor whiteColor],
-                                                           NSFontAttributeName: [WPStyleGuide fixedFontFor:UIFontTextStyleHeadline weight:UIFontWeightBold]
-                                                           }];
-    // Search
-    [WPStyleGuide configureSearchBarTextAppearance];
-    // SVProgressHUD styles
-    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline maximumPointSize:maximumPointSize]];
-}
-
-- (void)trackLogoutIfNeeded
-{
-    if (![AccountHelper isLoggedIn]) {
-        [WPAnalytics track:WPAnalyticsStatLogout];
-    }
-}
-
-#pragma mark - Keychain
-
-+ (void)fixKeychainAccess
-{
-    NSDictionary *query = @{
-                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                            (__bridge id)kSecReturnAttributes: @YES,
-                            (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitAll
-                            };
-
-    CFTypeRef result = NULL;
-    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
-    if (status != errSecSuccess) {
-        return;
-    }
-    DDLogVerbose(@"Fixing keychain items with wrong access requirements");
-    for (NSDictionary *item in (__bridge_transfer NSArray *)result) {
-        NSDictionary *itemQuery = @{
-                                    (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                    (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                                    (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
-                                    (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
-                                    (__bridge id)kSecReturnAttributes: @YES,
-                                    (__bridge id)kSecReturnData: @YES,
-                                    };
-
-        CFTypeRef itemResult = NULL;
-        status = SecItemCopyMatching((__bridge CFDictionaryRef)itemQuery, &itemResult);
-        if (status == errSecSuccess) {
-            NSDictionary *itemDictionary = (__bridge NSDictionary *)itemResult;
-            NSDictionary *updateQuery = @{
-                                          (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                          (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleWhenUnlocked,
-                                          (__bridge id)kSecAttrService: item[(__bridge id)kSecAttrService],
-                                          (__bridge id)kSecAttrAccount: item[(__bridge id)kSecAttrAccount],
-                                          };
-            NSDictionary *updatedAttributes = @{
-                                                (__bridge id)kSecValueData: itemDictionary[(__bridge id)kSecValueData],
-                                                (__bridge id)kSecAttrAccessible: (__bridge id)kSecAttrAccessibleAfterFirstUnlock,
-                                                };
-            status = SecItemUpdate((__bridge CFDictionaryRef)updateQuery, (__bridge CFDictionaryRef)updatedAttributes);
-            if (status == errSecSuccess) {
-                DDLogInfo(@"Migrated keychain item %@", item);
-            } else {
-                DDLogError(@"Error migrating keychain item: %d", status);
-            }
-        } else {
-            DDLogError(@"Error migrating keychain item: %d", status);
-        }
-    }
-    DDLogVerbose(@"End keychain fixing");
-}
-
-#pragma mark - Log Level
-
-+ (void)setLogLevel:(DDLogLevel)logLevel
-{
-    ddLogLevel = logLevel;
-
-    int logLevelInt = (int)logLevel;
-    WPSharedSetLoggingLevel(logLevelInt);
-    TracksSetLoggingLevel(logLevelInt);
-    WPStatsSetLoggingLevel(logLevelInt);
-    WPAuthenticatorSetLoggingLevel(logLevelInt);
 }
 
 @end

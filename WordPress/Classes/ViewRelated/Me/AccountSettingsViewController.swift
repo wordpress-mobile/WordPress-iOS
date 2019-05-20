@@ -75,7 +75,6 @@ private class AccountSettingsController: SettingsController {
     // MARK: - Model mapping
 
     func mapViewModel(_ settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
-        let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
 
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
@@ -87,6 +86,10 @@ private class AccountSettingsController: SettingsController {
             value: settings?.emailForDisplay ?? "",
             action: presenter.push(editEmailAddress(settings, service: service))
         )
+
+        // If the primary site has no name, then show the URL.
+        var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
+        primarySiteName = (primarySiteName?.isEmpty ?? true) ? settings?.webAddress : primarySiteName
 
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),

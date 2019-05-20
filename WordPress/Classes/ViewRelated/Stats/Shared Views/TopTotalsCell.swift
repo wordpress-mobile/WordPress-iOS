@@ -31,6 +31,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
+    private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
     // MARK: - Configure
@@ -41,6 +42,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
+                   postStatsDelegate: PostStatsDelegate? = nil,
                    limitRowsDisplayed: Bool = true) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
@@ -49,6 +51,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
+        self.postStatsDelegate = postStatsDelegate
         self.limitRowsDisplayed = limitRowsDisplayed
 
         let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
@@ -146,7 +149,15 @@ private extension TopTotalsCell {
         // store that on the row (for possible removal later),
         // and add the child view to the row stack view.
 
-        let numberOfRowsToAdd = childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
+        let numberOfRowsToAdd: Int = {
+            // If this is on Post Stats, don't limit the number of child rows
+            // as it needs to show a year's worth of data.
+            if postStatsDelegate != nil {
+                return childRows.count
+            }
+            return childRows.count > maxChildRowsToDisplay ? maxChildRowsToDisplay : childRows.count
+        }()
+
         let containingStackView = stackViewContainingRow(row)
         let childRowsView = StatsChildRowsView.loadFromNib()
 
@@ -285,11 +296,12 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
         siteStatsDetailsDelegate?.expandedRowUpdated?(row)
+        postStatsDelegate?.expandedRowUpdated?(row)
     }
 
-    func showPostStats(withPostTitle postTitle: String?, postURL: URL?) {
-        siteStatsPeriodDelegate?.showPostStats?(withPostTitle: postTitle, postURL: postURL)
-        siteStatsDetailsDelegate?.showPostStats?(withPostTitle: postTitle, postURL: postURL)
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        siteStatsPeriodDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
+        siteStatsDetailsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: postURL)
     }
 
 }
@@ -301,6 +313,7 @@ extension TopTotalsCell: ViewMoreRowDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
         siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
+        postStatsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }

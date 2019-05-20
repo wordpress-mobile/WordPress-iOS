@@ -1,5 +1,4 @@
 #import "PostCardTableViewCell.h"
-#import <AFNetworking/UIKit+AFNetworking.h>
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import <WordPressShared/WordPressShared.h>

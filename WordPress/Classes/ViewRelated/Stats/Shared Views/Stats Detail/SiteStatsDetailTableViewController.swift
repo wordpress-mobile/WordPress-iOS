@@ -5,7 +5,7 @@ import WordPressFlux
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
-    @objc optional func showPostStats(withPostTitle postTitle: String?, postURL: URL?)
+    @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
 
@@ -33,6 +33,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         return ImmuTableViewHandler(takeOver: self)
     }()
 
+    private var postID: Int?
     private let siteID = SiteStatsInformation.sharedInstance.siteID
 
     private lazy var mainContext: NSManagedObjectContext = {
@@ -58,10 +59,14 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
     }
 
-    func configure(statSection: StatSection, selectedDate: Date? = nil, selectedPeriod: StatsPeriodUnit? = nil) {
+    func configure(statSection: StatSection,
+                   selectedDate: Date? = nil,
+                   selectedPeriod: StatsPeriodUnit? = nil,
+                   postID: Int? = nil) {
         self.statSection = statSection
         self.selectedDate = selectedDate
         self.selectedPeriod = selectedPeriod
+        self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.title
         initViewModel()
@@ -89,7 +94,10 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
-        viewModel?.fetchDataFor(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
+        viewModel?.fetchDataFor(statSection: statSection,
+                                selectedDate: selectedDate,
+                                selectedPeriod: selectedPeriod,
+                                postID: postID)
 
         if statType == .insights {
             insightsChangeReceipt = viewModel?.onChange { [weak self] in
@@ -139,6 +147,8 @@ private extension SiteStatsDetailTableViewController {
             return periodStore.isFetchingCountries
         case .periodPublished:
             return periodStore.isFetchingPublished
+        case .postStatsMonthsYears, .postStatsAverageViews:
+            return periodStore.isFetchingPostStats
         default:
             return false
         }
@@ -186,6 +196,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshCountries()
         case .periodPublished:
             viewModel?.refreshPublished()
+        case .postStatsMonthsYears, .postStatsAverageViews:
+            viewModel?.refreshPostStats()
         default:
             refreshControl?.endRefreshing()
         }
@@ -250,9 +262,9 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
     }
 
-    func showPostStats(withPostTitle postTitle: String?, postURL: URL?) {
+    func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
-        postStatsTableViewController.configure(postTitle: postTitle, postURL: postURL)
+        postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 

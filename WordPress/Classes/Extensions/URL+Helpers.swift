@@ -166,17 +166,25 @@ extension NSURL {
 }
 
 extension URL {
-    func prependLocaleAsSubdomain() -> URL {
-        guard let localeLanguageCode = Locale.current.languageCode,
-            let host = self.host else {
-            return self
+    func appendingLocale() -> URL {
+        guard let selfComponents = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+                return self
         }
 
-        var components = URLComponents()
-        components.scheme = self.scheme
-        components.host = "\(localeLanguageCode).".appending(host)
-        components.path = self.path
+        let localeIdentifier = Locale.current.identifier
 
-        return components.url ?? self
+        var newComponents = URLComponents()
+        newComponents.scheme = selfComponents.scheme
+        newComponents.host = selfComponents.host
+        newComponents.path = selfComponents.path
+
+        var selfQueryItems = selfComponents.queryItems ?? []
+
+        let localeQueryItem = URLQueryItem(name: "locale", value: localeIdentifier)
+        selfQueryItems.append(localeQueryItem)
+
+        newComponents.queryItems = selfQueryItems
+
+        return newComponents.url ?? self
     }
 }

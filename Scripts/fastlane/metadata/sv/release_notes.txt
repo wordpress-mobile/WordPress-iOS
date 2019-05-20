@@ -1,5 +1,13 @@
+<<<<<<< HEAD
+* Markera aviseringar som olästa genom att helt enkelt svepa.
+* Kraschade appen ibland när du sökte fria bilder? Nu har vi löst det!
+* Smidigare än någonsin att logga in till webbplatser på webbhotell eller egen server.
+* Blockcitat i läsaren har fått ny, stilig utformning.
+* Vi har gjort en lång rad små förbättringar i hela appen för åtkomlighet för syn och hörsel.
+=======
 Gillar du appar av typen iA Writer, 1Writer, Bear och Ulysses? Du kan snabbt flytta utkast från din app till WordPress — nu importerar vår app bilder från TextBundle- och TextPack-filer och har även stöd för import av Markdown-filer.
 Notiser om problem med internetanslutningen fyller inte längre hela skärmen. I stället är det ett litet popup-fönster, så att du kan fortsätta arbeta med hjälp av offline-möjligheterna (till exempel att radera inlägg, något som nu fungerar mer tillförlitligt om du skulle vara utan internetanslutning).
 En del text i aktivitetsloggen visades ibland på fel språk. Inte så användbart. Nu ett minne blott.
 En annan inte så användbar sak är när programmet kraschar. Ibland kunde de inträffa när man höll på att skapa en ny webbplats eller när man skulle ladda statistik, men nu är det rättat.
 Fjärrinstallation av Jetpack fungerar, så du kan installera och aktivera Jetpack direkt inifrån appen på din WordPress-webbplats, om den körs på egen server.
+>>>>>>> origin/master

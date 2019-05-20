@@ -48,7 +48,7 @@ extension UIImageView {
             return
         }
 
-        setImageWith(siteIconURL, placeholderImage: placeholderImage)
+        downloadImage(from: siteIconURL, placeholderImage: placeholderImage)
     }
 
 
@@ -73,7 +73,7 @@ extension UIImageView {
             request = URLRequest(url: siteIconURL)
         }
 
-        setImageWith(request, placeholderImage: placeholderImage, success: { [weak self] (_, _, image) in
+        downloadImage(usingRequest: request, placeholderImage: placeholderImage, success: { [weak self] (image) in
             self?.image = image
             self?.removePlaceholderBorder()
         }, failure: nil)
