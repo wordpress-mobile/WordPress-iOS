@@ -42,6 +42,10 @@ struct StatsTotalRowData {
         self.childRows = childRows
         self.statSection = statSection
     }
+
+    var hasIcon: Bool {
+        return self.icon != nil || self.socialIconURL != nil || self.userIconURL != nil
+    }
 }
 
 @objc protocol StatsTotalRowDelegate {
@@ -132,10 +136,7 @@ class StatsTotalRow: UIView, NibLoadable {
     }
 
     var hasIcon: Bool {
-        guard let rowData = rowData else {
-            return false
-        }
-        return rowData.icon != nil || rowData.socialIconURL != nil || rowData.userIconURL != nil
+        return rowData?.hasIcon ?? false
     }
 
     // MARK: - Configure

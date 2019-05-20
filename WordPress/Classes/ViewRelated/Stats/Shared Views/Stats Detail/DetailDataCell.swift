@@ -28,7 +28,8 @@ class DetailDataCell: UITableViewCell, NibLoadable {
                    hideIndentedSeparator: Bool = false,
                    hideFullSeparator: Bool = true,
                    expanded: Bool = false,
-                   isChildRow: Bool = false) {
+                   isChildRow: Bool = false,
+                   showChildRowImage: Bool = true) {
 
         Style.configureViewAsSeparator(bottomExpandedSeparatorLine)
 
@@ -50,6 +51,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
         if isChildRow {
             Style.configureLabelAsChildRowTitle(row.itemLabel)
+            row.imageView.isHidden = !showChildRowImage
         }
 
         dataView.addSubview(row)

@@ -135,10 +135,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodClicks.dataSubtitle))
             tableRows.append(contentsOf: clicksRows())
         case .periodAuthors:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodAuthors.dataSubtitle,
-                                                     dataRows: authorsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle))
+            tableRows.append(contentsOf: authorsRows())
         case .periodReferrers:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle,
@@ -380,7 +379,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Tags and Categories
 
-    func tagsAndCategoriesRows() -> [DetailExpandableDataRow] {
+    func tagsAndCategoriesRows() -> [ImmuTableRow] {
         return expandableDataRowsFor(tagsAndCategoriesRowData(), forStat: .insightsTagsAndCategories)
     }
 
@@ -486,7 +485,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Clicks
 
-    func clicksRows() -> [DetailExpandableDataRow] {
+    func clicksRows() -> [ImmuTableRow] {
         return expandableDataRowsFor(clicksRowData(), forStat: .periodClicks)
     }
 
@@ -506,16 +505,22 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Authors
 
-    func authorsRows() -> [StatsTotalRowData] {
+    func authorsRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(authorsRowData(), forStat: .periodAuthors)
+    }
+
+    func authorsRowData() -> [StatsTotalRowData] {
         let authors = periodStore.getTopAuthors()?.topAuthors ?? []
 
-        return authors.map { StatsTotalRowData(name: $0.name,
-                                               data: $0.viewsCount.abbreviatedString(),
-                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
-                                               userIconURL: $0.iconURL,
-                                               showDisclosure: true,
-                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
-                                               statSection: .periodAuthors) }
+        return authors.map {
+            StatsTotalRowData(name: $0.name,
+                              data: $0.viewsCount.abbreviatedString(),
+                              dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                              userIconURL: $0.iconURL,
+                              showDisclosure: true,
+                              childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                              statSection: .periodAuthors)
+        }
     }
 
     // MARK: - Referrers
@@ -617,8 +622,8 @@ private extension SiteStatsDetailsViewModel {
         return detailDataRows
     }
 
-    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [DetailExpandableDataRow] {
-        var detailDataRows = [DetailExpandableDataRow]()
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [ImmuTableRow] {
+        var detailDataRows = [ImmuTableRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
             let isLastRow = idx == rowsData.endIndex-1
@@ -640,12 +645,11 @@ private extension SiteStatsDetailsViewModel {
             let hideIndentedSeparator = expanded ? (expanded || isLastRow) : (nextExpanded || isLastRow)
 
             // Add current row
-            detailDataRows.append(DetailExpandableDataRow(rowData: rowData,
+            detailDataRows.append(DetailExpandableRow(rowData: rowData,
                                                           detailsDelegate: detailsDelegate,
                                                           hideIndentedSeparator: hideIndentedSeparator,
                                                           hideFullSeparator: !isLastRow,
-                                                          expanded: expanded,
-                                                          isChildRow: false))
+                                                          expanded: expanded))
 
             // Add child rows
             if expanded {
@@ -655,12 +659,15 @@ private extension SiteStatsDetailsViewModel {
                     // next parent's expanded state to prevent duplicate lines.
                     let hideFullSeparator = (idx == childRowsData.endIndex-1) ? nextExpanded : true
 
-                    detailDataRows.append(DetailExpandableDataRow(rowData: childRowData,
-                                                                  detailsDelegate: detailsDelegate,
-                                                                  hideIndentedSeparator: true,
-                                                                  hideFullSeparator: hideFullSeparator,
-                                                                  expanded: false,
-                                                                  isChildRow: true))
+                    // If the parent row has an icon, show the image view for the child
+                    // to make the child row appear "indented".
+                    let showImage = rowData.hasIcon
+
+                    detailDataRows.append(DetailExpandableChildRow(rowData: childRowData,
+                                                                   detailsDelegate: detailsDelegate,
+                                                                   hideIndentedSeparator: true,
+                                                                   hideFullSeparator: hideFullSeparator,
+                                                                   showImage: showImage))
                 }
             }
         }
