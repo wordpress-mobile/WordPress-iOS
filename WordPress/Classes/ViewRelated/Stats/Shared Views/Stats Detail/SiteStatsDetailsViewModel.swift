@@ -131,10 +131,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle))
             tableRows.append(contentsOf: videosRows())
         case .periodClicks:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodClicks.dataSubtitle,
-                                                     dataRows: clicksRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle))
+            tableRows.append(contentsOf: clicksRows())
         case .periodAuthors:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle,
@@ -487,17 +486,22 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Clicks
 
-    func clicksRows() -> [StatsTotalRowData] {
-        return periodStore.getTopClicks()?.clicks.map { StatsTotalRowData(name: $0.title,
-                                                                          data: $0.clicksCount.abbreviatedString(),
-                                                                          showDisclosure: true,
-                                                                          disclosureURL: $0.iconURL,
-                                                                          childRows: $0.children.map { StatsTotalRowData(name: $0.title,
-                                                                                                                         data: $0.clicksCount.abbreviatedString(),
-                                                                                                                         showDisclosure: true,
-                                                                                                                         disclosureURL: $0.clickedURL) },
-                                                                          statSection: .periodClicks) }
-            ?? []
+    func clicksRows() -> [DetailExpandableDataRow] {
+        return expandableDataRowsFor(clicksRowData(), forStat: .periodClicks)
+    }
+
+    func clicksRowData() -> [StatsTotalRowData] {
+        return periodStore.getTopClicks()?.clicks.map {
+            StatsTotalRowData(name: $0.title,
+                              data: $0.clicksCount.abbreviatedString(),
+                              showDisclosure: true,
+                              disclosureURL: $0.iconURL,
+                              childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                             data: $0.clicksCount.abbreviatedString(),
+                                                                             showDisclosure: true,
+                                                                             disclosureURL: $0.clickedURL) },
+                              statSection: .periodClicks)
+            } ?? []
     }
 
     // MARK: - Authors
@@ -648,8 +652,8 @@ private extension SiteStatsDetailsViewModel {
                 let childRowsData = rowData.childRows ?? []
                 for (idx, childRowData) in childRowsData.enumerated() {
                     // If this is the last child row, toggle the full separator based on
-                    // the current and next parent expanded states.
-                    let hideFullSeparator = (idx == childRowsData.endIndex-1) ? (expanded && nextExpanded) : true
+                    // next parent's expanded state to prevent duplicate lines.
+                    let hideFullSeparator = (idx == childRowsData.endIndex-1) ? nextExpanded : true
 
                     detailDataRows.append(DetailExpandableDataRow(rowData: childRowData,
                                                                   detailsDelegate: detailsDelegate,
