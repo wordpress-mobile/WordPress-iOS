@@ -527,15 +527,15 @@ private extension SiteStatsDetailsViewModel {
         let referrers = periodStore.getTopReferrers()?.referrers ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
-            let icon: UIImage?
-            let iconURL: URL?
+            var icon: UIImage? = nil
+            var iconURL: URL? = nil
 
             switch referrer.iconURL?.lastPathComponent {
             case "search-engine.png":
                 icon = Style.imageForGridiconType(.search)
-                iconURL = nil
+            case nil:
+                icon = Style.imageForGridiconType(.globe)
             default:
-                icon = nil
                 iconURL = referrer.iconURL
             }
 
