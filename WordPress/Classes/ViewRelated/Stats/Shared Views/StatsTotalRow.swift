@@ -199,21 +199,21 @@ private extension StatsTotalRow {
             return
         }
 
+        let imageSize = rowData.statSection?.imageSize ?? StatSection.defaultImageSize
+        imageWidthConstraint.constant = imageSize
+
         imageView.isHidden = !hasIcon
 
         if let icon = rowData.icon {
-            imageWidthConstraint.constant = Constants.defaultImageSize
             imageView.image = icon
         }
 
         if let iconURL = rowData.socialIconURL {
-            imageWidthConstraint.constant = Constants.socialImageSize
             downloadImageFrom(iconURL)
         }
 
         if let iconURL = rowData.userIconURL {
-            imageWidthConstraint.constant = Constants.userImageSize
-            imageView.layer.cornerRadius = Constants.userImageSize * 0.5
+            imageView.layer.cornerRadius = imageSize * 0.5
             imageView.clipsToBounds = true
 
             // Use placeholder image until real image is loaded.
@@ -260,9 +260,6 @@ private extension StatsTotalRow {
     }
 
     struct Constants {
-        static let defaultImageSize = CGFloat(24)
-        static let socialImageSize = CGFloat(20)
-        static let userImageSize = CGFloat(28)
         static let disclosureImageUp = CGFloat.pi * 1.5
         static let disclosureImageDown = CGFloat.pi / 2
     }
