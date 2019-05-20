@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 inhibit_all_warnings!
 use_frameworks!
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 workspace 'WordPress.xcworkspace'
 
 plugin 'cocoapods-repo-update'
@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.7.5'
+    pod 'WordPressShared', '~> 1.8.0-beta'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -29,12 +29,12 @@ def aztec
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '~> 1.6.1'
+    pod 'WordPress-Editor-iOS', '~> 1.6.3'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :tag => '1.2.1'
+    pod 'WordPressUI', '~> 1.3.0-beta'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -42,7 +42,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1.0'
+    pod 'WordPressKit', '~> 4.1.1-beta'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -76,6 +76,10 @@ end
 
 def gutenberg(options)
     options[:git] = 'http://github.com/wordpress-mobile/gutenberg-mobile/'
+    local_gutenberg = ENV['LOCAL_GUTENBERG']
+    if local_gutenberg
+      options = { :path => local_gutenberg.include?('/') ? local_gutenberg : '../gutenberg-mobile' }
+    end
     pod 'Gutenberg', options
     pod 'RNTAztecView', options
 
@@ -88,11 +92,17 @@ def gutenberg_dependencies(options)
         'yoga',
         'Folly',
         'react-native-safe-area',
+        'react-native-video',
     ]
-    tag_or_commit = options[:tag] || options[:commit]
+    if options[:path]
+        podspec_prefix = options[:path]
+    else
+        tag_or_commit = options[:tag] || options[:commit]
+        podspec_prefix = "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}"
+    end
 
     for pod_name in dependencies do
-        pod pod_name, :podspec => "https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/#{tag_or_commit}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
+        pod pod_name, :podspec => "#{podspec_prefix}/react-native-gutenberg-bridge/third-party-podspecs/#{pod_name}.podspec.json"
     end
 end
 
@@ -109,7 +119,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.4.0'
+    gutenberg :tag => 'v1.5.1'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
@@ -146,7 +156,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.4.1'
+    pod 'WordPressAuthenticator', '~> 1.5.0-beta'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 
@@ -271,4 +281,29 @@ target 'WordPressScreenshotGeneration' do
     inherit! :search_paths
 
     pod 'SimulatorStatusMagic'
+end
+
+# Static Frameworks:
+# ============
+#
+# Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
+# Linking the shared frameworks statically would lead to duplicate symbols
+# A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
+shared_targets = ['WordPressFlux', 'WordPressComStatsiOS']
+pre_install do |installer|
+    static = []
+    dynamic = []
+    installer.pod_targets.each do |pod|
+        # If this pod is a dependency of one of our shared targets, it must be linked dynamically
+        if pod.target_definitions.any? { |t| shared_targets.include? t.name }
+          dynamic << pod
+          next
+        end
+        static << pod
+        def pod.static_framework?;
+          true
+        end
+    end
+    puts "Installing #{static.count} pods as static frameworks"
+    puts "Installing #{dynamic.count} pods as dynamic frameworks"
 end

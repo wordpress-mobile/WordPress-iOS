@@ -322,7 +322,7 @@ private extension StatsInsightsStore {
     }
 
     func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
-        let api = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+        let api = WordPressComRestApi.defaultApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
 
         return StatsServiceRemoteV2(wordPressComRestApi: api, siteID: site, siteTimezone: SiteStatsInformation.sharedInstance.siteTimeZone!)
     }
@@ -465,14 +465,18 @@ private extension StatsInsightsStore {
 
         let api = apiService(for: siteID)
 
-        api.getInsight(limit: 0) { (dotComFollowers: StatsDotComFollowersInsight?, error) in
+        // The followers API returns a maximum of 100 results.
+        // Using a limit of 0 returns the default 20 results.
+        // So use limit 100 to get max results.
+
+        api.getInsight(limit: 100) { (dotComFollowers: StatsDotComFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers))
         }
 
-          api.getInsight(limit: 0) { (emailFollowers: StatsEmailFollowersInsight?, error) in
+          api.getInsight(limit: 100) { (emailFollowers: StatsEmailFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
             }
@@ -490,8 +494,8 @@ private extension StatsInsightsStore {
         state.fetchingAllCommentsInsight = true
 
         // The API doesn't work when we specify `0` here, like most of the other endpoints do, unfortunately...
-        // 1000 was chosen as an arbitraily large number that should be "big enough" for all of our users
-        // but I'm open to increasing it.
+        // 1000 was chosen as an arbitrarily large number that should be "big enough" for all of our users.
+
         api.getInsight(limit: 1000) {(allComments: StatsCommentsInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching all comments: \(String(describing: error?.localizedDescription))")

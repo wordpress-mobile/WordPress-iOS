@@ -99,20 +99,11 @@ extension WPStyleGuide {
         }
 
         private static var contentRegularFont: UIFont {
-            if #available(iOS 11.0, *) {
-                return WPStyleGuide.fontForTextStyle(.body)
-
-            } else {
-                return WPFontManager.systemRegularFont(ofSize: contentFontSize)
-            }
+            return WPStyleGuide.fontForTextStyle(.body)
         }
 
         private static var contentItalicFont: UIFont {
-            if #available(iOS 11.0, *) {
-                return  WPStyleGuide.fontForTextStyle(.body, symbolicTraits: .traitItalic)
-            } else {
-                return WPFontManager.systemItalicFont(ofSize: contentFontSize)
-            }
+            return  WPStyleGuide.fontForTextStyle(.body, symbolicTraits: .traitItalic)
         }
 
         fileprivate static let gravatar = UIImage(named: "gravatar")!

@@ -417,13 +417,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
 
-    // there is a display problem when showing this popup alert on iOS 10,
-    // so we show it from the empty screen's action button instead
-    if (@available(iOS 11, *)) {
-        [self showAddSiteAlertFrom:sourceView];
-    } else {
-        [self actionButtonPressed];
-    }
+    [self showAddSiteAlertFrom:sourceView];
 }
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
@@ -547,7 +541,7 @@ static NSInteger HideSearchMinSites = 3;
     UIEdgeInsets insets = self.tableView.contentInset;
 
     self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, insets.left, keyboardHeight, insets.right);
-    self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, insets.left, keyboardHeight, insets.right);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.view.safeAreaInsets.top, insets.left, keyboardHeight, insets.right);
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification

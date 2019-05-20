@@ -1,9 +1,12 @@
-12.5
+12.6
 -----
- 
+* The app now launches a bit more quickly.
+
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
 
 12.4
 -----

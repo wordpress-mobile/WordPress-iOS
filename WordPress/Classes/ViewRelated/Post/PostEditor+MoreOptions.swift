@@ -23,33 +23,70 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
-    private func savePostBeforePreview(completion: @escaping (() -> Void)) {
-        if post.isDraft() && post.hasUnsavedChanges() {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-             let status = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
-            SVProgressHUD.setDefaultMaskType(.clear)
-            SVProgressHUD.show(withStatus: status)
-            postService.uploadPost(post, success: { [weak self] newPost in
-                self?.post = newPost
-                self?.createPostRevisionBeforePreview(completion: completion)
+    private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        let draftStatus = NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
+        let publishedStatus = NSLocalizedString("Generating Preview...", comment: "Text displayed in HUD while a post is being saved.")
+        SVProgressHUD.setDefaultMaskType(.clear)
+
+        if !post.hasUnsavedChanges() {
+            completion(nil, nil)
+            return
+        }
+
+        if post.isDraft() {
+            SVProgressHUD.show(withStatus: draftStatus)
+            postService.uploadPost(post, success: { [weak self] savedPost in
+                self?.post = savedPost
+                self?.createPostRevisionBeforePreview() {
+                    completion(nil, nil)
+                }
                 SVProgressHUD.dismiss()
                 }, failure: { error in
-                    DDLogError("Error while trying to save post before preview: \(String(describing: error))")
-                    completion()
+                    DDLogError("Error while trying to upload draft before preview: \(String(describing: error))")
+                    completion(nil, nil)
                     SVProgressHUD.dismiss()
             })
         } else {
-           createPostRevisionBeforePreview(completion: completion)
+            SVProgressHUD.show(withStatus: publishedStatus)
+            postService.autoSave(post, success: { [weak self] savedPost, previewURL in
+                self?.post = savedPost
+                ContextManager.sharedInstance().save(context)
+                SVProgressHUD.dismiss()
+                completion(previewURL, nil)
+            }) { error in
+                //When failing to save a published post will result in "preview not available"
+                DDLogError("Error while trying to save post before preview: \(String(describing: error))")
+                SVProgressHUD.dismiss()
+                completion(nil, error)
+            }
         }
     }
 
+    private func displayPreviewNotAvialble() {
+        let title = NSLocalizedString("Preview Unavailable for Published Posts", comment: "Title on display preview error" )
+        let subtitle = NSLocalizedString("Update the published post to view your changes.", comment: "subtitle on display preview error" )
+        let noResultsController = NoResultsViewController.controllerWith(title: title, subtitle: subtitle)
+        noResultsController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(noResultsController, animated: true)
+    }
+
     func displayPreview() {
-        savePostBeforePreview() { [weak self] in
+        savePostBeforePreview() { [weak self] previewURLString, error in
+            if error != nil {
+                self?.displayPreviewNotAvialble()
+                return
+            }
             guard let post = self?.post else {
                 return
             }
-            let previewController = PostPreviewViewController(post: post)
+            var previewController: PostPreviewViewController
+            if let previewURLString = previewURLString, let previewURL = URL(string: previewURLString) {
+                previewController = PostPreviewViewController(post: post, previewURL: previewURL)
+            } else {
+                previewController = PostPreviewViewController(post: post)
+            }
             previewController.hidesBottomBarWhenPushed = true
             self?.navigationController?.pushViewController(previewController, animated: true)
         }

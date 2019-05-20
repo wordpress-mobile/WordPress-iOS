@@ -53,15 +53,17 @@ class SiteStatsInsightsViewModel: Observable {
 
         if insightsStore.fetchingOverviewHasFailed &&
             !insightsStore.containsCachedData {
-            return ImmuTable(sections: [])
+            return ImmuTable.Empty
         }
+
+        let postId = insightsStore.getLastPostInsight()?.postID
 
         insightsToShow.forEach { insightType in
             switch insightType {
             case .latestPostSummary:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsLatestPostSummary.title))
                 tableRows.append(LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
-                                                      chartData: periodStore.getPostStats(),
+                                                      chartData: periodStore.getPostStats(for: postId),
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))

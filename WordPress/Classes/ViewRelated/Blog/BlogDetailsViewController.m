@@ -177,6 +177,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSIndexPath *restorableSelectedIndexPath;
 @property (nonatomic) BlogDetailsSectionCategory selectedSectionCategory;
 
+@property (nonatomic) BOOL hasLoggedDomainCreditPromptShownEvent;
+
 @end
 
 @implementation BlogDetailsViewController
@@ -283,6 +285,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[BlogDetailsSectionFooterView class] forHeaderFooterViewReuseIdentifier:BlogDetailsSectionFooterIdentifier];
 
     self.clearsSelectionOnViewWillAppear = NO;
+    self.hasLoggedDomainCreditPromptShownEvent = NO;
 
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -312,12 +315,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
 
-    if (@available(iOS 11, *)) {
-        if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
-            self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
-        } else {
-            self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        }
+    if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
+        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+    } else {
+        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
     }
 
     if (self.splitViewControllerIsHorizontallyCompact) {
@@ -520,13 +521,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 #pragma mark - iOS 10 bottom padding
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (@available(iOS 11, *)) {
-        // intentionally left blank
-    } else if ([[QuickStartTourGuide find] currentElementInt] != NSNotFound) {
-        if (section == self.tableSections.count - 1) {
-            return BlogDetailBottomPaddingForQuickStartNotices;
-        }
-    }
     return UITableViewAutomaticDimension;
 }
 
@@ -551,16 +545,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [footerView updateUIWithTitle:footerTitle shouldShowExtraSpacing:shouldShowExtraSpacing];
         return footerView;
     }
-    if (@available(iOS 11, *)) {
-        return nil;
-    } else {
-        if (section != self.tableSections.count - 1) {
-            return nil;
-        }
-        UIView *view = [UIView new];
-        view.frame = CGRectMake(0, 0, 100.0, BlogDetailBottomPaddingForQuickStartNotices);
-        return view;
-    }
+
+    return nil;
 }
 
 #pragma mark - Data Model setup
@@ -601,6 +587,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     NSMutableArray *marr = [NSMutableArray array];
     if ([Feature enabled:FeatureFlagDomainCredit] && [DomainCreditEligibilityChecker canRedeemDomainCreditWithBlog:self.blog]) {
+        if (!self.hasLoggedDomainCreditPromptShownEvent) {
+            [WPAnalytics track:WPAnalyticsStatDomainCreditPromptShown];
+            self.hasLoggedDomainCreditPromptShownEvent = YES;
+        }
         [marr addObject:[self domainCreditSectionViewModel]];
     }
     if ([self shouldShowQuickStartChecklist]) {
@@ -1299,9 +1289,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
-                if (@available(iOS 11, *)) {
-                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 80.0, 0);
-                }
+                self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 80.0, 0);
 
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
                 [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:true];

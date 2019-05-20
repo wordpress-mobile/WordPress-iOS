@@ -9,13 +9,25 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Properties
 
     let changeDispatcher = Dispatcher<Void>()
+    var overviewStoreStatusOnChange: ((Status) -> Void)?
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private let store: StatsPeriodStore
-    private var lastRequestedPeriod: StatsPeriodUnit
+    private var lastRequestedDate: Date
+    private var lastRequestedPeriod: StatsPeriodUnit {
+        didSet {
+            if lastRequestedPeriod != oldValue {
+                mostRecentChartData = nil
+            }
+        }
+    }
     private let periodReceipt: Receipt
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
+
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
+    private var mostRecentChartData: StatsSummaryTimeIntervalData?
 
     // MARK: - Constructor
 
@@ -25,12 +37,22 @@ class SiteStatsPeriodViewModel: Observable {
          periodDelegate: SiteStatsPeriodDelegate) {
         self.periodDelegate = periodDelegate
         self.store = store
+        self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
         store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod, forceRefresh: false))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
+        }
+
+        store.cachedDataListener = { [weak self] hasCacheData in
+            self?.overviewStoreStatusOnChange?(.fetchingCacheData(hasCacheData))
+        }
+
+        store.fetchingOverviewListener = { [weak self] fetching, success in
+            let status: Status = fetching ? .fetchingData : .fetchingDataCompleted(success)
+            self?.overviewStoreStatusOnChange?(status)
         }
     }
 
@@ -39,6 +61,11 @@ class SiteStatsPeriodViewModel: Observable {
     func tableViewModel() -> ImmuTable {
 
         var tableRows = [ImmuTableRow]()
+
+        if !store.containsCachedData &&
+            (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
+            return ImmuTable(sections: [])
+        }
 
         tableRows.append(contentsOf: overviewTableRows())
         tableRows.append(contentsOf: postsAndPagesTableRows())
@@ -61,7 +88,16 @@ class SiteStatsPeriodViewModel: Observable {
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        self.lastRequestedDate = date
         self.lastRequestedPeriod = period
+    }
+
+    // MARK: - State
+
+    enum Status {
+        case fetchingData
+        case fetchingCacheData(_ hasCachedData: Bool)
+        case fetchingDataCompleted(_ success: Bool)
     }
 }
 
@@ -75,7 +111,14 @@ private extension SiteStatsPeriodViewModel {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: ""))
 
-        let summaryData = store.getSummary()?.summaryData ?? []
+        let periodSummary = store.getSummary()
+        let summaryData = periodSummary?.summaryData ?? []
+
+        if mostRecentChartData == nil {
+            mostRecentChartData = periodSummary
+        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
+            mostRecentChartData = chartData
+        }
 
         let viewsData = intervalData(summaryData: summaryData, summaryType: .views)
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
@@ -101,40 +144,22 @@ private extension SiteStatsPeriodViewModel {
                                               difference: commentsData.difference,
                                               differencePercent: commentsData.percentage)
 
-        // Introduced via #11063, to be replaced with real data via #11069
-        let viewsPeriodStub = ViewsPeriodDataStub()
-        let viewsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let viewsStyling = ViewsPeriodPerformanceStyling(initialDateInterval: viewsPeriodStubDateInterval)
+        var barChartData = [BarChartDataConvertible]()
+        var barChartStyling = [BarChartStyling]()
+        var indexToHighlight: Int?
+        if let chartData = mostRecentChartData {
+            let chart = PeriodChart(data: chartData)
 
-        let visitorsPeriodStub = VisitorsPeriodDataStub()
-        let visitorsPeriodStubDateInterval = viewsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let visitorsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: visitorsPeriodStubDateInterval)
+            barChartData.append(contentsOf: chart.barChartData)
+            barChartStyling.append(contentsOf: chart.barChartStyling)
 
-        let likesPeriodStub = LikesPeriodDataStub()
-        let likesPeriodStubDateInterval = likesPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let likesStyling = DefaultPeriodPerformanceStyling(initialDateInterval: likesPeriodStubDateInterval)
-
-        let commentsPeriodStub = CommentsPeriodDataStub()
-        let commentsPeriodStubDateInterval = commentsPeriodStub.periodData.first?.date.timeIntervalSince1970 ?? 0
-        let commentsStyling = DefaultPeriodPerformanceStyling(initialDateInterval: commentsPeriodStubDateInterval)
-
-        let chartData: [BarChartDataConvertible] = [
-            viewsPeriodStub,
-            visitorsPeriodStub,
-            likesPeriodStub,
-            commentsPeriodStub
-        ]
-
-        let chartStyling: [BarChartStyling] = [
-            viewsStyling,
-            visitorsStyling,
-            likesStyling,
-            commentsStyling
-        ]
-
+            indexToHighlight = chartData.summaryData.lastIndex(where: {
+                lastRequestedDate >= $0.periodStartDate
+            })
+        }
 
         let row = OverviewRow(tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
-                              chartData: chartData, chartStyling: chartStyling, period: lastRequestedPeriod)
+                              chartData: barChartData, chartStyling: barChartStyling, period: lastRequestedPeriod, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
         tableRows.append(row)
 
         return tableRows

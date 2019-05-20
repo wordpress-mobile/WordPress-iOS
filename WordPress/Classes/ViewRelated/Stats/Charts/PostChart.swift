@@ -34,7 +34,7 @@ extension PostChartType {
 
 // MARK: - PostChart
 
-class PostChart {
+final class PostChart {
 
     private let chartType: PostChartType
     private let rawPostViews: [StatsPostViews]
@@ -80,7 +80,7 @@ private extension StatsPostViews {
     }
 }
 
-class PostChartDataTransformer {
+private final class PostChartDataTransformer {
     static func transform(type: PostChartType, postViews: [StatsPostViews]) -> (barChartData: BarChartData, barChartStyling: BarChartStyling) {
         let data = postViews
 
@@ -97,9 +97,7 @@ class PostChartDataTransformer {
             lastDateInterval = data.last?.postDateTimeInterval ?? 0
 
             let range = lastDateInterval - firstDateInterval
-
             let effectiveBars = Double(Double(data.count) * 1.2)
-
             effectiveWidth = range / effectiveBars
         }
 

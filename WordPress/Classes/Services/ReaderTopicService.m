@@ -257,7 +257,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     NSAssert([phrase length] > 0, @"A search phrase is required.");
 
-    WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+    WordPressComRestApi *api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
     ReaderPostServiceRemote *remote = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:api];
 
     NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
@@ -636,7 +636,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
-        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+        api = [WordPressComRestApi defaultApiWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent] localeKey:[WordPressComRestApi LocaleKeyDefault]];
     }
     return api;
 }

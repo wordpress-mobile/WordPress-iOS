@@ -99,10 +99,7 @@
 
     NSMutableArray<UIActivityType> *activityTypes = [NSMutableArray arrayWithArray:systemActivityTypes];
 
-    if (@available(iOS 11, *)) {
-        [activityTypes addObject:UIActivityTypeMarkupAsPDF];
-    }
-
+    [activityTypes addObject:UIActivityTypeMarkupAsPDF];
     [activityTypes addObject:[SharePost activityType]];
 
     return activityTypes;

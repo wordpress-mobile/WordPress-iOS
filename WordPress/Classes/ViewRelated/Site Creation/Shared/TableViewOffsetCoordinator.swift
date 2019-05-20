@@ -147,10 +147,8 @@ final class TableViewOffsetCoordinator {
 
         var constraintConstant = keyboardContentOffset
 
-        if #available(iOS 11.0, *) {
-            let bottomInset = footerControlContainer.safeAreaInsets.bottom
-            constraintConstant -= bottomInset
-        }
+        let bottomInset = footerControlContainer.safeAreaInsets.bottom
+        constraintConstant -= bottomInset
 
         if let header = tableView?.tableHeaderView as? TitleSubtitleTextfieldHeader {
             let textFieldFrame = header.textField.frame
