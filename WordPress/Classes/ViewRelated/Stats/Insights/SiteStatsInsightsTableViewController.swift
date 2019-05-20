@@ -132,7 +132,7 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if insightsStore.fetchingOverviewHasFailed &&
+        if insightsStore.fetchingFailed(for: .insights) &&
             !insightsStore.containsCachedData {
             displayFailureViewIfNecessary()
         } else {
