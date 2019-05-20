@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.0-beta'
+    pod 'WordPressShared', '~> 1.8.0'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -34,7 +34,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.0-beta'
+    pod 'WordPressUI', '~> 1.3.0'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -42,7 +42,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1.1-beta'
+    pod 'WordPressKit', '~> 4.1.1'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => ''
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
@@ -150,13 +150,13 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
 
-    pod 'WPMediaPicker', '~> 1.4.1-beta'
+    pod 'WPMediaPicker', '~> 1.4.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e55438187d464763efd0b6bf11a0afa1964d9037'
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.5.0-beta'
+    pod 'WordPressAuthenticator', '~> 1.5.0'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 
