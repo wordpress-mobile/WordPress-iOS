@@ -1,0 +1,5 @@
+Adori le app come iA Writer, 1Writer, Bear e Ulysses? Passa rapidamente dall'app alla bozza di WordPress: ora l'app importa immagini da file TextBundle e TextPack e supporta anche l'importazione dei file Markdown.
+Le notifiche per i problemi di connessione a Internet non occupano più l'intero schermo del dispositivo. Ora, invece, appare un piccolo pop-up, così puoi continuare a utilizzare le funzionalità offline (come la cancellazione degli articoli, che ora viene eseguita in modo più affidabile se sei offline).
+A volte una parte del testo del log attività appare in una lingua sbagliata. Questa caratteristica non è utile e ora è stata corretta.
+Altri elementi non utili: gli arresti. Gli arresti che a volte si verificano durante la creazione del sito o il caricamento delle statistiche sono stati risolti.
+L'installazione da remoto di Jetpack è ora supportata, quindi puoi installare e attivare Jetpack su un sito ospitato personalmente direttamente dall'app.

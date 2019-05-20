@@ -1,0 +1,5 @@
+Suka aplikasi seperti iA Writer, 1Writer, Bear, dan Ulysses? Beralih dari konsep di aplikasi ke WordPress dengan cepat. Aplikasi kini mengimpor gambar dari file TextBundle dan TextPack serta mendukung impor file Markdown.
+Pemberitahuan untuk masalah konektivitas internet tidak lagi memenuhi seluruh layar perangkat Anda. Kini ada pop-up kecil sebagai gantinya, jadi Anda dapat tetap menggunakan kemampuan offline (seperti menghapus pos, yang kini lebih stabil jika Anda offline).
+Sebagian teks di Log Aktivitas terkadang muncul dalam bahasa yang salah. Tidak berguna! Sudah diperbaiki.
+Juga tidak berguna: crash. Crash yang terkadang muncul selama pembuatan situs atau saat memuat statistik sudah diperbaiki.
+Jetpack Remote Install didukung, jadi Anda dapat menginstal dan mengaktifkan Jetpack di situs yang dihosting sendiri langsung dari aplikasi.

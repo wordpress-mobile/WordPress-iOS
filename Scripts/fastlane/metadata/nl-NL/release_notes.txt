@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 * Markeer meldingen als ongelezen met een simpele veegbeweging.
 * Die incidentele crash wanneer je zoekt naar de gratis fotobibliotheek? Opgelost!
 * Inloggen in zelf-gehoste sites gaat nu soepeler dan ooit.
 * Blockquotes in de leesfunctie hebben een nieuwe, strakke uitstraling.
 * We hebben door de hele app heel veel kleine verbeteringen doorgevoerd voor de visuele en auditieve toegankelijkheid.
+=======
+Hou je van apps als iA Writer, 1Writer, Bear en Ulysses? Ga sneller over van app tot WordPress-concept. De app importeert afbeeldingen uit TextBundle- en TextPack-bestanden en ondersteunt ook het importeren van Markdown-bestanden.
+Meldingen over internet-verbindingsproblemen bedekken niet langer je hele scherm. Er wordt nu in plaats daarvan een kleine pop-up weergegeven, zodat je de offline-functies kunt blijven gebruiken (zoals het verwijderen van berichten, wat nu betrouwbaarder gebeurt als je offline bent).
+Sommige tekst in de Activiteitenlog werd soms in de verkeerde taal weergegeven. Niet handig! En nu gerepareerd.
+Ook niet handig: crashes. Crashes die soms plaatsvonden bij het aanmaken van de site of bij het laden van statistieken.
+Jetpack Remote Install wordt ondersteund, zodat je Jetpack direct vanuit de app kunt installeren en activeren op een zelf-gehoste site.
+>>>>>>> origin/master

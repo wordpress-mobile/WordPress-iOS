@@ -1,0 +1,5 @@
+iA Writer, 1Writer, Bear ve Ulysses gibi uygulamaları sever misiniz? Hızlı bir şekilde uygulamadan WordPress taslağına geçiş yapın - uygulama artık TextBundle ve TextPack dosyalarından görüntüleri içeri aktarıyor ve Markdown dosyalarını da içe aktarmayı destekliyor.
+İnternet bağlantısı sorunları için bildirimler artık tüm cihaz ekranınızı tüketmiyor. Şimdi bunun yerine küçük bir açılır pencere var, bu nedenle çevrimdışı yetenekleri kullanmaya devam edebilirsiniz (çevrimdışı durumdayken yazıları silmek gibi).
+Etkinlik Günlüğü'ndeki bazı metinler bazen yanlış bir dilde görünebilir. Yararlı değil! Ve şimdi düzeltildi.
+Çökmeler. Bazen site oluşturma sırasında veya istatistikler yüklenirken ortaya çıkan çökmeler çözüldü.
+Jetpack Remote Install desteklenir, böylece Jetpack'i kendiliğinden barındırılan bir siteye doğrudan uygulamadan yükleyebilir ve etkinleştirebilirsiniz.
