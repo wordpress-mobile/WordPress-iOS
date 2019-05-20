@@ -77,13 +77,40 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    func fetchDataHasFailed() -> Bool {
+        guard let statSection = statSection else {
+            return true
+        }
+
+        switch statSection {
+        case let statSection where StatSection.allInsights.contains(statSection):
+            guard let storeQuery = queryForInsightStatSection(statSection) else {
+                return true
+            }
+            return insightsStore.fetchingFailed(for: storeQuery)
+        case let statSection where StatSection.allPeriods.contains(statSection):
+            guard let storeQuery = queryForPeriodStatSection(statSection) else {
+                return true
+            }
+            return periodStore.fetchingFailed(for: storeQuery)
+        default:
+            guard let postID = postID else {
+                return true
+            }
+            return periodStore.fetchingFailed(for: .postStats(postID: postID))
+        }
+    }
+
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
-
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
                 return ImmuTable.Empty
+        }
+
+        if fetchDataHasFailed() {
+            return ImmuTable.Empty
         }
 
         var tableRows = [ImmuTableRow]()
