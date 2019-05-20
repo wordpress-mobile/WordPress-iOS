@@ -150,15 +150,13 @@ class SiteStatsDetailsViewModel: Observable {
         case .periodPublished:
             tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
-                                                     dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle,
-                                                     dataRows: postStatsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
+                                                               dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
+            tableRows.append(contentsOf: postStatsRows())
         case .postStatsAverageViews:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
-                                                     dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle,
-                                                     dataRows: postStatsRows(forAverages: true),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
+                                                               dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle))
+            tableRows.append(contentsOf: postStatsRows(forAverages: true))
         default:
             break
         }
@@ -572,8 +570,12 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Post Stats
 
-    func postStatsRows(forAverages: Bool = false) -> [StatsTotalRowData] {
+    func postStatsRows(forAverages: Bool = false) -> [ImmuTableRow] {
+        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages),
+                                     forStat: forAverages ? .postStatsAverageViews : .postStatsMonthsYears)
+    }
 
+    func postStatsRowData(forAverages: Bool) -> [StatsTotalRowData] {
         let postStats = periodStore.getPostStats(for: postID)
 
         guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
