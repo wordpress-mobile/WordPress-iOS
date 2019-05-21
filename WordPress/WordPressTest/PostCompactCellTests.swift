@@ -15,6 +15,24 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertEqual(PostCompactCell.height, 60)
     }
 
+    func testShowImageWhenAvailable() {
+        let post = PostBuilder().withImage().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertFalse(postCell.featuredImageView.isHidden)
+        XCTAssertTrue(postCell.labelsContainerTrailing.isActive)
+    }
+
+    func testHideImageWhenNotAvailable() {
+        let post = PostBuilder().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.featuredImageView.isHidden)
+        XCTAssertFalse(postCell.labelsContainerTrailing.isActive)
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {

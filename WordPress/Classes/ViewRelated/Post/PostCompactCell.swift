@@ -10,11 +10,20 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var labelsContainerTrailing: NSLayoutConstraint!
 
     static var height: CGFloat = 60
 
-    func configure(with post: Post) {
+    lazy var imageLoader: ImageLoader = {
+        return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
+    }()
 
+    var post: Post!
+
+    func configure(with post: Post) {
+        self.post = post
+
+        configureFeaturedImage()
     }
 
     override func awakeFromNib() {
@@ -51,6 +60,18 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
         labelsLeadingConstraint.constant = -8
+    }
+
+    private func configureFeaturedImage() {
+        if let url = post.featuredImageURLForDisplay(),
+            let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
+            featuredImageView.isHidden = false
+            labelsContainerTrailing.isActive = true
+            imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: desiredWidth, height: featuredImageView.frame.height))
+        } else {
+            featuredImageView.isHidden = true
+            labelsContainerTrailing.isActive = false
+        }
     }
 }
 

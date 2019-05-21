@@ -117,6 +117,7 @@
                 <outlet property="badgesLabel" destination="ZNQ-Pm-fi0" id="XSV-yJ-XKT"/>
                 <outlet property="featuredImageView" destination="tne-qn-oAS" id="cE0-O7-RC0"/>
                 <outlet property="innerView" destination="HJK-1N-bmY" id="V61-8s-DZ1"/>
+                <outlet property="labelsContainerTrailing" destination="YXw-VS-KHH" id="mMj-WE-nCF"/>
                 <outlet property="labelsLeadingConstraint" destination="mXG-L5-nGo" id="X0d-iX-rY3"/>
                 <outlet property="menuButton" destination="Zh4-Mc-AK7" id="D6v-4Q-OPG"/>
                 <outlet property="progressView" destination="06O-B0-y3k" id="kXa-eP-uHE"/>
