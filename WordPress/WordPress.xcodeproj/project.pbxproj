@@ -415,6 +415,7 @@
 		570BFD902282418A007859A8 /* PostBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570BFD8F2282418A007859A8 /* PostBuilder.swift */; };
 		5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */; };
 		572FB401223A806000933C76 /* NoticeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572FB400223A806000933C76 /* NoticeStoreTests.swift */; };
+		577C2AAB22936DCB00AD1F03 /* PostCellGhostableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577C2AAA22936DCB00AD1F03 /* PostCellGhostableTests.swift */; };
 		57AA848F228715DA00D3C2A2 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA848E228715DA00D3C2A2 /* PostCell.swift */; };
 		57AA8491228715E700D3C2A2 /* PostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57AA8490228715E700D3C2A2 /* PostCell.xib */; };
 		57AA8493228790AA00D3C2A2 /* PostCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA8492228790AA00D3C2A2 /* PostCellTests.swift */; };
@@ -2329,6 +2330,7 @@
 		570BFD8F2282418A007859A8 /* PostBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBuilder.swift; sourceTree = "<group>"; };
 		5727EAF72284F5AC00822104 /* InteractivePostViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostViewDelegate.swift; sourceTree = "<group>"; };
 		572FB400223A806000933C76 /* NoticeStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStoreTests.swift; sourceTree = "<group>"; };
+		577C2AAA22936DCB00AD1F03 /* PostCellGhostableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellGhostableTests.swift; sourceTree = "<group>"; };
 		57AA848E228715DA00D3C2A2 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		57AA8490228715E700D3C2A2 /* PostCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCell.xib; sourceTree = "<group>"; };
 		57AA8492228790AA00D3C2A2 /* PostCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellTests.swift; sourceTree = "<group>"; };
@@ -6285,6 +6287,7 @@
 				E684383F221F5A2200752258 /* PostListExcessiveLoadMoreTests.swift */,
 				570BFD8C22823DE5007859A8 /* PostActionSheetTests.swift */,
 				57AA8492228790AA00D3C2A2 /* PostCellTests.swift */,
+				577C2AAA22936DCB00AD1F03 /* PostCellGhostableTests.swift */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -11064,6 +11067,7 @@
 				40F50B82221310F000CBBB73 /* StatsTestCase.swift in Sources */,
 				02BE5CC02281B53F00E351BA /* RegisterDomainDetailsViewModelLoadingStateTests.swift in Sources */,
 				40EE948222132F5800CD264F /* PublicizeConectionStatsRecordValueTests.swift in Sources */,
+				577C2AAB22936DCB00AD1F03 /* PostCellGhostableTests.swift in Sources */,
 				02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */,
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
 				1797373720EBAA4100377B4E /* RouteMatcherTests.swift in Sources */,

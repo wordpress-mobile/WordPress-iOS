@@ -152,6 +152,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         isUserInteractionEnabled = true
         verticalContentStackView.spacing = 8
         titleAndSnippetView.spacing = 3
+        actionBarView.layer.opacity = 1
     }
 
     private func configureFeaturedImage() {
@@ -354,7 +355,7 @@ extension PostCell: InteractivePostView {
 
 extension PostCell: GhostableView {
     func ghostAnimationWillStart() {
-        featuredImage.isHidden = true
+        featuredImageStackView.isHidden = true
         titleLabel.attributedText = NSAttributedString(string: " ")
         snippetLabel.isHidden = false
         snippetLabel.attributedText = dateLabel.attributedText
@@ -365,10 +366,10 @@ extension PostCell: GhostableView {
         actionBarView.layer.opacity = 0.5
         isUserInteractionEnabled = false
 
-        topSpace.constant = margin
-        contentStackView.spacing = 0
-        titleAndSnippetView.spacing = 16
-        titleAndSnippetView.setLayoutMargin(top: 0, bottom: 8)
+        topPadding.constant = margin
+        verticalContentStackView.spacing = 0
+        titleAndSnippetView.spacing = contentSpacing * 2
+        titleAndSnippetView.setLayoutMargin(top: 0, bottom: contentSpacing)
 
         actionBarView.isGhostableDisabled = true
         upperBorder.isGhostableDisabled = true
