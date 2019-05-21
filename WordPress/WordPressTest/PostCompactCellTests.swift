@@ -41,6 +41,14 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertEqual(postCell.titleLabel.text, "Foo bar")
     }
 
+    func testShowDate() {
+        let post = PostBuilder().with(dateCreated: Date()).drafted().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.timestampLabel.text, "just now")
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {

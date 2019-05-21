@@ -24,6 +24,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         self.post = post
 
         configureTitle()
+        configureDate()
         configureFeaturedImage()
     }
 
@@ -77,6 +78,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private func configureTitle() {
         titleLabel.text = post.titleForDisplay()
+    }
+
+    private func configureDate() {
+        let post = self.post.latest()
+        timestampLabel.text = post.dateStringForDisplay()
     }
 }
 
