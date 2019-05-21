@@ -104,6 +104,13 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="badgesLabel" destination="ZNQ-Pm-fi0" id="XSV-yJ-XKT"/>
+                <outlet property="featuredImageView" destination="tne-qn-oAS" id="cE0-O7-RC0"/>
+                <outlet property="menuButton" destination="Zh4-Mc-AK7" id="D6v-4Q-OPG"/>
+                <outlet property="timestampLabel" destination="fEo-hS-PK1" id="Ih0-91-vRW"/>
+                <outlet property="titleLabel" destination="ZUq-Dg-elW" id="Dzt-PV-spZ"/>
+            </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>
         </tableViewCell>
     </objects>

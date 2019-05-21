@@ -66,8 +66,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private var isCompact: Bool = false {
         didSet {
             configureGhost()
+            tableView.separatorStyle = separatorStyle
             tableView.reloadSections([0], with: .automatic)
         }
+    }
+
+    private var separatorStyle: UITableViewCell.SeparatorStyle {
+        return isCompact ? .singleLine : .none
     }
 
     // MARK: - Convenience constructors
@@ -137,6 +142,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func heightForFooterView() -> CGFloat {
         return postListHeightForFooterView
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return isCompact ? PostCompactCell.height : super.tableView(tableView, heightForRowAt: indexPath)
     }
 
     private func configureFilterBarTopConstraint() {

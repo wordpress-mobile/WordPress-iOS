@@ -11,6 +11,10 @@ class PostCompactCellTests: XCTestCase {
         postCell = postCellFromNib()
     }
 
+    func testCellHeight() {
+        XCTAssertEqual(PostCompactCell.height, 60)
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {
