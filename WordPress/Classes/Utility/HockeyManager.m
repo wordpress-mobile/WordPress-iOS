@@ -4,6 +4,7 @@
 #import "ApiCredentials.h"
 #import "WPLogger.h"
 #import <HockeySDK/HockeySDK.h>
+#import "WordPress-Swift.h"
 
 @interface HockeyManager () <BITHockeyManagerDelegate>
 
