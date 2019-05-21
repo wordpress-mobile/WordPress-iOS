@@ -378,7 +378,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Tags and Categories
 
     func tagsAndCategoriesRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(tagsAndCategoriesRowData(), forStat: .insightsTagsAndCategories)
+        return expandableDataRowsFor(tagsAndCategoriesRowData())
     }
 
     func tagsAndCategoriesRowData() -> [StatsTotalRowData] {
@@ -484,7 +484,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Clicks
 
     func clicksRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(clicksRowData(), forStat: .periodClicks)
+        return expandableDataRowsFor(clicksRowData())
     }
 
     func clicksRowData() -> [StatsTotalRowData] {
@@ -504,7 +504,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Authors
 
     func authorsRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(authorsRowData(), forStat: .periodAuthors)
+        return expandableDataRowsFor(authorsRowData())
     }
 
     func authorsRowData() -> [StatsTotalRowData] {
@@ -584,8 +584,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Post Stats
 
     func postStatsRows(forAverages: Bool = false) -> [ImmuTableRow] {
-        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages),
-                                     forStat: forAverages ? .postStatsAverageViews : .postStatsMonthsYears)
+        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages))
     }
 
     func postStatsRowData(forAverages: Bool) -> [StatsTotalRowData] {
@@ -637,8 +636,12 @@ private extension SiteStatsDetailsViewModel {
         return detailDataRows
     }
 
-    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [ImmuTableRow] {
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData]) -> [ImmuTableRow] {
         var detailDataRows = [ImmuTableRow]()
+
+        guard let statSection = rowsData.first?.statSection else {
+            return []
+        }
 
         for (idx, rowData) in rowsData.enumerated() {
             let isLastRow = idx == rowsData.endIndex-1
