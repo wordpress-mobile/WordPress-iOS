@@ -23,6 +23,7 @@ PODS:
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
+  - FSInteractiveMap (0.1.0)
   - Gifu (3.2.0)
   - GiphyCoreSDK (1.4.2)
   - glog (0.3.4)
@@ -226,6 +227,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.5.1/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+  - FSInteractiveMap (= 0.1.0)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
@@ -272,6 +274,7 @@ SPEC REPOS:
     - DoubleConversion
     - Down
     - FormatterKit
+    - FSInteractiveMap
     - Gifu
     - GiphyCoreSDK
     - glog
@@ -355,6 +358,7 @@ SPEC CHECKSUMS:
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
+  FSInteractiveMap: 43a8d1388056b21da95194528fc37e222c7dad50
   Gifu: 7bcb6427457d85e0b4dff5a84ec5947ac19a93ea
   GiphyCoreSDK: 1a89e03e55dc6b636b9d40fde76107867dbb9da5
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
@@ -396,6 +400,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 1dd64c87489d1786220b23362ff38684051fc381
+PODFILE CHECKSUM: 8936eef6da122d179149be6b459a4cc6c960266a
 
 COCOAPODS: 1.6.1
