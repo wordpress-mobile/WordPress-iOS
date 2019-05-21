@@ -4,7 +4,7 @@ import WordPressShared
 
 // MARK: - SearchTextField
 
-private final class SearchTextField: UITextField {
+final class SearchTextField: UITextField {
 
     // MARK: Properties
 
@@ -15,6 +15,14 @@ private final class SearchTextField: UITextField {
         static let clearButtonInset = CGFloat(-9)
         static let searchHeight     = CGFloat(44)
         static let textInset        = CGFloat(56)
+    }
+
+    // MARK: Becoming First Responder
+
+    var allowFirstResponderStatus: Bool = true
+
+    override var canBecomeFirstResponder: Bool {
+        return allowFirstResponderStatus
     }
 
     // MARK: UIView
@@ -108,7 +116,7 @@ final class TitleSubtitleTextfieldHeader: UIView {
         return returnValue
     }()
 
-    private(set) var textField: UITextField = SearchTextField()
+    private(set) var textField = SearchTextField()
 
     private lazy var stackView: UIStackView = {
 
