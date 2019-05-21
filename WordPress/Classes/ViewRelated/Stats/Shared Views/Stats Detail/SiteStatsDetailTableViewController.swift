@@ -4,7 +4,6 @@ import WordPressFlux
 @objc protocol SiteStatsDetailsDelegate {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
     @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
@@ -253,11 +252,6 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController.init(rootViewController: webViewController)
         present(navController, animated: true)
-    }
-
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
-        StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
     }
 
     func toggleChildRowsForRow(_ row: StatsTotalRow) {
