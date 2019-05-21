@@ -30,18 +30,24 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
-    static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
-    static fileprivate let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
-    static fileprivate let postCardTextCellNibName = "PostCell"
-    static fileprivate let postCardRestoreCellNibName = "RestorePostTableViewCell"
-    static fileprivate let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
-    static fileprivate let statsStoryboardName = "SiteStats"
-    static fileprivate let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
+    private let postCompactCellIdentifier = "PostCompactCellIdentifier"
+    private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
+    private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
+    private let postCompactCellNibName = "PostCompactCell"
+    private let postCardTextCellNibName = "PostCell"
+    private let postCardRestoreCellNibName = "RestorePostTableViewCell"
+    private let statsStoryboardName = "SiteStats"
+    private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
+    private var postCellIdentifier: String {
+        return isCompact ? postCompactCellIdentifier : postCardTextCellIdentifier
+    }
 
-    static fileprivate let statsCacheInterval = TimeInterval(300) // 5 minutes
+    static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
-    static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
-    static fileprivate let postListHeightForFooterView = CGFloat(50.0)
+    private let statsCacheInterval = TimeInterval(300) // 5 minutes
+
+    private let postCardEstimatedRowHeight = CGFloat(300.0)
+    private let postListHeightForFooterView = CGFloat(50.0)
 
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
@@ -55,6 +61,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
+    }
+
+    private var isCompact: Bool = false {
+        didSet {
+            configureGhost()
+            tableView.reloadSections([0], with: .automatic)
+        }
     }
 
     // MARK: - Convenience constructors
@@ -123,7 +136,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
-        return type(of: self).postListHeightForFooterView
+        return postListHeightForFooterView
     }
 
     private func configureFilterBarTopConstraint() {
@@ -135,7 +148,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func configureGhost() {
-        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: type(of: self).postCardTextCellIdentifier, rowsPerSection: [10])
+        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
     }
 
     override func configureTableView() {
@@ -143,17 +156,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
         tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = type(of: self).postCardEstimatedRowHeight
+        tableView.estimatedRowHeight = postCardEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
 
         let bundle = Bundle.main
 
         // Register the cells
-        let postCardTextCellNib = UINib(nibName: type(of: self).postCardTextCellNibName, bundle: bundle)
-        tableView.register(postCardTextCellNib, forCellReuseIdentifier: type(of: self).postCardTextCellIdentifier)
+        let postCardTextCellNib = UINib(nibName: postCardTextCellNibName, bundle: bundle)
+        tableView.register(postCardTextCellNib, forCellReuseIdentifier: postCardTextCellIdentifier)
 
-        let postCardRestoreCellNib = UINib(nibName: type(of: self).postCardRestoreCellNibName, bundle: bundle)
-        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
+        let postCompactCellNib = UINib(nibName: postCompactCellNibName, bundle: bundle)
+        tableView.register(postCompactCellNib, forCellReuseIdentifier: postCompactCellIdentifier)
+
+        let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
+        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
     }
 
     override func configureAuthorFilter() {
@@ -369,9 +385,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         var identifier: String
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
-            identifier = type(of: self).postCardRestoreCellIdentifier
+            identifier = postCardRestoreCellIdentifier
         } else {
-            identifier = type(of: self).postCardTextCellIdentifier
+            identifier = postCellIdentifier
         }
 
         return identifier
@@ -472,7 +488,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = Bundle(for: WPStatsViewController.self)
-        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: statsBundle)
+        let statsStoryboard = UIStoryboard(name: statsStoryboardName, bundle: statsBundle)
         let viewControllerObject = statsStoryboard.instantiateViewController(withIdentifier: identifier)
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
@@ -483,7 +499,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         viewController.postID = apost.postID
         viewController.postTitle = apost.titleForDisplay()
-        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: type(of: self).statsCacheInterval)
+        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: statsCacheInterval)
 
         navigationController?.pushViewController(viewController, animated: true)
     }
