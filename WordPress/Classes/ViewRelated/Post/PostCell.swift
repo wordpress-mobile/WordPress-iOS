@@ -150,7 +150,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureItself() {
         isUserInteractionEnabled = true
-        verticalContentStackView.spacing = 8
+        contentStackView.spacing = 8
         titleAndSnippetView.spacing = 3
         actionBarView.layer.opacity = 1
     }
@@ -367,7 +367,7 @@ extension PostCell: GhostableView {
         isUserInteractionEnabled = false
 
         topPadding.constant = margin
-        verticalContentStackView.spacing = 0
+        contentStackView.spacing = 0
         titleAndSnippetView.spacing = contentSpacing * 2
         titleAndSnippetView.setLayoutMargin(top: 0, bottom: contentSpacing)
 
