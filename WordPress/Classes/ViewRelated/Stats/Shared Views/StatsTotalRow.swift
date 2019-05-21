@@ -90,6 +90,7 @@ class StatsTotalRow: UIView, NibLoadable {
     private var dataBarMaxTrailing: Float = 0.0
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
+    private var forDetails = false
 
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
@@ -141,9 +142,10 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil) {
+    func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil, forDetails: Bool = false) {
         self.rowData = rowData
         self.delegate = delegate
+        self.forDetails = forDetails
 
         configureExpandedState()
         configureIcon()
@@ -183,14 +185,14 @@ private extension StatsTotalRow {
     }
 
     func configureExpandedState() {
-
         guard let name = rowData?.name,
         let statSection = rowData?.statSection else {
             expanded = false
             return
         }
 
-        expanded = StatsDataHelper.expandedRowLabels[statSection]?.contains(name) ?? false
+        let expandedLabels = forDetails ? StatsDataHelper.expandedRowLabelsDetails : StatsDataHelper.expandedRowLabels
+        expanded = expandedLabels[statSection]?.contains(name) ?? false
     }
 
     func configureIcon() {
@@ -199,21 +201,21 @@ private extension StatsTotalRow {
             return
         }
 
+        let imageSize = rowData.statSection?.imageSize ?? StatSection.defaultImageSize
+        imageWidthConstraint.constant = imageSize
+
         imageView.isHidden = !hasIcon
 
         if let icon = rowData.icon {
-            imageWidthConstraint.constant = Constants.defaultImageSize
             imageView.image = icon
         }
 
         if let iconURL = rowData.socialIconURL {
-            imageWidthConstraint.constant = Constants.socialImageSize
             downloadImageFrom(iconURL)
         }
 
         if let iconURL = rowData.userIconURL {
-            imageWidthConstraint.constant = Constants.userImageSize
-            imageView.layer.cornerRadius = Constants.userImageSize * 0.5
+            imageView.layer.cornerRadius = imageSize * 0.5
             imageView.clipsToBounds = true
 
             // Use placeholder image until real image is loaded.
@@ -260,9 +262,6 @@ private extension StatsTotalRow {
     }
 
     struct Constants {
-        static let defaultImageSize = CGFloat(24)
-        static let socialImageSize = CGFloat(20)
-        static let userImageSize = CGFloat(28)
         static let disclosureImageUp = CGFloat.pi * 1.5
         static let disclosureImageDown = CGFloat.pi / 2
     }
