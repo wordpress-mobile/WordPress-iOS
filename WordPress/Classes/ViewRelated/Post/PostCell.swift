@@ -353,6 +353,10 @@ extension PostCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
     }
+
+    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
+        actionSheetDelegate = delegate
+    }
 }
 
 extension PostCell: GhostableView {

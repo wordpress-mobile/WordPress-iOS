@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "ConfigurablePostView.h"
-#import "InteractivePostView.h"
+#import "WordPress-Swift.h"
 
 @protocol ConfigurablePostView;
 

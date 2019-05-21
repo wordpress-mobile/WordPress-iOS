@@ -49,6 +49,18 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertEqual(postCell.timestampLabel.text, "just now")
     }
 
+    func testMoreAction() {
+        let postActionSheetDelegateMock = PostActionSheetDelegateMock()
+        let post = PostBuilder().published().build()
+        postCell.configure(with: post)
+        postCell.setActionSheetDelegate(postActionSheetDelegateMock)
+
+        postCell.menuButton.sendActions(for: .touchUpInside)
+
+        XCTAssertEqual(postActionSheetDelegateMock.calledWithPost, post)
+        XCTAssertEqual(postActionSheetDelegateMock.calledWithView, postCell.menuButton)
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {

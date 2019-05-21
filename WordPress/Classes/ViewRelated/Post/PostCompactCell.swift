@@ -14,6 +14,8 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     static var height: CGFloat = 60
 
+    private weak var actionSheetDelegate: PostActionSheetDelegate?
+
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
     }()
@@ -26,6 +28,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         configureTitle()
         configureDate()
         configureFeaturedImage()
+    }
+
+    @IBAction func more(_ sender: Any) {
+        guard let button = sender as? UIButton else { return }
+        actionSheetDelegate?.showActionSheet(post, from: button)
     }
 
     override func awakeFromNib() {
@@ -89,5 +96,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 extension PostCompactCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         
+    }
+
+    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
+        actionSheetDelegate = delegate
     }
 }

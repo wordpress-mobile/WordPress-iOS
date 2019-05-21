@@ -71,6 +71,9 @@
                                 <state key="normal" image="icon-post-actionbar-more">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="more:" destination="Bfq-Ne-g8g" eventType="touchUpInside" id="t3f-ip-IBh"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tne-qn-oAS" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="224" y="10" width="40" height="40"/>

@@ -384,6 +384,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         interactivePostView.setInteractionDelegate(self)
+        interactivePostView.setActionSheetDelegate?(self)
 
         configurablePostView.configure(with: post)
 
@@ -405,8 +406,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private func configurePostCell(_ cell: UITableViewCell) {
         guard let cell = cell as? PostCell else { return }
 
+<<<<<<< HEAD
         cell.setActionSheetDelegate(self)
         cell.isAuthorHidden = showingJustMyPosts
+=======
+        cell.isAuthorHidden = isAllPostsMine
+>>>>>>> Configure more action for compact cell
     }
 
     // MARK: - Post Actions

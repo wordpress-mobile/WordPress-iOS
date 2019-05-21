@@ -424,6 +424,7 @@
 		57BAD50C225CCE1A006139EC /* WPTabBarController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */; };
 		57D5812D2228526C002BAAD7 /* WPError+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D5812C2228526C002BAAD7 /* WPError+Swift.swift */; };
 		57D6C83E22945A10003DDC7E /* PostCompactCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */; };
+		57D6C840229498C5003DDC7E /* InteractivePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D6C83F229498C4003DDC7E /* InteractivePostView.swift */; };
 		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
 		590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590E873A1CB8205700D1B734 /* PostListViewController.swift */; };
 		591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */; };
@@ -2342,6 +2343,7 @@
 		57BAD50B225CCE1A006139EC /* WPTabBarController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+Swift.swift"; sourceTree = "<group>"; };
 		57D5812C2228526C002BAAD7 /* WPError+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPError+Swift.swift"; sourceTree = "<group>"; };
 		57D6C83D22945A10003DDC7E /* PostCompactCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCompactCellTests.swift; sourceTree = "<group>"; };
+		57D6C83F229498C4003DDC7E /* InteractivePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePostView.swift; sourceTree = "<group>"; };
 		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
 		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
 		590E873A1CB8205700D1B734 /* PostListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListViewController.swift; sourceTree = "<group>"; };
@@ -2364,7 +2366,6 @@
 		596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserViewController.swift; sourceTree = "<group>"; };
 		596C035F1B84F24000899EEB /* ThemeBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ThemeBrowser.storyboard; sourceTree = "<group>"; };
 		597421B01CEB6874005D5F38 /* ConfigurablePostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurablePostView.h; sourceTree = "<group>"; };
-		597421B31CEB8946005D5F38 /* InteractivePostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractivePostView.h; sourceTree = "<group>"; };
 		5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgentTests.m; sourceTree = "<group>"; };
 		598DD1701B97985700146967 /* ThemeBrowserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserCell.swift; sourceTree = "<group>"; };
 		59A3CADB1CD2FF0C009BFA1B /* BasePageListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePageListCell.h; sourceTree = "<group>"; };
@@ -5317,7 +5318,7 @@
 			isa = PBXGroup;
 			children = (
 				597421B01CEB6874005D5F38 /* ConfigurablePostView.h */,
-				597421B31CEB8946005D5F38 /* InteractivePostView.h */,
+				57D6C83F229498C4003DDC7E /* InteractivePostView.swift */,
 				5D2FB2841AE98C6600F1D4ED /* RestorePostTableViewCell.h */,
 				5D2FB2851AE98C6600F1D4ED /* RestorePostTableViewCell.m */,
 				5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */,
@@ -10635,6 +10636,7 @@
 				08216FCD1CDBF96000304BA7 /* MenuItemPagesViewController.m in Sources */,
 				40A71C6B220E1952002E3D25 /* StatsRecordValue+CoreDataProperties.swift in Sources */,
 				177B4C2D2123192200CF8084 /* GiphyMedia.swift in Sources */,
+				57D6C840229498C5003DDC7E /* InteractivePostView.swift in Sources */,
 				7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */,
 				D865721221869C590023A99C /* WizardStep.swift in Sources */,
 				43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */,

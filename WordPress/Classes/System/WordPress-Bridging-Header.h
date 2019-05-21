@@ -31,8 +31,6 @@
 
 #import "HockeyManager.h"
 
-#import "InteractivePostView.h"
-
 #import "LocalCoreDataService.h"
 
 #import "Media.h"
