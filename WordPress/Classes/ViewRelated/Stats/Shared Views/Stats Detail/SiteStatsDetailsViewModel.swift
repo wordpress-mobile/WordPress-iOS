@@ -139,10 +139,9 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodAuthors.dataSubtitle))
             tableRows.append(contentsOf: authorsRows())
         case .periodReferrers:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                                                     dataRows: referrersRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle))
+            tableRows.append(contentsOf: referrersRows())
         case .periodCountries:
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
@@ -523,7 +522,11 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Referrers
 
-    func referrersRows() -> [StatsTotalRowData] {
+    func referrersRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(referrersRowData())
+    }
+
+    func referrersRowData() -> [StatsTotalRowData] {
         let referrers = periodStore.getTopReferrers()?.referrers ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
