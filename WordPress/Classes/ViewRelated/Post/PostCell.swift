@@ -23,8 +23,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var upperBorder: UIView!
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topPadding: NSLayoutConstraint!
-    @IBOutlet weak var horizontalContentStackView: UIStackView!
-    @IBOutlet weak var verticalContentStackView: UIStackView!
+    @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var titleAndSnippetView: UIStackView!
     @IBOutlet weak var topMargin: NSLayoutConstraint!
 
@@ -241,7 +240,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
         }
 
-        actionBarView.setLayoutMargin(top: margin - verticalContentStackView.spacing)
+        actionBarView.setLayoutMargin(top: margin - contentStackView.spacing)
     }
 
     private func setupLabels() {
@@ -275,10 +274,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private func setupReadableGuideForiPad() {
         guard WPDeviceIdentification.isiPad() else { return }
 
-        horizontalContentStackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
-        horizontalContentStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
+        contentStackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
+        contentStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
-        verticalContentStackView.subviews.forEach { $0.setLayoutMargin(left: 0, right: 0) }
+        contentStackView.subviews.forEach { $0.setLayoutMargin(left: 0, right: 0) }
 
         topMargin.constant = margin
     }
