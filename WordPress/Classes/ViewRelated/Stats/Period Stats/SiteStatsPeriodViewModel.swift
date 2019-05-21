@@ -64,7 +64,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         if !store.containsCachedData &&
             (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
-            return ImmuTable(sections: [])
+            return ImmuTable.Empty
         }
 
         tableRows.append(contentsOf: overviewTableRows())
