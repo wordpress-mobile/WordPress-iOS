@@ -132,8 +132,7 @@ extension PostEditor {
         return "PostEditor.UploadFailed"
     }
 
-    var uploadFailureNotice: Notice {
-        let action = self.postEditorStateContext.action
+    func uploadFailureNotice(action: PostEditorAction) -> Notice {
         return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
     }
 }
