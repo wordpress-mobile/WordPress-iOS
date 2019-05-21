@@ -7,6 +7,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var badgesLabel: UILabel!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
+    @IBOutlet weak var innerView: UIView!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
 
     static var height: CGFloat = 60
 
@@ -17,12 +20,14 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
+        setupReadableGuideForiPad()
     }
 
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
         WPStyleGuide.configureLabel(timestampLabel, textStyle: UIFont.TextStyle.subheadline)
         WPStyleGuide.configureLabel(badgesLabel, textStyle: UIFont.TextStyle.subheadline)
+        WPStyleGuide.applyPostProgressViewStyle(progressView)
 
         titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(UIFont.TextStyle.headline)
         titleLabel.adjustsFontForContentSizeCategory = true
@@ -35,9 +40,17 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         menuButton.setImage(Gridicon.iconOfType(.ellipsis), for: .normal)
 
         backgroundColor = WPStyleGuide.greyLighten30()
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
 
         featuredImageView.layer.cornerRadius = 2
+    }
+
+    private func setupReadableGuideForiPad() {
+        guard WPDeviceIdentification.isiPad() else { return }
+
+        innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
+        innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
+
+        labelsLeadingConstraint.constant = -8
     }
 }
 
