@@ -83,15 +83,15 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertFalse(postCell.stickyLabel.isHidden)
+        XCTAssertEqual(postCell.statusLabel?.text, "Sticky")
     }
 
     func testHideStickyLabelWhenPostIsntSticky() {
-        let post = PostBuilder().is(sticked: false).build()
+        let post = PostBuilder().is(sticked: false).with(remoteStatus: .sync).build()
 
         postCell.configure(with: post)
 
-        XCTAssertTrue(postCell.stickyLabel.isHidden)
+        XCTAssertEqual(postCell.statusLabel?.text, "")
     }
 
     func testHideStickyLabelWhenPostIsUploading() {
@@ -99,7 +99,7 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertTrue(postCell.stickyLabel.isHidden)
+        XCTAssertEqual(postCell.statusLabel?.text, "Uploading post...")
     }
 
     func testHideStickyLabelWhenPostIsFailed() {
@@ -107,38 +107,9 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertTrue(postCell.stickyLabel.isHidden)
+        XCTAssertEqual(postCell.statusLabel?.text, "Upload failed")
     }
 
-    func testShowSeparatorWhenPostHasStatusAndItIsSticky() {
-        let post = PostBuilder()
-                    .with(remoteStatus: .sync).private()
-                    .is(sticked: true).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertFalse(postCell.statusAndStickySeparator.isHidden)
-    }
-
-    func testHideSeparatorWhenHasOnlyStickyLabel() {
-        let post = PostBuilder()
-            .with(remoteStatus: .sync)
-            .is(sticked: true).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertTrue(postCell.statusAndStickySeparator.isHidden)
-    }
-
-    func testHideSeparatorWhenHasOnlyStatusLabel() {
-        let post = PostBuilder()
-            .with(remoteStatus: .sync)
-            .private().build()
-
-        postCell.configure(with: post)
-
-        XCTAssertTrue(postCell.statusAndStickySeparator.isHidden)
-    }
 
     func testShowPrivateLabelWhenPostIsPrivate() {
         let post = PostBuilder().with(remoteStatus: .sync).private().build()

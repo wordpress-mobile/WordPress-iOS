@@ -4,6 +4,7 @@ import Gridicons
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
 class PostCardStatusViewModel: NSObject {
+    private let separator = "·"
     private let post: Post
     private var progressObserverUUID: UUID? = nil
     @objc var progressBlock: ((Float) -> Void)? = nil {
@@ -41,6 +42,26 @@ class PostCardStatusViewModel: NSObject {
         } else {
             return post.statusForDisplay()
         }
+    }
+
+    var sticky: String {
+        let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+        return post.isStickyPost ? stickyLabel : ""
+    }
+
+    var statusAndBadges: String {
+
+        let status = [self.status ?? "", isUploadingOrFailed ? "" : sticky]
+
+        return status.filter { !$0.isEmpty }.joined(separator: " \(separator) ")
+    }
+
+    var authorWithSeparator: String {
+        guard let author = post.authorForDisplay() else {
+            return ""
+        }
+
+        return " \(separator) \(author)"
     }
 
     var isUploadingOrFailed: Bool {

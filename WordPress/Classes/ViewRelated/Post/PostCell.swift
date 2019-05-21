@@ -9,9 +9,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var stickyLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var statusAndStickySeparator: UILabel!
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var editButton: UIButton!
@@ -30,8 +28,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
     private let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
     private let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
-
-    private let separator = "·"
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -61,8 +57,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         configureDate()
         configureAuthor()
         configureStatusLabel()
-        configureStickyPost()
-        configureStatusView()
         configureProgressView()
         configureActionBar()
     }
@@ -116,9 +110,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
         WPStyleGuide.applyPostDateStyle(dateLabel)
         WPStyleGuide.applyPostDateStyle(authorLabel)
-        WPStyleGuide.applyPostDateStyle(statusLabel)
-        WPStyleGuide.applyPostDateStyle(statusAndStickySeparator)
-        WPStyleGuide.applyPostDateStyle(stickyLabel)
+        WPStyleGuide.configureLabel(statusLabel, textStyle: UIFont.TextStyle.subheadline)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
         WPStyleGuide.applyPostButtonStyle(editButton)
         WPStyleGuide.applyPostButtonStyle(retryButton)
@@ -181,26 +173,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureAuthor() {
-        guard let author = post.authorForDisplay() else { return }
-        authorLabel.text = " \(separator) \(author)"
-    }
-
-    private func configureStickyPost() {
-        stickyLabel.isHidden = !viewModel.shouldShowStickyLabel
-        statusAndStickySeparator.isHidden = stickyLabel.isHidden || (statusLabel.text?.isEmpty ?? true)
-
+        authorLabel.text = viewModel.authorWithSeparator
     }
 
     private func configureStatusLabel() {
-        statusLabel.text = viewModel.status
-    }
-
-    private func configureStatusView() {
-        statusView.isHidden = viewModel.shouldHideStatusView
-
-        [statusLabel, statusAndStickySeparator, stickyLabel].forEach { label in
-            label?.textColor = viewModel.statusColor
-        }
+        let status = viewModel.statusAndBadges
+        statusLabel.textColor = viewModel.statusColor
+        statusLabel.text = status
+        statusView.isHidden = status.isEmpty
     }
 
     private func configureProgressView() {
@@ -244,9 +224,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupLabels() {
-        stickyLabel.text = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
-        statusAndStickySeparator.text = " \(separator) "
-
         retryButton.setTitle(NSLocalizedString("Retry", comment: "Label for the retry post upload button. Tapping attempts to upload the post again."), for: .normal)
         retryButton.setImage(Gridicon.iconOfType(.refresh, withSize: CGSize(width: 18, height: 18)), for: .normal)
         retryButton.isHidden = true
