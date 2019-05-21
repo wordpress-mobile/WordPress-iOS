@@ -232,6 +232,11 @@ open class AboutViewController: UITableViewController {
                 Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
+
+                // review: name of URL - any way to indicate it's a local file and not a web address?
+                Row(title: NSLocalizedString("Acknowledgments", comment: "Props to the library authors!"),
+                    details: nil,
+                    handler: { self.displayWebView(WPAcknowledgementsURL) }),
             ]
         ]
     }
