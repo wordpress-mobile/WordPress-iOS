@@ -124,11 +124,13 @@ final class WebAddressWizardContent: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignTextFieldResponderIfNeeded()
+        disallowTextFieldFirstResponder()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         restoreSearchIfNeeded()
+        allowTextFieldFirstResponder()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -136,6 +138,36 @@ final class WebAddressWizardContent: UIViewController {
 
         tableViewOffsetCoordinator?.stopListeningToKeyboardNotifications()
         clearContent()
+    }
+
+    // MARK: Workaround: Text Field First Responder Issues
+
+    /// This method is uses as a workaround for what appears to be an SDK bug.
+    ///
+    /// There's an issue that's causing `textField.resignFirstResponder()` to be ignored when called from
+    /// within `viewDidDisappear(animated:)`.  This method makes it so that the text field just can't
+    /// have first responder whenever we don't want it to.
+    ///
+    /// Issue: https://github.com/wordpress-mobile/WordPress-iOS/issues/11702
+    ///
+    private func allowTextFieldFirstResponder() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        header.textField.allowFirstResponderStatus = true
+    }
+
+    /// This method makes it impossible for the text field to become first responder.
+    ///
+    /// Read the documentation of `allowTextFieldFirstResponder` for more details.
+    ///
+    private func disallowTextFieldFirstResponder() {
+        guard let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
+            return
+        }
+
+        header.textField.allowFirstResponderStatus = false
     }
 
     // MARK: Private behavior
@@ -264,6 +296,7 @@ final class WebAddressWizardContent: UIViewController {
 
         let textField = header.textField
         textField.resignFirstResponder()
+        textField.allowFirstResponderStatus = false
     }
 
     private func restoreSearchIfNeeded() {
@@ -271,24 +304,11 @@ final class WebAddressWizardContent: UIViewController {
             return
         }
 
-        let textField = header.textField
-
-        let inputText: String
-        if let text = textField.text, !text.isEmpty {
-            inputText = text
-        } else if let text = siteCreator.information?.title, !text.isEmpty {
-            inputText = text
-        } else {
-            return
-        }
-
-        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
-        performSearchIfNeeded(query: inputText)
+        search(withInputFrom: header.textField)
     }
 
     private func prepareViewIfNeeded() {
         guard WPDeviceIdentification.isiPhone(), let header = self.table.tableHeaderView as? TitleSubtitleTextfieldHeader else {
-
             return
         }
 
@@ -404,13 +424,7 @@ final class WebAddressWizardContent: UIViewController {
 
     @objc
     private func textChanged(sender: UITextField) {
-        guard let query = query(from: sender) else {
-            clearContent()
-            return
-        }
-
-        performSearchIfNeeded(query: query)
-        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
+        search(withInputFrom: sender)
     }
 
     private func clearSelectionAndCreateSiteButton() {
@@ -426,6 +440,18 @@ final class WebAddressWizardContent: UIViewController {
         ]
 
         WPAnalytics.track(.enhancedSiteCreationDomainsSelected, withProperties: domainSuggestionProperties)
+    }
+
+    // MARK: - Search logic
+
+    private func search(withInputFrom textField: UITextField) {
+        guard let query = query(from: textField), query.isEmpty == false else {
+            clearContent()
+            return
+        }
+
+        performSearchIfNeeded(query: query)
+        tableViewOffsetCoordinator?.adjustTableOffsetIfNeeded()
     }
 }
 
