@@ -10,7 +10,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var labelsContainerTrailing: NSLayoutConstraint!
+    @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
 
     static var height: CGFloat = 60
 
