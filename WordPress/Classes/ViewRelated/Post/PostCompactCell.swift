@@ -23,6 +23,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     func configure(with post: Post) {
         self.post = post
 
+        configureTitle()
         configureFeaturedImage()
     }
 
@@ -72,6 +73,10 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
             featuredImageView.isHidden = true
             labelsContainerTrailing.isActive = false
         }
+    }
+
+    private func configureTitle() {
+        titleLabel.text = post.titleForDisplay()
     }
 }
 

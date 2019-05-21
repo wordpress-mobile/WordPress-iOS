@@ -33,6 +33,14 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertFalse(postCell.labelsContainerTrailing.isActive)
     }
 
+    func testShowPostTitle() {
+        let post = PostBuilder().with(title: "Foo bar").build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.titleLabel.text, "Foo bar")
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {
