@@ -2972,6 +2972,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         if let mediaAttachment = attachment as? MediaAttachment {
             self.resetMediaAttachmentOverlay(mediaAttachment)
             richTextView.refresh(mediaAttachment)
+            processMediaAttachments()
         }
     }
 
