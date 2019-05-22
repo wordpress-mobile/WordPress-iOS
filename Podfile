@@ -170,6 +170,15 @@ target 'WordPress' do
         shared_test_pods
         pod 'Nimble', '~> 7.3.1'
     end
+
+    ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+    post_install do | installer |
+        require 'commonmarker'
+        
+        markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
+        html = CommonMarker.render_html(markdown, :DEFAULT)
+        File.write('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.html', html)
+    end
 end
 
 
