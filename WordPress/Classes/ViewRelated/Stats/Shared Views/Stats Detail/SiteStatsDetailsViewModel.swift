@@ -174,6 +174,7 @@ class SiteStatsDetailsViewModel: Observable {
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
             tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
@@ -658,9 +659,11 @@ private extension SiteStatsDetailsViewModel {
         var detailDataRows = [DetailDataRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
+            let isLastRow = idx == rowsData.endIndex-1
             detailDataRows.append(DetailDataRow(rowData: rowData,
                                                 detailsDelegate: detailsDelegate,
-                                                hideSeparator: idx == rowsData.endIndex-1))
+                                                hideIndentedSeparator: isLastRow,
+                                                hideFullSeparator: !isLastRow))
         }
 
         return detailDataRows

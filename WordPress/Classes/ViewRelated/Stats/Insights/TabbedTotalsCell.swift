@@ -32,8 +32,8 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
+    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var filterTabBar: FilterTabBar!
-
     @IBOutlet weak var labelsStackView: UIStackView!
     @IBOutlet weak var totalCountView: UIView!
     @IBOutlet weak var totalCountLabel: UILabel!
@@ -157,6 +157,7 @@ private extension TabbedTotalsCell {
     func applyStyles() {
         Style.configureCell(self)
         Style.configureLabelAsTotalCount(totalCountLabel)
+        Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 

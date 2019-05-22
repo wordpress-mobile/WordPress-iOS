@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,7 +37,7 @@
                         </subviews>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="w2N-OJ-hIR">
-                        <rect key="frame" x="0.0" y="0.0" width="323" height="199.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="323" height="199"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBd-Ut-Uch" userLabel="Top Seperator Line">
                         <rect key="frame" x="0.0" y="0.0" width="323" height="0.5"/>
@@ -58,7 +58,6 @@
                     <constraint firstItem="Tyj-5B-MLc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="04p-Eh-3C7"/>
                     <constraint firstItem="cBd-Ut-Uch" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3tF-WR-xtY"/>
                     <constraint firstItem="Tyj-5B-MLc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7" id="3w8-O5-egA"/>
-                    <constraint firstAttribute="bottom" secondItem="w2N-OJ-hIR" secondAttribute="bottom" id="42h-SA-4TJ"/>
                     <constraint firstItem="w2N-OJ-hIR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HgO-4i-Tfs"/>
                     <constraint firstAttribute="trailing" secondItem="w2N-OJ-hIR" secondAttribute="trailing" id="J0K-LT-LLo"/>
                     <constraint firstItem="cBd-Ut-Uch" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="MkM-w2-NRz"/>
@@ -66,6 +65,7 @@
                     <constraint firstAttribute="trailing" secondItem="Tyj-5B-MLc" secondAttribute="trailing" constant="16" id="XOL-9m-28D"/>
                     <constraint firstAttribute="trailing" secondItem="cBd-Ut-Uch" secondAttribute="trailing" id="bwo-8W-tHL"/>
                     <constraint firstAttribute="bottom" secondItem="9px-XX-eCP" secondAttribute="bottom" id="e26-py-r2V"/>
+                    <constraint firstItem="9px-XX-eCP" firstAttribute="top" secondItem="w2N-OJ-hIR" secondAttribute="bottom" id="f44-Bu-iYm"/>
                     <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="Tyj-5B-MLc" secondAttribute="bottom" priority="999" constant="7" id="kke-sY-9lr"/>
                     <constraint firstItem="w2N-OJ-hIR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="olb-Fp-tx9"/>
                     <constraint firstItem="9px-XX-eCP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qfo-Hn-1HP"/>
