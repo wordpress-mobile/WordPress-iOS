@@ -269,6 +269,10 @@ private extension StatsTotalRow {
 
     @IBAction func didTapDisclosureButton(_ sender: UIButton) {
 
+        if let statSection = rowData?.statSection {
+            captureAnalyticsEventsFor(statSection)
+        }
+
         if let mediaID = rowData?.mediaID {
             delegate?.displayMediaWithID?(mediaID)
             return
@@ -297,4 +301,39 @@ private extension StatsTotalRow {
         DDLogInfo("Stat row selection action not supported.")
     }
 
+    func captureAnalyticsEventsFor(_ statSection: StatSection) {
+        guard let event = statSection.analyticsItemTappedEvent else {
+            return
+        }
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
+    }
+
+}
+
+// MARK: - Analytics support
+
+private extension StatSection {
+    var analyticsItemTappedEvent: WPAnalyticsStat? {
+        switch self {
+        case .periodAuthors, .insightsCommentsAuthors:
+            return .statsItemTappedAuthors
+        case .periodClicks:
+            return .statsItemTappedClicks
+        case .periodPostsAndPages:
+            return .statsItemTappedPostsAndPages
+        case .periodSearchTerms:
+            return .statsItemTappedSearchTerms
+        case .insightsTagsAndCategories:
+            return .statsItemTappedTagsAndCategories
+        case .periodVideos:
+            return .statsItemTappedVideoTapped
+        default:
+            return nil
+        }
+    }
 }
