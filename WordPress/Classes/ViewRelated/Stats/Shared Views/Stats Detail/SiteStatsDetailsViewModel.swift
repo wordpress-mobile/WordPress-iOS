@@ -658,9 +658,11 @@ private extension SiteStatsDetailsViewModel {
         var detailDataRows = [DetailDataRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
+            let isLastRow = idx == rowsData.endIndex-1
             detailDataRows.append(DetailDataRow(rowData: rowData,
                                                 detailsDelegate: detailsDelegate,
-                                                hideSeparator: idx == rowsData.endIndex-1))
+                                                hideIndentedSeparator: isLastRow,
+                                                hideFullSeparator: !isLastRow))
         }
 
         return detailDataRows

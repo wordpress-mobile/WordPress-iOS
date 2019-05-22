@@ -423,7 +423,8 @@ struct DetailDataRow: ImmuTableRow {
 
     let rowData: StatsTotalRowData
     weak var detailsDelegate: SiteStatsDetailsDelegate?
-    let hideSeparator: Bool
+    let hideIndentedSeparator: Bool
+    let hideFullSeparator: Bool
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -432,7 +433,10 @@ struct DetailDataRow: ImmuTableRow {
             return
         }
 
-        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideIndentedSeparator: hideSeparator)
+        cell.configure(rowData: rowData,
+                       detailsDelegate: detailsDelegate,
+                       hideIndentedSeparator: hideIndentedSeparator,
+                       hideFullSeparator: hideFullSeparator)
     }
 }
 
