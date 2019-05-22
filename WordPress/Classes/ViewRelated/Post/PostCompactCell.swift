@@ -10,10 +10,12 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var innerView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
-    @IBOutlet var timestampTrailing: NSLayoutConstraint!
 
     static var height: CGFloat = 60
+    private var contentSpacing: CGFloat = 8
+    private var imageRadius: CGFloat = 2
 
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
@@ -68,7 +70,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         backgroundColor = WPStyleGuide.greyLighten30()
 
-        featuredImageView.layer.cornerRadius = 2
+        featuredImageView.layer.cornerRadius = imageRadius
     }
 
     private func setupReadableGuideForiPad() {
@@ -77,7 +79,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
         innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
-        labelsLeadingConstraint.constant = -8
+        labelsLeadingConstraint.constant = -contentSpacing
     }
 
     private func configureFeaturedImage() {
@@ -99,7 +101,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     private func configureDate() {
         let isUploadingOrFailed = viewModel.isUploadingOrFailed
         timestampLabel.text = isUploadingOrFailed ? "" : post.latest().dateStringForDisplay()
-        timestampTrailing.constant = isUploadingOrFailed ? 0 : 8
+        timestampTrailing.constant = isUploadingOrFailed ? 0 : contentSpacing
         timestampLabel.isHidden = isUploadingOrFailed
     }
 
