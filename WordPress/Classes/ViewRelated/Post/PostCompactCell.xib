@@ -125,6 +125,7 @@
                 <outlet property="menuButton" destination="Zh4-Mc-AK7" id="D6v-4Q-OPG"/>
                 <outlet property="progressView" destination="06O-B0-y3k" id="kXa-eP-uHE"/>
                 <outlet property="timestampLabel" destination="fEo-hS-PK1" id="Ih0-91-vRW"/>
+                <outlet property="timestampTrailing" destination="cRx-5q-JF6" id="M5z-Fm-qZs"/>
                 <outlet property="titleLabel" destination="ZUq-Dg-elW" id="Dzt-PV-spZ"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>

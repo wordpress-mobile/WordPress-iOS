@@ -42,7 +42,8 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testShowDate() {
-        let post = PostBuilder().with(dateCreated: Date()).drafted().build()
+        let post = PostBuilder().with(remoteStatus: .sync)
+            .with(dateCreated: Date()).drafted().build()
 
         postCell.configure(with: post)
 
@@ -62,11 +63,54 @@ class PostCompactCellTests: XCTestCase {
     }
 
     func testStatusAndBadgeLabels() {
-        let post = PostBuilder().with(dateCreated: Date()).drafted().build()
+        let post = PostBuilder().with(remoteStatus: .sync)
+            .with(dateCreated: Date()).is(sticked: true).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.badgesLabel.text, "Sticky")
+    }
+
+    func testHideTimestampWhenUploading() {
+        let post = PostBuilder().build()
 
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.badgesLabel.text, "Uploading post...")
+        XCTAssertTrue(postCell.timestampLabel.isHidden)
+        XCTAssertEqual(postCell.timestampLabel.text, "")
+        XCTAssertEqual(postCell.timestampTrailing.constant, 0)
+    }
+
+    func testShowTimestampWhenNotUploading() {
+        let post = PostBuilder().with(remoteStatus: .sync)
+            .with(dateCreated: Date()).build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.badgesLabel.text, "")
+        XCTAssertFalse(postCell.timestampLabel.isHidden)
+        XCTAssertEqual(postCell.timestampTrailing.constant, 8)
+    }
+
+    func testShowProgressView() {
+        let post = PostBuilder()
+            .with(remoteStatus: .pushing)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertFalse(postCell.progressView.isHidden)
+    }
+
+    func testHideProgressView() {
+        let post = PostBuilder()
+            .with(remoteStatus: .sync)
+            .published().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.progressView.isHidden)
     }
 
     private func postCellFromNib() -> PostCompactCell {

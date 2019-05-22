@@ -11,6 +11,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
+    @IBOutlet var timestampTrailing: NSLayoutConstraint!
 
     static var height: CGFloat = 60
 
@@ -36,6 +37,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         configureDate()
         configureStatus()
         configureFeaturedImage()
+        configureProgressView()
     }
 
     @IBAction func more(_ sender: Any) {
@@ -95,13 +97,32 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureDate() {
-        let post = self.post.latest()
-        timestampLabel.text = post.dateStringForDisplay()
+        let isUploadingOrFailed = viewModel.isUploadingOrFailed
+        timestampLabel.text = isUploadingOrFailed ? "" : post.latest().dateStringForDisplay()
+        timestampTrailing.constant = isUploadingOrFailed ? 0 : 8
+        timestampLabel.isHidden = isUploadingOrFailed
     }
 
     private func configureStatus() {
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges
+    }
+
+    private func configureProgressView() {
+        let shouldHide = viewModel.shouldHideProgressView
+
+        progressView.isHidden = shouldHide
+
+        progressView.progress = viewModel.progress
+
+        if !shouldHide && viewModel.progressBlock == nil {
+            viewModel.progressBlock = { [weak self] progress in
+                self?.progressView.setProgress(progress, animated: true)
+                if progress >= 1.0, let post = self?.post {
+                    self?.configure(with: post)
+                }
+            }
+        }
     }
 }
 
