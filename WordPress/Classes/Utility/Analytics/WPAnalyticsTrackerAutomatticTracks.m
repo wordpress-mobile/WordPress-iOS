@@ -1618,8 +1618,41 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsInsightsAccessed:
             eventName = @"stats_insights_accessed";
             break;
+        case WPAnalyticsStatStatsItemTappedAuthors:
+            eventName = @"stats_authors_view_post_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedClicks:
+            eventName = @"stats_clicks_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedLatestPostSummaryNewPost:
+            eventName = @"stats_latest_post_summary_add_new_post_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedLatestPostSummarySharePost:
+            eventName = @"stats_latest_post_summary_share_post_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedLatestPostSummaryPost:
+            eventName = @"stats_latest_post_summary_post_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedLatestPostSummaryViewPostDetails:
+            eventName = @"stats_latest_post_summary_view_post_details_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedPostsAndPages:
+            eventName = @"stats_posts_and_pages_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedSearchTerms:
+            eventName = @"stats_search_terms_item_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedTagsAndCategories:
+            eventName = @"stats_tags_and_categories_view_tag_tapped";
+            break;
+        case WPAnalyticsStatStatsItemTappedVideoTapped:
+            eventName = @"stats_video_plays_video_tapped";
+            break;
         case WPAnalyticsStatStatsOverviewBarChartTapped:
             eventName = @"stats_overview_bar_chart_tapped";
+            break;
+        case WPAnalyticsStatStatsOverviewTypeTapped:
+            eventName = @"stats_overview_type_tapped";
             break;
         case WPAnalyticsStatStatsPeriodDaysAccessed:
             eventName = @"stats_period_accessed";
@@ -1648,6 +1681,39 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsViewAllAccessed:
             eventName = @"stats_view_all_accessed";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedAuthors:
+            eventName = @"stats_authors_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedClicks:
+            eventName = @"stats_clicks_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedComments:
+            eventName = @"stats_comments_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedCountries:
+            eventName = @"stats_countries_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedFollowers:
+            eventName = @"stats_followers_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedPostsAndPages:
+            eventName = @"stats_posts_and_pages_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedPublicize:
+            eventName = @"stats_publicize_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedReferrers:
+            eventName = @"stats_referrers_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedSearchTerms:
+            eventName = @"stats_search_terms_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedTagsAndCategories:
+            eventName = @"stats_tags_and_categories_view_more_tapped";
+            break;
+        case WPAnalyticsStatStatsViewMoreTappedVideoPlays:
+            eventName = @"stats_video_plays_view_more_tapped";
             break;
         case WPAnalyticsStatStockMediaAccessed:
             eventName = @"stock_media_accessed";
