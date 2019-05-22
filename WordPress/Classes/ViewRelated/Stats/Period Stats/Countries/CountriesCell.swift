@@ -7,6 +7,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var separatorLine: UIView!
     @IBOutlet weak var subtitleStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
+    @IBOutlet weak var countriesMapContainer: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
 
@@ -19,6 +20,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
+    private let mapView = CountriesMapView.loadFromNib()
 
     // MARK: - Configure
 
@@ -33,11 +35,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.forDetails = forDetails
 
-        // TODO: in xib when add map:
-        // - unhide Map View
-        // - Separator Line: enable Top Space to Map View constraint
-        // - Separator Line: remove Top Space to Superview constraint
-
         if !forDetails {
         addRows(dataRows,
                 toStackView: rowsStackView,
@@ -48,13 +45,15 @@ class CountriesCell: UITableViewCell, NibLoadable {
 
         setSubtitleVisibility()
         applyStyles()
+
+        countriesMapContainer.addArrangedSubview(mapView)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)
+        removeRowsFromStackView(countriesMapContainer)
     }
-
 }
 
 private extension CountriesCell {
