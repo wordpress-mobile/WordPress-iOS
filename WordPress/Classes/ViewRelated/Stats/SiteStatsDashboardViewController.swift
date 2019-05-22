@@ -60,6 +60,16 @@ private extension SiteStatsDashboardViewController {
             case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
             }
         }
+
+        var analyticsAccessEvent: WPAnalyticsStat {
+            switch self {
+            case .insights: return .statsInsightsAccessed
+            case .days:     return .statsPeriodDaysAccessed
+            case .weeks:    return .statsPeriodWeeksAccessed
+            case .months:   return .statsPeriodMonthsAccessed
+            case .years:    return .statsPeriodYearsAccessed
+            }
+        }
     }
 
     var currentSelectedPeriod: StatsPeriodType {
@@ -72,6 +82,7 @@ private extension SiteStatsDashboardViewController {
             setContainerViewVisibility()
             updatePeriodView()
             saveSelectedPeriodToUserDefaults()
+            trackAccessEvent()
         }
     }
 
@@ -119,5 +130,20 @@ private extension SiteStatsDashboardViewController {
         periodTableViewController?.selectedDate = Date()
         let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
         periodTableViewController?.selectedPeriod = selectedPeriod
+    }
+}
+
+// MARK: - Tracks Support
+
+private extension SiteStatsDashboardViewController {
+
+    func trackAccessEvent() {
+        let event = currentSelectedPeriod.analyticsAccessEvent
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
     }
 }
