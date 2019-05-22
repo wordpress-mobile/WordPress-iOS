@@ -61,6 +61,14 @@ class PostCompactCellTests: XCTestCase {
         XCTAssertEqual(postActionSheetDelegateMock.calledWithView, postCell.menuButton)
     }
 
+    func testStatusAndBadgeLabels() {
+        let post = PostBuilder().with(dateCreated: Date()).drafted().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertEqual(postCell.badgesLabel.text, "Uploading post...")
+    }
+
     private func postCellFromNib() -> PostCompactCell {
         let bundle = Bundle(for: PostCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {

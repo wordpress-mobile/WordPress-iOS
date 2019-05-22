@@ -20,13 +20,21 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
     }()
 
-    var post: Post!
+    private var post: Post! {
+        didSet {
+            if post != oldValue {
+                viewModel = PostCardStatusViewModel(post: post)
+            }
+        }
+    }
+    private var viewModel: PostCardStatusViewModel!
 
     func configure(with post: Post) {
         self.post = post
 
         configureTitle()
         configureDate()
+        configureStatus()
         configureFeaturedImage()
     }
 
@@ -52,7 +60,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         titleLabel.textColor = WPStyleGuide.darkGrey()
         timestampLabel.textColor = WPStyleGuide.grey()
-        badgesLabel.textColor = WPStyleGuide.darkYellow()
         menuButton.tintColor = WPStyleGuide.greyLighten10()
 
         menuButton.setImage(Gridicon.iconOfType(.ellipsis), for: .normal)
@@ -90,6 +97,11 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     private func configureDate() {
         let post = self.post.latest()
         timestampLabel.text = post.dateStringForDisplay()
+    }
+
+    private func configureStatus() {
+        badgesLabel.textColor = viewModel.statusColor
+        badgesLabel.text = viewModel.statusAndBadges
     }
 }
 
