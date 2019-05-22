@@ -211,14 +211,18 @@ private extension StatsTotalRow {
         }
 
         if let iconURL = rowData.socialIconURL {
+            // Show a grey box with rounded corners until image is loaded.
+            imageView.backgroundColor = Style.iconLoadingBackgroundColor
+            imageView.layer.cornerRadius = 4.0
             downloadImageFrom(iconURL)
         }
 
         if let iconURL = rowData.userIconURL {
+            // Show user icon as a circle.
             imageView.layer.cornerRadius = imageSize * 0.5
             imageView.clipsToBounds = true
 
-            // Use placeholder image until real image is loaded.
+            // Use placeholder image until image is loaded.
             imageView.image = Style.gravatarPlaceholderImage()
 
             downloadImageFrom(iconURL)
@@ -255,6 +259,7 @@ private extension StatsTotalRow {
     func downloadImageFrom(_ iconURL: URL) {
         WPImageSource.shared()?.downloadImage(for: iconURL, withSuccess: { image in
             self.imageView.image = image
+            self.imageView.backgroundColor = .clear
         }, failure: { error in
             DDLogInfo("Error downloading image: \(String(describing: error?.localizedDescription)). From URL: \(iconURL).")
             self.imageView.isHidden = true
