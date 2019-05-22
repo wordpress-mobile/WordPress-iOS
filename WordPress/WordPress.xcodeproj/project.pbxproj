@@ -1035,6 +1035,8 @@
 		9A38DC6B218899FB006A409B /* DiffContentValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC66218899FB006A409B /* DiffContentValue.swift */; };
 		9A38DC6C218899FB006A409B /* RevisionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC67218899FB006A409B /* RevisionDiff.swift */; };
 		9A38DC6D218899FB006A409B /* DiffAbstractValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38DC68218899FB006A409B /* DiffAbstractValue.swift */; };
+		9A3BDA0E22944F3500FBF510 /* CountriesMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3BDA0D22944F3500FBF510 /* CountriesMapView.swift */; };
+		9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A3BDA0F22944F4D00FBF510 /* CountriesMapView.xib */; };
 		9A4697B221B002AD00468B64 /* RevisionDiffsPageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */; };
 		9A4E215A21F7565A00EFF212 /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */; };
 		9A4E215C21F75BBE00EFF212 /* QuickStartChecklistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */; };
@@ -3055,6 +3057,8 @@
 		9A38DC66218899FB006A409B /* DiffContentValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffContentValue.swift; path = Revisions/DiffContentValue.swift; sourceTree = "<group>"; };
 		9A38DC67218899FB006A409B /* RevisionDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RevisionDiff.swift; path = Revisions/RevisionDiff.swift; sourceTree = "<group>"; };
 		9A38DC68218899FB006A409B /* DiffAbstractValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiffAbstractValue.swift; path = Revisions/DiffAbstractValue.swift; sourceTree = "<group>"; };
+		9A3BDA0D22944F3500FBF510 /* CountriesMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapView.swift; sourceTree = "<group>"; };
+		9A3BDA0F22944F4D00FBF510 /* CountriesMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapView.xib; sourceTree = "<group>"; };
 		9A4697B121B002AD00468B64 /* RevisionDiffsPageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionDiffsPageManager.swift; sourceTree = "<group>"; };
 		9A4E215921F7565A00EFF212 /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
 		9A4E215B21F75BBE00EFF212 /* QuickStartChecklistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistManager.swift; sourceTree = "<group>"; };
@@ -6425,6 +6429,8 @@
 		981676D3221B7A2C00B81C3F /* Countries */ = {
 			isa = PBXGroup;
 			children = (
+				9A3BDA0D22944F3500FBF510 /* CountriesMapView.swift */,
+				9A3BDA0F22944F4D00FBF510 /* CountriesMapView.xib */,
 				981676D4221B7A4300B81C3F /* CountriesCell.swift */,
 				981676D5221B7A4300B81C3F /* CountriesCell.xib */,
 			);
@@ -9018,6 +9024,7 @@
 				9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */,
 				9826AE8C21B5CC8D00C851FA /* PostingActivityMonth.xib in Resources */,
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
+				9A3BDA1022944F4D00FBF510 /* CountriesMapView.xib in Resources */,
 				98797DBD222F434500128C21 /* OverviewCell.xib in Resources */,
 				9A8ECE1E2254AE4E0043C8DA /* JetpackRemoteInstallStateView.xib in Resources */,
 				98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */,
@@ -10590,6 +10597,7 @@
 				17E60E09220DBD6E00848F89 /* WKWebView+Preview.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
+				9A3BDA0E22944F3500FBF510 /* CountriesMapView.swift in Sources */,
 				17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
 				436D562C2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */,
