@@ -55,7 +55,7 @@ class PostCellGhostableTests: XCTestCase {
     }
 
     func testVerticalContentSpacing() {
-        XCTAssertEqual(postCell.verticalContentStackView.spacing, 0)
+        XCTAssertEqual(postCell.contentStackView.spacing, 0)
     }
 
     func testSpaceBetweenTitleAndSnippet() {
@@ -92,7 +92,7 @@ class PostCellGhostableTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.verticalContentStackView.spacing, 8)
+        XCTAssertEqual(postCell.contentStackView.spacing, 8)
     }
 
     func testTitleAndSnippetSpacingAfterConfigure() {
