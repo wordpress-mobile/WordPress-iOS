@@ -150,9 +150,9 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func configureItself() {
         isUserInteractionEnabled = true
-        contentStackView.spacing = 8
-        titleAndSnippetView.spacing = 3
-        actionBarView.layer.opacity = 1
+        contentStackView.spacing = Constants.contentSpacing
+        titleAndSnippetView.spacing = Constants.titleAndSnippetSpacing
+        actionBarView.layer.opacity = Constants.actionBarOpacity
     }
 
     private func configureFeaturedImage() {
@@ -167,7 +167,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             loadFeaturedImageIfNeeded(url, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImageStackView.isHidden = true
-            topPadding.constant = 8
+            topPadding.constant = Constants.paddingWithoutImage
         }
     }
 
@@ -341,9 +341,13 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private enum Constants {
         static let separator = " · "
         static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
+        static let paddingWithoutImage: CGFloat = 8
         static let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
         static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
         static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
+        static let contentSpacing: CGFloat = 8
+        static let titleAndSnippetSpacing: CGFloat = 3
+        static let actionBarOpacity: Float = 1
     }
 }
 
@@ -355,24 +359,36 @@ extension PostCell: InteractivePostView {
 
 extension PostCell: GhostableView {
     func ghostAnimationWillStart() {
+        WPStyleGuide.configureLabel(titleLabel, textStyle: .headline)
+        WPStyleGuide.configureLabel(snippetLabel, textStyle: .subheadline)
+        WPStyleGuide.configureLabel(dateLabel, textStyle: .subheadline)
+        WPStyleGuide.configureLabel(spacingLabel, textStyle: .subheadline)
+
         featuredImageStackView.isHidden = true
-        titleLabel.attributedText = NSAttributedString(string: " ")
+        titleLabel.attributedText = NSAttributedString(string: GhostConstants.textPlaceholder)
         snippetLabel.isHidden = false
-        snippetLabel.attributedText = dateLabel.attributedText
-        dateLabel.text = "dateGhostPlaceholder"
+        snippetLabel.attributedText = NSAttributedString(string: GhostConstants.textPlaceholder)
+        dateLabel.attributedText = NSAttributedString(string: GhostConstants.snippetPlaceholder)
         authorLabel.isHidden = true
         statusView.isHidden = true
         progressView.isHidden = true
-        actionBarView.layer.opacity = 0.5
+        actionBarView.layer.opacity = GhostConstants.actionBarOpacity
         isUserInteractionEnabled = false
 
-        topPadding.constant = margin
+        topPadding.constant = Constants.margin
         contentStackView.spacing = 0
-        titleAndSnippetView.spacing = contentSpacing * 2
-        titleAndSnippetView.setLayoutMargin(top: 0, bottom: contentSpacing)
+        titleAndSnippetView.spacing = Constants.contentSpacing * 2
+        titleAndSnippetView.setLayoutMargin(top: 0, bottom: Constants.contentSpacing)
 
         actionBarView.isGhostableDisabled = true
         upperBorder.isGhostableDisabled = true
         bottomBorder.isGhostableDisabled = true
+    }
+
+    private enum GhostConstants {
+        static let actionBarOpacity: Float = 0.5
+        static let spacing: CGFloat = 0
+        static let textPlaceholder = " "
+        static let snippetPlaceholder = "                                    "
     }
 }

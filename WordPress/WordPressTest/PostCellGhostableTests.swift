@@ -25,7 +25,7 @@ class PostCellGhostableTests: XCTestCase {
     }
 
     func testDateLabelPlaceholder() {
-        XCTAssertEqual(postCell.dateLabel?.text, "dateGhostPlaceholder")
+        XCTAssertEqual(postCell.dateLabel?.text, "                                    ")
     }
 
     func testHideAuthorLabel() {
