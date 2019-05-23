@@ -1,7 +1,7 @@
 import Foundation
 
 extension UIView {
-    func setLayoutMargin(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
+    func changeLayoutMargins(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
         let top = top ?? layoutMargins.top
         let left = left ?? layoutMargins.left
         let bottom = bottom ?? layoutMargins.bottom

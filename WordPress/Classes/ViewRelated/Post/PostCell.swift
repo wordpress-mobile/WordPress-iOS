@@ -152,7 +152,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitleAndSnippetView() {
-        titleAndSnippetView.setLayoutMargin(top: Constants.titleTopMargin)
+        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin)
     }
 
     private func configureTitle() {
@@ -230,7 +230,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
         }
 
-        actionBarView.setLayoutMargin(top: Constants.margin - contentStackView.spacing)
+        actionBarView.changeLayoutMargins(top: Constants.margin - contentStackView.spacing)
     }
 
     private func setupLabels() {
@@ -264,7 +264,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         contentStackView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
         contentStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
-        contentStackView.subviews.forEach { $0.setLayoutMargin(left: 0, right: 0) }
+        contentStackView.subviews.forEach { $0.changeLayoutMargins(left: 0, right: 0) }
 
         topMargin.constant = Constants.margin
     }

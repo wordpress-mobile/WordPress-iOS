@@ -13,7 +13,7 @@ class UIViewLayoutMarginTests: XCTestCase {
     }
 
     func testChangeOnlyTopLayoutMargin() {
-        view.setLayoutMargin(top: 10)
+        view.changeLayoutMargins(top: 10)
 
         XCTAssertEqual(view.layoutMargins.top, 10)
         XCTAssertEqual(view.layoutMargins.left, 5)
@@ -22,7 +22,7 @@ class UIViewLayoutMarginTests: XCTestCase {
     }
 
     func testChangeOnlyLeftLayoutMargin() {
-        view.setLayoutMargin(left: 10)
+        view.changeLayoutMargins(left: 10)
 
         XCTAssertEqual(view.layoutMargins.top, 5)
         XCTAssertEqual(view.layoutMargins.left, 10)
@@ -31,7 +31,7 @@ class UIViewLayoutMarginTests: XCTestCase {
     }
 
     func testChangeOnlyBottomLayoutMargin() {
-        view.setLayoutMargin(bottom: 10)
+        view.changeLayoutMargins(bottom: 10)
 
         XCTAssertEqual(view.layoutMargins.top, 5)
         XCTAssertEqual(view.layoutMargins.left, 5)
@@ -40,7 +40,7 @@ class UIViewLayoutMarginTests: XCTestCase {
     }
 
     func testChangeOnlyRightLayoutMargin() {
-        view.setLayoutMargin(right: 10)
+        view.changeLayoutMargins(right: 10)
 
         XCTAssertEqual(view.layoutMargins.top, 5)
         XCTAssertEqual(view.layoutMargins.left, 5)
