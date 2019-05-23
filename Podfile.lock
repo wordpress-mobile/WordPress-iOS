@@ -252,7 +252,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.6.3)
   - WordPressAuthenticator (~> 1.5.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `bug/allow-specifying-limit-for-summary-queries`)
+  - WordPressKit (~> 4.1-beta)
   - WordPressShared (~> 1.8.1-beta)
   - WordPressUI (~> 1.3.0)
   - WPMediaPicker (~> 1.4.1)
@@ -297,6 +297,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -325,9 +326,6 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.5.1
-  WordPressKit:
-    :branch: bug/allow-specifying-limit-for-summary-queries
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.5.1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -344,9 +342,6 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.5.1
-  WordPressKit:
-    :commit: 63e0ad21a4924a37c4b52a54994619bc10a15221
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -401,6 +396,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: ca7f46e9d10789962c072cacde793e5b39f4878d
+PODFILE CHECKSUM: 5e98b2b9d05c0cd7a378a974b3b0dff6e69e63b7
 
 COCOAPODS: 1.6.1
