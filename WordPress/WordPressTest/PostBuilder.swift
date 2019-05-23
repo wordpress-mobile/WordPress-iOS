@@ -55,6 +55,11 @@ class PostBuilder {
         return self
     }
 
+    func with(dateModified: Date) -> PostBuilder {
+        post.dateModified = dateModified
+        return self
+    }
+
     func with(author: String) -> PostBuilder {
         post.author = author
         return self

@@ -63,7 +63,7 @@ class PostCellTests: XCTestCase {
     }
 
     func testShowDate() {
-        let post = PostBuilder().with(dateCreated: Date()).drafted().build()
+        let post = PostBuilder().with(dateModified: Date()).drafted().build()
 
         postCell.configure(with: post)
 
