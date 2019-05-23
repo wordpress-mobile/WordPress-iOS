@@ -233,10 +233,9 @@ open class AboutViewController: UITableViewController {
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
 
-                // review: name of URL - any way to indicate it's a local file and not a web address?
-                Row(title: NSLocalizedString("Acknowledgments", comment: "Props to the library authors!"),
+                Row(title: NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use"),
                     details: nil,
-                    handler: { self.displayWebView(WPAcknowledgementsURL) }),
+                    handler: { self.displayWebView(Bundle.main.url(forResource: "Pods-WordPress-acknowledgements", withExtension:"html")) }),
             ]
         ]
     }
