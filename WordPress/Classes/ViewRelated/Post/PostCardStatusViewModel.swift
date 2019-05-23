@@ -4,7 +4,6 @@ import Gridicons
 /// Encapsulates status display logic for PostCardTableViewCells.
 ///
 class PostCardStatusViewModel: NSObject {
-    private let separator = "·"
     private let post: Post
     private var progressObserverUUID: UUID? = nil
     @objc var progressBlock: ((Float) -> Void)? = nil {
@@ -53,7 +52,7 @@ class PostCardStatusViewModel: NSObject {
 
         let status = [self.status ?? "", isUploadingOrFailed ? "" : sticky]
 
-        return status.filter { !$0.isEmpty }.joined(separator: " \(separator) ")
+        return status.filter { !$0.isEmpty }.joined(separator: " \(Constants.separator) ")
     }
 
     var authorWithSeparator: String {
@@ -61,7 +60,7 @@ class PostCardStatusViewModel: NSObject {
             return ""
         }
 
-        return " \(separator) \(author)"
+        return " \(Constants.separator) \(author)"
     }
 
     var isUploadingOrFailed: Bool {
@@ -150,5 +149,9 @@ class PostCardStatusViewModel: NSObject {
         } else {
             return Float(MediaCoordinator.shared.totalProgress(for: post))
         }
+    }
+
+    private enum Constants {
+        static let separator = "·"
     }
 }
