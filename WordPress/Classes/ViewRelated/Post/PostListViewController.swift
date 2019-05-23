@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
+import Gridicons
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
@@ -55,8 +56,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    private var postViewIcon: UIImage? {
+        return isCompact ? UIImage(named: "icon-post-view-card") : Gridicon.iconOfType(.listUnordered)
+    }
+
     private lazy var postActionSheet: PostActionSheet = {
         return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
+    }()
+
+    private lazy var postsViewButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(image: postViewIcon, style: .done, target: self, action: #selector(togglePostsView))
     }()
 
     private var showingJustMyPosts: Bool {
@@ -68,6 +77,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             configureGhost()
             tableView.separatorStyle = separatorStyle
             tableView.reloadSections([0], with: .automatic)
+            postsViewButtonItem.image = postViewIcon
         }
     }
 
@@ -136,6 +146,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         configureFilterBarTopConstraint()
         configureGhost()
+
+        configurePostViewButtonItem()
+    }
+
+    func configurePostViewButtonItem() {
+        navigationItem.rightBarButtonItems = [postsViewButtonItem]
+    }
+
+    @objc func togglePostsView() {
+        isCompact.toggle()
     }
 
     // MARK: - Configuration
