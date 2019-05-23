@@ -506,7 +506,9 @@
 
 - (NSString *)dateStringForDisplay
 {
-    if ([self isScheduled]) {
+    if ([self isDraft] || [self.status isEqualToString:PostStatusPending]) {
+        return [[self dateModified] mediumString];
+    } else if ([self isScheduled]) {
         return [[self dateCreated] mediumStringWithTime];
     } else if ([self shouldPublishImmediately]) {
         return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
