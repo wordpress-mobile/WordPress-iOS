@@ -172,7 +172,7 @@ target 'WordPress' do
     end
 
     ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
-    post_install do | installer |
+    post_install do
         require 'commonmarker'
         
         markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')

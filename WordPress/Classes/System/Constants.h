@@ -11,7 +11,6 @@ extern NSString *const WPComDefaultAccountUrlKey;
 extern NSString *const WPMobileReaderURL;
 extern NSString *const WPMobileReaderDetailURL;
 extern NSString *const WPAutomatticMainURL;
-extern NSString *const WPAcknowledgementsURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
 extern NSString *const WPAutomatticCookiesURL;
