@@ -57,7 +57,7 @@ public struct ImmuTable {
 
     /// This function exists for testing purposes
     /// - seealso: registerRows(_:tableView:)
-    internal static func registerRows(_ rows: [ImmuTableRow.Type], registrator: CellRegistrator) {
+    internal static func registerRows(_ rows: [ImmuTableRow.Type], registrator: CellRegistrar) {
         let registrables = rows.reduce([:]) {
             (classes, row) -> [String: ImmuTableCell] in
 
@@ -373,12 +373,12 @@ public typealias ImmuTableAction = (ImmuTableRow) -> Void
 
 // MARK: - Internal testing helpers
 
-protocol CellRegistrator {
+protocol CellRegistrar {
     func register(_ cell: ImmuTableCell, cellReuseIdentifier: String)
 }
 
 
-extension UITableView: CellRegistrator {
+extension UITableView: CellRegistrar {
     public func register(_ cell: ImmuTableCell, cellReuseIdentifier: String) {
         switch cell {
         case .nib(let nib, _):
