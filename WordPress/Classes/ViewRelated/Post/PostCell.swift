@@ -28,6 +28,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
     private let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
     private let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
+    private let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -207,7 +208,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func setupBorders() {
         [upperBorder, bottomBorder].forEach { border in
-            border?.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+            border?.heightAnchor.constraint(equalToConstant: borderHeight).isActive = true
             border?.backgroundColor = WPStyleGuide.postCardBorderColor()
         }
     }

@@ -41,7 +41,7 @@
     [WPStyleGuide applyRestorePostButtonStyle:self.restoreButton];
 
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
-    self.postContentView.layer.borderWidth = 0.5;
+    self.postContentView.layer.borderWidth = 1.0 / UIScreen.mainScreen.scale;
 }
 
 - (void)configureView
