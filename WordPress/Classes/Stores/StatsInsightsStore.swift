@@ -292,9 +292,9 @@ private extension StatsInsightsStore {
             self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
         }
 
-        api.getInsight { (streak: StatsPostingStreakInsight?, error) in
+        api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching posting activity insight: \(String(describing: error?.localizedDescription))")
             }
 
             self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
