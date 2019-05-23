@@ -19,6 +19,7 @@ NSString *const TodayCacheKey = @"Today";
 @property (nonatomic, strong) NSNumber *siteId;
 @property (nonatomic, strong) NSString *oauth2Token;
 @property (nonatomic, strong) NSTimeZone *siteTimeZone;
+@property (nonatomic, strong) NSString *apiBaseUrlString;
 @property (nonatomic, strong) StatsEphemory *ephemory;
 @property (nonatomic, strong) StatsDateUtilities *dateUtilities;
 
@@ -39,11 +40,12 @@ NSString *const TodayCacheKey = @"Today";
     return self;
 }
 
-- (instancetype)initWithSiteId:(NSNumber *)siteId siteTimeZone:(NSTimeZone *)timeZone oauth2Token:(NSString *)oauth2Token andCacheExpirationInterval:(NSTimeInterval)cacheExpirationInterval
+- (instancetype)initWithSiteId:(NSNumber *)siteId siteTimeZone:(NSTimeZone *)timeZone oauth2Token:(NSString *)oauth2Token andCacheExpirationInterval:(NSTimeInterval)cacheExpirationInterval apiBaseUrlString:(NSString *)apiBaseUrlString
 {
     NSAssert(oauth2Token.length > 0, @"OAuth2 token must not be empty.");
     NSAssert(siteId != nil, @"Site ID must not be nil.");
     NSAssert(timeZone != nil, @"Timezone must not be nil.");
+    NSAssert(apiBaseUrlString != nil, @"Base Url must not be nil.");
 
     self = [super init];
     if (self) {
@@ -51,6 +53,7 @@ NSString *const TodayCacheKey = @"Today";
         _oauth2Token = oauth2Token;
         _siteTimeZone = timeZone ?: [NSTimeZone localTimeZone];
         _ephemory = [[StatsEphemory alloc] initWithExpiryInterval:cacheExpirationInterval];
+        _apiBaseUrlString = apiBaseUrlString;
     }
 
     return self;
@@ -493,7 +496,10 @@ NSString *const TodayCacheKey = @"Today";
 - (WPStatsServiceRemote *)remote
 {
     if (!_remote) {
-        _remote = [[WPStatsServiceRemote alloc] initWithOAuth2Token:self.oauth2Token siteId:self.siteId andSiteTimeZone:self.siteTimeZone];
+        _remote = [[WPStatsServiceRemote alloc] initWithOAuth2Token:self.oauth2Token
+                                                             siteId:self.siteId
+                                                    andSiteTimeZone:self.siteTimeZone
+                                                      baseUrlString:self.apiBaseUrlString];
     }
 
     return _remote;
