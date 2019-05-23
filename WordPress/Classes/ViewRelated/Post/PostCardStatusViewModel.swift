@@ -41,16 +41,11 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    var sticky: String {
-        let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
-        return post.isStickyPost ? stickyLabel : ""
-    }
-
     var statusAndBadges: String {
+        let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
+        let status = self.status ?? ""
 
-        let status = [self.status ?? "", isUploadingOrFailed ? "" : sticky]
-
-        return status.filter { !$0.isEmpty }.joined(separator: " \(Constants.separator) ")
+        return [status, sticky].filter { !$0.isEmpty }.joined(separator: " \(Constants.separator) ")
     }
 
     var authorWithSeparator: String {
@@ -61,12 +56,8 @@ class PostCardStatusViewModel: NSObject {
         return " \(Constants.separator) \(author)"
     }
 
-    var isUploadingOrFailed: Bool {
+    private var isUploadingOrFailed: Bool {
         return MediaCoordinator.shared.isUploadingMedia(for: post) || post.isFailed || post.remoteStatus == .pushing
-    }
-
-    var shouldShowStickyLabel: Bool {
-        return post.isStickyPost && !isUploadingOrFailed
     }
 
     private var postStatus: BasePost.Status? {
@@ -151,5 +142,6 @@ class PostCardStatusViewModel: NSObject {
 
     private enum Constants {
         static let separator = "·"
+        static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
     }
 }
