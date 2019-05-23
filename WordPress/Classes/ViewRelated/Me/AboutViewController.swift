@@ -235,7 +235,7 @@ open class AboutViewController: UITableViewController {
 
                 Row(title: NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use"),
                     details: nil,
-                    handler: { self.displayWebView(Bundle.main.url(forResource: "Pods-WordPress-acknowledgements", withExtension:"html")) }),
+                    handler: { self.displayWebView(Bundle.main.url(forResource: "acknowledgements", withExtension:"html")) }),
             ]
         ]
     }
