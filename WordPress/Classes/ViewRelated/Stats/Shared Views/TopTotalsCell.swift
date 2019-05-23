@@ -309,7 +309,6 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         toggleSeparatorsAroundRow(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
-        siteStatsDetailsDelegate?.expandedRowUpdated?(row)
         postStatsDelegate?.expandedRowUpdated?(row)
     }
 

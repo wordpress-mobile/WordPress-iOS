@@ -37,7 +37,7 @@ class DetailDataCell: UITableViewCell, NibLoadable {
         self.detailsDelegate = detailsDelegate
 
         let row = StatsTotalRow.loadFromNib()
-        row.configure(rowData: rowData, delegate: self)
+        row.configure(rowData: rowData, delegate: self, forDetails: true)
 
         bottomExpandedSeparatorLine.isHidden = hideFullSeparator
 

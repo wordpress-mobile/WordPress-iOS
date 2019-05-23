@@ -8,7 +8,12 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var insightsContainerView: UIView!
     @IBOutlet weak var statsContainerView: UIView!
 
-    private var insightsTableViewController: SiteStatsInsightsTableViewController?
+    private var insightsTableViewController: SiteStatsInsightsTableViewController? {
+        didSet {
+            prepareTableViewForAnalytics(insightsTableViewController?.tableView)
+        }
+    }
+
     private var periodTableViewController: SiteStatsPeriodTableViewController?
 
     // MARK: - View
@@ -60,6 +65,16 @@ private extension SiteStatsDashboardViewController {
             case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
             }
         }
+
+        var analyticsAccessEvent: WPAnalyticsStat {
+            switch self {
+            case .insights: return .statsInsightsAccessed
+            case .days:     return .statsPeriodDaysAccessed
+            case .weeks:    return .statsPeriodWeeksAccessed
+            case .months:   return .statsPeriodMonthsAccessed
+            case .years:    return .statsPeriodYearsAccessed
+            }
+        }
     }
 
     var currentSelectedPeriod: StatsPeriodType {
@@ -72,6 +87,7 @@ private extension SiteStatsDashboardViewController {
             setContainerViewVisibility()
             updatePeriodView()
             saveSelectedPeriodToUserDefaults()
+            trackAccessEvent()
         }
     }
 
@@ -119,5 +135,50 @@ private extension SiteStatsDashboardViewController {
         periodTableViewController?.selectedDate = Date()
         let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
         periodTableViewController?.selectedPeriod = selectedPeriod
+        prepareTableViewForAnalytics(periodTableViewController?.tableView)
+    }
+}
+
+// MARK: - Tracks Support
+
+private extension SiteStatsDashboardViewController {
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
+    }
+
+    func prepareTableViewForAnalytics(_ tableView: UIScrollView?) {
+        tableView?.delegate = self
+    }
+
+    func trackAccessEvent() {
+        let event = currentSelectedPeriod.analyticsAccessEvent
+        captureAnalyticsEvent(event)
+    }
+
+    func trackScrollToBottomEvent() {
+        captureAnalyticsEvent(.statsScrolledToBottom)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension SiteStatsDashboardViewController: UIScrollViewDelegate {
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+
+        let targetOffsetY = Int(targetContentOffset.pointee.y)
+
+        let scrollViewContentHeight = scrollView.contentSize.height
+        let visibleScrollViewHeight = scrollView.bounds.height
+        let effectiveScrollViewHeight = Int(scrollViewContentHeight - visibleScrollViewHeight)
+
+        if targetOffsetY >= effectiveScrollViewHeight {
+            trackScrollToBottomEvent()
+        }
     }
 }
