@@ -82,6 +82,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        // Don't respond to taps in margins.
         if !containerView.frame.contains(point) {
             return nil
         }
