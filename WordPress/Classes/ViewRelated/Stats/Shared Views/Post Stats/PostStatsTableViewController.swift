@@ -40,6 +40,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         initViewModel()
         displayLoadingViewIfNecessary()
+        trackAccessEvent()
     }
 
     func configure(postID: Int, postTitle: String?, postURL: URL?) {
@@ -89,6 +90,20 @@ private extension PostStatsTableViewController {
 
             self?.refreshTableView()
         }
+    }
+
+    func trackAccessEvent() {
+        var properties = [AnyHashable: Any]()
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            properties["blog_id"] = blogIdentifier
+        }
+
+        if let postIdentifier = postID {
+            properties["post_id"] = postIdentifier
+        }
+
+        WPAppAnalytics.track(.statsSinglePostAccessed, withProperties: properties)
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
