@@ -175,8 +175,17 @@ target 'WordPress' do
         require 'commonmarker'
         
         markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
-        html = CommonMarker.render_html(markdown, :DEFAULT)
-        File.write('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.html', html)
+        rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+        styled_html = "<style>
+                         body {
+                           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                         }
+                      </style>
+                      <body>
+                        #{rendered_html}
+                      </body>"
+                        
+        File.write('Pods/Target Support Files/Pods-WordPress/acknowledgements.html', styled_html)    
     end
 end
 
