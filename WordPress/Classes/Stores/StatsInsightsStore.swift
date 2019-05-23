@@ -655,13 +655,6 @@ extension StatsInsightsStore {
     ///
     func getMonthlyPostingActivityFor(date: Date) -> [PostingStreakEvent] {
 
-        guard
-            let postingEvents = state.postingActivity?.postingEvents,
-            postingEvents.count > 0
-            else {
-                return []
-        }
-
         let calendar = Calendar.autoupdatingCurrent
         let components = calendar.dateComponents([.month, .year], from: date)
 
@@ -671,6 +664,8 @@ extension StatsInsightsStore {
             else {
                 return []
         }
+
+        let postingEvents = state.postingActivity?.postingEvents ?? []
 
         // This gives a range of how many days there are in a given month...
         let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
