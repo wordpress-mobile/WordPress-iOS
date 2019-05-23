@@ -75,7 +75,7 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.authorLabel.text, " · John Doe")
+        XCTAssertEqual(postCell.authorLabel.text, "· John Doe")
     }
 
     func testShowStickyLabelWhenPostIsSticky() {

@@ -48,12 +48,12 @@ class PostCardStatusViewModel: NSObject {
         return [status, sticky].filter { !$0.isEmpty }.joined(separator: " \(Constants.separator) ")
     }
 
-    var authorWithSeparator: String {
+    var author: String {
         guard let author = post.authorForDisplay() else {
             return ""
         }
 
-        return " \(Constants.separator) \(author)"
+        return author
     }
 
     private var isUploadingOrFailed: Bool {
@@ -138,6 +138,12 @@ class PostCardStatusViewModel: NSObject {
         } else {
             return Float(MediaCoordinator.shared.totalProgress(for: post))
         }
+    }
+
+    func author(separatorDirection direction: UIUserInterfaceLayoutDirection) -> String {
+        let leftSeparator = direction == .leftToRight ? "\(Constants.separator) " : ""
+        let rightSeparator = direction == .rightToLeft ? " \(Constants.separator)" : ""
+        return "\(leftSeparator)\(author)\(rightSeparator)"
     }
 
     private enum Constants {

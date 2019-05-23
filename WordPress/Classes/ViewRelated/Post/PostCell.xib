@@ -76,8 +76,14 @@
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-Qn-Vgl">
-                                                        <rect key="frame" x="210" y="11" width="84" height="18"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cwN-GI-tSc">
+                                                        <rect key="frame" x="210" y="10" width="4.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Author" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-Qn-Vgl">
+                                                        <rect key="frame" x="214.5" y="11" width="79.5" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -87,9 +93,11 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="l4E-Qn-Vgl" secondAttribute="trailing" id="Cbe-Nu-PmP"/>
-                                                    <constraint firstItem="l4E-Qn-Vgl" firstAttribute="leading" secondItem="q5D-nc-yvr" secondAttribute="trailing" id="Nqw-eS-fcl"/>
                                                     <constraint firstItem="q5D-nc-yvr" firstAttribute="leading" secondItem="c55-4m-uvT" secondAttribute="leading" id="PEu-54-Dh3"/>
-                                                    <constraint firstItem="l4E-Qn-Vgl" firstAttribute="centerY" secondItem="q5D-nc-yvr" secondAttribute="centerY" id="SlK-2N-1iP"/>
+                                                    <constraint firstItem="cwN-GI-tSc" firstAttribute="leading" secondItem="q5D-nc-yvr" secondAttribute="trailing" id="Qhz-fU-WjD"/>
+                                                    <constraint firstItem="cwN-GI-tSc" firstAttribute="centerY" secondItem="l4E-Qn-Vgl" secondAttribute="centerY" id="Uks-0n-ECd"/>
+                                                    <constraint firstItem="q5D-nc-yvr" firstAttribute="centerY" secondItem="cwN-GI-tSc" secondAttribute="centerY" id="b8Z-AR-2bW"/>
+                                                    <constraint firstItem="l4E-Qn-Vgl" firstAttribute="leading" secondItem="cwN-GI-tSc" secondAttribute="trailing" id="lyg-NR-cHe"/>
                                                     <constraint firstItem="q5D-nc-yvr" firstAttribute="centerY" secondItem="c55-4m-uvT" secondAttribute="centerY" id="nVt-TJ-b8A"/>
                                                     <constraint firstAttribute="height" secondItem="q5D-nc-yvr" secondAttribute="height" id="yib-9p-eXd"/>
                                                 </constraints>
@@ -229,6 +237,7 @@
                 <outlet property="progressView" destination="33v-Uz-9S6" id="Ie3-MT-W3v"/>
                 <outlet property="retryButton" destination="ZFa-Ih-GYE" id="eqD-Eb-Qmj"/>
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>
+                <outlet property="spacingLabel" destination="cwN-GI-tSc" id="ajs-BW-1gA"/>
                 <outlet property="statusLabel" destination="Dbu-l3-L8G" id="MDp-Ba-Uon"/>
                 <outlet property="statusView" destination="Qxw-fl-tZF" id="LgT-lv-fng"/>
                 <outlet property="titleAndSnippetView" destination="8a8-4i-YeE" id="RiQ-4D-z0x"/>

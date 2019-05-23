@@ -9,6 +9,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var spacingLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -31,6 +32,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private var post: Post!
     private var viewModel: PostCardStatusViewModel!
+    private var currentLoadedFeaturedImage: String?
     private weak var interactivePostViewDelegate: InteractivePostViewDelegate?
     private weak var actionSheetDelegate: PostActionSheetDelegate?
     var isAuthorHidden: Bool = false {
@@ -61,6 +63,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         super.awakeFromNib()
 
         applyStyles()
+        adjustInsetsForTextDirection()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -106,6 +109,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostTitleStyle(titleLabel)
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
         WPStyleGuide.applyPostDateStyle(dateLabel)
+        WPStyleGuide.applyPostDateStyle(spacingLabel)
         WPStyleGuide.applyPostDateStyle(authorLabel)
         WPStyleGuide.configureLabel(statusLabel, textStyle: UIFont.TextStyle.subheadline)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
@@ -133,10 +137,17 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
             featuredImageStackView.isHidden = false
             topPadding.constant = Constants.margin
-            imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
+            loadFeaturedImageIfNeeded(url, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImageStackView.isHidden = true
             topPadding.constant = 8
+        }
+    }
+
+    private func loadFeaturedImageIfNeeded(_ url: URL, preferredSize: CGSize) {
+        if currentLoadedFeaturedImage != url.absoluteString {
+            currentLoadedFeaturedImage = url.absoluteString
+            imageLoader.loadImage(with: url, from: post, preferredSize: preferredSize)
         }
     }
 
@@ -170,7 +181,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureAuthor() {
-        authorLabel.text = viewModel.authorWithSeparator
+        let interfaceLayoutDirection = authorLabel.userInterfaceLayoutDirection()
+        authorLabel.text = viewModel.author(separatorDirection: interfaceLayoutDirection)
     }
 
     private func configureStatusLabel() {
@@ -211,6 +223,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func setupActionBar() {
         actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
+            button.flipInsetsForRightToLeftLayoutDirection()
             button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
             button.setTitleColor(WPStyleGuide.grey(), for: .normal)
             button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
@@ -254,6 +267,12 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         contentStackView.subviews.forEach { $0.setLayoutMargin(left: 0, right: 0) }
 
         topMargin.constant = Constants.margin
+    }
+
+    private func adjustInsetsForTextDirection() {
+        actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach {
+            $0.flipInsetsForRightToLeftLayoutDirection()
+        }
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
