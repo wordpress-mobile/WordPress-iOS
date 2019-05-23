@@ -25,11 +25,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var titleAndSnippetView: UIStackView!
     @IBOutlet weak var topMargin: NSLayoutConstraint!
 
-    private let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
-    private let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
-    private let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
-    private let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
-
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
     }()
@@ -128,7 +123,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupFeaturedImage() {
-        featuredImageHeight.constant = featuredImageHeightConstant
+        featuredImageHeight.constant = Constants.featuredImageHeightConstant
     }
 
     private func configureFeaturedImage() {
@@ -137,7 +132,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         if let url = post.featuredImageURLForDisplay(),
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
             featuredImageStackView.isHidden = false
-            topPadding.constant = margin
+            topPadding.constant = Constants.margin
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImageStackView.isHidden = true
@@ -146,7 +141,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitleAndSnippetView() {
-        titleAndSnippetView.setLayoutMargin(top: titleTopMargin)
+        titleAndSnippetView.setLayoutMargin(top: Constants.titleTopMargin)
     }
 
     private func configureTitle() {
@@ -209,7 +204,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func setupBorders() {
         [upperBorder, bottomBorder].forEach { border in
-            border?.heightAnchor.constraint(equalToConstant: borderHeight).isActive = true
+            border?.heightAnchor.constraint(equalToConstant: Constants.borderHeight).isActive = true
             border?.backgroundColor = WPStyleGuide.postCardBorderColor()
         }
     }
@@ -222,7 +217,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
         }
 
-        actionBarView.setLayoutMargin(top: margin - contentStackView.spacing)
+        actionBarView.setLayoutMargin(top: Constants.margin - contentStackView.spacing)
     }
 
     private func setupLabels() {
@@ -245,7 +240,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
             marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
             marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
-            marginMask.heightAnchor.constraint(equalToConstant: margin).isActive = true
+            marginMask.heightAnchor.constraint(equalToConstant: Constants.margin).isActive = true
             marginMask.backgroundColor = WPStyleGuide.greyLighten30()
         }
     }
@@ -258,11 +253,18 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         contentStackView.subviews.forEach { $0.setLayoutMargin(left: 0, right: 0) }
 
-        topMargin.constant = margin
+        topMargin.constant = Constants.margin
     }
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
         actionSheetDelegate = delegate
+    }
+
+    private enum Constants {
+        static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
+        static let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
+        static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
+        static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
     }
 }
 
