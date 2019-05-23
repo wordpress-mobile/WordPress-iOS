@@ -468,7 +468,6 @@
 		5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3DD175E7452005CFF05 /* ReaderPost.m */; };
 		5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A402175E76A2005CFF05 /* WPImageViewController.m */; };
 		5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
-		5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */; };
 		5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4E30D01AA4B41A000D9904 /* WPStyleGuide+Posts.m */; };
 		5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */; };
 		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
@@ -2413,7 +2412,6 @@
 		5D42A402175E76A2005CFF05 /* WPImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageViewController.m; sourceTree = "<group>"; };
 		5D44EB361986D8BA008B7175 /* ReaderSiteService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSiteService.h; sourceTree = "<group>"; };
 		5D44EB371986D8BA008B7175 /* ReaderSiteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSiteService.m; sourceTree = "<group>"; };
-		5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardTextCell.xib; sourceTree = "<group>"; };
 		5D4E30CF1AA4B41A000D9904 /* WPStyleGuide+Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Posts.h"; sourceTree = "<group>"; };
 		5D4E30D01AA4B41A000D9904 /* WPStyleGuide+Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Posts.m"; sourceTree = "<group>"; };
 		5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-20-21.xcmappingmodel"; sourceTree = "<group>"; };
@@ -5319,7 +5317,6 @@
 				5D2FB2841AE98C6600F1D4ED /* RestorePostTableViewCell.h */,
 				5D2FB2851AE98C6600F1D4ED /* RestorePostTableViewCell.m */,
 				5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */,
-				5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */,
 				5D2C05541AD2F56200A753FE /* NavBarTitleDropdownButton.h */,
 				5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */,
 				5D732F951AE84E3C00CD89E7 /* PostListFooterView.h */,
@@ -8998,7 +8995,6 @@
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
-				5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */,
 				D8380CA52192E77F00250609 /* VerticalsCell.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				9826AE8821B5C73400C851FA /* PostingActivityDay.xib in Resources */,
