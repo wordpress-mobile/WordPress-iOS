@@ -12,10 +12,10 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
+    @IBOutlet var titleAndTimestampSpacing: NSLayoutConstraint!
+    @IBOutlet var labelsCenter: NSLayoutConstraint!
 
-    static var height: CGFloat = 60
-    private var contentSpacing: CGFloat = 8
-    private var imageRadius: CGFloat = 2
+    static let height: CGFloat = 60
 
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
@@ -35,6 +35,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     func configure(with post: Post) {
         self.post = post
 
+        resetGhostStyles()
         configureTitle()
         configureDate()
         configureStatus()
@@ -53,14 +54,20 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         setupReadableGuideForiPad()
     }
 
+    private func resetGhostStyles() {
+        isUserInteractionEnabled = true
+        labelsCenter.constant = Constants.labelsVerticalAlignment
+        badgesLabel.isHidden = false
+        titleAndTimestampSpacing.constant = Constants.titleAndTimestampSpacing
+        menuButton.layer.opacity = Constants.opacity
+        configureLabels()
+    }
+
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
-        WPStyleGuide.configureLabel(timestampLabel, textStyle: UIFont.TextStyle.subheadline)
-        WPStyleGuide.configureLabel(badgesLabel, textStyle: UIFont.TextStyle.subheadline)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
 
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(UIFont.TextStyle.headline)
-        titleLabel.adjustsFontForContentSizeCategory = true
+        configureLabels()
 
         titleLabel.textColor = WPStyleGuide.darkGrey()
         timestampLabel.textColor = WPStyleGuide.grey()
@@ -70,7 +77,15 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         backgroundColor = WPStyleGuide.greyLighten30()
 
-        featuredImageView.layer.cornerRadius = imageRadius
+        featuredImageView.layer.cornerRadius = Constants.imageRadius
+    }
+
+    private func configureLabels() {
+        WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
+        WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
+
+        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
+        titleLabel.adjustsFontForContentSizeCategory = true
     }
 
     private func setupReadableGuideForiPad() {
@@ -79,7 +94,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         innerView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor).isActive = true
         innerView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
-        labelsLeadingConstraint.constant = -contentSpacing
+        labelsLeadingConstraint.constant = -Constants.contentSpacing
     }
 
     private func configureFeaturedImage() {
@@ -101,7 +116,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     private func configureDate() {
         let isUploadingOrFailed = viewModel.isUploadingOrFailed
         timestampLabel.text = isUploadingOrFailed ? "" : post.latest().dateStringForDisplay()
-        timestampTrailing.constant = isUploadingOrFailed ? 0 : contentSpacing
+        timestampTrailing.constant = isUploadingOrFailed ? 0 : Constants.contentSpacing
         timestampLabel.isHidden = isUploadingOrFailed
     }
 
@@ -126,6 +141,14 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
             }
         }
     }
+
+    private enum Constants {
+        static let contentSpacing: CGFloat = 8
+        static let imageRadius: CGFloat = 2
+        static let labelsVerticalAlignment: CGFloat = -1
+        static let titleAndTimestampSpacing: CGFloat = 2
+        static let opacity: Float = 1
+    }
 }
 
 extension PostCompactCell: InteractivePostView {
@@ -135,5 +158,29 @@ extension PostCompactCell: InteractivePostView {
 
     func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
         actionSheetDelegate = delegate
+    }
+}
+
+extension PostCompactCell: GhostableView {
+    func ghostAnimationWillStart() {
+        isUserInteractionEnabled = false
+        featuredImageView.isHidden = true
+        labelsContainerTrailing.isActive = false
+        timestampLabel.text = GhostConstants.timestampPlaceholder
+        menuButton.isGhostableDisabled = true
+        menuButton.layer.opacity = GhostConstants.opacity
+        titleAndTimestampSpacing.constant = GhostConstants.titleAndTimestampSpacing
+        labelsCenter.constant = GhostConstants.labelsVerticalAlignment
+        badgesLabel.isHidden = true
+
+        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.caption1)
+        WPStyleGuide.configureLabel(timestampLabel, textStyle: .caption2)
+    }
+
+    private enum GhostConstants {
+        static let labelsVerticalAlignment: CGFloat = 0
+        static let titleAndTimestampSpacing: CGFloat = 8
+        static let opacity: Float = 0.5
+        static let timestampPlaceholder = "                                    "
     }
 }

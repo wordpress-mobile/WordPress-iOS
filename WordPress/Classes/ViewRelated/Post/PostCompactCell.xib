@@ -54,7 +54,6 @@
                                     <constraint firstItem="ZUq-Dg-elW" firstAttribute="leading" secondItem="UrU-r4-hAL" secondAttribute="leading" id="LcB-FM-8SQ"/>
                                     <constraint firstItem="fEo-hS-PK1" firstAttribute="top" secondItem="ZUq-Dg-elW" secondAttribute="bottom" constant="2" id="Na7-iX-HyI"/>
                                     <constraint firstAttribute="trailing" secondItem="ZNQ-Pm-fi0" secondAttribute="trailing" id="ULF-V1-s1k"/>
-                                    <constraint firstItem="fEo-hS-PK1" firstAttribute="top" secondItem="ZUq-Dg-elW" secondAttribute="bottom" constant="2" id="WRC-dC-3NH"/>
                                     <constraint firstItem="ZNQ-Pm-fi0" firstAttribute="leading" secondItem="fEo-hS-PK1" secondAttribute="trailing" constant="8" id="cRx-5q-JF6"/>
                                     <constraint firstItem="ZUq-Dg-elW" firstAttribute="top" secondItem="UrU-r4-hAL" secondAttribute="top" id="d30-IF-aiG"/>
                                     <constraint firstAttribute="bottom" secondItem="fEo-hS-PK1" secondAttribute="bottom" id="f3q-Uz-O9K"/>
@@ -101,6 +100,7 @@
                             <constraint firstItem="UrU-r4-hAL" firstAttribute="trailing" secondItem="Zh4-Mc-AK7" secondAttribute="leading" priority="750" id="VgY-3y-Xq1"/>
                             <constraint firstItem="tne-qn-oAS" firstAttribute="leading" secondItem="UrU-r4-hAL" secondAttribute="trailing" constant="16" id="YXw-VS-KHH"/>
                             <constraint firstItem="06O-B0-y3k" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leading" id="g6x-y3-fZX"/>
+                            <constraint firstAttribute="height" priority="999" constant="60" id="heR-KO-Qwo"/>
                             <constraint firstItem="UrU-r4-hAL" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leadingMargin" constant="8" id="mXG-L5-nGo"/>
                             <constraint firstAttribute="bottom" secondItem="06O-B0-y3k" secondAttribute="bottom" id="wZI-eS-fxp"/>
                         </constraints>
@@ -120,12 +120,14 @@
                 <outlet property="badgesLabel" destination="ZNQ-Pm-fi0" id="XSV-yJ-XKT"/>
                 <outlet property="featuredImageView" destination="tne-qn-oAS" id="cE0-O7-RC0"/>
                 <outlet property="innerView" destination="HJK-1N-bmY" id="V61-8s-DZ1"/>
+                <outlet property="labelsCenter" destination="Tft-bS-JEu" id="lc9-Xe-lhW"/>
                 <outlet property="labelsContainerTrailing" destination="YXw-VS-KHH" id="mMj-WE-nCF"/>
                 <outlet property="labelsLeadingConstraint" destination="mXG-L5-nGo" id="X0d-iX-rY3"/>
                 <outlet property="menuButton" destination="Zh4-Mc-AK7" id="D6v-4Q-OPG"/>
                 <outlet property="progressView" destination="06O-B0-y3k" id="kXa-eP-uHE"/>
                 <outlet property="timestampLabel" destination="fEo-hS-PK1" id="Ih0-91-vRW"/>
                 <outlet property="timestampTrailing" destination="cRx-5q-JF6" id="M5z-Fm-qZs"/>
+                <outlet property="titleAndTimestampSpacing" destination="Na7-iX-HyI" id="PmG-Sc-31X"/>
                 <outlet property="titleLabel" destination="ZUq-Dg-elW" id="Dzt-PV-spZ"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>

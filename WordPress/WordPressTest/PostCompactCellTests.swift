@@ -43,7 +43,7 @@ class PostCompactCellTests: XCTestCase {
 
     func testShowDate() {
         let post = PostBuilder().with(remoteStatus: .sync)
-            .with(dateCreated: Date()).drafted().build()
+            .with(dateCreated: Date()).build()
 
         postCell.configure(with: post)
 
