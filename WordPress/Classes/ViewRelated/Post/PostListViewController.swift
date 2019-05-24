@@ -171,11 +171,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private func configureFilterBarTopConstraint() {
         filterTabBariOS10TopConstraint.isActive = false
     }
-
-    private func configureGhost() {
-        ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: type(of: self).postCardTextCellIdentifier, rowsPerSection: [10])
-    }
-
+    
     private func configureGhost() {
         ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
     }
