@@ -49,7 +49,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         self.post = post
 
-        configureItself()
+        resetGhost()
         configureFeaturedImage()
         configureTitleAndSnippetView()
         configureTitle()
@@ -148,7 +148,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         featuredImageHeight.constant = Constants.featuredImageHeightConstant
     }
 
-    private func configureItself() {
+    private func resetGhost() {
         isUserInteractionEnabled = true
         contentStackView.spacing = Constants.contentSpacing
         titleAndSnippetView.spacing = Constants.titleAndSnippetSpacing
