@@ -277,12 +277,10 @@ private extension TypeBasedExtensionContentExtractor {
 
     func saveToSharedContainer(image: UIImage) -> URL? {
         guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
-            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+            let fullPath = tempPath(for: "jpg") else {
                 return nil
         }
 
-        let fileName = "image_\(UUID().uuidString).jpg"
-        let fullPath = mediaDirectory.appendingPathComponent(fileName)
         do {
             try encodedMedia.write(to: fullPath, options: [.atomic])
         } catch {
@@ -293,14 +291,11 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func saveToSharedContainer(wrapper: FileWrapper) -> URL? {
-        guard let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL,
-            let wrappedFileName = wrapper.filename?.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
-            let wrappedURL = URL(string: wrappedFileName) else {
+        guard let wrappedFileName = wrapper.filename?.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
+            let wrappedURL = URL(string: wrappedFileName),
+            let newPath = tempPath(for: wrappedURL.pathExtension) else {
                 return nil
         }
-        let ext = wrappedURL.pathExtension
-        let fileName = "image_\(UUID().uuidString).\(ext)"
-        let newPath = mediaDirectory.appendingPathComponent(fileName)
 
         do {
             try wrapper.write(to: newPath, options: [], originalContentsURL: nil)
@@ -313,12 +308,9 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func copyToSharedContainer(url: URL) -> URL? {
-        guard let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+        guard let newPath = tempPath(for: url.lastPathComponent) else {
             return nil
         }
-        let ext = url.lastPathComponent
-        let fileName = "image_\(UUID().uuidString).\(ext)"
-        let newPath = mediaDirectory.appendingPathComponent(fileName)
 
         do {
             try FileManager.default.copyItem(at: url, to: newPath)
@@ -328,6 +320,15 @@ private extension TypeBasedExtensionContentExtractor {
         }
 
         return newPath
+    }
+
+    private func tempPath(for ext: String) -> URL? {
+        guard let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+            return nil
+        }
+
+        let fileName = "image_\(UUID().uuidString).\(ext)".lowercased()
+        return mediaDirectory.appendingPathComponent(fileName)
     }
 }
 

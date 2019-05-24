@@ -163,8 +163,12 @@ extension SharedCoreDataStack {
     /// - Returns: MediaUploadOperation or nil
     ///
     func fetchMediaUploadOp(for fileName: String, with sessionID: String) -> MediaUploadOperation? {
+        guard let fileNameWithoutExtension = URL(string: fileName)?.deletingPathExtension().lastPathComponent else {
+            return nil
+        }
+
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MediaUploadOperation")
-        request.predicate = NSPredicate(format: "(fileName == %@ AND backgroundSessionIdentifier == %@)", fileName, sessionID)
+        request.predicate = NSPredicate(format: "(fileName BEGINSWITH %@ AND backgroundSessionIdentifier == %@)", fileNameWithoutExtension.lowercased(), sessionID)
         request.fetchLimit = 1
         guard let results = (try? managedContext.fetch(request)) as? [MediaUploadOperation] else {
             return nil

@@ -3,11 +3,11 @@
 
 12.5
 -----
-* Fixed Notices sometimes showing behind the keyboard
-* Implemented Domain Credit feature
-* Implemented auto saving a post on preview  
-* The app now launches a bit more quickly.
-* Fixes a crash in reader on posts with no images
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).
 
 12.4
 -----
