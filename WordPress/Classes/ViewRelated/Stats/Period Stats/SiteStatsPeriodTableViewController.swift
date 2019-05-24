@@ -56,8 +56,10 @@ class SiteStatsPeriodTableViewController: UITableViewController {
 
     private var viewModel: SiteStatsPeriodViewModel?
 
+    private let analyticsTracker = BottomScrollAnalyticsTracker()
+
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
