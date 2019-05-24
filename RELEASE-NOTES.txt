@@ -1,6 +1,7 @@
 12.6
 -----
 * The app now launches a bit more quickly.
+* Added a list of third-party library acknowledgements.
 
 12.5
 -----
