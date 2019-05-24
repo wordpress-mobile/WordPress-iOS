@@ -4,9 +4,15 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
     @IBOutlet var postContentView: UIView!
     @IBOutlet var restoreLabel: UILabel!
     @IBOutlet var restoreButton: UIButton!
+    @IBOutlet var topMargin: NSLayoutConstraint!
 
     private weak var delegate: InteractivePostViewDelegate?
 
+    var isCompact: Bool = false {
+        didSet {
+            isCompact ? configureCompact() : configureDefault()
+        }
+    }
     var post: Post!
 
     func configure(with post: Post) {
@@ -34,13 +40,21 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
         restoreButton.setTitle(buttonTitle, for: .normal)
     }
 
+    private func configureCompact() {
+        topMargin.constant = Constants.compactMargin
+        postContentView.layer.borderWidth = 0
+    }
+
+    private func configureDefault() {
+        topMargin.constant = Constants.defaultMargin
+        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor().cgColor
+        postContentView.layer.borderWidth = 1.0 / UIScreen.main.scale
+    }
+
     private func applyStyles() {
         WPStyleGuide.applyPostCardStyle(self)
         WPStyleGuide.applyRestorePostLabelStyle(restoreLabel)
         WPStyleGuide.applyRestorePostButtonStyle(restoreButton)
-
-        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor().cgColor
-        postContentView.layer.borderWidth = 1.0 / UIScreen.main.scale
     }
 
     @IBAction func restore(_ sender: Any) {
@@ -49,5 +63,10 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
 
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         self.delegate = delegate
+    }
+
+    private enum Constants {
+        static let defaultMargin: CGFloat = 16
+        static let compactMargin: CGFloat = 0
     }
 }

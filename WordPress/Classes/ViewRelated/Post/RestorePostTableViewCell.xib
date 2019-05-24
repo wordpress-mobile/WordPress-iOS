@@ -68,11 +68,13 @@
                 </constraints>
                 <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES" preservesSuperviewLayoutMargins="YES"/>
             <connections>
                 <outlet property="postContentView" destination="XWn-76-OyW" id="NbJ-Fl-8LT"/>
                 <outlet property="restoreButton" destination="5bW-zk-smP" id="d5e-zd-9aD"/>
                 <outlet property="restoreLabel" destination="tDg-aX-r9a" id="oYb-ip-fJB"/>
+                <outlet property="topMargin" destination="GwZ-RS-fJM" id="s2z-vY-btP"/>
             </connections>
             <point key="canvasLocation" x="568" y="225"/>
         </tableViewCell>
