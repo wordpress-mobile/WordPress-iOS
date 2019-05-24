@@ -40,7 +40,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private let statsStoryboardName = "SiteStats"
     private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
     private var postCellIdentifier: String {
-        return isCompact ? postCompactCellIdentifier : postCardTextCellIdentifier
+        return isCompact || isSearching() ? postCompactCellIdentifier : postCardTextCellIdentifier
     }
 
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
@@ -79,10 +79,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             database.set(isCompact, forKey: Constants.exhibitionModeKey)
             showCompactOrDefault()
         }
-    }
-
-    private var separatorStyle: UITableViewCell.SeparatorStyle {
-        return isCompact ? .singleLine : .none
     }
 
     // MARK: - Convenience constructors
@@ -180,7 +176,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = separatorStyle
         tableView.estimatedRowHeight = postCardEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
 
@@ -231,9 +226,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.tableHeaderView = searchWrapperView
     }
 
+    private func configureSeparator() {
+        tableView.separatorStyle = isCompact || searchController.isActive ? .singleLine : .none
+    }
+
     func showCompactOrDefault() {
         configureGhost()
-        tableView.separatorStyle = separatorStyle
+        configureSeparator()
         tableView.reloadSections([0], with: .automatic)
         postsViewButtonItem.image = postViewIcon
     }
@@ -629,6 +628,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didPresentSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+        configureSeparator()
 
         tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
         tableView.contentInset.top = 0
@@ -636,6 +636,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+        configureSeparator()
 
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull
@@ -741,6 +742,7 @@ extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ post: AbstractPost, from view: UIView) {
         guard let post = post as? Post else { return }
 
-        postActionSheet.show(for: post, from: view, showViewOption: isCompact)
+        let isCompactOrSearching = isCompact || searchController.isActive
+        postActionSheet.show(for: post, from: view, showViewOption: isCompactOrSearching)
     }
 }
