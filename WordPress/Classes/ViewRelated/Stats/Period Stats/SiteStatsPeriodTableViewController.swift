@@ -11,7 +11,8 @@ import WordPressFlux
 }
 
 
-class SiteStatsPeriodTableViewController: UITableViewController {
+class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
 
