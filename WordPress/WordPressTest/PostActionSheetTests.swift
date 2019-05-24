@@ -53,6 +53,15 @@ class PostActionSheetTests: XCTestCase {
         XCTAssertEqual(["Cancel", "Move to Draft", "Delete Permanently"], options)
     }
 
+    func testPublishedPostOptionsWithView() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post, from: view, showViewOption: true)
+
+        let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
+        XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash", "View"], options)
+    }
+
     func testCallDelegateWhenStatsTapped() {
         let post = PostBuilder().published().build()
 
@@ -87,6 +96,15 @@ class PostActionSheetTests: XCTestCase {
         tap("Move to Trash", in: viewControllerMock.viewControllerPresented)
 
         XCTAssertTrue(interactivePostViewDelegateMock.didCallHandleTrashPost)
+    }
+
+    func testCallDelegateWhenViewTapped() {
+        let post = PostBuilder().published().build()
+
+        postActionSheet.show(for: post, from: view, showViewOption: true)
+        tap("View", in: viewControllerMock.viewControllerPresented)
+
+        XCTAssertTrue(interactivePostViewDelegateMock.didCallView)
     }
 
     func tap(_ label: String, in alertController: UIAlertController?) {

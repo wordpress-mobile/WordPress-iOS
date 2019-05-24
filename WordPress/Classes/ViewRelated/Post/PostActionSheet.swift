@@ -14,10 +14,16 @@ class PostActionSheet {
         self.interactivePostViewDelegate = interactivePostViewDelegate
     }
 
-    func show(for post: Post, from view: UIView) {
+    func show(for post: Post, from view: UIView, showViewOption: Bool = false) {
         let actionSheetController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         actionSheetController.addCancelActionWithTitle(Titles.cancel)
+
+        if showViewOption {
+            actionSheetController.addDefaultActionWithTitle(Titles.view) { [weak self] _ in
+                self?.interactivePostViewDelegate?.view(post)
+            }
+        }
 
         if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
             actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
@@ -51,5 +57,6 @@ class PostActionSheet {
         static let draft = NSLocalizedString("Move to Draft", comment: "Label for an option that moves a post to the draft folder")
         static let delete = NSLocalizedString("Delete Permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
         static let trash = NSLocalizedString("Move to Trash", comment: "Label for a option that moves a post to the trash folder")
+        static let view = NSLocalizedString("View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
     }
 }
