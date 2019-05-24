@@ -59,7 +59,7 @@ class PostActionSheetTests: XCTestCase {
         postActionSheet.show(for: post, from: view, showViewOption: true)
 
         let options = viewControllerMock.viewControllerPresented?.actions.compactMap { $0.title }
-        XCTAssertEqual(["Cancel", "Stats", "Move to Draft", "Move to Trash", "View"], options)
+        XCTAssertEqual(["Cancel", "View", "Stats", "Move to Draft", "Move to Trash"], options)
     }
 
     func testCallDelegateWhenStatsTapped() {

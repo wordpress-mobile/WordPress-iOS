@@ -25,19 +25,19 @@ class PostActionSheet {
             }
         }
 
-        if post.status == BasePost.Status.publish || post.status == BasePost.Status.draft {
+        if post.status == .publish || post.status == .draft {
             actionSheetController.addDefaultActionWithTitle(Titles.stats) { [weak self] _ in
                 self?.interactivePostViewDelegate?.stats(for: post)
             }
         }
 
-        if post.status != BasePost.Status.draft {
+        if post.status != .draft {
             actionSheetController.addDefaultActionWithTitle(Titles.draft) { [weak self] _ in
                 self?.interactivePostViewDelegate?.draft(post)
             }
         }
 
-        let destructiveTitle = post.status == BasePost.Status.trash ? Titles.delete : Titles.trash
+        let destructiveTitle = post.status == .trash ? Titles.delete : Titles.trash
         actionSheetController.addDestructiveActionWithTitle(destructiveTitle) { [weak self] _ in
             self?.interactivePostViewDelegate?.trash(post)
         }
