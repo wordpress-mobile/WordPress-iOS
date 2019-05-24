@@ -35,7 +35,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.0'
+    pod 'WordPressUI', :git => 'https://github.com/leandroalonso/WordPressUI-iOS', :branch => 'change_layout_margins_uiview_helper'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -56,7 +56,7 @@ def shared_with_all_pods
     pod 'Sentry', '4.3.1'
 end
 
-def shared_with_networking_pods    
+def shared_with_networking_pods
     pod 'Alamofire', '4.7.3'
     pod 'Reachability', '3.2'
 
@@ -154,7 +154,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '~> 1.4.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e55438187d464763efd0b6bf11a0afa1964d9037'
-    
+
     pod 'Gridicons', '~> 0.16'
 
     pod 'WordPressAuthenticator', '~> 1.5.0'
@@ -208,7 +208,7 @@ end
 ##
 target 'WordPressTodayWidget' do
     project 'WordPress/WordPress.xcodeproj'
-  
+
     shared_with_all_pods
     shared_with_networking_pods
 end
