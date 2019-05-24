@@ -30,16 +30,16 @@ PODS:
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.2.0):
-    - GoogleToolboxForMac/Defines (= 2.2.0)
-  - GoogleToolboxForMac/Defines (2.2.0)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.0)":
-    - GoogleToolboxForMac/DebugUtils (= 2.2.0)
-    - GoogleToolboxForMac/Defines (= 2.2.0)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.0)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.2.0)"
+  - GoogleToolboxForMac/DebugUtils (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - Gridicons (0.18)
-  - GTMSessionFetcher/Core (1.2.1)
+  - GTMSessionFetcher/Core (1.2.2)
   - Gutenberg (1.4.1):
     - React/Core (= 0.59.3)
     - React/CxxBridge (= 0.59.3)
@@ -171,9 +171,9 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.6.1)
-  - WordPress-Editor-iOS (1.6.1):
-    - WordPress-Aztec-iOS (= 1.6.1)
+  - WordPress-Aztec-iOS (1.6.1.1)
+  - WordPress-Editor-iOS (1.6.1.1):
+    - WordPress-Aztec-iOS (= 1.6.1.1)
   - WordPressAuthenticator (1.4.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
@@ -244,7 +244,7 @@ DEPENDENCIES:
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
-  - WordPress-Editor-iOS (~> 1.6.1)
+  - WordPress-Editor-iOS (~> 1.6.1.1)
   - WordPressAuthenticator (~> 1.4.1)
   - WordPressKit (~> 4.1.0)
   - WordPressShared (~> 1.7.5)
@@ -356,9 +356,9 @@ SPEC CHECKSUMS:
   GiphyCoreSDK: 1a89e03e55dc6b636b9d40fde76107867dbb9da5
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
-  GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   Gridicons: 04261236382e9c62c62c9a104f2f532c1bdf6a78
-  GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
+  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   Gutenberg: ea6fa085fcb98dd6ed8ed1e48725d834678c4c14
   HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: 3fef45d3fabe63e3c7c2eb603dd64ddfffc73062
@@ -380,8 +380,8 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: fecf8f0b8f7711c54de727bd597e449386bea094
-  WordPress-Editor-iOS: 8392c6acb0c8a155f5db3b1a6c85c3ef7631d3a1
+  WordPress-Aztec-iOS: aad9512b92b76e8182376992354c757a6fa4378f
+  WordPress-Editor-iOS: cd5c1abed03e327375a79f7eb86bd1999c846b8d
   WordPressAuthenticator: 1741b00c58c4e57a0505cbff32528c7a049b24e6
   WordPressKit: 78208a27c24f4f6eaf6bcfdf0ed4978de3bd080a
   WordPressShared: 2389d30388fd89660aeb4ae26bd28484639db959
@@ -392,6 +392,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e9960fdc45ab12f7adabb12bbda99c557cf729c3
+PODFILE CHECKSUM: 20548c6387b0dd719e3bb826baff168e6902d9a7
 
 COCOAPODS: 1.6.1
