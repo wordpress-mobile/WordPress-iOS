@@ -178,7 +178,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         WPCrashLogging.start()
 
-        configureHockeySDK()
+      //  configureHockeySDK()
         configureAppRatingUtility()
         configureAnalytics()
 
