@@ -1,5 +1,6 @@
 12.6
 -----
+* Removed the limit of number of photos that can be shared from other apps
 
 12.5
 -----
