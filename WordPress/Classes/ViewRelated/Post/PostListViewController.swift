@@ -334,15 +334,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(basePredicate)
         }
 
-        let typePredicate = NSPredicate(format: "postType = %@", postTypeToSync().rawValue)
-        predicates.append(typePredicate)
-
-        let searchText = currentSearchTerm()
-        let filterPredicate = filterSettings.currentPostListFilter().predicateForFetchRequest
+        let searchText = currentSearchTerm() ?? ""
+        let filterPredicate = searchController.isActive ? NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText) : filterSettings.currentPostListFilter().predicateForFetchRequest
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText?.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
             predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
@@ -358,7 +355,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(authorPredicate)
         }
 
-        if let searchText = searchText, searchText.count > 0 {
+        if searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -673,8 +670,12 @@ private extension PostListViewController {
             return
         }
 
-        if isSearching() {
-            noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+        if searchController.isActive {
+            if currentSearchTerm()?.count == 0 {
+                noResultsViewController.configureForNoSearchResults(title: NoResultsText.searchPosts)
+            } else {
+                noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+            }
         } else {
             let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
@@ -732,6 +733,7 @@ private extension PostListViewController {
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         static let noTrashedTitle = NSLocalizedString("You don't have any trashed posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
         static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        static let searchPosts = NSLocalizedString("Search posts", comment: "Text displayed when the search controller will be presented")
     }
 }
 
