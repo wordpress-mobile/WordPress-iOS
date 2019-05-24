@@ -68,8 +68,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     private var viewModel: SiteStatsInsightsViewModel?
 
+    private let analyticsTracker = BottomScrollAnalyticsTracker()
+
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
