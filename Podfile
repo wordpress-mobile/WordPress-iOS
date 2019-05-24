@@ -29,7 +29,7 @@ def aztec
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '~> 1.6.3'
+    pod 'WordPress-Editor-iOS', '~> 1.6.5'
 end
 
 def wordpress_ui
