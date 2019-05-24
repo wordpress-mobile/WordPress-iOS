@@ -74,10 +74,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private var isCompact: Bool = false {
         didSet {
-            configureGhost()
-            tableView.separatorStyle = separatorStyle
-            tableView.reloadSections([0], with: .automatic)
-            postsViewButtonItem.image = postViewIcon
+            showCompactOrDefault()
         }
     }
 
@@ -177,10 +174,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func configureTableView() {
-
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = separatorStyle
         tableView.estimatedRowHeight = postCardEstimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
 
@@ -229,6 +225,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         // Resetting the tableHeaderView is necessary to get the new height to take effect
         tableView.tableHeaderView = searchWrapperView
+    }
+
+    func showCompactOrDefault() {
+        configureGhost()
+        tableView.separatorStyle = separatorStyle
+        tableView.reloadSections([0], with: .automatic)
+        postsViewButtonItem.image = postViewIcon
     }
 
     // Mark - Layout Methods
