@@ -58,6 +58,22 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private var database: KeyValueDatabase = UserDefaults.standard
 
+    private lazy var _tableViewHandler: PostListTableViewHandler = {
+        let tableViewHandler = PostListTableViewHandler(tableView: tableView)
+        tableViewHandler.cacheRowHeights = false
+        tableViewHandler.delegate = self
+        tableViewHandler.updateRowAnimation = .none
+        return tableViewHandler
+    }()
+
+    override var tableViewHandler: WPTableViewHandler {
+        get {
+            return _tableViewHandler
+        } set {
+            super.tableViewHandler = newValue
+        }
+    }
+
     private var postViewIcon: UIImage? {
         return isCompact ? UIImage(named: "icon-post-view-card") : Gridicon.iconOfType(.listUnordered)
     }
@@ -161,6 +177,29 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return postListHeightForFooterView
     }
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard _tableViewHandler.isSearching else {
+            return 0.0
+        }
+        return Constants.searchHeaderHeight
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+        guard _tableViewHandler.isSearching else {
+            return UIView(frame: .zero)
+        }
+
+        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
+        let nibName = String(describing: PageListSectionHeaderView.self)
+        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
+
+        if let sectionInfo = sectionInfo {
+            headerView.setTitle(sectionInfo.name)
+        }
+
+        return headerView
+    }
+
     private func configureFilterBarTopConstraint() {
         filterTabBariOS10TopConstraint.isActive = false
     }
@@ -217,7 +256,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func updateTableHeaderSize() {
         if searchController.isActive {
             // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - view.safeAreaInsets.top
+            searchWrapperView.frame.size.height = 0
         } else {
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
@@ -629,9 +668,23 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func didPresentSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
         configureSeparator()
+        _tableViewHandler.isSearching = true
 
         tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
         tableView.contentInset.top = 0
+    }
+
+    override func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
+        if !isSearching() {
+            return super.sortDescriptorsForFetchRequest()
+        }
+
+        let descriptor = NSSortDescriptor(key: BasePost.statusKeyPath, ascending: true)
+        return [descriptor]
+    }
+
+    override func willDismissSearchController(_ searchController: UISearchController) {
+        _tableViewHandler.isSearching = false
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -656,6 +709,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private enum Constants {
         static let exhibitionModeKey = "showCompactPosts"
+        static let searchHeaderHeight: CGFloat = 40
     }
 }
 
