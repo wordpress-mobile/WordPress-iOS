@@ -405,6 +405,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         configurablePostView.configure(with: post)
 
         configurePostCell(cell)
+        configureRestoreCell(cell)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
@@ -423,6 +424,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let cell = cell as? PostCell else { return }
 
         cell.isAuthorHidden = showingJustMyPosts
+    }
+
+    private func configureRestoreCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? RestorePostTableViewCell else { return }
+
+        cell.isCompact = isCompact
     }
 
     // MARK: - Post Actions
