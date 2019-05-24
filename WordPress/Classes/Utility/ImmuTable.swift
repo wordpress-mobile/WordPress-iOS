@@ -235,12 +235,15 @@ public enum ImmuTableCell {
 ///
 open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     @objc unowned let target: UITableViewController
+    private weak var passthroughScrollViewDelegate: UIScrollViewDelegate?
 
     /// Initializes the handler with a target table view controller.
     /// - postcondition: After initialization, it becomse the data source and
     ///   delegate for the the target's table view.
-    @objc public init(takeOver target: UITableViewController) {
+    @objc public init(takeOver target: UITableViewController, with passthroughScrollViewDelegate: UIScrollViewDelegate? = nil) {
         self.target = target
+        self.passthroughScrollViewDelegate = passthroughScrollViewDelegate
+
         super.init()
 
         self.target.tableView.dataSource = self
@@ -259,7 +262,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
     /// Configure the handler to automatically deselect any cell after tapping it.
     @objc var automaticallyDeselectCells = false
 
-    // MARK: Table View Data Source
+    // MARK: UITableViewDataSource
 
     open func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
@@ -286,7 +289,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return viewModel.sections[section].footerText
     }
 
-    // MARK: Table View Delegate
+    // MARK: UITableViewDelegate
 
     open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:willSelectRowAt:))) {
@@ -363,6 +366,63 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         return nil
     }
 
+    // MARK: UIScrollViewDelegate
+
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewDidScroll?(scrollView)
+    }
+
+    open func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewDidZoom?(scrollView)
+    }
+
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewWillBeginDragging?(scrollView)
+    }
+
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        passthroughScrollViewDelegate?.scrollViewWillEndDragging?(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+    }
+
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        passthroughScrollViewDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+    }
+
+    open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewWillBeginDecelerating?(scrollView)
+    }
+
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewDidEndDecelerating?(scrollView)
+    }
+
+    open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+    }
+
+    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return passthroughScrollViewDelegate?.viewForZooming?(in: scrollView)
+    }
+
+    open func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        passthroughScrollViewDelegate?.scrollViewWillBeginZooming?(scrollView, with: view)
+    }
+
+    open func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        passthroughScrollViewDelegate?.scrollViewDidEndZooming?(scrollView, with: view, atScale: scale)
+    }
+
+    open func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        return passthroughScrollViewDelegate?.scrollViewShouldScrollToTop?(scrollView) ?? true
+    }
+
+    open func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewDidScrollToTop?(scrollView)
+    }
+
+    open func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        passthroughScrollViewDelegate?.scrollViewDidChangeAdjustedContentInset?(scrollView)
+    }
 }
 
 
