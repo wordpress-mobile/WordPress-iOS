@@ -171,7 +171,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private func configureFilterBarTopConstraint() {
         filterTabBariOS10TopConstraint.isActive = false
     }
-    
+
     private func configureGhost() {
         ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
     }
@@ -721,6 +721,6 @@ extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ post: AbstractPost, from view: UIView) {
         guard let post = post as? Post else { return }
 
-        postActionSheet.show(for: post, from: view)
+        postActionSheet.show(for: post, from: view, showViewOption: isCompact)
     }
 }
