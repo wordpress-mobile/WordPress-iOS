@@ -183,7 +183,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitleAndSnippetView() {
-        titleAndSnippetView.setLayoutMargin(top: Constants.titleTopMargin, bottom: 0)
+        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin, bottom: 0)
     }
 
     private func configureTitle() {
@@ -378,7 +378,7 @@ extension PostCell: GhostableView {
         topPadding.constant = Constants.margin
         contentStackView.spacing = 0
         titleAndSnippetView.spacing = Constants.contentSpacing * 2
-        titleAndSnippetView.setLayoutMargin(top: 0, bottom: Constants.contentSpacing)
+        titleAndSnippetView.changeLayoutMargins(top: 0, bottom: Constants.contentSpacing)
 
         actionBarView.isGhostableDisabled = true
         upperBorder.isGhostableDisabled = true
