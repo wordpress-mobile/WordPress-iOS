@@ -13,7 +13,7 @@ class SiteStatsInsightsViewModel: Observable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     private let insightsStore: StatsInsightsStore
-    private let insightsReceipt: Receipt
+    private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
 
@@ -34,8 +34,6 @@ class SiteStatsInsightsViewModel: Observable {
         self.insightsStore = insightsStore
         self.periodStore = periodStore
 
-        insightsReceipt = insightsStore.query(.insights)
-        insightsStore.actionDispatcher.dispatch(InsightAction.refreshInsights)
         insightsChangeReceipt = insightsStore.onChange { [weak self] in
             if let lastPostID = insightsStore.getLastPostInsight()?.postID {
                 self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
@@ -43,6 +41,12 @@ class SiteStatsInsightsViewModel: Observable {
 
             self?.emitChange()
         }
+
+        periodChangeReceipt = periodStore.onChange { [weak self] in
+            self?.emitChange()
+        }
+
+        insightsReceipt = insightsStore.query(.insights)
     }
 
     // MARK: - Table Model
@@ -473,9 +477,5 @@ private extension SiteStatsInsightsViewModel {
 
     func fetchStatsForInsightsLatestPost(postID: Int) {
         self.periodReceipt = periodStore.query(.postStats(postID: postID))
-        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
-        periodChangeReceipt = periodStore.onChange { [weak self] in
-            self?.emitChange()
-        }
     }
 }
