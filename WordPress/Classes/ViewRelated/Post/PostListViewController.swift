@@ -56,6 +56,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
+    private var database: KeyValueDatabase = UserDefaults.standard
+
     private var postViewIcon: UIImage? {
         return isCompact ? UIImage(named: "icon-post-view-card") : Gridicon.iconOfType(.listUnordered)
     }
@@ -74,6 +76,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private var isCompact: Bool = false {
         didSet {
+            database.set(isCompact, forKey: Constants.exhibitionModeKey)
             showCompactOrDefault()
         }
     }
@@ -141,6 +144,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
+        configureCompactOrDefault()
         configureFilterBarTopConstraint()
         configureGhost()
 
@@ -171,6 +175,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     private func configureGhost() {
         ghostOptions = GhostOptions(displaysSectionHeader: false, reuseIdentifier: postCellIdentifier, rowsPerSection: [10])
+    }
+
+    private func configureCompactOrDefault() {
+        isCompact = database.object(forKey: Constants.exhibitionModeKey) as? Bool ?? false
     }
 
     override func configureTableView() {
@@ -650,6 +658,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func noConnectionMessage() -> String {
         return NSLocalizedString("No internet connection. Some posts may be unavailable while offline.",
                                  comment: "Error message shown when the user is browsing Site Posts without an internet connection.")
+    }
+
+    private enum Constants {
+        static let exhibitionModeKey = "showCompactPosts"
     }
 }
 
