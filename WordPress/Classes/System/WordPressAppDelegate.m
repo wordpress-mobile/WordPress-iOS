@@ -95,6 +95,8 @@
     [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
     [[PushNotificationsManager shared] deletePendingLocalNotifications];
+    
+    
 
     return YES;
 }
@@ -171,6 +173,8 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    
+    [self.uploadsManager resume];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -296,6 +300,7 @@
         [MediaCoordinator.shared refreshMediaStatus];
         [PostCoordinator.shared refreshPostStatus];
         [MediaFileManager clearUnusedMediaUploadFilesOnCompletion:nil onError:nil];
+        [self.uploadsManager resume];
     });
     
     // Configure Extensions
