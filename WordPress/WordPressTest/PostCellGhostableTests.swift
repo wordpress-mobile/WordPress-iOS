@@ -24,10 +24,6 @@ class PostCellGhostableTests: XCTestCase {
         XCTAssertFalse(postCell.snippetLabel.isHidden)
     }
 
-    func testHideAuthorLabel() {
-        XCTAssertTrue(postCell.authorLabel.isHidden)
-    }
-
     func testHideStatusView() {
         XCTAssertTrue(postCell.statusView.isHidden)
     }
@@ -48,15 +44,6 @@ class PostCellGhostableTests: XCTestCase {
         let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
 
         XCTAssertEqual(postCell.topPadding.constant, margin)
-    }
-
-    func testSpaceBetweenTitleAndSnippet() {
-        XCTAssertEqual(postCell.titleAndSnippetView.spacing, 16)
-    }
-
-    func testTopAndBottomOfTitleAndSnippet() {
-        XCTAssertEqual(postCell.titleAndSnippetView.layoutMargins.top, 0)
-        XCTAssertEqual(postCell.titleAndSnippetView.layoutMargins.bottom, 8)
     }
 
     func testActionBarIsNotGhostable() {
