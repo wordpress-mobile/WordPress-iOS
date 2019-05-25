@@ -16,16 +16,12 @@ class PostCompactCellGhostableTests: XCTestCase {
         XCTAssertFalse(postCell.isUserInteractionEnabled)
     }
 
+    func testShowGhost() {
+        XCTAssertFalse(postCell.ghostView.isHidden)
+    }
+
     func testHideFeaturedImage() {
         XCTAssertTrue(postCell.featuredImageView.isHidden)
-    }
-
-    func testDisableDateAndBadgesSpacement() {
-        XCTAssertFalse(postCell.labelsContainerTrailing.isActive)
-    }
-
-    func testTimestampLabel() {
-        XCTAssertEqual(postCell.timestampLabel.text, "                                    ")
     }
 
     func testMenuButtonIsNotGhostable() {
@@ -36,32 +32,12 @@ class PostCompactCellGhostableTests: XCTestCase {
         XCTAssertEqual(postCell.menuButton.layer.opacity, 0.5)
     }
 
-    func testTitleAndTimestampSpacing() {
-        XCTAssertEqual(postCell.titleAndTimestampSpacing.constant, 8)
-    }
-
-    func testLabelsVerticalAlignment() {
-        XCTAssertEqual(postCell.labelsCenter.constant, 0)
-    }
-
-    func testBadgesLabelIsHidden() {
-        XCTAssertTrue(postCell.badgesLabel.isHidden)
-    }
-
     func testIsInteractiveAfterAConfigure() {
         let post = PostBuilder().build()
 
         postCell.configure(with: post)
 
         XCTAssertTrue(postCell.isUserInteractionEnabled)
-    }
-
-    func testLabelsVerticalAlignmentAfterConfigure() {
-        let post = PostBuilder().build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.labelsCenter.constant, -1)
     }
 
     func testShowBadgesLabelAfterConfigure() {
@@ -72,12 +48,12 @@ class PostCompactCellGhostableTests: XCTestCase {
         XCTAssertFalse(postCell.badgesLabel.isHidden)
     }
 
-    func testTitleAndTimestampSpacingAfterConfigure() {
+    func testHideGhostAfterConfigure() {
         let post = PostBuilder().build()
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.titleAndTimestampSpacing.constant, 2)
+        XCTAssertTrue(postCell.ghostView.isHidden)
     }
 
     func testMenuButtonOpacityAfterConfigure() {

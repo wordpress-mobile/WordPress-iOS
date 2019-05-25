@@ -8,12 +8,12 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet weak var innerView: UIView!
+    @IBOutlet weak var ghostView: UIView!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
-    @IBOutlet var titleAndTimestampSpacing: NSLayoutConstraint!
-    @IBOutlet var labelsCenter: NSLayoutConstraint!
+    @IBOutlet weak var ghostHeight: NSLayoutConstraint!
 
     static let height: CGFloat = 60
 
@@ -55,19 +55,18 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func resetGhostStyles() {
-        isUserInteractionEnabled = true
-        labelsCenter.constant = Constants.labelsVerticalAlignment
-        badgesLabel.isHidden = false
-        titleAndTimestampSpacing.constant = Constants.titleAndTimestampSpacing
+        toggleGhost(visible: false)
         menuButton.layer.opacity = Constants.opacity
-        configureLabels()
     }
 
     private func applyStyles() {
         WPStyleGuide.configureTableViewCell(self)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
+        WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
+        WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
 
-        configureLabels()
+        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
+        titleLabel.adjustsFontForContentSizeCategory = true
 
         titleLabel.textColor = WPStyleGuide.darkGrey()
         timestampLabel.textColor = WPStyleGuide.grey()
@@ -78,14 +77,8 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         backgroundColor = WPStyleGuide.greyLighten30()
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
-    }
 
-    private func configureLabels() {
-        WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
-        WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
-
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.headline)
-        titleLabel.adjustsFontForContentSizeCategory = true
+        ghostHeight.constant = Constants.borderHeight + type(of: self).height - 1
     }
 
     private func setupReadableGuideForiPad() {
@@ -146,8 +139,9 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         static let contentSpacing: CGFloat = 8
         static let imageRadius: CGFloat = 2
         static let labelsVerticalAlignment: CGFloat = -1
-        static let titleAndTimestampSpacing: CGFloat = 2
         static let opacity: Float = 1
+        static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
+        static let ghostHeight: CGFloat = Constants.borderHeight + PostCompactCell.height - 1
     }
 }
 
@@ -163,24 +157,18 @@ extension PostCompactCell: InteractivePostView {
 
 extension PostCompactCell: GhostableView {
     func ghostAnimationWillStart() {
-        isUserInteractionEnabled = false
-        featuredImageView.isHidden = true
-        labelsContainerTrailing.isActive = false
-        timestampLabel.text = GhostConstants.timestampPlaceholder
-        menuButton.isGhostableDisabled = true
+        toggleGhost(visible: true)
         menuButton.layer.opacity = GhostConstants.opacity
-        titleAndTimestampSpacing.constant = GhostConstants.titleAndTimestampSpacing
-        labelsCenter.constant = GhostConstants.labelsVerticalAlignment
-        badgesLabel.isHidden = true
+    }
 
-        titleLabel.font = WPStyleGuide.notoBoldFontForTextStyle(.caption1)
-        WPStyleGuide.configureLabel(timestampLabel, textStyle: .caption2)
+    private func toggleGhost(visible: Bool) {
+        isUserInteractionEnabled = !visible
+        menuButton.isGhostableDisabled = true
+        ghostView.isHidden = !visible
+        featuredImageView.isHidden = true
     }
 
     private enum GhostConstants {
-        static let labelsVerticalAlignment: CGFloat = 0
-        static let titleAndTimestampSpacing: CGFloat = 8
         static let opacity: Float = 0.5
-        static let timestampPlaceholder = "                                    "
     }
 }
