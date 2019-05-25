@@ -16,20 +16,12 @@ class PostCellGhostableTests: XCTestCase {
         XCTAssertTrue(postCell.featuredImageStackView.isHidden)
     }
 
-    func testEmptiesTitleLabel() {
-        XCTAssertEqual(postCell.titleLabel?.text, " ")
+    func testShowGhostView() {
+        XCTAssertFalse(postCell.ghostStackView.isHidden)
     }
 
     func testShowSnippetLabel() {
         XCTAssertFalse(postCell.snippetLabel.isHidden)
-    }
-
-    func testDateLabelPlaceholder() {
-        XCTAssertEqual(postCell.dateLabel?.text, "                                    ")
-    }
-
-    func testHideAuthorLabel() {
-        XCTAssertTrue(postCell.authorLabel.isHidden)
     }
 
     func testHideStatusView() {
@@ -52,19 +44,6 @@ class PostCellGhostableTests: XCTestCase {
         let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
 
         XCTAssertEqual(postCell.topPadding.constant, margin)
-    }
-
-    func testVerticalContentSpacing() {
-        XCTAssertEqual(postCell.contentStackView.spacing, 0)
-    }
-
-    func testSpaceBetweenTitleAndSnippet() {
-        XCTAssertEqual(postCell.titleAndSnippetView.spacing, 16)
-    }
-
-    func testTopAndBottomOfTitleAndSnippet() {
-        XCTAssertEqual(postCell.titleAndSnippetView.layoutMargins.top, 0)
-        XCTAssertEqual(postCell.titleAndSnippetView.layoutMargins.bottom, 8)
     }
 
     func testActionBarIsNotGhostable() {
@@ -95,20 +74,20 @@ class PostCellGhostableTests: XCTestCase {
         XCTAssertEqual(postCell.contentStackView.spacing, 8)
     }
 
-    func testTitleAndSnippetSpacingAfterConfigure() {
-        let post = PostBuilder().build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.titleAndSnippetView.spacing, 3)
-    }
-
     func testActionBarOpacityAfterConfigure() {
         let post = PostBuilder().build()
 
         postCell.configure(with: post)
 
         XCTAssertEqual(postCell.actionBarView.layer.opacity, 1)
+    }
+
+    func testHideGhostView() {
+        let post = PostBuilder().build()
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.ghostStackView.isHidden)
     }
 
     private func postCellFromNib() -> PostCell {
