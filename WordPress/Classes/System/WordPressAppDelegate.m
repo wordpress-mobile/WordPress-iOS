@@ -274,6 +274,9 @@
     // Networking setup
     [self setupNetworkActivityIndicator];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
+    
+    // Uploading
+    [self configureUploadsManager];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
     // by any of the Noto varients.  Size is arbitrary.

@@ -6,6 +6,7 @@
 @class HockeyManager;
 @class NoticePresenter;
 @class Reachability;
+@class UploadsManager;
 @class WPUserAgent;
 @class WPAppAnalytics;
 @class WPLogger;
@@ -24,6 +25,7 @@
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) WordPressAuthenticationManager *authManager;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
+@property (nonatomic, strong, readwrite, nonnull) UploadsManager        *uploadsManager;
 
 + (WordPressAppDelegate *)sharedInstance;
 

@@ -92,6 +92,19 @@ extension WordPressAppDelegate {
         }
     }
 
+    @objc func configureUploadsManager() {
+        // It's not great that we're using singletons here.  This change is a good opportunity to
+        // revisit if we can make the coordinators children to another owning object.
+        //
+        // We're leaving as-is for now to avoid digressing.
+        let uploaders: [Uploader] = [
+            MediaCoordinator.shared,
+            PostCoordinator.shared
+        ]
+
+        uploadsManager = UploadsManager(uploaders: uploaders)
+    }
+
     @objc func configureWordPressAuthenticator() {
         authManager = WordPressAuthenticationManager()
 

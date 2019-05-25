@@ -228,3 +228,12 @@ class PostCoordinator: NSObject {
         }
     }
 }
+
+extension PostCoordinator: Uploader {
+    func resume() {
+        // Resume the upload of all posts that are not synched.
+        //
+        // 1. Query posts with status == .failed
+        // 2. Call retrySave() for each post
+    }
+}
