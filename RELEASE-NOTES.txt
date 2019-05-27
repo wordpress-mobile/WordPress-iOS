@@ -1,5 +1,8 @@
 12.6
 -----
+* Gutenberg: A new block is available: video block.
+* Gutenberg: Added UI to display a warning when a block has invalid content.
+* Gutenberg: Fixed issue with link settings where “Open in New Tab” was always OFF on open.
 
 12.5
 -----
