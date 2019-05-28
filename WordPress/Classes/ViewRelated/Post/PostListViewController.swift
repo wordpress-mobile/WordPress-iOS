@@ -32,7 +32,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static fileprivate let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
-    static fileprivate let postCardTextCellNibName = "PostCardTextCell"
+    static fileprivate let postCardTextCellNibName = "PostCell"
     static fileprivate let postCardRestoreCellNibName = "RestorePostTableViewCell"
     static fileprivate let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
     static fileprivate let statsStoryboardName = "SiteStats"
@@ -41,7 +41,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let statsCacheInterval = TimeInterval(300) // 5 minutes
 
     static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
-    static fileprivate let postListHeightForFooterView = CGFloat(34.0)
+    static fileprivate let postListHeightForFooterView = CGFloat(50.0)
 
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
@@ -52,6 +52,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private lazy var postActionSheet: PostActionSheet = {
         return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
     }()
+
+    private var showingJustMyPosts: Bool {
+        return filterSettings.currentPostAuthorFilter() == .mine
+    }
 
     // MARK: - Convenience constructors
 
@@ -337,21 +341,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         cell.accessoryType = .none
-        cell.selectionStyle = .none
 
         let post = postAtIndexPath(indexPath)
 
         guard let interactivePostView = cell as? InteractivePostView,
             let configurablePostView = cell as? ConfigurablePostView else {
-
-            fatalError("Cell does not implement the required protocols")
+                fatalError("Cell does not implement the required protocols")
         }
 
         interactivePostView.setInteractionDelegate(self)
 
         configurablePostView.configure(with: post)
 
-        setActionSheetDelegate(cell)
+        configurePostCell(cell)
     }
 
     fileprivate func cellIdentifierForPost(_ post: Post) -> String {
@@ -366,10 +368,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return identifier
     }
 
-    private func setActionSheetDelegate(_ cell: UITableViewCell) {
-        guard let cell = cell as? PostCardTableViewCell else { return }
+    private func configurePostCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? PostCell else { return }
 
         cell.setActionSheetDelegate(self)
+        cell.isAuthorHidden = showingJustMyPosts
     }
 
     // MARK: - Post Actions
@@ -546,6 +549,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func draft(_ post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             moveToDraft(post)
+        }
+    }
+
+    func retry(_ post: AbstractPost) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            PostCoordinator.shared.retrySave(of: post)
         }
     }
 

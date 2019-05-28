@@ -63,7 +63,7 @@
 
 + (void)applyPostDateStyle:(UILabel *)label
 {
-    [self configureLabelForDeviceDependantStyle:label];
+    [self configureLabelForRegularFontStyle:label];
     label.textColor = [self grey];
 }
 
@@ -73,9 +73,9 @@
     label.textColor = [self grey];
 }
 
-+ (void)applyPostMetaButtonStyle:(UIButton *)button
++ (void)applyPostButtonStyle:(UIButton *)button
 {
-    [self configureLabelForDeviceDependantStyle:button.titleLabel];
+    [self configureLabelForRegularFontStyle:button.titleLabel];
     [button setTitleColor:[self grey] forState:UIControlStateNormal];
 }
 
@@ -88,13 +88,13 @@
 
 + (void)applyRestorePostLabelStyle:(UILabel *)label
 {
-    [self configureLabelForDeviceDependantStyle:label];
+    [self configureLabelForRegularFontStyle:label];
     label.textColor = [self grey];
 }
 
 + (void)applyRestorePostButtonStyle:(UIButton *)button
 {
-    [self configureLabelForSmallFontStyle:button.titleLabel];
+    [self configureLabelForRegularFontStyle:button.titleLabel];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
 }
@@ -124,7 +124,7 @@
 + (NSDictionary *)postCardTitleAttributes
 {
     UIFont *font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
-    CGFloat lineHeight = font.pointSize * 1.5;
+    CGFloat lineHeight = font.pointSize * 1.4;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
@@ -135,7 +135,7 @@
 {
     UIFontTextStyle textStyle = [UIDevice isPad] ? UIFontTextStyleCallout : UIFontTextStyleSubheadline;
     UIFont *font = [WPStyleGuide notoFontForTextStyle:textStyle];
-    CGFloat lineHeight = font.pointSize * 1.5;
+    CGFloat lineHeight = font.pointSize * 1.6;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;

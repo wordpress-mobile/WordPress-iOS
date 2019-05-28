@@ -9,4 +9,5 @@ import Foundation
     func trash(_ post: AbstractPost)
     func restore(_ post: AbstractPost)
     func draft(_ post: AbstractPost)
+    func retry(_ post: AbstractPost)
 }

@@ -30,6 +30,51 @@ class PostBuilder {
         return self
     }
 
+    func `private`() -> PostBuilder {
+        post.status = .publishPrivate
+        return self
+    }
+
+    func withImage() -> PostBuilder {
+        post.pathForDisplayImage = "https://localhost/image.png"
+        return self
+    }
+
+    func with(title: String) -> PostBuilder {
+        post.postTitle = title
+        return self
+    }
+
+    func with(snippet: String) -> PostBuilder {
+        post.content = snippet
+        return self
+    }
+
+    func with(dateCreated: Date) -> PostBuilder {
+        post.dateCreated = dateCreated
+        return self
+    }
+
+    func with(dateModified: Date) -> PostBuilder {
+        post.dateModified = dateModified
+        return self
+    }
+
+    func with(author: String) -> PostBuilder {
+        post.author = author
+        return self
+    }
+
+    func with(remoteStatus: AbstractPostRemoteStatus) -> PostBuilder {
+        post.remoteStatus = remoteStatus
+        return self
+    }
+
+    func `is`(sticked: Bool) -> PostBuilder {
+        post.isStickyPost = sticked
+        return self
+    }
+
     func build() -> Post {
         return post
     }

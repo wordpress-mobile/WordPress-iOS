@@ -6,7 +6,7 @@ import Gridicons
 class PostCardStatusViewModel: NSObject {
     private let post: Post
     private var progressObserverUUID: UUID? = nil
-    @objc var progressBlock: ((Double) -> Void)? = nil {
+    @objc var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
                 MediaCoordinator.shared.removeObserver(withUUID: uuid)
@@ -15,7 +15,7 @@ class PostCardStatusViewModel: NSObject {
             if let progressBlock = progressBlock {
                 progressObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (_, _) in
                     if let post = self?.post {
-                        progressBlock(MediaCoordinator.shared.totalProgress(for: post))
+                        progressBlock(Float(MediaCoordinator.shared.totalProgress(for: post)))
                     }
                 }, forMediaFor: post)
             }
@@ -41,6 +41,18 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
+    var author: String {
+        guard let author = post.authorForDisplay() else {
+            return ""
+        }
+
+        return author
+    }
+
+    private var isUploadingOrFailed: Bool {
+        return MediaCoordinator.shared.isUploadingMedia(for: post) || post.isFailed || post.remoteStatus == .pushing
+    }
+
     private var postStatus: BasePost.Status? {
         return post.status
     }
@@ -48,10 +60,10 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var shouldHideStatusView: Bool {
         guard let status = status else {
-            return true
+            return !post.isStickyPost
         }
 
-        return status.count == 0
+        return status.isEmpty && !post.isStickyPost
     }
 
     @objc
@@ -84,7 +96,7 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var statusColor: UIColor {
         guard let status = postStatus else {
-            return WPStyleGuide.darkGrey()
+            return WPStyleGuide.jazzyOrange()
         }
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
@@ -97,13 +109,13 @@ class PostCardStatusViewModel: NSObject {
 
         switch status {
         case .pending:
-            return WPStyleGuide.validGreen()
+            return WPStyleGuide.jazzyOrange()
         case .scheduled:
             return WPStyleGuide.mediumBlue()
         case .trash:
             return WPStyleGuide.errorRed()
         default:
-            return WPStyleGuide.darkGrey()
+            return WPStyleGuide.jazzyOrange()
         }
     }
 
@@ -113,11 +125,22 @@ class PostCardStatusViewModel: NSObject {
     }
 
     @objc
-    var progress: Double {
+    var progress: Float {
         if post.remoteStatus == .pushing {
             return 1.0
         } else {
-            return MediaCoordinator.shared.totalProgress(for: post)
+            return Float(MediaCoordinator.shared.totalProgress(for: post))
         }
+    }
+
+    func statusAndBadges(separatedBy separator: String) -> String {
+        let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
+        let status = self.status ?? ""
+
+        return [status, sticky].filter { !$0.isEmpty }.joined(separator: separator)
+    }
+
+    private enum Constants {
+        static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
     }
 }
