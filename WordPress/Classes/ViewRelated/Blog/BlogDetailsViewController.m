@@ -573,9 +573,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
             }
                 break;
-            default: {
+            default:
                 row = self.restorableSelectedIndexPath.row;
-            }
                 break;
         }
 
