@@ -53,7 +53,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return PostActionSheet(viewController: self, interactivePostViewDelegate: self)
     }()
 
-    private var isAllPostsMine: Bool {
+    private var showingJustMyPosts: Bool {
         return filterSettings.currentPostAuthorFilter() == .mine
     }
 
@@ -372,7 +372,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let cell = cell as? PostCell else { return }
 
         cell.setActionSheetDelegate(self)
-        cell.isAuthorHidden = isAllPostsMine
+        cell.isAuthorHidden = showingJustMyPosts
     }
 
     // MARK: - Post Actions
