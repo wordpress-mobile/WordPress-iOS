@@ -558,10 +558,26 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     // Check if the last selected category index needs to be updated after a dynamic section is activated and displayed.
     // QuickStart and Use Domain are dynamic section, which means they can be removed or hidden at any time.
-    NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
-    if (section != NSNotFound && self.restorableSelectedIndexPath.section != section) {
-        NSUInteger row = self.restorableSelectedIndexPath.row;
-        self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    NSUInteger sectionIndex = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
+
+    if (sectionIndex != NSNotFound && self.restorableSelectedIndexPath.section != sectionIndex) {
+        BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionIndex];
+
+        // For QuickStart and Use Domain cases we want to select the first row on the next available section
+        switch (section.category) {
+            case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryDomainCredit: {
+                BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:BlogDetailsSubsectionStats];
+                NSUInteger statsSectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
+                self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:statsSectionIndex];
+            }
+                break;
+            default: {
+                NSUInteger row = self.restorableSelectedIndexPath.row;
+                self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:sectionIndex];
+            }
+                break;
+        }
     }
 
     BOOL isValidIndexPath = self.restorableSelectedIndexPath.section < self.tableView.numberOfSections &&
