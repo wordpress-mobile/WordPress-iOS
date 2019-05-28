@@ -1,5 +1,6 @@
 12.6
 -----
+* Updated the blog address to a non-retired blog.
 
 12.5
 -----
