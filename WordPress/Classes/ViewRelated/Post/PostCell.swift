@@ -235,7 +235,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         guard let viewModel = viewModel else {
             return
         }
-        
+
         let shouldHide = viewModel.shouldHideProgressView
 
         progressView.isHidden = shouldHide
