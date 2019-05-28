@@ -8707,7 +8707,6 @@
 			buildConfigurationList = 8511CFC21C607A7000B7CEED /* Build configuration list for PBXNativeTarget "WordPressScreenshotGeneration" */;
 			buildPhases = (
 				2DF08408C90B90D744C56E02 /* [CP] Check Pods Manifest.lock */,
-				F9463A7121C05BAF0081F11E /* Copy Screenshot Credentials */,
 				8511CFB21C607A7000B7CEED /* Sources */,
 				8511CFB31C607A7000B7CEED /* Frameworks */,
 				8511CFB41C607A7000B7CEED /* Resources */,
@@ -8784,7 +8783,6 @@
 			buildPhases = (
 				37F48D4CB364EA4BCC1EAE82 /* [CP] Check Pods Manifest.lock */,
 				928885381E5E057F001F9637 /* Reset Simulator */,
-				CC8A5EAC2215A147001B7874 /* ShellScript */,
 				FF27168B1CAAC87A0006E2D4 /* Sources */,
 				FF27168C1CAAC87A0006E2D4 /* Frameworks */,
 				FF27168D1CAAC87A0006E2D4 /* Resources */,
@@ -9582,25 +9580,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CC8A5EAC2215A147001B7874 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"~/.mobile-secrets/iOS/WPiOS/WPUITestCredentials.swift",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/WordPressUITests/WPUITestCredentials.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nsh ../Scripts/BuildPhases/CopyUITestCredentials.sh\n";
-		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -9694,26 +9673,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		F9463A7121C05BAF0081F11E /* Copy Screenshot Credentials */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"~/.mobile-secrets/iOS/WPiOS/ScreenshotCredentials.swift",
-			);
-			name = "Copy Screenshot Credentials";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/WordPressScreenshotGeneration/ScreenshotCredentials.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\nsh ../Scripts/BuildPhases/CopyScreenshotCredentials.sh\n";
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
