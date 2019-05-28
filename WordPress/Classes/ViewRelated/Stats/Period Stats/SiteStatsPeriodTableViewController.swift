@@ -213,6 +213,7 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
                                      accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
                                         noResults.delegate = self
                                         noResults.hideImageView(false)
+                                        noResults.updateView()
         }
     }
 
