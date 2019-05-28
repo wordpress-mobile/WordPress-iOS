@@ -242,11 +242,11 @@ private extension SiteStatsInsightsViewModel {
         return [StatsTotalRowData(name: dayString,
                                   data: String(format: MostPopularStats.percentOfViews,
                                                mostPopularStats.mostPopularDayOfWeekPercentage),
-                                  icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)),
+                                  icon: Style.imageForGridiconType(.calendar)),
                 StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
                                   data: String(format: MostPopularStats.percentOfViews,
                                                mostPopularStats.mostPopularHourPercentage),
-                                  icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
+                                  icon: Style.imageForGridiconType(.time))]
     }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
