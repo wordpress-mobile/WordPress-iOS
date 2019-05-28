@@ -30,8 +30,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
     }()
 
-    private var post: Post!
-    private var viewModel: PostCardStatusViewModel!
+    private var post: Post?
+    private var viewModel: PostCardStatusViewModel?
     private var currentLoadedFeaturedImage: String?
     private weak var interactivePostViewDelegate: InteractivePostViewDelegate?
     private weak var actionSheetDelegate: PostActionSheetDelegate?
@@ -89,19 +89,34 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func edit() {
+        guard let post = post else {
+            return
+        }
+
         interactivePostViewDelegate?.edit(post)
     }
 
     @IBAction func view() {
+        guard let post = post else {
+            return
+        }
+
         interactivePostViewDelegate?.view(post)
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let button = sender as? UIButton else { return }
+        guard let button = sender as? UIButton, let post = post else {
+            return
+        }
+
         actionSheetDelegate?.showActionSheet(post, from: button)
     }
 
     @IBAction func retry() {
+        guard let post = post else {
+            return
+        }
+
         interactivePostViewDelegate?.retry(post)
     }
 
@@ -133,7 +148,9 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureFeaturedImage() {
-        let post = self.post.latest()
+        guard let post = post?.latest() else {
+            return
+        }
 
         if let url = post.featuredImageURLForDisplay(),
             let desiredWidth = UIApplication.shared.keyWindow?.frame.size.width {
@@ -147,6 +164,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func loadFeaturedImageIfNeeded(_ url: URL, preferredSize: CGSize) {
+        guard let post = post else {
+            return
+        }
+
         if currentLoadedFeaturedImage != url.absoluteString {
             currentLoadedFeaturedImage = url.absoluteString
             imageLoader.loadImage(with: url, from: post, preferredSize: preferredSize)
@@ -158,7 +179,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitle() {
-        let post = self.post.latest()
+        guard let post = post?.latest() else {
+            return
+        }
+
         if let titleForDisplay = post.titleForDisplay() {
             titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes() as? [NSAttributedString.Key: Any])
             titleLabel.lineBreakMode = .byTruncatingTail
@@ -166,7 +190,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureSnippet() {
-        let post = self.post.latest()
+        guard let post = post?.latest() else {
+            return
+        }
+
         if let contentPreviewForDisplay = post.contentPreviewForDisplay(),
             !contentPreviewForDisplay.isEmpty {
             snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes() as? [NSAttributedString.Key: Any])
@@ -178,15 +205,26 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureDate() {
-        let post = self.post.latest()
+        guard let post = post?.latest() else {
+            return
+        }
+
         dateLabel.text = post.dateStringForDisplay()
     }
 
     private func configureAuthor() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
         authorLabel.text = viewModel.author
     }
 
     private func configureStatusLabel() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
         let status = viewModel.statusAndBadges(separatedBy: Constants.separator)
         statusLabel.textColor = viewModel.statusColor
         statusLabel.text = status
@@ -194,6 +232,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureProgressView() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        
         let shouldHide = viewModel.shouldHideProgressView
 
         progressView.isHidden = shouldHide
@@ -211,6 +253,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureActionBar() {
+        guard let post = post else {
+            return
+        }
+
         retryButton.isHidden = !post.isFailed
         viewButton.isHidden = post.isFailed
     }
