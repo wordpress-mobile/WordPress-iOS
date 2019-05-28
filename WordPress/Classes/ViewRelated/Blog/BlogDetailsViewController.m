@@ -564,24 +564,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         BlogDetailsSection *section = [self.tableSections objectAtIndex:sectionIndex];
 
         NSUInteger row = 0;
-        NSUInteger statsSectionIndex;
         
         // For QuickStart and Use Domain cases we want to select the first row on the next available section
         switch (section.category) {
             case BlogDetailsSectionCategoryQuickStart:
             case BlogDetailsSectionCategoryDomainCredit: {
                 BlogDetailsSectionCategory category = [self sectionCategoryWithSubsection:BlogDetailsSubsectionStats];
-                statsSectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
+                sectionIndex = [self findSectionIndexWithSections:self.tableSections category:category];
             }
                 break;
             default: {
                 row = self.restorableSelectedIndexPath.row;
-                statsSectionIndex = sectionIndex;
             }
                 break;
         }
 
-        self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:statsSectionIndex];
+        self.restorableSelectedIndexPath = [NSIndexPath indexPathForRow:row inSection:sectionIndex];
     }
 
     BOOL isValidIndexPath = self.restorableSelectedIndexPath.section < self.tableView.numberOfSections &&
