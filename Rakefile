@@ -116,6 +116,11 @@ end
 
 CLOBBER << "vendor"
 
+desc "Mocks"
+task :mocks do
+  sh "./Pods/WordPressMocks/scripts/start.sh 8282"
+end
+
 desc "Build #{XCODE_SCHEME}"
 task :build => [:dependencies] do
   xcodebuild(:build)
