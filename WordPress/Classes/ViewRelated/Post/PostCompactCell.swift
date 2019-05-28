@@ -78,7 +78,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
 
-        ghostHeight.constant = Constants.borderHeight + type(of: self).height - 1
+        ghostHeight.constant = Constants.ghostHeight
     }
 
     private func setupReadableGuideForiPad() {
@@ -115,7 +115,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
 
     private func configureStatus() {
         badgesLabel.textColor = viewModel.statusColor
-        badgesLabel.text = viewModel.statusAndBadges
+        badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
     }
 
     private func configureProgressView() {
@@ -136,12 +136,13 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private enum Constants {
+        static let separator = " · "
         static let contentSpacing: CGFloat = 8
         static let imageRadius: CGFloat = 2
         static let labelsVerticalAlignment: CGFloat = -1
         static let opacity: Float = 1
         static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let ghostHeight: CGFloat = Constants.borderHeight + PostCompactCell.height - 1
+        static let ghostHeight: CGFloat = PostCompactCell.height - Constants.borderHeight
     }
 }
 

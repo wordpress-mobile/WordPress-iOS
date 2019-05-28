@@ -299,7 +299,6 @@ SPEC REPOS:
     - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
