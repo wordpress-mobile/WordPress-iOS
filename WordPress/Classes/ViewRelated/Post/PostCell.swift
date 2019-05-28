@@ -9,7 +9,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var snippetLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var spacingLabel: UILabel!
+    @IBOutlet weak var separatorLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var statusView: UIStackView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -38,6 +38,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     var isAuthorHidden: Bool = false {
         didSet {
             authorLabel.isHidden = isAuthorHidden
+            separatorLabel.isHidden = isAuthorHidden
         }
     }
 
@@ -109,7 +110,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         WPStyleGuide.applyPostTitleStyle(titleLabel)
         WPStyleGuide.applyPostSnippetStyle(snippetLabel)
         WPStyleGuide.applyPostDateStyle(dateLabel)
-        WPStyleGuide.applyPostDateStyle(spacingLabel)
+        WPStyleGuide.applyPostDateStyle(separatorLabel)
         WPStyleGuide.applyPostDateStyle(authorLabel)
         WPStyleGuide.configureLabel(statusLabel, textStyle: UIFont.TextStyle.subheadline)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
@@ -122,6 +123,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         setupFeaturedImage()
         setupBorders()
         setupLabels()
+        setupSeparatorLabel()
         setupSelectedBackgroundView()
         setupReadableGuideForiPad()
     }
@@ -181,12 +183,11 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureAuthor() {
-        let interfaceLayoutDirection = authorLabel.userInterfaceLayoutDirection()
-        authorLabel.text = viewModel.author(separatorDirection: interfaceLayoutDirection)
+        authorLabel.text = viewModel.author
     }
 
     private func configureStatusLabel() {
-        let status = viewModel.statusAndBadges
+        let status = viewModel.statusAndBadges(separatedBy: Constants.separator)
         statusLabel.textColor = viewModel.statusColor
         statusLabel.text = status
         statusView.isHidden = status.isEmpty
@@ -269,6 +270,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         topMargin.constant = Constants.margin
     }
 
+    private func setupSeparatorLabel() {
+        separatorLabel.text = Constants.separator
+    }
+
     private func adjustInsetsForTextDirection() {
         actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach {
             $0.flipInsetsForRightToLeftLayoutDirection()
@@ -280,6 +285,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private enum Constants {
+        static let separator = " · "
         static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
         static let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
         static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100

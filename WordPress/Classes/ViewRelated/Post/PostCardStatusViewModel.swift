@@ -41,13 +41,6 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    var statusAndBadges: String {
-        let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
-        let status = self.status ?? ""
-
-        return [status, sticky].filter { !$0.isEmpty }.joined(separator: " \(Constants.separator) ")
-    }
-
     var author: String {
         guard let author = post.authorForDisplay() else {
             return ""
@@ -140,14 +133,14 @@ class PostCardStatusViewModel: NSObject {
         }
     }
 
-    func author(separatorDirection direction: UIUserInterfaceLayoutDirection) -> String {
-        let leftSeparator = direction == .leftToRight ? "\(Constants.separator) " : ""
-        let rightSeparator = direction == .rightToLeft ? " \(Constants.separator)" : ""
-        return "\(leftSeparator)\(author)\(rightSeparator)"
+    func statusAndBadges(separatedBy separator: String) -> String {
+        let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
+        let status = self.status ?? ""
+
+        return [status, sticky].filter { !$0.isEmpty }.joined(separator: separator)
     }
 
     private enum Constants {
-        static let separator = "·"
         static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
     }
 }

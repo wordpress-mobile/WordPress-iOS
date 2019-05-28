@@ -75,7 +75,7 @@ class PostCellTests: XCTestCase {
 
         postCell.configure(with: post)
 
-        XCTAssertEqual(postCell.authorLabel.text, "· John Doe")
+        XCTAssertEqual(postCell.authorLabel.text, "John Doe")
     }
 
     func testShowStickyLabelWhenPostIsSticky() {
@@ -222,22 +222,24 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.viewButton.isHidden)
     }
 
-    func testHideAuthor() {
+    func testHideAuthorAndSeparator() {
         let post = PostBuilder().with(author: "John Doe").build()
         postCell.configure(with: post)
 
         postCell.isAuthorHidden = true
 
         XCTAssertTrue(postCell.authorLabel.isHidden)
+        XCTAssertTrue(postCell.separatorLabel.isHidden)
     }
 
-    func testDoesNotHideAuthor() {
+    func testDoesNotHideAuthorAndSeparator() {
         let post = PostBuilder().with(author: "John Doe").build()
         postCell.configure(with: post)
 
         postCell.isAuthorHidden = false
 
         XCTAssertFalse(postCell.authorLabel.isHidden)
+        XCTAssertFalse(postCell.separatorLabel.isHidden)
     }
 
     private func postCellFromNib() -> PostCell {
