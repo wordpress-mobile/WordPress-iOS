@@ -67,7 +67,8 @@
                     <constraint firstAttribute="trailing" secondItem="UCQ-gq-RrN" secondAttribute="trailing" id="aFU-xt-Aie"/>
                     <constraint firstAttribute="trailing" secondItem="1JU-qn-kkK" secondAttribute="trailing" id="akX-e3-TqW"/>
                     <constraint firstAttribute="trailing" secondItem="OxT-ul-sgW" secondAttribute="trailing" id="lH1-IY-PBX"/>
-                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="1JU-qn-kkK" secondAttribute="bottom" id="mCR-Yw-ITf"/>
+                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="284" id="luP-rt-UHj"/>
+                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" priority="999" id="mCR-Yw-ITf"/>
                     <constraint firstItem="1JU-qn-kkK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="t08-Lk-bTh"/>
                     <constraint firstItem="WGt-7n-PjC" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" constant="7" id="u2O-MU-b7v"/>
                     <constraint firstItem="UCQ-gq-RrN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="zLz-hS-D9n"/>
@@ -87,6 +88,7 @@
                 <outlet property="rowsStackViewTopConstraint" destination="Usf-7v-7m6" id="Res-MH-gOh"/>
                 <outlet property="rowsStackViewTopConstraintWithSubtitles" destination="ILe-TY-16f" id="sbx-rC-13u"/>
                 <outlet property="separatorLine" destination="OxT-ul-sgW" id="Hp1-EA-174"/>
+                <outlet property="strokeTopConstraint" destination="luP-rt-UHj" id="da1-Tc-cz2"/>
                 <outlet property="subtitleStackView" destination="WGt-7n-PjC" id="5JN-Yn-YM9"/>
             </connections>
             <point key="canvasLocation" x="-263.19999999999999" y="204.64767616191907"/>

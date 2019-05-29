@@ -15,12 +15,19 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
     // If the subtitles are shown, this is active.
     @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
+    @IBOutlet private var strokeTopConstraint: NSLayoutConstraint!
 
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
     private let mapView = CountriesMapView.loadFromNib()
+    private var hideCountriesMap: Bool = false {
+        didSet {
+            countriesMapContainer.isHidden = hideCountriesMap
+            strokeTopConstraint.isActive = !hideCountriesMap
+        }
+    }
 
     // MARK: - Configure
 
@@ -46,13 +53,22 @@ class CountriesCell: UITableViewCell, NibLoadable {
         setSubtitleVisibility()
         applyStyles()
 
-        countriesMapContainer.addArrangedSubview(mapView)
+        hideCountriesMap = dataRows.isEmpty
+        guard hideCountriesMap else {
+            // Set map
+            return
+        }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)
-        removeRowsFromStackView(countriesMapContainer)
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        countriesMapContainer.addArrangedSubview(mapView)
     }
 }
 
