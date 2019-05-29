@@ -211,7 +211,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
-            WPAnalytics.track(.enhancedSiteCreationCompleted)
+            WPAnalytics.track(.createdSite)
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)
