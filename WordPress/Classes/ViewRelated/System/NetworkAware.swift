@@ -6,7 +6,7 @@ protocol NetworkAware {
 }
 
 /// Abstracts UI elements that need to be aware of the network connection status, and present user facing alerts.
-protocol NetworkAwareUI: NetworkAware {
+protocol NetworkAwareUI: NetworkAware, UIViewController {
     func shouldPresentAlert() -> Bool
     func contentIsEmpty() -> Bool
     func presentNoNetworkAlert()
@@ -22,7 +22,7 @@ extension NetworkAware {
 
 extension NetworkAwareUI {
     func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty()
+        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 
     func handleConnectionError() {
