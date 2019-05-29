@@ -203,6 +203,7 @@
 		17F7C24922770B68002E5C2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F7C24822770B68002E5C2E /* main.swift */; };
 		17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17FCA6801FD84B4600DBA9C8 /* NoticeStore.swift */; };
 		1A433B1D2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A433B1C2254CBEE00AE7910 /* WordPressComRestApi+Defaults.swift */; };
+		1A82EC9F229EBAFB000F141E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		1AE0F2AE2296EDD4000BDD7F /* BlogDetailsViewController+Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE0F2AD2296EDD4000BDD7F /* BlogDetailsViewController+Stats.swift */; };
 		1D36FCB53C05724865D41F7A /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -10892,6 +10893,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A82EC9F229EBAFB000F141E /* Logger.swift in Sources */,
 				F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */,
 				8511CFC71C60894200B7CEED /* WordPressScreenshotGeneration.swift in Sources */,
 				8511CFC51C60884400B7CEED /* SnapshotHelper.swift in Sources */,
