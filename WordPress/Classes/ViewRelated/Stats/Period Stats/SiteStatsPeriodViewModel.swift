@@ -257,15 +257,15 @@ private extension SiteStatsPeriodViewModel {
         let referrers = store.getTopReferrers()?.referrers.prefix(10) ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
-            let icon: UIImage?
-            let iconURL: URL?
+            var icon: UIImage? = nil
+            var iconURL: URL? = nil
 
             switch referrer.iconURL?.lastPathComponent {
             case "search-engine.png":
                 icon = Style.imageForGridiconType(.search)
-                iconURL = nil
+            case nil:
+                icon = Style.imageForGridiconType(.globe)
             default:
-                icon = nil
                 iconURL = referrer.iconURL
             }
 
@@ -320,7 +320,6 @@ private extension SiteStatsPeriodViewModel {
 
     func authorsDataRows() -> [StatsTotalRowData] {
         let authors = store.getTopAuthors()?.topAuthors.prefix(10) ?? []
-
 
         return authors.map { StatsTotalRowData(name: $0.name,
                                                data: $0.viewsCount.abbreviatedString(),

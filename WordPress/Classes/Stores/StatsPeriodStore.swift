@@ -318,7 +318,7 @@ private extension StatsPeriodStore {
 
         fetchingOverviewListener?(true, false)
 
-        statsRemote.getData(for: period, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching summary: \(String(describing: error?.localizedDescription))")
             }

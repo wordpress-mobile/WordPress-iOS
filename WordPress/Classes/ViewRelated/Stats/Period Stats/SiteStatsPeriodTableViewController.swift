@@ -56,8 +56,10 @@ class SiteStatsPeriodTableViewController: UITableViewController {
 
     private var viewModel: SiteStatsPeriodViewModel?
 
+    private let analyticsTracker = BottomScrollAnalyticsTracker()
+
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -79,8 +81,7 @@ class SiteStatsPeriodTableViewController: UITableViewController {
             return nil
         }
 
-        let periodCount = 10
-        cell.configure(date: selectedDate, period: .day, delegate: self, expectedPeriodCount: periodCount)
+        cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
         viewModel?.statsBarChartViewDelegate = cell
 
         return cell

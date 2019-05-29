@@ -131,7 +131,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
         return WPStatsService(siteId: blog.dotComID,
                               siteTimeZone: blogService.timeZone(for: blog),
                               oauth2Token: blog.authToken,
-                              andCacheExpirationInterval: expirationTime)
+                              andCacheExpirationInterval: expirationTime,
+                              apiBaseUrlString: Environment.current.wordPressComApiBase)
     }
 
     private func newStatsViewController() -> StatsViewAllTableViewController {

@@ -14,9 +14,9 @@ class EditorPublishEpilogueScreen: BaseScreen {
         super.init(element: published)
     }
 
-    func done() -> MySiteScreen {
+    // returns void since return screen depends on what screen you started on
+    func done() {
         doneButton.tap()
-        return MySiteScreen()
     }
 
     func verifyEpilogueDisplays(postTitle expectedPostTitle: String, siteAddress expectedSiteAddress: String) -> EditorPublishEpilogueScreen {
