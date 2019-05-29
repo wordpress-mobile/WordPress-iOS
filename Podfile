@@ -178,20 +178,34 @@ target 'WordPress' do
         acknowledgements = 'Acknowledgements'
         markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
-        styled_html = "<style>
-                         body {
-                           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-                           font-size: 16px;
-                           color: #1a1a1a;
-                           margin: 20px;
-                         }
-                      </style>
-                      <title>
-                        #{acknowledgements}
-                      </title>
-                      <body>
-                        #{rendered_html}
-                      </body>".sub("<h1>#{acknowledgements}</h1>", '')
+        styled_html = "<head>
+                         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+                         <style>
+                           body {
+                             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                             font-size: 16px;
+                             color: #1a1a1a;
+                             margin: 20px;
+                           }
+                           pre {
+                            white-space: pre-wrap;
+                           }
+                         </style>
+                         <title>
+                           #{acknowledgements}
+                         </title>
+                       </head>
+                       <body>
+                         #{rendered_html}
+                       </body>"
+          
+          ## Remove the <h1>, since we've promoted it to <title>
+          styled_html = styled_html.sub("<h1>#{acknowledgements}</h1>", '')
+          
+          ## The glog library's license contains a URL that does not wrap in the web view,
+          ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
+          ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
+          styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
                         
         File.write('Pods/Target Support Files/Pods-WordPress/acknowledgements.html', styled_html)    
     end
