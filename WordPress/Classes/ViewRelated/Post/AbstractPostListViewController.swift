@@ -1092,6 +1092,15 @@ class AbstractPostListViewController: UIViewController,
     func shouldPresentAlert() -> Bool {
         return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
+
+    // MARK: - Others
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        // Override to hide Notice when we are showing the Editor. We hide Notices in
+        // `-viewDidDisappear` but it is not called when presenting a ViewController.
+        dismissAllNetworkErrorNotices()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
+    }
 }
 
 extension AbstractPostListViewController: NetworkStatusDelegate {
