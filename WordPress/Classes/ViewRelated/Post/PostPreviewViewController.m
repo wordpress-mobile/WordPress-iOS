@@ -179,8 +179,7 @@
     }
 
     [self stopLoading];
-
-    [self.generator previewRequestFailedWithReason:@"Generic web view error"];
+    [self.generator previewRequestFailedWithReason:[NSString stringWithFormat:@"Generic web view error Error. Error code: %d, Error domain: %@", error.code, error.domain]];
 }
 
 - (BOOL)webView:(UIWebView *)awebView
