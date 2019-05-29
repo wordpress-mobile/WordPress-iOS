@@ -15,12 +15,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-
-    // If the subtitles are not shown, this is active.
+    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the subtitles are shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
-
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
@@ -111,18 +107,16 @@ private extension TopTotalsCell {
     /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
+        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
-            subtitleStackView.isHidden = !subtitlesProvided
-            rowsStackView.isHidden = true
             bottomSeparatorLine.isHidden = true
+            rowsStackViewTopConstraint.constant = subtitlesProvided ? subtitleHeight : 0
             return
         }
 
         let showSubtitles = dataRows.count > 0 && subtitlesProvided
-        subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.isActive = !showSubtitles
-        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleHeight : 0
     }
 
     // MARK: - Child Row Handling
