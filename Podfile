@@ -35,11 +35,11 @@ end
 
 def wordpress_ui
     ## for production:
-    ## pod 'WordPressUI', '~> 1.3.0'
+    pod 'WordPressUI', '~> 1.3.1-beta.1'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'edd2908'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'edd2908'
 end
 
 def wordpress_kit
