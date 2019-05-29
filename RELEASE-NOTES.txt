@@ -1,5 +1,6 @@
 12.6
 -----
+Account Settings Primary Site now shows the site domain if the site has no name.
 
 12.5
 -----
