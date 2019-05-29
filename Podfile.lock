@@ -198,7 +198,7 @@ PODS:
     - UIDeviceIdentifier (~> 1.1.4)
     - WordPressShared (~> 1.8.0-beta)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.8.1-beta.1):
+  - WordPressShared (1.8.1-beta.2):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.3.0)
@@ -253,7 +253,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.6.3)
   - WordPressAuthenticator (~> 1.5.0)
   - WordPressKit (~> 4.1-beta)
-  - WordPressShared (~> 1.8.1-beta)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `7c993fcc48dc9db7dadbe8c07c463d82bbcc6549`)
   - WordPressUI (~> 1.3.0)
   - WPMediaPicker (~> 1.4.1)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.5.1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -298,7 +298,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
-    - WordPressShared
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
@@ -326,6 +325,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.5.1
+  WordPressShared:
+    :commit: 7c993fcc48dc9db7dadbe8c07c463d82bbcc6549
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.5.1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
@@ -342,6 +344,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.5.1
+  WordPressShared:
+    :commit: 7c993fcc48dc9db7dadbe8c07c463d82bbcc6549
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -388,7 +393,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: b5f2a352dc2b68b1a622ba83bdc716b7e346d556
   WordPressAuthenticator: 958545e13b06d39d064d96b2cfdd92c250fe6ead
   WordPressKit: 841679f76215ec001dc37dca1f0ec71c0aa5a7b7
-  WordPressShared: bf57cce7391f67ed3d128f6d733536191e04dcf8
+  WordPressShared: f48dfc3925e88fc55ba21baad58518a3ab7d97b3
   WordPressUI: f63d7852dea29a3d08a87ec19a3af938215123ba
   WPMediaPicker: 8cff8dff846f3440c0c6d088c12240ab85570ee5
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -396,6 +401,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 5e98b2b9d05c0cd7a378a974b3b0dff6e69e63b7
+PODFILE CHECKSUM: 32ec3bcc805d21fa8ff8b9ca168691b40d1b30fb
 
 COCOAPODS: 1.6.1
