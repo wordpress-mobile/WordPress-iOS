@@ -1092,8 +1092,9 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Others
 
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
-        // Override to hide Notice when we are showing the Editor. We hide Notices in
-        // `-viewDidDisappear` but it is not called when presenting a ViewController.
+        // We override this method to dismiss any Notice that is currently being shown. If we
+        // don't do this, the present Notice will be shown on top of the ViewController we are
+        // presenting.
         dismissAllNetworkErrorNotices()
         super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
