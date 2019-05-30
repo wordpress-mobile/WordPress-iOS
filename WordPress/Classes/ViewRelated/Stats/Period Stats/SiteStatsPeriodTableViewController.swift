@@ -133,6 +133,8 @@ private extension SiteStatsPeriodTableViewController {
                     self.hideNoResults()
                 }
             case .fetchingDataCompleted(let error):
+                self.refreshControl?.endRefreshing()
+
                 if error {
                     self.displayFailureViewIfNecessary()
                 } else {
@@ -161,7 +163,6 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-        refreshControl?.endRefreshing()
     }
 
     @objc func userInitiatedRefresh() {
