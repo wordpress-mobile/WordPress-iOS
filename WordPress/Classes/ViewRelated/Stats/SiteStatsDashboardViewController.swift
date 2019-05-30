@@ -117,13 +117,13 @@ private extension SiteStatsDashboardViewController {
     }
 
     func updatePeriodView(oldSelectedPeriod: StatsPeriodType) {
-        let selectedPeriosChanged = currentSelectedPeriod != oldSelectedPeriod
+        let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
 
         switch currentSelectedPeriod {
         case .insights:
-            if selectedPeriosChanged || pageViewControllerIsEmpty {
+            if selectedPeriodChanged || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([insightsTableViewController],
                                                        direction: .forward,
                                                        animated: false)
