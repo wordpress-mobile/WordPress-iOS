@@ -13,7 +13,7 @@ class SiteStatsInsightsViewModel: Observable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     private let insightsStore: StatsInsightsStore
-    private var insightsReceipt: Receipt?
+    private var insightsReceipt: Receipt
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
 
@@ -34,19 +34,18 @@ class SiteStatsInsightsViewModel: Observable {
         self.insightsStore = insightsStore
         self.periodStore = periodStore
 
+        insightsReceipt = insightsStore.query(.insights)
+        insightsStore.actionDispatcher.dispatch(InsightAction.refreshInsights)
         insightsChangeReceipt = insightsStore.onChange { [weak self] in
             if let lastPostID = insightsStore.getLastPostInsight()?.postID {
                 self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
             }
-
             self?.emitChange()
         }
 
         periodChangeReceipt = periodStore.onChange { [weak self] in
             self?.emitChange()
         }
-
-        insightsReceipt = insightsStore.query(.insights)
     }
 
     // MARK: - Table Model
@@ -118,10 +117,8 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshInsights() {
-        ActionDispatcher.dispatch(InsightAction.refreshInsights)
-
-        if let postID = insightsStore.getLastPostInsight()?.postID {
-            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        if !insightsStore.isFetchingOverview {
+            ActionDispatcher.dispatch(InsightAction.refreshInsights)
         }
     }
 }
@@ -476,6 +473,14 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func fetchStatsForInsightsLatestPost(postID: Int) {
-        self.periodReceipt = periodStore.query(.postStats(postID: postID))
+        if periodStore.isFetchingPostStats(for: postID) {
+            return
+        }
+
+        if periodReceipt != nil {
+            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        } else {
+            periodReceipt = periodStore.query(.postStats(postID: postID))
+        }
     }
 }
