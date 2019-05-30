@@ -506,7 +506,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
-        self.selectedSectionCategory = section.category;
+        switch (section.category) {
+            case BlogDetailsSectionCategoryQuickStart:
+            case BlogDetailsSectionCategoryDomainCredit: {
+                self.selectedSectionCategory = BlogDetailsSectionCategoryGeneral;
+                NSUInteger section = [self findSectionIndexWithSections:self.tableSections category:self.selectedSectionCategory];
+                _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+            }
+                break;
+                
+            default:
+                self.selectedSectionCategory = section.category;
+                break;
+        }
     }
 }
 
