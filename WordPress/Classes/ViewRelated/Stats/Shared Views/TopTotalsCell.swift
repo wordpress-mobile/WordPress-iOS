@@ -115,7 +115,7 @@ private extension TopTotalsCell {
             return
         }
 
-        let showSubtitles = dataRows.count > 0 && subtitlesProvided
+        let showSubtitles = !dataRows.isEmpty && subtitlesProvided
         rowsStackViewTopConstraint.constant = showSubtitles ? subtitleHeight : 0
     }
 

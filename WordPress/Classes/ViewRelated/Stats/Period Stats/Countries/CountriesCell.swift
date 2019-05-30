@@ -74,7 +74,7 @@ private extension CountriesCell {
             return
         }
 
-        rowsStackViewTopConstraint.constant = dataRows.count > 0 ? subtitleHeight : 0
+        rowsStackViewTopConstraint.constant = !dataRows.isEmpty ? subtitleHeight : 0
     }
 
 }
