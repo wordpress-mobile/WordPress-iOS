@@ -514,7 +514,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 _restorableSelectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
             }
                 break;
-                
             default:
                 self.selectedSectionCategory = section.category;
                 break;
