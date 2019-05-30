@@ -10,11 +10,8 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
     @IBOutlet weak var bottomSeparatorLine: UIView!
-
-    // If the subtitles are not shown, this is active.
+    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the subtitles are shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
 
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
@@ -70,17 +67,14 @@ private extension CountriesCell {
     }
 
     func setSubtitleVisibility() {
+        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
-            subtitleStackView.isHidden = false
-            rowsStackView.isHidden = true
+            rowsStackViewTopConstraint.constant = subtitleHeight
             return
         }
 
-        let showSubtitles = dataRows.count > 0
-        subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.isActive = !showSubtitles
-        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+        rowsStackViewTopConstraint.constant = !dataRows.isEmpty ? subtitleHeight : 0
     }
 
 }
