@@ -640,6 +640,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEnhancedSiteCreationSuccessPreviewLoaded:
             eventName = @"enhanced_site_creation_preview_loaded";
             break;
+        case WPAnalyticsStatEnhancedSiteCreationSuccessPreviewOkButtonTapped:
+            eventName = @"enhanced_site_creation_preview_ok_button_tapped";
+            break;
         case WPAnalyticsStatEnhancedSiteCreationErrorShown:
             eventName = @"enhanced_site_creation_error_shown";
             break;
