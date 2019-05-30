@@ -504,7 +504,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     _restorableSelectedIndexPath = restorableSelectedIndexPath;
 
-    if (restorableSelectedIndexPath != nil) {
+    if (restorableSelectedIndexPath != nil && restorableSelectedIndexPath.section < [self.tableSections count]) {
         BlogDetailsSection *section = [self.tableSections objectAtIndex:restorableSelectedIndexPath.section];
         self.selectedSectionCategory = section.category;
     }
