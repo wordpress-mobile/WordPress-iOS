@@ -1,6 +1,7 @@
 12.6
 -----
-Account Settings Primary Site now shows the site domain if the site has no name.
+* Removed the limit of number of photos that can be shared from other apps.
+* Account Settings Primary Site now shows the site domain if the site has no name.
 * The app now launches a bit more quickly.
 * Added a list of third-party library acknowledgements.
 
