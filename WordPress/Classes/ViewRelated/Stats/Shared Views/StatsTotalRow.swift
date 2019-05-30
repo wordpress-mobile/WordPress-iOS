@@ -205,9 +205,18 @@ private extension StatsTotalRow {
         }
 
         let imageSize = rowData.statSection?.imageSize ?? StatSection.defaultImageSize
-        imageWidthConstraint.constant = imageSize
 
-        imageView.isHidden = !hasIcon
+        // If the parent row has an icon and this row does not,
+        // show the image view to make this row appear "indented" by the icon width.
+        if let parentRow = parentRow, parentRow.hasIcon, !hasIcon {
+            imageView.isHidden = false
+            imageWidthConstraint.constant = parentRow.imageWidthConstraint.constant
+            imageHeightConstraint.constant = 1
+        } else {
+            imageView.isHidden = !hasIcon
+            imageWidthConstraint.constant = imageSize
+            imageHeightConstraint.constant = imageSize
+        }
 
         if let icon = rowData.icon {
             imageView.image = icon

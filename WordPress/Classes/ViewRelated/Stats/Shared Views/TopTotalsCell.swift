@@ -182,12 +182,6 @@ private extension TopTotalsCell {
                 Style.configureLabelAsChildRowTitle(childRow.itemLabel)
             }
 
-            // If the parent row has an icon, show the image view for the child
-            // to make the child row appear "indented".
-            // If the parent does not have an icon, don't indent the child row.
-            childRow.imageView.isHidden = row.imageView.isHidden
-            childRow.imageWidthConstraint.constant = row.imageWidthConstraint.constant
-
             childRowsView.rowsStackView.addArrangedSubview(childRow)
         }
 
