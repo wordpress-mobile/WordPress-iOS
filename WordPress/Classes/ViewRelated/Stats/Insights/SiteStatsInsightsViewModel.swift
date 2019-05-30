@@ -13,7 +13,7 @@ class SiteStatsInsightsViewModel: Observable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     private let insightsStore: StatsInsightsStore
-    private let insightsReceipt: Receipt
+    private var insightsReceipt: Receipt
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
 
@@ -39,8 +39,12 @@ class SiteStatsInsightsViewModel: Observable {
         insightsChangeReceipt = insightsStore.onChange { [weak self] in
             if let lastPostID = insightsStore.getLastPostInsight()?.postID {
                 self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
+            } else {
+                self?.emitChange()
             }
+        }
 
+        periodChangeReceipt = periodStore.onChange { [weak self] in
             self?.emitChange()
         }
     }
@@ -114,10 +118,8 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshInsights() {
-        ActionDispatcher.dispatch(InsightAction.refreshInsights)
-
-        if let postID = insightsStore.getLastPostInsight()?.postID {
-            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        if !insightsStore.isFetchingOverview {
+            ActionDispatcher.dispatch(InsightAction.refreshInsights)
         }
     }
 }
@@ -472,10 +474,6 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func fetchStatsForInsightsLatestPost(postID: Int) {
-        self.periodReceipt = periodStore.query(.postStats(postID: postID))
-        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
-        periodChangeReceipt = periodStore.onChange { [weak self] in
-            self?.emitChange()
-        }
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 }

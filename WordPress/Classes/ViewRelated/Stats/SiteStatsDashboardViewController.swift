@@ -5,30 +5,27 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
-    @IBOutlet weak var insightsContainerView: UIView!
-    @IBOutlet weak var statsContainerView: UIView!
 
-    private var insightsTableViewController: SiteStatsInsightsTableViewController?
-    private var periodTableViewController: SiteStatsPeriodTableViewController?
+    private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
+    private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
+    private var pageViewController: UIPageViewController?
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFilterBar()
-        getSelectedPeriodFromUserDefaults()
+        restoreSelectedPeriodFromUserDefaults()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
-            insightsTableViewController = insightsTableVC
-        }
-
-        if let periodTableVC = segue.destination as? SiteStatsPeriodTableViewController {
-            periodTableViewController = periodTableVC
+        switch segue.destination {
+        case let pageViewController as UIPageViewController:
+            self.pageViewController = pageViewController
+        default:
+            break
         }
     }
-
 }
 
 // MARK: - Private Extension
@@ -79,18 +76,12 @@ private extension SiteStatsDashboardViewController {
         }
         set {
             filterTabBar?.setSelectedIndex(newValue.rawValue)
-            setContainerViewVisibility()
-            updatePeriodView()
+            let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
+            updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
             trackAccessEvent()
         }
     }
-
-    func setContainerViewVisibility() {
-        statsContainerView.isHidden = currentSelectedPeriod == .insights
-        insightsContainerView.isHidden = !statsContainerView.isHidden
-    }
-
 }
 
 // MARK: - FilterTabBar Support
@@ -117,19 +108,38 @@ private extension SiteStatsDashboardViewController {
         UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Constants.userDefaultsKey)
     }
 
-    func getSelectedPeriodFromUserDefaults() {
-        currentSelectedPeriod = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
+    func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
+        return StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
     }
 
-    func updatePeriodView() {
+    func restoreSelectedPeriodFromUserDefaults() {
+        currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
+    }
 
-        guard currentSelectedPeriod != .insights else {
-            return
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType) {
+        let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
+        let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
+        let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
+
+        switch currentSelectedPeriod {
+        case .insights:
+            if selectedPeriodChanged || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([insightsTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+            insightsTableViewController.refreshInsights()
+            break
+        default:
+            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([periodTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+            periodTableViewController.selectedDate = Date()
+            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+            periodTableViewController.selectedPeriod = selectedPeriod
         }
-
-        periodTableViewController?.selectedDate = Date()
-        let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-        periodTableViewController?.selectedPeriod = selectedPeriod
     }
 }
 

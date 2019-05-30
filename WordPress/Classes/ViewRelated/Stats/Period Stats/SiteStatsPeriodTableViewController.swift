@@ -11,7 +11,8 @@ import WordPressFlux
 }
 
 
-class SiteStatsPeriodTableViewController: UITableViewController {
+class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
 
@@ -132,6 +133,8 @@ private extension SiteStatsPeriodTableViewController {
                     self.hideNoResults()
                 }
             case .fetchingDataCompleted(let error):
+                self.refreshControl?.endRefreshing()
+
                 if error {
                     self.displayFailureViewIfNecessary()
                 } else {
@@ -160,7 +163,6 @@ private extension SiteStatsPeriodTableViewController {
         }
 
         tableHandler.viewModel = viewModel.tableViewModel()
-        refreshControl?.endRefreshing()
     }
 
     @objc func userInitiatedRefresh() {
@@ -212,6 +214,7 @@ extension SiteStatsPeriodTableViewController: NoResultsViewHost {
                                      accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
                                         noResults.delegate = self
                                         noResults.hideImageView(false)
+                                        noResults.updateView()
         }
     }
 
