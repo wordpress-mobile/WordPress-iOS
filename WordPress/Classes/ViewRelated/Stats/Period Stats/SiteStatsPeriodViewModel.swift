@@ -40,7 +40,9 @@ class SiteStatsPeriodViewModel: Observable {
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod, forceRefresh: false))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate,
+                                                                               period: selectedPeriod,
+                                                                               forceRefresh: true))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -87,7 +89,7 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
         self.lastRequestedDate = date
         self.lastRequestedPeriod = period
     }

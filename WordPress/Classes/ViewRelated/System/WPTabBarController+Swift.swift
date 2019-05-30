@@ -76,11 +76,10 @@ extension WPTabBarController {
     /// - After logging in (and this VC is shown)
     @objc @discardableResult func trackTabAccessForTabIndex(_ tabIndex: Int) -> Bool {
         // Since this ViewController is a singleton, it can be active **behind** the login view.
-        // The `isViewonScreen()` prevents us from tracking this.
-        //
-        // The `presentedViewController` check is to avoid tracking while a modal dialog is shown
-        // and the app is placed in the background and back to foreground.
-        guard isViewOnScreen(), presentedViewController == nil else {
+        // The `isViewonScreen()` prevents us from tracking this. It also helps us in avoiding
+        // tracking events if a modal dialog is shown and the app is placed in the background
+        // and back to foreground.
+        guard isViewOnScreen() else {
             return false
         }
 
