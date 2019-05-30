@@ -173,9 +173,8 @@ private extension TopTotalsCell {
             let childRowData = childRows[childRowsIndex]
             let childRow = StatsTotalRow.loadFromNib()
 
-            childRow.configure(rowData: childRowData, delegate: self)
+            childRow.configure(rowData: childRowData, delegate: self, parentRow: row)
             childRow.showSeparator = false
-            childRow.parentRow = row
 
             // If this child is just a child, then change the label color.
             // If this child is also a parent, then leave the color as default.

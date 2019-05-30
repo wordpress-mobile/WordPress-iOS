@@ -92,13 +92,11 @@ class StatsTotalRow: UIView, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private weak var delegate: StatsTotalRowDelegate?
     private var forDetails = false
+    private(set) weak var parentRow: StatsTotalRow?
 
     // This view is modified by the containing cell, to show/hide
     // child rows when a parent row is selected.
     weak var childRowsView: StatsChildRowsView?
-
-    // This is set by the containing cell when child rows are added.
-    weak var parentRow: StatsTotalRow?
 
     var showSeparator = true {
         didSet {
@@ -143,10 +141,14 @@ class StatsTotalRow: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    func configure(rowData: StatsTotalRowData, delegate: StatsTotalRowDelegate? = nil, forDetails: Bool = false) {
+    func configure(rowData: StatsTotalRowData,
+                   delegate: StatsTotalRowDelegate? = nil,
+                   forDetails: Bool = false,
+                   parentRow: StatsTotalRow? = nil) {
         self.rowData = rowData
         self.delegate = delegate
         self.forDetails = forDetails
+        self.parentRow = parentRow
 
         configureExpandedState()
         configureIcon()
