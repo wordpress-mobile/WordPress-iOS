@@ -39,8 +39,9 @@ class SiteStatsInsightsViewModel: Observable {
         insightsChangeReceipt = insightsStore.onChange { [weak self] in
             if let lastPostID = insightsStore.getLastPostInsight()?.postID {
                 self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
+            } else {
+                self?.emitChange()
             }
-            self?.emitChange()
         }
 
         periodChangeReceipt = periodStore.onChange { [weak self] in
@@ -473,14 +474,6 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func fetchStatsForInsightsLatestPost(postID: Int) {
-        if periodStore.isFetchingPostStats(for: postID) {
-            return
-        }
-
-        if periodReceipt != nil {
-            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
-        } else {
-            periodReceipt = periodStore.query(.postStats(postID: postID))
-        }
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 }
