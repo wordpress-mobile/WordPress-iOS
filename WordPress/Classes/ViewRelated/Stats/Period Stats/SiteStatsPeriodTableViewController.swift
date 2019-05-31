@@ -91,7 +91,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return SiteStatsTableHeaderView.height
     }
-
 }
 
 // MARK: - Private Extension
@@ -111,6 +110,13 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedDate: selectedDate,
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self)
+        addViewModelListeners()
+    }
+
+    func addViewModelListeners() {
+        if changeReceipt != nil {
+            return
+        }
 
         changeReceipt = viewModel?.onChange { [weak self] in
             self?.refreshTableView()
@@ -119,8 +125,9 @@ private extension SiteStatsPeriodTableViewController {
         viewModel?.overviewStoreStatusOnChange = { [weak self] status in
             guard let self = self,
                 let viewModel = self.viewModel,
-                self.viewIsVisible() else {
-                return
+                self.viewIsVisible(),
+                self.changeReceipt != nil else {
+                    return
             }
 
             self.tableHandler.viewModel = viewModel.tableViewModel()
@@ -142,6 +149,11 @@ private extension SiteStatsPeriodTableViewController {
                 }
             }
         }
+    }
+
+    func removeViewModelListeners() {
+        changeReceipt = nil
+        viewModel?.overviewStoreStatusOnChange = nil
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -178,7 +190,7 @@ private extension SiteStatsPeriodTableViewController {
                 refreshControl?.endRefreshing()
                 return
         }
-
+        addViewModelListeners()
         viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
@@ -287,6 +299,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
             return
         }
 
+        removeViewModelListeners()
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection,
                                             selectedDate: selectedDate,
@@ -295,6 +309,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
+
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
