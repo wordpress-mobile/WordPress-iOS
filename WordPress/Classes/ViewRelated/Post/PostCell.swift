@@ -334,10 +334,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         }
     }
 
-    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
-        actionSheetDelegate = delegate
-    }
-
     private enum Constants {
         static let separator = " · "
         static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
@@ -352,6 +348,10 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 extension PostCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
+    }
+
+    func setActionSheetDelegate(_ delegate: PostActionSheetDelegate) {
+        actionSheetDelegate = delegate
     }
 }
 

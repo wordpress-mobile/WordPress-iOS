@@ -49,7 +49,7 @@ class PostCardStatusViewModel: NSObject {
         return author
     }
 
-    private var isUploadingOrFailed: Bool {
+    var isUploadingOrFailed: Bool {
         return MediaCoordinator.shared.isUploadingMedia(for: post) || post.isFailed || post.remoteStatus == .pushing
     }
 
