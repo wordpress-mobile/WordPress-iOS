@@ -4,30 +4,32 @@ class CountriesCell: UITableViewCell, NibLoadable {
 
     // MARK: - Properties
 
-    @IBOutlet weak var separatorLine: UIView!
+    @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var subtitleStackView: UIStackView!
     @IBOutlet weak var rowsStackView: UIStackView!
-    @IBOutlet weak var countriesMapContainer: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-
-    // If the subtitles are not shown, this is active.
+    @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the subtitles are shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
-    @IBOutlet private var strokeTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var separatorTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var countriesMapContainer: UIStackView! {
+        didSet {
+            countriesMapContainer.addArrangedSubview(countriesMap)
+        }
+    }
 
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
-    private let mapView = CountriesMapView.loadFromNib()
-    private var hideCountriesMap: Bool = false {
+    private var hideMapView: Bool = false {
         didSet {
-            countriesMapContainer.isHidden = hideCountriesMap
-            strokeTopConstraint.isActive = !hideCountriesMap
+            separatorTopConstraint.isActive = !hideMapView
+            countriesMapContainer.isHidden = hideMapView
         }
     }
+    private let countriesMap = CountriesMapView.loadFromNib()
 
     // MARK: - Configure
 
@@ -41,6 +43,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
         self.dataRows = dataRows
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
         self.forDetails = forDetails
+        bottomSeparatorLine.isHidden = forDetails
 
         if !forDetails {
         addRows(dataRows,
@@ -53,22 +56,12 @@ class CountriesCell: UITableViewCell, NibLoadable {
         setSubtitleVisibility()
         applyStyles()
 
-        hideCountriesMap = dataRows.isEmpty
-        guard hideCountriesMap else {
-            // Set map
-            return
-        }
+        hideMapView = dataRows.isEmpty
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        countriesMapContainer.addArrangedSubview(mapView)
     }
 }
 
@@ -78,21 +71,19 @@ private extension CountriesCell {
         Style.configureCell(self)
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
-        Style.configureViewAsSeparator(separatorLine)
+        Style.configureViewAsSeparator(topSeparatorLine)
+        Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
     func setSubtitleVisibility() {
+        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
 
         if forDetails {
-            subtitleStackView.isHidden = false
-            rowsStackView.isHidden = true
+            rowsStackViewTopConstraint.constant = subtitleHeight
             return
         }
 
-        let showSubtitles = dataRows.count > 0
-        subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.isActive = !showSubtitles
-        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+        rowsStackViewTopConstraint.constant = !dataRows.isEmpty ? subtitleHeight : 0
     }
 
 }

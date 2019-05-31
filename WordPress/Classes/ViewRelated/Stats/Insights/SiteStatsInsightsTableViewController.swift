@@ -40,7 +40,8 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class SiteStatsInsightsTableViewController: UITableViewController {
+class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
 
@@ -92,6 +93,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
+    }
+
+    func refreshInsights() {
+        viewModel?.refreshInsights()
     }
 }
 
@@ -147,7 +152,7 @@ private extension SiteStatsInsightsTableViewController {
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
         clearExpandedRows()
-        viewModel?.refreshInsights()
+        refreshInsights()
     }
 
     func applyTableUpdates() {
@@ -228,7 +233,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showCreatePost() {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
-            self?.viewModel?.refreshInsights()
+            self?.refreshInsights()
         }
     }
 
@@ -292,6 +297,6 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
                         accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
                             noResults.hideImageView(false)
         }
-        viewModel?.refreshInsights()
+        refreshInsights()
     }
 }
