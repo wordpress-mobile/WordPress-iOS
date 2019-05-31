@@ -53,13 +53,3 @@ extension UIAlertController {
         copyAlertController?.presentFromRootViewController()
     }
 }
-
-@objc extension UIAlertController {
-    static func presentNotice(title: String) {
-        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
-    }
-
-    static func dismissNotice() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
-    }
-}
