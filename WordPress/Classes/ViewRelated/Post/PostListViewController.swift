@@ -428,13 +428,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func configurePostCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? PostCell else { return }
+        guard let cell = cell as? PostCell else {
+            return
+        }
 
         cell.isAuthorHidden = showingJustMyPosts
     }
 
     private func configureRestoreCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? RestorePostTableViewCell else { return }
+        guard let cell = cell as? RestorePostTableViewCell else {
+            return
+        }
 
         cell.isCompact = isCompact
     }
@@ -737,7 +741,9 @@ private extension PostListViewController {
 
 extension PostListViewController: PostActionSheetDelegate {
     func showActionSheet(_ post: AbstractPost, from view: UIView) {
-        guard let post = post as? Post else { return }
+        guard let post = post as? Post else {
+            return
+        }
 
         postActionSheet.show(for: post, from: view, showViewOption: isCompact)
     }
