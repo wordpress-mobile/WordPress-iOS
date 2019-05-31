@@ -598,7 +598,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                               NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
                                                                     @"Error displayed if a comment fails to get updated");
                               
-                               [ReachabilityUtils showNoInternetConnectionNoticeWithMessage:message];
+                              [weakSelf displayNoticeWithTitle:message message:nil];
                           }];
 }
 

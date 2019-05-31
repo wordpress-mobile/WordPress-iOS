@@ -1085,7 +1085,7 @@ private extension NotificationDetailsViewController {
     }
 
     func displayReplyError(with block: FormattableCommentContent, content: String) {
-        let message = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message");
+        let message = NSLocalizedString("There has been an unexpected error while sending your reply", comment: "Reply Failure Message")
         displayNotice(title: message)
     }
 }

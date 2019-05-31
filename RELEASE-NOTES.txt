@@ -4,7 +4,7 @@
 * Account Settings Primary Site now shows the site domain if the site has no name.
 * The app now launches a bit more quickly.
 * Added a list of third-party library acknowledgements.
-* Updated messaging experience for a reply failure and a comment edit failure.
+* Updated messaging experience for a reply upload result.
 
 12.5
 -----
