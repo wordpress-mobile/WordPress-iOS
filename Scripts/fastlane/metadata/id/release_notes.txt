@@ -1,0 +1,5 @@
+* Terkadang pemberitahuan muncul di belakang keyboard, ini jadi tidak nyaman jika sebenarnya Anda ingin membacanya. Sekarang pemberitahuan tersebut akan ditampilkan di depan, di tempat yang memang seharusnya.
+* Kami merapikan pengelolaan domain di aplikasi dengan kemampuan untuk menebus kredit domain WordPress.com agar dapat memberikan domain kustom ke situs Anda.
+* Sekarang pos akan tersimpan otomatis saat Anda melakukan pratinjau — berkurang satu hal yang perlu dipikirkan selagi Anda membuat konsep.
+* Terkadang aplikasi mengalami crash saat mencoba memuat komentar Pembaca yang berisi beberapa GIF. 65% interaksi di internet adalah berbagi GIF, jadi jika masalah ini terjadi akan sangat mengganggu. Sekarang sudah diperbaiki.
+* Aplikasi terbuka sedikit lebih cepat, jadi Anda bisa menghemat beberapa detik dan menggunakannya secara produktif (atau untuk memilih GIF yang sempurna).
