@@ -11,10 +11,6 @@ class PostCompactCellTests: XCTestCase {
         postCell = postCellFromNib()
     }
 
-    func testCellHeight() {
-        XCTAssertEqual(PostCompactCell.height, 60)
-    }
-
     func testShowImageWhenAvailable() {
         let post = PostBuilder().withImage().build()
 
