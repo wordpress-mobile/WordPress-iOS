@@ -175,6 +175,15 @@ class PostCellTests: XCTestCase {
         XCTAssertTrue(postCell.progressView.isHidden)
     }
 
+    func testIsUserInteractionEnabled() {
+        let post = PostBuilder().withImage().build()
+        postCell.isUserInteractionEnabled = false
+
+        postCell.configure(with: post)
+
+        XCTAssertTrue(postCell.isUserInteractionEnabled)
+    }
+
     func testEditAction() {
         let post = PostBuilder().published().build()
         postCell.configure(with: post)

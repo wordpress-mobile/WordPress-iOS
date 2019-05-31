@@ -24,6 +24,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var topPadding: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
     @IBOutlet weak var titleAndSnippetView: UIStackView!
+    @IBOutlet weak var ghostStackView: UIStackView!
     @IBOutlet weak var topMargin: NSLayoutConstraint!
 
     lazy var imageLoader: ImageLoader = {
@@ -49,6 +50,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         self.post = post
 
+        resetGhost()
         configureFeaturedImage()
         configureTitleAndSnippetView()
         configureTitle()
@@ -147,6 +149,12 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         featuredImageHeight.constant = Constants.featuredImageHeightConstant
     }
 
+    private func resetGhost() {
+        isUserInteractionEnabled = true
+        actionBarView.layer.opacity = Constants.actionBarOpacity
+        toggleGhost(visible: false)
+    }
+
     private func configureFeaturedImage() {
         guard let post = post?.latest() else {
             return
@@ -159,7 +167,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             loadFeaturedImageIfNeeded(url, preferredSize: CGSize(width: desiredWidth, height: featuredImage.frame.height))
         } else {
             featuredImageStackView.isHidden = true
-            topPadding.constant = 8
+            topPadding.constant = Constants.paddingWithoutImage
         }
     }
 
@@ -175,7 +183,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitleAndSnippetView() {
-        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin)
+        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin, bottom: 0)
     }
 
     private func configureTitle() {
@@ -333,14 +341,42 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     private enum Constants {
         static let separator = " · "
         static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
+        static let paddingWithoutImage: CGFloat = 8
         static let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
         static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
         static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
+        static let actionBarOpacity: Float = 1
     }
 }
 
 extension PostCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
+    }
+}
+
+extension PostCell: GhostableView {
+    func ghostAnimationWillStart() {
+        progressView.isHidden = true
+        actionBarView.layer.opacity = GhostConstants.actionBarOpacity
+        isUserInteractionEnabled = false
+
+        topPadding.constant = Constants.margin
+
+        toggleGhost(visible: true)
+
+        actionBarView.isGhostableDisabled = true
+        upperBorder.isGhostableDisabled = true
+        bottomBorder.isGhostableDisabled = true
+    }
+
+    private func toggleGhost(visible: Bool) {
+        contentStackView.subviews.forEach { $0.isHidden = visible }
+        ghostStackView.isHidden = !visible
+        actionBarView.isHidden = false
+    }
+
+    private enum GhostConstants {
+        static let actionBarOpacity: Float = 0.5
     }
 }
