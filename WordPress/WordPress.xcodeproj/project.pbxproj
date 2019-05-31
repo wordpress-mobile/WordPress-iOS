@@ -1774,6 +1774,7 @@
 		FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */; };
 		FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */; };
 		FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */; };
+		FFCB9F4B22A125BD0080A45F /* WPException.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCB9F4A22A125BD0080A45F /* WPException.m */; };
 		FFD12D5E1FE1998D00F20A00 /* Progress+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD12D5D1FE1998D00F20A00 /* Progress+Helpers.swift */; };
 		FFDA7E501B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */; };
 		FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3B2C61B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m */; };
@@ -4003,6 +4004,8 @@
 		FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataService.m; sourceTree = "<group>"; };
 		FFC6ADE11B56F58B002F3C84 /* WordPress 36.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 36.xcdatamodel"; sourceTree = "<group>"; };
+		FFCB9F4922A125BD0080A45F /* WPException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPException.h; sourceTree = "<group>"; };
+		FFCB9F4A22A125BD0080A45F /* WPException.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WPException.m; sourceTree = "<group>"; };
 		FFD12D5D1FE1998D00F20A00 /* Progress+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+Helpers.swift"; sourceTree = "<group>"; };
 		FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSiteVisibilityHelper.h; sourceTree = "<group>"; };
 		FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSiteVisibilityHelper.m; sourceTree = "<group>"; };
@@ -6176,6 +6179,8 @@
 				85B125431B02937E008A3D95 /* UIAlertControllerProxy.h */,
 				85B125441B02937E008A3D95 /* UIAlertControllerProxy.m */,
 				7E846FF020FD0A0500881F5A /* ContentCoordinator.swift */,
+				FFCB9F4922A125BD0080A45F /* WPException.h */,
+				FFCB9F4A22A125BD0080A45F /* WPException.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -10605,6 +10610,7 @@
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				171909E4206CFFCD0054DF0B /* FancyAlertViewController+Async.swift in Sources */,
+				FFCB9F4B22A125BD0080A45F /* WPException.m in Sources */,
 				E14DF70620C922F200959BA9 /* NotificationCenter+ObserveOnce.swift in Sources */,
 				E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */,
 				B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */,

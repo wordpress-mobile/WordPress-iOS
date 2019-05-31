@@ -147,3 +147,27 @@ extension NSManagedObjectContext {
         return objects ?? []
     }
 }
+
+extension NSPersistentStoreCoordinator {
+
+    /// Retrieves an NSManagedObjectID in a safe way, so even if the URL is not in a valid CoreData format no exceptions will be throw.
+    ///
+    /// - Parameter uri: the core-data object uri representation
+    /// - Returns: a NSManagedObjectID if the uri is valid or nil if not.
+    ///
+    public func safeManagedObjectID(forURIRepresentation uri: URL) -> NSManagedObjectID? {
+        guard let host = uri.host, host == "x-coredata" else {
+            return nil
+        }
+        var result:NSManagedObjectID? = nil
+        do {
+            try WPException.objcTry {
+                result = self.managedObjectID(forURIRepresentation: uri)
+            }
+        } catch {
+            return nil
+        }
+        return result
+    }
+
+}
