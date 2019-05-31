@@ -73,10 +73,10 @@ extension WPCrashLogging {
         Client.shared?.send(event: event)
     }
 
-    static func logMessage(_ message: String, extra: [String: Any]? = nil) {
+    static func logMessage(_ message: String, properties: [String: Any]? = nil) {
         let event = Event(level: .info)
         event.message = message
-        event.extra = extra
+        event.extra = properties
         Client.shared?.send(event: event)
     }
 }
