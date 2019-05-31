@@ -232,6 +232,10 @@ open class AboutViewController: UITableViewController {
                 Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
+
+                Row(title: NSLocalizedString("Acknowledgements", comment: "Displays the list of third-party libraries we use"),
+                    details: nil,
+                    handler: { self.displayWebView(Bundle.main.url(forResource: "acknowledgements", withExtension: "html")) }),
             ]
         ]
     }

@@ -1089,8 +1089,14 @@ class AbstractPostListViewController: UIViewController,
         return ReachabilityUtils.noConnectionMessage()
     }
 
-    func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
+    // MARK: - Others
+
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        // We override this method to dismiss any Notice that is currently being shown. If we
+        // don't do this, the present Notice will be shown on top of the ViewController we are
+        // presenting.
+        dismissAllNetworkErrorNotices()
+        super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
 }
 
