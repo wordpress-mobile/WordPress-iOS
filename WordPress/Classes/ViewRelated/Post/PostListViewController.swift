@@ -165,10 +165,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return postListHeightForFooterView
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return isCompact ? PostCompactCell.height : super.tableView(tableView, heightForRowAt: indexPath)
-    }
-
     private func configureFilterBarTopConstraint() {
         filterTabBariOS10TopConstraint.isActive = false
     }

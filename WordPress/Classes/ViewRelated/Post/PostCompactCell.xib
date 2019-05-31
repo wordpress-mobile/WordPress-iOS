@@ -121,7 +121,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" priority="999" constant="60" id="W3Y-m3-wGY"/>
                                     <constraint firstAttribute="trailing" secondItem="ESK-bT-Bix" secondAttribute="trailing" id="h96-7a-N0h"/>
                                     <constraint firstItem="ESK-bT-Bix" firstAttribute="leading" secondItem="XTx-r8-hUF" secondAttribute="leading" id="mJJ-sj-Om2"/>
                                     <constraint firstItem="ESK-bT-Bix" firstAttribute="centerY" secondItem="XTx-r8-hUF" secondAttribute="centerY" id="yNO-gY-vZq"/>
@@ -144,6 +143,8 @@
                             <constraint firstItem="Zh4-Mc-AK7" firstAttribute="leading" secondItem="XTx-r8-hUF" secondAttribute="trailing" id="ex5-gp-3zr"/>
                             <constraint firstItem="06O-B0-y3k" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leading" id="g6x-y3-fZX"/>
                             <constraint firstItem="UrU-r4-hAL" firstAttribute="leading" secondItem="HJK-1N-bmY" secondAttribute="leadingMargin" constant="8" id="mXG-L5-nGo"/>
+                            <constraint firstAttribute="bottom" secondItem="UrU-r4-hAL" secondAttribute="bottom" constant="9" id="qTo-qH-YL7"/>
+                            <constraint firstItem="UrU-r4-hAL" firstAttribute="top" secondItem="HJK-1N-bmY" secondAttribute="top" constant="7" id="see-W8-w9Y"/>
                             <constraint firstAttribute="bottom" secondItem="06O-B0-y3k" secondAttribute="bottom" id="wZI-eS-fxp"/>
                         </constraints>
                     </view>
@@ -161,7 +162,6 @@
             <connections>
                 <outlet property="badgesLabel" destination="ZNQ-Pm-fi0" id="XSV-yJ-XKT"/>
                 <outlet property="featuredImageView" destination="tne-qn-oAS" id="cE0-O7-RC0"/>
-                <outlet property="ghostHeight" destination="W3Y-m3-wGY" id="Ult-mc-ILS"/>
                 <outlet property="ghostView" destination="XTx-r8-hUF" id="MIr-fB-1Hp"/>
                 <outlet property="innerView" destination="HJK-1N-bmY" id="V61-8s-DZ1"/>
                 <outlet property="labelsContainerTrailing" destination="YXw-VS-KHH" id="mMj-WE-nCF"/>

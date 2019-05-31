@@ -13,9 +13,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var labelsLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var timestampTrailing: NSLayoutConstraint!
     @IBOutlet var labelsContainerTrailing: NSLayoutConstraint!
-    @IBOutlet weak var ghostHeight: NSLayoutConstraint!
-
-    static let height: CGFloat = 60
 
     private weak var actionSheetDelegate: PostActionSheetDelegate?
 
@@ -77,8 +74,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         backgroundColor = WPStyleGuide.greyLighten30()
 
         featuredImageView.layer.cornerRadius = Constants.imageRadius
-
-        ghostHeight.constant = Constants.ghostHeight
     }
 
     private func setupReadableGuideForiPad() {
@@ -141,8 +136,6 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         static let imageRadius: CGFloat = 2
         static let labelsVerticalAlignment: CGFloat = -1
         static let opacity: Float = 1
-        static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
-        static let ghostHeight: CGFloat = PostCompactCell.height - Constants.borderHeight
     }
 }
 
