@@ -197,7 +197,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [super viewWillDisappear:animated];
 
     [self.keyboardManager stopListeningToKeyboardNotifications];
-    [UIAlertController dismissNotice];
 }
 
 #pragma mark - Fetching Post
@@ -597,8 +596,26 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                           } failure:^(NSError *error) {
                               NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
                                                                     @"Error displayed if a comment fails to get updated");
-                              [UIAlertController presentNoticeWithTitle:message];
                               
+                              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                                       message:message
+                                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                              
+                              UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+                                                                                     style:UIAlertActionStyleCancel
+                                                                                   handler:^(UIAlertAction *action){
+                                                                                       [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
+                                                                                       [weakSelf reloadData];
+                                                                                   }];
+                              
+                              UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Try Again", @"Retry an action that failed")
+                                                                                    style:UIAlertActionStyleDestructive
+                                                                                  handler:^(UIAlertAction *action){
+                                                                                      [weakSelf updateCommentForNewContent:content];
+                                                                                  }];
+                              [alertController addAction:cancelAction];
+                              [alertController addAction:retryAction];
+                              [weakSelf presentViewController:alertController animated:YES completion:nil];
                           }];
 }
 
@@ -617,13 +634,44 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
     
+    __typeof(self) __weak weakSelf = self;
+    
     void (^successBlock)(void) = ^void() {
         [SVProgressHUD showDismissibleSuccessWithStatus:successMessage];
     };
     
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
-        [UIAlertController presentNoticeWithTitle:message];
+        NSUInteger lastIndex = content.length == 0 ? 0 : content.length - 1;
+        NSUInteger composedCharacterIndex = NSMaxRange([content rangeOfComposedCharacterSequenceAtIndex:MIN(lastIndex, 140)]);
+        // 140 is a somewhat arbitraily chosen number (old tweet length) — should be enough to let people know what
+        // comment failed to show, but not too long to display.
+
+        NSString *replyExcerpt = [content substringToIndex:composedCharacterIndex];
+
+        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"There has been an unexpected error while sending your reply: \n\"%@\"", nil), replyExcerpt];
+        if (composedCharacterIndex < lastIndex) {
+            NSMutableString *mutString = message.mutableCopy;
+            [mutString insertString:@"…" atIndex:(message.length - 2)];
+
+            message = mutString.copy;
+        }
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction *action){}];
+        
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Try Again", @"Retry an action that failed")
+                                                              style:UIAlertActionStyleDestructive
+                                                            handler:^(UIAlertAction *action){
+                                                                [weakSelf sendReplyWithNewContent:content];
+                                                            }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:retryAction];
+        [weakSelf presentViewController:alertController animated:YES completion:nil];
     };
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
