@@ -159,7 +159,7 @@ extension NSPersistentStoreCoordinator {
         guard let host = uri.host, host == "x-coredata" else {
             return nil
         }
-        var result:NSManagedObjectID? = nil
+        var result: NSManagedObjectID? = nil
         do {
             try WPException.objcTry {
                 result = self.managedObjectID(forURIRepresentation: uri)
