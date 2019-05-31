@@ -83,7 +83,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
-        automaticallyAdjustsScrollViewInsets = false
+        collectionView?.contentInsetAdjustmentBehavior = .never
 
         registerChangeObserver()
         registerUploadCoordinatorObserver()
