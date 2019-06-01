@@ -224,11 +224,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         PushNotificationsManager.shared.registerForRemoteNotifications()
 
         // Deferred tasks to speed up app launch
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async { [weak self] in
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
-            uploadsManager.resume()
+            self?.uploadsManager.resume()
         }
 
         setupWordPressExtensions()
