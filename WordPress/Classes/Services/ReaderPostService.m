@@ -602,7 +602,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     if (![api hasCredentials]) {
-        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+        api = [WordPressComRestApi defaultApiWithOAuthToken:nil
+                                                  userAgent:[WPUserAgent wordPressUserAgent]
+                                                  localeKey:[WordPressComRestApi LocaleKeyDefault]];
     }
     return api;
 }

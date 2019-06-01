@@ -319,10 +319,8 @@ extension SiteInformationWizardContent {
 
         var constraintConstant = convertedKeyboardFrame.height
 
-        if #available(iOS 11.0, *) {
-            let bottomInset = view.safeAreaInsets.bottom
-            constraintConstant -= bottomInset
-        }
+        let bottomInset = view.safeAreaInsets.bottom
+        constraintConstant -= bottomInset
 
         let animationDuration = payload.animationDuration
 

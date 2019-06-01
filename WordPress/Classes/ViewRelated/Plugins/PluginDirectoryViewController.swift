@@ -101,7 +101,7 @@ class PluginDirectoryViewController: UITableViewController {
     fileprivate func updateTableHeaderSize() {
         if searchController.isActive {
             // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - view.safeAreaInsets.top
         } else {
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
@@ -152,12 +152,9 @@ extension PluginDirectoryViewController: UISearchControllerDelegate {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
-        if #available(iOS 11.0, *) {
-            updateTableHeaderSize()
-
-            tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
-            tableView.contentInset.top = 0
-        }
+        updateTableHeaderSize()
+        tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+        tableView.contentInset.top = 0
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {

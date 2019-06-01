@@ -1,6 +1,5 @@
-12.2
------
-* Publicera tillförlitligt! Förhandsvisningar av utkast kommer att ge en mer korrekt version av dina inlägg.
-* Om du föredrar att skriva i sådana appar som Bear eller Ulysses (eller någon annan app som använder formaten TextBundle eller TextPack) är det perfekt – fortsätt så. Och nu kan du även importera din text i de apparna till den här appen.
-* Vi har snyggat upp hela appen nu inför våren – rättat till några visuella störningen i processen för att skapa en ny webbplats, justerad vissa fraser för att tydliggöra hur stort lagringsutrymme webbplatsen använder. Dessutom har vi tagit hand om en jobbig krasch som ibland inträffade när man försökte att hantera sina tillägg.
-
+* Ibland doldes notiser av tangentbordet – inte så lyckat om du faktiskt vill kunna se dem. Nu ligger de överst, där notiser hör hemma.
+* Vi har snyggat till domänhanteringen i appen med möjligheten att utnyttja ett domäntillgodohavande hos WordPress.com för att ge din domän en egen domän.
+* Nu sparas dina inlägg automatiskt när du förhandsvisar dem – en sak mindre att hålla reda på för dig när du arbetar på ett utkast.
+* Ibland kunde appen krascha när de försökte ladda in kommentarer med flera GIF-bilder. Kommunikationen på internet handlar ju till stor del om att dela GIF-bilder, så ett sådant fel är inte OK. Fixat nu..
+* Appen startar lite snabbare – du får några fler sekunder till produktiv användning (eller till att välja den perfekta GIF-bilden för en kommentar).

@@ -209,6 +209,24 @@
         }
     }
 
+    // MARK: - Image Size Accessor
+
+    static let defaultImageSize = CGFloat(24)
+
+    var imageSize: CGFloat {
+        switch self {
+        case .insightsPublicize, .periodReferrers:
+            return ImageSizes.socialImage
+        case .insightsCommentsAuthors,
+             .insightsFollowersWordPress,
+             .insightsFollowersEmail,
+             .periodAuthors:
+            return ImageSizes.userImage
+        default:
+            return ImageSizes.defaultImage
+        }
+    }
+
     // MARK: String Structs
 
     struct InsightsHeaders {
@@ -279,4 +297,13 @@
     }
 
     static let noPostTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
+
+    // MARK: - Image Sizes
+
+    struct ImageSizes {
+        static let defaultImage = StatSection.defaultImageSize
+        static let socialImage = CGFloat(20)
+        static let userImage = CGFloat(28)
+    }
+
 }

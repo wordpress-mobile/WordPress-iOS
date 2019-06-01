@@ -60,11 +60,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self setSubtitleText:blog.displayURL];
     [self.labelsStackView setNeedsLayout];
     
-    if (@available(iOS 11.0, *)) {
-        if ([self.delegate siteIconShouldAllowDroppedImages]) {
-            UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-            [self.blavatarDropTarget addInteraction:dropInteraction];
-        }
+    if ([self.delegate siteIconShouldAllowDroppedImages]) {
+        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+        [self.blavatarDropTarget addInteraction:dropInteraction];
     }
 }
 

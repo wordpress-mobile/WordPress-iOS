@@ -71,6 +71,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.showSearchBar = true
         options.showActionBar = false
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
 
         return options
     }
@@ -81,8 +82,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         super.viewDidLoad()
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
-
-        automaticallyAdjustsScrollViewInsets = false
 
         registerChangeObserver()
         registerUploadCoordinatorObserver()

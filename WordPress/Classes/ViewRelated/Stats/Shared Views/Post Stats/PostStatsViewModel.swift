@@ -41,6 +41,8 @@ class PostStatsViewModel: Observable {
 
     private let weekFormat = NSLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
 
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
     // MARK: - Init
 
     init(postID: Int,
@@ -64,8 +66,12 @@ class PostStatsViewModel: Observable {
     // MARK: - Table View
 
     func tableViewModel() -> ImmuTable {
+        if let postID = postID,
+            (store.fetchingFailed(for: .postStats(postID: postID)) || store.isFetchingPostStats(for: postID)) {
+            return ImmuTable.Empty
+        }
 
-        postStats = store.getPostStats()
+        postStats = store.getPostStats(for: postID)
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(titleTableRow())
@@ -88,6 +94,12 @@ class PostStatsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
+    func fetchDataHasFailed() -> Bool {
+        if let postID = postID {
+            return store.fetchingFailed(for: .postStats(postID: postID))
+        }
+        return true
+    }
 }
 
 // MARK: - Private Extension
@@ -116,7 +128,13 @@ private extension PostStatsViewModel {
 
         let chart = PostChart(postViews: lastTwoWeeks)
 
-        tableRows.append(OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil))
+        let selectedDateComponents = calendar.dateComponents([.year, .month, .day], from: selectedDate)
+        let indexToHighlight = lastTwoWeeks.lastIndex(where: {
+            $0.date == selectedDateComponents
+        })
+
+        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
+        tableRows.append(row)
 
         return tableRows
     }

@@ -560,7 +560,9 @@
 
 - (BOOL)hasLocalChanges
 {
-    if(self.remoteStatus == AbstractPostRemoteStatusLocal || self.remoteStatus == AbstractPostRemoteStatusFailed) {
+    if(self.remoteStatus == AbstractPostRemoteStatusLocal ||
+       self.remoteStatus == AbstractPostRemoteStatusFailed ||
+       self.remoteStatus == AbstractPostRemoteStatusAutoSaved) {
         return YES;
     }
     

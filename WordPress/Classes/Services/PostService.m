@@ -215,21 +215,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
 
-                NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
-                NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
-                for (Media *media in mediaToUpdate) {
-                    media.postID = post.postID;
-                }
-
-                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                [mediaService updateMedia:mediaToUpdate overallSuccess:^{
-                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
+                [self updateMediaForPost:postInContext success:^{
                     if (success) {
                         success(postInContext);
                     }
-                } failure:^(NSError *error){
-                    // Sergio Estevao (2018-02-27): even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed was attaching the media to it.
+                } failure:^(NSError * _Nullable error) {
+                    DDLogInfo(@"Error in updateMediaForPost while uploading post. description: %@", error.localizedDescription);
+                    // even if media fails to attach we are answering with success because the post upload was successful.
                     if (success) {
                         success(postInContext);
                     }
@@ -244,8 +236,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
-            Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
+                if ([postInContext isRevision]) {
+                    postInContext = postInContext.original;
+                    [postInContext applyRevision];
+                    [postInContext deleteRevision];
+                }
                 postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
                 // If the post was not created on the server yet we convert the post to a local draft post with the current date.
                 if (!postInContext.hasRemote) {
@@ -266,6 +263,55 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                    failure:failureBlock];
     } else {
         [remote createPost:remotePost
+                   success:successBlock
+                   failure:failureBlock];
+    }
+}
+
+- (void)autoSave:(AbstractPost *)post
+         success:(nullable void (^)(AbstractPost *post, NSString *previewURL))success
+         failure:(void (^)(NSError * _Nullable error))failure
+{
+    if(![post.blog supports:BlogFeatureWPComRESTAPI]) {
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Blog does not support WPCom REST API" };
+        failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+        return;
+    }
+
+    PostServiceRemoteREST *remote = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:post.blog.wordPressComRestApi siteID:post.blog.dotComID];
+    RemotePost *remotePost = [self remotePostWithPost:post];
+    NSManagedObjectID *postObjectID = post.objectID;
+    void (^successBlock)(RemotePost *post, NSString *previewURL) = ^(RemotePost *post, NSString *previewURL) {
+        [self.managedObjectContext performBlock:^{
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            if (postInContext) {
+                postInContext.remoteStatus = AbstractPostRemoteStatusAutoSaved;
+                [self updateMediaForPost:postInContext success:^{
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                } failure:^(NSError * _Nullable error) {
+                    DDLogInfo(@"Error in updateMediaForPost while remote auto-saving post. description: %@", error.localizedDescription);
+                    // even if media fails to attach we are answering with success because the post auto-save was successful.
+                    if (success) {
+                        success(postInContext, previewURL);
+                    }
+                }];
+            } else {
+                // This can happen if the post was deleted right after triggering the auto-save.
+                if (success) {
+                    success(nil, nil);
+                }
+            }
+        }];
+    };
+    
+     void (^failureBlock)(NSError *error) = ^(NSError *error) {
+         failure(error);
+     };
+    
+    if ([post.postID longLongValue] > 0) {
+        [remote autoSave:remotePost
                    success:successBlock
                    failure:failureBlock];
     }

@@ -167,6 +167,7 @@ extension WPStyleGuide {
         static let actionTextColor = WPStyleGuide.wordPressBlue()
         static let summaryTextColor = WPStyleGuide.darkGrey()
         static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
+        static let iconLoadingBackgroundColor = WPStyleGuide.greyLighten20()
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)

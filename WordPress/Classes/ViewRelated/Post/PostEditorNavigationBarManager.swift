@@ -46,9 +46,7 @@ class PostEditorNavigationBarManager {
     lazy var blogPickerButton: WPBlogSelectorButton = {
         let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
         button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
-        if #available(iOS 11, *) {
-            button.translatesAutoresizingMaskIntoConstraints = false
-        }
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
@@ -70,9 +68,7 @@ class PostEditorNavigationBarManager {
         let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: delegate?.uploadingButtonSize ?? .zero))
         button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
         button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
-        if #available(iOS 11, *) {
-            button.translatesAutoresizingMaskIntoConstraints = false
-        }
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()

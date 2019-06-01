@@ -243,8 +243,7 @@ class NoticeView: UIView {
         titleLabel.font = notice.style.titleLabelFont
         messageLabel.font = notice.style.messageLabelFont
 
-        if #available(iOS 11.0, *),
-            traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+        if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
             dualButtonsStackView?.axis = .vertical
             actionButton.titleLabel?.textAlignment = .center
             cancelButton.titleLabel?.textAlignment = .center

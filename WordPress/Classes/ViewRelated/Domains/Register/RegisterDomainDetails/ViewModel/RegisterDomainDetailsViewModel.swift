@@ -1,6 +1,5 @@
 import Foundation
 
-
 class RegisterDomainDetailsViewModel {
 
     typealias Localized = RegisterDomainDetails.Localized
@@ -188,7 +187,6 @@ class RegisterDomainDetailsViewModel {
                 self?.isLoading = false
                 return
             }
-
 
             WPAnalytics.track(.automatedTransferCustomDomainContactInfoValidated)
 
@@ -485,16 +483,16 @@ extension RegisterDomainDetailsViewModel {
                     return
                 }
 
-                strongSelf.isLoading = false
-
                 if response.success {
                     strongSelf.clearValidationErrors()
+                    strongSelf.onChange?(.remoteValidationFinished)
                     successCompletion()
                 } else {
+                    strongSelf.isLoading = false
                     WPAnalytics.track(.automatedTransferCustomDomainContactInfoValidationFailed)
                     strongSelf.updateValidationErrors(with: response.messages)
+                    strongSelf.onChange?(.remoteValidationFinished)
                 }
-                strongSelf.onChange?(.remoteValidationFinished)
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return

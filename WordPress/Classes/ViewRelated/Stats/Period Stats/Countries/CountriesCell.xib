@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="355" height="416.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X6O-ua-Hm7" userLabel="Map View">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X6O-ua-Hm7" userLabel="Map View">
                         <rect key="frame" x="0.0" y="0.0" width="355" height="200"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imagine a pretty map here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OsT-Jn-Nkl" userLabel="Temporary Label">
@@ -40,15 +40,8 @@
                             <constraint firstAttribute="trailing" secondItem="OsT-Jn-Nkl" secondAttribute="trailing" id="s9K-TQ-Nze"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OxT-ul-sgW" userLabel="Seperator Line">
-                        <rect key="frame" x="0.0" y="200" width="355" height="0.5"/>
-                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="0.5" id="tep-qB-gA1"/>
-                        </constraints>
-                    </view>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="WGt-7n-PjC" userLabel="Subtitles Stack View">
-                        <rect key="frame" x="16" y="207.5" width="323" height="16"/>
+                        <rect key="frame" x="16" y="7.5" width="323" height="16"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5E0-WK-AUD">
                                 <rect key="frame" x="0.0" y="0.0" width="161.5" height="16"/>
@@ -68,40 +61,58 @@
                         </constraints>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="UCQ-gq-RrN" userLabel="Rows Stack View">
-                        <rect key="frame" x="0.0" y="230.5" width="355" height="186"/>
+                        <rect key="frame" x="0.0" y="0.5" width="355" height="416"/>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OxT-ul-sgW" userLabel="Top Seperator Line">
+                        <rect key="frame" x="0.0" y="0.0" width="355" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="tep-qB-gA1"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4PI-2u-gGF" userLabel="Bottom Seperator Line">
+                        <rect key="frame" x="0.0" y="416" width="355" height="0.5"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.5" id="RQD-WP-JN5"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="X6O-ua-Hm7" secondAttribute="bottom" id="05N-cC-wfk"/>
                     <constraint firstItem="X6O-ua-Hm7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3j5-bC-lW0"/>
                     <constraint firstItem="WGt-7n-PjC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="7v5-dC-nT6"/>
                     <constraint firstAttribute="trailing" secondItem="WGt-7n-PjC" secondAttribute="trailing" constant="16" id="F8F-2p-b3J"/>
-                    <constraint firstItem="UCQ-gq-RrN" firstAttribute="top" secondItem="WGt-7n-PjC" secondAttribute="bottom" constant="7" id="ILe-TY-16f"/>
+                    <constraint firstAttribute="trailing" secondItem="4PI-2u-gGF" secondAttribute="trailing" id="Fby-mi-9AI"/>
                     <constraint firstItem="OxT-ul-sgW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="IPs-GC-KBm"/>
-                    <constraint firstItem="UCQ-gq-RrN" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" priority="999" id="Usf-7v-7m6"/>
+                    <constraint firstItem="UCQ-gq-RrN" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" id="Usf-7v-7m6"/>
+                    <constraint firstItem="OxT-ul-sgW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="V1r-tT-mNL"/>
                     <constraint firstAttribute="bottom" secondItem="UCQ-gq-RrN" secondAttribute="bottom" id="WJD-J4-Jab"/>
                     <constraint firstAttribute="trailing" secondItem="UCQ-gq-RrN" secondAttribute="trailing" id="aFU-xt-Aie"/>
                     <constraint firstAttribute="trailing" secondItem="OxT-ul-sgW" secondAttribute="trailing" id="lH1-IY-PBX"/>
                     <constraint firstAttribute="trailing" secondItem="X6O-ua-Hm7" secondAttribute="trailing" id="lQx-hE-jLN"/>
+                    <constraint firstAttribute="bottom" secondItem="4PI-2u-gGF" secondAttribute="bottom" id="mfY-aB-rjX"/>
+                    <constraint firstItem="4PI-2u-gGF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="pPJ-5q-XT5"/>
                     <constraint firstItem="WGt-7n-PjC" firstAttribute="top" secondItem="OxT-ul-sgW" secondAttribute="bottom" constant="7" id="u2O-MU-b7v"/>
                     <constraint firstItem="X6O-ua-Hm7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="vew-RU-HMw"/>
                     <constraint firstItem="UCQ-gq-RrN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="zLz-hS-D9n"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="Usf-7v-7m6"/>
+                        <exclude reference="05N-cC-wfk"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="bottomSeparatorLine" destination="4PI-2u-gGF" id="sVv-1n-kB5"/>
                 <outlet property="dataSubtitleLabel" destination="2jM-Bl-1PY" id="72z-f9-HCr"/>
                 <outlet property="itemSubtitleLabel" destination="5E0-WK-AUD" id="IUx-oV-aio"/>
                 <outlet property="rowsStackView" destination="UCQ-gq-RrN" id="Y2s-76-aAt"/>
                 <outlet property="rowsStackViewTopConstraint" destination="Usf-7v-7m6" id="Res-MH-gOh"/>
-                <outlet property="rowsStackViewTopConstraintWithSubtitles" destination="ILe-TY-16f" id="sbx-rC-13u"/>
-                <outlet property="separatorLine" destination="OxT-ul-sgW" id="Hp1-EA-174"/>
                 <outlet property="subtitleStackView" destination="WGt-7n-PjC" id="5JN-Yn-YM9"/>
+                <outlet property="subtitlesStackViewTopConstraint" destination="u2O-MU-b7v" id="ya9-A4-B6Y"/>
+                <outlet property="topSeparatorLine" destination="OxT-ul-sgW" id="qjZ-f6-e57"/>
             </connections>
             <point key="canvasLocation" x="-263.19999999999999" y="204.64767616191907"/>
         </tableViewCell>

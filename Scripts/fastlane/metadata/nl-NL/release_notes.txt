@@ -1,6 +1,5 @@
-12.2
------
-* Publiceer vol vertrouwen! In voorbeeldweergaven van concepten zie je nu een nauwkeurigere versie van je berichten.
-* Als je liever in apps als Bear of Ulysses schrijft (of elke andere app die gebruikmaakt van de TextBundle- en TextPack-indeling) dan kun je dat nu blijven doen. Je kunt de tekst van die apps importeren naar deze.
-* De hele app heeft een voorjaarsschoonmaak gekregen: we hebben wat visuele bugs in het aanmaakproces van sites gerepareerd, een paar teksten aangepast om duidelijk te maken hoeveel opslagruimte je site gebruikt en we hebben een irritante crash opgelost die soms plaatsvond als je probeerde plugins te beheren.
-
+* Soms worden meldingen weergegeven achter het toetsenbord, wat niet erg handig is als je ze wilde lezen. Ze worden nu op de voorgrond weergegeven, waar meldingen horen te staan.
+* We hebben domeinbeheer in de app verbeterd doordat je nu een WordPress.com-domeinkrediet kunt verzilveren om je site een aangepast domein te geven.
+* Berichten worden nu automatisch opgeslagen wanneer je een voorbeeld ervan bekijkt, zodat je hiermee in ieder geval geen rekening meer hoeft te houden tijdens het opstellen van een conceptbericht.
+* De app crashte regelmatig bij het laden van Reader-opmerkingen met meerdere gifs. Communiceren op het internet bestaat voor 65% uit het delen van gifs, dus dat is niet de bedoeling. Dit is nu opgelost.
+* De app wordt een beetje sneller opgestart, dus kun je die bespaarde seconden nu een stuk productiever besteden (of voor het kiezen van de perfecte gif).

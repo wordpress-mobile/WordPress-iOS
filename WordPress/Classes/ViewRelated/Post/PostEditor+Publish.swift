@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 extension PostEditor where Self: UIViewController {
 
@@ -186,6 +187,7 @@ extension PostEditor where Self: UIViewController {
     // MARK: - Close button handling
 
     func cancelEditing() {
+        ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
         if post.canSave() {
@@ -232,6 +234,7 @@ extension PostEditor where Self: UIViewController {
         }
 
         post = originalPost
+        post.remoteStatus = originalPost.remoteStatus
         post.deleteRevision()
         let shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload() && !post.isLocalRevision
 
@@ -243,7 +246,7 @@ extension PostEditor where Self: UIViewController {
         }
 
         cancelUploadOfAllMedia(for: post)
-        ContextManager.sharedInstance().save(managedObjectContext)
+        ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
         return postDeleted
     }
 
@@ -318,10 +321,10 @@ extension PostEditor where Self: UIViewController {
         postEditorStateContext.updated(isBeingPublished: true)
 
         uploadPost() { [weak self] uploadedPost, error in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
-            strongSelf.postEditorStateContext.updated(isBeingPublished: false)
+            self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
             let generator = UINotificationFeedbackGenerator()
@@ -329,19 +332,18 @@ extension PostEditor where Self: UIViewController {
 
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
+                ActionDispatcher.dispatch(NoticeAction.post(self.uploadFailureNotice(action: action)))
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
-                strongSelf.post = uploadedPost
+                self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
             }
 
             if dismissWhenDone {
-                strongSelf.dismissOrPopView()
+                self.dismissOrPopView()
             } else {
-                strongSelf.createRevisionOfPost()
+                self.createRevisionOfPost()
             }
         }
     }

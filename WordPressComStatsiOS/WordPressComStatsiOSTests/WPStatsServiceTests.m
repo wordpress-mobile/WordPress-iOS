@@ -19,7 +19,7 @@
 - (void)setUp {
     [super setUp];
     
-    self.subject = [[WPStatsService alloc] initWithSiteId:@123456 siteTimeZone:[NSTimeZone localTimeZone] oauth2Token:@"token" andCacheExpirationInterval:50 * 6];
+    self.subject = [[WPStatsService alloc] initWithSiteId:@123456 siteTimeZone:[NSTimeZone localTimeZone] oauth2Token:@"token" andCacheExpirationInterval:50 * 6 apiBaseUrlString:[WordPressComRestApi apiBaseURLString]];
 }
 
 - (void)tearDown {

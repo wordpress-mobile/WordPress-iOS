@@ -47,16 +47,10 @@ class QuickStartChecklistHeader: UIView {
 
     private let animator = Animator()
     private var contentViewLeadingAnchor: NSLayoutXAxisAnchor {
-        if #available(iOS 11.0, *) {
-            return WPDeviceIdentification.isiPhone() ? safeAreaLayoutGuide.leadingAnchor : layoutMarginsGuide.leadingAnchor
-        }
-        return WPDeviceIdentification.isiPhone() ? leadingAnchor : layoutMarginsGuide.leadingAnchor
+        return WPDeviceIdentification.isiPhone() ? safeAreaLayoutGuide.leadingAnchor : layoutMarginsGuide.leadingAnchor
     }
     private var contentViewTrailingAnchor: NSLayoutXAxisAnchor {
-        if #available(iOS 11.0, *) {
-            return WPDeviceIdentification.isiPhone() ? safeAreaLayoutGuide.trailingAnchor : layoutMarginsGuide.trailingAnchor
-        }
-        return WPDeviceIdentification.isiPhone() ? trailingAnchor : layoutMarginsGuide.trailingAnchor
+        return WPDeviceIdentification.isiPhone() ? safeAreaLayoutGuide.trailingAnchor : layoutMarginsGuide.trailingAnchor
     }
 
     @IBAction private func headerDidTouch(_ sender: UIButton) {

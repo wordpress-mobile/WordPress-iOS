@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,26 +26,26 @@
                                     <rect key="frame" x="0.0" y="15" width="28" height="28"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="28" id="Sez-wA-eee"/>
-                                        <constraint firstAttribute="width" secondItem="il5-2Z-QId" secondAttribute="height" multiplier="1:1" id="Xff-jJ-dhu"/>
+                                        <constraint firstAttribute="height" constant="28" id="vQc-8f-D53"/>
                                     </constraints>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="U2I-mF-Pab" userLabel="Label Stack View">
-                                    <rect key="frame" x="0.0" y="8.5" width="362.5" height="41"/>
+                                    <rect key="frame" x="0.0" y="10" width="362.5" height="38.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV5-rf-zLD" userLabel="Item Label">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV5-rf-zLD" userLabel="Item Label">
                                             <rect key="frame" x="0.0" y="0.0" width="79.5" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Detail Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYo-jW-XP6" userLabel="Item Detail Label">
-                                            <rect key="frame" x="0.0" y="20.5" width="128" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Detail Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYo-jW-XP6" userLabel="Item Detail Label">
+                                            <rect key="frame" x="0.0" y="20.5" width="114.5" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iS7-PL-Iwy" userLabel="Data Bar View">
-                                            <rect key="frame" x="0.0" y="41" width="362.5" height="11"/>
+                                            <rect key="frame" x="0.0" y="38.5" width="362.5" height="11"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ZS-AN-Jkl" userLabel="Data Bar">
                                                     <rect key="frame" x="0.0" y="6" width="362.5" height="5"/>
@@ -73,7 +73,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BAZ-QX-R74" userLabel="Right Stack View">
                             <rect key="frame" x="378.5" y="0.0" width="31.5" height="58"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ivc-26-vsM" userLabel="Data Label">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ivc-26-vsM" userLabel="Data Label">
                                     <rect key="frame" x="0.0" y="19" width="31.5" height="20.5"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="textColor"/>
@@ -150,6 +150,7 @@
                 <outlet property="dataLabel" destination="Ivc-26-vsM" id="wbJ-ri-8Rh"/>
                 <outlet property="disclosureButton" destination="KoQ-BR-jDc" id="qah-fR-XpV"/>
                 <outlet property="disclosureImageView" destination="zUJ-W9-Eeb" id="RPm-XV-KAU"/>
+                <outlet property="imageHeightConstraint" destination="vQc-8f-D53" id="T9W-c3-pP3"/>
                 <outlet property="imageView" destination="il5-2Z-QId" id="G0o-g7-BBY"/>
                 <outlet property="imageWidthConstraint" destination="Sez-wA-eee" id="PXQ-kQ-vRU"/>
                 <outlet property="itemDetailLabel" destination="AYo-jW-XP6" id="KlK-Zw-PCH"/>
