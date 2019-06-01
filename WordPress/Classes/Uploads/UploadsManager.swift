@@ -2,9 +2,12 @@ import Foundation
 
 /// Takes care of coordinating all uploaders used by the app.
 ///
-@objc
 class UploadsManager: NSObject {
     private let uploaders: [Uploader]
+
+    /// The reason why this property is lazy is that it's basically a closure with a self reference.
+    /// There's no easy way to initialize these, other than making them lazy (2019-06-01)
+    ///
     private lazy var reachabilityObserver: NSObjectProtocol = {
         return NotificationCenter.default.addObserver(forName: .reachabilityChanged, object: nil, queue: nil) { [weak self] notification in
 
@@ -31,6 +34,9 @@ class UploadsManager: NSObject {
         self.uploaders = uploaders
 
         super.init()
+
+        /// This just makes sure the reachabilityObserver property is initialized here.
+        _ = reachabilityObserver
     }
 
     deinit {
@@ -41,7 +47,6 @@ class UploadsManager: NSObject {
 
     /// Resumes all uploads handled by the uploaders.
     ///
-    @objc
     func resume() {
         for uploader in uploaders {
             uploader.resume()

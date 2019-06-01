@@ -248,9 +248,16 @@ class PostCoordinator: NSObject {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        // Resume the upload of all posts that are not synched.
-        //
-        // 1. Query posts with status == .failed
-        // 2. Call retrySave() for each post
+        let service = PostService(managedObjectContext: mainContext)
+
+        service.getFailedPosts { [weak self] posts in
+            guard let self = self else {
+                return
+            }
+
+            for post in posts {
+                self.retrySave(of: post)
+            }
+        }
     }
 }

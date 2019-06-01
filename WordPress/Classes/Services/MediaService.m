@@ -509,6 +509,24 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 #pragma mark - Getting media
 
+- (void)getFailedMedia:(void (^)( NSArray<Media *>* media))result {
+    [self.managedObjectContext performBlock:^{
+        NSString *entityName = NSStringFromClass([Media class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        
+        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", MediaRemoteStatusFailed];
+        
+        NSError *error = nil;
+        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        
+        if (!results) {
+            result(@[]);
+        } else {
+            result(results);
+        }
+    }];
+}
+
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
                 success:(void (^)(Media *media))success
                 failure:(void (^)(NSError *error))failure
