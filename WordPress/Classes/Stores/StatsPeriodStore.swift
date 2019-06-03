@@ -111,6 +111,7 @@ struct PeriodStoreState {
     var summary: StatsSummaryTimeIntervalData?
     var fetchingSummary = false
     var fetchingSummaryHasFailed = false
+    var fetchingSummaryLikes = false
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var fetchingPostsAndPages = false
@@ -759,6 +760,7 @@ private extension StatsPeriodStore {
                                                       summaryData: newSummaryData)
 
         transaction { state in
+            state.fetchingSummaryLikes = false
             state.summary = newSummary
         }
 
@@ -897,6 +899,7 @@ private extension StatsPeriodStore {
 
     func setAllAsFetchingOverview(fetching: Bool = true) {
         state.fetchingSummary = fetching
+        state.fetchingSummaryLikes = fetching
         state.fetchingPostsAndPages = fetching
         state.fetchingReferrers = fetching
         state.fetchingClicks = fetching
@@ -1002,6 +1005,10 @@ extension StatsPeriodStore {
             state.fetchingSearchTerms ||
             state.fetchingVideos ||
             state.fetchingCountries
+    }
+
+    var isFetchingSummaryLikes: Bool {
+        return state.fetchingSummaryLikes
     }
 
     var isFetchingPostsAndPages: Bool {
