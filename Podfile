@@ -44,7 +44,7 @@ end
 
 def wordpress_kit
     pod 'WordPressKit', '~> 4.1-beta'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'bug/allow-specifying-limit-for-summary-queries'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/stats-fetch-likes-separately'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
