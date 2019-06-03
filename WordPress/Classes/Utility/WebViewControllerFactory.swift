@@ -6,13 +6,8 @@ class WebViewControllerFactory: NSObject {
     }
 
     @objc static func controller(configuration: WebViewControllerConfiguration) -> UIViewController {
-        if #available(iOS 11, *) {
-            let controller = WebKitViewController(configuration: configuration)
-            return controller
-        } else {
-            let controller = WPWebViewController(configuration: configuration)
-            return controller
-        }
+        let controller = WebKitViewController(configuration: configuration)
+        return controller
     }
 
     @objc static func controller(url: URL) -> UIViewController {

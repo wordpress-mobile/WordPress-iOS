@@ -6,9 +6,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        if #available(iOS 11, *) {
-            nameLabel?.font = UIFontMetrics.default.scaledFont(for: nameLabel!.font)
-        }
+        nameLabel?.font = UIFontMetrics.default.scaledFont(for: nameLabel!.font)
     }
 
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {

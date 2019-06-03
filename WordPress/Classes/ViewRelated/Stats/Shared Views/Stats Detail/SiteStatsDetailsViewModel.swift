@@ -27,9 +27,13 @@ class SiteStatsDetailsViewModel: Observable {
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
 
+    // MARK: - Init
+
     init(detailsDelegate: SiteStatsDetailsDelegate) {
         self.detailsDelegate = detailsDelegate
     }
+
+    // MARK: - Data Fetching
 
     func fetchDataFor(statSection: StatSection,
                       selectedDate: Date? = nil,
@@ -73,11 +77,13 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    // MARK: - Table Model
+
     func tableViewModel() -> ImmuTable {
 
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
-                return ImmuTable(sections: [])
+                return ImmuTable.Empty
         }
 
         var tableRows = [ImmuTableRow]()
@@ -85,70 +91,72 @@ class SiteStatsDetailsViewModel: Observable {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
             let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
-            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForFollowerType(.insightsFollowersWordPress),
-                                                                   tabDataForFollowerType(.insightsFollowersEmail)],
-                                                        siteStatsDetailsDelegate: detailsDelegate,
-                                                        showTotalCount: true,
-                                                        selectedIndex: selectedIndex))
+            let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
+            let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
+
+            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [wpTabData, emailTabData],
+                                                            siteStatsDetailsDelegate: detailsDelegate,
+                                                            showTotalCount: true,
+                                                            selectedIndex: selectedIndex))
+
+            let dataRows = statSection == .insightsFollowersWordPress ? wpTabData.dataRows : emailTabData.dataRows
+            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
         case .insightsCommentsAuthors, .insightsCommentsPosts:
             let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
-            tableRows.append(TabbedTotalsDetailStatsRow(tabsData: [tabDataForCommentType(.insightsCommentsAuthors),
-                                                                   tabDataForCommentType(.insightsCommentsPosts)],
-                                                        siteStatsDetailsDelegate: detailsDelegate,
-                                                        showTotalCount: false,
-                                                        selectedIndex: selectedIndex))
+            let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
+            let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
+
+            tableRows.append(DetailSubtitlesTabbedHeaderRow(tabsData: [authorsTabData, postsTabData],
+                                                            siteStatsDetailsDelegate: detailsDelegate,
+                                                            showTotalCount: false,
+                                                            selectedIndex: selectedIndex))
+
+            let dataRows = statSection == .insightsCommentsAuthors ? authorsTabData.dataRows : postsTabData.dataRows
+            tableRows.append(contentsOf: tabbedRowsFrom(dataRows))
         case .insightsTagsAndCategories:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
-                                                     dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle,
-                                                     dataRows: tagsAndCategoriesRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
+                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
+            tableRows.append(contentsOf: tagsAndCategoriesRows())
         case .periodPostsAndPages:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
-                                                     dataRows: postsAndPagesRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
+            tableRows.append(contentsOf: postsAndPagesRows())
+
         case .periodSearchTerms:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
-                                                     dataRows: searchTermsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
+            tableRows.append(contentsOf: searchTermsRows())
         case .periodVideos:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodVideos.dataSubtitle,
-                                                     dataRows: videosRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodVideos.dataSubtitle))
+            tableRows.append(contentsOf: videosRows())
         case .periodClicks:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodClicks.dataSubtitle,
-                                                     dataRows: clicksRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle))
+            tableRows.append(contentsOf: clicksRows())
         case .periodAuthors:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodAuthors.dataSubtitle,
-                                                     dataRows: authorsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle))
+            tableRows.append(contentsOf: authorsRows())
         case .periodReferrers:
             tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                      dataRows: referrersRows(),
                                                      siteStatsDetailsDelegate: detailsDelegate))
         case .periodCountries:
-            tableRows.append(CountriesDetailStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodCountries.dataSubtitle,
-                                                     dataRows: countriesRows()))
+            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
+                                                     dataSubtitle: StatSection.periodCountries.dataSubtitle))
+            tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
-            tableRows.append(TopTotalsNoSubtitlesPeriodDetailStatsRow(dataRows: publishedRows(),
-                                                                      siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
-                                                     dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle,
-                                                     dataRows: postStatsRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
+                                                               dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
+            tableRows.append(contentsOf: postStatsRows())
         case .postStatsAverageViews:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
-                                                     dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle,
-                                                     dataRows: postStatsRows(forAverages: true),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
+                                                               dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle))
+            tableRows.append(contentsOf: postStatsRows(forAverages: true))
         default:
             break
         }
@@ -251,6 +259,8 @@ class SiteStatsDetailsViewModel: Observable {
 
 private extension SiteStatsDetailsViewModel {
 
+    // MARK: - Store Queries
+
     func queryForInsightStatSection(_ statSection: StatSection) -> InsightQuery? {
         switch statSection {
         case .insightsFollowersWordPress, .insightsFollowersEmail:
@@ -291,6 +301,12 @@ private extension SiteStatsDetailsViewModel {
         default:
             return nil
         }
+    }
+
+    // MARK: - Tabbed Cards
+
+    func tabbedRowsFrom(_ commentsRowData: [StatsTotalRowData]) -> [DetailDataRow] {
+        return dataRowsFor(commentsRowData)
     }
 
     func tabDataForFollowerType(_ followerType: StatSection) -> TabData {
@@ -359,7 +375,13 @@ private extension SiteStatsDetailsViewModel {
                        dataRows: rowItems)
     }
 
-    func tagsAndCategoriesRows() -> [StatsTotalRowData] {
+    // MARK: - Tags and Categories
+
+    func tagsAndCategoriesRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(tagsAndCategoriesRowData(), forStat: .insightsTagsAndCategories)
+    }
+
+    func tagsAndCategoriesRowData() -> [StatsTotalRowData] {
         guard let tagsAndCategories = insightsStore.getAllTagsAndCategories()?.topTagsAndCategories else {
             return []
         }
@@ -378,7 +400,13 @@ private extension SiteStatsDetailsViewModel {
         }
     }
 
-    func postsAndPagesRows() -> [StatsTotalRowData] {
+    // MARK: - Posts and Pages
+
+    func postsAndPagesRows() -> [DetailDataRow] {
+        return dataRowsFor(postsAndPagesRowData())
+    }
+
+    func postsAndPagesRowData() -> [StatsTotalRowData] {
         let postsAndPages = periodStore.getTopPostsAndPages()?.topPosts ?? []
 
         return postsAndPages.map {
@@ -406,7 +434,13 @@ private extension SiteStatsDetailsViewModel {
         }
     }
 
-    func searchTermsRows() -> [StatsTotalRowData] {
+    // MARK: - Search Terms
+
+    func searchTermsRows() -> [DetailDataRow] {
+        return dataRowsFor(searchTermsRowData())
+    }
+
+    func searchTermsRowData() -> [StatsTotalRowData] {
         guard let searchTerms = periodStore.getTopSearchTerms() else {
             return []
         }
@@ -431,7 +465,13 @@ private extension SiteStatsDetailsViewModel {
         return mappedSearchTerms
     }
 
-    func videosRows() -> [StatsTotalRowData] {
+    // MARK: - Videos
+
+    func videosRows() -> [DetailDataRow] {
+        return dataRowsFor(videosRowData())
+    }
+
+    func videosRowData() -> [StatsTotalRowData] {
         return periodStore.getTopVideos()?.videos.map { StatsTotalRowData(name: $0.title,
                                                                           data: $0.playsCount.abbreviatedString(),
                                                                           mediaID: $0.postID as NSNumber,
@@ -441,30 +481,47 @@ private extension SiteStatsDetailsViewModel {
             ?? []
     }
 
-    func clicksRows() -> [StatsTotalRowData] {
-        return periodStore.getTopClicks()?.clicks.map { StatsTotalRowData(name: $0.title,
-                                                                          data: $0.clicksCount.abbreviatedString(),
-                                                                          showDisclosure: true,
-                                                                          disclosureURL: $0.iconURL,
-                                                                          childRows: $0.children.map { StatsTotalRowData(name: $0.title,
-                                                                                                                         data: $0.clicksCount.abbreviatedString(),
-                                                                                                                         showDisclosure: true,
-                                                                                                                         disclosureURL: $0.clickedURL) },
-                                                                          statSection: .periodClicks) }
-            ?? []
+    // MARK: - Clicks
+
+    func clicksRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(clicksRowData(), forStat: .periodClicks)
     }
 
-    func authorsRows() -> [StatsTotalRowData] {
+    func clicksRowData() -> [StatsTotalRowData] {
+        return periodStore.getTopClicks()?.clicks.map {
+            StatsTotalRowData(name: $0.title,
+                              data: $0.clicksCount.abbreviatedString(),
+                              showDisclosure: true,
+                              disclosureURL: $0.iconURL,
+                              childRows: $0.children.map { StatsTotalRowData(name: $0.title,
+                                                                             data: $0.clicksCount.abbreviatedString(),
+                                                                             showDisclosure: true,
+                                                                             disclosureURL: $0.clickedURL) },
+                              statSection: .periodClicks)
+            } ?? []
+    }
+
+    // MARK: - Authors
+
+    func authorsRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(authorsRowData(), forStat: .periodAuthors)
+    }
+
+    func authorsRowData() -> [StatsTotalRowData] {
         let authors = periodStore.getTopAuthors()?.topAuthors ?? []
 
-        return authors.map { StatsTotalRowData(name: $0.name,
-                                               data: $0.viewsCount.abbreviatedString(),
-                                               dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
-                                               userIconURL: $0.iconURL,
-                                               showDisclosure: true,
-                                               childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
-                                               statSection: .periodAuthors) }
+        return authors.map {
+            StatsTotalRowData(name: $0.name,
+                              data: $0.viewsCount.abbreviatedString(),
+                              dataBarPercent: Float($0.viewsCount) / Float(authors.first!.viewsCount),
+                              userIconURL: $0.iconURL,
+                              showDisclosure: true,
+                              childRows: $0.posts.map { StatsTotalRowData(name: $0.title, data: $0.viewsCount.abbreviatedString()) },
+                              statSection: .periodAuthors)
+        }
     }
+
+    // MARK: - Referrers
 
     func referrersRows() -> [StatsTotalRowData] {
         let referrers = periodStore.getTopReferrers()?.referrers ?? []
@@ -482,7 +539,13 @@ private extension SiteStatsDetailsViewModel {
         return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
-    func countriesRows() -> [StatsTotalRowData] {
+    // MARK: - Countries
+
+    func countriesRows() -> [DetailDataRow] {
+        return dataRowsFor(countriesRowData())
+    }
+
+    func countriesRowData() -> [StatsTotalRowData] {
         return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                                 data: $0.viewsCount.abbreviatedString(),
                                                                                 icon: UIImage(named: $0.code),
@@ -490,7 +553,13 @@ private extension SiteStatsDetailsViewModel {
             ?? []
     }
 
-    func publishedRows() -> [StatsTotalRowData] {
+    // MARK: - Published
+
+    func publishedRows() -> [DetailDataRow] {
+        return dataRowsFor(publishedRowData())
+    }
+
+    func publishedRowData() -> [StatsTotalRowData] {
         return periodStore.getTopPublished()?.publishedPosts.map { StatsTotalRowData(name: $0.title,
                                                                                      data: "",
                                                                                      showDisclosure: true,
@@ -499,9 +568,15 @@ private extension SiteStatsDetailsViewModel {
             ?? []
     }
 
-    func postStatsRows(forAverages: Bool = false) -> [StatsTotalRowData] {
+    // MARK: - Post Stats
 
-        let postStats = periodStore.getPostStats()
+    func postStatsRows(forAverages: Bool = false) -> [ImmuTableRow] {
+        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages),
+                                     forStat: forAverages ? .postStatsAverageViews : .postStatsMonthsYears)
+    }
+
+    func postStatsRowData(forAverages: Bool) -> [StatsTotalRowData] {
+        let postStats = periodStore.getPostStats(for: postID)
 
         guard let yearsData = (forAverages ? postStats?.dailyAveragesPerMonth : postStats?.monthlyBreakdown),
             let minYear = StatsDataHelper.minYearFrom(yearsData: yearsData),
@@ -533,6 +608,73 @@ private extension SiteStatsDetailsViewModel {
         }
 
         return yearRows
+    }
+
+    // MARK: - Helpers
+
+    func dataRowsFor(_ rowsData: [StatsTotalRowData]) -> [DetailDataRow] {
+        var detailDataRows = [DetailDataRow]()
+
+        for (idx, rowData) in rowsData.enumerated() {
+            detailDataRows.append(DetailDataRow(rowData: rowData,
+                                                detailsDelegate: detailsDelegate,
+                                                hideSeparator: idx == rowsData.endIndex-1))
+        }
+
+        return detailDataRows
+    }
+
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [ImmuTableRow] {
+        var detailDataRows = [ImmuTableRow]()
+
+        for (idx, rowData) in rowsData.enumerated() {
+            let isLastRow = idx == rowsData.endIndex-1
+
+            // Expanded state of current row
+            let expanded = StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
+
+            // Expanded state of next row
+            var nextExpanded = false
+            let nextIndex = idx + 1
+            if nextIndex < rowsData.count {
+                let nextRow = rowsData[nextIndex]
+                nextExpanded = StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(nextRow.name) ?? false
+            }
+
+            // Toggle the indented separator line based on expanded states.
+            // If the current row is expanded, hide the separator.
+            // If the current row is not expanded, hide the separator if the next row is.
+            let hideIndentedSeparator = expanded ? (expanded || isLastRow) : (nextExpanded || isLastRow)
+
+            // Add current row
+            detailDataRows.append(DetailExpandableRow(rowData: rowData,
+                                                          detailsDelegate: detailsDelegate,
+                                                          hideIndentedSeparator: hideIndentedSeparator,
+                                                          hideFullSeparator: !isLastRow,
+                                                          expanded: expanded))
+
+            // Add child rows
+            if expanded {
+                let childRowsData = rowData.childRows ?? []
+                for (idx, childRowData) in childRowsData.enumerated() {
+                    // If this is the last child row, toggle the full separator based on
+                    // next parent's expanded state to prevent duplicate lines.
+                    let hideFullSeparator = (idx == childRowsData.endIndex-1) ? nextExpanded : true
+
+                    // If the parent row has an icon, show the image view for the child
+                    // to make the child row appear "indented".
+                    let showImage = rowData.hasIcon
+
+                    detailDataRows.append(DetailExpandableChildRow(rowData: childRowData,
+                                                                   detailsDelegate: detailsDelegate,
+                                                                   hideIndentedSeparator: true,
+                                                                   hideFullSeparator: hideFullSeparator,
+                                                                   showImage: showImage))
+                }
+            }
+        }
+
+        return detailDataRows
     }
 
 }

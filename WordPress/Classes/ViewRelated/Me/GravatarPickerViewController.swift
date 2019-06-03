@@ -106,6 +106,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         options.preferFrontCamera = true
         options.allowMultipleSelection = false
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
         pickerViewController.delegate = self

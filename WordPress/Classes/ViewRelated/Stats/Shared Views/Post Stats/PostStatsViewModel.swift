@@ -41,6 +41,8 @@ class PostStatsViewModel: Observable {
 
     private let weekFormat = NSLocalizedString("%@ - %@, %@", comment: "Post Stats label for week date range. Ex: Mar 25 - Mar 31, 2019")
 
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+
     // MARK: - Init
 
     init(postID: Int,
@@ -65,7 +67,7 @@ class PostStatsViewModel: Observable {
 
     func tableViewModel() -> ImmuTable {
 
-        postStats = store.getPostStats()
+        postStats = store.getPostStats(for: postID)
         var tableRows = [ImmuTableRow]()
 
         tableRows.append(titleTableRow())
@@ -116,7 +118,13 @@ private extension PostStatsViewModel {
 
         let chart = PostChart(postViews: lastTwoWeeks)
 
-        tableRows.append(OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil))
+        let selectedDateComponents = calendar.dateComponents([.year, .month, .day], from: selectedDate)
+        let indexToHighlight = lastTwoWeeks.lastIndex(where: {
+            $0.date == selectedDateComponents
+        })
+
+        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
+        tableRows.append(row)
 
         return tableRows
     }

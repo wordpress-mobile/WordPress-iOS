@@ -53,6 +53,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         }
 
         cell.configure(date: selectedDate, period: .day, delegate: self)
+        viewModel?.statsBarChartViewDelegate = cell
 
         return cell
     }
@@ -81,7 +82,7 @@ private extension PostStatsTableViewController {
 
         changeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.store,
-                !store.isFetchingPostStats else {
+                !store.isFetchingPostStats(for: self?.postID) else {
                     return
             }
 
@@ -123,13 +124,8 @@ private extension PostStatsTableViewController {
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-            })
-        } else {
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
+        tableView.performBatchUpdates({
+        })
     }
 
 }

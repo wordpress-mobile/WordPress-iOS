@@ -1,7 +1,7 @@
 /// Local service for Jetpack
 ///
 class JetpackService {
-    private let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi())
+    private let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi())
 
     /// This method installs remotely Jetpack in a self-hosted blog.
     ///

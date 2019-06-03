@@ -13,14 +13,13 @@ extension UITableViewCell {
                  toStackView rowsStackView: UIStackView,
                  forType statType: StatType,
                  limitRowsDisplayed: Bool = true,
-                 forDetailsList: Bool = false,
                  rowDelegate: StatsTotalRowDelegate? = nil,
                  viewMoreDelegate: ViewMoreRowDelegate? = nil) {
 
         let numberOfDataRows = dataRows.count
 
         guard numberOfDataRows > 0 else {
-            if !forDetailsList {
+            if limitRowsDisplayed {
                 let row = StatsNoDataRow.loadFromNib()
                 row.configure(forType: statType)
                 rowsStackView.addArrangedSubview(row)

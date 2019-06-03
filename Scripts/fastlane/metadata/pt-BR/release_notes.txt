@@ -1,5 +1,5 @@
-Gosta de aplicativos como iA Writer, 1Writer, Bear e Ulysses? Mova de um aplicativo para um rascunho do WordPress rapidamente. O aplicativo agora importa arquivos de imagens do TextBundle e TextPack e também arquivos de Markdown.
-As notificações de problema de conexão com a internet não ocupam mais a tela inteira. Agora, há um pequeno popup para que você possa continuar usando o aplicativo mesmo off-line (como apagando posts, que agora é mais confiável no modo off-line)
-Alguns textos em Atividade apareciam no idioma errado. Isso foi corrigido.
-Fechamentos inesperados que ocorriam durante a criação de um site ou ao carregar as estatísticas foram corrigidos.
-Instalação remota do Jetpack agora é suportada. Então você pode instalar e ativar o Jetpack em um site WordPress.org direto do aplicativo.
+* Algumas vezes os avisos eram exibidos sob o teclado. O que não é o ideal quando você quer ler esses avisos. Agora os avisos são exibidos no lugar certo.
+* Melhoramos o gerenciamento de domínios no aplicativo com a possibilidade de usar créditos de domínios do WordPress.com para adicionar um domínio personalizado ao seu site.
+* Agora os posts são salvos automaticamente quando você os visualiza. Uma coisa a menos para se preocupar ao criar um rascunho.
+* O aplicativo poderia falhar ao tentar carregar comentários no Leitor com vários gifs. Corrigimos esse problema.
+* O aplicativo agora é carregado mais rapidamente. Então você pode usar esses segundos economizados para focar em sua produtividade.

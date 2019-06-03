@@ -11,7 +11,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
@@ -782,6 +781,7 @@ FeaturedImageViewControllerDelegate>
 {
     WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
     activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+    activityCell.accessibilityIdentifier = @"SetFeaturedImage";
     activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
     return activityCell;
@@ -1326,6 +1326,7 @@ FeaturedImageViewControllerDelegate>
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
     options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
+    options.preferredStatusBarStyle = UIStatusBarStyleLightContent;
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                              initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];

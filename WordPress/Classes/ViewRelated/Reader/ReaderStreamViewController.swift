@@ -768,7 +768,7 @@ import WordPressFlux
     }
 
     @objc func connectionAvailable() -> Bool {
-        return WordPressAppDelegate.sharedInstance()!.connectionAvailable
+        return WordPressAppDelegate.shared!.connectionAvailable
     }
 
 
@@ -785,7 +785,7 @@ import WordPressFlux
             return
         }
 
-        guard WordPressAppDelegate.sharedInstance().runningInBackground == false else {
+        guard WordPressAppDelegate.shared?.runningInBackground == false else {
             return
         }
 
@@ -1570,6 +1570,7 @@ private extension ReaderStreamViewController {
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
         resultsStatusView.view.frame = tableView.frame
         resultsStatusView.didMove(toParent: tableViewController)
+        resultsStatusView.updateView()
         footerView.isHidden = true
     }
 

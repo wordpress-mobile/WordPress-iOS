@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-* Markera aviseringar som olästa genom att helt enkelt svepa.
-* Kraschade appen ibland när du sökte fria bilder? Nu har vi löst det!
-* Smidigare än någonsin att logga in till webbplatser på webbhotell eller egen server.
-* Blockcitat i läsaren har fått ny, stilig utformning.
-* Vi har gjort en lång rad små förbättringar i hela appen för åtkomlighet för syn och hörsel.
-=======
-Gillar du appar av typen iA Writer, 1Writer, Bear och Ulysses? Du kan snabbt flytta utkast från din app till WordPress — nu importerar vår app bilder från TextBundle- och TextPack-filer och har även stöd för import av Markdown-filer.
-Notiser om problem med internetanslutningen fyller inte längre hela skärmen. I stället är det ett litet popup-fönster, så att du kan fortsätta arbeta med hjälp av offline-möjligheterna (till exempel att radera inlägg, något som nu fungerar mer tillförlitligt om du skulle vara utan internetanslutning).
-En del text i aktivitetsloggen visades ibland på fel språk. Inte så användbart. Nu ett minne blott.
-En annan inte så användbar sak är när programmet kraschar. Ibland kunde de inträffa när man höll på att skapa en ny webbplats eller när man skulle ladda statistik, men nu är det rättat.
-Fjärrinstallation av Jetpack fungerar, så du kan installera och aktivera Jetpack direkt inifrån appen på din WordPress-webbplats, om den körs på egen server.
->>>>>>> origin/master
+* Ibland doldes notiser av tangentbordet – inte så lyckat om du faktiskt vill kunna se dem. Nu ligger de överst, där notiser hör hemma.
+* Vi har snyggat till domänhanteringen i appen med möjligheten att utnyttja ett domäntillgodohavande hos WordPress.com för att ge din domän en egen domän.
+* Nu sparas dina inlägg automatiskt när du förhandsvisar dem – en sak mindre att hålla reda på för dig när du arbetar på ett utkast.
+* Ibland kunde appen krascha när de försökte ladda in kommentarer med flera GIF-bilder. Kommunikationen på internet handlar ju till stor del om att dela GIF-bilder, så ett sådant fel är inte OK. Fixat nu..
+* Appen startar lite snabbare – du får några fler sekunder till produktiv användning (eller till att välja den perfekta GIF-bilden för en kommentar).

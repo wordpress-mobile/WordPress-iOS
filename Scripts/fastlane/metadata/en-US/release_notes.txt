@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-* Mark notifications as unread with a simple swipe.
-* That occasional crash when searching the free photo library? Fixed!
-* Logging in to self-hosted sites is now smoother than ever.
-* Blockquotes in the Reader got a new, sleek look.
-* We’ve made lots of small improvements to visual and hearing accessibility throughout the app.
-=======
-Love apps like iA Writer, 1Writer, Bear, and Ulysses? Move from app to WordPress draft fast — the app now imports images from TextBundle and TextPack files and supports importing Markdown files, too.
-Notifications for internet connectivity problems no longer eat up your entire device screen. Now there’s a small popup instead, so you can keep using offline abilities (like deleting posts, which now happens more reliably if you’re offline).
-Some text in Activity Log would sometimes show up in a wrong language. Not useful! And now fixed.
-Also not useful: crashes. Crashes that sometimes occurred during site creation or when loading stats are resolved.
-Jetpack Remote Install is supported, so you can install and activate Jetpack on a self-hosted site right from the app.
->>>>>>> origin/master
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).

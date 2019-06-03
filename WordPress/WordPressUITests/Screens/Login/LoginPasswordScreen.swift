@@ -28,7 +28,7 @@ class LoginPasswordScreen: BaseScreen {
         passwordTextField.typeText(password)
         loginButton.tap()
         if loginButton.exists && !loginButton.isHittable {
-            _ = waitFor(element: loginButton, predicate: "isEnabled == true")
+            waitFor(element: loginButton, predicate: "isEnabled == true")
         }
         return self
     }

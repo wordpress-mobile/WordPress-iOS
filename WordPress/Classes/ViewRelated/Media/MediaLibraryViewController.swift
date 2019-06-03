@@ -71,6 +71,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.showSearchBar = true
         options.showActionBar = false
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
 
         return options
     }

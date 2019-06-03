@@ -328,32 +328,16 @@ extension WPStyleGuide {
 
         // Fonts
         fileprivate static var sectionHeaderFont: UIFont {
-            if #available(iOS 11.0, *) {
-                return WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .semibold)
-            } else {
-                return WPFontManager.systemSemiBoldFont(ofSize: headerFontSize)
-            }
+            return WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .semibold)
         }
         fileprivate static var subjectRegularFont: UIFont {
-            if #available(iOS 11.0, *) {
-                return WPStyleGuide.fontForTextStyle(.subheadline)
-            } else {
-                return WPFontManager.systemRegularFont(ofSize: subjectFontSize)
-            }
+            return WPStyleGuide.fontForTextStyle(.subheadline)
         }
         fileprivate static var subjectBoldFont: UIFont {
-            if #available(iOS 11.0, *) {
-                return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
-            } else {
-                return WPFontManager.systemSemiBoldFont(ofSize: subjectFontSize)
-            }
+            return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
         }
         fileprivate static var subjectItalicsFont: UIFont {
-            if #available(iOS 11.0, *) {
-                return  WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitItalic)
-            } else {
-                return WPFontManager.systemItalicFont(ofSize: subjectFontSize)
-            }
+            return  WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitItalic)
         }
 
         fileprivate static let subjectNoticonFont       = UIFont(name: "Noticons", size: subjectNoticonSize)!

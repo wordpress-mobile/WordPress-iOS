@@ -166,58 +166,10 @@ class AbstractPostListViewController: UIViewController,
         updateSelectedFilter()
 
         refreshResults()
-        registerForKeyboardNotifications()
-    }
-
-    fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardDidShow(_:)),
-                                               name: UIResponder.keyboardDidShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardDidHide(_:)),
-                                               name: UIResponder.keyboardDidHideNotification,
-                                               object: nil)
-    }
-
-    fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardDidShowNotification,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardDidHideNotification,
-                                                  object: nil)
-    }
-
-    @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        // The following adjustments don't appear to be necessary on iOS 11.
-        let keyboardFrame = localKeyboardFrameFromNotification(notification)
-        let keyboardHeight = tableView.frame.maxY - keyboardFrame.origin.y
-
-        tableView.contentInset.top = topLayoutGuide.length
-        tableView.contentInset.bottom = keyboardHeight
-        tableView.scrollIndicatorInsets.top = searchBarHeight
-        tableView.scrollIndicatorInsets.bottom = keyboardHeight
-    }
-
-    @objc fileprivate func keyboardDidHide(_ notification: Foundation.Notification) {
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        // The following adjustments don't appear to be necessary on iOS 11.
-        tableView.contentInset.top = topLayoutGuide.length
-        tableView.contentInset.bottom = 0
-        tableView.scrollIndicatorInsets.top = searchController.isActive ? searchBarHeight : topLayoutGuide.length
-        tableView.scrollIndicatorInsets.bottom = 0
     }
 
     fileprivate var searchBarHeight: CGFloat {
-        return searchController.searchBar.bounds.height + topLayoutGuide.length
+        return searchController.searchBar.bounds.height + view.safeAreaInsets.top
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
@@ -250,7 +202,6 @@ class AbstractPostListViewController: UIViewController,
         dismissAllNetworkErrorNotices()
 
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        unregisterForKeyboardNotifications()
     }
 
     // MARK: - Configuration
@@ -349,22 +300,14 @@ class AbstractPostListViewController: UIViewController,
     }
 
     fileprivate func configureInitialScrollInsets() {
-        if #available(iOS 11.0, *) {
-            tableView.scrollIndicatorInsets.top = 0
-            tableView.contentInset.top = 0
-        } else {
-            tableView.scrollIndicatorInsets.top = topLayoutGuide.length
-        }
+        tableView.scrollIndicatorInsets.top = 0
+        tableView.contentInset.top = 0
     }
 
     fileprivate func configureSearchBackingView() {
         // This mask view is required to cover the area between the top of the search
         // bar and the top of the screen on an iPhone X and on iOS 10.
-        var topAnchor = topLayoutGuide.bottomAnchor
-
-        if #available(iOS 11.0, *) {
-            topAnchor = view.safeAreaLayoutGuide.topAnchor
-        }
+        let topAnchor = view.safeAreaLayoutGuide.topAnchor
 
         let backingView = UIView()
         view.addSubview(backingView)
@@ -609,7 +552,7 @@ class AbstractPostListViewController: UIViewController,
         }
 
         // Do not start auto-sync if connection is down
-        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let appDelegate = WordPressAppDelegate.shared
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()

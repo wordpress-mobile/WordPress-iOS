@@ -1,6 +1,5 @@
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
-#import "WordPressAppDelegate.h"
 #import "PostCategory.h"
 #import "WordPress-Swift.h"
 #import "WPUserAgent.h"
@@ -43,6 +42,18 @@
     if (self) {
         self.apost = aPost;
         self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost];
+        self.generator.delegate = self;
+        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
+    }
+    return self;
+}
+
+- (instancetype)initWithPost:(AbstractPost *)aPost previewURL:(NSURL *)previewURL
+{
+    self = [super init];
+    if (self) {
+        self.apost = aPost;
+        self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost previewURL:previewURL];
         self.generator.delegate = self;
         self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }

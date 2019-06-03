@@ -134,9 +134,7 @@ private extension RevisionPreviewViewController {
     private func updateScrollInsets() {
         var scrollInsets = textView.contentInset
         var rightMargin = (view.frame.maxX - textView.frame.maxX)
-        if #available(iOS 11.0, *) {
-            rightMargin -= view.safeAreaInsets.right
-        }
+        rightMargin -= view.safeAreaInsets.right
         scrollInsets.right = -rightMargin
         textView.scrollIndicatorInsets = scrollInsets
     }

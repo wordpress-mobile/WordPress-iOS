@@ -56,7 +56,7 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     private var showTotalCount = false
-    private var limitRowsDisplayed = true
+    private var forDetails = false
 
     // MARK: - Configure
 
@@ -65,13 +65,13 @@ class TabbedTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    showTotalCount: Bool,
                    selectedIndex: Int = 0,
-                   limitRowsDisplayed: Bool = true) {
+                   forDetails: Bool = false) {
         self.tabsData = tabsData
         self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.showTotalCount = showTotalCount
-        self.limitRowsDisplayed = limitRowsDisplayed
-        bottomSeparatorLine.isHidden = !limitRowsDisplayed
+        self.forDetails = forDetails
+        bottomSeparatorLine.isHidden = forDetails
         setupFilterBar(selectedIndex: selectedIndex)
         addRowsForSelectedFilter()
         configureSubtitles()
@@ -114,14 +114,18 @@ private extension TabbedTotalsCell {
     }
 
     func toggleNoResults() {
+
+        guard forDetails else {
+            return
+        }
+
         noResultsViewController.removeFromView()
 
-        let showNoResults = tabsData[filterTabBar.selectedIndex].dataRows.isEmpty && !limitRowsDisplayed
+        let showNoResults = tabsData[filterTabBar.selectedIndex].dataRows.isEmpty
         noResultsView.isHidden = !showNoResults
 
-        guard showNoResults,
-            let superview = superview else {
-                return
+        guard showNoResults, let superview = superview else {
+            return
         }
 
         noResultsViewController.view.frame = noResultsView.bounds
@@ -130,17 +134,16 @@ private extension TabbedTotalsCell {
     }
 
     func addRowsForSelectedFilter() {
-        toggleNoResults()
 
-        guard noResultsView.isHidden else {
+        if forDetails {
+            toggleNoResults()
             return
         }
 
         addRows(tabsData[filterTabBar.selectedIndex].dataRows,
                 toStackView: rowsStackView,
                 forType: .insights,
-                limitRowsDisplayed: limitRowsDisplayed,
-                forDetailsList: !limitRowsDisplayed,
+                limitRowsDisplayed: true,
                 rowDelegate: self,
                 viewMoreDelegate: self)
     }

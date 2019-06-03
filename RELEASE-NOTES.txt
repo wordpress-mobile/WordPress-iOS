@@ -1,9 +1,13 @@
-12.5
+12.6
 -----
- 
+
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
+* The app now launches a bit more quickly.
+* Fixed broken images in posts created by the share extension.
 
 12.4.1
 ------
@@ -16,6 +20,7 @@
 * Better URL validation when logging in with a self hosted site.
 * Account Settings Primary Site now shows the site URL if the site has no name.
 * Implemented incremental improvements to accessibility experience across the app.
+* Updated error message when tag loading failed.
 
 12.3
 -----

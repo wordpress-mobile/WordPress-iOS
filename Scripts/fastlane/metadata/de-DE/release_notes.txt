@@ -1,5 +1,5 @@
-Liebst du Apps wie iA Writer, 1Writer, Bear und Ulysses? Schneller Wechsel von App zu WordPress-Entwurf - die App importiert nun Bilder aus TextBundle- und TextPack-Dateien und unterstützt auch den Import von Markdown-Dateien.
-Benachrichtigungen bei Problemen mit der Internetverbindung verbrauchen nicht mehr den gesamten Gerätebildschirm. Jetzt gibt es stattdessen ein kleines Popup, damit du weiterhin Offline-Funktionen verwenden kannst (wie das Löschen von Beiträgen, was nun zuverlässiger geschieht, wenn du offline bist).
-Einige Texte im Aktivitätsprotokoll wurden manchmal in einer falschen Sprache angezeigt. Nicht sinnvoll! Und jetzt repariert.
-Auch nicht sinnvoll: Abstürze. Abstürze, die manchmal während der Erstellung der Website oder beim Laden von Statistiken aufgetreten sind, wurden behoben.
-Eine Jetpack Remote-Installation wird unterstützt, so dass du Jetpack auf einer selbst gehosteten Website direkt von der app aus installieren und aktivieren kannst.
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).

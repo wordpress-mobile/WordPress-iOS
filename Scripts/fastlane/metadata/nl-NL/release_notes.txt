@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-* Markeer meldingen als ongelezen met een simpele veegbeweging.
-* Die incidentele crash wanneer je zoekt naar de gratis fotobibliotheek? Opgelost!
-* Inloggen in zelf-gehoste sites gaat nu soepeler dan ooit.
-* Blockquotes in de leesfunctie hebben een nieuwe, strakke uitstraling.
-* We hebben door de hele app heel veel kleine verbeteringen doorgevoerd voor de visuele en auditieve toegankelijkheid.
-=======
-Hou je van apps als iA Writer, 1Writer, Bear en Ulysses? Ga sneller over van app tot WordPress-concept. De app importeert afbeeldingen uit TextBundle- en TextPack-bestanden en ondersteunt ook het importeren van Markdown-bestanden.
-Meldingen over internet-verbindingsproblemen bedekken niet langer je hele scherm. Er wordt nu in plaats daarvan een kleine pop-up weergegeven, zodat je de offline-functies kunt blijven gebruiken (zoals het verwijderen van berichten, wat nu betrouwbaarder gebeurt als je offline bent).
-Sommige tekst in de Activiteitenlog werd soms in de verkeerde taal weergegeven. Niet handig! En nu gerepareerd.
-Ook niet handig: crashes. Crashes die soms plaatsvonden bij het aanmaken van de site of bij het laden van statistieken.
-Jetpack Remote Install wordt ondersteund, zodat je Jetpack direct vanuit de app kunt installeren en activeren op een zelf-gehoste site.
->>>>>>> origin/master
+* Soms worden meldingen weergegeven achter het toetsenbord, wat niet erg handig is als je ze wilde lezen. Ze worden nu op de voorgrond weergegeven, waar meldingen horen te staan.
+* We hebben domeinbeheer in de app verbeterd doordat je nu een WordPress.com-domeinkrediet kunt verzilveren om je site een aangepast domein te geven.
+* Berichten worden nu automatisch opgeslagen wanneer je een voorbeeld ervan bekijkt, zodat je hiermee in ieder geval geen rekening meer hoeft te houden tijdens het opstellen van een conceptbericht.
+* De app crashte regelmatig bij het laden van Reader-opmerkingen met meerdere gifs. Communiceren op het internet bestaat voor 65% uit het delen van gifs, dus dat is niet de bedoeling. Dit is nu opgelost.
+* De app wordt een beetje sneller opgestart, dus kun je die bespaarde seconden nu een stuk productiever besteden (of voor het kiezen van de perfecte gif).

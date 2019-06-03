@@ -1,11 +1,5 @@
-Vous aimez les apps comme iA Writer, 1Writer, Bear, et Ulysses ? Passer de l’application à un brouillon WordPress rapidement. L’application importe maintenant des images à partir de fichiers TextBundle et TextPack et prend en charge l’importation de fichiers Markdown, aussi.
-
-Les notifications pour les problèmes de connectivité internet ne prennent plus l’intégralité de l’écran de votre appareil. Maintenant, il ya une petite popup à la place, de sorte que vous puissiez continuer à utiliser des capacités hors ligne (comme la suppression de messages, qui est maintenant plus fiable si vous êtes hors ligne).
-
-Certains textes dans le journal d’activité apparaissent parfois dans une langue erronée. Pas utile ! C’est maintenant réparé.
-
-Également pas utile : les plantages. Les plantages qui se produisent parfois lors de la création du site ou lors du chargement des statistiques sont résolus.
-
-L’installation à distance Jetpack est prise en charge, vous pouvez donc installer et activer Jetpack sur un site auto-hébergé directement depuis l’application.
-
-Les statistiques sont plus accessibles: Si vous utilisez VoiceOver dans l’application, il vous lira vos statistiques.
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).

@@ -17,23 +17,36 @@ class EditorScreen: BaseScreen {
     private var richTextField = "Rich Content"
     private var htmlTextField = "HTMLContentView"
 
-    let titleView = XCUIApplication().textViews["Title"]
+    let editorCloseButton = XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"]
+    let publishButton = XCUIApplication().buttons["Publish"]
+    let moreButton = XCUIApplication().buttons["More"]
+    let uploadProgressBar = XCUIApplication().progressIndicators["Progress"]
 
-    lazy var mediaButton = XCUIApplication().buttons["formatToolbarInsertMedia"]
-    lazy var headerButton = XCUIApplication().buttons["formatToolbarSelectParagraphStyle"]
-    lazy var boldButton = XCUIApplication().buttons["formatToolbarToggleBold"]
-    lazy var italicButton = XCUIApplication().buttons["formatToolbarToggleItalic"]
-    lazy var underlineButton = XCUIApplication().buttons["formatToolbarToggleUnderline"]
-    lazy var strikethroughButton = XCUIApplication().buttons["formatToolbarToggleStrikethrough"]
-    lazy var blockquoteButton = XCUIApplication().buttons["formatToolbarToggleBlockquote"]
-    lazy var listButton = XCUIApplication().buttons["formatToolbarToggleListUnordered"]
-    lazy var linkButton = XCUIApplication().buttons["formatToolbarInsertLink"]
-    lazy var horizontalrulerButton = XCUIApplication().buttons["formatToolbarInsertHorizontalRuler"]
-    lazy var sourcecodeButton = XCUIApplication().buttons["formatToolbarToggleHtmlView"]
-    lazy var moreButton = XCUIApplication().buttons["formatToolbarInsertMore"]
+    let titleView = XCUIApplication().textViews["Title"]
+    let contentPlaceholder = XCUIApplication().staticTexts["aztec-content-placeholder"]
+
+    let mediaButton = XCUIApplication().buttons["format_toolbar_insert_media"]
+    let insertMediaButton = XCUIApplication().buttons["insert_media_button"]
+    let headerButton = XCUIApplication().buttons["format_toolbar_select_paragraph_style"]
+    let boldButton = XCUIApplication().buttons["format_toolbar_toggle_bold"]
+    let italicButton = XCUIApplication().buttons["format_toolbar_toggle_italic"]
+    let underlineButton = XCUIApplication().buttons["format_toolbar_toggle_underline"]
+    let strikethroughButton = XCUIApplication().buttons["format_toolbar_toggle_strikethrough"]
+    let blockquoteButton = XCUIApplication().buttons["format_toolbar_toggle_blockquote"]
+    let listButton = XCUIApplication().buttons["format_toolbar_toggle_list_unordered"]
+    let linkButton = XCUIApplication().buttons["format_toolbar_insert_link"]
+    let horizontalrulerButton = XCUIApplication().buttons["format_toolbar_insert_horizontal_ruler"]
+    let sourcecodeButton = XCUIApplication().buttons["format_toolbar_toggle_html_view"]
+    let moreToolbarButton = XCUIApplication().buttons["format_toolbar_insert_more"]
 
     let unorderedListOption = XCUIApplication().buttons["Unordered List"]
     let orderedListOption = XCUIApplication().buttons["Ordered List"]
+
+    // Action sheets
+    let actionSheet = XCUIApplication().sheets.element(boundBy: 0)
+    let discardButton = XCUIApplication().buttons["Discard"]
+    let postSettingsButton = XCUIApplication().sheets.buttons["Post Settings"]
+    let keepEditingButton = XCUIApplication().sheets.buttons["Keep Editing"]
 
     init(mode: Mode) {
         var textField = ""
@@ -61,10 +74,10 @@ class EditorScreen: BaseScreen {
 
     func showOptionsStrip() {
         textView.coordinate(withNormalizedOffset: .zero).tap()
-        expandOptionsSctrip()
+        expandOptionsStrip()
     }
 
-    func expandOptionsSctrip() {
+    func expandOptionsStrip() {
         let expandButton = app.children(matching: .window).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .button).element
 
         if expandButton.exists && expandButton.isHittable && !sourcecodeButton.exists {
@@ -87,11 +100,10 @@ class EditorScreen: BaseScreen {
     func addListWithLines(type: String, lines: Array<String>) -> EditorScreen {
         addList(type: type)
 
-        let returnButton = app.buttons["Return"]
         for (index, line) in lines.enumerated() {
             enterText(text: line)
             if index != (lines.count - 1) {
-                returnButton.tap()
+                app.buttons["Return"].tap()
             }
         }
         return self
@@ -150,7 +162,7 @@ class EditorScreen: BaseScreen {
      */
     @discardableResult
     func enterText(text: String) -> EditorScreen {
-        textView.tap()
+        contentPlaceholder.tap()
         textView.typeText(text)
         return self
     }
@@ -204,47 +216,69 @@ class EditorScreen: BaseScreen {
      */
     func addImageByOrder(id: Int) -> EditorScreen {
         tapToolbarButton(button: mediaButton)
-        let cameraRollButton = app.otherElements.cells["Camera Roll"]
-        waitFor(element: cameraRollButton, predicate: "isEnabled == true && isHittable == true")
-        cameraRollButton.tap()
 
-        // Wait for the Camera Roll Animation
-        let navigationBar = app.otherElements.navigationBars["Camera Roll"]
-        _ = navigationBar.waitForExistence(timeout: waitTimeout)
+        // Allow access to device media
+        app.tap() // trigger the media permissions alert handler
+
+        // Make sure media picker is open
+        if mediaButton.exists {
+            tapToolbarButton(button: mediaButton)
+        }
 
         // Inject the first picture
-        app.cells.element(boundBy: 0).tap()
+        MediaPickerAlbumScreen().selectImage(atIndex: 0)
+        insertMediaButton.tap()
 
-        // wait for upload simulation
-        sleep(6)
+        // Wait for upload to finish
+        waitFor(element: uploadProgressBar, predicate: "exists == false", timeout: 10)
 
         return self
     }
 
     // returns void since return screen depends on from which screen it loaded
-    func goBack() {
-//    func goBack() -> MySitesScreen {
-        let navBar = app.navigationBars["Azctec Editor Navigation Bar"]
-        navBar.buttons["Close"].tap()
+    func closeEditor() {
+        // Close the More menu if needed
+        if actionSheet.exists {
+            if isIpad {
+                app.otherElements["PopoverDismissRegion"].tap()
+            } else {
+                keepEditingButton.tap()
+            }
+        }
+
+        // Close the editor and discard any local changes
+        editorCloseButton.tap()
         let notSavedState = app.staticTexts["You have unsaved changes."]
         if notSavedState.exists {
             Logger.log(message: "Discarding unsaved changes", event: .v)
-            app.buttons["Discard"].tap()
+            discardButton.tap()
         }
     }
 
     func publish() -> EditorNoticeComponent {
-        app.buttons["Publish"].tap()
-        acceptPublishAlertIfNeeded() // Accepts "Publish with Confidence" alert
+        publishButton.tap()
+        confirmPublish()
 
         return EditorNoticeComponent(withNotice: "Post published", andAction: "View")
     }
 
-    private func acceptPublishAlertIfNeeded() {
-        let publishAlert = FancyAlertComponent()
-        if publishAlert.isLoaded() {
-            publishAlert.acceptAlert()
+    private func confirmPublish() {
+        if FancyAlertComponent.isLoaded() {
+            FancyAlertComponent().acceptAlert()
+        } else {
+            if isIpad {
+                app.alerts.buttons["Publish"].tap()
+            } else {
+                app.sheets.buttons["Publish"].tap()
+            }
         }
+    }
+
+    func openPostSettings() -> EditorPostSettings {
+        moreButton.tap()
+        postSettingsButton.tap()
+
+        return EditorPostSettings()
     }
 
     private func getHTMLContent() -> String {
@@ -260,5 +294,9 @@ class EditorScreen: BaseScreen {
 
     private func getTextContent() -> String {
         return textView.value as! String
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().navigationBars["Azctec Editor Navigation Bar"].buttons["Close"].exists
     }
 }

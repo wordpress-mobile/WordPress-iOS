@@ -1,5 +1,4 @@
 #import "ReachabilityUtils.h"
-#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 
 @import WordPressUI;

@@ -181,11 +181,7 @@ class CollectionViewContainerCell: UITableViewCell {
 
         titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.spacing).isActive = true
 
-        if #available(iOS 11.0, *) {
-            titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
-        } else {
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.spacing).isActive = true
-        }
+        titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
 
         actionButton = UIButton(type: .custom)
         actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
@@ -195,11 +191,7 @@ class CollectionViewContainerCell: UITableViewCell {
 
         self.addSubview(actionButton)
 
-        if #available(iOS 11.0, *) {
-            actionButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.spacing).isActive = true
-        } else {
-            actionButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.spacing).isActive = true
-        }
+        actionButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.spacing).isActive = true
 
         actionButton.lastBaselineAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor).isActive = true
         actionButton.setContentHuggingPriority(.required, for: .horizontal)

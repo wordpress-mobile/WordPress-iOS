@@ -1,5 +1,5 @@
-Adori le app come iA Writer, 1Writer, Bear e Ulysses? Passa rapidamente dall'app alla bozza di WordPress: ora l'app importa immagini da file TextBundle e TextPack e supporta anche l'importazione dei file Markdown.
-Le notifiche per i problemi di connessione a Internet non occupano più l'intero schermo del dispositivo. Ora, invece, appare un piccolo pop-up, così puoi continuare a utilizzare le funzionalità offline (come la cancellazione degli articoli, che ora viene eseguita in modo più affidabile se sei offline).
-A volte una parte del testo del log attività appare in una lingua sbagliata. Questa caratteristica non è utile e ora è stata corretta.
-Altri elementi non utili: gli arresti. Gli arresti che a volte si verificano durante la creazione del sito o il caricamento delle statistiche sono stati risolti.
-L'installazione da remoto di Jetpack è ora supportata, quindi puoi installare e attivare Jetpack su un sito ospitato personalmente direttamente dall'app.
+*Alcune volte gli avvisi venivano visualizzati dietro la tastiera, il che non era l'ideale se si voleva davvero leggerli. Ora vengono mostrati di fronte, dove devono essere posizionati gli avvisi.
+*Abbiamo migliorato la gestione del dominio nell'app con la possibilità di riscattare un credito di dominio WordPress.com per dare al tuo sito un dominio personalizzato.
+*Ora gli articoli vengono salvati automaticamente quando li visualizzi in anteprima: una cosa in meno a cui pensare mentre prepari la bozza.
+*Occasionalmente l'app si arrestava in modo anomalo quando cercava di caricare commenti del Reader con GIF multiple. L'interazione su Internet consiste al 65% nella condivisione di GIF, quindi era un problema. Il problema ora è stato risolto.
+*L'app si avvia un po' più velocemente. In questo modo è possibile approfittare di quei secondi salvati e usarli in modo produttivo (o per selezionare la GIF perfetta).

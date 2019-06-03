@@ -57,8 +57,8 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         configureTableView()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
-        viewModel.onChange = { [unowned self] (change) in
-            self.handle(change: change)
+        viewModel.onChange = { [weak self] (change) in
+            self?.handle(change: change)
         }
 
         viewModel.prefill()
@@ -77,13 +77,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     }
 
     private func changeBottomSafeAreaInset() {
-        guard #available(iOS 11.0, *) else {
-            return
-        }
-
-        // Footer in this case is the submit button. We want the background to extend under the home "buttom".
-        // The bar at the bottom of the screen. Whatever that thing's called? Home indicator? That thing.
-        // Hence this bit of dark magic.
+        // Footer in this case is the submit button. We want the background to extend under the home indicator.
         let safeAreaInsets = tableView.safeAreaInsets.bottom
 
         var newInsets = tableView.contentInset
@@ -171,14 +165,15 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         case .checkMarkRowsUpdated:
             tableView.reloadData()
         case .registerSucceeded(let domain):
-
-            viewModel.domainPurchasedCallback(domain)
-            dismiss(animated: true)
+            dismiss(animated: true) { [weak self] in
+                self?.viewModel.domainPurchasedCallback(domain)
+            }
         case .unexpectedError(let message):
             showAlert(message: message)
         case .loading(let isLoading):
             if isLoading {
                 footerView.submitButton.isEnabled = false
+                SVProgressHUD.setDefaultMaskType(.clear)
                 SVProgressHUD.show()
             } else {
                 footerView.submitButton.isEnabled = true

@@ -312,7 +312,7 @@ public protocol ThemePresenter: class {
     }
 
     fileprivate var searchBarHeight: CGFloat {
-        return searchController.searchBar.bounds.height + topLayoutGuide.length
+        return searchController.searchBar.bounds.height + view.safeAreaInsets.top
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -388,7 +388,7 @@ public protocol ThemePresenter: class {
     @objc open func keyboardWillHide(_ notification: Foundation.Notification) {
         let tabBarHeight = tabBarController?.tabBar.bounds.height ?? 0
 
-        collectionView.contentInset.top = topLayoutGuide.length
+        collectionView.contentInset.top = view.safeAreaInsets.top
         collectionView.contentInset.bottom = tabBarHeight
         collectionView.scrollIndicatorInsets.top = searchBarHeight
         collectionView.scrollIndicatorInsets.bottom = tabBarHeight
@@ -689,7 +689,7 @@ public protocol ThemePresenter: class {
         if sections[1] == .themes || sections[1] == .customThemes {
             setInfoSectionHidden(false)
         }
-        collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
+        collectionView.scrollIndicatorInsets.top = view.safeAreaInsets.top
     }
 
     fileprivate func setInfoSectionHidden(_ hidden: Bool) {

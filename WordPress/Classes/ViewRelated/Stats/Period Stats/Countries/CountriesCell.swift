@@ -18,6 +18,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
+    private var forDetails = false
 
     // MARK: - Configure
 
@@ -25,17 +26,25 @@ class CountriesCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
-                   limitRowsDisplayed: Bool = true) {
+                   forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
+        self.forDetails = forDetails
 
+        // TODO: in xib when add map:
+        // - unhide Map View
+        // - Separator Line: enable Top Space to Map View constraint
+        // - Separator Line: remove Top Space to Superview constraint
+
+        if !forDetails {
         addRows(dataRows,
                 toStackView: rowsStackView,
                 forType: .period,
-                limitRowsDisplayed: limitRowsDisplayed,
+                limitRowsDisplayed: true,
                 viewMoreDelegate: self)
+        }
 
         setSubtitleVisibility()
         applyStyles()
@@ -58,6 +67,13 @@ private extension CountriesCell {
     }
 
     func setSubtitleVisibility() {
+
+        if forDetails {
+            subtitleStackView.isHidden = false
+            rowsStackView.isHidden = true
+            return
+        }
+
         let showSubtitles = dataRows.count > 0
         subtitleStackView.isHidden = !showSubtitles
         rowsStackViewTopConstraint.isActive = !showSubtitles
