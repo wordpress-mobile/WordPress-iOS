@@ -318,8 +318,6 @@ end
 target 'WordPressScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
-    inherit! :search_paths
-
     pod 'SimulatorStatusMagic'
 end
 
