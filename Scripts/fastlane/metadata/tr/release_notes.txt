@@ -1,0 +1,5 @@
+* Bazen bildirimler klavyenin arkasında görünür, bu da gerçekten okumak istemeniz durumunda ideal değildir. Şimdi bildirimlerin olması gerektiği yerde, önde çıkıyorlar.
+* Uygulamada, sitenize özel bir alan adı vermek için bir WordPress.com alan adı kredisi kullanma becerisiyle alan adı yönetimini hızlandırdık.
+* Yazılar artık önizleme yaparken otomatik olarak kaydedilir; taslak oluştururken düşünmeniz için bir şey daha eksik.
+* Uygulama, birden fazla GIF ile okuyucu yorumunu yüklemeye çalışırken zaman zaman çöktü. İnternette etkileşimde bulunmak %65 oranında GIF paylaşmak demek, bu yüzden olmamalıydı. Şimdi düzeltildi.
+* Uygulama biraz daha hızlı açılır, böylece kaydedilen saniyeleri alabilir ve bunları verimli (veya mükemmel GIF'i seçmek için) bir şekilde kullanabilirsiniz.

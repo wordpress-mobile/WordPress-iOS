@@ -30,16 +30,16 @@ def aztec
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8a37b93fcc7d7ecb109aef1da2af0e2ec57f2633'
     ## pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag => '1.5.0.beta.1'
-    pod 'WordPress-Editor-iOS', '~> 1.6.3'
+    pod 'WordPress-Editor-iOS', '~> 1.6.5'
 end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.0'
+    pod 'WordPressUI', '~> 1.3.1-beta.1'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '500fd609a7cbb541298bfea92d0ac842cf9b468d'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => 'edd2908'
 end
 
 def wordpress_kit
@@ -120,7 +120,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.5.1'
+    gutenberg :tag => 'v1.6.0'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
@@ -169,6 +169,45 @@ target 'WordPress' do
 
         shared_test_pods
         pod 'Nimble', '~> 7.3.1'
+    end
+
+    ## Convert the 3rd-party license acknowledgements markdown into html for use in the app
+    post_install do
+        require 'commonmarker'
+        
+        acknowledgements = 'Acknowledgements'
+        markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
+        rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+        styled_html = "<head>
+                         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+                         <style>
+                           body {
+                             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                             font-size: 16px;
+                             color: #1a1a1a;
+                             margin: 20px;
+                           }
+                           pre {
+                            white-space: pre-wrap;
+                           }
+                         </style>
+                         <title>
+                           #{acknowledgements}
+                         </title>
+                       </head>
+                       <body>
+                         #{rendered_html}
+                       </body>"
+          
+          ## Remove the <h1>, since we've promoted it to <title>
+          styled_html = styled_html.sub("<h1>#{acknowledgements}</h1>", '')
+          
+          ## The glog library's license contains a URL that does not wrap in the web view,
+          ## leading to a large right-hand whitespace gutter.  Work around this by explicitly
+          ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
+          styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
+                        
+        File.write('Pods/Target Support Files/Pods-WordPress/acknowledgements.html', styled_html)    
     end
 end
 
@@ -278,8 +317,6 @@ end
 ##
 target 'WordPressScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
-
-    inherit! :search_paths
 
     pod 'SimulatorStatusMagic'
 end

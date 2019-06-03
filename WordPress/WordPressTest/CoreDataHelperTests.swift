@@ -176,6 +176,23 @@ class CoreDataHelperTests: XCTestCase {
         XCTAssertEqual(retrieved!.key, "YEAH!")
         XCTAssertEqual(retrieved!.value, 42)
     }
+
+    /// Verifies that safeManagedObjectID never runs into exceptions and always returns nil
+    ///
+    func testSafeManagedObjectIDRetrievalUsingURI() {
+        insertDummyEntities(10)
+        guard let psc = context.persistentStoreCoordinator,
+            let uriGood = URL(string: "x-coredata://ABDASDBASD/a.png"),
+            let uriBad1 = URL(string: "ABDASDBASD/a.png"),
+            let uriBad2 = URL(string: "x-coredata://ABDASDBASD") else {
+                return
+        }
+
+
+        XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriGood))
+        XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriBad1))
+        XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriBad2))
+    }
 }
 
 
