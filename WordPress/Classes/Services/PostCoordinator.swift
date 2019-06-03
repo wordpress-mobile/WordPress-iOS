@@ -255,9 +255,7 @@ extension PostCoordinator: Uploader {
                 return
             }
 
-            for post in posts {
-                self.retrySave(of: post)
-            }
+            posts.forEach() { self.retrySave(of: $0 ) }
         }
     }
 }

@@ -606,14 +606,12 @@ extension MediaCoordinator: Uploader {
     func resume() {
         let service = MediaService(managedObjectContext: mainContext)
 
-        service.getFailedMedia { [weak self] mediaArray in
+        service.getFailedMedia { [weak self] media in
             guard let self = self else {
                 return
             }
 
-            for media in mediaArray {
-                self.retryMedia(media)
-            }
+            media.forEach() { self.retryMedia($0) }
         }
     }
 }
