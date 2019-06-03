@@ -1,24 +1,11 @@
 import Foundation
+import Reachability
 
 /// Takes care of coordinating all uploaders used by the app.
 ///
-@objc
 class UploadsManager: NSObject {
     private let uploaders: [Uploader]
-    private lazy var reachabilityObserver: NSObjectProtocol = {
-        return NotificationCenter.default.addObserver(forName: .reachabilityChanged, object: nil, queue: nil) { [weak self] notification in
-
-            guard let self = self else {
-                return
-            }
-
-            let internetIsReachable = notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool ?? false
-
-            if internetIsReachable {
-                self.resume()
-            }
-        }
-    }()
+    private let reachability: Reachability = Reachability.forInternetConnection()
 
     // MARK: Initialization & Finalization
 
@@ -31,17 +18,24 @@ class UploadsManager: NSObject {
         self.uploaders = uploaders
 
         super.init()
+
+        setupReachableBlock()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(reachabilityObserver)
+    // MARK: Reachability
+
+    private func setupReachableBlock() {
+        reachability.reachableBlock = { _ in
+            self.resume()
+        }
+
+        reachability.startNotifier()
     }
 
     // MARK: Interacting with Uploads
 
     /// Resumes all uploads handled by the uploaders.
     ///
-    @objc
     func resume() {
         for uploader in uploaders {
             uploader.resume()

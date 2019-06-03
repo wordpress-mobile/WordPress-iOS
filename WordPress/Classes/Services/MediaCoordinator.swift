@@ -5,11 +5,7 @@ import WordPressFlux
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
 ///
-class MediaCoordinator: NSObject, Uploader {
-    func resume() {
-    }
-
-
+class MediaCoordinator: NSObject {
     @objc static let shared = MediaCoordinator()
 
     private(set) var backgroundContext: NSManagedObjectContext = {
@@ -602,6 +598,20 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         if mediaProgressCoordinator != mediaLibraryProgressCoordinator {
             removeCoordinator(mediaProgressCoordinator)
+        }
+    }
+}
+
+extension MediaCoordinator: Uploader {
+    func resume() {
+        let service = MediaService(managedObjectContext: mainContext)
+
+        service.getFailedMedia { [weak self] media in
+            guard let self = self else {
+                return
+            }
+
+            media.forEach() { self.retryMedia($0) }
         }
     }
 }
