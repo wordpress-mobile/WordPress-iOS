@@ -6,6 +6,7 @@ enum PeriodAction: Action {
 
     // Period overview
     case receivedSummary(_ summary: StatsSummaryTimeIntervalData?, _ error: Error?)
+    case receivedLikesSummary(_ likes: StatsLikesSummaryTimeIntervalData?, _ error: Error?)
     case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?)
     case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?)
     case receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?, _ error: Error?)
@@ -169,6 +170,8 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .receivedSummary(let summary, let error):
             receivedSummary(summary, error)
+        case .receivedLikesSummary(let likes, let error):
+            receivedLikesSummary(likes, error)
         case .receivedPostsAndPages(let postsAndPages, let error):
             receivedPostsAndPages(postsAndPages, error)
         case .receivedReferrers(let referrers, let error):
@@ -326,6 +329,16 @@ private extension StatsPeriodStore {
             DDLogInfo("Stats: Finished fetching summary.")
 
             self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary, error))
+        }
+
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching likes summary.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -717,6 +730,38 @@ private extension StatsPeriodStore {
                 state.summary = summaryData
             }
         }
+    }
+
+    func receivedLikesSummary(_ likesSummary: StatsLikesSummaryTimeIntervalData?, _ error: Error?) {
+        // This is a workaround for how our API works — the requests for summary for long periods of times
+        // can take extreme amounts of time to finish (and semi-frequenty fail). In order to not block the UI
+        // here, we split out the views/visitors/comments and likes requests.
+        // This method splices the results of the two back together so we can persist it to Core Data.
+        guard
+            let summary = likesSummary,
+            let currentSummary = state.summary,
+            summary.summaryData.count == currentSummary.summaryData.count
+            else {
+                return
+        }
+
+        let newSummaryData = currentSummary.summaryData.enumerated().map { index, obj in
+            return StatsSummaryData(period: obj.period,
+                                    periodStartDate: obj.periodStartDate,
+                                    viewsCount: obj.viewsCount,
+                                    visitorsCount: obj.visitorsCount,
+                                    likesCount: summary.summaryData[index].likesCount,
+                                    commentsCount: obj.commentsCount)
+        }
+
+        let newSummary = StatsSummaryTimeIntervalData(period: currentSummary.period,
+                                                      periodEndDate: currentSummary.periodEndDate,
+                                                      summaryData: newSummaryData)
+
+        transaction { state in
+            state.summary = newSummary
+        }
+
     }
 
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
