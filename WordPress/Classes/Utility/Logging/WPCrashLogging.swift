@@ -34,7 +34,7 @@ class WPCrashLogging {
     }
 
     func beforeSerializeEvent(_ event: Event) {
-        event.extra = ["b": "c"]
+        event.tags?["locale"] = NSLocale.current.languageCode
     }
 
     func shouldSendEvent(_ event: Event?) -> Bool {
@@ -126,13 +126,10 @@ extension WPCrashLogging {
     }
 
     var releaseName: String {
-        let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let buildNumber = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-
-        return "\(bundleVersion) (\(buildNumber)"
+        return Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
     }
 
     var buildType: String {
-        return Mirror(reflecting: BuildConfiguration.current).children.first?.label ?? "unknown"
+        return BuildConfiguration.current.rawValue
     }
 }
