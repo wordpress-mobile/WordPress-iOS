@@ -1,3 +1,6 @@
+12.7
+-----
+ 
 12.6
 -----
 * Block Editor: A new block is available: video block.
