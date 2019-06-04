@@ -175,8 +175,9 @@ target 'WordPress' do
     post_install do
         require 'commonmarker'
         
+        project_root = File.dirname(__FILE__)
         acknowledgements = 'Acknowledgements'
-        markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
+        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
         styled_html = "<head>
                          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -207,7 +208,7 @@ target 'WordPress' do
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
                         
-        File.write('Pods/Target Support Files/Pods-WordPress/acknowledgements.html', styled_html)    
+        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)    
     end
 end
 
