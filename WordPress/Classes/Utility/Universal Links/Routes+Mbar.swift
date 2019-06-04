@@ -44,9 +44,10 @@ extension MbarRoute: NavigationAction {
 
         guard let url = values[MatchedRouteURLComponentKey.url.rawValue],
             let redirectUrl = redirectURL(from: url) else {
+                failAndBounce(values)
                 return
         }
 
-        UniversalLinkRouter.shared.handle(url: redirectUrl, shouldTrack: true)
+        UniversalLinkRouter.shared.handle(url: redirectUrl, shouldTrack: false)
     }
 }
