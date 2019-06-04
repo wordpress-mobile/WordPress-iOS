@@ -35,7 +35,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.1-beta.1'
+    pod 'WordPressUI', '~> 1.3.1'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1-beta'
+    pod 'WordPressKit', '~> 4.1.2'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/stats-fetch-likes-separately'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
