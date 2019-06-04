@@ -123,7 +123,6 @@ private extension SiteStatsDetailTableViewController {
                 DetailExpandableChildRow.self,
                 DetailSubtitlesHeaderRow.self,
                 DetailSubtitlesTabbedHeaderRow.self,
-                TopTotalsDetailStatsRow.self,
                 DetailSubtitlesCountriesHeaderRow.self]
     }
 
