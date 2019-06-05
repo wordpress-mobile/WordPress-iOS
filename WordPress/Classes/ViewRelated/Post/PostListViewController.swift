@@ -185,16 +185,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        guard _tableViewHandler.isSearching else {
+        guard _tableViewHandler.isSearching,
+            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
             return UIView(frame: .zero)
         }
 
         let sectionInfo = _tableViewHandler.resultsController.sections?[section]
-        let nibName = String(describing: PageListSectionHeaderView.self)
-        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
 
         if let sectionInfo = sectionInfo {
-            headerView.setTitle(sectionInfo.name)
+            headerView.titleLabel.text = AbstractPost.title(forStatus: sectionInfo.name).uppercased()
         }
 
         return headerView
@@ -229,6 +228,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let postCardRestoreCellNib = UINib(nibName: postCardRestoreCellNibName, bundle: bundle)
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: postCardRestoreCellIdentifier)
+
+        let headerNib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
+        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
     }
 
     override func configureAuthorFilter() {
