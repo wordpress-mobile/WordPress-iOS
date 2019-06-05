@@ -349,7 +349,7 @@ private extension String {
     private enum Constants {
         static let iconOffset: CGFloat = 1.0
         static let iconSize: CGFloat = 16.0
-        static let highlightColor = WPStyleGuide.lightBlue()
+        static let highlightColor = UIColor.white;
         static var highlightFont: UIFont {
             get {
                 return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
