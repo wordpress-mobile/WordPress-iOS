@@ -49,15 +49,15 @@ struct MurielColorIdentifier {
     }
 
     // MARK: - Semantic colors
-    static let accent = MurielColorIdentifier.init(name: MurielColorName.hotPink)
-    static let divider = MurielColorIdentifier.init(name: MurielColorName.gray, shade: .shade50)
-    static let error = MurielColorIdentifier.init(name: MurielColorName.hotRed)
-    static let neutral = MurielColorIdentifier.init(name: MurielColorName.gray)
-    static let primary = MurielColorIdentifier.init(name: MurielColorName.blue)
-    static let success = MurielColorIdentifier.init(name: MurielColorName.green)
-    static let text = MurielColorIdentifier.init(name: MurielColorName.gray, shade: .shade800)
-    static let textSubtle = MurielColorIdentifier.init(name: MurielColorName.gray, shade: .shade500)
-    static let warning = MurielColorIdentifier.init(name: MurielColorName.hotYellow)
+    static let accent = MurielColorIdentifier(name: MurielColorName.hotPink)
+    static let divider = MurielColorIdentifier(name: MurielColorName.gray, shade: .shade50)
+    static let error = MurielColorIdentifier(name: MurielColorName.hotRed)
+    static let neutral = MurielColorIdentifier(name: MurielColorName.gray)
+    static let primary = MurielColorIdentifier(name: MurielColorName.blue)
+    static let success = MurielColorIdentifier(name: MurielColorName.green)
+    static let text = MurielColorIdentifier(name: MurielColorName.gray, shade: .shade800)
+    static let textSubtle = MurielColorIdentifier(name: MurielColorName.gray, shade: .shade500)
+    static let warning = MurielColorIdentifier(name: MurielColorName.hotYellow)
 
     /// The full name of the color, with required shade value
     func name(with shade: MurielColorShade = .shade500) -> String {
