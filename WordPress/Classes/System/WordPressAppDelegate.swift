@@ -738,19 +738,23 @@ extension WordPressAppDelegate {
         window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
-        WPStyleGuide.configureNavigationBarAppearance()
+        if Feature.enabled(.murielColors) {
+            WPStyleGuide.configureNavigationAppearance()
+        } else {
+            WPStyleGuide.configureNavigationBarAppearance()
+
+            UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
+            UITabBar.appearance().tintColor = WPStyleGuide.mediumBlue()
+
+            let navigationAppearance = UINavigationBar.appearance()
+            navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
+            navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
+            navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
+        }
 
         let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))
         UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).shadowImage = clearImage
         UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for: .default)
-
-        UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
-        UITabBar.appearance().tintColor = WPStyleGuide.mediumBlue()
-
-        let navigationAppearance = UINavigationBar.appearance()
-        navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
-        navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
-        navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = WPStyleGuide.wordPressBlue()
