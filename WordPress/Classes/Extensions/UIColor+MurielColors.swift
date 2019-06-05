@@ -129,4 +129,10 @@ extension UIColor {
     class func warning(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColorIdentifier(from: .warning, shade: shade))
     }
+
+    /// Muriel/iOS navigation color
+    static var navigationBar = muriel(color: .navigationBar)
+
+    /// Muriel/iOS navgiation shadow color
+    static var navigationBarShadow = muriel(color: .navigationBarShadow)
 }
