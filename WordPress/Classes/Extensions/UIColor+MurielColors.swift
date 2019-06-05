@@ -1,5 +1,5 @@
 /// Generates the names of the named colors in the ColorPalette.xcasset
-enum MurielColorName: String {
+enum MurielColorName: String, CustomStringConvertible {
     // MARK: - Base colors
     case blue
     case celadon
@@ -19,13 +19,17 @@ enum MurielColorName: String {
     case red
     case wooPurple = "Woo-Purple"
     case yellow
+
+    var description: String {
+        return rawValue.capitalized
+    }
 }
 
 /// Value of a Muriel color's shade
 ///
 /// Note: There are a finite number of acceptable values. Not just any Int works.
 ///       Also, enum cases cannot begin with a number, thus the `shade` prefix.
-enum MurielColorShade: Int {
+enum MurielColorShade: Int, CustomStringConvertible {
     case shade0 = 0
     case shade50 = 50
     case shade100 = 100
@@ -37,6 +41,10 @@ enum MurielColorShade: Int {
     case shade700 = 700
     case shade800 = 800
     case shade900 = 900
+
+    var description: String {
+        return "\(rawValue)"
+    }
 }
 
 struct MurielColorIdentifier {
@@ -70,7 +78,7 @@ struct MurielColorIdentifier {
 
     /// The full name of the color, with required shade value
     func assetName() -> String {
-        return "\(self)-\(shade.rawValue)"
+        return "\(name)-\(shade)"
     }
 }
 
@@ -81,8 +89,12 @@ extension UIColor {
     ///   - color: an instance of a MurielColorIdentifier
     ///   - shade: an optional shade value
     /// - Returns: UIColor. Red in cases of error
-    class func muriel(color: MurielColorIdentifier) -> UIColor {
-        return UIColor(named: color.assetName()) ?? .red
+    class func muriel(color colorID: MurielColorIdentifier) -> UIColor {
+        let assetName = colorID.assetName()
+        guard let color = UIColor(named: assetName) else {
+            return .red
+        }
+        return color
     }
 
     /// Muriel accent color
