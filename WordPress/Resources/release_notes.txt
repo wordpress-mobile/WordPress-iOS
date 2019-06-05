@@ -1,13 +1,25 @@
 12.6
 -----
+* Enabled Stats Refresh (dramatic improvements to stats)
+* Block Editor: A new block is available: video block.
+* Block Editor: Added UI to display a warning when a block has invalid content.
+* Block Editor: Fixed issue with link settings where “Open in New Tab” was always OFF on open.
+* Removed the limit of number of photos that can be shared from other apps.
+* Account Settings Primary Site now shows the site domain if the site has no name.
+* The app now launches a bit more quickly.
+* Added a list of third-party library acknowledgements.
+* Updated messaging experience for a reply upload result.
+* Fixed a crash that could happen when setting up your blog.
+
 
 12.5
 -----
-* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
-* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
-* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
-* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
-* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).
+* Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
+* The app now launches a bit more quickly.
+* Fixed broken images in posts created by the share extension.
+* Deprecated local previews
 
 12.4
 -----
