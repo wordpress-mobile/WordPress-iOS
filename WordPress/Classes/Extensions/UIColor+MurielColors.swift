@@ -48,19 +48,28 @@ struct MurielColorIdentifier {
         self.shade = shade
     }
 
-    // MARK: - Semantic colors
-    static let accent = MurielColorIdentifier(name: MurielColorName.hotPink)
-    static let divider = MurielColorIdentifier(name: MurielColorName.gray, shade: .shade50)
-    static let error = MurielColorIdentifier(name: MurielColorName.hotRed)
-    static let neutral = MurielColorIdentifier(name: MurielColorName.gray)
-    static let primary = MurielColorIdentifier(name: MurielColorName.blue)
-    static let success = MurielColorIdentifier(name: MurielColorName.green)
-    static let text = MurielColorIdentifier(name: MurielColorName.gray, shade: .shade800)
-    static let textSubtle = MurielColorIdentifier(name: MurielColorName.gray, shade: .shade500)
-    static let warning = MurielColorIdentifier(name: MurielColorName.hotYellow)
+    init(from identifier: MurielColorIdentifier, shade: MurielColorShade) {
+        self.name = identifier.name
+        self.shade = shade
+    }
+
+    // MARK: - Muriel's semantic colors
+    static let accent = MurielColorIdentifier(name: .hotPink)
+    static let divider = MurielColorIdentifier(name: .gray, shade: .shade50)
+    static let error = MurielColorIdentifier(name: .hotRed)
+    static let neutral = MurielColorIdentifier(name: .gray)
+    static let primary = MurielColorIdentifier(name: .blue)
+    static let success = MurielColorIdentifier(name: .green)
+    static let text = MurielColorIdentifier(name: .gray, shade: .shade800)
+    static let textSubtle = MurielColorIdentifier(name: .gray, shade: .shade500)
+    static let warning = MurielColorIdentifier(name: .hotYellow)
+
+    // MARK: - Additional iOS semantic colors
+    static let navigationBar = MurielColorIdentifier(name: .blue)
+    static let navigationBarShadow = MurielColorIdentifier(name: .blue, shade: .shade800)
 
     /// The full name of the color, with required shade value
-    func name(with shade: MurielColorShade = .shade500) -> String {
+    func assetName() -> String {
         return "\(self)-\(shade.rawValue)"
     }
 }
@@ -72,15 +81,14 @@ extension UIColor {
     ///   - color: an instance of a MurielColorIdentifier
     ///   - shade: an optional shade value
     /// - Returns: UIColor. Red in cases of error
-    class func muriel(color: MurielColorIdentifier, shade: MurielColorShade = .shade500) -> UIColor {
-        return UIColor(named: color.name(with: shade)) ?? .red
+    class func muriel(color: MurielColorIdentifier) -> UIColor {
+        return UIColor(named: color.assetName()) ?? .red
     }
-
 
     /// Muriel accent color
     static var accent = muriel(color: .accent)
     class func accent(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .accent, shade: shade)
+        return muriel(color: MurielColorIdentifier(from: .accent, shade: shade))
     }
 
     /// Muriel divider color
@@ -89,42 +97,36 @@ extension UIColor {
     /// Muriel error color
     static var error = muriel(color: .error)
     class func error(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .error, shade: shade)
+        return muriel(color: MurielColorIdentifier(from: .error, shade: shade))
     }
 
     /// Muriel neutral color
     static var neutral = muriel(color: .neutral)
     class func neutral(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .neutral, shade: shade)
+        return muriel(color: MurielColorIdentifier(from: .neutral, shade: shade))
     }
 
     /// Muriel primary color
     static var primary = muriel(color: .primary)
     class func primary(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .primary, shade: shade)
+        return muriel(color: MurielColorIdentifier(from: .primary, shade: shade))
     }
 
     /// Muriel success color
     static var success = muriel(color: .success)
     class func success(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .success, shade: shade)
+        return muriel(color: MurielColorIdentifier(from: .success, shade: shade))
     }
 
     /// Muriel text color
     static var text = muriel(color: .text)
-    class func text(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .text, shade: shade)
-    }
 
     /// Muriel text subtle color
     static var textSubtle = muriel(color: .textSubtle)
-    class func textSubtle(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .textSubtle, shade: shade)
-    }
 
     /// Muriel warning color
     static var warning = muriel(color: .warning)
     class func warning(shade: MurielColorShade) -> UIColor {
-        return muriel(color: .warning, shade: shade)
+        return muriel(color: MurielColorIdentifier(from: .warning, shade: shade))
     }
 }
