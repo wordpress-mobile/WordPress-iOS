@@ -4437,6 +4437,7 @@
 			isa = PBXGroup;
 			children = (
 				17B7C89F20EC1D6A0042E260 /* Route.swift */,
+				17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */,
 				17F0E1D920EBDC0A001E9514 /* Routes+Me.swift */,
 				17E24F5320FCF1D900BD70A3 /* Routes+MySites.swift */,
 				17B7C8C020EE2A870042E260 /* Routes+Notifications.swift */,
@@ -4444,7 +4445,6 @@
 				17A4A36820EE51870071C2CA /* Routes+Reader.swift */,
 				1715179120F4B2EB002C4A38 /* Routes+Stats.swift */,
 				17BD4A182101D31B00975AC3 /* NavigationActionHelpers.swift */,
-				17BD4A0720F76A4700975AC3 /* Routes+Banners.swift */,
 				1714F8CF20E6DA8900226DCB /* RouteMatcher.swift */,
 				17B7C89D20EC1D0D0042E260 /* UniversalLinkRouter.swift */,
 			);
@@ -4496,7 +4496,7 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -8954,7 +8954,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
