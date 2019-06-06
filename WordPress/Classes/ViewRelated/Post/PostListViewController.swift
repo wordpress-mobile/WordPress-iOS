@@ -193,7 +193,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let sectionInfo = _tableViewHandler.resultsController.sections?[section]
 
         if let sectionInfo = sectionInfo {
-            headerView.titleLabel.text = AbstractPost.title(forStatus: sectionInfo.name).uppercased()
+            headerView.titleLabel.text = PostSearchHeader.title(forStatus: sectionInfo.name)
         }
 
         return headerView
