@@ -1,8 +1,8 @@
 import Foundation
 
 enum PostSearchHeader {
-    static let published = NSLocalizedString("Drafts", comment: "Title of the drafts header in search list.")
-    static let drafts = NSLocalizedString("Published", comment: "Title of the published header in search list.")
+    static let published = NSLocalizedString("Published", comment: "Title of the published header in search list.")
+    static let drafts = NSLocalizedString("Drafts", comment: "Title of the drafts header in search list.")
 
     static func title(forStatus rawStatus: String) -> String {
         var title: String
