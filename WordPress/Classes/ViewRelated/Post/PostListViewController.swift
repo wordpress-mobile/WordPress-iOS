@@ -661,7 +661,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    // MARK: - UISearchControllerDelegate
+    // MARK: - Searching
+
+    override func updateForLocalPostsMatchingSearchText() {
+        // If the user taps and starts to type right away, avoid doing the search
+        // while the tableViewHandler is not ready yet
+        if !_tableViewHandler.isSearching && currentSearchTerm()?.count > 0 {
+            return
+        }
+
+        super.updateForLocalPostsMatchingSearchText()
+    }
 
     override func willPresentSearchController(_ searchController: UISearchController) {
         super.willPresentSearchController(searchController)
