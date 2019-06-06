@@ -169,6 +169,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     @objc func togglePostsView() {
         isCompact.toggle()
+
+        WPAppAnalytics.track(.postListToggleButtonPressed, withProperties: ["mode": isCompact ? Constants.compact: Constants.card])
     }
 
     // MARK: - Configuration
@@ -712,6 +714,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private enum Constants {
         static let exhibitionModeKey = "showCompactPosts"
         static let searchHeaderHeight: CGFloat = 40
+        static let card = "card"
+        static let compact = "compact"
     }
 }
 
