@@ -689,6 +689,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func willDismissSearchController(_ searchController: UISearchController) {
         _tableViewHandler.isSearching = false
+        _tableViewHandler.refreshTableView()
+        super.willDismissSearchController(searchController)
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
