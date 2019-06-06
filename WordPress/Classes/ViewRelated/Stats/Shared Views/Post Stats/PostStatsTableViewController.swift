@@ -32,7 +32,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Stats", comment: "Window title for Post Stats view.")
+        navigationItem.title = NSLocalizedString("Post Stats", comment: "Window title for Post Stats view.")
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
