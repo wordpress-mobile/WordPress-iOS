@@ -100,7 +100,9 @@ private extension SiteStatsTableHeaderView {
         }
 
         let value = forward ? 1 : -1
-        self.date = calendar.date(byAdding: period.calendarComponent, value: value, to: date)
+        dump("current date: \(date)")
+        self.date = calculateEndDate(startDate: date, offsetBy: value, unit: period)
+        dump("adjusted date: \(date)")
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
@@ -194,11 +196,58 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
 
         let periodShift = -((entryCount - 1) - entryIndex)
 
-        let currentDate = Date().normalizedDate()
+        dump("periodShift: \(periodShift)")
+        self.date = calculateEndDate(startDate: Date().normalizedDate(), offsetBy: periodShift, unit: period)
+        dump("new calculated date: \(date)")
 
-        self.date = calendar.date(byAdding: period.calendarComponent, value: periodShift, to: currentDate)
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
+    }
+}
+
+private extension SiteStatsTableHeaderView {
+    func calculateEndDate(startDate: Date, offsetBy count: Int = 1, unit: StatsPeriodUnit) -> Date? {
+        let calendar = Calendar.autoupdatingCurrent
+
+        guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: startDate) else {
+            NSLog("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
+            return startDate
+        }
+
+        switch unit {
+        case .day:
+            return adjustedDate.normalizedDate()
+
+        case .week:
+            guard let endOfWeek = calendar.dateInterval(of: .weekOfYear, for: startDate)?.end else {
+                return startDate
+            }
+
+            let weekAdjusted = calendar.date(byAdding: .weekOfYear, value: count, to: endOfWeek)
+
+            return calendar.dateInterval(of: .weekOfYear, for: weekAdjusted!)?.end
+
+
+        case .month:
+            guard let maxComponent = calendar.range(of: .day, in: .month, for: adjustedDate)?.max() else {
+                NSLog("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
+                return startDate
+            }
+
+            return calendar.date(bySetting: .day, value: maxComponent, of: adjustedDate)?.normalizedDate()
+
+        case .year:
+            guard
+                let maxMonth = calendar.range(of: .month, in: .year, for: adjustedDate)?.max(),
+                let adjustedMonthDate = calendar.date(bySetting: .month, value: maxMonth, of: adjustedDate),
+                let maxDay = calendar.range(of: .day, in: .month, for: adjustedMonthDate)?.max() else {
+                    NSLog("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
+                    return startDate
+            }
+            let adjustedDayDate = calendar.date(bySetting: .day, value: maxDay, of: adjustedMonthDate)
+
+            return adjustedDayDate?.normalizedDate()
+        }
     }
 }
