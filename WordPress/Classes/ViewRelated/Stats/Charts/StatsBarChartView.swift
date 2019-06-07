@@ -185,6 +185,8 @@ private extension StatsBarChartView {
 
         configureLegendIfNeeded()
         data = barChartData
+
+        configureYAxisMaximum()
     }
 
     func configureBarChartViewProperties() {
@@ -303,6 +305,17 @@ private extension StatsBarChartView {
         // This adjustment is intended to prevent clipping observed with some labels
         // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
         extraTopOffset = Constants.topOffsetSansLegend
+    }
+
+    func configureYAxisMaximum() {
+        let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
+
+        if let maxY = data?.getYMax(),
+            maxY >= lowestMaxValue {
+            leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
+        } else {
+            leftAxis.axisMaximum = lowestMaxValue
+        }
     }
 
     func drawChartMarker(for entry: ChartDataEntry) {

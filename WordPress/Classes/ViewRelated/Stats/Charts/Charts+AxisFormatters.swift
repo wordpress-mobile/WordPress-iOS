@@ -65,4 +65,20 @@ class VerticalAxisFormatter: IAxisValueFormatter {
 
         return largeValueFormatter.stringForValue(value, axis: axis)
     }
+
+    // Matches WPAndroid behavior to produce neater rounded values on
+    // the vertical axis.
+    static func roundUpAxisMaximum(_ input: Double) -> Double {
+        if input > 100 {
+            return roundUpAxisMaximum(input / 10) * 10
+        } else {
+            for i in 1..<25 {
+                let limit = Double(4 * i)
+                if input < limit {
+                    return limit
+                }
+            }
+            return Double(100)
+        }
+    }
 }
