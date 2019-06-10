@@ -100,9 +100,9 @@ private extension SiteStatsTableHeaderView {
         }
 
         let value = forward ? 1 : -1
-        dump("current date: \(date)")
+
         self.date = calculateEndDate(startDate: date, offsetBy: value, unit: period)
-        dump("adjusted date: \(date)")
+
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
@@ -196,9 +196,7 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
 
         let periodShift = -((entryCount - 1) - entryIndex)
 
-        dump("periodShift: \(periodShift)")
         self.date = calculateEndDate(startDate: Date().normalizedDate(), offsetBy: periodShift, unit: period)
-        dump("new calculated date: \(date)")
 
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
@@ -220,14 +218,23 @@ private extension SiteStatsTableHeaderView {
             return adjustedDate.normalizedDate()
 
         case .week:
-            guard let endOfWeek = calendar.dateInterval(of: .weekOfYear, for: startDate)?.end else {
+
+            // The hours component here is because the `dateInterval` returnd by Calendar is a closed range
+            // — so the "end" of a specific week is also simultenously a 'start' of the next one.
+            // This causes problem when calling this math on dates that _already are_ an end/start of a week.
+            // This doesn't work for our calculations, so we force it to rollover using this hack.
+            // (I *think* that's what's happening here. Doing Calendar math on this method has broken my brain.
+            // I spend like 10h on this ~50 LoC method. Beware.)
+            let components = DateComponents(day: 7 * count, hour: -12)
+
+            guard let weekAdjusted = calendar.date(byAdding: components, to: startDate.normalizedDate()) else {
+                NSLog("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
                 return startDate
             }
 
-            let weekAdjusted = calendar.date(byAdding: .weekOfYear, value: count, to: endOfWeek)
+            let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end
 
-            return calendar.dateInterval(of: .weekOfYear, for: weekAdjusted!)?.end
-
+            return endOfAdjustedWeek?.normalizedDate()
 
         case .month:
             guard let maxComponent = calendar.range(of: .day, in: .month, for: adjustedDate)?.max() else {
