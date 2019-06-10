@@ -136,27 +136,50 @@ private final class PeriodChartDataTransformer {
 
         let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
         let chartStyling: [BarChartStyling] = [
-            ViewsPeriodChartStyling(primaryBarColor: (totalViews > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+            ViewsPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
+                                    secondaryBarColor: secondaryBarColor(forCount: totalViews),
+                                    primaryHighlightColor: primaryHighlightColor(forCount: totalViews),
+                                    secondaryHighlightColor: secondaryHighlightColor(forCount: totalViews),
                                     xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(primaryBarColor: (totalVisitors > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+            DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalVisitors),
+                                      primaryHighlightColor: primaryHighlightColor(forCount: totalVisitors),
                                       xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(primaryBarColor: (totalLikes > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+            DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalLikes),
+                                      primaryHighlightColor: primaryHighlightColor(forCount: totalLikes),
                                       xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(primaryBarColor: (totalComments > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+            DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalComments),
+                                      primaryHighlightColor: primaryHighlightColor(forCount: totalComments),
                                       xAxisValueFormatter: horizontalAxisFormatter),
         ]
 
         return (barChartDataConvertibles, chartStyling)
     }
+
+    static func primaryBarColor(forCount count: Int) -> UIColor {
+        return count > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
+    }
+
+    static func secondaryBarColor(forCount count: Int) -> UIColor {
+        return count > 0 ? WPStyleGuide.darkBlue() : WPStyleGuide.lightGrey()
+    }
+
+    static func primaryHighlightColor(forCount count: Int) -> UIColor? {
+        return count > 0 ? WPStyleGuide.jazzyOrange() : nil
+    }
+
+    static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
+        return count > 0 ? WPStyleGuide.fireOrange() : nil
+    }
+
 }
 
 // MARK: - ViewsPeriodChartStyling
 
 private struct ViewsPeriodChartStyling: BarChartStyling {
     let primaryBarColor: UIColor
-    let secondaryBarColor: UIColor?                 = WPStyleGuide.darkBlue()
-    let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
-    let secondaryHighlightColor: UIColor?           = WPStyleGuide.fireOrange()
+    let secondaryBarColor: UIColor?
+    let primaryHighlightColor: UIColor?
+    let secondaryHighlightColor: UIColor?
     let labelColor: UIColor                         = WPStyleGuide.grey()
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
@@ -169,7 +192,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
 private struct DefaultPeriodChartStyling: BarChartStyling {
     let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?                 = nil
-    let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
+    let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
     let labelColor: UIColor                         = WPStyleGuide.grey()
     let legendTitle: String?                        = nil
