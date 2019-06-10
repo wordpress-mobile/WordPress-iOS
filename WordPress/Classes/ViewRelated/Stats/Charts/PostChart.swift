@@ -145,6 +145,7 @@ private struct PostChartStyling: BarChartStyling {
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
     let labelColor: UIColor                         = WPStyleGuide.grey()
+    let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
     let xAxisValueFormatter: IAxisValueFormatter

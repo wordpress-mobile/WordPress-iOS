@@ -181,6 +181,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
     let labelColor: UIColor                         = WPStyleGuide.grey()
+    let legendColor: UIColor?                       = WPStyleGuide.wordPressBlue()
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
     let xAxisValueFormatter: IAxisValueFormatter
@@ -195,6 +196,7 @@ private struct DefaultPeriodChartStyling: BarChartStyling {
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
     let labelColor: UIColor                         = WPStyleGuide.grey()
+    let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
     let xAxisValueFormatter: IAxisValueFormatter

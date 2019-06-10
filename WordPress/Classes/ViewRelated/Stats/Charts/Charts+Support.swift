@@ -37,6 +37,9 @@ protocol BarChartStyling {
     /// This corresponds to the color of labels on the chart
     var labelColor: UIColor { get }
 
+    /// This corresponds to the legend color; currently only applicable when Views/Visitors overlaid.
+    var legendColor: UIColor? { get }
+
     /// If specified, a legend will be presented with this value. It maps to the secondary bar color above.
     var legendTitle: String? { get }
 

@@ -263,7 +263,7 @@ private extension StatsBarChartView {
     func configureLegendIfNeeded() {
         legend.enabled = false
 
-        guard let legendColor = styling.secondaryBarColor, let legendTitle = styling.legendTitle, legendView == nil else {
+        guard let legendColor = styling.legendColor, let legendTitle = styling.legendTitle, legendView == nil else {
             return
         }
 
