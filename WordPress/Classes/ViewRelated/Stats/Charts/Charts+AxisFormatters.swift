@@ -23,28 +23,58 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     // MARK: Properties
 
     private let initialDateInterval: TimeInterval
+    private let period: StatsPeriodUnit
 
-    private lazy var formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("MMM d")
+    private var format: String {
+        switch period {
+        case .day:
+            return "MMM d, yyyy"
+        case .week:
+            return "MMM d"
+        case .month:
+            return "MMM, yyyy"
+        case .year:
+            return "yyyy"
+        }
+    }
 
-        return formatter
-    }()
+    private lazy var formatter = DateFormatter()
 
     // MARK: HorizontalAxisFormatter
 
-    init(initialDateInterval: TimeInterval) {
+    init(initialDateInterval: TimeInterval, period: StatsPeriodUnit = .day) {
         self.initialDateInterval = initialDateInterval
+        self.period = period
     }
 
     // MARK: IAxisValueFormatter
 
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        updateFormatterTemplate()
+
         let adjustedValue = initialDateInterval + value
         let date = Date(timeIntervalSince1970: adjustedValue)
-        let value = formatter.string(from: date)
 
-        return value
+        switch period {
+            case .week:
+                return formattedDate(forWeekStarting: date)
+            default:
+                return formatter.string(from: date)
+        }
+    }
+
+    private func updateFormatterTemplate() {
+        formatter.setLocalizedDateFormatFromTemplate(format)
+    }
+
+    private func formattedDate(forWeekStarting date: Date) -> String {
+        let oneWeek = DateComponents(weekOfYear: 1)
+
+        guard let weekAhead = Calendar.current.date(byAdding: oneWeek, to: date) else {
+            return formatter.string(from: date)
+        }
+
+        return "\(formatter.string(from: date)) – \(formatter.string(from: weekAhead))"
     }
 }
 
