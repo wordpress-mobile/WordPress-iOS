@@ -119,16 +119,22 @@ private final class PostChartDataTransformer {
         let chartData = BarChartData(entries: entries)
         chartData.barWidth = effectiveWidth
 
-        let primaryBarColor = totalViews > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
         let xAxisFormatter: IAxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
-
-        let styling = PostChartStyling(primaryBarColor: primaryBarColor,
-                                       primaryHighlightColor: type.highlightColor,
+        let styling = PostChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
+                                       primaryHighlightColor: primaryHighlightColor(forType: type, withCount: totalViews),
                                        xAxisValueFormatter: xAxisFormatter)
-
 
         return (chartData, styling)
     }
+
+    static func primaryBarColor(forCount count: Int) -> UIColor {
+        return count > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
+    }
+
+    static func primaryHighlightColor(forType type: PostChartType, withCount count: Int) -> UIColor? {
+        return count > 0 ? type.highlightColor : nil
+    }
+
 }
 
 // MARK: - PostChartStyling
