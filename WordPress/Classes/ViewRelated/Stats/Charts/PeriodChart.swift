@@ -75,6 +75,11 @@ private final class PeriodChartDataTransformer {
             effectiveWidth = range / effectiveBars
         }
 
+        let totalViews = data.compactMap({$0.viewsCount}).reduce(0, +)
+        let totalVisitors = data.compactMap({$0.visitorsCount}).reduce(0, +)
+        let totalLikes = data.compactMap({$0.likesCount}).reduce(0, +)
+        let totalComments = data.compactMap({$0.commentsCount}).reduce(0, +)
+
         var viewEntries     = [BarChartDataEntry]()
         var visitorEntries  = [BarChartDataEntry]()
         var likeEntries     = [BarChartDataEntry]()
@@ -85,10 +90,11 @@ private final class PeriodChartDataTransformer {
 
             let x = offset
 
-            let viewEntry = BarChartDataEntry(x: x, y: Double(datum.viewsCount))
-            let visitorEntry = BarChartDataEntry(x: x, y: Double(datum.visitorsCount))
-            let likeEntry = BarChartDataEntry(x: x, y: Double(datum.likesCount))
-            let commentEntry = BarChartDataEntry(x: x, y: Double(datum.commentsCount))
+            // If the chart has no data, show "stub" bars
+            let viewEntry = BarChartDataEntry(x: x, y: totalViews > 0 ? Double(datum.viewsCount) : 1.0)
+            let visitorEntry = BarChartDataEntry(x: x, y: totalVisitors > 0 ? Double(datum.visitorsCount) : 1.0)
+            let likeEntry = BarChartDataEntry(x: x, y: totalLikes > 0 ? Double(datum.likesCount) : 1.0)
+            let commentEntry = BarChartDataEntry(x: x, y: totalComments > 0 ? Double(datum.commentsCount) : 1.0)
 
             viewEntries.append(viewEntry)
             visitorEntries.append(visitorEntry)
@@ -130,10 +136,14 @@ private final class PeriodChartDataTransformer {
 
         let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
         let chartStyling: [BarChartStyling] = [
-            ViewsPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
+            ViewsPeriodChartStyling(primaryBarColor: (totalViews > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+                                    xAxisValueFormatter: horizontalAxisFormatter),
+            DefaultPeriodChartStyling(primaryBarColor: (totalVisitors > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+                                      xAxisValueFormatter: horizontalAxisFormatter),
+            DefaultPeriodChartStyling(primaryBarColor: (totalLikes > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+                                      xAxisValueFormatter: horizontalAxisFormatter),
+            DefaultPeriodChartStyling(primaryBarColor: (totalComments > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()),
+                                      xAxisValueFormatter: horizontalAxisFormatter),
         ]
 
         return (barChartDataConvertibles, chartStyling)
@@ -143,7 +153,7 @@ private final class PeriodChartDataTransformer {
 // MARK: - ViewsPeriodChartStyling
 
 private struct ViewsPeriodChartStyling: BarChartStyling {
-    let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
+    let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?                 = WPStyleGuide.darkBlue()
     let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
     let secondaryHighlightColor: UIColor?           = WPStyleGuide.fireOrange()
@@ -157,7 +167,7 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
 // MARK: - DefaultPeriodChartStyling
 
 private struct DefaultPeriodChartStyling: BarChartStyling {
-    let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
+    let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
     let secondaryHighlightColor: UIColor?           = nil
