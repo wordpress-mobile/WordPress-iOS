@@ -276,7 +276,7 @@ extension StatsPeriodUnit {
         case .week:
             return "MMM d"
         case .month:
-            return "MMM yyyy"
+            return "MMM, yyyy"
         case .year:
             return "yyyy"
         }

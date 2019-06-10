@@ -25,19 +25,6 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     private let initialDateInterval: TimeInterval
     private let period: StatsPeriodUnit
 
-    private var format: String {
-        switch period {
-        case .day:
-            return "MMM d, yyyy"
-        case .week:
-            return "MMM d"
-        case .month:
-            return "MMM, yyyy"
-        case .year:
-            return "yyyy"
-        }
-    }
-
     private lazy var formatter = DateFormatter()
 
     // MARK: HorizontalAxisFormatter
@@ -64,7 +51,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     }
 
     private func updateFormatterTemplate() {
-        formatter.setLocalizedDateFormatFromTemplate(format)
+        formatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
     }
 
     private func formattedDate(forWeekStarting date: Date) -> String {
