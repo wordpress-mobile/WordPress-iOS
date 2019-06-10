@@ -44,7 +44,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
 
         switch period {
             case .week:
-                return formattedDate(forWeekStarting: date)
+                return formattedDate(forWeekContaining: date)
             default:
                 return formatter.string(from: date)
         }
@@ -54,14 +54,30 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
         formatter.setLocalizedDateFormatFromTemplate(period.dateFormatTemplate)
     }
 
-    private func formattedDate(forWeekStarting date: Date) -> String {
-        let oneWeek = DateComponents(weekOfYear: 1)
-
-        guard let weekAhead = Calendar.current.date(byAdding: oneWeek, to: date) else {
-            return formatter.string(from: date)
+    private func formattedDate(forWeekContaining date: Date) -> String {
+        let week = weekIncludingDate(date)
+        guard let weekStart = week?.weekStart, let weekEnd = week?.weekEnd else {
+            return ""
         }
 
-        return "\(formatter.string(from: date)) – \(formatter.string(from: weekAhead))"
+        return "\(formatter.string(from: weekStart)) – \(formatter.string(from: weekEnd))"
+    }
+
+    private func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
+        // Note: Week is Monday - Sunday
+
+        let calendar: Calendar = {
+            var cal = Calendar(identifier: .iso8601)
+            cal.timeZone = .autoupdatingCurrent
+            return cal
+        }()
+
+        guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
+            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
+                return nil
+        }
+
+        return (weekStart, weekEnd)
     }
 }
 
