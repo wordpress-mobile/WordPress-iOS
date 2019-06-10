@@ -209,7 +209,7 @@ private extension SiteStatsTableHeaderView {
         let calendar = Calendar.autoupdatingCurrent
 
         guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: startDate) else {
-            NSLog("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
+            DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
             return startDate
         }
 
@@ -228,7 +228,7 @@ private extension SiteStatsTableHeaderView {
             let components = DateComponents(day: 7 * count, hour: -12)
 
             guard let weekAdjusted = calendar.date(byAdding: components, to: startDate.normalizedDate()) else {
-                NSLog("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
+                DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
                 return startDate
             }
 
@@ -238,7 +238,7 @@ private extension SiteStatsTableHeaderView {
 
         case .month:
             guard let maxComponent = calendar.range(of: .day, in: .month, for: adjustedDate)?.max() else {
-                NSLog("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
+                DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
                 return startDate
             }
 
@@ -249,7 +249,7 @@ private extension SiteStatsTableHeaderView {
                 let maxMonth = calendar.range(of: .month, in: .year, for: adjustedDate)?.max(),
                 let adjustedMonthDate = calendar.date(bySetting: .month, value: maxMonth, of: adjustedDate),
                 let maxDay = calendar.range(of: .day, in: .month, for: adjustedMonthDate)?.max() else {
-                    NSLog("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
+                    DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
                     return startDate
             }
             let adjustedDayDate = calendar.date(bySetting: .day, value: maxDay, of: adjustedMonthDate)
