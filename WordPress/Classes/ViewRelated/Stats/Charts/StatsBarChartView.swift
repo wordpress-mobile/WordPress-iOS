@@ -192,6 +192,7 @@ private extension StatsBarChartView {
     func configureBarChartViewProperties() {
         drawBarShadowEnabled = false
         drawValueAboveBarEnabled = false
+        clipValuesToContentEnabled = false
         fitBars = true
     }
 
@@ -286,6 +287,7 @@ private extension StatsBarChartView {
         xAxis.labelTextColor = styling.labelColor
         xAxis.setLabelCount(Constants.horizontalAxisLabelCount, force: true)
         xAxis.valueFormatter = styling.xAxisValueFormatter
+        xAxis.avoidFirstLastClippingEnabled = true
     }
 
     func configureYAxis() {
