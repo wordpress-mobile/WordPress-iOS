@@ -66,12 +66,7 @@ class HorizontalAxisFormatter: IAxisValueFormatter {
     private func weekIncludingDate(_ date: Date) -> (weekStart: Date, weekEnd: Date)? {
         // Note: Week is Monday - Sunday
 
-        let calendar: Calendar = {
-            var cal = Calendar(identifier: .iso8601)
-            cal.timeZone = .autoupdatingCurrent
-            return cal
-        }()
-
+        let calendar = Calendar.current
         guard let weekStart = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
             let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) else {
                 return nil
