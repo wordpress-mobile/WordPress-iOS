@@ -314,7 +314,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', branch: 'ios-mocking'
+  pod 'WordPressMocks', git: 'https://github.com/wordpress-mobile/WordPressMocks.git', commit: '63140916389876c3de8aec7cff21fdfcc37beaa9'
 end
 
 ## Screenshot Generation

@@ -254,7 +254,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.6.5)
   - WordPressAuthenticator (~> 1.5.0)
   - WordPressKit (~> 4.1.2)
-  - WordPressMocks (from `https://github.com/wordpress-mobile/WordPressMocks.git`, branch `ios-mocking`)
+  - WordPressMocks (from `https://github.com/wordpress-mobile/WordPressMocks.git`, commit `63140916389876c3de8aec7cff21fdfcc37beaa9`)
   - WordPressShared (~> 1.8.1)
   - WordPressUI (~> 1.3.3)
   - WPMediaPicker (~> 1.4.1)
@@ -329,7 +329,7 @@ EXTERNAL SOURCES:
     :commit: 36c0aa9845001cd632ef6969a59036f0216b8ad1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressMocks:
-    :branch: ios-mocking
+    :commit: 63140916389876c3de8aec7cff21fdfcc37beaa9
     :git: https://github.com/wordpress-mobile/WordPressMocks.git
   yoga:
     :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
@@ -348,7 +348,7 @@ CHECKOUT OPTIONS:
     :commit: 36c0aa9845001cd632ef6969a59036f0216b8ad1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
   WordPressMocks:
-    :commit: 914802977f6d1c310cefa7e195bf769f506b928d
+    :commit: 63140916389876c3de8aec7cff21fdfcc37beaa9
     :git: https://github.com/wordpress-mobile/WordPressMocks.git
 
 SPEC CHECKSUMS:
@@ -405,6 +405,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 936232785d2a7afc7e4daead62bc7c1b6f6b7fc9
+PODFILE CHECKSUM: c796470d99fda08efb41fe1a432b00ac3368b4f9
 
 COCOAPODS: 1.6.1
