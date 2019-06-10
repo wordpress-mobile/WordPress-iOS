@@ -75,10 +75,10 @@ private final class PeriodChartDataTransformer {
             effectiveWidth = range / effectiveBars
         }
 
-        let totalViews = data.compactMap({$0.viewsCount}).reduce(0, +)
-        let totalVisitors = data.compactMap({$0.visitorsCount}).reduce(0, +)
-        let totalLikes = data.compactMap({$0.likesCount}).reduce(0, +)
-        let totalComments = data.compactMap({$0.commentsCount}).reduce(0, +)
+        let totalViews = summaryData.compactMap({$0.viewsCount}).reduce(0, +)
+        let totalVisitors = summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
+        let totalLikes = summaryData.compactMap({$0.likesCount}).reduce(0, +)
+        let totalComments = summaryData.compactMap({$0.commentsCount}).reduce(0, +)
 
         var viewEntries     = [BarChartDataEntry]()
         var visitorEntries  = [BarChartDataEntry]()
