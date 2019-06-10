@@ -18,7 +18,7 @@ extension BarChartDataSet {
 
 // MARK: - Charts protocols
 
-/// Describes the visual appearance of a BarChartView. Implementation TBD.
+/// Describes the visual appearance of a BarChartView.
 ///
 protocol BarChartStyling {
 

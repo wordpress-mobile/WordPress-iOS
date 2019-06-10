@@ -101,13 +101,16 @@ private final class PostChartDataTransformer {
             effectiveWidth = range / effectiveBars
         }
 
+        let totalViews = data.compactMap({$0.viewsCount}).reduce(0, +)
+
         var entries = [BarChartDataEntry]()
         for datum in data {
             let dateInterval = datum.postDateTimeInterval ?? 0
             let offset = dateInterval - firstDateInterval
 
             let x = offset
-            let y = Double(datum.viewsCount)
+            // If the chart has no data, show "stub" bars
+            let y = totalViews > 0 ? Double(datum.viewsCount) : 1.0
             let entry = BarChartDataEntry(x: x, y: y)
 
             entries.append(entry)
@@ -116,8 +119,13 @@ private final class PostChartDataTransformer {
         let chartData = BarChartData(entries: entries)
         chartData.barWidth = effectiveWidth
 
+        let primaryBarColor = totalViews > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
         let xAxisFormatter: IAxisValueFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
-        let styling = PostChartStyling(primaryHighlightColor: type.highlightColor, xAxisValueFormatter: xAxisFormatter)
+
+        let styling = PostChartStyling(primaryBarColor: primaryBarColor,
+                                       primaryHighlightColor: type.highlightColor,
+                                       xAxisValueFormatter: xAxisFormatter)
+
 
         return (chartData, styling)
     }
@@ -126,7 +134,7 @@ private final class PostChartDataTransformer {
 // MARK: - PostChartStyling
 
 private struct PostChartStyling: BarChartStyling {
-    let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
+    let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
