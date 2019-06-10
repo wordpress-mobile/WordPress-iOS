@@ -78,11 +78,7 @@ private extension SiteStatsTableHeaderView {
                 return nil
             }
 
-            let startDate = dateFormatter.string(from: weekStart)
-            let endDate = dateFormatter.string(from: weekEnd)
-
-            let weekFormat = NSLocalizedString("%@ - %@", comment: "Stats label for week date range. Ex: Mar 25 - Mar 31")
-            return String.localizedStringWithFormat(weekFormat, startDate, endDate)
+            return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
         }
     }
 

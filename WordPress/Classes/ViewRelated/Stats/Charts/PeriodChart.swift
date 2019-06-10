@@ -56,22 +56,22 @@ private struct PeriodChartData: BarChartDataConvertible {
 
 private final class PeriodChartDataTransformer {
     static func transform(data: StatsSummaryTimeIntervalData) -> (barChartData: [BarChartDataConvertible], barChartStyling: [BarChartStyling]) {
-        let data = data.summaryData
+        let summaryData = data.summaryData
 
         let firstDateInterval: TimeInterval
         let lastDateInterval: TimeInterval
         let effectiveWidth: Double
 
-        if data.isEmpty {
+        if summaryData.isEmpty {
             firstDateInterval = 0
             lastDateInterval = 0
             effectiveWidth = 1
         } else {
-            firstDateInterval = data.first?.periodStartDate.timeIntervalSince1970 ?? 0
-            lastDateInterval = data.last?.periodStartDate.timeIntervalSince1970 ?? 0
+            firstDateInterval = summaryData.first?.periodStartDate.timeIntervalSince1970 ?? 0
+            lastDateInterval = summaryData.last?.periodStartDate.timeIntervalSince1970 ?? 0
 
             let range = lastDateInterval - firstDateInterval
-            let effectiveBars = Double(Double(data.count) * 1.2)
+            let effectiveBars = Double(Double(summaryData.count) * 1.2)
             effectiveWidth = range / effectiveBars
         }
 
@@ -84,7 +84,7 @@ private final class PeriodChartDataTransformer {
         var visitorEntries  = [BarChartDataEntry]()
         var likeEntries     = [BarChartDataEntry]()
         var commentEntries  = [BarChartDataEntry]()
-        for datum in data {
+        for datum in summaryData {
             let dateInterval = datum.periodStartDate.timeIntervalSince1970
             let offset = dateInterval - firstDateInterval
 
@@ -134,7 +134,7 @@ private final class PeriodChartDataTransformer {
             barChartDataConvertibles.append(periodChartData)
         }
 
-        let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
+        let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval, period: data.period)
         let chartStyling: [BarChartStyling] = [
             ViewsPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
                                     secondaryBarColor: secondaryBarColor(forCount: totalViews),
