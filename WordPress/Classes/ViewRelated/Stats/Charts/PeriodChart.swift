@@ -137,9 +137,9 @@ private final class PeriodChartDataTransformer {
         let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval, period: data.period)
         let chartStyling: [BarChartStyling] = [
             ViewsPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
-                                    secondaryBarColor: secondaryBarColor(forCount: totalViews),
+                                    secondaryBarColor: secondaryBarColor(forCount: totalVisitors),
                                     primaryHighlightColor: primaryHighlightColor(forCount: totalViews),
-                                    secondaryHighlightColor: secondaryHighlightColor(forCount: totalViews),
+                                    secondaryHighlightColor: secondaryHighlightColor(forCount: totalVisitors),
                                     xAxisValueFormatter: horizontalAxisFormatter),
             DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalVisitors),
                                       primaryHighlightColor: primaryHighlightColor(forCount: totalVisitors),
