@@ -13,7 +13,7 @@ class BlockEditorScreen: BaseScreen {
     // Title
     let titleView = XCUIApplication().textViews.containing(.staticText, identifier: "Add title").element(boundBy: 0) // Uses a localized string
     // Paragraph block
-    let paragraphView = XCUIApplication().otherElements["block-0-core/paragraph"].textViews.element(boundBy: 0)
+    let paragraphView = XCUIApplication().otherElements["Paragraph Block. Row 1. Empty"].textViews.element(boundBy: 0)
     // Image block
     let imagePlaceholder = XCUIApplication().buttons["Image block. Empty"] // Uses a localized string
 
