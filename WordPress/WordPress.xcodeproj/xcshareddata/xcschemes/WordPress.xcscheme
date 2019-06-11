@@ -151,7 +151,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-wpcom-api-base-url http://localhost:8080/"
+            argument = "-wpcom-api-base-url http://localhost:8282/"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
