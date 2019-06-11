@@ -221,9 +221,13 @@ private extension StatsBarChartView {
         primaryDataSet.colors = [ styling.primaryBarColor ]
         primaryDataSet.drawValuesEnabled = false
 
-        primaryDataSet.highlightAlpha = Constants.highlightAlpha
         if let initialHighlightColor = styling.primaryHighlightColor {
+            primaryDataSet.highlightAlpha = Constants.highlightAlpha
             primaryDataSet.highlightColor = initialHighlightColor
+            primaryDataSet.highlightEnabled = true
+        } else {
+            primaryDataSet.highlightEnabled = false
+            highlightPerTapEnabled = false
         }
 
         // Secondary
@@ -263,7 +267,7 @@ private extension StatsBarChartView {
     func configureLegendIfNeeded() {
         legend.enabled = false
 
-        guard let legendColor = styling.secondaryBarColor, let legendTitle = styling.legendTitle, legendView == nil else {
+        guard let legendColor = styling.legendColor, let legendTitle = styling.legendTitle, legendView == nil else {
             return
         }
 
