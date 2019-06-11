@@ -313,13 +313,27 @@ target 'WordPressComStatsiOSTests' do
   shared_test_pods
 end
 
+def wordpress_mocks
+  pod 'WordPressMocks', '~> 0.0.1'
+end
+
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
+    wordpress_mocks
     pod 'SimulatorStatusMagic'
+end
+
+## UI Tests
+## ===================
+##
+target 'WordPressUITests' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    wordpress_mocks
 end
 
 # Static Frameworks:
