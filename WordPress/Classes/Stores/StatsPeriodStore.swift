@@ -764,7 +764,6 @@ private extension StatsPeriodStore {
             state.summary = newSummary
         }
 
-        persistToCoreData()
     }
 
     func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
