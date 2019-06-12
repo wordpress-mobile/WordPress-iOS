@@ -13,14 +13,14 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.1-beta'
+    pod 'WordPressShared', '~> 1.8.3-beta'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
     # pod 'WordPressShared', :git => 	# 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/support-swift-5'
-	#pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> 'a903525'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
 def aztec
@@ -35,7 +35,7 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '~> 1.3.1-beta.1'
+    pod 'WordPressUI', '~> 1.3.4'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
@@ -43,8 +43,9 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1-beta'
-    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'bug/allow-specifying-limit-for-summary-queries'
+    pod 'WordPressKit', '~> 4.1.3-beta'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/stats-fetch-likes-separately'
+    #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
 end
 
@@ -120,7 +121,7 @@ target 'WordPress' do
     ## Gutenberg (React Native)
     ## =====================
     ##
-    gutenberg :tag => 'v1.6.0'
+    gutenberg :commit => '36c0aa9845001cd632ef6969a59036f0216b8ad1'
 
     pod 'RNSVG', :git => 'https://github.com/wordpress-mobile/react-native-svg.git', :tag => '9.3.3-gb'
     pod 'react-native-keyboard-aware-scroll-view', :git => 'https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git', :tag => 'gb-v0.8.7'
@@ -157,7 +158,7 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.5.0'
+    pod 'WordPressAuthenticator', '~> 1.5.3-beta'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 
@@ -175,8 +176,9 @@ target 'WordPress' do
     post_install do
         require 'commonmarker'
         
+        project_root = File.dirname(__FILE__)
         acknowledgements = 'Acknowledgements'
-        markdown = File.read('Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown')
+        markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
         styled_html = "<head>
                          <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
@@ -207,7 +209,7 @@ target 'WordPress' do
           ## inserting a <br> in the HTML.  Use gsub juuust in case another one sneaks in later.
           styled_html = styled_html.gsub('p?hl=en#dR3YEbitojA/COPYING', 'p?hl=en#dR3YEbitojA/COPYING<br>')
                         
-        File.write('Pods/Target Support Files/Pods-WordPress/acknowledgements.html', styled_html)    
+        File.write("#{project_root}/Pods/Target Support Files/Pods-WordPress/acknowledgements.html", styled_html)    
     end
 end
 
@@ -312,15 +314,27 @@ target 'WordPressComStatsiOSTests' do
   shared_test_pods
 end
 
+def wordpress_mocks
+  pod 'WordPressMocks', '~> 0.0.1'
+end
+
 ## Screenshot Generation
 ## ===================
 ##
 target 'WordPressScreenshotGeneration' do
     project 'WordPress/WordPress.xcodeproj'
 
-    inherit! :search_paths
-
+    wordpress_mocks
     pod 'SimulatorStatusMagic'
+end
+
+## UI Tests
+## ===================
+##
+target 'WordPressUITests' do
+    project 'WordPress/WordPress.xcodeproj'
+
+    wordpress_mocks
 end
 
 # Static Frameworks:

@@ -16,8 +16,6 @@ class SiteStatsPeriodTableViewController: UITableViewController, StoryboardLoada
 
     // MARK: - Properties
 
-    private let siteID = SiteStatsInformation.sharedInstance.siteID
-
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
     }()
@@ -275,7 +273,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
 
-        guard let siteID = siteID,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = blogService.blog(byBlogId: siteID) else {
                 DDLogInfo("Unable to get blog when trying to show media from Stats.")
                 return

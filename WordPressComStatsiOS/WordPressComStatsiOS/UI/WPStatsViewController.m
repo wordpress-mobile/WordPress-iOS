@@ -50,7 +50,18 @@
         self.statsTableViewController = tableVC;
         tableVC.statsDelegate = self.statsDelegate;
         tableVC.statsProgressViewDelegate = self;
-        tableVC.statsService = [[WPStatsService alloc] initWithSiteId:self.siteID siteTimeZone:self.siteTimeZone oauth2Token:self.oauth2Token andCacheExpirationInterval:5 * 60 apiBaseUrlString:[WordPressComRestApi apiBaseURLString]];
+        if ([self.statsDelegate respondsToSelector:@selector(statsService)])
+        {
+            tableVC.statsService = [self.statsDelegate statsService];
+        }
+        if (tableVC.statsService == nil)
+        {
+            tableVC.statsService = [[WPStatsService alloc] initWithSiteId:self.siteID
+                                                             siteTimeZone:self.siteTimeZone
+                                                              oauth2Token:self.oauth2Token
+                                               andCacheExpirationInterval:5 * 60
+                                                         apiBaseUrlString:[WordPressComRestApi apiBaseURLString]];
+        }
     } else if ([segue.identifier isEqualToString:@"InsightsTableEmbed"]) {
         InsightsTableViewController *insightsTableViewController = (InsightsTableViewController *)segue.destinationViewController;
         self.insightsTableViewController = insightsTableViewController;
@@ -63,7 +74,11 @@
         }
         if (insightsTableViewController.statsService == nil)
         {
-            insightsTableViewController.statsService = [[WPStatsService alloc] initWithSiteId:self.siteID siteTimeZone:self.siteTimeZone oauth2Token:self.oauth2Token andCacheExpirationInterval:5 * 60 apiBaseUrlString:[WordPressComRestApi apiBaseURLString]];
+            insightsTableViewController.statsService = [[WPStatsService alloc] initWithSiteId:self.siteID
+                                                                                 siteTimeZone:self.siteTimeZone
+                                                                                  oauth2Token:self.oauth2Token
+                                                                   andCacheExpirationInterval:5 * 60
+                                                                             apiBaseUrlString:[WordPressComRestApi apiBaseURLString]];
         }
     }
 }

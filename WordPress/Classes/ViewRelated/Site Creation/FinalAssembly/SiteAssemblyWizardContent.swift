@@ -114,6 +114,8 @@ final class SiteAssemblyWizardContent: UIViewController {
                     self.contentView.siteURLString = blog?.url as String?
                     self.contentView.siteName = blog?.displayURL as String?
                     self.createdBlog = blog
+
+                    WPAnalytics.track(.createdSite)
                 }
 
                 self.contentView.status = status
@@ -211,7 +213,7 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             guard let blog = createdBlog else {
                 return
             }
-            WPAnalytics.track(.enhancedSiteCreationCompleted)
+            WPAnalytics.track(.enhancedSiteCreationSuccessPreviewOkButtonTapped)
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
 
             self?.showQuickStartAlert(for: blog)

@@ -176,10 +176,10 @@ PODS:
   - Starscream (3.0.6)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (1.1.4)
-  - WordPress-Aztec-iOS (1.6.5)
-  - WordPress-Editor-iOS (1.6.5):
-    - WordPress-Aztec-iOS (= 1.6.5)
-  - WordPressAuthenticator (1.5.0):
+  - WordPress-Aztec-iOS (1.6.6)
+  - WordPress-Editor-iOS (1.6.6):
+    - WordPress-Aztec-iOS (= 1.6.6)
+  - WordPressAuthenticator (1.5.3-beta.1):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -188,20 +188,21 @@ PODS:
     - lottie-ios (= 2.5.2)
     - "NSURL+IDN (= 0.3)"
     - SVProgressHUD (= 2.2.5)
-    - WordPressKit (~> 4.1.1-beta)
-    - WordPressShared (~> 1.8.0-beta)
-    - WordPressUI (~> 1.0)
-  - WordPressKit (4.1.2-beta.1):
+    - WordPressKit (~> 4.1)
+    - WordPressShared (~> 1.8)
+    - WordPressUI (~> 1.3)
+  - WordPressKit (4.1.3-beta.2):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 1.1.4)
-    - WordPressShared (~> 1.8.0-beta)
+    - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
-  - WordPressShared (1.8.1-beta.1):
+  - WordPressMocks (0.0.1)
+  - WordPressShared (1.8.3-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.3.1-beta.1)
+  - WordPressUI (1.3.4)
   - WPMediaPicker (1.4.1)
   - wpxmlrpc (0.8.4)
   - yoga (0.59.3.React)
@@ -224,12 +225,12 @@ DEPENDENCIES:
   - Charts (~> 3.2.2)
   - CocoaLumberjack (= 3.5.2)
   - Down (~> 0.6.6)
-  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
+  - Folly (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json`)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.2.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (~> 0.16)
-  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.6.0`)
+  - Gutenberg (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `36c0aa9845001cd632ef6969a59036f0216b8ad1`)
   - HockeySDK (= 5.1.4)
   - MGSwipeTableCell (= 1.6.8)
   - MRProgress (= 0.8.3)
@@ -240,23 +241,24 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
-  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
+  - React (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json`)
   - react-native-keyboard-aware-scroll-view (from `https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git`, tag `gb-v0.8.7`)
-  - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
-  - react-native-video (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json`)
+  - react-native-safe-area (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json`)
+  - react-native-video (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json`)
   - RNSVG (from `https://github.com/wordpress-mobile/react-native-svg.git`, tag `9.3.3-gb`)
-  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, tag `v1.6.0`)
+  - RNTAztecView (from `http://github.com/wordpress-mobile/gutenberg-mobile/`, commit `36c0aa9845001cd632ef6969a59036f0216b8ad1`)
   - Sentry (= 4.3.1)
   - SimulatorStatusMagic
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.6.5)
-  - WordPressAuthenticator (~> 1.5.0)
-  - WordPressKit (~> 4.1-beta)
-  - WordPressShared (~> 1.8.1-beta)
-  - WordPressUI (~> 1.3.1-beta.1)
+  - WordPressAuthenticator (~> 1.5.3-beta)
+  - WordPressKit (~> 4.1.3-beta)
+  - WordPressMocks (~> 0.0.1)
+  - WordPressShared (~> 1.8.3-beta)
+  - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.1)
-  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
+  - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
   - ZendeskSDK (= 2.3.1)
   - ZIPFoundation (~> 0.9.8)
 
@@ -298,6 +300,7 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
+    - WordPressMocks
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -307,32 +310,32 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Folly:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/Folly.podspec.json
   Gutenberg:
+    :commit: 36c0aa9845001cd632ef6969a59036f0216b8ad1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.6.0
   React:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/React.podspec.json
   react-native-keyboard-aware-scroll-view:
     :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
     :tag: gb-v0.8.7
   react-native-safe-area:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/react-native-safe-area.podspec.json
   react-native-video:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/react-native-video.podspec.json
   RNSVG:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 9.3.3-gb
   RNTAztecView:
+    :commit: 36c0aa9845001cd632ef6969a59036f0216b8ad1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.6.0
   yoga:
-    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.6.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
+    :podspec: https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/36c0aa9845001cd632ef6969a59036f0216b8ad1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   Gutenberg:
+    :commit: 36c0aa9845001cd632ef6969a59036f0216b8ad1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.6.0
   react-native-keyboard-aware-scroll-view:
     :git: https://github.com/wordpress-mobile/react-native-keyboard-aware-scroll-view.git
     :tag: gb-v0.8.7
@@ -340,8 +343,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/react-native-svg.git
     :tag: 9.3.3-gb
   RNTAztecView:
+    :commit: 36c0aa9845001cd632ef6969a59036f0216b8ad1
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
-    :tag: v1.6.0
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -384,18 +387,19 @@ SPEC CHECKSUMS:
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
-  WordPress-Aztec-iOS: a571396f85f97dc37d4f48ccbb8975f3f92b1617
-  WordPress-Editor-iOS: f56cb8ccf5d4c69aef498e72d043696e72c07e8f
-  WordPressAuthenticator: 958545e13b06d39d064d96b2cfdd92c250fe6ead
-  WordPressKit: 841679f76215ec001dc37dca1f0ec71c0aa5a7b7
-  WordPressShared: bf57cce7391f67ed3d128f6d733536191e04dcf8
-  WordPressUI: c98c9f6c2347a8d70d6c3a7e3b9ef61faecf3ab0
+  WordPress-Aztec-iOS: 0f52944080a5d49a977d2260f2d1f613a789ee76
+  WordPress-Editor-iOS: b744ea2f6ca051bf2fd965f9b3ac12eef3272419
+  WordPressAuthenticator: 229726b4d090984c70abb69e9c619b94355838cc
+  WordPressKit: c611c1ec513c7662cfa2e89142df8a1a4ece3c5f
+  WordPressMocks: bdebffc38f4fa8097e95e204b9a293aab670fcce
+  WordPressShared: 7f3007a57331b4567c2c5bc539990818dd9a9965
+  WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
   WPMediaPicker: 8cff8dff846f3440c0c6d088c12240ab85570ee5
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
   yoga: 0cb6e1c4f763ba12d1c825f2d6f863da6614a2a4
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 7970adb3c42ebef49e7a7fe3c8b24a06d518b1ca
+PODFILE CHECKSUM: acc35ffbe869f334703d3b7dd910f484be2592dc
 
 COCOAPODS: 1.6.1
