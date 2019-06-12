@@ -78,6 +78,10 @@
     }
 }
 
+- (void)setMediaLibraryIgnoresNetworkLoadingErrors:(BOOL)mediaLibraryIgnoresNetworkLoadingErrors {
+    self.mediaLibraryDataSource.ignoreNetworkLoadingErrors = mediaLibraryIgnoresNetworkLoadingErrors;
+}
+
 - (NSInteger)numberOfGroups
 {
     return [self.mediaLibraryDataSource numberOfGroups] + [self.deviceLibraryDataSource numberOfGroups];

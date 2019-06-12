@@ -22,4 +22,6 @@ typedef NS_ENUM(NSUInteger, MediaPickerDataSourceType) {
 - (instancetype)initWithPost:(AbstractPost *)post
        initialDataSourceType:(MediaPickerDataSourceType)sourceType;
 
+@property (nonatomic) BOOL mediaLibraryIgnoresNetworkLoadingErrors;
+
 @end
