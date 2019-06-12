@@ -56,7 +56,7 @@
     _observers = [[NSMutableDictionary alloc] init];
     _groupObservers = [[NSMutableDictionary alloc] init];
     _searchQuery = @"";
-    _mediaLibraryDataSource.ignoreNetworkLoadingErrors = YES;
+    _mediaLibraryDataSource.ignoreSyncErrors = YES;
     
     [self setDataSourceType:sourceType];
 }
