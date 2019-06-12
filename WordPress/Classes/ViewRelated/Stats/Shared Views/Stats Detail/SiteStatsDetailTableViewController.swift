@@ -4,7 +4,7 @@ import WordPressFlux
 @objc protocol SiteStatsDetailsDelegate {
     @objc optional func tabbedTotalsCellUpdated()
     @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
 }
@@ -34,7 +34,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     }()
 
     private var postID: Int?
-    private let siteID = SiteStatsInformation.sharedInstance.siteID
 
     private lazy var mainContext: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -70,6 +69,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.title
         initViewModel()
+        displayLoadingViewIfNecessary()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -117,10 +117,12 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [TabbedTotalsDetailStatsRow.self,
-                TopTotalsDetailStatsRow.self,
-                CountriesDetailStatsRow.self,
-                TopTotalsNoSubtitlesPeriodDetailStatsRow.self]
+        return [DetailDataRow.self,
+                DetailExpandableRow.self,
+                DetailExpandableChildRow.self,
+                DetailSubtitlesHeaderRow.self,
+                DetailSubtitlesTabbedHeaderRow.self,
+                DetailSubtitlesCountriesHeaderRow.self]
     }
 
     func storeIsFetching(statSection: StatSection) -> Bool {
@@ -148,7 +150,7 @@ private extension SiteStatsDetailTableViewController {
         case .periodPublished:
             return periodStore.isFetchingPublished
         case .postStatsMonthsYears, .postStatsAverageViews:
-            return periodStore.isFetchingPostStats
+            return periodStore.isFetchingPostStats(for: postID)
         default:
             return false
         }
@@ -163,6 +165,12 @@ private extension SiteStatsDetailTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
+
+        if viewModel.fetchDataHasFailed() {
+            displayFailureViewIfNecessary()
+        } else {
+            hideNoResults()
+        }
     }
 
     @objc func refreshData() {
@@ -204,15 +212,9 @@ private extension SiteStatsDetailTableViewController {
     }
 
     func applyTableUpdates() {
-        if #available(iOS 11.0, *) {
-            tableView.performBatchUpdates({
-                updateStatSectionForFilterChange()
-            })
-        } else {
-            tableView.beginUpdates()
+        tableView.performBatchUpdates({
             updateStatSectionForFilterChange()
-            tableView.endUpdates()
-        }
+        })
     }
 
     func clearExpandedRows() {
@@ -257,9 +259,9 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         present(navController, animated: true)
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func toggleChildRowsForRow(_ row: StatsTotalRow) {
         StatsDataHelper.updatedExpandedState(forRow: row, inDetails: true)
+        refreshTableView()
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
@@ -270,7 +272,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func displayMediaWithID(_ mediaID: NSNumber) {
 
-        guard let siteID = siteID,
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
             let blog = blogService.blog(byBlogId: siteID) else {
                 DDLogInfo("Unable to get blog when trying to show media from Stats details.")
                 return
@@ -284,4 +286,57 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
         })
     }
 
+}
+
+// MARK: - NoResultsViewHost
+
+extension SiteStatsDetailTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        if noResultsViewController.view.superview != nil {
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
+    }
+
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
+        }
+    }
+
+    private enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate methods
+
+extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        updateNoResults(title: NoResultConstants.successTitle,
+                        accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
+                            noResults.hideImageView(false)
+        }
+        refreshData()
+    }
 }

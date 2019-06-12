@@ -1,6 +1,5 @@
-12.2
------
-*Pubblica con fiducia! Le anteprime della bozza ti mostreranno una versione più accurata dei tuoi articoli.
-*Se preferisci scrivere in app come Bear o Ulysses (oppure qualsiasi altra app che utilizzi i formati TextBundle e TextPack), continua a farlo! Ora puoi importare il testo da quelle app a questa.
-*L'intera app è stata rimessa a nuovo: abbiamo risolto alcuni tic visuali durante la procedura di creazione del sito, sistemato alcune formulazioni per rendere più chiaro quanto spazio di archiviazione viene utilizzato dal tuo sito e ci siamo occupati di un fastidioso arresto anomalo che sarebbe avvenuto qualche volta durante i tentativi di gestione dei plugin.
-
+*Alcune volte gli avvisi venivano visualizzati dietro la tastiera, il che non era l'ideale se si voleva davvero leggerli. Ora vengono mostrati di fronte, dove devono essere posizionati gli avvisi.
+*Abbiamo migliorato la gestione del dominio nell'app con la possibilità di riscattare un credito di dominio WordPress.com per dare al tuo sito un dominio personalizzato.
+*Ora gli articoli vengono salvati automaticamente quando li visualizzi in anteprima: una cosa in meno a cui pensare mentre prepari la bozza.
+*Occasionalmente l'app si arrestava in modo anomalo quando cercava di caricare commenti del Reader con GIF multiple. L'interazione su Internet consiste al 65% nella condivisione di GIF, quindi era un problema. Il problema ora è stato risolto.
+*L'app si avvia un po' più velocemente. In questo modo è possibile approfittare di quei secondi salvati e usarli in modo produttivo (o per selezionare la GIF perfetta).

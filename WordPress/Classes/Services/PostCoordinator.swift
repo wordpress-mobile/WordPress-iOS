@@ -49,12 +49,27 @@ class PostCoordinator: NSObject {
                 }
                 switch state {
                 case .ended:
-                    self.updateReferences(to: media, in: post)
-
-                    // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                        self.removeObserver(for: post)
-                        self.upload(post: post)
+                    let successHandler = {
+                        self.updateReferences(to: media, in: post)
+                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
+                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                            self.removeObserver(for: post)
+                            self.upload(post: post)
+                        }
+                    }
+                    switch media.mediaType {
+                    case .video:
+                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { [weak self] (result) in
+                            switch result {
+                            case .error:
+                                self?.change(post: post, status: .failed)
+                            case .success(let value):
+                                media.remoteURL = value.videoURL.absoluteString
+                                successHandler()
+                            }
+                        }
+                    default:
+                        successHandler()
                     }
                 case .failed:
                     self.change(post: post, status: .failed)
@@ -186,6 +201,8 @@ class PostCoordinator: NSObject {
         } else if media.mediaType == .video {
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             postContent = videoPostUploadProcessor.process(postContent)
+            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr, localURLString: media.absoluteThumbnailLocalURL?.absoluteString)
+            postContent = gutenbergVideoPostUploadProcessor.process(postContent)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent
             let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)

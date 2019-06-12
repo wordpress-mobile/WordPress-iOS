@@ -46,6 +46,8 @@ class AppSettingsViewController: UITableViewController {
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         addAccountSettingsChangedObserver()
+
+        tableView.accessibilityIdentifier = "appSettingsTable"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -316,7 +318,8 @@ private extension AppSettingsViewController {
         let gutenbergEditor = SwitchRow(
             title: NSLocalizedString("Use Block Editor", comment: "Option to enable the block editor for new posts"),
             value: enabled,
-            onChange: toggleGutenberg()
+            onChange: toggleGutenberg(),
+            accessibilityIdentifier: "useBlockEditorSwitch"
         )
 
         let headerText = NSLocalizedString("Editor", comment: "Title for the editor settings section")

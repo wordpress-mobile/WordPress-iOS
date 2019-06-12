@@ -22,7 +22,7 @@ open class PlanService: LocalCoreDataService {
     @objc public func getWpcomPlans(_ success: @escaping () -> Void,
                           failure: @escaping (Error?) -> Void) {
 
-        let wpcomAPI = WordPressComRestApi(localeKey: WordPressComRestApi.LocaleKeyDefault) // locale, not _locale
+        let wpcomAPI = WordPressComRestApi.defaultApi(localeKey: WordPressComRestApi.LocaleKeyDefault) // locale, not _locale
         let remote = PlanServiceRemote(wordPressComRestApi: wpcomAPI)
         remote.getWpcomPlans({ plans in
 

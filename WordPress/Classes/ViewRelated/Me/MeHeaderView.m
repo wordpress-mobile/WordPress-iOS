@@ -216,11 +216,9 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
                                                                                 action:@selector(handleHeaderPress:)];
     singleTap.numberOfTapsRequired = 1;
     [dropTarget addGestureRecognizer:singleTap];
-    
-    if (@available(iOS 11.0, *)) {
-        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-        [dropTarget addInteraction:dropInteraction];
-    }
+
+    UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+    [dropTarget addInteraction:dropInteraction];
     
     return dropTarget;
 }

@@ -3,12 +3,14 @@ import UIKit
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
+    var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
 
-    init(tabTitle: String, tabData: Int, difference: Int, differencePercent: Int) {
+    init(tabTitle: String, tabData: Int, tabDataStub: String? = nil, difference: Int, differencePercent: Int) {
         self.tabTitle = tabTitle
         self.tabData = tabData
+        self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
     }
@@ -19,7 +21,14 @@ struct OverviewTabData: FilterTabBarItem {
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
-        let attributedData = NSMutableAttributedString(string: tabData.abbreviatedString())
+        let dataString: String = {
+            if let tabDataStub = tabDataStub {
+                return tabDataStub
+            }
+            return tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
                                        range: NSMakeRange(0, attributedData.string.count))
 
@@ -69,14 +78,10 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [BarChartStyling] = []
+    private weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+    private var chartHighlightIndex: Int?
 
-    private var period: StatsPeriodUnit? {
-        didSet {
-            if chartContainerView.subviews.isEmpty || oldValue != period {
-                configureChartView()
-            }
-        }
-    }
+    private var period: StatsPeriodUnit?
 
     // MARK: - Configure
 
@@ -85,12 +90,15 @@ class OverviewCell: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
-    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil) {
+    func configure(tabsData: [OverviewTabData], barChartData: [BarChartDataConvertible] = [], barChartStyling: [BarChartStyling] = [], period: StatsPeriodUnit? = nil, statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil, barChartHighlightIndex: Int? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
+        self.statsBarChartViewDelegate = statsBarChartViewDelegate
+        self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        configureChartView()
         setupFilterBar()
         updateLabels()
     }
@@ -115,13 +123,7 @@ private extension OverviewCell {
     ///
     func configureFonts() {
 
-        let prevailingFont: UIFont
-        if #available(iOS 11.0, *) {
-            prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
-        } else {
-            let fontSize = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1).pointSize
-            prevailingFont = WPFontManager.systemRegularFont(ofSize: fontSize)
-        }
+        let prevailingFont = WPStyleGuide.fontForTextStyle(UIFont.TextStyle.largeTitle)
         selectedData.font = prevailingFont
 
         selectedData.adjustsFontForContentSizeCategory = true   // iOS 10
@@ -167,15 +169,10 @@ private extension OverviewCell {
             return
         }
 
-        let barChartData = chartData[filterSelectedIndex]
-        let barChartStyling = chartStyling[filterSelectedIndex]
-        let analyticsGranularity = period?.analyticsGranularity
+        let configuration = StatsBarChartConfiguration(data: chartData[filterSelectedIndex], styling: chartStyling[filterSelectedIndex], analyticsGranularity: period?.analyticsGranularity, delegate: statsBarChartViewDelegate, indexToHighlight: chartHighlightIndex)
+        let chartView = StatsBarChartView(configuration: configuration)
 
-        for subview in chartContainerView.subviews {
-            subview.removeFromSuperview()
-        }
-
-        let chartView = StatsBarChartView(data: barChartData, styling: barChartStyling, analyticsGranularity: analyticsGranularity)
+        resetChartContainerView()
         chartContainerView.addSubview(chartView)
 
         NSLayoutConstraint.activate([
@@ -184,6 +181,12 @@ private extension OverviewCell {
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
         ])
+    }
+
+    func resetChartContainerView() {
+        for subview in chartContainerView.subviews {
+            subview.removeFromSuperview()
+        }
     }
 
     enum ChartBottomMargin {

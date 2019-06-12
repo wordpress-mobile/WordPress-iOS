@@ -5,15 +5,16 @@ import WordPressComStatsiOS
 enum PeriodAction: Action {
 
     // Period overview
-    case receivedSummary(_ summary: StatsSummaryTimeIntervalData?)
-    case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?)
-    case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?)
-    case receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?)
-    case receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?)
-    case receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?)
-    case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?)
-    case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?)
-    case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?)
+    case receivedSummary(_ summary: StatsSummaryTimeIntervalData?, _ error: Error?)
+    case receivedLikesSummary(_ likes: StatsLikesSummaryTimeIntervalData?, _ error: Error?)
+    case receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?)
+    case receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?)
+    case receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?, _ error: Error?)
+    case receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?, _ error: Error?)
+    case receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?, _ error: Error?)
+    case receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?)
+    case receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?)
+    case receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?)
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
 
     // Period details
@@ -27,7 +28,7 @@ enum PeriodAction: Action {
     case refreshCountries(date: Date, period: StatsPeriodUnit)
 
     // Post Stats
-    case receivedPostStats(_ postStats: StatsPostDetails?)
+    case receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?)
     case refreshPostStats(postID: Int)
 }
 
@@ -109,38 +110,51 @@ struct PeriodStoreState {
 
     var summary: StatsSummaryTimeIntervalData?
     var fetchingSummary = false
+    var fetchingSummaryHasFailed = false
+    var fetchingSummaryLikes = false
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var fetchingPostsAndPages = false
+    var fetchingPostsAndPagesHasFailed = false
 
     var topReferrers: StatsTopReferrersTimeIntervalData?
     var fetchingReferrers = false
+    var fetchingReferrersHasFailed = false
 
     var topClicks: StatsTopClicksTimeIntervalData?
     var fetchingClicks = false
+    var fetchingClicksHasFailed = false
 
     var topPublished: StatsPublishedPostsTimeIntervalData?
     var fetchingPublished = false
+    var fetchingPublishedHasFailed = false
 
     var topAuthors: StatsTopAuthorsTimeIntervalData?
     var fetchingAuthors = false
+    var fetchingAuthorsHasFailed = false
 
     var topSearchTerms: StatsSearchTermTimeIntervalData?
     var fetchingSearchTerms = false
+    var fetchingSearchTermsHasFailed = false
 
     var topCountries: StatsTopCountryTimeIntervalData?
     var fetchingCountries = false
+    var fetchingCountriesHasFailed = false
 
     var topVideos: StatsTopVideosTimeIntervalData?
     var fetchingVideos = false
+    var fetchingVideosHasFailed = false
 
     // Post Stats
 
-    var postStats: StatsPostDetails?
-    var fetchingPostStats = false
+    var postStats = [Int: StatsPostDetails?]()
+    var fetchingPostStats = [Int: Bool]()
+    var fetchingPostStatsHasFailed = [Int: Bool]()
 }
 
 class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
+    var fetchingOverviewListener: ((_ fetching: Bool, _ success: Bool) -> Void)?
+    var cachedDataListener: ((_ hasCachedData: Bool) -> Void)?
 
     private var statsServiceRemote: StatsServiceRemoteV2?
 
@@ -155,24 +169,26 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         switch periodAction {
-        case .receivedSummary(let summary):
-            receivedSummary(summary)
-        case .receivedPostsAndPages(let postsAndPages):
-            receivedPostsAndPages(postsAndPages)
-        case .receivedReferrers(let referrers):
-            receivedReferrers(referrers)
-        case .receivedClicks(let clicks):
-            receivedClicks(clicks)
-        case .receivedPublished(let published):
-            receivedPublished(published)
-        case .receivedAuthors(let authors):
-            receivedAuthors(authors)
-        case .receivedSearchTerms(let searchTerms):
-            receivedSearchTerms(searchTerms)
-        case .receivedVideos(let videos):
-            receivedVideos(videos)
-        case .receivedCountries(let countries):
-            receivedCountries(countries)
+        case .receivedSummary(let summary, let error):
+            receivedSummary(summary, error)
+        case .receivedLikesSummary(let likes, let error):
+            receivedLikesSummary(likes, error)
+        case .receivedPostsAndPages(let postsAndPages, let error):
+            receivedPostsAndPages(postsAndPages, error)
+        case .receivedReferrers(let referrers, let error):
+            receivedReferrers(referrers, error)
+        case .receivedClicks(let clicks, let error):
+            receivedClicks(clicks, error)
+        case .receivedPublished(let published, let error):
+            receivedPublished(published, error)
+        case .receivedAuthors(let authors, let error):
+            receivedAuthors(authors, error)
+        case .receivedSearchTerms(let searchTerms, let error):
+            receivedSearchTerms(searchTerms, error)
+        case .receivedVideos(let videos, let error):
+            receivedVideos(videos, error)
+        case .receivedCountries(let countries, let error):
+            receivedCountries(countries, error)
         case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
             refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
         case .refreshPostsAndPages(let date, let period):
@@ -191,14 +207,15 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
             refreshCountries(date: date, period: period)
         case .refreshPublished(let date, let period):
             refreshPublished(date: date, period: period)
-        case .receivedPostStats(let postStats):
-            receivedPostStats(postStats)
+        case .receivedPostStats(let postStats, let postId, let error):
+            receivedPostStats(postStats, postId, error)
         case .refreshPostStats(let postID):
             refreshPostStats(postID: postID)
         }
 
         if !isFetchingOverview {
             DDLogInfo("Stats: All fetching operations finished.")
+            fetchingOverviewListener?(false, fetchingOverviewHasFailed)
         }
     }
 
@@ -227,7 +244,6 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         try? ContextManager.shared.mainContext.save()
         DDLogInfo("Stats: finished persisting Stats to disk.")
     }
-
 }
 
 // MARK: - Private Methods
@@ -279,7 +295,7 @@ private extension StatsPeriodStore {
                     fetchAllPublished(date: query.date, period: query.period)
                 }
             case .postStats:
-                if shouldFetchPostStats() {
+                if shouldFetchPostStats(for: query.postID) {
                     fetchPostStats(postID: query.postID)
                 }
             }
@@ -304,14 +320,26 @@ private extension StatsPeriodStore {
 
         setAllAsFetchingOverview()
 
-        statsRemote.getData(for: period, endingOn: date) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        fetchingOverviewListener?(true, false)
+
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (summary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching summary: \(String(describing: error?.localizedDescription))")
             }
 
             DDLogInfo("Stats: Finished fetching summary.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary))
+            self.actionDispatcher.dispatch(PeriodAction.receivedSummary(summary, error))
+        }
+
+        statsRemote.getData(for: period, endingOn: date, limit: 14) { (likes: StatsLikesSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogInfo("Error fetching likes summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats: Finished fetching likes summary.")
+
+            self.actionDispatcher.dispatch(PeriodAction.receivedLikesSummary(likes, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (posts: StatsTopPostsTimeIntervalData?, error: Error?) in
@@ -321,7 +349,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching posts.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(posts))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(posts, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (published: StatsPublishedPostsTimeIntervalData?, error: Error?) in
@@ -331,7 +359,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching published.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (referrers: StatsTopReferrersTimeIntervalData?, error: Error?) in
@@ -341,7 +369,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching referrers.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers))
+            self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (clicks: StatsTopClicksTimeIntervalData?, error: Error?) in
@@ -351,7 +379,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching clicks.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks))
+            self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (authors: StatsTopAuthorsTimeIntervalData?, error: Error?) in
@@ -361,7 +389,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching authors.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors))
+            self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (searchTerms: StatsSearchTermTimeIntervalData?, error: Error?) in
@@ -371,7 +399,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching search terms.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
+            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (videos: StatsTopVideosTimeIntervalData?, error: Error?) in
@@ -381,7 +409,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching videos.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
+            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos, error))
         }
 
         statsRemote.getData(for: period, endingOn: date) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
@@ -391,7 +419,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching countries.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries))
+            self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries, error))
         }
     }
 
@@ -427,6 +455,8 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished setting data to store from Core Data.")
         }
+
+        cachedDataListener?(containsCachedData)
     }
 
     func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool) {
@@ -458,7 +488,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching all posts.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(posts))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostsAndPages(posts, error))
             self.persistToCoreData()
         }
     }
@@ -486,7 +516,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching all search terms.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms))
+            self.actionDispatcher.dispatch(PeriodAction.receivedSearchTerms(searchTerms, error))
             self.persistToCoreData()
         }
     }
@@ -514,7 +544,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching videos.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos))
+            self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos, error))
             self.persistToCoreData()
         }
     }
@@ -542,7 +572,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching all clicks.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks))
+            self.actionDispatcher.dispatch(PeriodAction.receivedClicks(clicks, error))
             self.persistToCoreData()
         }
     }
@@ -570,7 +600,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching all authors.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors))
+            self.actionDispatcher.dispatch(PeriodAction.receivedAuthors(authors, error))
             self.persistToCoreData()
         }
     }
@@ -598,7 +628,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching all referrers.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers))
+            self.actionDispatcher.dispatch(PeriodAction.receivedReferrers(referrers, error))
             self.persistToCoreData()
         }
     }
@@ -626,7 +656,7 @@ private extension StatsPeriodStore {
 
             DDLogInfo("Stats: Finished fetching all countries.")
 
-            self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries))
+            self.actionDispatcher.dispatch(PeriodAction.receivedCountries(countries, error))
             self.persistToCoreData()
         }
     }
@@ -652,7 +682,7 @@ private extension StatsPeriodStore {
                 DDLogInfo("Error fetching all Published: \(String(describing: error?.localizedDescription))")
             }
             DDLogInfo("Stats: Finished fetching all published.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPublished(published, error))
             self.persistToCoreData()
         }
     }
@@ -673,28 +703,29 @@ private extension StatsPeriodStore {
                 return
         }
 
-        state.fetchingPostStats = true
+        state.fetchingPostStats[postID] = true
 
         statsRemote.getDetails(forPostID: postID) { (postStats: StatsPostDetails?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching Post Stats: \(String(describing: error?.localizedDescription))")
             }
             DDLogInfo("Stats: Finished fetching post stats.")
-            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats))
+            self.actionDispatcher.dispatch(PeriodAction.receivedPostStats(postStats, postID, error))
         }
     }
 
     func refreshPostStats(postID: Int) {
-        state.fetchingPostStats = false
+        state.fetchingPostStats[postID] = false
         cancelQueries()
         fetchPostStats(postID: postID)
     }
 
     // MARK: - Receive data methods
 
-    func receivedSummary(_ summaryData: StatsSummaryTimeIntervalData?) {
+    func receivedSummary(_ summaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingSummary = false
+            state.fetchingSummaryHasFailed = error != nil
 
             if summaryData != nil {
                 state.summary = summaryData
@@ -702,9 +733,43 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?) {
+    func receivedLikesSummary(_ likesSummary: StatsLikesSummaryTimeIntervalData?, _ error: Error?) {
+        // This is a workaround for how our API works — the requests for summary for long periods of times
+        // can take extreme amounts of time to finish (and semi-frequenty fail). In order to not block the UI
+        // here, we split out the views/visitors/comments and likes requests.
+        // This method splices the results of the two back together so we can persist it to Core Data.
+        guard
+            let summary = likesSummary,
+            let currentSummary = state.summary,
+            summary.summaryData.count == currentSummary.summaryData.count
+            else {
+                return
+        }
+
+        let newSummaryData = currentSummary.summaryData.enumerated().map { index, obj in
+            return StatsSummaryData(period: obj.period,
+                                    periodStartDate: obj.periodStartDate,
+                                    viewsCount: obj.viewsCount,
+                                    visitorsCount: obj.visitorsCount,
+                                    likesCount: summary.summaryData[index].likesCount,
+                                    commentsCount: obj.commentsCount)
+        }
+
+        let newSummary = StatsSummaryTimeIntervalData(period: currentSummary.period,
+                                                      periodEndDate: currentSummary.periodEndDate,
+                                                      summaryData: newSummaryData)
+
+        transaction { state in
+            state.fetchingSummaryLikes = false
+            state.summary = newSummary
+        }
+
+    }
+
+    func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingPostsAndPages = false
+            state.fetchingPostsAndPagesHasFailed = error != nil
 
             if postsAndPages != nil {
                 state.topPostsAndPages = postsAndPages
@@ -712,9 +777,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?) {
+    func receivedReferrers(_ referrers: StatsTopReferrersTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingReferrers = false
+            state.fetchingReferrersHasFailed = error != nil
 
             if referrers != nil {
                 state.topReferrers = referrers
@@ -722,9 +788,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?) {
+    func receivedClicks(_ clicks: StatsTopClicksTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingClicks = false
+            state.fetchingClicksHasFailed = error != nil
 
             if clicks != nil {
                 state.topClicks = clicks
@@ -732,9 +799,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?) {
+    func receivedAuthors(_ authors: StatsTopAuthorsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingAuthors = false
+            state.fetchingAuthorsHasFailed = error != nil
 
             if authors != nil {
                 state.topAuthors = authors
@@ -742,9 +810,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?) {
+    func receivedPublished(_ published: StatsPublishedPostsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingPublished = false
+            state.fetchingPublishedHasFailed = error != nil
 
             if published != nil {
                 state.topPublished = published
@@ -752,9 +821,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?) {
+    func receivedSearchTerms(_ searchTerms: StatsSearchTermTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingSearchTerms = false
+            state.fetchingSearchTermsHasFailed = error != nil
 
             if searchTerms != nil {
                 state.topSearchTerms = searchTerms
@@ -762,9 +832,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedVideos(_ videos: StatsTopVideosTimeIntervalData?) {
+    func receivedVideos(_ videos: StatsTopVideosTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingVideos = false
+            state.fetchingVideosHasFailed = error != nil
 
             if videos != nil {
                 state.topVideos = videos
@@ -772,9 +843,10 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedCountries(_ countries: StatsTopCountryTimeIntervalData?) {
+    func receivedCountries(_ countries: StatsTopCountryTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.fetchingCountries = false
+            state.fetchingCountriesHasFailed = error != nil
 
             if countries != nil {
                 state.topCountries = countries
@@ -782,13 +854,11 @@ private extension StatsPeriodStore {
         }
     }
 
-    func receivedPostStats(_ postStats: StatsPostDetails?) {
+    func receivedPostStats(_ postStats: StatsPostDetails?, _ postId: Int, _ error: Error?) {
         transaction { state in
-            state.fetchingPostStats = false
-
-            if postStats != nil {
-                state.postStats = postStats
-            }
+            state.fetchingPostStats[postId] = false
+            state.fetchingPostStatsHasFailed[postId] = error != nil
+            state.postStats[postId] = postStats
         }
     }
 
@@ -812,7 +882,7 @@ private extension StatsPeriodStore {
                 return
         }
 
-        let wpApi = WordPressComRestApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+        let wpApi = WordPressComRestApi.defaultApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
         statsServiceRemote = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
     }
 
@@ -828,6 +898,8 @@ private extension StatsPeriodStore {
     }
 
     func setAllAsFetchingOverview(fetching: Bool = true) {
+        state.fetchingSummary = fetching
+        state.fetchingSummaryLikes = fetching
         state.fetchingPostsAndPages = fetching
         state.fetchingReferrers = fetching
         state.fetchingClicks = fetching
@@ -870,10 +942,9 @@ private extension StatsPeriodStore {
         return !isFetchingPublished
     }
 
-    func shouldFetchPostStats() -> Bool {
-        return !isFetchingPostStats
+    func shouldFetchPostStats(for postId: Int?) -> Bool {
+        return !isFetchingPostStats(for: postId)
     }
-
 }
 
 // MARK: - Public Accessors
@@ -916,8 +987,11 @@ extension StatsPeriodStore {
         return state.topCountries
     }
 
-    func getPostStats() -> StatsPostDetails? {
-        return state.postStats
+    func getPostStats(for postId: Int?) -> StatsPostDetails? {
+        guard let postId = postId else {
+            return nil
+        }
+        return state.postStats[postId] ?? nil
     }
 
     var isFetchingOverview: Bool {
@@ -931,6 +1005,10 @@ extension StatsPeriodStore {
             state.fetchingSearchTerms ||
             state.fetchingVideos ||
             state.fetchingCountries
+    }
+
+    var isFetchingSummaryLikes: Bool {
+        return state.fetchingSummaryLikes
     }
 
     var isFetchingPostsAndPages: Bool {
@@ -965,8 +1043,63 @@ extension StatsPeriodStore {
         return state.fetchingPublished
     }
 
-    var isFetchingPostStats: Bool {
-        return state.fetchingPostStats
+    var fetchingOverviewHasFailed: Bool {
+        return state.fetchingSummaryHasFailed &&
+            state.fetchingPostsAndPagesHasFailed &&
+            state.fetchingReferrersHasFailed &&
+            state.fetchingClicksHasFailed &&
+            state.fetchingPublishedHasFailed &&
+            state.fetchingAuthorsHasFailed &&
+            state.fetchingSearchTermsHasFailed &&
+            state.fetchingVideosHasFailed &&
+            state.fetchingCountriesHasFailed
     }
 
+    func fetchingFailed(for query: PeriodQuery) -> Bool {
+        switch query {
+        case .periods:
+            return fetchingOverviewHasFailed
+        case .allPostsAndPages:
+            return state.fetchingPostsAndPagesHasFailed
+        case .allSearchTerms:
+            return state.fetchingSearchTermsHasFailed
+        case .allVideos:
+            return state.fetchingVideosHasFailed
+        case .allClicks:
+            return state.fetchingClicksHasFailed
+        case .allAuthors:
+            return state.fetchingAuthorsHasFailed
+        case .allReferrers:
+            return state.fetchingReferrersHasFailed
+        case .allCountries:
+            return state.fetchingCountriesHasFailed
+        case .allPublished:
+            return state.fetchingPublishedHasFailed
+        case .postStats(let postId):
+            return state.fetchingPostStatsHasFailed[postId] ?? true
+        }
+    }
+
+    var containsCachedData: Bool {
+        if state.summary != nil ||
+            state.topPostsAndPages != nil ||
+            state.topReferrers != nil ||
+            state.topClicks != nil ||
+            state.topPublished != nil ||
+            state.topAuthors != nil ||
+            state.topSearchTerms != nil ||
+            state.topCountries != nil ||
+            state.topVideos != nil {
+            return true
+        }
+
+        return false
+    }
+
+    func isFetchingPostStats(for postId: Int?) -> Bool {
+        guard let postId = postId else {
+            return false
+        }
+        return state.fetchingPostStats[postId] ?? false
+    }
 }

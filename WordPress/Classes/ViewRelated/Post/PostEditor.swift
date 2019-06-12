@@ -128,4 +128,11 @@ extension PostEditor {
         return currentBlogCount <= 1 || post.hasRemote()
     }
 
+    var uploadFailureNoticeTag: Notice.Tag {
+        return "PostEditor.UploadFailed"
+    }
+
+    func uploadFailureNotice(action: PostEditorAction) -> Notice {
+        return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
+    }
 }

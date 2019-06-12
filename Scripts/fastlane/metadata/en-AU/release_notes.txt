@@ -1,6 +1,5 @@
-12.2
------
-* Publish with confidence! Draft previews will show you a more accurate version of your posts.
-* If you prefer to write in apps like Bear or Ulysses (or any other app using the TextBundle and TextPack formats), great – keep doing it. And now you can import text from the those apps into this one.
-* The whole app got a spring pick-me-up — we fixed up some little visual tics in the site creation process, adjusted some wording to make it clear how much storage space your site is using, and took care of a pesky crash that would sometimes occur when you were trying to manage plugins.
-
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).

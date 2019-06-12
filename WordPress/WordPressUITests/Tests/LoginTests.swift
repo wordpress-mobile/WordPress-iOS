@@ -3,15 +3,8 @@ import XCTest
 class LoginTests: XCTestCase {
 
     override func setUp() {
-        super.setUp()
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+        setUpTestSuite()
 
-        let app = XCUIApplication()
-        app.launchArguments = ["NoAnimations"]
-        app.activate()
-
-        // Logout first if needed
         LoginFlow.logoutIfNeeded()
     }
 
@@ -35,16 +28,19 @@ class LoginTests: XCTestCase {
     }
 
     /**
-     This test currently stops after requesting the magic link.
-     The rest of the flow should be tested after we set up network mocking.
+     This test opens safari to trigger the mocked magic link redirect
      */
     func testEmailMagicLinkLogin() {
-        _ = WelcomeScreen().login()
-        .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-        .proceedWithLink()
-        .checkMagicLink()
+        let welcomeScreen = WelcomeScreen().login()
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .proceedWithLink()
+            .openMagicLink()
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+            .tabBar.gotoMeScreen()
+            .logout()
 
-        XCTAssert(LoginCheckMagicLinkScreen().isLoaded())
+        XCTAssert(welcomeScreen.isLoaded())
     }
 
     func testWpcomUsernamePasswordLogin() {

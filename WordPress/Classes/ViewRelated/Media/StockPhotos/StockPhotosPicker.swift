@@ -32,6 +32,7 @@ final class StockPhotosPicker: NSObject {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        options.preferredStatusBarStyle = .lightContent
         return options
     }()
 

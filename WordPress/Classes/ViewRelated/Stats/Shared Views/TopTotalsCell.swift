@@ -15,15 +15,12 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
-
-    // If the subtitles are not shown, this is active.
+    @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    // If the subtitles are shown, this is active.
-    @IBOutlet weak var rowsStackViewTopConstraintWithSubtitles: NSLayoutConstraint!
-
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
 
+    private var forDetails = false
     private var limitRowsDisplayed = true
     private let maxChildRowsToDisplay = 10
     private var dataRows = [StatsTotalRowData]()
@@ -43,7 +40,8 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
                    siteStatsDetailsDelegate: SiteStatsDetailsDelegate? = nil,
                    postStatsDelegate: PostStatsDelegate? = nil,
-                   limitRowsDisplayed: Bool = true) {
+                   limitRowsDisplayed: Bool = true,
+                   forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
@@ -53,19 +51,20 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
         self.siteStatsDetailsDelegate = siteStatsDetailsDelegate
         self.postStatsDelegate = postStatsDelegate
         self.limitRowsDisplayed = limitRowsDisplayed
+        self.forDetails = forDetails
 
-        let statType: StatType = (siteStatsPeriodDelegate != nil) ? .period : .insights
+        if !forDetails {
+            addRows(dataRows,
+                    toStackView: rowsStackView,
+                    forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+                    limitRowsDisplayed: limitRowsDisplayed,
+                    rowDelegate: self,
+                    viewMoreDelegate: self)
 
-        addRows(dataRows,
-                toStackView: rowsStackView,
-                forType: statType,
-                limitRowsDisplayed: limitRowsDisplayed,
-                rowDelegate: self,
-                viewMoreDelegate: self)
+            initChildRows()
+        }
 
         setSubtitleVisibility()
-        initChildRows()
-
         applyStyles()
     }
 
@@ -102,13 +101,22 @@ private extension TopTotalsCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    /// Hide the subtitles if there is no data or Subtitles.
+    /// For Overview tables: Hide the subtitles if there is no data or subtitles.
+    /// For Details table:
+    /// - Hide the subtitles if none provided.
+    /// - Hide the stack view.
     ///
     func setSubtitleVisibility() {
-        let showSubtitles = dataRows.count > 0 && subtitlesProvided
-        subtitleStackView.isHidden = !showSubtitles
-        rowsStackViewTopConstraint.isActive = !showSubtitles
-        rowsStackViewTopConstraintWithSubtitles.isActive = showSubtitles
+        let subtitleHeight = subtitlesStackViewTopConstraint.constant * 2 + subtitleStackView.frame.height
+
+        if forDetails {
+            bottomSeparatorLine.isHidden = true
+            rowsStackViewTopConstraint.constant = subtitlesProvided ? subtitleHeight : 0
+            return
+        }
+
+        let showSubtitles = !dataRows.isEmpty && subtitlesProvided
+        rowsStackViewTopConstraint.constant = showSubtitles ? subtitleHeight : 0
     }
 
     // MARK: - Child Row Handling
@@ -165,21 +173,14 @@ private extension TopTotalsCell {
             let childRowData = childRows[childRowsIndex]
             let childRow = StatsTotalRow.loadFromNib()
 
-            childRow.configure(rowData: childRowData, delegate: self)
+            childRow.configure(rowData: childRowData, delegate: self, parentRow: row)
             childRow.showSeparator = false
-            childRow.parentRow = row
 
             // If this child is just a child, then change the label color.
             // If this child is also a parent, then leave the color as default.
             if !childRow.hasChildRows {
                 Style.configureLabelAsChildRowTitle(childRow.itemLabel)
             }
-
-            // If the parent row has an icon, show the image view for the child
-            // to make the child row appear "indented".
-            // If the parent does not have an icon, don't indent the child row.
-            childRow.imageView.isHidden = row.imageView.isHidden
-            childRow.imageWidthConstraint.constant = row.imageWidthConstraint.constant
 
             childRowsView.rowsStackView.addArrangedSubview(childRow)
         }
@@ -295,7 +296,6 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         toggleSeparatorsAroundRow(row)
         siteStatsInsightsDelegate?.expandedRowUpdated?(row)
         siteStatsPeriodDelegate?.expandedRowUpdated?(row)
-        siteStatsDetailsDelegate?.expandedRowUpdated?(row)
         postStatsDelegate?.expandedRowUpdated?(row)
     }
 

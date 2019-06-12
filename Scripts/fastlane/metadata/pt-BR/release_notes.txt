@@ -1,5 +1,5 @@
-12.2
------
-* Publique com confiança! Visualizações de rascunhos exibirão versões mais precisas de seus posts.
-* Se você prefere escrever usando aplicativos como Bear ou Ulysses (ou qualquer outro aplicativo que use os formatos TextBundle e TextPack), tudo ótimo!. Agora você pode importar textos desses aplicativos para este.
-* O aplicativo como um todo recebeu ajustes. Fizemos pequenas correções visuais no processo de criação do site, melhoramos os textos para deixar mais claro o quanto de armazenamento seu site está usando e corrigimos um problema que ocorria ocasionalmente ao tentar gerenciar plugins.
+* Algumas vezes os avisos eram exibidos sob o teclado. O que não é o ideal quando você quer ler esses avisos. Agora os avisos são exibidos no lugar certo.
+* Melhoramos o gerenciamento de domínios no aplicativo com a possibilidade de usar créditos de domínios do WordPress.com para adicionar um domínio personalizado ao seu site.
+* Agora os posts são salvos automaticamente quando você os visualiza. Uma coisa a menos para se preocupar ao criar um rascunho.
+* O aplicativo poderia falhar ao tentar carregar comentários no Leitor com vários gifs. Corrigimos esse problema.
+* O aplicativo agora é carregado mais rapidamente. Então você pode usar esses segundos economizados para focar em sua produtividade.

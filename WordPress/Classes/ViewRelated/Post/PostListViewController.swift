@@ -118,18 +118,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func configureFilterBarTopConstraint() {
-        // Not an ideal solution, but fixes an issue where the filter bar
-        // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
-        if #available(iOS 11.0, *) {
-            filterTabBariOS10TopConstraint.isActive = false
-        } else {
-            extendedLayoutIncludesOpaqueBars = false
-            edgesForExtendedLayout = []
-
-            filterTabBarTopConstraint.isActive = false
-
-            view.layoutIfNeeded()
-        }
+        filterTabBariOS10TopConstraint.isActive = false
     }
 
     override func configureTableView() {
@@ -175,11 +164,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func updateTableHeaderSize() {
         if searchController.isActive {
             // Account for the search bar being moved to the top of the screen.
-            if #available(iOS 11.0, *) {
-                searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
-            } else {
-                searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y)
-            }
+            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - view.safeAreaInsets.top
         } else {
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
@@ -460,6 +445,25 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
 
         // Push the Stats Post Details ViewController
+
+        if FeatureFlag.statsRefresh.enabled {
+            guard let postID = apost.postID as? Int else {
+                return
+            }
+
+            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+            SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+            SiteStatsInformation.sharedInstance.siteID = blog.dotComID
+
+            let postURL = URL(string: apost.permaLink! as String)
+            let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
+            postStatsTableViewController.configure(postID: postID, postTitle: apost.titleForDisplay(), postURL: postURL)
+            navigationController?.pushViewController(postStatsTableViewController, animated: true)
+
+            return
+        }
+
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = Bundle(for: WPStatsViewController.self)
@@ -474,7 +478,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         viewController.postID = apost.postID
         viewController.postTitle = apost.titleForDisplay()
-        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: type(of: self).statsCacheInterval)
+        viewController.statsService = WPStatsService(siteId: blog.dotComID,
+                                                     siteTimeZone: service.timeZone(for: blog),
+                                                     oauth2Token: blog.authToken,
+                                                     andCacheExpirationInterval: type(of: self).statsCacheInterval,
+                                                     apiBaseUrlString: Environment.current.wordPressComApiBase)
 
         navigationController?.pushViewController(viewController, animated: true)
     }
@@ -553,22 +561,13 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.willPresentSearchController(searchController)
 
         self.filterTabBar.alpha = WPAlphaZero
-
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        filterTabBarBottomConstraint.isActive = false
-        tableViewTopConstraint.isActive = true
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
-        if #available(iOS 11.0, *) {
-            updateTableHeaderSize()
+        updateTableHeaderSize()
 
-            tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
-            tableView.contentInset.top = 0
-        }
+        tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+        tableView.contentInset.top = 0
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -577,13 +576,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull
         }
-
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        tableViewTopConstraint.isActive = false
-        filterTabBarBottomConstraint.isActive = true
     }
 
     enum Animations {

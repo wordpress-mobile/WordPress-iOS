@@ -1,6 +1,5 @@
-12.2
------
-* Publier en toute confiance ! L'affichage en mode brouillon vous donnera un aperçu plus précis de vos articles.
-* Si vous préférez rédiger dans des applications comme Bear ou Ulysses (ou toute autre application utilisant les formats TextBundle et TextPack), n'hésitez surtout pas, continuez. Vous pouvez à présent importer du texte de ces applications vers celle-ci.
-* L'application a subi un lifting de printemps : nous avons résolu certains petits défauts visuels lors du processus de création de sites, modifié certains termes pour indiquer plus clairement l'espace de stockage utilisé par votre site et corrigé une défaillance ennuyeuse qui se produisait parfois lorsque vous tentiez de gérer des extensions.
-
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).

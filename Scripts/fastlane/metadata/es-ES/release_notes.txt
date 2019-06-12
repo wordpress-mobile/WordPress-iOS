@@ -1,6 +1,5 @@
-12.2
------
-* ¡Publica con confianza! Las vistas preliminares en borrador te mostrarán una versión más precisa de tus entradas.
-* Si prefieres escribir en aplicaciones como Bear o Ulysses (o cualquier otra aplicación que utilice los formatos TextBundle y TextPack), genial, sigue haciéndolo. Y ahora puedes importar texto de esas aplicaciones a esta.
-* Toda la aplicación recibió un estímulo de primavera - arreglamos algunos pequeños fallos visuales en el proceso de creación del sitio, ajustamos algunas palabras para dejar claro cuánto espacio de almacenamiento está usando tu sitio, y nos encargamos de un molesto fallo que a veces se producía cuando estabas tratando de administrar los plugins.
-
+* A veces los avisos aparecían detrás del teclado, lo que no era lo ideal si realmente querías leerlos. Ahora aparecen al frente, donde se supone que deben estar los avisos.
+* Hemos mejorado la gestión de dominios en la aplicación con la posibilidad de canjear un crédito de dominio de WordPress.com para dar a tu sitio un dominio personalizado.
+* Las entradas ahora se guardan automáticamente cuando las previsualizas - una cosa menos en la que debes pensar mientras haces un borrador.
+* La aplicación ocasionalmente se bloqueaba cuando intentaba cargar los comentarios del lector con múltiples GIFs. Interactuar en Internet es compartir GIFs en un 65%, así que eso no es suficiente. Ya está arreglado.
+* La aplicación se inicia un poco más rápido, por lo que puedes aprovechar los segundos ahorrados y utilizarlos de forma productiva (o para seleccionar el GIF perfecto).

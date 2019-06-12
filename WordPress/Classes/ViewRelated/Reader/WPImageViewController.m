@@ -1,6 +1,4 @@
 #import "WPImageViewController.h"
-
-#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 @import Gridicons;
 
@@ -392,17 +390,12 @@ static CGFloat const MinimumZoomScale = 0.1;
         [UIView animateWithDuration:0.3
                          animations:^{
                              [self setNeedsStatusBarAppearanceUpdate];
-
-                             if (@available(iOS 11.0, *)) {
-                                 [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-                             }
+                             [self setNeedsUpdateOfHomeIndicatorAutoHidden];
                          }];
     } else {
         [self setNeedsStatusBarAppearanceUpdate];
 
-        if (@available(iOS 11.0, *)) {
-            [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-        }
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
     }
 }
 

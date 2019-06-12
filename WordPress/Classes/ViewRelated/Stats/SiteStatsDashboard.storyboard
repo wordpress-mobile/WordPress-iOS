@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tqa-zb-Liz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,30 +41,20 @@
                                     <constraint firstAttribute="height" constant="46" id="u03-Cy-Pus"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS" userLabel="Insights Container View">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J6j-x0-sMS">
                                 <rect key="frame" x="0.0" y="110" width="375" height="557"/>
                                 <connections>
-                                    <segue destination="Hcp-7d-sgU" kind="embed" id="1nS-hf-ioa"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OmR-2E-jXp" userLabel="Stats Container View">
-                                <rect key="frame" x="0.0" y="110" width="375" height="557"/>
-                                <connections>
-                                    <segue destination="plb-uA-RCD" kind="embed" id="HLi-0c-1Fw"/>
+                                    <segue destination="83f-eK-Wfs" kind="embed" id="Vur-EF-t51"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="3Vy-SZ-45b"/>
-                            <constraint firstItem="OmR-2E-jXp" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="4PI-hg-39d"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="5Dc-js-I5s"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="Cgj-jO-OfC"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="GXb-KG-d0p"/>
-                            <constraint firstItem="OmR-2E-jXp" firstAttribute="bottom" secondItem="Ocg-ig-pQt" secondAttribute="bottom" id="aAd-fu-NMn"/>
-                            <constraint firstItem="OmR-2E-jXp" firstAttribute="trailing" secondItem="Ocg-ig-pQt" secondAttribute="trailing" id="doC-hh-j5P"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="top" secondItem="Ocg-ig-pQt" secondAttribute="top" id="gS5-1d-Huj"/>
-                            <constraint firstItem="OmR-2E-jXp" firstAttribute="top" secondItem="R6d-mo-itW" secondAttribute="bottom" id="iEq-zu-8bV"/>
                             <constraint firstItem="J6j-x0-sMS" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="iem-bg-Jp2"/>
                             <constraint firstItem="R6d-mo-itW" firstAttribute="leading" secondItem="Ocg-ig-pQt" secondAttribute="leading" id="irM-hU-WLy"/>
                         </constraints>
@@ -73,8 +63,6 @@
                     <navigationItem key="navigationItem" title="Stats" id="VZj-LS-owu"/>
                     <connections>
                         <outlet property="filterTabBar" destination="R6d-mo-itW" id="fNF-ni-3g1"/>
-                        <outlet property="insightsContainerView" destination="J6j-x0-sMS" id="Zd2-hc-Bwl"/>
-                        <outlet property="statsContainerView" destination="OmR-2E-jXp" id="LWw-FC-YvT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ixM-JR-6YX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -84,9 +72,9 @@
         <!--Insights Table View Controller-->
         <scene sceneID="pUd-Yh-VXv">
             <objects>
-                <tableViewController id="Hcp-7d-sgU" userLabel="Insights Table View Controller" customClass="SiteStatsInsightsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SiteStatsInsightsTableViewController" id="Hcp-7d-sgU" userLabel="Insights Table View Controller" customClass="SiteStatsInsightsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="qZC-N3-iSA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="557"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
@@ -106,9 +94,9 @@
         <!--Stats Table View Controller-->
         <scene sceneID="VVg-67-Gst">
             <objects>
-                <tableViewController id="plb-uA-RCD" userLabel="Stats Table View Controller" customClass="SiteStatsPeriodTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SiteStatsPeriodTableViewController" id="plb-uA-RCD" userLabel="Stats Table View Controller" customClass="SiteStatsPeriodTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zaS-th-YDU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="557"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <connections>
@@ -117,12 +105,21 @@
                         </connections>
                     </tableView>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="8ir-7a-bdo">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lv3-Hh-4h3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1030" y="558"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="RlY-v4-27D">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="83f-eK-Wfs" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mCQ-F7-hdS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="241" y="935"/>
         </scene>
     </scenes>
 </document>

@@ -21,14 +21,12 @@ class ChangePasswordViewController: SettingsTextViewController, UITextFieldDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 11.0, *) {
-            let hiddenTextField = UITextField(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
-            hiddenTextField.text = username
-            hiddenTextField.textContentType = .username
-            hiddenTextField.isAccessibilityElement = false
-            hiddenTextField.isEnabled = false
-            view.addSubview(hiddenTextField)
-        }
+        let hiddenTextField = UITextField(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+        hiddenTextField.text = username
+        hiddenTextField.textContentType = .username
+        hiddenTextField.isAccessibilityElement = false
+        hiddenTextField.isEnabled = false
+        view.addSubview(hiddenTextField)
 
         mode = .newPassword
         navigationItem.title = Constants.title

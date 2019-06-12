@@ -254,12 +254,14 @@ struct SwitchRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction? = nil
     let onChange: (Bool) -> Void
+    let accessibilityIdentifier: String?
 
-    init(title: String, value: Bool, icon: UIImage? = nil, onChange: @escaping (Bool) -> Void) {
+    init(title: String, value: Bool, icon: UIImage? = nil, onChange: @escaping (Bool) -> Void, accessibilityIdentifier: String? = nil) {
         self.title = title
         self.value = value
         self.icon = icon
         self.onChange = onChange
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -270,6 +272,7 @@ struct SwitchRow: ImmuTableRow {
         cell.selectionStyle = .none
         cell.on = value
         cell.onChange = onChange
+        cell.flipSwitch.accessibilityIdentifier = accessibilityIdentifier
     }
 }
 

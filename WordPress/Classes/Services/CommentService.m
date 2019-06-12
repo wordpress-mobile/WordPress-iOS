@@ -1056,7 +1056,9 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     WordPressComRestApi *api = [defaultAccount wordPressComRestApi];
     //Sergio Estevao: Do we really want to do this? If the call going to be valid if no credential is available?
     if (![api hasCredentials]) {
-        api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:[WPUserAgent wordPressUserAgent]];
+        api = [WordPressComRestApi defaultApiWithOAuthToken:nil
+                                                  userAgent:[WPUserAgent wordPressUserAgent]
+                                                  localeKey:[WordPressComRestApi LocaleKeyDefault]];
     }
     return api;
 }

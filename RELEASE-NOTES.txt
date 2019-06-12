@@ -1,9 +1,25 @@
-12.5
+12.7
 -----
- 
+* Block Editor: Video, Quote and More blocks are available now.
+
+12.6
+-----
+* Block Editor: Added UI to display a warning when a block has invalid content.
+* Block Editor: Fixed issue with link settings where “Open in New Tab” was always OFF on open.
+* Removed the limit of number of photos that can be shared from other apps.
+* Account Settings Primary Site now shows the site domain if the site has no name.
+* The app now launches a bit more quickly.
+* Added a list of third-party library acknowledgements.
+* Updated messaging experience for a reply upload result.
+
 12.5
 -----
 * Fixed Notices sometimes showing behind the keyboard
+* Implemented Domain Credit feature
+* Implemented auto saving a post on preview  
+* The app now launches a bit more quickly.
+* Fixed broken images in posts created by the share extension.
+* Deprecated local previews
 
 12.4
 -----

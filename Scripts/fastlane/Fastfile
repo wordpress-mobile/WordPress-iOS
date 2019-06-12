@@ -7,11 +7,11 @@ platform :ios do
 ########################################################################
 Dotenv.load('~/.wpios-env.default')
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
-ENV[“PROJECT_NAME”]=“WordPress”
-ENV[“PUBLIC_CONFIG_FILE”]=“../config/Version.Public.xcconfig”
-ENV[“INTERNAL_CONFIG_FILE”]=“../config/Version.internal.xcconfig”
-ENV[“DOWNLOAD_METADATA”]=“./fastlane/download_metadata.swift”
-ENV[“PROJECT_ROOT_FOLDER”]=“../“
+ENV["PROJECT_NAME"]="WordPress"
+ENV["PUBLIC_CONFIG_FILE"]="../config/Version.Public.xcconfig"
+ENV["INTERNAL_CONFIG_FILE"]="../config/Version.internal.xcconfig"
+ENV["DOWNLOAD_METADATA"]="./fastlane/download_metadata.swift"
+ENV["PROJECT_ROOT_FOLDER"]="../"
 
 ########################################################################
 # Screenshots 
@@ -194,6 +194,7 @@ import "./ScreenshotFastfile"
       export_method: "enterprise",
       clean: true,
       output_directory: "../build/",
+      derived_data_path: "../derived-data/internal/",
       export_team_id: ENV["INT_EXPORT_TEAM_ID"],
       export_options: {
         method: "enterprise",
@@ -247,7 +248,9 @@ import "./ScreenshotFastfile"
     ios_build_preflight() unless (options[:skip_prechecks])
 
     gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
-      clean: true, export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
+      clean: true,
+      export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
+      derived_data_path: "../derived-data/itc/",
       export_options: {
         method: "app-store",
         provisioningProfiles: { 

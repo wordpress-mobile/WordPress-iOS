@@ -131,18 +131,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Configuration
 
     private func configureFilterBarTopConstraint() {
-        // Not an ideal solution, but fixes an issue where the filter bar
-        // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
-        if #available(iOS 11.0, *) {
-            filterTabBariOS10TopConstraint.isActive = false
-        } else {
-            extendedLayoutIncludesOpaqueBars = false
-            edgesForExtendedLayout = []
-
-            filterTabBarTopConstraint.isActive = false
-
-            view.layoutIfNeeded()
-        }
+        filterTabBariOS10TopConstraint.isActive = false
     }
 
     override func configureTableView() {
@@ -765,13 +754,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         filterTabBar.alpha = WPAlphaZero
 
-        if #available(iOS 11.0, *) {
-            tableView.contentInset.top = -searchController.searchBar.bounds.height
-            return
-        }
-
-        filterTabBarBottomConstraint.isActive = false
-        tableViewTopConstraint.isActive = true
+        tableView.contentInset.top = -searchController.searchBar.bounds.height
     }
 
     override func updateSearchResults(for searchController: UISearchController) {
@@ -785,9 +768,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
-        if #available(iOS 11.0, *) {
-            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - topLayoutGuide.length
-        }
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - view.safeAreaInsets.top
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -796,13 +777,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }) { _ in
             self.hideNoResultsView()
         }
-
-        if #available(iOS 11.0, *) {
-            return
-        }
-
-        tableViewTopConstraint.isActive = false
-        filterTabBarBottomConstraint.isActive = true
     }
 
     enum Animations {

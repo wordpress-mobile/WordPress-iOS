@@ -62,8 +62,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 {
     [super viewWillLayoutSubviews];
     self.searchBarTop.hidden = !self.navigationController.navigationBarHidden;
-    self.searchBarTop.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, [self.topLayoutGuide length]);
-    self.searchBar.frame = CGRectMake(0.0, [self.topLayoutGuide length]-1, self.view.frame.size.width, 44.0);
+    self.searchBarTop.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.safeAreaInsets.top);
+    self.searchBar.frame = CGRectMake(0.0, self.view.safeAreaInsets.top-1, self.view.frame.size.width, 44.0);
     self.tableView.frame = CGRectMake(0.0, CGRectGetMaxY(self.searchBar.frame), self.view.frame.size.width, self.view.frame.size.height-CGRectGetMaxY(self.searchBar.frame));
 }
 

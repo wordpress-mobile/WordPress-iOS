@@ -152,10 +152,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
 
-        if #available(iOS 11, *) {
-            textView.smartDashesType = .no
-            textView.smartQuotesType = .no
-        }
+        textView.smartDashesType = .no
+        textView.smartQuotesType = .no
 
         // Set up the editor for screenshot generation, if needed
         if UIApplication.shared.isCreatingScreenshots() {
@@ -201,14 +199,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         // We need this false to be able to set negative `scrollInset` values.
         textView.clipsToBounds = false
 
-        if #available(iOS 10, *) {
-            textView.adjustsFontForContentSizeCategory = true
-        }
-
-        if #available(iOS 11, *) {
-            textView.smartDashesType = .no
-            textView.smartQuotesType = .no
-        }
+        textView.adjustsFontForContentSizeCategory = true
+        textView.smartDashesType = .no
+        textView.smartQuotesType = .no
     }
 
 
@@ -526,7 +519,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.resizeBlogPickerButton()
             self.updateTitleHeight()
         })
 
@@ -589,9 +581,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let referenceView = editorView.activeView
         var scrollInsets = referenceView.contentInset
         var rightMargin = (view.frame.maxX - referenceView.frame.maxX)
-        if #available(iOS 11.0, *) {
-            rightMargin -= view.safeAreaInsets.right
-        }
+        rightMargin -= view.safeAreaInsets.right
         scrollInsets.right = -rightMargin
         referenceView.scrollIndicatorInsets = scrollInsets
     }
@@ -761,7 +751,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     func refreshInterface() {
         reloadBlogPickerButton()
         reloadEditorContents()
-        resizeBlogPickerButton()
         reloadPublishButton()
         refreshNavigationBar()
     }
@@ -826,21 +815,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func reloadPublishButton() {
         navigationBarManager.reloadPublishButton()
-    }
-
-    func resizeBlogPickerButton() {
-        // On iOS 11 no resize is needed because the StackView on the navigation bar will do the work
-        if #available(iOS 11, *) {
-            return
-        }
-        // On iOS 10 and before we still need to manually resize the button.
-        // Ensure the BlogPicker gets it's maximum possible size
-        let blogPickerButton = navigationBarManager.blogPickerButton
-        blogPickerButton.sizeToFit()
-        // Cap the size, according to the current traits
-        var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
-        blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
-        blogPickerButton.frame.size = blogPickerSize
     }
 
     fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
@@ -1123,7 +1097,7 @@ private extension AztecPostViewController {
         let addContentsToPostTitle = NSLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
 
         let addContentsActionHandler: (() -> Void)
-        if #available(iOS 11.0, *), uti == String(kUTTypePDF) {
+        if uti == String(kUTTypePDF) {
             addContentsActionHandler = { [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -1791,6 +1765,7 @@ extension AztecPostViewController {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
 
         let picker = WPNavigationMediaPickerViewController()
 
@@ -1834,6 +1809,7 @@ extension AztecPostViewController {
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
         options.badgedUTTypes = [String(kUTTypeGIF)]
+        options.preferredStatusBarStyle = .lightContent
 
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
@@ -2097,9 +2073,7 @@ extension AztecPostViewController {
 
         toolbarButtons.append(makeToolbarButton(identifier: .mediaLibrary))
 
-        if #available(iOS 11, *) {
-            toolbarButtons.append(makeToolbarButton(identifier: .otherApplications))
-        }
+        toolbarButtons.append(makeToolbarButton(identifier: .otherApplications))
 
         return toolbarButtons
     }
@@ -2233,24 +2207,13 @@ extension AztecPostViewController {
         let keyboardFrameRatioDefault = UIApplication.shared.statusBarOrientation.isPortrait ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
         let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
 
-        if #available(iOS 11, *) {
-            // On iOS 11, we need to make an assumption the hardware keyboard is attached based on
-            // the height of the current keyboard frame being less than our sensible default. If it is
-            // "attached", let's just use our default.
-            if currentKeyboardFrame.height < keyboardHeightDefault {
-                keyboardHeight = keyboardHeightDefault
-            } else {
-                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
-            }
+        // we need to make an assumption the hardware keyboard is attached based on
+        // the height of the current keyboard frame being less than our sensible default. If it is
+        // "attached", let's just use our default.
+        if currentKeyboardFrame.height < keyboardHeightDefault {
+            keyboardHeight = keyboardHeightDefault
         } else {
-            // On iOS 10, when the soft keyboard is visible, the keyboard's frame is within the dimensions of the screen.
-            // However, when an external keyboard is present, the keyboard's frame is located offscreen. Test to see if
-            // that is true and adjust the keyboard height as necessary.
-            if (currentKeyboardFrame.origin.y + currentKeyboardFrame.height) > view.frame.height {
-                keyboardHeight = (currentKeyboardFrame.maxY - view.frame.height)
-            } else {
-                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
-            }
+            keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
         }
 
         // Sanity check
@@ -2349,11 +2312,9 @@ extension AztecPostViewController {
     private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset, source: MediaSource) {
         var isGif = (source == .giphy)
 
-        if #available(iOS 11.0, *) {
-            if let asset = asset as? PHAsset,
-                asset.playbackStyle == .imageAnimated {
-                isGif = true
-            }
+        if let asset = asset as? PHAsset,
+            asset.playbackStyle == .imageAnimated {
+            isGif = true
         }
 
         if isGif {
@@ -3011,6 +2972,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         if let mediaAttachment = attachment as? MediaAttachment {
             self.resetMediaAttachmentOverlay(mediaAttachment)
             richTextView.refresh(mediaAttachment)
+            processMediaAttachments()
         }
     }
 
