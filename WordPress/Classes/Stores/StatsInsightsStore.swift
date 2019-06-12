@@ -219,12 +219,11 @@ private extension StatsInsightsStore {
 
         loadFromCache()
 
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+        guard let api = statsRemote() else {
             return
         }
 
         setAllAsFetchingOverview()
-        let api = apiService(for: siteID)
 
         api.getInsight { (lastPost: StatsLastPostInsight?, error) in
             if error != nil {
@@ -324,10 +323,16 @@ private extension StatsInsightsStore {
         }
     }
 
-    func apiService(`for` site: Int) -> StatsServiceRemoteV2 {
-        let api = WordPressComRestApi.defaultApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+    func statsRemote() -> StatsServiceRemoteV2? {
+        guard
+            let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
+            let timeZone = SiteStatsInformation.sharedInstance.siteTimeZone
+            else {
+                return nil
+        }
 
-        return StatsServiceRemoteV2(wordPressComRestApi: api, siteID: site, siteTimezone: SiteStatsInformation.sharedInstance.siteTimeZone!)
+        let wpApi = WordPressComRestApi.defaultApi(oAuthToken: SiteStatsInformation.sharedInstance.oauth2Token, userAgent: WPUserAgent.wordPress())
+        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID, siteTimezone: timeZone)
     }
 
     func refreshInsights() {
@@ -459,14 +464,12 @@ private extension StatsInsightsStore {
     // MARK: - Insights Details
 
     func fetchAllFollowers() {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+        guard let api = statsRemote() else {
             return
         }
 
         state.fetchingAllDotComFollowers = true
         state.fetchingAllEmailFollowers = true
-
-        let api = apiService(for: siteID)
 
         // The followers API returns a maximum of 100 results.
         // Using a limit of 0 returns the default 20 results.
@@ -488,11 +491,9 @@ private extension StatsInsightsStore {
     }
 
     func fetchAllComments() {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+        guard let api = statsRemote() else {
             return
         }
-
-        let api = apiService(for: siteID)
 
         state.fetchingAllCommentsInsight = true
 
@@ -508,13 +509,11 @@ private extension StatsInsightsStore {
     }
 
     func fetchAllTagsAndCategories() {
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else {
+        guard let api = statsRemote() else {
             return
         }
 
         state.fetchingAllTagsAndCategories = true
-
-        let api = apiService(for: siteID)
 
         // See the comment about the limit in the method above.
         api.getInsight(limit: 1000) { (allTagsAndCategories: StatsTagsAndCategoriesInsight?, error) in
