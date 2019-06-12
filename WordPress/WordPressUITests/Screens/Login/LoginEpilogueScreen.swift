@@ -40,10 +40,19 @@ class LoginEpilogueScreen: BaseScreen {
             XCTAssertEqual(expectedUsername, actualUsername, "Username displayed is \(actualUsername) but should be \(expectedUsername)")
         }
 
-        let expectedSiteUrl = siteUrl
+        let expectedSiteUrl = getDisplayUrl(for: siteUrl)
         let actualSiteUrl = siteUrlField.label
         XCTAssertEqual(expectedSiteUrl, actualSiteUrl, "Site URL displayed is \(actualSiteUrl) but should be \(expectedSiteUrl)")
 
         return self
+    }
+
+    private func getDisplayUrl(for siteUrl: String) -> String {
+        var displayUrl = siteUrl.replacingOccurrences(of: "http(s?)://", with: "", options: .regularExpression)
+        if displayUrl.hasSuffix("/") {
+            displayUrl = String(displayUrl.dropLast())
+        }
+
+        return displayUrl
     }
 }

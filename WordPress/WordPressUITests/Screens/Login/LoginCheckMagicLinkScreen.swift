@@ -43,7 +43,7 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         safari.textFields["URL"].typeText("\(magicLinkComponents.url!.absoluteString)\n")
 
         // Accept the prompt to open the deep link
-        safari.buttons.matching(identifier: "Open").firstMatch.tap()
+        safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
 
         return LoginEpilogueScreen()
     }
