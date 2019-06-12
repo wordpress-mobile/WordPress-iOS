@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComStatsiOS
 
 // MARK: - Shared Rows
 

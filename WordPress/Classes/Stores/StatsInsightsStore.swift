@@ -1,7 +1,6 @@
 import Foundation
 import WordPressKit
 import WordPressFlux
-import WordPressComStatsiOS
 
 enum InsightAction: Action {
 
