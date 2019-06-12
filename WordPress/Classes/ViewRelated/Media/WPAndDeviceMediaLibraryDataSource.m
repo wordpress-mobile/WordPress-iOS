@@ -56,6 +56,7 @@
     _observers = [[NSMutableDictionary alloc] init];
     _groupObservers = [[NSMutableDictionary alloc] init];
     _searchQuery = @"";
+    _mediaLibraryDataSource.ignoreNetworkLoadingErrors = YES;
     
     [self setDataSourceType:sourceType];
 }
@@ -76,10 +77,6 @@
         default:
             break;
     }
-}
-
-- (void)setMediaLibraryIgnoresNetworkLoadingErrors:(BOOL)mediaLibraryIgnoresNetworkLoadingErrors {
-    self.mediaLibraryDataSource.ignoreNetworkLoadingErrors = mediaLibraryIgnoresNetworkLoadingErrors;
 }
 
 - (NSInteger)numberOfGroups

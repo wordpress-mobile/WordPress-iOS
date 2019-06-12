@@ -1331,7 +1331,6 @@ FeaturedImageViewControllerDelegate>
 
     WPAndDeviceMediaLibraryDataSource *mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                                                            initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
-    mediaDataSource.mediaLibraryIgnoresNetworkLoadingErrors = YES;
 
     picker.dataSource = mediaDataSource;
     picker.delegate = self;

@@ -139,14 +139,14 @@
     // try to sync from the server
     MediaCoordinator *mediaCoordinator = [MediaCoordinator shared];
 
-    __weak __typeof(self) weakSelf = self;
+    __block BOOL ignoreSyncError = self.ignoreSyncErrors;
     [mediaCoordinator syncMediaFor:self.blog
                            success:^{
                                if (!localResultsAvailable && successBlock) {
                                    successBlock();
                                }
                            } failure:^(NSError * _Nonnull error) {
-                               if ([error.domain isEqualToString:NSURLErrorDomain] && weakSelf.ignoreNetworkLoadingErrors && successBlock) {
+                               if (ignoreSyncError && successBlock) {
                                    successBlock();
                                    return;
                                }
