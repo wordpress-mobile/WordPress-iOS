@@ -1,6 +1,7 @@
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
 
 12.6
 -----
