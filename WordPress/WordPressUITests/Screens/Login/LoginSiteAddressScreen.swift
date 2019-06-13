@@ -3,21 +3,18 @@ import XCTest
 
 private struct ElementStringIDs {
     static let navBar = "WordPressAuthenticator.LoginSiteAddressView"
-    static let navBackButton = "Back"
     static let siteAddressTextField = "usernameField"
     static let nextButton = "Site Address Next Button"
 }
 
 class LoginSiteAddressScreen: BaseScreen {
     let navBar: XCUIElement
-    let navBackButton: XCUIElement
     let siteAddressTextField: XCUIElement
     let nextButton: XCUIElement
 
     init() {
         let app = XCUIApplication()
         navBar = app.navigationBars[ElementStringIDs.navBar]
-        navBackButton = navBar.buttons[ElementStringIDs.navBackButton]
         siteAddressTextField = app.textFields[ElementStringIDs.siteAddressTextField]
         nextButton = app.buttons[ElementStringIDs.nextButton]
 

@@ -96,6 +96,7 @@ extension LoginEpilogueTableViewController {
         }
 
         cell.titleLabel?.text = title(for: section)
+        cell.accessibilityIdentifier = "Login Cell"
 
         return cell
     }
