@@ -6567,6 +6567,7 @@
 		98747671219638BF0080967F /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				98880A4722B2E3FC00464538 /* Two Column Stats */,
 				9822AF9D21EECB39007D922D /* Annual Site Stats */,
 				9826AE7F21B5C63800C851FA /* Latest Post Summary */,
 				9826AE8421B5C6D500C851FA /* Posting Activity */,
@@ -6598,6 +6599,15 @@
 				98797DBB222F434500128C21 /* OverviewCell.xib */,
 			);
 			path = Overview;
+			sourceTree = "<group>";
+		};
+		98880A4722B2E3FC00464538 /* Two Column Stats */ = {
+			isa = PBXGroup;
+			children = (
+				98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */,
+				98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */,
+			);
+			path = "Two Column Stats";
 			sourceTree = "<group>";
 		};
 		98C43E841FE98041006FEF54 /* Social Signup */ = {
@@ -6636,8 +6646,6 @@
 				983DBBA822125DD300753988 /* StatsTableFooter.xib */,
 				98812964219CE42A0075FF33 /* StatsTotalRow.swift */,
 				98812965219CE42A0075FF33 /* StatsTotalRow.xib */,
-				98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */,
-				98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */,
 				984F86FA21DEDB060070E0E3 /* TopTotalsCell.swift */,
 				9895B6DF21ED49160053D370 /* TopTotalsCell.xib */,
 				98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */,
