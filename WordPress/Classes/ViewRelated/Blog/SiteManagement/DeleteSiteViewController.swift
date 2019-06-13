@@ -48,7 +48,7 @@ open class DeleteSiteViewController: UITableViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 500.0
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         setupHeaderSection()
         setupListSection()
         setupMainBodySection()
@@ -285,7 +285,7 @@ open class DeleteSiteViewController: UITableViewController {
                 // then replace it with an empty view controller, as we just deleted its blog
                 if primaryNavigationController != secondaryNavigationController && secondaryNavigationController == self.navigationController {
                     let emptyViewController = UIViewController()
-                    WPStyleGuide.configureColors(for: emptyViewController.view, andTableView: nil)
+                    WPStyleGuide.configureColors(view: emptyViewController.view, tableView: nil)
 
                     self.navigationController?.viewControllers = [emptyViewController]
                 }

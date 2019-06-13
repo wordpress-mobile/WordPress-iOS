@@ -67,7 +67,7 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: self.view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: self.view, tableView: tableView)
 
         tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: WPBlogTableViewCell.reuseIdentifier())
 

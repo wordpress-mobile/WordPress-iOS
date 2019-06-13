@@ -149,7 +149,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func setupTable() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.tableFooterView = UIView(frame: .zero)
     }
 

@@ -33,3 +33,57 @@ extension WPStyleGuide {
 
     }
 }
+
+
+extension WPStyleGuide {
+    @objc(configureColorsForView:andTableView:)
+    open class func configureColors(view: UIView?, tableView: UITableView?) {
+        
+    }
+
+    class func configureColors(view: UIView, collectionView: UICollectionView) {
+    }
+
+    @objc
+    class func configureTableViewCell(_ cell: UITableViewCell?) {
+        guard let cell = cell else {
+            return
+        }
+
+    }
+
+    class func configureTableViewSmallSubtitleCell(_ cell: UITableViewCell) {
+    }
+
+    @objc
+    class func configureTableViewActionCell(_ cell: UITableViewCell?) {
+        guard let cell = cell else {
+            return
+        }
+    }
+
+    @objc
+    class func configureTableViewDestructiveActionCell(_ cell: UITableViewCell) {
+    }
+
+    @objc
+    class func configureTableViewTextCell(_ cell: WPTextFieldTableViewCell) {
+
+    }
+
+    @objc class func configureTableViewSectionHeader(_ header: UIView) {
+        guard let header = header as? UITableViewHeaderFooterView else {
+            return
+        }
+
+    }
+
+    @objc
+    class func configureTableViewSectionFooter(_ footer: UIView) {
+        guard let footer = footer as? UITableViewHeaderFooterView else {
+            return
+        }
+
+    }
+
+}

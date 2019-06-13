@@ -343,6 +343,10 @@
 		43290D0A215E8B1200F6B398 /* QuickStartSpotlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43290D09215E8B1200F6B398 /* QuickStartSpotlightView.swift */; };
 		432A5AE021F9222A00603959 /* QuickStartListTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A5ADF21F9222A00603959 /* QuickStartListTitleCell.swift */; };
 		433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432511E9ED18900915988 /* LoginEpilogueViewController.swift */; };
+		4338672522B2E0D600C8DEBD /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
+		4338672622B2E0D600C8DEBD /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
+		4338672722B2E17F00C8DEBD /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
+		4338672822B2E17F00C8DEBD /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
 		433A550220F693A100757928 /* ManyDelegateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433A550120F693A100757928 /* ManyDelegateNavigationController.swift */; };
 		433ADC19223B2A0200ED9DE1 /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
 		433ADC1A223B2A7D00ED9DE1 /* TextBundleWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 43EE90EE223B1028006A33E9 /* TextBundleWrapper.m */; };
@@ -360,6 +364,8 @@
 		435035991EDCAB99004ECF47 /* post.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035941EDCAB99004ECF47 /* post.json */; };
 		4350359A1EDCAB99004ECF47 /* reader.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035951EDCAB99004ECF47 /* reader.json */; };
 		4350359B1EDCAB99004ECF47 /* stats.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035961EDCAB99004ECF47 /* stats.json */; };
+		4352211622B1B68E00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */; };
+		4352211722B1B68F00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */; };
 		4353BFA9219E0E820009CED3 /* RevisionOperationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353BFA8219E0E820009CED3 /* RevisionOperationViewController.swift */; };
 		4353BFB221A376BF0009CED3 /* UntouchableWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353BFB121A376BF0009CED3 /* UntouchableWindow.swift */; };
 		435B762222973D0600511813 /* UIColor+MurielColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B762122973D0600511813 /* UIColor+MurielColors.swift */; };
@@ -10929,6 +10935,7 @@
 				7414A142203CD066005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
 				74021A1D202E15AF006CC39F /* Constants.m in Sources */,
 				740219FE202E12F4006CC39F /* UploadOperation.swift in Sources */,
+				4352211722B1B68F00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
 				74021A19202E14C1006CC39F /* NSAttributedStringKey+Conversion.swift in Sources */,
 				74021A08202E1307006CC39F /* UITableView+Extensions.swift in Sources */,
 				74021A03202E1307006CC39F /* NSExtensionContext+Extensions.swift in Sources */,
@@ -10940,6 +10947,7 @@
 				74021A04202E1307006CC39F /* String+Extensions.swift in Sources */,
 				747F88C42037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */,
 				74576675202B558C00F42E40 /* MainDraftActionViewController.swift in Sources */,
+				4338672822B2E17F00C8DEBD /* BuildConfiguration.swift in Sources */,
 				74021A13202E1383006CC39F /* ShareExtensionAbstractViewController.swift in Sources */,
 				74021A10202E1370006CC39F /* ExtensionPresentationController.swift in Sources */,
 				74021A17202E13C6006CC39F /* SharePost.swift in Sources */,
@@ -10960,6 +10968,7 @@
 				74021A1B202E150F006CC39F /* String+RegEx.swift in Sources */,
 				74021A16202E139A006CC39F /* ShareData.swift in Sources */,
 				74C2044E20363316006FB344 /* WPReusableTableViewCells.swift in Sources */,
+				4338672622B2E0D600C8DEBD /* FeatureFlag.swift in Sources */,
 				74021A15202E1397006CC39F /* ShareModularViewController.swift in Sources */,
 				74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */,
 				74021A0E202E1358006CC39F /* Tracks.swift in Sources */,
@@ -11002,6 +11011,7 @@
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
 				747F88C1203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				7414A141203CBAE0005A7D9B /* ShareCategoriesPickerViewController.swift in Sources */,
+				4352211622B1B68E00D45849 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
 				74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
 				B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */,
@@ -11013,6 +11023,7 @@
 				74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */,
 				E125F1E51E8E596200320B67 /* SharePost.swift in Sources */,
 				745EAF4A20040B220066F415 /* ShareData.swift in Sources */,
+				4338672722B2E17F00C8DEBD /* BuildConfiguration.swift in Sources */,
 				747F88C32037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */,
 				74402F2C2005337D00A1D4A2 /* ExtensionTransitioningManager.swift in Sources */,
 				74337EDD20054D5500777997 /* MainShareViewController.swift in Sources */,
@@ -11033,6 +11044,7 @@
 				74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
 				74D06FEA1FE0787400AF1788 /* Header+WordPress.swift in Sources */,
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
+				4338672522B2E0D600C8DEBD /* FeatureFlag.swift in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				74D06FE81FE076F700AF1788 /* FormatBarItemProviders.swift in Sources */,
 				745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */,

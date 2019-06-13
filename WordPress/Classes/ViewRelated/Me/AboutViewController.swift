@@ -59,7 +59,7 @@ open class AboutViewController: UITableViewController {
         tableView.tableHeaderView   = imageView
         tableView.contentInset      = WPTableViewContentInsets
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 

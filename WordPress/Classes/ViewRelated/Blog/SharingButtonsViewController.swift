@@ -98,7 +98,7 @@ import WordPressShared
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SortableSwitchCellIdentifier)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SwitchCellIdentifier)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.setEditing(true, animated: false)
         tableView.allowsSelectionDuringEditing = true
     }
