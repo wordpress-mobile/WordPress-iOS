@@ -31,6 +31,14 @@
 /// currently being processed or uploaded.
 @property (nonatomic) BOOL includeUnsyncedMedia;
 
+/// Defaults to `NO`.
+/// By default, errors (causes by e.g. devices being offline, or user using a slow network) when syncing
+/// will cause `-[WPMediaCollectionDataSource loadDataWithOptions:success:failure:]` to call the
+/// failure block. Setting this to `YES` will override this behavior, and will call the `successBlock` instead.
+/// Note: this only applies to the fetching operation — write/upload operations will still return errors as
+/// normal.
+@property (nonatomic) BOOL ignoreSyncErrors;
+
 /// The total asset account, ignoring the current search query if there is one.
 @property (nonatomic, readonly) NSInteger totalAssetCount;
 

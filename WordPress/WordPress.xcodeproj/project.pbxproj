@@ -8807,7 +8807,6 @@
 			buildConfigurationList = FF27169A1CAAC87B0006E2D4 /* Build configuration list for PBXNativeTarget "WordPressUITests" */;
 			buildPhases = (
 				37F48D4CB364EA4BCC1EAE82 /* [CP] Check Pods Manifest.lock */,
-				928885381E5E057F001F9637 /* Reset Simulator */,
 				FF27168B1CAAC87A0006E2D4 /* Sources */,
 				FF27168C1CAAC87A0006E2D4 /* Frameworks */,
 				FF27168D1CAAC87A0006E2D4 /* Resources */,
@@ -9544,20 +9543,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		928885381E5E057F001F9637 /* Reset Simulator */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Reset Simulator";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/bin/xcrun simctl uninstall booted org.wordpress";
 		};
 		9879533A2135D77500743763 /* Zendesk Strip Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

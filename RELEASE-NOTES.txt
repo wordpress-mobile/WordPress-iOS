@@ -2,6 +2,7 @@
 -----
 * Block Editor: Video, Quote and More blocks are available now.
 * Offline Improvements: Posts will now be auto-uploaded when reopening the App or when a connection is detected.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
 
 12.6
 -----
