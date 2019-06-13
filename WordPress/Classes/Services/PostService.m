@@ -238,7 +238,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [self.managedObjectContext performBlock:^{
             AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                if ([postInContext isRevision] && [postInContext isDraft]) {
+                if ([postInContext isRevision]) {
                     postInContext = postInContext.original;
                     [postInContext applyRevision];
                     [postInContext deleteRevision];
