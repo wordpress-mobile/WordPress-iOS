@@ -41,7 +41,7 @@ msgstr ""
 msgctxt "v12.6-whats-new"
 msgid ""
 "* Stats are so much better, we don’t even know where to start. Both the UI and backend are totally revamped! Data is cached, so loading stats is way faster and you can see them even when you’re offline! Individual stats have deeper levels of detail for you to explore! Date selectors let you specify the exact periods you want to see! Is it dorky to be this excited about stats? Who cares!\n"
-"* The Block Editor keeps getting better. It’s got clearer messaging when you try to put invalid content into a block, and we patched up a problem with link settings that caused “Open in New Tab” to always be off.\n"
+"* The block editor keeps getting better. It’s got clearer messaging when you try to put invalid content into a block, and we patched up a problem with link settings that caused “Open in New Tab” to always be off.\n"
 "* To infinity and beyond: We removed the limit on number of photos you can share to WordPress from other apps.\n"
 "* If you write a comment and wander off while it uploads, you now get a clearer message when it successfully posts, or more detailed information if it fails.\n"
 "* In Account Settings, your Primary Site now displays the site domain if the site has no name. (Takes the pressure off having to think of The Perfect Name immediately. It’ll come to you!)\n"
@@ -74,7 +74,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-1"
 msgid ""
 "Enjoy your\n"
@@ -82,7 +82,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-2"
 msgid ""
 "Get notified\n"
@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-3"
 msgid ""
 "Manage your site\n"
@@ -98,7 +98,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-4"
 msgid ""
 "Share your ideas\n"
@@ -106,7 +106,7 @@ msgid ""
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one. 
+#. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-5"
 msgid ""
 "All the stats\n"

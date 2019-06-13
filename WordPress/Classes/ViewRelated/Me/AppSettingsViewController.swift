@@ -316,7 +316,7 @@ private extension AppSettingsViewController {
         let gutenbergSettings = GutenbergSettings()
         let enabled = gutenbergSettings.isGutenbergEnabled()
         let gutenbergEditor = SwitchRow(
-            title: NSLocalizedString("Use Block Editor", comment: "Option to enable the block editor for new posts"),
+            title: NSLocalizedString("Use block editor", comment: "Option to enable the block editor for new posts"),
             value: enabled,
             onChange: toggleGutenberg(),
             accessibilityIdentifier: "useBlockEditorSwitch"
