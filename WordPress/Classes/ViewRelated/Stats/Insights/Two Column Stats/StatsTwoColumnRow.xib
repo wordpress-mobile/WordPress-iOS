@@ -13,40 +13,40 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="aeN-Hx-mEr" customClass="StatsTwoColumnRow" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="442" height="69"/>
+            <rect key="frame" x="0.0" y="0.0" width="442" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bi9-y4-md7" userLabel="Content View">
-                    <rect key="frame" x="16" y="13" width="410" height="43"/>
+                    <rect key="frame" x="16" y="13" width="410" height="54"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yot-Wq-heN" userLabel="Left Item Label">
-                            <rect key="frame" x="0.0" y="0.0" width="188.5" height="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="188.5" height="17.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="9,999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0p-pS-fTZ" userLabel="Left Data Label">
-                            <rect key="frame" x="0.0" y="22" width="188.5" height="21"/>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <rect key="frame" x="0.0" y="22.5" width="188.5" height="31.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RlP-Oc-Euy" userLabel="Separator Line">
-                            <rect key="frame" x="204.5" y="0.0" width="1" height="43"/>
+                            <rect key="frame" x="204.5" y="0.0" width="1" height="54"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="xF1-Zj-Nzk"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1cm-aN-woc" userLabel="Right Item Label">
-                            <rect key="frame" x="221.5" y="0.0" width="188.5" height="17"/>
+                            <rect key="frame" x="221.5" y="0.0" width="188.5" height="17.5"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="9,999" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNi-l4-j8C" userLabel="Right Data Label">
-                            <rect key="frame" x="221.5" y="22" width="188.5" height="21"/>
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <rect key="frame" x="221.5" y="22.5" width="188.5" height="31.5"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
