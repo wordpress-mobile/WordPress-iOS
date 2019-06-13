@@ -93,9 +93,13 @@
             <viewLayoutGuide key="safeArea" id="5pF-Tt-Ldy"/>
             <connections>
                 <outlet property="bottomSeparatorLine" destination="Cm8-Qw-O9e" id="aJ6-i9-r5U"/>
+                <outlet property="bottomSeparatorLineHeightConstraint" destination="3NE-5X-JlJ" id="kaO-5K-fcS"/>
                 <outlet property="rowsStackView" destination="53U-Zk-ZGa" id="T8V-zp-KCA"/>
+                <outlet property="rowsStackViewBottomConstraint" destination="5cr-Nz-ZDr" id="gpX-JD-vtf"/>
                 <outlet property="topSeparatorLine" destination="NTK-eu-Zrd" id="9Sq-Ea-hi8"/>
+                <outlet property="viewMoreHeightConstraint" destination="44e-cc-T7y" id="641-sy-IiJ"/>
                 <outlet property="viewMoreLabel" destination="1To-pb-uoT" id="nmB-Rf-6TI"/>
+                <outlet property="viewMoreView" destination="Cfy-Hl-Mjq" id="ljz-6d-bwT"/>
             </connections>
             <point key="canvasLocation" x="-44" y="157.87106446776613"/>
         </tableViewCell>
