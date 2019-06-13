@@ -177,6 +177,15 @@ private extension SiteStatsInsightsViewModel {
             return []
         }
 
+        let totalCounts = allTimeInsight.viewsCount +
+                          allTimeInsight.visitorsCount +
+                          allTimeInsight.postsCount +
+                          allTimeInsight.bestViewsPerDayCount
+
+        guard totalCounts > 0 else {
+            return []
+        }
+
         var dataRows = [StatsTwoColumnRowData]()
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.viewsTitle,

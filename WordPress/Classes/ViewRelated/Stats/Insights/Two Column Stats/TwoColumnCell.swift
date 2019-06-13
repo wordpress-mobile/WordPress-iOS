@@ -14,6 +14,9 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLineHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
+    private var dataRows: [StatsTwoColumnRowData]?
+    private var statSection: StatSection?
+
 
     // MARK: - View
 
@@ -28,8 +31,10 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     }
 
     func configure(dataRows: [StatsTwoColumnRowData], statSection: StatSection) {
-        addRows(dataRows)
-        toggleViewMore(forSection: statSection)
+        self.dataRows = dataRows
+        self.statSection = statSection
+        addRows()
+        toggleViewMore()
     }
 }
 
@@ -44,7 +49,14 @@ private extension TwoColumnCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    func addRows(_ dataRows: [StatsTwoColumnRowData]) {
+    func addRows() {
+        guard let dataRows = dataRows, dataRows.count > 0 else {
+            let row = StatsNoDataRow.loadFromNib()
+            row.configure(forType: .insights)
+            rowsStackView.addArrangedSubview(row)
+            return
+        }
+
         for dataRow in dataRows {
             let row = StatsTwoColumnRow.loadFromNib()
             row.configure(rowData: dataRow)
@@ -52,8 +64,9 @@ private extension TwoColumnCell {
         }
     }
 
-    func toggleViewMore(forSection statSection: StatSection) {
-        let showViewMore = statSection == .insightsAnnualSiteStats
+    func toggleViewMore() {
+        let haveDataRows = (dataRows?.count ?? 0) > 0
+        let showViewMore = haveDataRows && statSection == .insightsAnnualSiteStats
         viewMoreView.isHidden = !showViewMore
         rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant :
                                                                 bottomSeparatorLineHeightConstraint.constant
