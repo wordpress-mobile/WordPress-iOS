@@ -57,6 +57,10 @@ class CountriesCell: UITableViewCell, NibLoadable {
         applyStyles()
 
         hideMapView = dataRows.isEmpty
+
+        if !hideMapView {
+            countriesMap.setData()
+        }
     }
 
     override func prepareForReuse() {
