@@ -20,6 +20,8 @@ class StatsTwoColumnRow: UIView, NibLoadable {
 
 }
 
+// MARK: - Private Extension
+
 private extension StatsTwoColumnRow {
 
     func applyStyles() {

@@ -1001,6 +1001,8 @@
 		9881296F219CF1310075FF33 /* StatsCellHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9881296D219CF1310075FF33 /* StatsCellHeader.xib */; };
 		98812972219CF5100075FF33 /* SimpleTotalsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98812970219CF5100075FF33 /* SimpleTotalsCell.swift */; };
 		98812973219CF5100075FF33 /* SimpleTotalsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98812971219CF5100075FF33 /* SimpleTotalsCell.xib */; };
+		98880A4A22B2E5E400464538 /* TwoColumnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98880A4822B2E5E400464538 /* TwoColumnCell.swift */; };
+		98880A4B22B2E5E400464538 /* TwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98880A4922B2E5E400464538 /* TwoColumnCell.xib */; };
 		98921EF721372E12004949AA /* MediaCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF621372E12004949AA /* MediaCoordinator.swift */; };
 		98921EF921372E30004949AA /* LocalNewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EF821372E30004949AA /* LocalNewsService.swift */; };
 		98921EFB21372E57004949AA /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98921EFA21372E57004949AA /* NewsService.swift */; };
@@ -3030,6 +3032,8 @@
 		9881296D219CF1310075FF33 /* StatsCellHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatsCellHeader.xib; sourceTree = "<group>"; };
 		98812970219CF5100075FF33 /* SimpleTotalsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTotalsCell.swift; sourceTree = "<group>"; };
 		98812971219CF5100075FF33 /* SimpleTotalsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SimpleTotalsCell.xib; sourceTree = "<group>"; };
+		98880A4822B2E5E400464538 /* TwoColumnCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoColumnCell.swift; sourceTree = "<group>"; };
+		98880A4922B2E5E400464538 /* TwoColumnCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwoColumnCell.xib; sourceTree = "<group>"; };
 		98921EF621372E12004949AA /* MediaCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaCoordinator.swift; sourceTree = "<group>"; };
 		98921EF821372E30004949AA /* LocalNewsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNewsService.swift; sourceTree = "<group>"; };
 		98921EFA21372E57004949AA /* NewsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
@@ -6567,10 +6571,10 @@
 		98747671219638BF0080967F /* Insights */ = {
 			isa = PBXGroup;
 			children = (
-				98880A4722B2E3FC00464538 /* Two Column Stats */,
 				9822AF9D21EECB39007D922D /* Annual Site Stats */,
 				9826AE7F21B5C63800C851FA /* Latest Post Summary */,
 				9826AE8421B5C6D500C851FA /* Posting Activity */,
+				98880A4722B2E3FC00464538 /* Two Column Stats */,
 				98812970219CF5100075FF33 /* SimpleTotalsCell.swift */,
 				98812971219CF5100075FF33 /* SimpleTotalsCell.xib */,
 				988056022183CCE50083B643 /* SiteStatsInsightsTableViewController.swift */,
@@ -6606,6 +6610,8 @@
 			children = (
 				98D52C3022B1CFEB00831529 /* StatsTwoColumnRow.swift */,
 				98D52C3122B1CFEC00831529 /* StatsTwoColumnRow.xib */,
+				98880A4822B2E5E400464538 /* TwoColumnCell.swift */,
+				98880A4922B2E5E400464538 /* TwoColumnCell.xib */,
 			);
 			path = "Two Column Stats";
 			sourceTree = "<group>";
@@ -9045,6 +9051,7 @@
 				4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */,
 				9848DF8321B8BB6900B99DA4 /* PostingActivityLegend.xib in Resources */,
 				981C986B21B9BF6000A7C0C8 /* PostingActivityViewController.storyboard in Resources */,
+				98880A4B22B2E5E400464538 /* TwoColumnCell.xib in Resources */,
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				983DBBAA22125DD500753988 /* StatsTableFooter.xib in Resources */,
@@ -9802,6 +9809,7 @@
 				17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */,
 				E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */,
 				B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */,
+				98880A4A22B2E5E400464538 /* TwoColumnCell.swift in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				2FA6511521F269A6009AA935 /* VerticalsTableViewProvider.swift in Sources */,
 				08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */,

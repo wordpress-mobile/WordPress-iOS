@@ -213,6 +213,26 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     }
 }
 
+struct TwoColumnStatsRow: ImmuTableRow {
+
+    typealias CellType = TwoColumnCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure()
+    }
+}
+
 // MARK: - Period Rows
 
 struct TopTotalsPeriodStatsRow: ImmuTableRow {
