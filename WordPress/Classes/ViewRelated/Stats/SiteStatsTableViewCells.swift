@@ -221,6 +221,8 @@ struct TwoColumnStatsRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
+    let dataRows: [StatsTwoColumnRowData]
+    let statSection: StatSection
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -229,7 +231,7 @@ struct TwoColumnStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure()
+        cell.configure(dataRows: dataRows, statSection: statSection)
     }
 }
 

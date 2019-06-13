@@ -31,7 +31,12 @@ class StatsTwoColumnRow: UIView, NibLoadable {
 
     // MARK: - Configure
 
-    func configure() {
+    func configure(rowData: StatsTwoColumnRowData) {
+        leftItemLabel.text = rowData.leftColumnName
+        leftDataLabel.text = rowData.leftColumnData
+        rightItemLabel.text = rowData.rightColumnName
+        rightDataLabel.text = rowData.rightColumnData
+
         applyStyles()
     }
 

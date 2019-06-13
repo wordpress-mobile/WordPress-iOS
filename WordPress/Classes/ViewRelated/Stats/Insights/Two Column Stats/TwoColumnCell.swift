@@ -23,7 +23,8 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
         removeRowsFromStackView(rowsStackView)
     }
 
-    func configure() {
+    func configure(dataRows: [StatsTwoColumnRowData], statSection: StatSection) {
+        addRows(dataRows)
     }
 }
 
@@ -38,4 +39,11 @@ private extension TwoColumnCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
+    func addRows(_ dataRows: [StatsTwoColumnRowData]) {
+        for dataRow in dataRows {
+            let row = StatsTwoColumnRow.loadFromNib()
+            row.configure(rowData: dataRow)
+            rowsStackView.addArrangedSubview(row)
+        }
+    }
 }
