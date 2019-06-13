@@ -260,6 +260,7 @@ struct CountriesStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
+    let countriesMap: CountriesMap
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
@@ -272,7 +273,8 @@ struct CountriesStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate,
+                       countriesMap: countriesMap)
     }
 }
 

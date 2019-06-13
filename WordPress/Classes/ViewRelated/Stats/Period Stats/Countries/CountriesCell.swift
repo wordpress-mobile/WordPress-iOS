@@ -15,7 +15,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet private var separatorTopConstraint: NSLayoutConstraint!
     @IBOutlet private var countriesMapContainer: UIStackView! {
         didSet {
-            countriesMapContainer.addArrangedSubview(countriesMap)
+            countriesMapContainer.addArrangedSubview(countriesMapView)
         }
     }
 
@@ -29,7 +29,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
             countriesMapContainer.isHidden = hideMapView
         }
     }
-    private let countriesMap = CountriesMapView.loadFromNib()
+    private let countriesMapView = CountriesMapView.loadFromNib()
 
     // MARK: - Configure
 
@@ -37,7 +37,8 @@ class CountriesCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
-                   forDetails: Bool = false) {
+                   forDetails: Bool = false,
+                   countriesMap: CountriesMap? = nil) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
@@ -56,10 +57,10 @@ class CountriesCell: UITableViewCell, NibLoadable {
         setSubtitleVisibility()
         applyStyles()
 
-        hideMapView = dataRows.isEmpty
+        hideMapView = countriesMap?.data.isEmpty ?? true
 
-        if !hideMapView {
-            countriesMap.setData()
+        if let countriesMap = countriesMap, !hideMapView {
+            countriesMapView.setData(countriesMap)
         }
     }
 

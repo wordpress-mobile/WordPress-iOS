@@ -2,17 +2,19 @@ import FSInteractiveMap
 
 class CountriesMapView: UIView, NibLoadable {
     private var map = FSInteractiveMapView(frame: CGRect(x: 0, y: 0, width: 335, height: 224))
+    private let colors: [UIColor] = [.init(fromHex: 0xfff088), .init(fromHex: 0xf24606)]
 
     @IBOutlet private var mapContainer: UIView! {
         didSet {
             map.strokeColor = .white
-            map.loadMap("world-map", withData: [:], colorAxis: [UIColor.yellow, UIColor.red])
+            map.fillColor = WPStyleGuide.greyLighten20()
+            map.loadMap("world-map", withData: [:], colorAxis: colors)
             mapContainer.addSubview(map)
         }
     }
 
-    func setData() {
+    func setData(_ countries: CountriesMap) {
         map.frame = mapContainer.bounds
-        map.setData([:], colorAxis: [UIColor.yellow, UIColor.red])
+        map.setData(countries.data, colorAxis: colors)
     }
 }

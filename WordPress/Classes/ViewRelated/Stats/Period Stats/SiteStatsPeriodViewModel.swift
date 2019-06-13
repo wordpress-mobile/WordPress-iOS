@@ -339,6 +339,7 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                            dataRows: countriesDataRows(),
+                                           countriesMap: countriesMap(),
                                            siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -350,6 +351,17 @@ private extension SiteStatsPeriodViewModel {
                                                                                      icon: UIImage(named: $0.code),
                                                                                      statSection: .periodCountries) }
             ?? []
+    }
+
+    func countriesMap() -> CountriesMap {
+        let countries = store.getTopCountries()?.countries ?? []
+        return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
+                            maxViewsCount: countries.first?.viewsCount ?? 0,
+                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
+                                    var nextDict = dict
+                                    nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                    return nextDict
+        })
     }
 
     func searchTermsTableRows() -> [ImmuTableRow] {
