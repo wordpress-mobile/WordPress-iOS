@@ -1,5 +1,22 @@
 import UIKit
 
+struct StatsTwoColumnRowData {
+    var leftColumnName: String
+    var leftColumnData: String
+    var rightColumnName: String
+    var rightColumnData: String
+
+    init(leftColumnName: String,
+         leftColumnData: String,
+         rightColumnName: String,
+         rightColumnData: String) {
+        self.leftColumnName = leftColumnName
+        self.leftColumnData = leftColumnData
+        self.rightColumnName = rightColumnName
+        self.rightColumnData = rightColumnData
+    }
+}
+
 class StatsTwoColumnRow: UIView, NibLoadable {
 
     // MARK: - Properties
