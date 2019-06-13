@@ -1,7 +1,48 @@
 version: 2.1
 
 orbs:
-  ios: wordpress-mobile/ios@0.0.25
+  ios: wordpress-mobile/ios@0.0.29
+
+jobs:
+  build-ui-tests:
+    executor:
+      name: ios/default
+      xcode-version: "10.2.0"
+    steps:
+      - checkout
+      - ios/install-dependencies:
+          bundle-install: true
+          pod-install: true
+      - ios/xcodebuild:
+          command: build-for-testing
+          arguments: -workspace 'WordPress.xcworkspace' -scheme 'WordPressUITests' -configuration 'Debug' -sdk iphonesimulator -derivedDataPath DerivedData
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - DerivedData/Build/Products
+            - Pods/WordPressMocks
+  run-ui-tests:
+    parameters:
+      device:
+        type: string
+    executor:
+      name: ios/default
+      xcode-version: "10.2.0"
+    steps:
+      - ios/boot-simulator:
+          xcode-version: "10.2.0"
+          device: << parameters.device >>
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Run mocks
+          command: ./Pods/WordPressMocks/scripts/start.sh 8282
+          background: true
+      - ios/wait-for-simulator
+      - ios/xcodebuild:
+          command: test-without-building
+          arguments: -xctestrun DerivedData/Build/Products/WordPressUITests_iphonesimulator12.2-x86_64.xctestrun -destination "platform=iOS Simulator,id=$SIMULATOR_UDID"
+      - ios/save-xcodebuild-artifacts
 
 workflows:
   wordpress_ios:
@@ -12,6 +53,22 @@ workflows:
           workspace: WordPress.xcworkspace
           scheme: WordPress
           device: iPhone XS
-          ios-version: "12.2"
-          # If you want to reset the CircleCI cache, increment the number in the cache prefix below
-          cache-prefix: dependency-cache-v1
+  ui_tests:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - build-ui-tests:
+          name: Build UI Tests
+      - run-ui-tests:
+          name: UI Tests (iPhone Xs)
+          device: iPhone Xs
+          requires: [ "Build UI Tests" ]
+      - run-ui-tests:
+          name: UI Tests (iPad 6th generation)
+          device: iPad \\(6th generation\\)
+          requires: [ "Build UI Tests" ]

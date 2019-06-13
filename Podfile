@@ -315,7 +315,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.1'
+  pod 'WordPressMocks', '~> 0.0.3'
 end
 
 ## Screenshot Generation
