@@ -26,6 +26,10 @@ class SiteStatsDashboardViewController: UIViewController {
             break
         }
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, reloadData: false)
+    }
 }
 
 // MARK: - Private Extension
@@ -116,7 +120,7 @@ private extension SiteStatsDashboardViewController {
         currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
     }
 
-    func updatePeriodView(oldSelectedPeriod: StatsPeriodType) {
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, reloadData: Bool = true) {
         let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
@@ -128,17 +132,20 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-            insightsTableViewController.refreshInsights()
-            break
+            if reloadData {
+                insightsTableViewController.refreshInsights()
+            }
         default:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([periodTableViewController],
                                                        direction: .forward,
                                                        animated: false)
             }
-            periodTableViewController.selectedDate = Date()
-            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-            periodTableViewController.selectedPeriod = selectedPeriod
+            if reloadData {
+                periodTableViewController.selectedDate = Date()
+                let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+                periodTableViewController.selectedPeriod = selectedPeriod
+            }
         }
     }
 }
