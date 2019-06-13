@@ -25,8 +25,8 @@ class UploadsManager: NSObject {
     // MARK: Reachability
 
     private func setupReachableBlock() {
-        reachability.reachableBlock = { _ in
-            self.resume()
+        reachability.reachableBlock = { [weak self] _ in
+            self?.resume()
         }
 
         reachability.startNotifier()
