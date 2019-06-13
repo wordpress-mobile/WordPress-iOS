@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-class EditorScreen: BaseScreen {
+class AztecEditorScreen: BaseScreen {
     enum Mode {
         case rich
         case html
@@ -86,7 +86,7 @@ class EditorScreen: BaseScreen {
     }
 
     @discardableResult
-    func addList(type: String) -> EditorScreen {
+    func addList(type: String) -> AztecEditorScreen {
         tapToolbarButton(button: listButton)
         if type == "ul" {
             unorderedListOption.tap()
@@ -97,7 +97,7 @@ class EditorScreen: BaseScreen {
         return self
     }
 
-    func addListWithLines(type: String, lines: Array<String>) -> EditorScreen {
+    func addListWithLines(type: String, lines: Array<String>) -> AztecEditorScreen {
         addList(type: type)
 
         for (index, line) in lines.enumerated() {
@@ -113,7 +113,7 @@ class EditorScreen: BaseScreen {
      Tapping on toolbar button. And swipes if needed.
      */
     @discardableResult
-    func tapToolbarButton(button: XCUIElement) -> EditorScreen {
+    func tapToolbarButton(button: XCUIElement) -> AztecEditorScreen {
         let swipeElement = mediaButton.isHittable ? mediaButton : linkButton
 
         if !button.exists || !button.isHittable {
@@ -131,7 +131,7 @@ class EditorScreen: BaseScreen {
      30:32 - first word in 2d indented line (list)
      30:72 - first word in 3d intended line (blockquote)
      */
-    func tapByCordinates(x: Int, y: Int) -> EditorScreen {
+    func tapByCordinates(x: Int, y: Int) -> AztecEditorScreen {
         // textView frames on different devices:
         // iPhone X (0.0, 88.0, 375.0, 391.0)
         // iPhone SE (0.0, 64.0, 320.0, 504.0)
@@ -150,18 +150,18 @@ class EditorScreen: BaseScreen {
     /**
      Switches between Rich and HTML view.
      */
-    func switchContentView() -> EditorScreen {
+    func switchContentView() -> AztecEditorScreen {
         tapToolbarButton(button: sourcecodeButton)
 
 
-        return EditorScreen(mode: mode.toggle())
+        return AztecEditorScreen(mode: mode.toggle())
     }
 
     /**
      Common method to type in different text fields
      */
     @discardableResult
-    func enterText(text: String) -> EditorScreen {
+    func enterText(text: String) -> AztecEditorScreen {
         contentPlaceholder.tap()
         textView.typeText(text)
         return self
@@ -171,7 +171,7 @@ class EditorScreen: BaseScreen {
      Enters text into title field.
      - Parameter text: the test to enter into the title
      */
-    func enterTextInTitle(text: String) -> EditorScreen {
+    func enterTextInTitle(text: String) -> AztecEditorScreen {
         titleView.tap()
         titleView.typeText(text)
 
@@ -179,7 +179,7 @@ class EditorScreen: BaseScreen {
     }
 
     @discardableResult
-    func deleteText(chars: Int) -> EditorScreen {
+    func deleteText(chars: Int) -> AztecEditorScreen {
         for _ in 1...chars {
             app.keys["delete"].tap()
         }
@@ -198,23 +198,18 @@ class EditorScreen: BaseScreen {
     /**
      Selects all entered text in provided textView element
      */
-    func selectAllText() -> EditorScreen {
+    func selectAllText() -> AztecEditorScreen {
         textView.coordinate(withNormalizedOffset: CGVector.zero).press(forDuration: 1)
         app.menuItems["Select All"].tap()
 
         return self
     }
 
-    func makeLink() -> EditorEditLinkScreen {
-        tapToolbarButton(button: linkButton)
-
-        return EditorEditLinkScreen()
-    }
     /*
      Select Image from Camera Roll by its ID. Starts with 0
      Simulator range: 0..4
      */
-    func addImageByOrder(id: Int) -> EditorScreen {
+    func addImageByOrder(id: Int) -> AztecEditorScreen {
         tapToolbarButton(button: mediaButton)
 
         // Allow access to device media

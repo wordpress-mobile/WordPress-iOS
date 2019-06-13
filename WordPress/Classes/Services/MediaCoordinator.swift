@@ -334,7 +334,7 @@ class MediaCoordinator: NSObject {
     func media(withObjectID objectID: String) -> Media? {
         guard let storeCoordinator = mainContext.persistentStoreCoordinator,
             let url = URL(string: objectID),
-            let managedObjectID = storeCoordinator.managedObjectID(forURIRepresentation: url),
+            let managedObjectID = storeCoordinator.safeManagedObjectID(forURIRepresentation: url),
             let media = try? mainContext.existingObject(with: managedObjectID) as? Media else {
             return nil
         }

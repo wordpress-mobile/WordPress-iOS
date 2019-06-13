@@ -225,17 +225,18 @@ open class ThemeBrowserCell: UICollectionViewCell {
             })
         }
 
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action title")
+        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+
         alertController.modalPresentationStyle = .popover
+        alertController.presentFromRootViewController()
+
         if let popover = alertController.popoverPresentationController {
             popover.sourceView = actionButton
             popover.sourceRect = actionButton.bounds
             popover.permittedArrowDirections = .any
             popover.canOverlapSourceViewRect = true
-        } else {
-            let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action title")
-            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         }
-        alertController.presentFromRootViewController()
     }
 
 }

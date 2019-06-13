@@ -3,12 +3,14 @@ import UIKit
 struct OverviewTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
+    var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
 
-    init(tabTitle: String, tabData: Int, difference: Int, differencePercent: Int) {
+    init(tabTitle: String, tabData: Int, tabDataStub: String? = nil, difference: Int, differencePercent: Int) {
         self.tabTitle = tabTitle
         self.tabData = tabData
+        self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
     }
@@ -19,7 +21,14 @@ struct OverviewTabData: FilterTabBarItem {
         attributedTitle.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterTitleFont],
                                        range: NSMakeRange(0, attributedTitle.string.count))
 
-        let attributedData = NSMutableAttributedString(string: tabData.abbreviatedString())
+        let dataString: String = {
+            if let tabDataStub = tabDataStub {
+                return tabDataStub
+            }
+            return tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: WPStyleGuide.Stats.overviewCardFilterDataFont],
                                        range: NSMakeRange(0, attributedData.string.count))
 
