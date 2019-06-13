@@ -313,16 +313,15 @@ private extension String {
             // if the provided base doesn't contain %@ then we don't know where to place the highlight
             return NSAttributedString(string: self)
         }
-        let resultString = NSMutableAttributedString(string: normalParts[0])
 
-        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        let resultString = NSMutableAttributedString(string: normalParts[0], attributes: [.font: Fonts.regular])
 
-        let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Constants.highlightColor, .font: Constants.highlightFont])
+        let highlightStr = NSAttributedString(string: phrase, attributes: [.foregroundColor: Constants.highlightColor, .font: Fonts.highlight])
 
         if let icon = icon {
             let iconAttachment = NSTextAttachment()
             iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
-            iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
+            iconAttachment.bounds = CGRect(x: 0.0, y: Fonts.regular.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
             let iconStr = NSAttributedString(attachment: iconAttachment)
 
             switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
@@ -340,20 +339,20 @@ private extension String {
         }
 
         if normalParts.count > 1 {
-            resultString.append(NSAttributedString(string: normalParts[1]))
+            resultString.append(NSAttributedString(string: normalParts[1], attributes: [.font: Fonts.regular]))
         }
 
         return resultString
+    }
+
+    private enum Fonts {
+        static let regular = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
+        static let highlight = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
     }
 
     private enum Constants {
         static let iconOffset: CGFloat = 1.0
         static let iconSize: CGFloat = 16.0
         static let highlightColor: UIColor = .white
-        static var highlightFont: UIFont {
-            get {
-                return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-            }
-        }
     }
 }

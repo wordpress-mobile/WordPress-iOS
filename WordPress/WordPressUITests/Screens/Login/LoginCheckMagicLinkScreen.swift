@@ -2,10 +2,8 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let passwordOption = "Enter your password instead."
-    static let mailButton = "Open Mail"
-    static let mailAlert = "Please check your email"
-    static let okButton = "OK"
+    static let passwordOption = "Use Password"
+    static let mailButton = "Open Mail Button"
 }
 
 class LoginCheckMagicLinkScreen: BaseScreen {
@@ -17,7 +15,7 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         let app = XCUIApplication()
         passwordOption = app.buttons[ElementStringIDs.passwordOption]
         mailButton = app.buttons[ElementStringIDs.mailButton]
-        mailAlert = app.alerts[ElementStringIDs.mailAlert]
+        mailAlert = app.alerts.element(boundBy: 0)
 
         super.init(element: mailButton)
     }
@@ -45,7 +43,7 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         safari.textFields["URL"].typeText("\(magicLinkComponents.url!.absoluteString)\n")
 
         // Accept the prompt to open the deep link
-        safari.buttons.matching(identifier: "Open").firstMatch.tap()
+        safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
 
         return LoginEpilogueScreen()
     }
