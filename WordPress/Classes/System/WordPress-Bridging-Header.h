@@ -120,6 +120,7 @@
 #import "WPUserAgent.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPLogger.h"
+#import "WPException.h"
 
 
 // Pods

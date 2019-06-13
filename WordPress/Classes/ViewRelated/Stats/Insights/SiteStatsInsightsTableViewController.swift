@@ -40,7 +40,8 @@ enum InsightType: Int {
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class SiteStatsInsightsTableViewController: UITableViewController {
+class SiteStatsInsightsTableViewController: UITableViewController, StoryboardLoadable {
+    static var defaultStoryboardName: String = "SiteStatsDashboard"
 
     // MARK: - Properties
 
@@ -68,8 +69,10 @@ class SiteStatsInsightsTableViewController: UITableViewController {
 
     private var viewModel: SiteStatsInsightsViewModel?
 
+    private let analyticsTracker = BottomScrollAnalyticsTracker()
+
     private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -91,6 +94,11 @@ class SiteStatsInsightsTableViewController: UITableViewController {
         super.viewWillDisappear(animated)
         writeInsightsToUserDefaults()
     }
+
+    func refreshInsights() {
+        addViewModelListeners()
+        viewModel?.refreshInsights()
+    }
 }
 
 // MARK: - Private Extension
@@ -100,13 +108,25 @@ private extension SiteStatsInsightsTableViewController {
     func initViewModel() {
         viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow, insightsDelegate: self, insightsStore: insightsStore, periodStore: periodStore)
 
+        addViewModelListeners()
+    }
+
+    func addViewModelListeners() {
+        if insightsChangeReceipt != nil {
+            return
+        }
+
         insightsChangeReceipt = viewModel?.onChange { [weak self] in
             guard let store = self?.insightsStore,
                 !store.isFetchingOverview else {
-                return
+                    return
             }
             self?.refreshTableView()
         }
+    }
+
+    func removeViewModelListeners() {
+        insightsChangeReceipt = nil
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -132,7 +152,7 @@ private extension SiteStatsInsightsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
 
-        if insightsStore.fetchingOverviewHasFailed &&
+        if insightsStore.fetchingFailed(for: .insights) &&
             !insightsStore.containsCachedData {
             displayFailureViewIfNecessary()
         } else {
@@ -145,7 +165,7 @@ private extension SiteStatsInsightsTableViewController {
     @objc func refreshData() {
         refreshControl?.beginRefreshing()
         clearExpandedRows()
-        viewModel?.refreshInsights()
+        refreshInsights()
     }
 
     func applyTableUpdates() {
@@ -226,7 +246,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func showCreatePost() {
         WPTabBarController.sharedInstance().showPostTab { [weak self] in
-            self?.viewModel?.refreshInsights()
+            self?.refreshInsights()
         }
     }
 
@@ -271,12 +291,16 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
+        removeViewModelListeners()
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
+        removeViewModelListeners()
+
         let postStatsTableViewController = PostStatsTableViewController.loadFromStoryboard()
         postStatsTableViewController.configure(postID: postID, postTitle: postTitle, postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
@@ -290,6 +314,7 @@ extension SiteStatsInsightsTableViewController: NoResultsViewControllerDelegate 
                         accessoryView: NoResultsViewController.loadingAccessoryView()) { noResults in
                             noResults.hideImageView(false)
         }
-        viewModel?.refreshInsights()
+        addViewModelListeners()
+        refreshInsights()
     }
 }

@@ -66,6 +66,10 @@ class PostStatsViewModel: Observable {
     // MARK: - Table View
 
     func tableViewModel() -> ImmuTable {
+        if let postID = postID,
+            (store.fetchingFailed(for: .postStats(postID: postID)) || store.isFetchingPostStats(for: postID)) {
+            return ImmuTable.Empty
+        }
 
         postStats = store.getPostStats(for: postID)
         var tableRows = [ImmuTableRow]()
@@ -90,6 +94,12 @@ class PostStatsViewModel: Observable {
         ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 
+    func fetchDataHasFailed() -> Bool {
+        if let postID = postID {
+            return store.fetchingFailed(for: .postStats(postID: postID))
+        }
+        return true
+    }
 }
 
 // MARK: - Private Extension

@@ -40,7 +40,9 @@ class SiteStatsPeriodViewModel: Observable {
         self.lastRequestedDate = selectedDate
         self.lastRequestedPeriod = selectedPeriod
         periodReceipt = store.query(.periods(date: selectedDate, period: selectedPeriod))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate, period: selectedPeriod, forceRefresh: false))
+        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: selectedDate,
+                                                                               period: selectedPeriod,
+                                                                               forceRefresh: true))
 
         changeReceipt = store.onChange { [weak self] in
             self?.emitChange()
@@ -64,7 +66,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         if !store.containsCachedData &&
             (store.fetchingOverviewHasFailed || store.isFetchingOverview) {
-            return ImmuTable(sections: [])
+            return ImmuTable.Empty
         }
 
         tableRows.append(contentsOf: overviewTableRows())
@@ -87,7 +89,7 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: false))
         self.lastRequestedDate = date
         self.lastRequestedPeriod = period
     }
@@ -132,9 +134,15 @@ private extension SiteStatsPeriodViewModel {
                                               difference: visitorsData.difference,
                                               differencePercent: visitorsData.percentage)
 
+
+        // If Summary Likes is still loading, show dashes (instead of 0)
+        // to indicate it's still loading.
+        let likesLoadingStub = store.isFetchingSummaryLikes ? "----" : nil
+
         let likesData = intervalData(summaryData: summaryData, summaryType: .likes)
         let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
                                            tabData: likesData.count,
+                                           tabDataStub: likesLoadingStub,
                                            difference: likesData.difference,
                                            differencePercent: likesData.percentage)
 
@@ -257,9 +265,22 @@ private extension SiteStatsPeriodViewModel {
         let referrers = store.getTopReferrers()?.referrers.prefix(10) ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            var icon: UIImage? = nil
+            var iconURL: URL? = nil
+
+            switch referrer.iconURL?.lastPathComponent {
+            case "search-engine.png":
+                icon = Style.imageForGridiconType(.search)
+            case nil:
+                icon = Style.imageForGridiconType(.globe)
+            default:
+                iconURL = referrer.iconURL
+            }
+
             return StatsTotalRowData(name: referrer.title,
                                      data: referrer.viewsCount.abbreviatedString(),
-                                     socialIconURL: referrer.iconURL,
+                                     icon: icon,
+                                     socialIconURL: iconURL,
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
@@ -307,7 +328,6 @@ private extension SiteStatsPeriodViewModel {
 
     func authorsDataRows() -> [StatsTotalRowData] {
         let authors = store.getTopAuthors()?.topAuthors.prefix(10) ?? []
-
 
         return authors.map { StatsTotalRowData(name: $0.name,
                                                data: $0.viewsCount.abbreviatedString(),

@@ -138,11 +138,23 @@
     }
     // try to sync from the server
     MediaCoordinator *mediaCoordinator = [MediaCoordinator shared];
-    [mediaCoordinator syncMediaFor:self.blog success:^{
-        if (!localResultsAvailable && successBlock) {
-            successBlock();
-        }
-    } failure:failureBlock];
+
+    __block BOOL ignoreSyncError = self.ignoreSyncErrors;
+    [mediaCoordinator syncMediaFor:self.blog
+                           success:^{
+                               if (!localResultsAvailable && successBlock) {
+                                   successBlock();
+                               }
+                           } failure:^(NSError * _Nonnull error) {
+                               if (ignoreSyncError && successBlock) {
+                                   successBlock();
+                                   return;
+                               }
+
+                               if (failureBlock) {
+                                   failureBlock(error);
+                               }
+                           }];
 }
 
 - (void)notifyObserversWithIncrementalChanges:(BOOL)incrementalChanges removed:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moved

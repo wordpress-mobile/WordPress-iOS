@@ -136,6 +136,7 @@ final class TableViewOffsetCoordinator {
 
     @objc
     private func keyboardWillHide(_ notification: Foundation.Notification) {
+        keyboardContentOffset = 0
         toolbarHasBeenAdjusted = false
         toolbarBottomConstraint?.constant = 0
     }

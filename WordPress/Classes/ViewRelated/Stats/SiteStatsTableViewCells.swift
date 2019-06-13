@@ -1,7 +1,72 @@
 import UIKit
 import WordPressComStatsiOS
 
-// MARK: - ImmuTableRow Structs
+// MARK: - Shared Rows
+
+struct OverviewRow: ImmuTableRow {
+
+    typealias CellType = OverviewCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let tabsData: [OverviewTabData]
+    let action: ImmuTableAction? = nil
+    let chartData: [BarChartDataConvertible]
+    let chartStyling: [BarChartStyling]
+    let period: StatsPeriodUnit?
+    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
+    let chartHighlightIndex: Int?
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
+    }
+}
+
+struct CellHeaderRow: ImmuTableRow {
+
+    typealias CellType = StatsCellHeader
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let title: String
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(withTitle: title)
+    }
+}
+
+struct TableFooterRow: ImmuTableRow {
+
+    typealias CellType = StatsTableFooter
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        // No configuration needed.
+        // This method is needed to satisfy ImmuTableRow protocol requirements.
+    }
+}
+
+// MARK: - Insights Rows
 
 struct LatestPostSummaryRow: ImmuTableRow {
 
@@ -122,34 +187,6 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }
 }
 
-struct TopTotalsDetailStatsRow: ImmuTableRow {
-
-    typealias CellType = TopTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let itemSubtitle: String
-    let dataSubtitle: String
-    let dataRows: [StatsTotalRowData]
-    weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(itemSubtitle: itemSubtitle,
-                       dataSubtitle: dataSubtitle,
-                       dataRows: dataRows,
-                       siteStatsDetailsDelegate: siteStatsDetailsDelegate,
-                       limitRowsDisplayed: false)
-    }
-}
-
 struct TopTotalsInsightStatsRow: ImmuTableRow {
 
     typealias CellType = TopTotalsCell
@@ -176,6 +213,8 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
+
+// MARK: - Period Rows
 
 struct TopTotalsPeriodStatsRow: ImmuTableRow {
 
@@ -276,31 +315,7 @@ struct CountriesStatsRow: ImmuTableRow {
     }
 }
 
-struct OverviewRow: ImmuTableRow {
-
-    typealias CellType = OverviewCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let tabsData: [OverviewTabData]
-    let action: ImmuTableAction? = nil
-    let chartData: [BarChartDataConvertible]
-    let chartStyling: [BarChartStyling]
-    let period: StatsPeriodUnit?
-    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
-    let chartHighlightIndex: Int?
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
-    }
-}
+// MARK: - Post Stats Rows
 
 struct PostStatsTitleRow: ImmuTableRow {
 
@@ -354,27 +369,6 @@ struct TopTotalsPostStatsRow: ImmuTableRow {
     }
 }
 
-struct CellHeaderRow: ImmuTableRow {
-
-    typealias CellType = StatsCellHeader
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let title: String
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(withTitle: title)
-    }
-}
-
 struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
@@ -395,23 +389,7 @@ struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
     }
 }
 
-struct TableFooterRow: ImmuTableRow {
-
-    typealias CellType = StatsTableFooter
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-        // No configuration needed.
-        // This method is needed to satisfy ImmuTableRow protocol requirements.
-    }
-}
-
-// MARK: - Site Stats Detail Table cells
+// MARK: - Detail Rows
 
 struct DetailDataRow: ImmuTableRow {
 
@@ -423,7 +401,8 @@ struct DetailDataRow: ImmuTableRow {
 
     let rowData: StatsTotalRowData
     weak var detailsDelegate: SiteStatsDetailsDelegate?
-    let hideSeparator: Bool
+    let hideIndentedSeparator: Bool
+    let hideFullSeparator: Bool
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -432,7 +411,10 @@ struct DetailDataRow: ImmuTableRow {
             return
         }
 
-        cell.configure(rowData: rowData, detailsDelegate: detailsDelegate, hideIndentedSeparator: hideSeparator)
+        cell.configure(rowData: rowData,
+                       detailsDelegate: detailsDelegate,
+                       hideIndentedSeparator: hideIndentedSeparator,
+                       hideFullSeparator: hideFullSeparator)
     }
 }
 

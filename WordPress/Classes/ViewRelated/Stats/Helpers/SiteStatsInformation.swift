@@ -29,7 +29,8 @@ import WordPressComStatsiOS
         return WPStatsService.init(siteId: siteID,
                                    siteTimeZone: siteTimeZone,
                                    oauth2Token: oauth2Token,
-                                   andCacheExpirationInterval: SiteStatsInformation.cacheExpirationInterval)
+                                   andCacheExpirationInterval: SiteStatsInformation.cacheExpirationInterval,
+                                   apiBaseUrlString: Environment.current.wordPressComApiBase)
     }
 
 }
