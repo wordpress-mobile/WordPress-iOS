@@ -37,8 +37,6 @@ class UploadsManager: NSObject {
     /// Resumes all uploads handled by the uploaders.
     ///
     func resume() {
-        for uploader in uploaders {
-            uploader.resume()
-        }
+        uploaders.forEach { $0.resume() }
     }
 }
