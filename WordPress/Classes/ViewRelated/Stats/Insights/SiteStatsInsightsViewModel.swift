@@ -129,13 +129,9 @@ private extension SiteStatsInsightsViewModel {
 
     struct AllTimeStats {
         static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
-        static let postsIcon = Style.imageForGridiconType(.posts)
         static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
-        static let visitorsIcon = Style.imageForGridiconType(.user)
         static let bestViewsEverTitle = NSLocalizedString("Best views ever", comment: "All Time Stats 'Best views ever' label")
-        static let bestViewsIcon = Style.imageForGridiconType(.trophy)
     }
 
     struct MostPopularStats {
