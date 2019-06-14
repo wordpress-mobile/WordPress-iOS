@@ -29,7 +29,7 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
-            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
+            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, withDate: periodTableViewController.selectedDate)
         }
     }
 }
@@ -122,7 +122,7 @@ private extension SiteStatsDashboardViewController {
         currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
     }
 
-    func updatePeriodView(oldSelectedPeriod: StatsPeriodType) {
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, withDate periodDate: Date? = Date()) {
         let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
         let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
@@ -141,7 +141,7 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-            periodTableViewController.selectedDate = periodTableViewController.selectedDate ?? Date()
+            periodTableViewController.selectedDate = periodDate
             let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
             periodTableViewController.selectedPeriod = selectedPeriod
         }
