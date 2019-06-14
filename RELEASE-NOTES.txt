@@ -3,6 +3,7 @@
 * Block Editor: Video, Quote and More blocks are available now.
 * Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
 * Stats Insights: New two-column layout for All-Time stats.
+* Stats Insights: New two-column layout for Today stats.
 
 12.6
 -----
