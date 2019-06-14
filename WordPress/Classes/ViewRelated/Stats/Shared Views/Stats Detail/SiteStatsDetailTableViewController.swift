@@ -122,7 +122,8 @@ private extension SiteStatsDetailTableViewController {
                 DetailExpandableChildRow.self,
                 DetailSubtitlesHeaderRow.self,
                 DetailSubtitlesTabbedHeaderRow.self,
-                DetailSubtitlesCountriesHeaderRow.self]
+                DetailSubtitlesCountriesHeaderRow.self,
+                CountriesMapRow.self]
     }
 
     func storeIsFetching(statSection: StatSection) -> Bool {

@@ -170,6 +170,10 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodReferrers.dataSubtitle))
             tableRows.append(contentsOf: referrersRows())
         case .periodCountries:
+            let map = countriesMap()
+            if !map.data.isEmpty {
+                tableRows.append(CountriesMapRow(countriesMap: map))
+            }
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
@@ -595,6 +599,17 @@ private extension SiteStatsDetailsViewModel {
                                                                                 icon: UIImage(named: $0.code),
                                                                                 statSection: .periodCountries) }
             ?? []
+    }
+
+    func countriesMap() -> CountriesMap {
+        let countries = periodStore.getTopCountries()?.countries ?? []
+        return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
+                            maxViewsCount: countries.first?.viewsCount ?? 0,
+                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
+                                var nextDict = dict
+                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                return nextDict
+        })
     }
 
     // MARK: - Published

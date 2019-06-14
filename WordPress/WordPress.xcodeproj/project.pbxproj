@@ -1056,6 +1056,8 @@
 		9A4E61F821A2C3BC0017A925 /* RevisionDiff+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */; };
 		9A4E939F2268D9B400E14823 /* UIViewController+NoResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */; };
 		9A4F8F56218B88E000EEDCCC /* PostService+Revisions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */; };
+		9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */; };
+		9A5C854922B3E42800BEE7A3 /* CountriesMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */; };
 		9A76C32F22AFDA2100F5D819 /* world-map.svg in Resources */ = {isa = PBXBuildFile; fileRef = 9A76C32E22AFDA2100F5D819 /* world-map.svg */; };
 		9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8ECE012254A3250043C8DA /* JetpackLoginViewController.swift */; };
 		9A8ECE0D2254A3260043C8DA /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */; };
@@ -3091,6 +3093,8 @@
 		9A4E61F721A2C3BC0017A925 /* RevisionDiff+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RevisionDiff+CoreData.swift"; sourceTree = "<group>"; };
 		9A4E939E2268D9B400E14823 /* UIViewController+NoResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+NoResults.swift"; sourceTree = "<group>"; };
 		9A4F8F55218B88E000EEDCCC /* PostService+Revisions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostService+Revisions.swift"; sourceTree = "<group>"; };
+		9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesMapCell.swift; sourceTree = "<group>"; };
+		9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CountriesMapCell.xib; sourceTree = "<group>"; };
 		9A76C32E22AFDA2100F5D819 /* world-map.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "world-map.svg"; sourceTree = "<group>"; };
 		9A8ECE012254A3250043C8DA /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		9A8ECE022254A3250043C8DA /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
@@ -6785,6 +6789,8 @@
 				9A76C32E22AFDA2100F5D819 /* world-map.svg */,
 				9A3BDA0D22944F3500FBF510 /* CountriesMapView.swift */,
 				9A3BDA0F22944F4D00FBF510 /* CountriesMapView.xib */,
+				9A5C854622B3E42800BEE7A3 /* CountriesMapCell.swift */,
+				9A5C854722B3E42800BEE7A3 /* CountriesMapCell.xib */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -9140,6 +9146,7 @@
 				43D74AD420FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib in Resources */,
 				D818FFD82191566B000E5FEE /* VerticalsWizardContent.xib in Resources */,
 				4349BFF5221205540084F200 /* BlogDetailsSectionHeaderView.xib in Resources */,
+				9A5C854922B3E42800BEE7A3 /* CountriesMapCell.xib in Resources */,
 				5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */,
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
 				436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */,
@@ -10163,6 +10170,7 @@
 				E6F2788421BC1A4A008B4DB5 /* PlanFeature.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
+				9A5C854822B3E42800BEE7A3 /* CountriesMapCell.swift in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */,

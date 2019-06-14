@@ -298,7 +298,6 @@ struct CountriesStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let countriesMap: CountriesMap
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
@@ -311,8 +310,25 @@ struct CountriesStatsRow: ImmuTableRow {
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsPeriodDelegate: siteStatsPeriodDelegate,
-                       countriesMap: countriesMap)
+                       siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+    }
+}
+
+struct CountriesMapRow: ImmuTableRow {
+    let action: ImmuTableAction? = nil
+    let countriesMap: CountriesMap
+
+    typealias CellType = CountriesMapCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+        cell.configure(with: countriesMap)
     }
 }
 

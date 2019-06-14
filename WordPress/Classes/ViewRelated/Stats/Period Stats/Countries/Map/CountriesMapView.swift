@@ -6,12 +6,12 @@ class CountriesMapView: UIView, NibLoadable {
     private let colors: [UIColor] = [.init(fromHex: 0xfff088), .init(fromHex: 0xf24606)]
     @IBOutlet private var minViewsCountLabel: UILabel! {
         didSet {
-            minViewsCountLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+            decorate(minViewsCountLabel)
         }
     }
     @IBOutlet private var maxViewsCountLabel: UILabel! {
         didSet {
-            maxViewsCountLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+            decorate(maxViewsCountLabel)
         }
     }
     @IBOutlet private var gradientView: GradientView! {
@@ -35,5 +35,10 @@ class CountriesMapView: UIView, NibLoadable {
         map.setData(countries.data, colorAxis: colors)
         minViewsCountLabel.text = String(countries.minViewsCount.abbreviatedString())
         maxViewsCountLabel.text = String(countries.maxViewsCount.abbreviatedString())
+    }
+
+    private func decorate(_ label: UILabel) {
+        label.font = WPStyleGuide.fontForTextStyle(.footnote)
+        label.textColor = WPStyleGuide.darkGrey()
     }
 }

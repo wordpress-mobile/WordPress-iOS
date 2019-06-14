@@ -12,24 +12,11 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLine: UIView!
     @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet private var separatorTopConstraint: NSLayoutConstraint!
-    @IBOutlet private var countriesMapContainer: UIStackView! {
-        didSet {
-            countriesMapContainer.addArrangedSubview(countriesMapView)
-        }
-    }
 
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
-    private var hideMapView: Bool = false {
-        didSet {
-            separatorTopConstraint.isActive = !hideMapView
-            countriesMapContainer.isHidden = hideMapView
-        }
-    }
-    private let countriesMapView = CountriesMapView.loadFromNib()
 
     // MARK: - Configure
 
@@ -37,8 +24,7 @@ class CountriesCell: UITableViewCell, NibLoadable {
                    dataSubtitle: String,
                    dataRows: [StatsTotalRowData],
                    siteStatsPeriodDelegate: SiteStatsPeriodDelegate? = nil,
-                   forDetails: Bool = false,
-                   countriesMap: CountriesMap? = nil) {
+                   forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
         self.dataRows = dataRows
@@ -56,12 +42,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
 
         setSubtitleVisibility()
         applyStyles()
-
-        hideMapView = countriesMap?.data.isEmpty ?? true
-
-        if let countriesMap = countriesMap, !hideMapView {
-            countriesMapView.setData(countriesMap)
-        }
     }
 
     override func prepareForReuse() {
