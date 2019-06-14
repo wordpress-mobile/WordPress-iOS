@@ -1,5 +1,7 @@
-* Ibland doldes notiser av tangentbordet – inte så lyckat om du faktiskt vill kunna se dem. Nu ligger de överst, där notiser hör hemma.
-* Vi har snyggat till domänhanteringen i appen med möjligheten att utnyttja ett domäntillgodohavande hos WordPress.com för att ge din domän en egen domän.
-* Nu sparas dina inlägg automatiskt när du förhandsvisar dem – en sak mindre att hålla reda på för dig när du arbetar på ett utkast.
-* Ibland kunde appen krascha när de försökte ladda in kommentarer med flera GIF-bilder. Kommunikationen på internet handlar ju till stor del om att dela GIF-bilder, så ett sådant fel är inte OK. Fixat nu..
-* Appen startar lite snabbare – du får några fler sekunder till produktiv användning (eller till att välja den perfekta GIF-bilden för en kommentar).
+* Statistiken har blivit mycket bättre, vi vet inte ens vad vi ska nämna först. Både användargränssnittet och det bakomliggande maskineriet har fått sig en totalrenovering! Data cachelagra, så det går snabbare att ladda in statistiken, och du kan kolla siffrorna även utan internetanslutning! Enstaka statistikuppgifter har nu fler detaljer du kan utforska! Med datumväljare kan du ange exakt vilken tidsperiod du vill studera! Är det konstigt att vara upphetsad över statistik? Det rör inte oss!
+* Blockredigeraren fortsätter att förbättras. Nu får du tydligare information om du försöker att lägga in ogiltigt innehåll i ett block. Dessutom har vi löst ett problem med länkinställningar som gjorde att ”Öppna i ny flik” alltid var avstängt.
+* Oändligt många, och ännu fler: vi har tagit bort begränsningen på hur många foton du kan dela till WordPress från andra appar.
+* Om du skriver en kommentar och lämnar sidan medan kommentaren fortfarande laddas upp får du nu ett tydligare meddelande när kommentaren har publicerats eller mer detaljerad information om uppladdningen misslyckas.
+* I kontoinställningarna visar huvudwebbplatsen nu webbplatsens domän om den inte har något namn. (Du är alltså inte tvungen att hitta på det perfekta namnet direkt. Så småningom kommer du på det!)
+* Undrar du över programkoden som ingår i appen? Vi har lagt till erkännanden för alla tredjeparts kodbibliotek vi använder – de finns bland dina inställningar.
+* Vi har löst en programkrasch som kunde inträffa i samband med konfigurationen av webbpltatsen, så nu kan du, verkligen , konfigurera den.
