@@ -38,10 +38,32 @@ extension WPStyleGuide {
 extension WPStyleGuide {
     @objc(configureColorsForView:andTableView:)
     open class func configureColors(view: UIView?, tableView: UITableView?) {
-        
+        configureTableViewColors(view: view)
+        configureTableViewColors(tableView: tableView)
+    }
+    class func configureTableViewColors(view: UIView?) {
+        guard let view = view else {
+            return
+        }
+        if !FeatureFlag.murielColors.enabled {
+            view.backgroundColor = greyLighten30()
+        }
+    }
+    class func configureTableViewColors(tableView: UITableView?) {
+        guard let tableView = tableView else {
+            return
+        }
+        if !FeatureFlag.murielColors.enabled {
+            tableView.backgroundView = nil
+            tableView.backgroundColor = greyLighten30()
+            tableView.separatorColor = greyLighten20()
+        }
     }
 
     class func configureColors(view: UIView, collectionView: UICollectionView) {
+        configureTableViewColors(view: view)
+        collectionView.backgroundView = nil
+        collectionView.backgroundColor = greyLighten30()
     }
 
     @objc
@@ -50,9 +72,26 @@ extension WPStyleGuide {
             return
         }
 
+        cell.textLabel?.font = tableviewTextFont()
+        cell.textLabel?.sizeToFit()
+        cell.detailTextLabel?.font = tableviewSubtitleFont()
+        cell.detailTextLabel?.sizeToFit()
+
+        if !FeatureFlag.murielColors.enabled {
+            cell.textLabel?.textColor = darkGrey()
+            cell.detailTextLabel?.textColor = grey()
+            cell.imageView?.tintColor = greyLighten10()
+        }
     }
 
     class func configureTableViewSmallSubtitleCell(_ cell: UITableViewCell) {
+        configureTableViewColors(view: cell)
+        cell.detailTextLabel?.font = subtitleFont()
+        if FeatureFlag.murielColors.enabled {
+            cell.detailTextLabel?.textColor = .textSubtle
+        } else {
+            cell.detailTextLabel?.textColor = darkGrey()
+        }
     }
 
     @objc
