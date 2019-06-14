@@ -14,7 +14,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var bottomSeparatorLineHeightConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
-    private var dataRows: [StatsTwoColumnRowData]?
+    private var dataRows = [StatsTwoColumnRowData]()
     private var statSection: StatSection?
 
 
@@ -50,7 +50,7 @@ private extension TwoColumnCell {
     }
 
     func addRows() {
-        guard let dataRows = dataRows, dataRows.count > 0 else {
+        guard !dataRows.isEmpty else {
             let row = StatsNoDataRow.loadFromNib()
             row.configure(forType: .insights)
             rowsStackView.addArrangedSubview(row)
@@ -65,8 +65,7 @@ private extension TwoColumnCell {
     }
 
     func toggleViewMore() {
-        let haveDataRows = (dataRows?.count ?? 0) > 0
-        let showViewMore = haveDataRows && statSection == .insightsAnnualSiteStats
+        let showViewMore = !dataRows.isEmpty && statSection == .insightsAnnualSiteStats
         viewMoreView.isHidden = !showViewMore
         rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant :
                                                                 bottomSeparatorLineHeightConstraint.constant
