@@ -94,7 +94,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(createFollowersRow())
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createTodaysStatsRows(), statSection: .insightsTodaysStats))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
                 tableRows.append(createPostingActivityRow())
@@ -151,11 +151,7 @@ private extension SiteStatsInsightsViewModel {
         static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
-        static let likesIcon = Style.imageForGridiconType(.star)
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
-        static let visitorsIcon = Style.imageForGridiconType(.user)
-        static let commentsIcon = Style.imageForGridiconType(.comment)
     }
 
     struct AnnualSiteStats {
@@ -273,35 +269,31 @@ private extension SiteStatsInsightsViewModel {
         }
     }
 
-    func createTodaysStatsRows() -> [StatsTotalRowData] {
+    func createTodaysStatsRows() -> [StatsTwoColumnRowData] {
         guard let todaysStats = insightsStore.getTodaysStats() else {
             return []
         }
-        var dataRows = [StatsTotalRowData]()
 
-        if todaysStats.viewsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.viewsTitle,
-                                                   data: todaysStats.viewsCount.abbreviatedString(),
-                                                   icon: TodaysStats.viewsIcon))
+        let totalCounts = todaysStats.viewsCount +
+                          todaysStats.visitorsCount +
+                          todaysStats.likesCount +
+                          todaysStats.commentsCount
+
+        guard totalCounts > 0 else {
+            return []
         }
 
-        if todaysStats.visitorsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.visitorsTitle,
-                                                   data: todaysStats.visitorsCount.abbreviatedString(),
-                                                   icon: TodaysStats.visitorsIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if todaysStats.likesCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.likesTitle,
-                                                   data: todaysStats.likesCount.abbreviatedString(),
-                                                   icon: TodaysStats.likesIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.viewsTitle,
+                                                   leftColumnData: todaysStats.viewsCount.abbreviatedString(),
+                                                   rightColumnName: TodaysStats.visitorsTitle,
+                                                   rightColumnData: todaysStats.visitorsCount.abbreviatedString()))
 
-        if todaysStats.commentsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.commentsTitle,
-                                                   data: todaysStats.commentsCount.abbreviatedString(),
-                                                   icon: TodaysStats.commentsIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.likesTitle,
+                                                   leftColumnData: todaysStats.likesCount.abbreviatedString(),
+                                                   rightColumnName: TodaysStats.commentsTitle,
+                                                   rightColumnData: todaysStats.commentsCount.abbreviatedString()))
 
         return dataRows
     }
