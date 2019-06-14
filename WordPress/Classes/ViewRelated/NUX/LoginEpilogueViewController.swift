@@ -129,6 +129,7 @@ private extension LoginEpilogueViewController {
         continueButton.accessibilityIdentifier = "Continue"
         connectButton.setTitle(connectTitle, for: .normal)
         connectButton.isHidden = hidesConnectButton
+        connectButton.accessibilityIdentifier = "Connect"
     }
 
     /// Setup: Button Panel

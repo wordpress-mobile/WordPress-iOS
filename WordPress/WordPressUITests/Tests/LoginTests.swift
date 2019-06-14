@@ -18,6 +18,7 @@ class LoginTests: XCTestCase {
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSiteAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
             .tabBar.gotoMeScreen()
@@ -27,16 +28,19 @@ class LoginTests: XCTestCase {
     }
 
     /**
-     This test currently stops after requesting the magic link.
-     The rest of the flow should be tested after we set up network mocking.
+     This test opens safari to trigger the mocked magic link redirect
      */
     func testEmailMagicLinkLogin() {
-        _ = WelcomeScreen().login()
-        .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
-        .proceedWithLink()
-        .checkMagicLink()
+        let welcomeScreen = WelcomeScreen().login()
+            .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
+            .proceedWithLink()
+            .openMagicLink()
+            .continueWithSelectedSite()
+            .dismissNotificationAlertIfNeeded()
+            .tabBar.gotoMeScreen()
+            .logout()
 
-        XCTAssert(LoginCheckMagicLinkScreen().isLoaded())
+        XCTAssert(welcomeScreen.isLoaded())
     }
 
     func testWpcomUsernamePasswordLogin() {
@@ -44,6 +48,7 @@ class LoginTests: XCTestCase {
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: "WordPress.com")
             .proceedWith(username: WPUITestCredentials.testWPcomUserEmail, password: WPUITestCredentials.testWPcomPassword)
+            .verifyEpilogueDisplays(username: WPUITestCredentials.testWPcomUsername, siteUrl: WPUITestCredentials.testWPcomSiteAddress)
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
 
@@ -55,6 +60,7 @@ class LoginTests: XCTestCase {
             .goToSiteAddressLogin()
             .proceedWith(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .proceedWith(username: WPUITestCredentials.selfHostedUsername, password: WPUITestCredentials.selfHostedPassword)
+            .verifyEpilogueDisplays(siteUrl: WPUITestCredentials.selfHostedSiteAddress)
             .continueWithSelectedSite()
             .removeSelfHostedSite()
 

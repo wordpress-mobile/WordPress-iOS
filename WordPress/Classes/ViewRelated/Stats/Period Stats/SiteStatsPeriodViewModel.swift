@@ -134,9 +134,15 @@ private extension SiteStatsPeriodViewModel {
                                               difference: visitorsData.difference,
                                               differencePercent: visitorsData.percentage)
 
+
+        // If Summary Likes is still loading, show dashes (instead of 0)
+        // to indicate it's still loading.
+        let likesLoadingStub = store.isFetchingSummaryLikes ? "----" : nil
+
         let likesData = intervalData(summaryData: summaryData, summaryType: .likes)
         let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
                                            tabData: likesData.count,
+                                           tabDataStub: likesLoadingStub,
                                            difference: likesData.difference,
                                            differencePercent: likesData.percentage)
 

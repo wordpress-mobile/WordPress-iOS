@@ -2,10 +2,8 @@ import Foundation
 import XCTest
 
 private struct ElementStringIDs {
-    static let passwordOption = "Enter your password instead."
-    static let mailButton = "Open Mail"
-    static let mailAlert = "Please check your email"
-    static let okButton = "OK"
+    static let passwordOption = "Use Password"
+    static let mailButton = "Open Mail Button"
 }
 
 class LoginCheckMagicLinkScreen: BaseScreen {
@@ -17,7 +15,7 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         let app = XCUIApplication()
         passwordOption = app.buttons[ElementStringIDs.passwordOption]
         mailButton = app.buttons[ElementStringIDs.mailButton]
-        mailAlert = app.alerts[ElementStringIDs.mailAlert]
+        mailAlert = app.alerts.element(boundBy: 0)
 
         super.init(element: mailButton)
     }
@@ -28,11 +26,26 @@ class LoginCheckMagicLinkScreen: BaseScreen {
         return LoginPasswordScreen()
     }
 
-    func checkMagicLink() -> LoginCheckMagicLinkScreen {
-        mailButton.tap()
-        mailAlert.buttons[ElementStringIDs.okButton].tap()
+    func openMagicLink() -> LoginEpilogueScreen {
+        let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+        safari.launch()
 
-        return self
+        // Select the URL bar when Safari opens
+        let urlBar = safari.otherElements["URL"]
+        waitFor(element: urlBar, predicate: "exists == true")
+        urlBar.tap()
+
+        // Follow the magic link
+        var magicLinkComponents = URLComponents(url: WireMock.URL(), resolvingAgainstBaseURL: false)!
+        magicLinkComponents.path = "/magic-link"
+        magicLinkComponents.queryItems = [URLQueryItem(name: "scheme", value: "wpdebug")]
+
+        safari.textFields["URL"].typeText("\(magicLinkComponents.url!.absoluteString)\n")
+
+        // Accept the prompt to open the deep link
+        safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
+
+        return LoginEpilogueScreen()
     }
 
     static func isLoaded() -> Bool {

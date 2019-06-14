@@ -165,6 +165,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.textColor = [WPStyleGuide darkGrey];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    label.accessibilityIdentifier = @"Display Name";
     [WPStyleGuide configureLabel:label
                        textStyle:UIFontTextStyleHeadline
                       fontWeight:UIFontWeightSemibold];
@@ -181,6 +182,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.textColor = [WPStyleGuide grey];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    label.accessibilityIdentifier = @"Username";
     [WPStyleGuide configureLabel:label
                        textStyle:UIFontTextStyleCallout];
 

@@ -1,5 +1,5 @@
-* Mark notifications as unread with a simple swipe.
-* That occasional crash when searching the free photo library? Fixed!
-* Logging in to self-hosted sites is now smoother than ever.
-* Blockquotes in the Reader got a new, sleek look.
-* We’ve made lots of small improvements to visual and hearing accessibility throughout the app.
+* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
+* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
+* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
+* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
+* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).
