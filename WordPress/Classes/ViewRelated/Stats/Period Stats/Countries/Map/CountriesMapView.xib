@@ -26,11 +26,54 @@
                                 <constraint firstAttribute="height" constant="224" id="qig-sl-Ecf"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifQ-Nh-olb">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifQ-Nh-olb" userLabel="Chart container">
                             <rect key="frame" x="0.0" y="224" width="280" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K4S-IH-TLk">
+                                    <rect key="frame" x="0.0" y="12" width="42" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YZV-na-PDI" customClass="GradientView" customModule="WordPressUI">
+                                    <rect key="frame" x="50" y="18" width="60" height="8"/>
+                                    <color key="backgroundColor" red="1" green="0.33045744020000001" blue="0.35746497040000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="FLe-Lj-FCP"/>
+                                        <constraint firstAttribute="height" constant="8" id="RPj-vv-WWZ"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="fromColor">
+                                            <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="toColor">
+                                            <color key="value" red="1" green="0.33045744020000001" blue="0.35746497040000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="point" keyPath="startPoint">
+                                            <point key="value" x="0.0" y="0.5"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="point" keyPath="endPoint">
+                                            <point key="value" x="1" y="0.5"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMr-as-Umw">
+                                    <rect key="frame" x="118" y="12" width="42" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="WMr-as-Umw" firstAttribute="centerY" secondItem="ifQ-Nh-olb" secondAttribute="centerY" id="2N3-xK-mgD"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WMr-as-Umw" secondAttribute="trailing" id="Djl-Ef-vAR"/>
+                                <constraint firstItem="K4S-IH-TLk" firstAttribute="centerY" secondItem="ifQ-Nh-olb" secondAttribute="centerY" id="P3W-fJ-2pd"/>
+                                <constraint firstItem="YZV-na-PDI" firstAttribute="centerY" secondItem="ifQ-Nh-olb" secondAttribute="centerY" id="SHW-aR-1oM"/>
+                                <constraint firstItem="YZV-na-PDI" firstAttribute="leading" secondItem="K4S-IH-TLk" secondAttribute="trailing" constant="8" id="cRU-Wg-rWR"/>
+                                <constraint firstItem="K4S-IH-TLk" firstAttribute="leading" secondItem="ifQ-Nh-olb" secondAttribute="leading" id="jDw-4w-tPj"/>
                                 <constraint firstAttribute="height" constant="44" id="q1l-q8-r82"/>
+                                <constraint firstItem="WMr-as-Umw" firstAttribute="leading" secondItem="YZV-na-PDI" secondAttribute="trailing" constant="8" id="xSX-V9-q7y"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -52,7 +95,10 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="gradientView" destination="YZV-na-PDI" id="e2Y-qt-CeK"/>
                 <outlet property="mapContainer" destination="UhT-aV-rYz" id="Oa2-O1-S27"/>
+                <outlet property="maxViewsCountLabel" destination="WMr-as-Umw" id="wfT-DC-7by"/>
+                <outlet property="minViewsCountLabel" destination="K4S-IH-TLk" id="61g-Hr-tQF"/>
             </connections>
             <point key="canvasLocation" x="134.78260869565219" y="-24.776785714285712"/>
         </view>
