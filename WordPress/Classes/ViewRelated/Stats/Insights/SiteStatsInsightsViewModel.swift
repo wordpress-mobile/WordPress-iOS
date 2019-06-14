@@ -1,5 +1,4 @@
 import Foundation
-import WordPressComStatsiOS
 import WordPressFlux
 
 /// The view model used by Stats Insights.

@@ -1,6 +1,5 @@
 import Foundation
 import WordPressFlux
-import WordPressComStatsiOS
 
 enum PeriodAction: Action {
 
