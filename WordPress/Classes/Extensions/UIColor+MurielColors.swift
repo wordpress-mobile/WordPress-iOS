@@ -1,3 +1,6 @@
+/// Only necessary until the .murielColors feature flag is removed
+import WordPressShared
+
 /// Generates the names of the named colors in the ColorPalette.xcasset
 enum MurielColorName: String, CustomStringConvertible {
     // MARK: - Base colors
@@ -118,7 +121,13 @@ extension UIColor {
     }
 
     /// Muriel primary color
-    static var primary = muriel(color: .primary)
+    static var primary: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .primary)
+        } else {
+            return WPStyleGuide.wordPressBlue()
+        }
+    }
     class func primary(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .primary, shade: shade))
     }

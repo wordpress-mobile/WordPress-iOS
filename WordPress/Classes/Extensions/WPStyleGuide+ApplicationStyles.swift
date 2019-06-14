@@ -77,7 +77,10 @@ extension WPStyleGuide {
         cell.detailTextLabel?.font = tableviewSubtitleFont()
         cell.detailTextLabel?.sizeToFit()
 
-        if !FeatureFlag.murielColors.enabled {
+        // we only set the text subtle color, so that system colors are used otherwise
+        if FeatureFlag.murielColors.enabled {
+            cell.detailTextLabel?.textColor = .textSubtle
+        } else {
             cell.textLabel?.textColor = darkGrey()
             cell.detailTextLabel?.textColor = grey()
             cell.imageView?.tintColor = greyLighten10()
@@ -96,9 +99,8 @@ extension WPStyleGuide {
 
     @objc
     class func configureTableViewActionCell(_ cell: UITableViewCell?) {
-        guard let cell = cell else {
-            return
-        }
+        configureTableViewCell(cell)
+        cell?.textLabel?.textColor = .primary
     }
 
     @objc
