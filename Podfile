@@ -158,9 +158,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.5.3-beta'
+    # pod 'WordPressAuthenticator', '~> 1.5.3-beta'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'c4f62798f2b1413b2120d0803ed1fc7dabaeade7'
 
     aztec
     wordpress_ui
@@ -315,8 +315,8 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.4'
-  # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
+  # pod 'WordPressMocks', '~> 0.0.4'
+  pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => '2b1d7643c8847ef33edc2d70d81e4eb9a9614465'
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end
 
