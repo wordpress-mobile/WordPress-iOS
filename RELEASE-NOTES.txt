@@ -5,6 +5,7 @@
 * Block Editor: Updated color scheme.
 * Block Editor: Nested lists are now available on the toolbar.
 * Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
+* Stats Insights: Countries Map added in countries section.
 
 12.6
 -----
