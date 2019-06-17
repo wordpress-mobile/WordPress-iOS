@@ -155,4 +155,13 @@ extension UIColor {
 
     /// Muriel/iOS navgiation shadow color
     static var navigationBarShadow = muriel(color: .navigationBarShadow)
+
+    /// Muriel/iOS unselected color
+    static var unselected: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColorIdentifier(name: .gray, shade: .shade300))
+        } else {
+            return WPStyleGuide.greyLighten10()
+        }
+    }
 }

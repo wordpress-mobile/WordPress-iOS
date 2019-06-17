@@ -755,6 +755,8 @@ extension WordPressAppDelegate {
 
         if Feature.enabled(.murielColors) {
             WPStyleGuide.configureNavigationAppearance()
+
+            UITabBar.appearance().tintColor = .primary
         } else {
             WPStyleGuide.configureNavigationBarAppearance()
 
@@ -765,6 +767,12 @@ extension WordPressAppDelegate {
             navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
             navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
             navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
+
+            let tabBarTextColor = WPStyleGuide.wordPressBlue()
+            let tabBarUnselectedTextColor = WPStyleGuide.grey()
+
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarUnselectedTextColor], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
         }
 
         let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))
@@ -774,8 +782,6 @@ extension WordPressAppDelegate {
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = WPStyleGuide.wordPressBlue()
         UISwitch.appearance().onTintColor = WPStyleGuide.wordPressBlue()
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.grey()], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.wordPressBlue()], for: .selected)
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
         navReferenceAppearance.setBackgroundImage(nil, for: .default)
