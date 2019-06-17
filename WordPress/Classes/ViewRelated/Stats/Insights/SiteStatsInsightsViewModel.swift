@@ -70,7 +70,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createAllTimeStatsRows(), statSection: .insightsAllTime))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
@@ -129,13 +129,9 @@ private extension SiteStatsInsightsViewModel {
 
     struct AllTimeStats {
         static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
-        static let postsIcon = Style.imageForGridiconType(.posts)
         static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
-        static let visitorsIcon = Style.imageForGridiconType(.user)
-        static let bestViewsEverTitle = NSLocalizedString("Best Views Ever", comment: "All Time Stats 'Best Views Ever' label")
-        static let bestViewsIcon = Style.imageForGridiconType(.trophy)
+        static let bestViewsEverTitle = NSLocalizedString("Best views ever", comment: "All Time Stats 'Best views ever' label")
     }
 
     struct MostPopularStats {
@@ -172,44 +168,31 @@ private extension SiteStatsInsightsViewModel {
         static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
-    func createAllTimeStatsRows() -> [StatsTotalRowData] {
+    func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
         guard let allTimeInsight = insightsStore.getAllTimeStats() else {
             return []
         }
 
-        var dataRows = [StatsTotalRowData]()
+        let totalCounts = allTimeInsight.viewsCount +
+                          allTimeInsight.visitorsCount +
+                          allTimeInsight.postsCount +
+                          allTimeInsight.bestViewsPerDayCount
 
-        if allTimeInsight.postsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: allTimeInsight.postsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.postsIcon))
+        guard totalCounts > 0 else {
+            return []
         }
 
-        if allTimeInsight.viewsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: allTimeInsight.viewsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.viewsIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if allTimeInsight.visitorsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: allTimeInsight.visitorsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.visitorsIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.viewsTitle,
+                                                   leftColumnData: allTimeInsight.viewsCount.abbreviatedString(),
+                                                   rightColumnName: AllTimeStats.visitorsTitle,
+                                                   rightColumnData: allTimeInsight.visitorsCount.abbreviatedString()))
 
-        if allTimeInsight.bestViewsPerDayCount > 0 {
-            let formattedDate = { () -> String in
-                let df = DateFormatter()
-                df.dateStyle = .medium
-                df.timeStyle = .none
-                return df.string(from: allTimeInsight.bestViewsDay)
-            }()
-
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: allTimeInsight.bestViewsPerDayCount.abbreviatedString(),
-                                                   icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: formattedDate))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.postsTitle,
+                                                   leftColumnData: allTimeInsight.postsCount.abbreviatedString(),
+                                                   rightColumnName: AllTimeStats.bestViewsEverTitle,
+                                                   rightColumnData: allTimeInsight.bestViewsPerDayCount.abbreviatedString()))
 
         return dataRows
     }

@@ -132,6 +132,7 @@ private extension SiteStatsInsightsTableViewController {
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [CellHeaderRow.self,
                 LatestPostSummaryRow.self,
+                TwoColumnStatsRow.self,
                 SimpleTotalsStatsRow.self,
                 SimpleTotalsStatsSubtitlesRow.self,
                 PostingActivityRow.self,
