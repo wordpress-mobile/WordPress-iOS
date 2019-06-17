@@ -7,6 +7,7 @@
 * Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
 * Stats Insights: New two-column layout for All-Time stats.
 * Stats Insights: New two-column layout for Today stats.
+* Stats Insights: New two-column layout for Follower Totals stats.
 
 12.6
 -----
