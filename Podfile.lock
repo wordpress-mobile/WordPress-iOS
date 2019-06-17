@@ -253,7 +253,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.6.3)
   - WordPressAuthenticator (~> 1.5.0)
   - WordPressKit (~> 4.1-beta)
-  - WordPressShared (~> 1.8.1-beta)
+  - WordPressShared (from `https://github.com/leandroalonso/WordPress-iOS-Shared.git`, branch `feature/wpios11646_post_list_toggle_events`)
   - WordPressUI (from `https://github.com/leandroalonso/WordPressUI-iOS`, branch `change_layout_margins_uiview_helper`)
   - WPMediaPicker (~> 1.4.1)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.5.1/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -298,7 +298,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -325,6 +324,9 @@ EXTERNAL SOURCES:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.5.1
+  WordPressShared:
+    :branch: feature/wpios11646_post_list_toggle_events
+    :git: https://github.com/leandroalonso/WordPress-iOS-Shared.git
   WordPressUI:
     :branch: change_layout_margins_uiview_helper
     :git: https://github.com/leandroalonso/WordPressUI-iOS
@@ -344,6 +346,9 @@ CHECKOUT OPTIONS:
   RNTAztecView:
     :git: http://github.com/wordpress-mobile/gutenberg-mobile/
     :tag: v1.5.1
+  WordPressShared:
+    :commit: e7fa345df7ad30d2ba07d5181b6b8466cb39124f
+    :git: https://github.com/leandroalonso/WordPress-iOS-Shared.git
   WordPressUI:
     :commit: 5aedcf47873090a253d80ceec6c549f4ffa06303
     :git: https://github.com/leandroalonso/WordPressUI-iOS
@@ -401,6 +406,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: ebf070eac6ff8103026ebf8b01fc9a08ff9643f9
+PODFILE CHECKSUM: 655219fc3069aba429b848d3f89b4f7b9e0c67ec
 
 COCOAPODS: 1.6.1
