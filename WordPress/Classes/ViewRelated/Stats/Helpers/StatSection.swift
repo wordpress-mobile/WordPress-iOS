@@ -235,7 +235,7 @@
         static let mostPopularTime = NSLocalizedString("Most Popular Time", comment: "Insights 'Most Popular Time' header")
         static let followerTotals = NSLocalizedString("Follower Totals", comment: "Insights 'Follower Totals' header")
         static let publicize = NSLocalizedString("Publicize", comment: "Insights 'Publicize' header")
-        static let todaysStats = NSLocalizedString("Today's Stats", comment: "Insights 'Today's Stats' header")
+        static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
