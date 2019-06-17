@@ -1,9 +1,15 @@
 12.7
 -----
- 
+* Block Editor: Video, Quote and More blocks are available now.
+* Block Editor: Copy/Paste of text with attributes( bold, italic, ...) will be respected on the editor.
+* Block Editor: Updated color scheme.
+* Block Editor: Nested lists are now available on the toolbar.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
+* Stats Insights: New two-column layout for All-Time stats.
+* Stats Insights: New two-column layout for Today stats.
+
 12.6
 -----
-* Block Editor: A new block is available: video block.
 * Block Editor: Added UI to display a warning when a block has invalid content.
 * Block Editor: Fixed issue with link settings where “Open in New Tab” was always OFF on open.
 * Removed the limit of number of photos that can be shared from other apps.
