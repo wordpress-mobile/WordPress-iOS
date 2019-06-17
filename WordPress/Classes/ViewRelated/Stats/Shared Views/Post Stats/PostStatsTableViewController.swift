@@ -19,6 +19,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var postURL: URL?
     private var postID: Int?
     private var selectedDate = Date()
+    private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
     private let store = StoreContainer.shared.statsPeriod
@@ -55,8 +56,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         }
 
         cell.configure(date: selectedDate, period: .day, delegate: self)
-        viewModel?.statsBarChartViewDelegate = cell
-
+        tableHeaderView = cell
         return cell
     }
 
@@ -90,6 +90,8 @@ private extension PostStatsTableViewController {
 
             self?.refreshTableView()
         }
+
+        viewModel?.statsBarChartViewDelegate = self
     }
 
     func trackAccessEvent() {
@@ -181,6 +183,14 @@ extension PostStatsTableViewController: PostStatsDelegate {
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
+}
+
+// MARK: - StatsBarChartViewDelegate
+
+extension PostStatsTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
+    }
 }
 
 // MARK: - SiteStatsTableHeaderDelegate Methods

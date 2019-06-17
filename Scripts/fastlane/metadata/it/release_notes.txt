@@ -1,5 +1,7 @@
-*Alcune volte gli avvisi venivano visualizzati dietro la tastiera, il che non era l'ideale se si voleva davvero leggerli. Ora vengono mostrati di fronte, dove devono essere posizionati gli avvisi.
-*Abbiamo migliorato la gestione del dominio nell'app con la possibilità di riscattare un credito di dominio WordPress.com per dare al tuo sito un dominio personalizzato.
-*Ora gli articoli vengono salvati automaticamente quando li visualizzi in anteprima: una cosa in meno a cui pensare mentre prepari la bozza.
-*Occasionalmente l'app si arrestava in modo anomalo quando cercava di caricare commenti del Reader con GIF multiple. L'interazione su Internet consiste al 65% nella condivisione di GIF, quindi era un problema. Il problema ora è stato risolto.
-*L'app si avvia un po' più velocemente. In questo modo è possibile approfittare di quei secondi salvati e usarli in modo produttivo (o per selezionare la GIF perfetta).
+* Le statistiche sono migliorate talmente tanto che non sappiamo da dove iniziare. Sia la UI sia il back-end sono completamente rinnovati. I dati vengono memorizzati nella cache, quindi il caricamento delle statistiche è decisamente più rapido e puoi vederle anche quando sei offline. Le statistiche individuali hanno livelli di dettaglio più profondi da esplorare. I selettori della data consentono di specificare i periodi esatti da vedere. Il nostro entusiasmo per le statistiche è un po' eccessivo? Chi se ne importa!
+* L'editor dei blocchi è in continua evoluzione. La messaggistica è più chiara quando provi a inserire contenuto non valido in un blocco e abbiamo corretto un problema con le impostazioni del link per il quale l'opzione "Apri in nuova scheda" era sempre disattivata.
+* Verso l'infinito e oltre: abbiamo rimosso il limite al numero di foto che puoi condividere su WordPress da altre app.
+* Se scrivi un commento e durante il caricamento ti allontani, ora ricevi un messaggio più chiaro quando viene correttamente pubblicato, altrimenti informazioni più dettagliate in caso di caricamento non riuscito.
+* In Impostazioni account, ora il tuo sito principale mostra il dominio del sito se non ha un nome. (Elimina la pressione del dover pensare immediatamente al nome perfetto. Ti verrà in mente.)
+* Ti stai chiedendo quale sia il codice alla base dell'app? Abbiamo aggiunto i ringraziamenti per tutte le librerie di terze parti che utilizziamo: le trovi nelle impostazioni.
+* Abbiamo risolto un arresto anomalo che poteva verificarsi durante la configurazione del blog, quindi ora puoi dedicarti alla configurazione.

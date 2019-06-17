@@ -376,9 +376,14 @@ private extension SiteStatsInsightsViewModel {
 
         var rowItems: [StatsTotalRowData] = []
 
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/11713
+        // For now, don't show `View more` for Insights Comments.
+        // To accomplish this, return only the max number of rows displayed on the Insights card,
+        // as `View more` is added if the number of rows exceeds the max.
+
         switch commentType {
         case .insightsCommentsAuthors:
-            let authors = commentsInsight?.topAuthors ?? []
+            let authors = commentsInsight?.topAuthors.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -387,7 +392,7 @@ private extension SiteStatsInsightsViewModel {
                                   statSection: .insightsCommentsAuthors)
             }
         case .insightsCommentsPosts:
-            let posts = commentsInsight?.topPosts ?? []
+            let posts = commentsInsight?.topPosts.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
