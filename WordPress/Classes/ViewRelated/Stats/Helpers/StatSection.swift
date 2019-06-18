@@ -307,3 +307,16 @@
     }
 
 }
+
+// MARK: - Strings specific to Annual Site Stats
+
+struct AnnualSiteStats {
+    static let year = NSLocalizedString("Year", comment: "'This Year' label for the the year.")
+    static let totalPosts = NSLocalizedString("Total Posts", comment: "'This Year' label for the total number of posts.")
+    static let totalComments = NSLocalizedString("Total Comments", comment: "'This Year' label for total number of comments.")
+    static let totalLikes = NSLocalizedString("Total Likes", comment: "'This Year' label for total number of likes.")
+    static let totalWords = NSLocalizedString("Total Words", comment: "'This Year' label for total number of words.")
+    static let commentsPerPost = NSLocalizedString("Avg Comments / Post", comment: "'This Year' label for average comments per post.")
+    static let likesPerPost = NSLocalizedString("Avg Likes / Post", comment: "'This Year' label for average likes per post.")
+    static let wordsPerPost = NSLocalizedString("Avg Words / Post", comment: "'This Year' label for average words per post.")
+}
