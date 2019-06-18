@@ -74,9 +74,9 @@ class SiteStatsInsightsViewModel: Observable {
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
-            case .mostPopularDayAndHour:
+            case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createMostPopularStatsRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(), statSection: .insightsMostPopularTime))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
                 tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
@@ -135,7 +135,8 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct MostPopularStats {
-        static let percentOfViews = NSLocalizedString("%i%% of views", comment: "'Most Popular Time' label displaying percent of views. %i is the percent value.")
+        static let bestDay = NSLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
+        static let bestHour = NSLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
     }
 
     struct FollowerTotals {
@@ -193,7 +194,7 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
-    func createMostPopularStatsRows() -> [StatsTotalRowData] {
+    func createMostPopularStatsRows() -> [StatsTwoColumnRowData] {
         guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
             var mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
             let mostPopularHour = mostPopularStats.mostPopularHour.hour,
@@ -219,14 +220,10 @@ private extension SiteStatsInsightsViewModel {
 
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
-        return [StatsTotalRowData(name: dayString,
-                                  data: String(format: MostPopularStats.percentOfViews,
-                                               mostPopularStats.mostPopularDayOfWeekPercentage),
-                                  icon: Style.imageForGridiconType(.calendar)),
-                StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
-                                  data: String(format: MostPopularStats.percentOfViews,
-                                               mostPopularStats.mostPopularHourPercentage),
-                                  icon: Style.imageForGridiconType(.time))]
+        return [StatsTwoColumnRowData.init(leftColumnName: MostPopularStats.bestDay,
+                                   leftColumnData: dayString,
+                                   rightColumnName: MostPopularStats.bestHour,
+                                   rightColumnData: timeString.replacingOccurrences(of: ":00", with: ""))]
     }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {

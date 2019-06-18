@@ -1,3 +1,7 @@
+12.8
+-----
+* Stats Insights: New two-column layout for Most Popular Time stats.
+
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.

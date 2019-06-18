@@ -5,7 +5,7 @@ enum InsightType: Int {
     case latestPostSummary
     case allTimeStats
     case followersTotals
-    case mostPopularDayAndHour
+    case mostPopularTime
     case tagsAndCategories
     case annualSiteStats
     case comments
@@ -19,7 +19,7 @@ enum InsightType: Int {
                             .todaysStats,
                             .annualSiteStats,
                             .allTimeStats,
-                            .mostPopularDayAndHour,
+                            .mostPopularTime,
                             .postingActivity,
                             .comments,
                             .tagsAndCategories,
