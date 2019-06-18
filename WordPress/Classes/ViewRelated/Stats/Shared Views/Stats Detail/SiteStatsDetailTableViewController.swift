@@ -67,7 +67,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
-        title = statSection.title
+        title = statSection.detailsTitle
         initViewModel()
         displayLoadingViewIfNecessary()
     }

@@ -209,6 +209,15 @@
         }
     }
 
+    var detailsTitle: String {
+        switch self {
+        case .insightsAnnualSiteStats:
+            return DetailsTitles.annualSiteStats
+        default:
+            return title
+        }
+    }
+
     // MARK: - Image Size Accessor
 
     static let defaultImageSize = CGFloat(24)
@@ -241,6 +250,10 @@
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
+    }
+
+    struct DetailsTitles {
+        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'This Year' details view header")
     }
 
     struct PeriodHeaders {
