@@ -144,6 +144,9 @@ class SiteStatsDetailsViewModel: Observable {
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
             tableRows.append(contentsOf: tagsAndCategoriesRows())
+        case .insightsAnnualSiteStats:
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
+            tableRows.append(contentsOf: annualRows())
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                       dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
@@ -206,6 +209,10 @@ class SiteStatsDetailsViewModel: Observable {
 
     func refreshTagsAndCategories() {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
+    }
+
+    func refreshAnnualAndMostPopularTime() {
+        ActionDispatcher.dispatch(InsightAction.refreshAnnualAndMostPopularTime)
     }
 
     func refreshPostsAndPages() {
@@ -296,6 +303,8 @@ private extension SiteStatsDetailsViewModel {
             return .allComments
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
+        case .insightsAnnualSiteStats:
+            return .allAnnualAndMostPopularTime
         default:
             return nil
         }
@@ -425,6 +434,33 @@ private extension SiteStatsDetailsViewModel {
                                      childRows: StatsDataHelper.childRowsForItems($0.children),
                                      statSection: .insightsTagsAndCategories)
         }
+    }
+
+    // MARK: - Annual Site Stats
+
+    func annualRows() -> [DetailDataRow] {
+        return dataRowsFor(annualRowData())
+    }
+
+    func annualRowData() -> [StatsTotalRowData] {
+        guard let annualInsights = insightsStore.getAllAnnualAndMostPopularTime() else {
+            return []
+        }
+
+        return [StatsTotalRowData(name: AnnualSiteStats.totalPosts,
+                                  data: annualInsights.annualInsightsTotalPostsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalComments,
+                                  data: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
+                                  data: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalLikes,
+                                  data: annualInsights.annualInsightsTotalLikesCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
+                                  data: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalWords,
+                                  data: annualInsights.annualInsightsTotalWordsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
+                                  data: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString())]
     }
 
     // MARK: - Posts and Pages
