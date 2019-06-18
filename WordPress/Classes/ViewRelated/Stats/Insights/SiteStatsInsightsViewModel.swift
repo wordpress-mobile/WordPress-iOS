@@ -70,7 +70,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createAllTimeStatsRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createAllTimeStatsRows(), statSection: .insightsAllTime))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
@@ -94,7 +94,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(createFollowersRow())
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createTodaysStatsRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createTodaysStatsRows(), statSection: .insightsTodaysStats))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
                 tableRows.append(createPostingActivityRow())
@@ -129,13 +129,9 @@ private extension SiteStatsInsightsViewModel {
 
     struct AllTimeStats {
         static let postsTitle = NSLocalizedString("Posts", comment: "All Time Stats 'Posts' label")
-        static let postsIcon = Style.imageForGridiconType(.posts)
         static let viewsTitle = NSLocalizedString("Views", comment: "All Time Stats 'Views' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "All Time Stats 'Visitors' label")
-        static let visitorsIcon = Style.imageForGridiconType(.user)
-        static let bestViewsEverTitle = NSLocalizedString("Best Views Ever", comment: "All Time Stats 'Best Views Ever' label")
-        static let bestViewsIcon = Style.imageForGridiconType(.trophy)
+        static let bestViewsEverTitle = NSLocalizedString("Best views ever", comment: "All Time Stats 'Best views ever' label")
     }
 
     struct MostPopularStats {
@@ -155,11 +151,7 @@ private extension SiteStatsInsightsViewModel {
         static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
-        static let likesIcon = Style.imageForGridiconType(.star)
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
-        static let viewsIcon = Style.imageForGridiconType(.visible)
-        static let visitorsIcon = Style.imageForGridiconType(.user)
-        static let commentsIcon = Style.imageForGridiconType(.comment)
     }
 
     struct AnnualSiteStats {
@@ -172,44 +164,31 @@ private extension SiteStatsInsightsViewModel {
         static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
     }
 
-    func createAllTimeStatsRows() -> [StatsTotalRowData] {
+    func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
         guard let allTimeInsight = insightsStore.getAllTimeStats() else {
             return []
         }
 
-        var dataRows = [StatsTotalRowData]()
+        let totalCounts = allTimeInsight.viewsCount +
+                          allTimeInsight.visitorsCount +
+                          allTimeInsight.postsCount +
+                          allTimeInsight.bestViewsPerDayCount
 
-        if allTimeInsight.postsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.postsTitle,
-                                                   data: allTimeInsight.postsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.postsIcon))
+        guard totalCounts > 0 else {
+            return []
         }
 
-        if allTimeInsight.viewsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.viewsTitle,
-                                                   data: allTimeInsight.viewsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.viewsIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if allTimeInsight.visitorsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.visitorsTitle,
-                                                   data: allTimeInsight.visitorsCount.abbreviatedString(),
-                                                   icon: AllTimeStats.visitorsIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.viewsTitle,
+                                                   leftColumnData: allTimeInsight.viewsCount.abbreviatedString(),
+                                                   rightColumnName: AllTimeStats.visitorsTitle,
+                                                   rightColumnData: allTimeInsight.visitorsCount.abbreviatedString()))
 
-        if allTimeInsight.bestViewsPerDayCount > 0 {
-            let formattedDate = { () -> String in
-                let df = DateFormatter()
-                df.dateStyle = .medium
-                df.timeStyle = .none
-                return df.string(from: allTimeInsight.bestViewsDay)
-            }()
-
-            dataRows.append(StatsTotalRowData.init(name: AllTimeStats.bestViewsEverTitle,
-                                                   data: allTimeInsight.bestViewsPerDayCount.abbreviatedString(),
-                                                   icon: AllTimeStats.bestViewsIcon,
-                                                   nameDetail: formattedDate))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.postsTitle,
+                                                   leftColumnData: allTimeInsight.postsCount.abbreviatedString(),
+                                                   rightColumnName: AllTimeStats.bestViewsEverTitle,
+                                                   rightColumnData: allTimeInsight.bestViewsPerDayCount.abbreviatedString()))
 
         return dataRows
     }
@@ -290,35 +269,31 @@ private extension SiteStatsInsightsViewModel {
         }
     }
 
-    func createTodaysStatsRows() -> [StatsTotalRowData] {
+    func createTodaysStatsRows() -> [StatsTwoColumnRowData] {
         guard let todaysStats = insightsStore.getTodaysStats() else {
             return []
         }
-        var dataRows = [StatsTotalRowData]()
 
-        if todaysStats.viewsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.viewsTitle,
-                                                   data: todaysStats.viewsCount.abbreviatedString(),
-                                                   icon: TodaysStats.viewsIcon))
+        let totalCounts = todaysStats.viewsCount +
+                          todaysStats.visitorsCount +
+                          todaysStats.likesCount +
+                          todaysStats.commentsCount
+
+        guard totalCounts > 0 else {
+            return []
         }
 
-        if todaysStats.visitorsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.visitorsTitle,
-                                                   data: todaysStats.visitorsCount.abbreviatedString(),
-                                                   icon: TodaysStats.visitorsIcon))
-        }
+        var dataRows = [StatsTwoColumnRowData]()
 
-        if todaysStats.likesCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.likesTitle,
-                                                   data: todaysStats.likesCount.abbreviatedString(),
-                                                   icon: TodaysStats.likesIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.viewsTitle,
+                                                   leftColumnData: todaysStats.viewsCount.abbreviatedString(),
+                                                   rightColumnName: TodaysStats.visitorsTitle,
+                                                   rightColumnData: todaysStats.visitorsCount.abbreviatedString()))
 
-        if todaysStats.commentsCount > 0 {
-            dataRows.append(StatsTotalRowData.init(name: TodaysStats.commentsTitle,
-                                                   data: todaysStats.commentsCount.abbreviatedString(),
-                                                   icon: TodaysStats.commentsIcon))
-        }
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.likesTitle,
+                                                   leftColumnData: todaysStats.likesCount.abbreviatedString(),
+                                                   rightColumnName: TodaysStats.commentsTitle,
+                                                   rightColumnData: todaysStats.commentsCount.abbreviatedString()))
 
         return dataRows
     }
@@ -404,9 +379,14 @@ private extension SiteStatsInsightsViewModel {
 
         var rowItems: [StatsTotalRowData] = []
 
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/11713
+        // For now, don't show `View more` for Insights Comments.
+        // To accomplish this, return only the max number of rows displayed on the Insights card,
+        // as `View more` is added if the number of rows exceeds the max.
+
         switch commentType {
         case .insightsCommentsAuthors:
-            let authors = commentsInsight?.topAuthors ?? []
+            let authors = commentsInsight?.topAuthors.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -415,7 +395,7 @@ private extension SiteStatsInsightsViewModel {
                                   statSection: .insightsCommentsAuthors)
             }
         case .insightsCommentsPosts:
-            let posts = commentsInsight?.topPosts ?? []
+            let posts = commentsInsight?.topPosts.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),

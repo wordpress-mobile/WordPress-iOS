@@ -348,7 +348,7 @@ private extension SiteStatsDetailsViewModel {
         switch followerType {
         case .insightsFollowersWordPress:
             followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
-            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
+            totalFollowers = insightsStore.getAllDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
             followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
             totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
