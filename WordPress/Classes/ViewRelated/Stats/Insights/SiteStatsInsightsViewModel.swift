@@ -70,13 +70,17 @@ class SiteStatsInsightsViewModel: Observable {
                                                       siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .allTimeStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAllTime.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createAllTimeStatsRows(), statSection: .insightsAllTime))
+                tableRows.append(TwoColumnStatsRow(dataRows: createAllTimeStatsRows(),
+                                                   statSection: .insightsAllTime,
+                                                   siteStatsInsightsDelegate: nil))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
             case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(), statSection: .insightsMostPopularTime))
+                tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
+                                                   statSection: .insightsMostPopularTime,
+                                                   siteStatsInsightsDelegate: nil))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
                 tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
@@ -85,7 +89,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createAnnualRows(), statSection: .insightsAnnualSiteStats))
+                tableRows.append(TwoColumnStatsRow(dataRows: createAnnualRows(),
+                                                   statSection: .insightsAnnualSiteStats,
+                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .comments:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
                 tableRows.append(createCommentsRow())
@@ -94,7 +100,9 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(createFollowersRow())
             case .todaysStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTodaysStats.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createTodaysStatsRows(), statSection: .insightsTodaysStats))
+                tableRows.append(TwoColumnStatsRow(dataRows: createTodaysStatsRows(),
+                                                   statSection: .insightsTodaysStats,
+                                                   siteStatsInsightsDelegate: nil))
             case .postingActivity:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPostingActivity.title))
                 tableRows.append(createPostingActivityRow())
@@ -153,17 +161,6 @@ private extension SiteStatsInsightsViewModel {
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
         static let likesTitle = NSLocalizedString("Likes", comment: "Today's Stats 'Likes' label")
         static let commentsTitle = NSLocalizedString("Comments", comment: "Today's Stats 'Comments' label")
-    }
-
-    struct AnnualSiteStats {
-        static let year = NSLocalizedString("Year", comment: "'This Year' label for the the year.")
-        static let totalPosts = NSLocalizedString("Total Posts", comment: "'This Year' label for the total number of posts.")
-        static let totalComments = NSLocalizedString("Total Comments", comment: "'This Year' label for total number of comments.")
-        static let totalLikes = NSLocalizedString("Total Likes", comment: "'This Year' label for total number of likes.")
-        static let totalWords = NSLocalizedString("Total Words", comment: "'This Year' label for total number of words.")
-        static let commentsPerPost = NSLocalizedString("Avg Comments / Post", comment: "'This Year' label for average comments per post.")
-        static let likesPerPost = NSLocalizedString("Avg Likes / Post", comment: "'This Year' label for average likes per post.")
-        static let wordsPerPost = NSLocalizedString("Avg Words / Post", comment: "'This Year' label for average words per post.")
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
