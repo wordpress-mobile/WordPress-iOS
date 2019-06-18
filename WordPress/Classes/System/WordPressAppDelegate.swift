@@ -771,8 +771,8 @@ extension WordPressAppDelegate {
             let tabBarTextColor = WPStyleGuide.wordPressBlue()
             let tabBarUnselectedTextColor = WPStyleGuide.grey()
 
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarUnselectedTextColor], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
+            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarUnselectedTextColor], for: .normal)
+            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
         }
 
         let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))

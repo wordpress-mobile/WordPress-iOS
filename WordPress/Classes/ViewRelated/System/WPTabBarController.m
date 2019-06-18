@@ -901,13 +901,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void) showReaderBadge:(NSNotification *)notification
 {
-    UIImage *readerTabBarImage = [[UIImage imageNamed:@"icon-tab-reader-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    NSString *readerIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-reader-unread-muriel" : @"icon-tab-reader-unread";
+    UIImage *readerTabBarImage = [[UIImage imageNamed:readerIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 
 - (void) hideReaderBadge:(NSNotification *)notification
 {
-    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
+    NSString *readerIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-reader-muriel" : @"icon-tab-reader";
+    UIImage *readerTabBarImage = [UIImage imageNamed:readerIconName];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 
