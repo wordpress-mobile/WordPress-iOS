@@ -74,9 +74,9 @@ class SiteStatsInsightsViewModel: Observable {
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
                 tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
-            case .mostPopularDayAndHour:
+            case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createMostPopularStatsRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(), statSection: .insightsMostPopularTime))
             case .tagsAndCategories:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsTagsAndCategories.title))
                 tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
@@ -85,7 +85,7 @@ class SiteStatsInsightsViewModel: Observable {
                                                    siteStatsInsightsDelegate: siteStatsInsightsDelegate))
             case .annualSiteStats:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsAnnualSiteStats.title))
-                tableRows.append(createAnnualSiteStatsRow())
+                tableRows.append(TwoColumnStatsRow(dataRows: createAnnualRows(), statSection: .insightsAnnualSiteStats))
             case .comments:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsCommentsPosts.title))
                 tableRows.append(createCommentsRow())
@@ -135,7 +135,8 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct MostPopularStats {
-        static let percentOfViews = NSLocalizedString("%i%% of views", comment: "'Most Popular Time' label displaying percent of views. %i is the percent value.")
+        static let bestDay = NSLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
+        static let bestHour = NSLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
     }
 
     struct FollowerTotals {
@@ -155,13 +156,14 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct AnnualSiteStats {
-        static let totalPosts = NSLocalizedString("Total Posts", comment: "'Annual Site Stats' label for the total number of posts.")
-        static let comments = NSLocalizedString("Comments", comment: "'Annual Site Stats' label for total number of comments.")
-        static let likes = NSLocalizedString("Likes", comment: "'Annual Site Stats' label for total number of likes.")
-        static let words = NSLocalizedString("Words", comment: "'Annual Site Stats' label for total number of words.")
-        static let commentsPerPost = NSLocalizedString("Comments Per Post", comment: "'Annual Site Stats' label for average comments per post.")
-        static let likesPerPost = NSLocalizedString("Likes Per Post", comment: "'Annual Site Stats' label for average likes per post.")
-        static let wordsPerPost = NSLocalizedString("Words Per Post", comment: "'Annual Site Stats' label for average words per post.")
+        static let year = NSLocalizedString("Year", comment: "'This Year' label for the the year.")
+        static let totalPosts = NSLocalizedString("Total Posts", comment: "'This Year' label for the total number of posts.")
+        static let totalComments = NSLocalizedString("Total Comments", comment: "'This Year' label for total number of comments.")
+        static let totalLikes = NSLocalizedString("Total Likes", comment: "'This Year' label for total number of likes.")
+        static let totalWords = NSLocalizedString("Total Words", comment: "'This Year' label for total number of words.")
+        static let commentsPerPost = NSLocalizedString("Avg Comments / Post", comment: "'This Year' label for average comments per post.")
+        static let likesPerPost = NSLocalizedString("Avg Likes / Post", comment: "'This Year' label for average likes per post.")
+        static let wordsPerPost = NSLocalizedString("Avg Words / Post", comment: "'This Year' label for average words per post.")
     }
 
     func createAllTimeStatsRows() -> [StatsTwoColumnRowData] {
@@ -193,7 +195,7 @@ private extension SiteStatsInsightsViewModel {
         return dataRows
     }
 
-    func createMostPopularStatsRows() -> [StatsTotalRowData] {
+    func createMostPopularStatsRows() -> [StatsTwoColumnRowData] {
         guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
             var mostPopularWeekday = mostPopularStats.mostPopularDayOfWeek.weekday,
             let mostPopularHour = mostPopularStats.mostPopularHour.hour,
@@ -219,14 +221,10 @@ private extension SiteStatsInsightsViewModel {
 
         let timeString = timeFormatter.string(from: timeModifiedDate)
 
-        return [StatsTotalRowData(name: dayString,
-                                  data: String(format: MostPopularStats.percentOfViews,
-                                               mostPopularStats.mostPopularDayOfWeekPercentage),
-                                  icon: Style.imageForGridiconType(.calendar)),
-                StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
-                                  data: String(format: MostPopularStats.percentOfViews,
-                                               mostPopularStats.mostPopularHourPercentage),
-                                  icon: Style.imageForGridiconType(.time))]
+        return [StatsTwoColumnRowData.init(leftColumnName: MostPopularStats.bestDay,
+                                   leftColumnData: dayString,
+                                   rightColumnName: MostPopularStats.bestHour,
+                                   rightColumnData: timeString.replacingOccurrences(of: ":00", with: ""))]
     }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
@@ -333,37 +331,36 @@ private extension SiteStatsInsightsViewModel {
         }
     }
 
-    func createAnnualSiteStatsRow() -> AnnualSiteStatsRow {
+    func createAnnualRows() -> [StatsTwoColumnRowData] {
+
         guard let annualInsights = insightsStore.getAnnualAndMostPopularTime(),
             annualInsights.annualInsightsTotalPostsCount > 0 else {
-                return AnnualSiteStatsRow(totalPostsRowData: nil, totalsDataRows: nil, averagesDataRows: nil)
+                return []
         }
 
-        // Total Posts row
-        let totalPostsRowData = StatsTotalRowData(name: AnnualSiteStats.totalPosts,
-                                                  data: annualInsights.annualInsightsTotalPostsCount.abbreviatedString())
+        var dataRows = [StatsTwoColumnRowData]()
 
-        // Totals rows
-        let totalCommentsRow = StatsTotalRowData(name: AnnualSiteStats.comments,
-                                                 data: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString())
-        let totalLikesRow = StatsTotalRowData(name: AnnualSiteStats.likes,
-                                              data: annualInsights.annualInsightsTotalLikesCount.abbreviatedString())
-        let totalWordsRow = StatsTotalRowData(name: AnnualSiteStats.words,
-                                              data: annualInsights.annualInsightsTotalWordsCount.abbreviatedString())
-        let totalsDataRows = [totalCommentsRow, totalLikesRow, totalWordsRow]
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.year,
+                                                   leftColumnData: String(annualInsights.annualInsightsYear),
+                                                   rightColumnName: AnnualSiteStats.totalPosts,
+                                                   rightColumnData: annualInsights.annualInsightsTotalPostsCount.abbreviatedString()))
 
-        // Averages rows
-        let averageCommentsRow = StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                                                   data: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString())
-        let averageLikesRow = StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                                                data: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString())
-        let averageWordsRow = StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                                                data: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString())
-        let averageDataRows = [averageCommentsRow, averageLikesRow, averageWordsRow]
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalComments,
+                                                   leftColumnData: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString(),
+                                                   rightColumnName: AnnualSiteStats.commentsPerPost,
+                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString()))
 
-        return AnnualSiteStatsRow(totalPostsRowData: totalPostsRowData,
-                                  totalsDataRows: totalsDataRows,
-                                  averagesDataRows: averageDataRows)
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalLikes,
+                                                   leftColumnData: annualInsights.annualInsightsTotalLikesCount.abbreviatedString(),
+                                                   rightColumnName: AnnualSiteStats.likesPerPost,
+                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString()))
+
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalWords,
+                                                   leftColumnData: annualInsights.annualInsightsTotalWordsCount.abbreviatedString(),
+                                                   rightColumnName: AnnualSiteStats.wordsPerPost,
+                                                   rightColumnData: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString()))
+
+        return dataRows
 
     }
 
