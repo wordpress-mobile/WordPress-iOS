@@ -1,6 +1,6 @@
 12.8
 -----
-* Stats Refresh: Countries Map added in countries section.
+* Stats Periods: Countries Map added in countries section.
 
 12.7
 -----
