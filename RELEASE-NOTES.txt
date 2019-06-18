@@ -1,3 +1,7 @@
+12.8
+-----
+* Updated copy for preview unavailable screen
+
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.

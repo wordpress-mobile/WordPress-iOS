@@ -73,9 +73,8 @@ extension PostEditor where Self: UIViewController {
     func displayPreview() {
         savePostBeforePreview() { [weak self] previewURLString, error in
             if error != nil {
-                let title = NSLocalizedString("Preview Unavailable for Published Posts", comment: "Title on display preview error" )
-                let subtitle = NSLocalizedString("Update the published post to view your changes.", comment: "subtitle on display preview error" )
-                self?.displayPreviewNotAvailable(title: title, subtitle: subtitle)
+                let title = NSLocalizedString("Preview Unavailable", comment: "Title on display preview error" )
+                self?.displayPreviewNotAvailable(title: title)
                 return
             }
             guard let post = self?.post else {
