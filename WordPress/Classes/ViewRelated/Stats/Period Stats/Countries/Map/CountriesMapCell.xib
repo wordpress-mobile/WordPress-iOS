@@ -20,14 +20,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9qC-oR-E6W">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="UVB-Zz-xnO"/>
+                            <constraint firstAttribute="height" constant="0.5" id="UVB-Zz-xnO"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xGz-qQ-24V">
-                        <rect key="frame" x="0.0" y="1" width="320" height="282.5"/>
+                        <rect key="frame" x="0.0" y="0.5" width="320" height="283"/>
                     </stackView>
                 </subviews>
                 <constraints>
