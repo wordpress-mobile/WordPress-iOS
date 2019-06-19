@@ -73,7 +73,7 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(TwoColumnStatsRow(dataRows: createAllTimeStatsRows(), statSection: .insightsAllTime))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
-                tableRows.append(SimpleTotalsStatsRow(dataRows: createTotalFollowersRows()))
+                tableRows.append(TwoColumnStatsRow(dataRows: createTotalFollowersRows(), statSection: .insightsFollowerTotals))
             case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
                 tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(), statSection: .insightsMostPopularTime))
@@ -140,12 +140,10 @@ private extension SiteStatsInsightsViewModel {
     }
 
     struct FollowerTotals {
+        static let total = NSLocalizedString("Total", comment: "Label for total followers")
         static let wordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let email = NSLocalizedString("Email", comment: "Label for email followers")
         static let social = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
-        static let wordPressIcon = Style.imageForGridiconType(.mySites)
-        static let emailIcon = Style.imageForGridiconType(.mail)
-        static let socialIcon = Style.imageForGridiconType(.share)
     }
 
     struct TodaysStats {
@@ -227,30 +225,32 @@ private extension SiteStatsInsightsViewModel {
                                    rightColumnData: timeString.replacingOccurrences(of: ":00", with: ""))]
     }
 
-    func createTotalFollowersRows() -> [StatsTotalRowData] {
-        var dataRows = [StatsTotalRowData]()
+    func createTotalFollowersRows() -> [StatsTwoColumnRowData] {
+        let totalDotComFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount ?? 0
+        let totalEmailFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
 
-        if let totalDotComFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount,
-            totalDotComFollowers > 0 {
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.wordPress,
-                                                   data: totalDotComFollowers.abbreviatedString(),
-                                                   icon: FollowerTotals.wordPressIcon))
-        }
-
-        if let totalEmailFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount,
-            totalEmailFollowers > 0 {
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.email,
-                                                   data: totalEmailFollowers.abbreviatedString(),
-                                                   icon: FollowerTotals.emailIcon))
-        }
-
+        var totalPublicize = 0
         if let publicize = insightsStore.getPublicize(), !publicize.publicizeServices.isEmpty {
-            let publicizeSum = publicize.publicizeServices.reduce(0) { $0 + $1.followers }
-
-            dataRows.append(StatsTotalRowData.init(name: FollowerTotals.social,
-                                                   data: publicizeSum.abbreviatedString(),
-                                                   icon: FollowerTotals.socialIcon))
+            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
         }
+
+        let totalFollowers = totalDotComFollowers + totalEmailFollowers + totalPublicize
+
+        guard totalFollowers > 0 else {
+            return []
+        }
+
+        var dataRows = [StatsTwoColumnRowData]()
+
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: FollowerTotals.total,
+                                                   leftColumnData: totalFollowers.abbreviatedString(),
+                                                   rightColumnName: FollowerTotals.wordPress,
+                                                   rightColumnData: totalDotComFollowers.abbreviatedString()))
+
+        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: FollowerTotals.email,
+                                                   leftColumnData: totalEmailFollowers.abbreviatedString(),
+                                                   rightColumnName: FollowerTotals.social,
+                                                   rightColumnData: totalPublicize.abbreviatedString()))
 
         return dataRows
     }
