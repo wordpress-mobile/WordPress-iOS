@@ -1,6 +1,9 @@
 12.8
 -----
 * Stats Periods: Countries Map added in countries section.
+* Updated copy for preview unavailable screen
+* Stats Insights: New two-column layout for This Year stats.
+* Stats Insights: New two-column layout for Most Popular Time stats.
 
 12.7
 -----

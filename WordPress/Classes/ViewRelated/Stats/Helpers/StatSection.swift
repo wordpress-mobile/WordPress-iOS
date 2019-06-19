@@ -240,7 +240,7 @@
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
-        static let annualSiteStats = NSLocalizedString("Annual Site Stats", comment: "Insights 'Annual Site Stats' header")
+        static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
     }
 
     struct PeriodHeaders {
