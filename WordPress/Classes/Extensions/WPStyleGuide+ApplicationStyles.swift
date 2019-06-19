@@ -18,10 +18,8 @@ extension WPStyleGuide {
     // MARK: - style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
         let navigationAppearance = UINavigationBar.appearance()
-        navigationAppearance.barTintColor = wordPressBlue()
-        navigationAppearance.tintColor = .white
-        navigationAppearance.setBackgroundImage(UIImage(color: .navigationBar), for: .default)
-        navigationAppearance.shadowImage = UIImage(color: .navigationBarShadow)
+        navigationAppearance.isTranslucent = false
+        navigationAppearance.barTintColor = .navigationBar
         navigationAppearance.barStyle = .black
 
         let buttonBarAppearance = UIBarButtonItem.appearance()
