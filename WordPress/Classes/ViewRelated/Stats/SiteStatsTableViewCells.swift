@@ -223,6 +223,7 @@ struct TwoColumnStatsRow: ImmuTableRow {
 
     let dataRows: [StatsTwoColumnRowData]
     let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -231,7 +232,7 @@ struct TwoColumnStatsRow: ImmuTableRow {
             return
         }
 
-        cell.configure(dataRows: dataRows, statSection: statSection)
+        cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
 }
 

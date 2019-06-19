@@ -16,7 +16,7 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
     private var statSection: StatSection?
-
+    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - View
 
@@ -30,9 +30,10 @@ class TwoColumnCell: UITableViewCell, NibLoadable {
         removeRowsFromStackView(rowsStackView)
     }
 
-    func configure(dataRows: [StatsTwoColumnRowData], statSection: StatSection) {
+    func configure(dataRows: [StatsTwoColumnRowData], statSection: StatSection, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
         self.dataRows = dataRows
         self.statSection = statSection
+        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
         addRows()
         toggleViewMore()
     }
@@ -69,6 +70,13 @@ private extension TwoColumnCell {
         viewMoreView.isHidden = !showViewMore
         rowsStackViewBottomConstraint.constant = showViewMore ? viewMoreHeightConstraint.constant :
                                                                 bottomSeparatorLineHeightConstraint.constant
+    }
+
+    @IBAction func didTapViewMore(_ sender: UIButton) {
+        guard let statSection = statSection else {
+            return
+        }
+        siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
 }
