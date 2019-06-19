@@ -75,7 +75,9 @@ class SiteStatsInsightsViewModel: Observable {
                                                    siteStatsInsightsDelegate: nil))
             case .followersTotals:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsFollowerTotals.title))
-                tableRows.append(TwoColumnStatsRow(dataRows: createTotalFollowersRows(), statSection: .insightsFollowerTotals))
+                tableRows.append(TwoColumnStatsRow(dataRows: createTotalFollowersRows(),
+                                                   statSection: .insightsFollowerTotals,
+                                                   siteStatsInsightsDelegate: nil))
             case .mostPopularTime:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsMostPopularTime.title))
                 tableRows.append(TwoColumnStatsRow(dataRows: createMostPopularStatsRows(),
