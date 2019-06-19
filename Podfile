@@ -140,6 +140,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
+    pod 'FSInteractiveMap', '0.1.0'
 
     ## Automattic libraries
     ## ====================
