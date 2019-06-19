@@ -32,11 +32,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
         self.forDetails = forDetails
         bottomSeparatorLine.isHidden = forDetails
 
-        // TODO: in xib when add map:
-        // - unhide Map View
-        // - Top Separator Line: enable Top Space to Map View constraint
-        // - Top Separator Line: remove Top Space to Superview constraint
-
         if !forDetails {
         addRows(dataRows,
                 toStackView: rowsStackView,
@@ -53,7 +48,6 @@ class CountriesCell: UITableViewCell, NibLoadable {
         super.prepareForReuse()
         removeRowsFromStackView(rowsStackView)
     }
-
 }
 
 private extension CountriesCell {

@@ -313,6 +313,24 @@ struct CountriesStatsRow: ImmuTableRow {
     }
 }
 
+struct CountriesMapRow: ImmuTableRow {
+    let action: ImmuTableAction? = nil
+    let countriesMap: CountriesMap
+
+    typealias CellType = CountriesMapCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+        cell.configure(with: countriesMap)
+    }
+}
+
 // MARK: - Post Stats Rows
 
 struct PostStatsTitleRow: ImmuTableRow {
