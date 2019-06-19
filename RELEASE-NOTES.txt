@@ -11,6 +11,7 @@
 * The app now launches a bit more quickly.
 * Added a list of third-party library acknowledgements.
 * Updated messaging experience for a reply upload result.
+* Stats: Fixed an issue where chart axes may be formatted incorrectly in some locales.
 
 12.5
 -----
