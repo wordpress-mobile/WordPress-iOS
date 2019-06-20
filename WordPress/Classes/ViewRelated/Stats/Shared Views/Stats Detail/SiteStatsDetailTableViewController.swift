@@ -87,7 +87,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
         // Only show the date bar for Insights Annual details
         guard let statSection = statSection,
-            statSection == .insightsAnnualSiteStats else {
+            statSection == .insightsAnnualSiteStats,
+            let numberOfYears = insightsStore.getAllAnnual()?.allAnnualInsights.count else {
             return nil
         }
 
@@ -95,7 +96,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return nil
         }
 
-        cell.configure(date: Date(), period: .year, delegate: self)
+        cell.configure(date: Date(), period: .year, delegate: self, expectedPeriodCount: numberOfYears)
 
         return cell
     }
