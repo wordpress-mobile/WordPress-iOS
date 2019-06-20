@@ -10,6 +10,8 @@
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor network conditions.
+* Offline Improvements: Posts that failed to upload due to connectivity issues will be auto-uploaded.
 * Block Editor: Copy/Paste of text with attributes( bold, italic, ...) will be respected on the editor.
 * Block Editor: Updated color scheme.
 * Block Editor: Nested lists are now available on the toolbar.

@@ -28,6 +28,18 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
     private var shouldRestoreApplicationState = false
+    private var uploadsManager: UploadsManager = {
+        // It's not great that we're using singletons here.  This change is a good opportunity to
+        // revisit if we can make the coordinators children to another owning object.
+        //
+        // We're leaving as-is for now to avoid digressing.
+        let uploaders: [Uploader] = [
+            MediaCoordinator.shared,
+            PostCoordinator.shared
+        ]
+
+        return UploadsManager(uploaders: uploaders)
+    }()
 
     @objc class var shared: WordPressAppDelegate? {
         return UIApplication.shared.delegate as? WordPressAppDelegate
@@ -102,6 +114,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
+
+        uploadsManager.resume()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -210,10 +224,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         PushNotificationsManager.shared.registerForRemoteNotifications()
 
         // Deferred tasks to speed up app launch
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async { [weak self] in
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
+            self?.uploadsManager.resume()
         }
 
         setupWordPressExtensions()
