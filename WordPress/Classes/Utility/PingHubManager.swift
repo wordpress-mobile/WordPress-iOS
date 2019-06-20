@@ -119,6 +119,8 @@ class PingHubManager: NSObject {
     }
 
     fileprivate func stateChanged(old: State, new: State) {
+        precondition(Thread.isMainThread, "PingHubManager should only be changing state from the main thread")
+
         let connected = State.Pattern.connected
         let disconnected = !connected
         let foreground = State.Pattern.foreground
@@ -171,6 +173,12 @@ fileprivate extension PingHubManager {
     @objc
     func accountChanged() {
         let authToken = defaultAccountToken()
+        DispatchQueue.main.async { [weak self] in
+            self?.resetAuthToken(authToken)
+        }
+    }
+
+    func resetAuthToken(_ authToken: String?) {
         client = authToken.map({ client(token: $0 ) })
         // we set a new state as we are changing two properties and only want to trigger didSet once
         state = State(connected: false, reachable: state.reachable, foreground: state.foreground, authToken: authToken)
@@ -193,7 +201,9 @@ fileprivate extension PingHubManager {
             guard let manager = self, let reachability = reachability else {
                 return
             }
-            manager.state.reachable = reachability.isReachable()
+            DispatchQueue.main.async {
+                manager.state.reachable = reachability.isReachable()
+            }
         }
         reachability.reachableBlock = reachabilityChanged
         reachability.unreachableBlock = reachabilityChanged
