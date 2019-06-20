@@ -207,6 +207,7 @@ private extension LatestPostSummaryCell {
             return
         }
 
+        WPAppAnalytics.track(.statsItemTappedLatestPostSummaryPost)
         siteStatsInsightsDelegate?.displayWebViewWithURL?(postURL)
     }
 
@@ -216,22 +217,27 @@ private extension LatestPostSummaryCell {
             return
         }
 
+        let event: WPAnalyticsStat
         switch actionType {
         case .viewMore:
             guard let postID = lastPostInsight?.postID else {
                 DDLogInfo("No postID available to show Post Stats.")
                 return
             }
+            event = .statsItemTappedLatestPostSummaryViewPostDetails
             siteStatsInsightsDelegate?.showPostStats?(postID: postID, postTitle: postTitle, postURL: lastPostInsight?.url)
         case .sharePost:
             guard let postID = lastPostInsight?.postID else {
                 DDLogInfo("No postID available to share post.")
                 return
             }
+            event = .statsItemTappedLatestPostSummarySharePost
             siteStatsInsightsDelegate?.showShareForPost?(postID: postID as NSNumber, fromView: actionStackView)
         case .createPost:
+            event = .statsItemTappedLatestPostSummaryNewPost
             siteStatsInsightsDelegate?.showCreatePost?()
         }
+        WPAppAnalytics.track(event)
     }
 
     // MARK: - Chart support

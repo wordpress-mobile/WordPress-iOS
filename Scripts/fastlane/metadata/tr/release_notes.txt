@@ -1,5 +1,7 @@
-* Bazen bildirimler klavyenin arkasında görünür, bu da gerçekten okumak istemeniz durumunda ideal değildir. Şimdi bildirimlerin olması gerektiği yerde, önde çıkıyorlar.
-* Uygulamada, sitenize özel bir alan adı vermek için bir WordPress.com alan adı kredisi kullanma becerisiyle alan adı yönetimini hızlandırdık.
-* Yazılar artık önizleme yaparken otomatik olarak kaydedilir; taslak oluştururken düşünmeniz için bir şey daha eksik.
-* Uygulama, birden fazla GIF ile okuyucu yorumunu yüklemeye çalışırken zaman zaman çöktü. İnternette etkileşimde bulunmak %65 oranında GIF paylaşmak demek, bu yüzden olmamalıydı. Şimdi düzeltildi.
-* Uygulama biraz daha hızlı açılır, böylece kaydedilen saniyeleri alabilir ve bunları verimli (veya mükemmel GIF'i seçmek için) bir şekilde kullanabilirsiniz.
+* İstatistikler çok daha iyi, nereden başlayacağımızı bile bilmiyoruz. Hem UI hem de arka uç tamamen yenilenmiştir! Veriler önbelleğe alınır, bu nedenle yükleme istatistikleri çok daha hızlıdır ve çevrimdışı olduğunuzda bile bunları görebilirsiniz! Bireysel istatistikler, keşfetmeniz için daha derin ayrıntılara sahiptir! Tarih seçicileri, görmek istediğiniz süreleri tam olarak belirlemenizi sağlar! İstatistiklerden bu kadar heyecanlı olmak aptalca mı? Kimin umrunda!
+* Blok düzenleyici daha iyi olmaya devam ediyor. Bir bloğa geçersiz içerik yerleştirmeye çalıştığınızda daha net bir mesajlaşma oldu ve “Yeni sekmede aç” seçeneğinin her zaman kapalı kalmasına neden olan bağlantı ayarlarıyla ilgili bir sorun tespit ettik.
+* Sonsuzluğa ve ötesine: WordPress ile paylaşabileceğiniz fotoğraf sayısı sınırını diğer uygulamalardan kaldırdık.
+* Bir yorum yazarsanız ve yüklerken dolaşırsanız, başarılı bir şekilde gönderildiğinde daha net bir mesaj alırsınız veya başarısız olursa daha ayrıntılı bilgi alırsınız.
+* Sitenin adı yoksa, hesap ayarlarında birincil siteniz alan adı görüntüler. (Hemen mükemmel ismi düşünmek zorunda kalmanın baskısını alır. İsim size gelecektir.)
+* Uygulamaya güç veren kodları merak mı ediyorsunuz? Kullandığımız tüm üçüncü taraf kod kütüphaneleri için onaylar ekledik; bunları ayarlarınızda bulabilirsiniz.
+* Blogunuzu kurarken meydana gelebilecek bir çökme sorununu düzelttik, yani şimdi gerçekten de kurabilirsiniz.

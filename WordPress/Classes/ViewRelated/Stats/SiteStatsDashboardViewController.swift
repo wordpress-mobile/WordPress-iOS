@@ -5,30 +5,33 @@ class SiteStatsDashboardViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet weak var filterTabBar: FilterTabBar!
-    @IBOutlet weak var insightsContainerView: UIView!
-    @IBOutlet weak var statsContainerView: UIView!
 
-    private var insightsTableViewController: SiteStatsInsightsTableViewController?
-    private var periodTableViewController: SiteStatsPeriodTableViewController?
+    private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
+    private var periodTableViewController = SiteStatsPeriodTableViewController.loadFromStoryboard()
+    private var pageViewController: UIPageViewController?
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFilterBar()
-        getSelectedPeriodFromUserDefaults()
+        restoreSelectedPeriodFromUserDefaults()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let insightsTableVC = segue.destination as? SiteStatsInsightsTableViewController {
-            insightsTableViewController = insightsTableVC
-        }
-
-        if let periodTableVC = segue.destination as? SiteStatsPeriodTableViewController {
-            periodTableViewController = periodTableVC
+        switch segue.destination {
+        case let pageViewController as UIPageViewController:
+            self.pageViewController = pageViewController
+        default:
+            break
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
+            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod, withDate: periodTableViewController.selectedDate)
+        }
+    }
 }
 
 // MARK: - Private Extension
@@ -60,6 +63,16 @@ private extension SiteStatsDashboardViewController {
             case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
             }
         }
+
+        var analyticsAccessEvent: WPAnalyticsStat {
+            switch self {
+            case .insights: return .statsInsightsAccessed
+            case .days:     return .statsPeriodDaysAccessed
+            case .weeks:    return .statsPeriodWeeksAccessed
+            case .months:   return .statsPeriodMonthsAccessed
+            case .years:    return .statsPeriodYearsAccessed
+            }
+        }
     }
 
     var currentSelectedPeriod: StatsPeriodType {
@@ -69,17 +82,12 @@ private extension SiteStatsDashboardViewController {
         }
         set {
             filterTabBar?.setSelectedIndex(newValue.rawValue)
-            setContainerViewVisibility()
-            updatePeriodView()
+            let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
+            updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
+            trackAccessEvent()
         }
     }
-
-    func setContainerViewVisibility() {
-        statsContainerView.isHidden = currentSelectedPeriod == .insights
-        insightsContainerView.isHidden = !statsContainerView.isHidden
-    }
-
 }
 
 // MARK: - FilterTabBar Support
@@ -106,18 +114,54 @@ private extension SiteStatsDashboardViewController {
         UserDefaults.standard.set(currentSelectedPeriod.rawValue, forKey: Constants.userDefaultsKey)
     }
 
-    func getSelectedPeriodFromUserDefaults() {
-        currentSelectedPeriod = StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
+    func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
+        return StatsPeriodType(rawValue: UserDefaults.standard.integer(forKey: Constants.userDefaultsKey)) ?? .insights
     }
 
-    func updatePeriodView() {
+    func restoreSelectedPeriodFromUserDefaults() {
+        currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
+    }
 
-        guard currentSelectedPeriod != .insights else {
-            return
+    func updatePeriodView(oldSelectedPeriod: StatsPeriodType, withDate periodDate: Date? = Date()) {
+        let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
+        let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
+        let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
+
+        switch currentSelectedPeriod {
+        case .insights:
+            if selectedPeriodChanged || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([insightsTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+            insightsTableViewController.refreshInsights()
+        default:
+            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([periodTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+            periodTableViewController.selectedDate = periodDate
+            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+            periodTableViewController.selectedPeriod = selectedPeriod
         }
+    }
+}
 
-        periodTableViewController?.selectedDate = Date()
-        let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-        periodTableViewController?.selectedPeriod = selectedPeriod
+// MARK: - Tracks Support
+
+private extension SiteStatsDashboardViewController {
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
+    }
+
+    func trackAccessEvent() {
+        let event = currentSelectedPeriod.analyticsAccessEvent
+        captureAnalyticsEvent(event)
     }
 }

@@ -25,11 +25,16 @@ class WPCrashLogging {
             try Client.shared?.startCrashHandler()
 
             // Override event serialization to append the logs, if needed
+            Client.shared?.beforeSerializeEvent = sharedInstance.beforeSerializeEvent
             Client.shared?.shouldSendEvent = sharedInstance.shouldSendEvent
 
         } catch let error {
             print("\(error)")
         }
+    }
+
+    func beforeSerializeEvent(_ event: Event) {
+        event.tags?["locale"] = NSLocale.current.languageCode
     }
 
     func shouldSendEvent(_ event: Event?) -> Bool {
@@ -65,6 +70,13 @@ extension WPCrashLogging {
         event.message = error.localizedDescription
 
         Client.shared?.appendStacktrace(to: event)
+        Client.shared?.send(event: event)
+    }
+
+    static func logMessage(_ message: String, properties: [String: Any]? = nil) {
+        let event = Event(level: .info)
+        event.message = message
+        event.extra = properties
         Client.shared?.send(event: event)
     }
 }
@@ -114,13 +126,10 @@ extension WPCrashLogging {
     }
 
     var releaseName: String {
-        let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let buildNumber = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-
-        return "\(bundleVersion) (\(buildNumber)"
+        return Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
     }
 
     var buildType: String {
-        return Mirror(reflecting: BuildConfiguration.current).children.first?.label ?? "unknown"
+        return BuildConfiguration.current.rawValue
     }
 }

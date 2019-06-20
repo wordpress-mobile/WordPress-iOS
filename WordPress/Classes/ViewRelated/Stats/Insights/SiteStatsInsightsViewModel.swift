@@ -13,7 +13,7 @@ class SiteStatsInsightsViewModel: Observable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     private let insightsStore: StatsInsightsStore
-    private let insightsReceipt: Receipt
+    private var insightsReceipt: Receipt
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
 
@@ -39,8 +39,12 @@ class SiteStatsInsightsViewModel: Observable {
         insightsChangeReceipt = insightsStore.onChange { [weak self] in
             if let lastPostID = insightsStore.getLastPostInsight()?.postID {
                 self?.fetchStatsForInsightsLatestPost(postID: lastPostID)
+            } else {
+                self?.emitChange()
             }
+        }
 
+        periodChangeReceipt = periodStore.onChange { [weak self] in
             self?.emitChange()
         }
     }
@@ -51,7 +55,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         var tableRows = [ImmuTableRow]()
 
-        if insightsStore.fetchingOverviewHasFailed &&
+        if insightsStore.fetchingFailed(for: .insights) &&
             !insightsStore.containsCachedData {
             return ImmuTable.Empty
         }
@@ -114,10 +118,8 @@ class SiteStatsInsightsViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshInsights() {
-        ActionDispatcher.dispatch(InsightAction.refreshInsights)
-
-        if let postID = insightsStore.getLastPostInsight()?.postID {
-            ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        if !insightsStore.isFetchingOverview {
+            ActionDispatcher.dispatch(InsightAction.refreshInsights)
         }
     }
 }
@@ -242,11 +244,11 @@ private extension SiteStatsInsightsViewModel {
         return [StatsTotalRowData(name: dayString,
                                   data: String(format: MostPopularStats.percentOfViews,
                                                mostPopularStats.mostPopularDayOfWeekPercentage),
-                                  icon: Style.imageForGridiconType(.calendar, withTint: .darkGrey)),
+                                  icon: Style.imageForGridiconType(.calendar)),
                 StatsTotalRowData(name: timeString.replacingOccurrences(of: ":00", with: ""),
                                   data: String(format: MostPopularStats.percentOfViews,
                                                mostPopularStats.mostPopularHourPercentage),
-                                  icon: Style.imageForGridiconType(.time, withTint: .darkGrey))]
+                                  icon: Style.imageForGridiconType(.time))]
     }
 
     func createTotalFollowersRows() -> [StatsTotalRowData] {
@@ -403,9 +405,14 @@ private extension SiteStatsInsightsViewModel {
 
         var rowItems: [StatsTotalRowData] = []
 
+        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/11713
+        // For now, don't show `View more` for Insights Comments.
+        // To accomplish this, return only the max number of rows displayed on the Insights card,
+        // as `View more` is added if the number of rows exceeds the max.
+
         switch commentType {
         case .insightsCommentsAuthors:
-            let authors = commentsInsight?.topAuthors ?? []
+            let authors = commentsInsight?.topAuthors.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = authors.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -414,7 +421,7 @@ private extension SiteStatsInsightsViewModel {
                                   statSection: .insightsCommentsAuthors)
             }
         case .insightsCommentsPosts:
-            let posts = commentsInsight?.topPosts ?? []
+            let posts = commentsInsight?.topPosts.prefix(StatsDataHelper.maxRowsToDisplay) ?? []
             rowItems = posts.map {
                 StatsTotalRowData(name: $0.name,
                                   data: $0.commentCount.abbreviatedString(),
@@ -472,10 +479,6 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func fetchStatsForInsightsLatestPost(postID: Int) {
-        self.periodReceipt = periodStore.query(.postStats(postID: postID))
-        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
-        periodChangeReceipt = periodStore.onChange { [weak self] in
-            self?.emitChange()
-        }
+        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
     }
 }

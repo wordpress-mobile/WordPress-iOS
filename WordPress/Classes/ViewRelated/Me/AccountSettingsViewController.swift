@@ -87,13 +87,17 @@ private class AccountSettingsController: SettingsController {
             action: presenter.push(editEmailAddress(settings, service: service))
         )
 
-        // If the primary site has no name, then show the URL.
-        var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
-        primarySiteName = (primarySiteName?.isEmpty ?? true) ? settings?.webAddress : primarySiteName
+        var primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) } ?? ""
+
+        // If the primary site has no Site Title, then show the displayURL.
+        if primarySiteName.isEmpty {
+            let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            primarySiteName = blogService.primaryBlog()?.displayURL as String? ?? ""
+        }
 
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-            value: primarySiteName ?? "",
+            value: primarySiteName,
             action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
         )
 

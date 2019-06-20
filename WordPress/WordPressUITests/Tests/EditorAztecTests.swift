@@ -1,26 +1,56 @@
 import XCTest
 
 class EditorAztecTests: XCTestCase {
-    private var editorScreen: EditorScreen!
+    private var editorScreen: AztecEditorScreen!
 
     override func setUp() {
-        super.setUp()
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+        setUpTestSuite()
 
-        let app = XCUIApplication()
-        app.launchArguments = ["NoAnimations"]
-        app.activate()
-
-        editorScreen = LoginFlow
-            .login(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
-            .tabBar.gotoEditorScreen()
+        _ = LoginFlow.loginIfNeeded(siteUrl: WPUITestCredentials.testWPcomSiteAddress, username: WPUITestCredentials.testWPcomUsername, password: WPUITestCredentials.testWPcomPassword)
+        editorScreen = EditorFlow
+            .toggleBlockEditor(to: .off)
+            .tabBar.gotoAztecEditorScreen()
     }
 
     override func tearDown() {
-        editorScreen.closeEditor()
-        LoginFlow.logoutIfNeeded()
+        if editorScreen != nil && !TabNavComponent.isVisible() {
+            EditorFlow.returnToMainEditorScreen()
+            editorScreen.closeEditor()
+        }
         super.tearDown()
+    }
+
+    func testTextPostPublish() {
+        let title = getRandomPhrase()
+        let content = getRandomContent()
+        editorScreen
+            .enterTextInTitle(text: title)
+            .enterText(text: content)
+            .publish()
+            .viewPublishedPost(withTitle: title)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .done()
+    }
+
+    func testBasicPostPublish() {
+        let title = getRandomPhrase()
+        let content = getRandomContent()
+        let category = getCategory()
+        let tag = getTag()
+        editorScreen
+            .enterTextInTitle(text: title)
+            .enterText(text: content)
+            .addImageByOrder(id: 0)
+            .openPostSettings()
+            .selectCategory(name: category)
+            .addTag(name: tag)
+            .setFeaturedImage()
+            .verifyPostSettings(withCategory: category, withTag: tag, hasImage: true)
+            .closePostSettings()
+        AztecEditorScreen(mode: .rich).publish()
+            .viewPublishedPost(withTitle: title)
+            .verifyEpilogueDisplays(postTitle: title, siteAddress: WPUITestCredentials.testWPcomSiteAddress)
+            .done()
     }
 
     // Github issue https://github.com/wordpress-mobile/AztecEditor-iOS/issues/385

@@ -66,6 +66,19 @@ struct DefaultContentCoordinator: ContentCoordinator {
             throw DisplayError.missingParameter
         }
 
+        if FeatureFlag.statsRefresh.enabled {
+            let service = BlogService(managedObjectContext: mainContext)
+            SiteStatsInformation.sharedInstance.siteTimeZone = service.timeZone(for: blog)
+            SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+            SiteStatsInformation.sharedInstance.siteID = blog.dotComID
+
+            let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+            detailTableViewController.configure(statSection: StatSection.insightsFollowersWordPress)
+            controller?.navigationController?.pushViewController(detailTableViewController, animated: true)
+
+            return
+        }
+
         let statsViewController = newStatsViewController()
         statsViewController.selectedDate = Date()
         statsViewController.statsSection = .followers
@@ -131,7 +144,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
         return WPStatsService(siteId: blog.dotComID,
                               siteTimeZone: blogService.timeZone(for: blog),
                               oauth2Token: blog.authToken,
-                              andCacheExpirationInterval: expirationTime)
+                              andCacheExpirationInterval: expirationTime,
+                              apiBaseUrlString: Environment.current.wordPressComApiBase)
     }
 
     private func newStatsViewController() -> StatsViewAllTableViewController {

@@ -19,14 +19,14 @@ enum InsightAction: Action {
     case refreshInsights
 
     // Insights details
-    case receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?)
-    case receivedAllEmailFollowers(_ allDotComFollowers: StatsEmailFollowersInsight?)
+    case receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?, _ error: Error?)
+    case receivedAllEmailFollowers(_ allDotComFollowers: StatsEmailFollowersInsight?, _ error: Error?)
     case refreshFollowers
 
-    case receivedAllCommentsInsight(_ commentsInsight: StatsCommentsInsight?)
+    case receivedAllCommentsInsight(_ commentsInsight: StatsCommentsInsight?, _ error: Error?)
     case refreshComments
 
-    case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?)
+    case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
     case refreshTagsAndCategories
 }
 
@@ -85,15 +85,19 @@ struct InsightStoreState {
 
     var allDotComFollowers: StatsDotComFollowersInsight?
     var fetchingAllDotComFollowers = false
+    var fetchingAllDotComFollowersHasFailed = false
 
     var allEmailFollowers: StatsEmailFollowersInsight?
     var fetchingAllEmailFollowers = false
+    var fetchingAllEmailFollowersHasFailed = false
 
     var allCommentsInsight: StatsCommentsInsight?
     var fetchingAllCommentsInsight = false
+    var fetchingAllCommentsInsightHasFailed = false
 
     var allTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingAllTagsAndCategories = false
+    var fetchingAllTagsAndCategoriesHasFailed = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -131,18 +135,18 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedTagsAndCategories(tagsAndCategories, error)
         case .refreshInsights:
             refreshInsights()
-        case .receivedAllDotComFollowers(let allDotComFollowers):
-            receivedAllDotComFollowers(allDotComFollowers)
-        case .receivedAllEmailFollowers(let allEmailFollowers):
-            receivedAllEmailFollowers(allEmailFollowers)
+        case .receivedAllDotComFollowers(let allDotComFollowers, let error):
+            receivedAllDotComFollowers(allDotComFollowers, error)
+        case .receivedAllEmailFollowers(let allEmailFollowers, let error):
+            receivedAllEmailFollowers(allEmailFollowers, error)
         case .refreshFollowers:
             refreshFollowers()
-        case .receivedAllCommentsInsight(let allComments):
-            receivedAllCommentsInsight(allComments)
+        case .receivedAllCommentsInsight(let allComments, let error):
+            receivedAllCommentsInsight(allComments, error)
         case .refreshComments:
             refreshComments()
-        case .receivedAllTagsAndCategories(let allTagsAndCategories):
-            receivedAllTagsAndCategories(allTagsAndCategories)
+        case .receivedAllTagsAndCategories(let allTagsAndCategories, let error):
+            receivedAllTagsAndCategories(allTagsAndCategories, error)
         case .refreshTagsAndCategories:
             refreshTagsAndCategories()
         }
@@ -288,9 +292,9 @@ private extension StatsInsightsStore {
             self.actionDispatcher.dispatch(InsightAction.receivedTagsAndCategories(tagsAndCategoriesInsight, error))
         }
 
-        api.getInsight { (streak: StatsPostingStreakInsight?, error) in
+        api.getInsight(limit: 5000) { (streak: StatsPostingStreakInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching tags and categories insight: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching posting activity insight: \(String(describing: error?.localizedDescription))")
             }
 
             self.actionDispatcher.dispatch(InsightAction.receivedPostingActivity(streak, error))
@@ -473,14 +477,14 @@ private extension StatsInsightsStore {
             if error != nil {
                 DDLogInfo("Error fetching dotCom Followers: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers))
+            self.actionDispatcher.dispatch(InsightAction.receivedAllDotComFollowers(dotComFollowers, error))
         }
 
           api.getInsight(limit: 100) { (emailFollowers: StatsEmailFollowersInsight?, error) in
             if error != nil {
                 DDLogInfo("Error fetching email Followers: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllEmailFollowers(emailFollowers))
+            self.actionDispatcher.dispatch(InsightAction.receivedAllEmailFollowers(emailFollowers, error))
         }
     }
 
@@ -500,7 +504,7 @@ private extension StatsInsightsStore {
             if error != nil {
                 DDLogInfo("Error fetching all comments: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllCommentsInsight(allComments))
+            self.actionDispatcher.dispatch(InsightAction.receivedAllCommentsInsight(allComments, error))
         }
     }
 
@@ -518,25 +522,27 @@ private extension StatsInsightsStore {
             if error != nil {
                 DDLogInfo("Error fetching all tags and categories: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllTagsAndCategories(allTagsAndCategories))
+            self.actionDispatcher.dispatch(InsightAction.receivedAllTagsAndCategories(allTagsAndCategories, error))
         }
     }
 
-    func receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?) {
+    func receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?, _ error: Error?) {
         transaction { state in
             if allDotComFollowers != nil {
                 state.allDotComFollowers = allDotComFollowers
             }
             state.fetchingAllDotComFollowers = false
+            state.fetchingAllDotComFollowersHasFailed = error != nil
         }
     }
 
-    func receivedAllEmailFollowers(_ allEmailFollowers: StatsEmailFollowersInsight?) {
+    func receivedAllEmailFollowers(_ allEmailFollowers: StatsEmailFollowersInsight?, _ error: Error?) {
         transaction { state in
             if allEmailFollowers != nil {
                 state.allEmailFollowers = allEmailFollowers
             }
             state.fetchingAllEmailFollowers = false
+            state.fetchingAllEmailFollowersHasFailed = error != nil
         }
     }
 
@@ -553,12 +559,13 @@ private extension StatsInsightsStore {
         return !isFetchingFollowers
     }
 
-    func receivedAllCommentsInsight(_ allCommentsInsight: StatsCommentsInsight?) {
+    func receivedAllCommentsInsight(_ allCommentsInsight: StatsCommentsInsight?, _ error: Error?) {
         transaction { state in
             if allCommentsInsight != nil {
                 state.allCommentsInsight = allCommentsInsight
             }
             state.fetchingAllCommentsInsight = false
+            state.fetchingAllCommentsInsightHasFailed = error != nil
         }
     }
 
@@ -575,12 +582,13 @@ private extension StatsInsightsStore {
         return !isFetchingComments
     }
 
-    func receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?) {
+    func receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?) {
         transaction { state in
             if allTagsAndCategories != nil {
                 state.allTagsAndCategories = allTagsAndCategories
             }
             state.fetchingAllTagsAndCategories = false
+            state.fetchingAllTagsAndCategoriesHasFailed = error != nil
         }
     }
 
@@ -647,13 +655,6 @@ extension StatsInsightsStore {
     ///
     func getMonthlyPostingActivityFor(date: Date) -> [PostingStreakEvent] {
 
-        guard
-            let postingEvents = state.postingActivity?.postingEvents,
-            postingEvents.count > 0
-            else {
-                return []
-        }
-
         let calendar = Calendar.autoupdatingCurrent
         let components = calendar.dateComponents([.month, .year], from: date)
 
@@ -663,6 +664,8 @@ extension StatsInsightsStore {
             else {
                 return []
         }
+
+        let postingEvents = state.postingActivity?.postingEvents ?? []
 
         // This gives a range of how many days there are in a given month...
         let rangeOfMonth = calendar.range(of: .day, in: .month, for: date) ?? 0..<0
@@ -754,6 +757,20 @@ extension StatsInsightsStore {
             state.fetchingPostingActivityHasFailed &&
             state.fetchingCommentsInsightHasFailed &&
             state.fetchingTagsAndCategoriesHasFailed
+    }
+
+    func fetchingFailed(for query: InsightQuery) -> Bool {
+        switch query {
+        case .insights:
+            return fetchingOverviewHasFailed
+        case .allFollowers:
+            return state.fetchingAllDotComFollowersHasFailed &&
+                state.fetchingAllEmailFollowersHasFailed
+        case .allComments:
+            return state.fetchingAllCommentsInsightHasFailed
+        case .allTagsAndCategories:
+            return state.fetchingAllTagsAndCategoriesHasFailed
+        }
     }
 
     var containsCachedData: Bool {

@@ -34,6 +34,11 @@ class PostingActivityViewController: UIViewController, StoryboardLoadable {
         dayDataView.isHidden = true
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+
 }
 
 // MARK: - UICollectionViewDataSource

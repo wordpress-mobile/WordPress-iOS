@@ -19,6 +19,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var postURL: URL?
     private var postID: Int?
     private var selectedDate = Date()
+    private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
     private let store = StoreContainer.shared.statsPeriod
@@ -32,13 +33,15 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Stats", comment: "Window title for Post Stats view.")
+        navigationItem.title = NSLocalizedString("Post Stats", comment: "Window title for Post Stats view.")
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
         tableView.register(SiteStatsTableHeaderView.defaultNib,
                            forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
         initViewModel()
+        displayLoadingViewIfNecessary()
+        trackAccessEvent()
     }
 
     func configure(postID: Int, postTitle: String?, postURL: URL?) {
@@ -53,8 +56,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         }
 
         cell.configure(date: selectedDate, period: .day, delegate: self)
-        viewModel?.statsBarChartViewDelegate = cell
-
+        tableHeaderView = cell
         return cell
     }
 
@@ -88,6 +90,22 @@ private extension PostStatsTableViewController {
 
             self?.refreshTableView()
         }
+
+        viewModel?.statsBarChartViewDelegate = self
+    }
+
+    func trackAccessEvent() {
+        var properties = [AnyHashable: Any]()
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            properties["blog_id"] = blogIdentifier
+        }
+
+        if let postIdentifier = postID {
+            properties["post_id"] = postIdentifier
+        }
+
+        WPAppAnalytics.track(.statsSinglePostAccessed, withProperties: properties)
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
@@ -108,6 +126,12 @@ private extension PostStatsTableViewController {
 
         tableHandler.viewModel = viewModel.tableViewModel()
         refreshControl?.endRefreshing()
+
+        if viewModel.fetchDataHasFailed() {
+            displayFailureViewIfNecessary()
+        } else {
+            hideNoResults()
+        }
     }
 
     @objc func userInitiatedRefresh() {
@@ -115,12 +139,17 @@ private extension PostStatsTableViewController {
         refreshData()
     }
 
-    func refreshData() {
-        guard let postID = postID else {
+    func refreshData(forceUpdate: Bool = false) {
+        guard let viewModel = viewModel,
+            let postID = postID else {
             return
         }
 
-        viewModel?.refreshPostStats(postID: postID, selectedDate: selectedDate)
+        viewModel.refreshPostStats(postID: postID, selectedDate: selectedDate)
+        if forceUpdate {
+            tableHandler.viewModel = viewModel.tableViewModel()
+        }
+        displayLoadingViewIfNecessary()
     }
 
     func applyTableUpdates() {
@@ -156,6 +185,14 @@ extension PostStatsTableViewController: PostStatsDelegate {
 
 }
 
+// MARK: - StatsBarChartViewDelegate
+
+extension PostStatsTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
+    }
+}
+
 // MARK: - SiteStatsTableHeaderDelegate Methods
 
 extension PostStatsTableViewController: SiteStatsTableHeaderDelegate {
@@ -166,7 +203,60 @@ extension PostStatsTableViewController: SiteStatsTableHeaderDelegate {
         }
 
         selectedDate = newDate
-        refreshData()
+        refreshData(forceUpdate: true)
+    }
+}
+
+// MARK: - NoResultsViewHost
+
+extension PostStatsTableViewController: NoResultsViewHost {
+    private func displayLoadingViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        if noResultsViewController.view.superview != nil {
+            updateNoResults(title: NoResultConstants.successTitle,
+                            accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                noResults.delegate = self
+                                noResults.hideImageView(false)
+            }
+            return
+        }
+
+        configureAndDisplayNoResults(on: tableView,
+                                     title: NoResultConstants.successTitle,
+                                     accessoryView: NoResultsViewController.loadingAccessoryView()) { [weak self] noResults in
+                                        noResults.delegate = self
+                                        noResults.hideImageView(false)
+        }
     }
 
+    private func displayFailureViewIfNecessary() {
+        guard tableHandler.viewModel.sections.isEmpty else {
+            return
+        }
+
+        updateNoResults(title: NoResultConstants.errorTitle,
+                        subtitle: NoResultConstants.errorSubtitle,
+                        buttonTitle: NoResultConstants.refreshButtonTitle) { [weak self] noResults in
+                            noResults.delegate = self
+                            noResults.hideImageView()
+        }
+    }
+
+    private enum NoResultConstants {
+        static let successTitle = NSLocalizedString("Loading Stats...", comment: "The loading view title displayed while the service is loading")
+        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
+        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
+        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate methods
+
+extension PostStatsTableViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        refreshData()
+    }
 }

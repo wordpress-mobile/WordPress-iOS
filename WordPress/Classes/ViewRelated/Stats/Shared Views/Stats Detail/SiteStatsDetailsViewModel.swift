@@ -77,13 +77,40 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    func fetchDataHasFailed() -> Bool {
+        guard let statSection = statSection else {
+            return true
+        }
+
+        switch statSection {
+        case let statSection where StatSection.allInsights.contains(statSection):
+            guard let storeQuery = queryForInsightStatSection(statSection) else {
+                return true
+            }
+            return insightsStore.fetchingFailed(for: storeQuery)
+        case let statSection where StatSection.allPeriods.contains(statSection):
+            guard let storeQuery = queryForPeriodStatSection(statSection) else {
+                return true
+            }
+            return periodStore.fetchingFailed(for: storeQuery)
+        default:
+            guard let postID = postID else {
+                return true
+            }
+            return periodStore.fetchingFailed(for: .postStats(postID: postID))
+        }
+    }
+
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
-
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
                 return ImmuTable.Empty
+        }
+
+        if fetchDataHasFailed() {
+            return ImmuTable.Empty
         }
 
         var tableRows = [ImmuTableRow]()
@@ -139,15 +166,15 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodAuthors.dataSubtitle))
             tableRows.append(contentsOf: authorsRows())
         case .periodReferrers:
-            tableRows.append(TopTotalsDetailStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
-                                                     dataSubtitle: StatSection.periodReferrers.dataSubtitle,
-                                                     dataRows: referrersRows(),
-                                                     siteStatsDetailsDelegate: detailsDelegate))
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
+                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle))
+            tableRows.append(contentsOf: referrersRows())
         case .periodCountries:
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
         case .periodPublished:
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
             tableRows.append(contentsOf: publishedRows())
         case .postStatsMonthsYears:
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
@@ -317,7 +344,7 @@ private extension SiteStatsDetailsViewModel {
         switch followerType {
         case .insightsFollowersWordPress:
             followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
-            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
+            totalFollowers = insightsStore.getAllDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
             followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
             totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
@@ -378,7 +405,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Tags and Categories
 
     func tagsAndCategoriesRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(tagsAndCategoriesRowData(), forStat: .insightsTagsAndCategories)
+        return expandableDataRowsFor(tagsAndCategoriesRowData())
     }
 
     func tagsAndCategoriesRowData() -> [StatsTotalRowData] {
@@ -484,7 +511,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Clicks
 
     func clicksRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(clicksRowData(), forStat: .periodClicks)
+        return expandableDataRowsFor(clicksRowData())
     }
 
     func clicksRowData() -> [StatsTotalRowData] {
@@ -504,7 +531,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Authors
 
     func authorsRows() -> [ImmuTableRow] {
-        return expandableDataRowsFor(authorsRowData(), forStat: .periodAuthors)
+        return expandableDataRowsFor(authorsRowData())
     }
 
     func authorsRowData() -> [StatsTotalRowData] {
@@ -523,13 +550,30 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Referrers
 
-    func referrersRows() -> [StatsTotalRowData] {
+    func referrersRows() -> [ImmuTableRow] {
+        return expandableDataRowsFor(referrersRowData())
+    }
+
+    func referrersRowData() -> [StatsTotalRowData] {
         let referrers = periodStore.getTopReferrers()?.referrers ?? []
 
         func rowDataFromReferrer(referrer: StatsReferrer) -> StatsTotalRowData {
+            var icon: UIImage? = nil
+            var iconURL: URL? = nil
+
+            switch referrer.iconURL?.lastPathComponent {
+            case "search-engine.png":
+                icon = Style.imageForGridiconType(.search)
+            case nil:
+                icon = Style.imageForGridiconType(.globe)
+            default:
+                iconURL = referrer.iconURL
+            }
+
             return StatsTotalRowData(name: referrer.title,
                                      data: referrer.viewsCount.abbreviatedString(),
-                                     socialIconURL: referrer.iconURL,
+                                     icon: icon,
+                                     socialIconURL: iconURL,
                                      showDisclosure: true,
                                      disclosureURL: referrer.url,
                                      childRows: referrer.children.map { rowDataFromReferrer(referrer: $0) },
@@ -571,8 +615,7 @@ private extension SiteStatsDetailsViewModel {
     // MARK: - Post Stats
 
     func postStatsRows(forAverages: Bool = false) -> [ImmuTableRow] {
-        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages),
-                                     forStat: forAverages ? .postStatsAverageViews : .postStatsMonthsYears)
+        return expandableDataRowsFor(postStatsRowData(forAverages: forAverages))
     }
 
     func postStatsRowData(forAverages: Bool) -> [StatsTotalRowData] {
@@ -616,65 +659,134 @@ private extension SiteStatsDetailsViewModel {
         var detailDataRows = [DetailDataRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
+            let isLastRow = idx == rowsData.endIndex-1
             detailDataRows.append(DetailDataRow(rowData: rowData,
                                                 detailsDelegate: detailsDelegate,
-                                                hideSeparator: idx == rowsData.endIndex-1))
+                                                hideIndentedSeparator: isLastRow,
+                                                hideFullSeparator: !isLastRow))
         }
 
         return detailDataRows
     }
 
-    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], forStat statSection: StatSection) -> [ImmuTableRow] {
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData]) -> [ImmuTableRow] {
         var detailDataRows = [ImmuTableRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
-            let isLastRow = idx == rowsData.endIndex-1
 
             // Expanded state of current row
-            let expanded = StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
+            let expanded = rowExpanded(rowData)
 
             // Expanded state of next row
-            var nextExpanded = false
-            let nextIndex = idx + 1
-            if nextIndex < rowsData.count {
-                let nextRow = rowsData[nextIndex]
-                nextExpanded = StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(nextRow.name) ?? false
-            }
+            let nextExpanded: Bool = {
+                let nextIndex = idx + 1
+                if nextIndex < rowsData.count {
+                    return rowExpanded(rowsData[nextIndex])
+                }
+                return false
+            }()
+
+            let isLastRow = idx == rowsData.endIndex-1
 
             // Toggle the indented separator line based on expanded states.
             // If the current row is expanded, hide the separator.
             // If the current row is not expanded, hide the separator if the next row is.
             let hideIndentedSeparator = expanded ? (expanded || isLastRow) : (nextExpanded || isLastRow)
 
-            // Add current row
-            detailDataRows.append(DetailExpandableRow(rowData: rowData,
-                                                          detailsDelegate: detailsDelegate,
-                                                          hideIndentedSeparator: hideIndentedSeparator,
-                                                          hideFullSeparator: !isLastRow,
-                                                          expanded: expanded))
+            // Add top level parent row
+            detailDataRows.append(parentRow(rowData: rowData,
+                                            hideIndentedSeparator: hideIndentedSeparator,
+                                            hideFullSeparator: !isLastRow,
+                                            expanded: expanded))
+
+            // Continue to next parent if not expanded.
+            guard expanded, let childRowsData = rowData.childRows else {
+                continue
+            }
 
             // Add child rows
-            if expanded {
-                let childRowsData = rowData.childRows ?? []
-                for (idx, childRowData) in childRowsData.enumerated() {
-                    // If this is the last child row, toggle the full separator based on
-                    // next parent's expanded state to prevent duplicate lines.
-                    let hideFullSeparator = (idx == childRowsData.endIndex-1) ? nextExpanded : true
+            for (idx, childRowData) in childRowsData.enumerated() {
+                let isLastRow = idx == childRowsData.endIndex-1
 
-                    // If the parent row has an icon, show the image view for the child
-                    // to make the child row appear "indented".
-                    let showImage = rowData.hasIcon
+                // If this is the last child row, toggle the full separator based on
+                // next parent's expanded state to prevent duplicate lines.
+                let hideFullSeparator = isLastRow ? nextExpanded : true
 
-                    detailDataRows.append(DetailExpandableChildRow(rowData: childRowData,
-                                                                   detailsDelegate: detailsDelegate,
-                                                                   hideIndentedSeparator: true,
-                                                                   hideFullSeparator: hideFullSeparator,
-                                                                   showImage: showImage))
+                // If the parent row has an icon, show the image view for the child
+                // to make the child row appear "indented".
+                let showImage = rowData.hasIcon
+
+                let grandChildRowsData = childRowData.childRows ?? []
+
+                // If this child has no children, add it as a child row.
+                guard !grandChildRowsData.isEmpty else {
+                    detailDataRows.append(childRow(rowData: childRowData,
+                                                   hideFullSeparator: hideFullSeparator,
+                                                   showImage: showImage))
+                    continue
+                }
+
+                let childExpanded = rowExpanded(childRowData)
+
+                // If this child has children, add it as a parent row.
+                detailDataRows.append(parentRow(rowData: childRowData,
+                                                hideIndentedSeparator: true,
+                                                hideFullSeparator: !isLastRow,
+                                                expanded: childExpanded))
+
+                // If this child is not expanded, continue to next.
+                guard childExpanded else {
+                    continue
+                }
+
+                // Expanded state of next child row
+                let nextChildExpanded: Bool = {
+                    let nextIndex = idx + 1
+                    if nextIndex < childRowsData.count {
+                        return rowExpanded(childRowsData[nextIndex])
+                    }
+                    return false
+                }()
+
+                // Add grandchild rows
+                for (idx, grandChildRowData) in grandChildRowsData.enumerated() {
+
+                    // If this is the last grandchild row, toggle the full separator based on
+                    // next child's expanded state to prevent duplicate lines.
+                    let hideFullSeparator = (idx == grandChildRowsData.endIndex-1) ? nextChildExpanded : true
+
+                    detailDataRows.append(childRow(rowData: grandChildRowData,
+                                                   hideFullSeparator: hideFullSeparator,
+                                                   showImage: showImage))
                 }
             }
         }
 
         return detailDataRows
+    }
+
+    func childRow(rowData: StatsTotalRowData, hideFullSeparator: Bool, showImage: Bool) -> DetailExpandableChildRow {
+        return DetailExpandableChildRow(rowData: rowData,
+                                        detailsDelegate: detailsDelegate,
+                                        hideIndentedSeparator: true,
+                                        hideFullSeparator: hideFullSeparator,
+                                        showImage: showImage)
+
+    }
+
+    func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {
+        return DetailExpandableRow(rowData: rowData,
+                                   detailsDelegate: detailsDelegate,
+                                   hideIndentedSeparator: hideIndentedSeparator,
+                                   hideFullSeparator: hideFullSeparator,
+                                   expanded: expanded)
+    }
+
+    func rowExpanded(_ rowData: StatsTotalRowData) -> Bool {
+        guard let statSection = rowData.statSection else {
+            return false
+        }
+        return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
 }

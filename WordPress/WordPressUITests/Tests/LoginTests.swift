@@ -3,15 +3,8 @@ import XCTest
 class LoginTests: XCTestCase {
 
     override func setUp() {
-        super.setUp()
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+        setUpTestSuite()
 
-        let app = XCUIApplication()
-        app.launchArguments = ["NoAnimations"]
-        app.activate()
-
-        // Logout first if needed
         LoginFlow.logoutIfNeeded()
     }
 

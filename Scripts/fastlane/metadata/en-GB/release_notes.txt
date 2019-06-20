@@ -1,5 +1,7 @@
-* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
-* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
-* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
-* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
-* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).
+* Stats are so much better, we don’t even know where to start. Both the UI and back end are totally revamped! Data is cached, so loading stats is way faster and you can see them even when you’re offline! Individual stats have deeper levels of detail for you to explore! Date selectors let you specify the exact periods you want to see! Is it dorky to be this excited about stats? Who cares!
+* The block editor keeps getting better. It’s got clearer messaging when you try to put invalid content into a block, and we patched up a problem with link settings that caused “Open in New Tab” to always be off.
+* To infinity and beyond: We removed the limit on the number of photos you can share to WordPress from other apps.
+* If you write a comment and wander off while it uploads, you now get a clearer message when it successfully posts, or more detailed information if it fails.
+* In Account Settings, your Primary Site now displays the site domain if the site has no name. (Takes the pressure off having to think of The Perfect Name immediately. It’ll come to you!)
+* Wondering about the code the powers the app? We’ve added acknowledgements for all the third-party code libraries we use — you can find them in your settings.
+* We fixed a crash that could happen when setting up your blog, so now you can actually, y’know, set it up.
