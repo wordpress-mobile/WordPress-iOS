@@ -1,3 +1,12 @@
+12.8
+-----
+* Stats Insights: New two-column layout for Follower Totals stats.
+* Stats Periods: Countries Map added in countries section.
+* Updated copy for preview unavailable screen
+* Stats Insights: New two-column layout for This Year stats.
+* Stats Insights: added details option for This Year stats.
+* Stats Insights: New two-column layout for Most Popular Time stats.
+
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.
@@ -7,6 +16,8 @@
 * Block Editor: Updated color scheme.
 * Block Editor: Nested lists are now available on the toolbar.
 * Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
+* Stats Insights: New two-column layout for All-Time stats.
+* Stats Insights: New two-column layout for Today stats.
 
 12.6
 -----

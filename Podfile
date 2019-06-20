@@ -13,7 +13,7 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.3-beta'
+    pod 'WordPressShared', '~> 1.8.3'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
@@ -43,7 +43,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-    pod 'WordPressKit', '~> 4.1.3-beta'
+    pod 'WordPressKit', '~> 4.1.3'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/stats-fetch-likes-separately'
     #pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'ef4f184f5a33ef628c053892e8f706046191d66c'
     #pod 'WordPressKit', :path => '../WordPressKit-iOS'
@@ -140,6 +140,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
+    pod 'FSInteractiveMap', '0.1.0'
 
     ## Automattic libraries
     ## ====================
@@ -152,13 +153,13 @@ target 'WordPress' do
 
     pod 'NSURL+IDN', '0.3'
 
-    pod 'WPMediaPicker', '~> 1.4.1'
+    pod 'WPMediaPicker', '~> 1.4.2'
     ## while PR is in review:
-    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'e55438187d464763efd0b6bf11a0afa1964d9037'
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '7c3cb8f00400b9316a803640b42bb88a66bbc648'
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.5.3-beta'
+    pod 'WordPressAuthenticator', '~> 1.5.3'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
     # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
 
@@ -315,7 +316,7 @@ target 'WordPressComStatsiOSTests' do
 end
 
 def wordpress_mocks
-  pod 'WordPressMocks', '~> 0.0.4'
+  pod 'WordPressMocks', '~> 0.0.5'
   # pod 'WordPressMocks', :git => 'https://github.com/wordpress-mobile/WordPressMocks.git', :commit => ''
   # pod 'WordPressMocks', :path => '../WordPressMocks'
 end

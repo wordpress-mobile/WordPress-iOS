@@ -27,6 +27,9 @@ enum InsightAction: Action {
 
     case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
     case refreshTagsAndCategories
+
+    case receivedAllAnnualAndMostPopularTime(_ allAnnualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?, _ error: Error?)
+    case refreshAnnualAndMostPopularTime
 }
 
 enum InsightQuery {
@@ -34,6 +37,7 @@ enum InsightQuery {
     case allFollowers
     case allComments
     case allTagsAndCategories
+    case allAnnualAndMostPopularTime
 }
 
 struct InsightStoreState {
@@ -97,6 +101,10 @@ struct InsightStoreState {
     var allTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingAllTagsAndCategories = false
     var fetchingAllTagsAndCategoriesHasFailed = false
+
+    var allAnnualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?
+    var fetchingAllAnnualAndMostPopularTime = false
+    var fetchingAllAnnualAndMostPopularTimeHasFailed = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -148,6 +156,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllTagsAndCategories(allTagsAndCategories, error)
         case .refreshTagsAndCategories:
             refreshTagsAndCategories()
+        case .receivedAllAnnualAndMostPopularTime(let allAnnualAndMostPopularTime, let error):
+            receivedAllAnnualAndMostPopularTime(allAnnualAndMostPopularTime, error)
+        case .refreshAnnualAndMostPopularTime:
+            refreshAnnualAndMostPopularTime()
         }
     }
 
@@ -209,6 +221,10 @@ private extension StatsInsightsStore {
                 if shouldFetchTagsAndCategories() {
                     fetchAllTagsAndCategories()
                 }
+            case .allAnnualAndMostPopularTime:
+                if shouldFetchAnnualAndMostPopularTime() {
+                    fetchAllAnnualAndMostPopularTime()
+                }
             }
         }
     }
@@ -262,7 +278,7 @@ private extension StatsInsightsStore {
 
         api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching most popular time: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching annual/most popular time: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
         }
@@ -524,6 +540,21 @@ private extension StatsInsightsStore {
         }
     }
 
+    func fetchAllAnnualAndMostPopularTime() {
+        guard let api = statsRemote() else {
+            return
+        }
+
+        state.fetchingAllAnnualAndMostPopularTime = true
+
+        api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all annual/most popular time: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllAnnualAndMostPopularTime(annualAndTime, error))
+        }
+    }
+
     func receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?, _ error: Error?) {
         transaction { state in
             if allDotComFollowers != nil {
@@ -601,6 +632,29 @@ private extension StatsInsightsStore {
 
     func shouldFetchTagsAndCategories() -> Bool {
         return !isFetchingTagsAndCategories
+    }
+
+    func receivedAllAnnualAndMostPopularTime(_ allAnnualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?, _ error: Error?) {
+        transaction { state in
+            if allAnnualAndMostPopularTime != nil {
+                state.allAnnualAndMostPopularTime = allAnnualAndMostPopularTime
+            }
+            state.fetchingAllAnnualAndMostPopularTime = false
+            state.fetchingAllAnnualAndMostPopularTimeHasFailed = error != nil
+        }
+    }
+
+    func refreshAnnualAndMostPopularTime() {
+        guard shouldFetchAnnualAndMostPopularTime() else {
+            DDLogInfo("Stats Insights Annual/Most Popular Time refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllAnnualAndMostPopularTime()
+    }
+
+    func shouldFetchAnnualAndMostPopularTime() -> Bool {
+        return !isFetchingAnnualAndMostPopularTime
     }
 
 }
@@ -715,6 +769,10 @@ extension StatsInsightsStore {
         return state.allTagsAndCategories
     }
 
+    func getAllAnnualAndMostPopularTime() -> StatsAnnualAndMostPopularTimeInsight? {
+        return state.allAnnualAndMostPopularTime
+    }
+
     var isFetchingOverview: Bool {
         return
             state.fetchingLastPostInsight ||
@@ -743,6 +801,10 @@ extension StatsInsightsStore {
         return state.fetchingAllTagsAndCategories
     }
 
+    var isFetchingAnnualAndMostPopularTime: Bool {
+        return state.fetchingAllAnnualAndMostPopularTime
+    }
+
     var fetchingOverviewHasFailed: Bool {
         return
             state.fetchingLastPostInsightHasFailed &&
@@ -768,6 +830,8 @@ extension StatsInsightsStore {
             return state.fetchingAllCommentsInsightHasFailed
         case .allTagsAndCategories:
             return state.fetchingAllTagsAndCategoriesHasFailed
+        case .allAnnualAndMostPopularTime:
+            return state.fetchingAllAnnualAndMostPopularTimeHasFailed
         }
     }
 

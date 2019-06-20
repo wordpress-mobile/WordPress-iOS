@@ -67,7 +67,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
-        title = statSection.title
+        title = statSection.detailsTitle
         initViewModel()
         displayLoadingViewIfNecessary()
     }
@@ -122,7 +122,8 @@ private extension SiteStatsDetailTableViewController {
                 DetailExpandableChildRow.self,
                 DetailSubtitlesHeaderRow.self,
                 DetailSubtitlesTabbedHeaderRow.self,
-                DetailSubtitlesCountriesHeaderRow.self]
+                DetailSubtitlesCountriesHeaderRow.self,
+                CountriesMapRow.self]
     }
 
     func storeIsFetching(statSection: StatSection) -> Bool {
@@ -188,6 +189,8 @@ private extension SiteStatsDetailTableViewController {
             viewModel?.refreshComments()
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
+        case .insightsAnnualSiteStats:
+            viewModel?.refreshAnnualAndMostPopularTime()
         case .periodPostsAndPages:
             viewModel?.refreshPostsAndPages()
         case .periodSearchTerms:

@@ -5,7 +5,7 @@ enum InsightType: Int {
     case latestPostSummary
     case allTimeStats
     case followersTotals
-    case mostPopularDayAndHour
+    case mostPopularTime
     case tagsAndCategories
     case annualSiteStats
     case comments
@@ -19,7 +19,7 @@ enum InsightType: Int {
                             .todaysStats,
                             .annualSiteStats,
                             .allTimeStats,
-                            .mostPopularDayAndHour,
+                            .mostPopularTime,
                             .postingActivity,
                             .comments,
                             .tagsAndCategories,
@@ -132,12 +132,12 @@ private extension SiteStatsInsightsTableViewController {
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [CellHeaderRow.self,
                 LatestPostSummaryRow.self,
+                TwoColumnStatsRow.self,
                 SimpleTotalsStatsRow.self,
                 SimpleTotalsStatsSubtitlesRow.self,
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
-                AnnualSiteStatsRow.self,
                 TableFooterRow.self]
     }
 

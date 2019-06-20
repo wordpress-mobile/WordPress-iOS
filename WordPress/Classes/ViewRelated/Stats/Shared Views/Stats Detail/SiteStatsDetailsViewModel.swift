@@ -144,6 +144,9 @@ class SiteStatsDetailsViewModel: Observable {
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
             tableRows.append(contentsOf: tagsAndCategoriesRows())
+        case .insightsAnnualSiteStats:
+            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
+            tableRows.append(contentsOf: annualRows())
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                       dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
@@ -170,6 +173,10 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodReferrers.dataSubtitle))
             tableRows.append(contentsOf: referrersRows())
         case .periodCountries:
+            let map = countriesMap()
+            if !map.data.isEmpty {
+                tableRows.append(CountriesMapRow(countriesMap: map))
+            }
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
@@ -206,6 +213,10 @@ class SiteStatsDetailsViewModel: Observable {
 
     func refreshTagsAndCategories() {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
+    }
+
+    func refreshAnnualAndMostPopularTime() {
+        ActionDispatcher.dispatch(InsightAction.refreshAnnualAndMostPopularTime)
     }
 
     func refreshPostsAndPages() {
@@ -296,6 +307,8 @@ private extension SiteStatsDetailsViewModel {
             return .allComments
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
+        case .insightsAnnualSiteStats:
+            return .allAnnualAndMostPopularTime
         default:
             return nil
         }
@@ -344,7 +357,7 @@ private extension SiteStatsDetailsViewModel {
         switch followerType {
         case .insightsFollowersWordPress:
             followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
-            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
+            totalFollowers = insightsStore.getAllDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
             followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
             totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
@@ -425,6 +438,33 @@ private extension SiteStatsDetailsViewModel {
                                      childRows: StatsDataHelper.childRowsForItems($0.children),
                                      statSection: .insightsTagsAndCategories)
         }
+    }
+
+    // MARK: - Annual Site Stats
+
+    func annualRows() -> [DetailDataRow] {
+        return dataRowsFor(annualRowData())
+    }
+
+    func annualRowData() -> [StatsTotalRowData] {
+        guard let annualInsights = insightsStore.getAllAnnualAndMostPopularTime() else {
+            return []
+        }
+
+        return [StatsTotalRowData(name: AnnualSiteStats.totalPosts,
+                                  data: annualInsights.annualInsightsTotalPostsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalComments,
+                                  data: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
+                                  data: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalLikes,
+                                  data: annualInsights.annualInsightsTotalLikesCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
+                                  data: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalWords,
+                                  data: annualInsights.annualInsightsTotalWordsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
+                                  data: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString())]
     }
 
     // MARK: - Posts and Pages
@@ -595,6 +635,17 @@ private extension SiteStatsDetailsViewModel {
                                                                                 icon: UIImage(named: $0.code),
                                                                                 statSection: .periodCountries) }
             ?? []
+    }
+
+    func countriesMap() -> CountriesMap {
+        let countries = periodStore.getTopCountries()?.countries ?? []
+        return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
+                            maxViewsCount: countries.first?.viewsCount ?? 0,
+                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
+                                var nextDict = dict
+                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                return nextDict
+        })
     }
 
     // MARK: - Published

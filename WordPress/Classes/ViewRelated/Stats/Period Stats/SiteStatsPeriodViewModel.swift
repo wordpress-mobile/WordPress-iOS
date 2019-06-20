@@ -118,6 +118,10 @@ private extension SiteStatsPeriodViewModel {
 
         if mostRecentChartData == nil {
             mostRecentChartData = periodSummary
+        } else if let mostRecentChartData = mostRecentChartData,
+            let periodSummary = periodSummary,
+            mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
+            self.mostRecentChartData = periodSummary
         } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
             mostRecentChartData = chartData
         }
@@ -342,11 +346,14 @@ private extension SiteStatsPeriodViewModel {
     func countriesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: StatSection.periodCountries.title))
+        let map = countriesMap()
+        if !map.data.isEmpty {
+            tableRows.append(CountriesMapRow(countriesMap: map))
+        }
         tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                            dataRows: countriesDataRows(),
                                            siteStatsPeriodDelegate: periodDelegate))
-
         return tableRows
     }
 
@@ -356,6 +363,17 @@ private extension SiteStatsPeriodViewModel {
                                                                                      icon: UIImage(named: $0.code),
                                                                                      statSection: .periodCountries) }
             ?? []
+    }
+
+    func countriesMap() -> CountriesMap {
+        let countries = store.getTopCountries()?.countries ?? []
+        return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
+                            maxViewsCount: countries.first?.viewsCount ?? 0,
+                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
+                                    var nextDict = dict
+                                    nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                    return nextDict
+        })
     }
 
     func searchTermsTableRows() -> [ImmuTableRow] {

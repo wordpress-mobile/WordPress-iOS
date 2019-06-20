@@ -213,6 +213,29 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     }
 }
 
+struct TwoColumnStatsRow: ImmuTableRow {
+
+    typealias CellType = TwoColumnCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let dataRows: [StatsTwoColumnRowData]
+    let statSection: StatSection
+    weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+}
+
 // MARK: - Period Rows
 
 struct TopTotalsPeriodStatsRow: ImmuTableRow {
@@ -264,29 +287,6 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
     }
 }
 
-struct AnnualSiteStatsRow: ImmuTableRow {
-
-    typealias CellType = AnnualSiteStatsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let totalPostsRowData: StatsTotalRowData?
-    let totalsDataRows: [StatsTotalRowData]?
-    let averagesDataRows: [StatsTotalRowData]?
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(totalPostsRowData: totalPostsRowData, totalsDataRows: totalsDataRows, averagesDataRows: averagesDataRows)
-    }
-}
-
 struct CountriesStatsRow: ImmuTableRow {
 
     typealias CellType = CountriesCell
@@ -311,6 +311,24 @@ struct CountriesStatsRow: ImmuTableRow {
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
                        siteStatsPeriodDelegate: siteStatsPeriodDelegate)
+    }
+}
+
+struct CountriesMapRow: ImmuTableRow {
+    let action: ImmuTableAction? = nil
+    let countriesMap: CountriesMap
+
+    typealias CellType = CountriesMapCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+        cell.configure(with: countriesMap)
     }
 }
 
