@@ -145,7 +145,6 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
             tableRows.append(contentsOf: tagsAndCategoriesRows())
         case .insightsAnnualSiteStats:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
             tableRows.append(contentsOf: annualRows())
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,

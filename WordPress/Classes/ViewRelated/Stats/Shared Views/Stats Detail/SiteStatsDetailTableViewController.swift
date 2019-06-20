@@ -56,6 +56,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
     }
 
     func configure(statSection: StatSection,
@@ -79,6 +81,32 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.reloadData()
         })
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        // Only show the date bar for Insights Annual details
+        guard let statSection = statSection,
+            statSection == .insightsAnnualSiteStats else {
+            return nil
+        }
+
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        cell.configure(date: Date(), period: .year, delegate: self)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let statSection = statSection,
+            statSection == .insightsAnnualSiteStats else {
+                return 0
+        }
+
+        return SiteStatsTableHeaderView.height
     }
 
 }
@@ -342,4 +370,13 @@ extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
         }
         refreshData()
     }
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+    }
+
 }
