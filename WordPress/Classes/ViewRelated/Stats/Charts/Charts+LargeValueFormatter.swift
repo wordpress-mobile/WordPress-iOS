@@ -51,6 +51,8 @@ public class LargeValueFormatter: NSObject, IValueFormatter, IAxisValueFormatter
 
     private static var formatter: NumberFormatter = {
         var numberFormatter = NumberFormatter()
+        // Fix the locale, as our code to replace the exponent may not function in some locales.
+        numberFormatter.locale = Locale(identifier: "en-US")
         numberFormatter.positiveFormat = "###E00"
         numberFormatter.minimumFractionDigits = 1
         numberFormatter.maximumFractionDigits = 3
