@@ -83,6 +83,7 @@
                 <outlet property="subtitleStackView" destination="WGt-7n-PjC" id="5JN-Yn-YM9"/>
                 <outlet property="subtitlesStackViewTopConstraint" destination="u2O-MU-b7v" id="ya9-A4-B6Y"/>
                 <outlet property="topSeparatorLine" destination="OxT-ul-sgW" id="qjZ-f6-e57"/>
+                <outlet property="topSeparatorLineHeightConstraint" destination="tep-qB-gA1" id="7JT-Pm-BKH"/>
             </connections>
             <point key="canvasLocation" x="-263.19999999999999" y="204.64767616191907"/>
         </tableViewCell>

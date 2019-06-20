@@ -13,6 +13,8 @@ class CountriesCell: UITableViewCell, NibLoadable {
     @IBOutlet weak var subtitlesStackViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var rowsStackViewTopConstraint: NSLayoutConstraint!
 
+    @IBOutlet private var topSeparatorLineHeightConstraint: NSLayoutConstraint!
+
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     private var dataRows = [StatsTotalRowData]()
     private typealias Style = WPStyleGuide.Stats
@@ -69,6 +71,7 @@ private extension CountriesCell {
         }
 
         rowsStackViewTopConstraint.constant = !dataRows.isEmpty ? subtitleHeight : 0
+        topSeparatorLineHeightConstraint.constant = dataRows.isEmpty ? 0.5 : 0.33
     }
 
 }
