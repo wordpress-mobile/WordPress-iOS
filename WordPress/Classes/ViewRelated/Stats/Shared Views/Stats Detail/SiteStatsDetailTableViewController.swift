@@ -190,7 +190,7 @@ private extension SiteStatsDetailTableViewController {
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
         case .insightsAnnualSiteStats:
-            viewModel?.refreshAnnualAndMostPopularTime()
+            viewModel?.refreshAnnual()
         case .periodPostsAndPages:
             viewModel?.refreshPostsAndPages()
         case .periodSearchTerms:
