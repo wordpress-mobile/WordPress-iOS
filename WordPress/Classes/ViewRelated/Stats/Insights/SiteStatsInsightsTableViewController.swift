@@ -293,8 +293,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         removeViewModelListeners()
 
+        // When displaying Annual details, start from the most recent year available.
+        var selectedDate: Date?
+        if statSection == .insightsAnnualSiteStats,
+            let year = insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear {
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            dateComponents.year = year
+            selectedDate = Calendar.current.date(from: dateComponents)
+        }
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

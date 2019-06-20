@@ -27,6 +27,8 @@ class SiteStatsDetailsViewModel: Observable {
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
 
+    private var allAnnualInsights = [StatsAnnualInsight]()
+
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate) {
@@ -99,6 +101,10 @@ class SiteStatsDetailsViewModel: Observable {
             }
             return periodStore.fetchingFailed(for: .postStats(postID: postID))
         }
+    }
+
+    func updateSelectedDate(_ selectedDate: Date) {
+        self.selectedDate = selectedDate
     }
 
     // MARK: - Table Model
@@ -214,7 +220,8 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
     }
 
-    func refreshAnnual() {
+    func refreshAnnual(selectedDate: Date) {
+        self.selectedDate = selectedDate
         ActionDispatcher.dispatch(InsightAction.refreshAnnual)
     }
 
@@ -446,7 +453,16 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func annualRowData() -> [StatsTotalRowData] {
-        guard let annualInsights = insightsStore.getAllAnnual()?.allAnnualInsights.last else {
+
+        guard let selectedDate = selectedDate else {
+            return []
+        }
+
+        allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights ?? []
+        let selectedYear = Calendar.current.component(.year, from: selectedDate)
+        let selectedYearInsights = allAnnualInsights.first { $0.year == selectedYear }
+
+        guard let annualInsights = selectedYearInsights else {
             return []
         }
 

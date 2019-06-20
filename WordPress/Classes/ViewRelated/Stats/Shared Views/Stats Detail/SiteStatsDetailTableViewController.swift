@@ -20,7 +20,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
-    private var selectedDate: Date?
+    private var selectedDate = Date()
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
@@ -65,7 +65,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                    selectedPeriod: StatsPeriodUnit? = nil,
                    postID: Int? = nil) {
         self.statSection = statSection
-        self.selectedDate = selectedDate
+        self.selectedDate = selectedDate ?? Date()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
@@ -88,7 +88,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         // Only show the date bar for Insights Annual details
         guard let statSection = statSection,
             statSection == .insightsAnnualSiteStats,
-            let numberOfYears = insightsStore.getAllAnnual()?.allAnnualInsights.count else {
+            let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
+            let mostRecentYear = allAnnualInsights.last?.year else {
             return nil
         }
 
@@ -96,7 +97,16 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
             return nil
         }
 
-        cell.configure(date: Date(), period: .year, delegate: self, expectedPeriodCount: numberOfYears)
+        // Allow the date bar to only go up to the most recent year available.
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        dateComponents.year = mostRecentYear
+        let mostRecentDate = Calendar.current.date(from: dateComponents)
+
+        cell.configure(date: selectedDate,
+                       period: .year,
+                       delegate: self,
+                       expectedPeriodCount: allAnnualInsights.count,
+                       mostRecentDate: mostRecentDate)
 
         return cell
     }
@@ -219,7 +229,7 @@ private extension SiteStatsDetailTableViewController {
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
         case .insightsAnnualSiteStats:
-            viewModel?.refreshAnnual()
+            viewModel?.refreshAnnual(selectedDate: selectedDate)
         case .periodPostsAndPages:
             viewModel?.refreshPostsAndPages()
         case .periodSearchTerms:
@@ -378,6 +388,15 @@ extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
 extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
 
     func dateChangedTo(_ newDate: Date?) {
+        guard let newDate = newDate else {
+            return
+        }
+
+        // Since all Annual insights have already been fetched, don't refetch.
+        // Just update the date in the view model and refresh the table.
+        selectedDate = newDate
+        viewModel?.updateSelectedDate(newDate)
+        refreshTableView()
     }
 
 }
