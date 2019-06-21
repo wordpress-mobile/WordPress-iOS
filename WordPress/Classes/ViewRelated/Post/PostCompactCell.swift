@@ -20,14 +20,16 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
         return ImageLoader(imageView: featuredImageView, gifStrategy: .mediumGIFs)
     }()
 
-    private var post: Post! {
+    private var post: Post? {
         didSet {
-            if post != oldValue {
-                viewModel = PostCardStatusViewModel(post: post)
+            guard let post = post, post != oldValue else {
+                return
             }
+
+            viewModel = PostCardStatusViewModel(post: post)
         }
     }
-    private var viewModel: PostCardStatusViewModel!
+    private var viewModel: PostCardStatusViewModel?
 
     func configure(with post: Post) {
         self.post = post
@@ -41,7 +43,10 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     @IBAction func more(_ sender: Any) {
-        guard let button = sender as? UIButton else { return }
+        guard let post = post, let button = sender as? UIButton else {
+            return
+        }
+
         actionSheetDelegate?.showActionSheet(post, from: button)
     }
 
@@ -86,7 +91,7 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureFeaturedImage() {
-        if let url = post.featuredImageURLForDisplay() {
+        if let post = post, let url = post.featuredImageURLForDisplay() {
             featuredImageView.isHidden = false
             labelsContainerTrailing.isActive = true
             imageLoader.loadImage(with: url, from: post, preferredSize: CGSize(width: featuredImageView.frame.width, height: featuredImageView.frame.height))
@@ -97,10 +102,14 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureTitle() {
-        titleLabel.text = post.titleForDisplay()
+        titleLabel.text = post?.titleForDisplay()
     }
 
     private func configureDate() {
+        guard let post = post, let viewModel = viewModel else {
+            return
+        }
+
         let isUploadingOrFailed = viewModel.isUploadingOrFailed
         timestampLabel.text = isUploadingOrFailed ? "" : post.latest().dateStringForDisplay()
         timestampTrailing.constant = isUploadingOrFailed ? 0 : Constants.contentSpacing
@@ -108,11 +117,19 @@ class PostCompactCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func configureStatus() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
         badgesLabel.textColor = viewModel.statusColor
         badgesLabel.text = viewModel.statusAndBadges(separatedBy: Constants.separator)
     }
 
     private func configureProgressView() {
+        guard let viewModel = viewModel else {
+            return
+        }
+
         let shouldHide = viewModel.shouldHideProgressView
 
         progressView.isHidden = shouldHide
