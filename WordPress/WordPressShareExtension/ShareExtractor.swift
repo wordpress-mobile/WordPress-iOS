@@ -578,7 +578,7 @@ private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
             url.absoluteString.count == payload.count {
             returnedItem.url = url
         } else {
-            returnedItem.selectedText = payload
+            returnedItem.importedText = payload
         }
         return returnedItem
     }
