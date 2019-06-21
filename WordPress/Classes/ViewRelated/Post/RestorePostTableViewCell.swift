@@ -13,7 +13,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
             isCompact ? configureCompact() : configureDefault()
         }
     }
-    var post: Post!
+    var post: Post?
 
     func configure(with post: Post) {
         self.post = post
@@ -58,6 +58,10 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
     }
 
     @IBAction func restore(_ sender: Any) {
+        guard let post = post else {
+            return
+        }
+        
         delegate?.restore(post)
     }
 
