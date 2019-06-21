@@ -23,9 +23,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var bottomBorder: UIView!
     @IBOutlet weak var topPadding: NSLayoutConstraint!
     @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var titleAndSnippetView: UIStackView!
     @IBOutlet weak var ghostStackView: UIStackView!
-    @IBOutlet weak var topMargin: NSLayoutConstraint!
 
     lazy var imageLoader: ImageLoader = {
         return ImageLoader(imageView: featuredImage, gifStrategy: .mediumGIFs)
@@ -52,7 +50,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         resetGhost()
         configureFeaturedImage()
-        configureTitleAndSnippetView()
         configureTitle()
         configureSnippet()
         configureDate()
@@ -180,10 +177,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
             currentLoadedFeaturedImage = url.absoluteString
             imageLoader.loadImage(with: url, from: post, preferredSize: preferredSize)
         }
-    }
-
-    private func configureTitleAndSnippetView() {
-        titleAndSnippetView.changeLayoutMargins(top: Constants.titleTopMargin, bottom: 0)
     }
 
     private func configureTitle() {
@@ -320,8 +313,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         contentStackView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor).isActive = true
 
         contentStackView.subviews.forEach { $0.changeLayoutMargins(left: 0, right: 0) }
-
-        topMargin.constant = Constants.margin
     }
 
     private func setupSeparatorLabel() {
@@ -336,9 +327,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private enum Constants {
         static let separator = " · "
-        static let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
+        static let margin: CGFloat = 16
         static let paddingWithoutImage: CGFloat = 8
-        static let titleTopMargin: CGFloat = WPDeviceIdentification.isiPad() ? 6 : 2
         static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
         static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let actionBarOpacity: Float = 1

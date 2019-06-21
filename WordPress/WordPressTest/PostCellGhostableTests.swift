@@ -41,9 +41,7 @@ class PostCellGhostableTests: XCTestCase {
     }
 
     func testTopPadding() {
-        let margin: CGFloat = WPDeviceIdentification.isiPad() ? 20 : 16
-
-        XCTAssertEqual(postCell.topPadding.constant, margin)
+        XCTAssertEqual(postCell.topPadding.constant, 16)
     }
 
     func testActionBarIsNotGhostable() {

@@ -47,7 +47,7 @@
                                         <rect key="frame" x="0.0" y="108" width="326" height="169.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Post Title" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="xIT-FJ-g43">
-                                                <rect key="frame" x="16" y="0.0" width="294" height="149.5"/>
+                                                <rect key="frame" x="16" y="2" width="294" height="147.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -61,7 +61,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
+                                        <edgeInsets key="layoutMargins" top="2" left="16" bottom="0.0" right="16"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="lQh-4z-2Tt">
                                         <rect key="frame" x="0.0" y="285.5" width="326" height="40"/>
@@ -283,9 +283,7 @@
                 <outlet property="snippetLabel" destination="POV-pe-wu8" id="Fgh-2K-dPQ"/>
                 <outlet property="statusLabel" destination="Dbu-l3-L8G" id="MDp-Ba-Uon"/>
                 <outlet property="statusView" destination="Qxw-fl-tZF" id="LgT-lv-fng"/>
-                <outlet property="titleAndSnippetView" destination="8a8-4i-YeE" id="UFE-ca-Uv1"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="7oq-fK-MSR"/>
-                <outlet property="topMargin" destination="se6-ym-EJT" id="ixh-60-3zn"/>
                 <outlet property="topPadding" destination="hLL-be-nDD" id="EBS-Du-PzL"/>
                 <outlet property="upperBorder" destination="sev-PH-HG8" id="fe9-3Q-8go"/>
                 <outlet property="viewButton" destination="zSW-B3-aWT" id="UnQ-NG-EJJ"/>
