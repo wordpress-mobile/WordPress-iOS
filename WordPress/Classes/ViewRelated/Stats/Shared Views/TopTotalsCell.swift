@@ -133,13 +133,13 @@ private extension TopTotalsCell {
                 return
             }
 
-            toggleChildRowsForRow(row)
+            toggleChildRows(for: row, didSelectRow: false)
 
             row.childRowsView?.rowsStackView.arrangedSubviews.forEach { child in
                 guard let childRow = child as? StatsTotalRow else {
                     return
                 }
-                toggleChildRowsForRow(childRow)
+                toggleChildRows(for: childRow, didSelectRow: false)
             }
         }
     }
@@ -291,12 +291,12 @@ extension TopTotalsCell: StatsTotalRowDelegate {
         siteStatsDetailsDelegate?.displayMediaWithID?(mediaID)
     }
 
-    func toggleChildRowsForRow(_ row: StatsTotalRow) {
+    func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool) {
         row.expanded ? addChildRowsForRow(row) : removeChildRowsForRow(row)
         toggleSeparatorsAroundRow(row)
-        siteStatsInsightsDelegate?.expandedRowUpdated?(row)
-        siteStatsPeriodDelegate?.expandedRowUpdated?(row)
-        postStatsDelegate?.expandedRowUpdated?(row)
+        siteStatsInsightsDelegate?.expandedRowUpdated?(row, didSelectRow: didSelectRow)
+        siteStatsPeriodDelegate?.expandedRowUpdated?(row, didSelectRow: didSelectRow)
+        postStatsDelegate?.expandedRowUpdated?(row, didSelectRow: didSelectRow)
     }
 
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
