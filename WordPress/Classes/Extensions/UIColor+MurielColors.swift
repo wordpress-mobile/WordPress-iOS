@@ -109,7 +109,13 @@ extension UIColor {
     static var divider = muriel(color: .divider)
 
     /// Muriel error color
-    static var error = muriel(color: .error)
+    static var error: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .error)
+        } else {
+            return WPStyleGuide.errorRed()
+        }
+    }
     class func error(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .error, shade: shade))
     }
@@ -159,7 +165,7 @@ extension UIColor {
     /// Muriel/iOS unselected color
     static var unselected: UIColor {
         if FeatureFlag.murielColors.enabled {
-            return muriel(color: MurielColorIdentifier(name: .gray, shade: .shade300))
+            return muriel(color: MurielColor(name: .gray, shade: .shade300))
         } else {
             return WPStyleGuide.greyLighten10()
         }

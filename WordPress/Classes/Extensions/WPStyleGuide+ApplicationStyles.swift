@@ -105,24 +105,51 @@ extension WPStyleGuide {
 
     @objc
     class func configureTableViewDestructiveActionCell(_ cell: UITableViewCell) {
+        configureTableViewCell(cell)
+
+        cell.textLabel?.textAlignment = .center;
+        cell.textLabel?.textColor = UIColor.error
     }
 
     @objc
     class func configureTableViewTextCell(_ cell: WPTextFieldTableViewCell) {
+        configureTableViewCell(cell)
 
+        if cell.textField.isEnabled {
+            if FeatureFlag.murielColors.enabled {
+                cell.detailTextLabel?.textColor = .text
+            } else {
+                cell.detailTextLabel?.textColor = darkBlue()
+            }
+            cell.textField.textAlignment = .natural;
+        } else {
+            if FeatureFlag.murielColors.enabled {
+                cell.detailTextLabel?.textColor = .textSubtle
+            } else {
+                cell.detailTextLabel?.textColor = darkGrey()
+            }
+            cell.textField.textAlignment = .right;
+        }
     }
 
     @objc class func configureTableViewSectionHeader(_ header: UIView) {
-        guard let header = header as? UITableViewHeaderFooterView else {
+        guard !FeatureFlag.murielColors.enabled,
+            let header = header as? UITableViewHeaderFooterView else {
             return
         }
-
+        header.textLabel?.textColor = whisperGrey()
     }
 
     @objc
     class func configureTableViewSectionFooter(_ footer: UIView) {
-        guard let footer = footer as? UITableViewHeaderFooterView else {
+        guard let footer = footer as? UITableViewHeaderFooterView,
+            let textLabel = footer.textLabel else {
             return
+        }
+        if textLabel.isUserInteractionEnabled {
+            textLabel.textColor = .primary;
+        } else if !FeatureFlag.murielColors.enabled {
+            textLabel.textColor = greyDarken10();
         }
 
     }
