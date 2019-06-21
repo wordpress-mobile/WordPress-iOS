@@ -2,15 +2,34 @@ import Foundation
 import WordPressShared
 
 extension WPStyleGuide {
-    @objc public class func navigationBarBackgroundImage() -> UIImage {
+    // MARK: - styles used before Muriel colors are enabled
+    public class func navigationBarBackgroundImage() -> UIImage {
         return UIImage(color: WPStyleGuide.wordPressBlue())
     }
 
-    @objc public class func navigationBarBarStyle() -> UIBarStyle {
+    public class func navigationBarBarStyle() -> UIBarStyle {
         return .black
     }
 
-    @objc public class func navigationBarShadowImage() -> UIImage {
+    public class func navigationBarShadowImage() -> UIImage {
         return UIImage(color: UIColor(fromHex: 0x007eb1))
+    }
+
+    // MARK: - style the navigation appearance using Muriel colors
+    class func configureNavigationAppearance() {
+        let navigationAppearance = UINavigationBar.appearance()
+        navigationAppearance.isTranslucent = false
+        navigationAppearance.barTintColor = .navigationBar
+        navigationAppearance.barStyle = .black
+
+        let buttonBarAppearance = UIBarButtonItem.appearance()
+        buttonBarAppearance.tintColor = .white
+        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                    NSAttributedString.Key.foregroundColor: UIColor.white],
+                                                   for: .normal)
+        buttonBarAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
+                                                    NSAttributedString.Key.foregroundColor: UIColor(white: 1.0, alpha: 0.25)],
+                                                   for: .disabled)
+
     }
 }
