@@ -51,7 +51,7 @@ struct StatsTotalRowData {
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
+    @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
@@ -296,7 +296,7 @@ private extension StatsTotalRow {
 
         if hasChildRows {
             expanded.toggle()
-            delegate?.toggleChildRowsForRow?(self)
+            delegate?.toggleChildRows?(for: self, didSelectRow: true)
             return
         }
 

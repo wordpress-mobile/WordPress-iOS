@@ -3,7 +3,7 @@ import WordPressFlux
 
 @objc protocol PostStatsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
@@ -169,8 +169,11 @@ extension PostStatsTableViewController: PostStatsDelegate {
         present(navController, animated: true)
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
+        StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
