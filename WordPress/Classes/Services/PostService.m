@@ -734,6 +734,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
+    if(post.permaLink != nil) {
+        remotePost.URL = [NSURL URLWithString:post.permaLink];
+    }
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
