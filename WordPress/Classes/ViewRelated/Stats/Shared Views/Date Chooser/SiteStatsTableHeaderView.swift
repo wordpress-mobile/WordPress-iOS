@@ -21,6 +21,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
+    private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
@@ -43,11 +44,16 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount) {
+    func configure(date: Date?,
+                   period: StatsPeriodUnit?,
+                   delegate: SiteStatsTableHeaderDelegate,
+                   expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
+                   mostRecentDate: Date? = nil) {
         self.date = date
         self.period = period
         self.delegate = delegate
         self.expectedPeriodCount = expectedPeriodCount
+        self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
         updateButtonStates()
     }
@@ -107,7 +113,7 @@ private extension SiteStatsTableHeaderView {
     func updateButtonStates() {
 
         // Use dates without time
-        let currentDate = Date().normalizedDate()
+        let currentDate = (mostRecentDate != nil) ? mostRecentDate!.normalizedDate() : Date().normalizedDate()
 
         guard var date = date,
             let period = period,
