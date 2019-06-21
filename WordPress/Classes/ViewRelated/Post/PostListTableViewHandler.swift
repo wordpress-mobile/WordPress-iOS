@@ -44,7 +44,7 @@ class PostListTableViewHandler: WPTableViewHandler {
     }
 
     private func sectionNameKeyPath() -> String? {
-        return delegate?.sectionNameKeyPath!()
+        return delegate?.sectionNameKeyPath?()
     }
 
     override func refreshTableView() {
