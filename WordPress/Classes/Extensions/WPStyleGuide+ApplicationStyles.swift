@@ -107,7 +107,7 @@ extension WPStyleGuide {
     class func configureTableViewDestructiveActionCell(_ cell: UITableViewCell) {
         configureTableViewCell(cell)
 
-        cell.textLabel?.textAlignment = .center;
+        cell.textLabel?.textAlignment = .center
         cell.textLabel?.textColor = UIColor.error
     }
 
@@ -121,14 +121,14 @@ extension WPStyleGuide {
             } else {
                 cell.detailTextLabel?.textColor = darkBlue()
             }
-            cell.textField.textAlignment = .natural;
+            cell.textField.textAlignment = .natural
         } else {
             if FeatureFlag.murielColors.enabled {
                 cell.detailTextLabel?.textColor = .textSubtle
             } else {
                 cell.detailTextLabel?.textColor = darkGrey()
             }
-            cell.textField.textAlignment = .right;
+            cell.textField.textAlignment = .right
         }
     }
 
@@ -147,9 +147,9 @@ extension WPStyleGuide {
             return
         }
         if textLabel.isUserInteractionEnabled {
-            textLabel.textColor = .primary;
+            textLabel.textColor = .primary
         } else if !FeatureFlag.murielColors.enabled {
-            textLabel.textColor = greyDarken10();
+            textLabel.textColor = greyDarken10()
         }
 
     }
