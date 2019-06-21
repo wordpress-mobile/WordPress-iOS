@@ -35,7 +35,7 @@ enum InsightType: Int {
     @objc optional func showShareForPost(postID: NSNumber, fromView: UIView)
     @objc optional func showPostingActivityDetails()
     @objc optional func tabbedTotalsCellUpdated()
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
@@ -281,8 +281,10 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         applyTableUpdates()
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
         StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
@@ -293,8 +295,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         removeViewModelListeners()
 
+        // When displaying Annual details, start from the most recent year available.
+        var selectedDate: Date?
+        if statSection == .insightsAnnualSiteStats,
+            let year = insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear {
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            dateComponents.year = year
+            selectedDate = Calendar.current.date(from: dateComponents)
+        }
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
