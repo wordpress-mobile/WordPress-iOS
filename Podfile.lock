@@ -192,7 +192,7 @@ PODS:
     - WordPressKit (~> 4.1)
     - WordPressShared (~> 1.8)
     - WordPressUI (~> 1.3)
-  - WordPressKit (4.1.3-beta.2):
+  - WordPressKit (4.2.0-beta.1):
     - Alamofire (~> 4.7.3)
     - CocoaLumberjack (~> 3.4)
     - NSObject-SafeExpectations (= 0.0.3)
@@ -255,7 +255,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.7.0)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `19efd8b8e7dadad66b5be9988fbc071acb766222`)
-  - WordPressKit (from `../WordPressKit-iOS`)
+  - WordPressKit (~> 4.2.0-beta.1)
   - WordPressMocks (~> 0.0.5)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `issues/11946-remove-table-styling`)
   - WordPressUI (~> 1.3.4)
@@ -301,6 +301,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressMocks
     - WordPressUI
     - WPMediaPicker
@@ -332,8 +333,6 @@ EXTERNAL SOURCES:
   WordPressAuthenticator:
     :commit: 19efd8b8e7dadad66b5be9988fbc071acb766222
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :path: "../WordPressKit-iOS"
   WordPressShared:
     :branch: issues/11946-remove-table-styling
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -405,7 +404,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 2dc41978696cdae7537dab8035cb1a9df02d9e87
   WordPress-Editor-iOS: f032feafcd01282c9d4c24cd4ecf941a3b67f629
   WordPressAuthenticator: a2ca65bbb342de7da496a37b4a241cb7ba398382
-  WordPressKit: c611c1ec513c7662cfa2e89142df8a1a4ece3c5f
+  WordPressKit: 387ef89aff02fe5d042ef3657833ad71f9b4e6a5
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
   WordPressShared: a70fb1f5465c484cd54e8ce150dd8d16cada5791
   WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
@@ -415,6 +414,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: 9d6b27e4e46754a9ca2f23d64fde8cb8c71c8de0
+PODFILE CHECKSUM: 7388ca33aea32e2f30cab0f17812ed1884a1d6c8
 
 COCOAPODS: 1.6.1
