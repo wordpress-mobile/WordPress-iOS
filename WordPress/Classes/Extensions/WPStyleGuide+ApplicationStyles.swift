@@ -15,7 +15,7 @@ extension WPStyleGuide {
         return UIImage(color: UIColor(fromHex: 0x007eb1))
     }
 
-    // MARK: - style the navigation appearance using Muriel colors
+    /// Style the navigation appearance using Muriel colors
     class func configureNavigationAppearance() {
         let navigationAppearance = UINavigationBar.appearance()
         navigationAppearance.isTranslucent = false
@@ -31,6 +31,12 @@ extension WPStyleGuide {
                                                     NSAttributedString.Key.foregroundColor: UIColor(white: 1.0, alpha: 0.25)],
                                                    for: .disabled)
 
+    }
+
+    /// Style the tab bar using Muriel colors
+    class func configureTabBarAppearance() {
+        UITabBar.appearance().tintColor = .primary
+        UITabBar.appearance().unselectedItemTintColor = .unselected
     }
 }
 

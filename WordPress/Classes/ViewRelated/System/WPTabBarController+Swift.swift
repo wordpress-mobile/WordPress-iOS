@@ -94,9 +94,6 @@ extension WPTabBarController {
 
     /// Set up the tab bar's colors
     @objc func setupColors() {
-        tabBar.unselectedItemTintColor = .unselected
-        if !FeatureFlag.murielColors.enabled {
-            tabBar.isTranslucent = false
-        }
+        tabBar.isTranslucent = false
     }
 }

@@ -755,8 +755,7 @@ extension WordPressAppDelegate {
 
         if Feature.enabled(.murielColors) {
             WPStyleGuide.configureNavigationAppearance()
-
-            UITabBar.appearance().tintColor = .primary
+            WPStyleGuide.configureTabBarAppearance()
         } else {
             WPStyleGuide.configureNavigationBarAppearance()
 
