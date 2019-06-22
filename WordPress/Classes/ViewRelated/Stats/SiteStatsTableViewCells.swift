@@ -185,10 +185,18 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
             return
         }
 
+        let limitRowsDisplayed: Bool = {
+            if let statSection = dataRows.first?.statSection, statSection == .insightsPublicize {
+                return false
+            }
+            return true
+        }()
+
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                       siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                       limitRowsDisplayed: limitRowsDisplayed)
     }
 }
 

@@ -110,9 +110,10 @@ class SiteStatsInsightsViewModel: Observable {
                 tableRows.append(createPostingActivityRow())
             case .publicize:
                 tableRows.append(CellHeaderRow(title: StatSection.insightsPublicize.title))
-                tableRows.append(SimpleTotalsStatsSubtitlesRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
-                                                               dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
-                                                               dataRows: createPublicizeRows()))
+                tableRows.append(TopTotalsInsightStatsRow(itemSubtitle: StatSection.insightsPublicize.itemSubtitle,
+                                                          dataSubtitle: StatSection.insightsPublicize.dataSubtitle,
+                                                          dataRows: createPublicizeRows(),
+                                                          siteStatsInsightsDelegate: nil))
             }
         }
 
@@ -262,7 +263,8 @@ private extension SiteStatsInsightsViewModel {
         return services.map {
             return StatsTotalRowData(name: $0.name,
                                      data: $0.followers.abbreviatedString(),
-                                     socialIconURL: $0.iconURL)
+                                     socialIconURL: $0.iconURL,
+                                     statSection: .insightsPublicize)
         }
     }
 
