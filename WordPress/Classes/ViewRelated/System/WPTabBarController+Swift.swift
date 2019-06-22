@@ -99,35 +99,4 @@ extension WPTabBarController {
             tabBar.isTranslucent = false
         }
     }
-
-//    @objc func setBadgeColor(for item: UITabBarItem) {
-//        item.badgeColor = .accent
-//    }
-//
-//    @objc func showReaderBadge(_ notification: NSNotification) {
-//    }
-//
-//    @objc func  hideReaderBadge(_ notification: NSNotification) {
-//        let readerIconName: String
-//        if FeatureFlag.murielColors.enabled {
-//            readerIconName = "icon-tab-reader-muriel"
-//        } else {
-//            readerIconName = "icon-tab-reader"
-//        }
-//        let readerTabBarImage = UIImage(named:readerIconName)
-//        readerNavigationController.tabBarItem.image = readerTabBarImage
-//    }
-
-//    - (void) showReaderBadge:(NSNotification *)notification
-//    {
-//    UIImage *readerTabBarImage = [[UIImage imageNamed:@"icon-tab-reader-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
-//    }
-//
-//    - (void) hideReaderBadge:(NSNotification *)notification
-//    {
-//    NSString *readerIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-reader" : @"icon-tab-reader-muriel";
-//    UIImage *readerTabBarImage = [UIImage imageNamed:readerIconName];
-//    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
-//    }
 }
