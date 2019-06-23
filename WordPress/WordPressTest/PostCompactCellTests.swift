@@ -110,7 +110,7 @@ class PostCompactCellTests: XCTestCase {
     }
 
     private func postCellFromNib() -> PostCompactCell {
-        let bundle = Bundle(for: PostCell.self)
+        let bundle = Bundle(for: PostCompactCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {
             fatalError("PostCompactCell does not exist")
         }

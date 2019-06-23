@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-class PostCell: UITableViewCell, ConfigurablePostView {
+class PostCardCell: UITableViewCell, ConfigurablePostView {
     @IBOutlet weak var featuredImageStackView: UIStackView!
     @IBOutlet weak var featuredImage: CachedAnimatedImageView!
     @IBOutlet weak var featuredImageHeight: NSLayoutConstraint!
@@ -317,7 +317,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 }
 
-extension PostCell: InteractivePostView {
+extension PostCardCell: InteractivePostView {
     func setInteractionDelegate(_ delegate: InteractivePostViewDelegate) {
         interactivePostViewDelegate = delegate
     }
@@ -327,7 +327,7 @@ extension PostCell: InteractivePostView {
     }
 }
 
-extension PostCell: GhostableView {
+extension PostCardCell: GhostableView {
     func ghostAnimationWillStart() {
         progressView.isHidden = true
         actionBarView.layer.opacity = GhostConstants.actionBarOpacity

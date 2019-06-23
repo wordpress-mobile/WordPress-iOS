@@ -65,7 +65,7 @@ class PostCompactCellGhostableTests: XCTestCase {
     }
 
     private func postCellFromNib() -> PostCompactCell {
-        let bundle = Bundle(for: PostCell.self)
+        let bundle = Bundle(for: PostCardCell.self)
         guard let postCell = bundle.loadNibNamed("PostCompactCell", owner: nil)?.first as? PostCompactCell else {
             fatalError("PostCell does not exist")
         }
