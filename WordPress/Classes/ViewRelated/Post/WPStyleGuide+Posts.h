@@ -7,35 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WPStyleGuide (Posts)
 
-+ (UIColor *)postListSearchBarTextColor;
-
-+ (UIColor *)postCardBorderColor;
-
-+ (void)applyPostAuthorFilterStyle:(UISegmentedControl *)segmentControl;
-
-+ (void)applyPostCardStyle:(UITableViewCell *)cell;
-
-+ (void)applyPostAuthorSiteStyle:(UILabel *)label;
-
-+ (void)applyPostAuthorNameStyle:(UILabel *)label;
-
-+ (void)applyPostTitleStyle:(UILabel *)label;
-
-+ (void)applyPostSnippetStyle:(UILabel *)label;
-
-+ (void)applyPostDateStyle:(UILabel *)label;
-
-+ (void)applyPostStatusStyle:(UILabel *)label;
-
-+ (void)applyPostButtonStyle:(UIButton *)button;
-
-+ (void)applyPostProgressViewStyle:(UIProgressView *)progressView;
-
-+ (void)applyRestorePostLabelStyle:(UILabel *)label;
-
-+ (void)applyRestorePostButtonStyle:(UIButton *)button;
-
-
 + (NSDictionary *)postCardAuthorSiteAttributes;
 
 + (NSDictionary *)postCardAuthorNameAttributes;
