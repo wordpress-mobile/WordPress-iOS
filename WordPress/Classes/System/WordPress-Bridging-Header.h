@@ -105,7 +105,7 @@
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPScrollableViewController.h"
-#import "WPStyleGuide+Posts.h"
+#import "WPStyleGuide+Pages.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPStyleGuide+WebView.h"
 #import "WPTableImageSource.h"

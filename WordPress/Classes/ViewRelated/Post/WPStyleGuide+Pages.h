@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface WPStyleGuide (Posts)
+@interface WPStyleGuide (Pages)
 
 #pragma mark - Pages
 
