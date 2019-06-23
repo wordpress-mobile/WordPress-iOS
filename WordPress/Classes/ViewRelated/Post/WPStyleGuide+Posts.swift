@@ -2,6 +2,18 @@
 ///
 extension WPStyleGuide {
 
+    // MARK: - General Posts Styles
+
+    class func applyPostTitleStyle(_ title: String, into label: UILabel) {
+        label.attributedText = NSAttributedString(string: title, attributes: WPStyleGuide.postCardTitleAttributes)
+        label.lineBreakMode = .byTruncatingTail
+    }
+
+    class func applyPostSnippetStyle(_ title: String, into label: UILabel) {
+        label.attributedText = NSAttributedString(string: title, attributes: WPStyleGuide.postCardSnippetAttributes)
+        label.lineBreakMode = .byTruncatingTail
+    }
+
     // MARK: - Card View Styles
     class func postCardBorderColor() -> UIColor {
         return UIColor(fromRGBAColorWithRed: 215.0, green: 227.0, blue: 235.0, alpha: 1.0)
@@ -45,6 +57,30 @@ extension WPStyleGuide {
         configureLabelForRegularFontStyle(button.titleLabel)
         button.setTitleColor(wordPressBlue(), for: .normal)
         button.setTitleColor(darkBlue(), for: .highlighted)
+    }
+
+    class func applyBorderStyle(_ view: UIView) {
+        view.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale).isActive = true
+        view.backgroundColor = postCardBorderColor()
+    }
+
+    class func applyActionBarButtonStyle(_ button: UIButton) {
+        button.flipInsetsForRightToLeftLayoutDirection()
+        button.setImage(button.imageView?.image?.imageWithTintColor(grey()), for: .normal)
+        button.setTitleColor(grey(), for: .normal)
+        button.setTitleColor(darkGrey(), for: .highlighted)
+        button.setTitleColor(darkGrey(), for: .selected)
+    }
+
+    class func applySelectedBackgroundView(_ selectedBackgroundView: UIView, topMargin: CGFloat) {
+        let marginMask = UIView()
+        selectedBackgroundView.addSubview(marginMask)
+        marginMask.translatesAutoresizingMaskIntoConstraints = false
+        marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
+        marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
+        marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
+        marginMask.heightAnchor.constraint(equalToConstant: topMargin).isActive = true
+        marginMask.backgroundColor = greyLighten30()
     }
 
     // MARK: - Attributed String Attributes

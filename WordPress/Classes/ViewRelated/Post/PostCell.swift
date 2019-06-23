@@ -185,8 +185,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         }
 
         if let titleForDisplay = post.titleForDisplay() {
-            titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes)
-            titleLabel.lineBreakMode = .byTruncatingTail
+            WPStyleGuide.applyPostTitleStyle(titleForDisplay, into: titleLabel)
         }
     }
 
@@ -197,9 +196,8 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         if let contentPreviewForDisplay = post.contentPreviewForDisplay(),
             !contentPreviewForDisplay.isEmpty {
-            snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes)
+            WPStyleGuide.applyPostSnippetStyle(contentPreviewForDisplay, into: snippetLabel)
             snippetLabel.isHidden = false
-            snippetLabel.lineBreakMode = .byTruncatingTail
         } else {
             snippetLabel.isHidden = true
         }
@@ -263,22 +261,14 @@ class PostCell: UITableViewCell, ConfigurablePostView {
     }
 
     private func setupBorders() {
-        [upperBorder, bottomBorder].forEach { border in
-            border?.heightAnchor.constraint(equalToConstant: Constants.borderHeight).isActive = true
-            border?.backgroundColor = WPStyleGuide.postCardBorderColor()
-        }
+        WPStyleGuide.applyBorderStyle(upperBorder)
+        WPStyleGuide.applyBorderStyle(bottomBorder)
     }
 
     private func setupActionBar() {
         actionBarView.subviews.compactMap({ $0 as? UIButton }).forEach { button in
-            button.flipInsetsForRightToLeftLayoutDirection()
-            button.setImage(button.imageView?.image?.imageWithTintColor(WPStyleGuide.grey()), for: .normal)
-            button.setTitleColor(WPStyleGuide.grey(), for: .normal)
-            button.setTitleColor(WPStyleGuide.darkGrey(), for: .highlighted)
-            button.setTitleColor(WPStyleGuide.darkGrey(), for: .selected)
+            WPStyleGuide.applyActionBarButtonStyle(button)
         }
-
-        actionBarView.changeLayoutMargins(top: Constants.margin - contentStackView.spacing)
     }
 
     private func setupLabels() {
@@ -295,14 +285,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
     private func setupSelectedBackgroundView() {
         if let selectedBackgroundView = selectedBackgroundView {
-            let marginMask = UIView()
-            selectedBackgroundView.addSubview(marginMask)
-            marginMask.translatesAutoresizingMaskIntoConstraints = false
-            marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
-            marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
-            marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
-            marginMask.heightAnchor.constraint(equalToConstant: Constants.margin).isActive = true
-            marginMask.backgroundColor = WPStyleGuide.greyLighten30()
+            WPStyleGuide.applySelectedBackgroundView(selectedBackgroundView, topMargin: Constants.margin)
         }
     }
 
@@ -330,7 +313,6 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         static let margin: CGFloat = 16
         static let paddingWithoutImage: CGFloat = 8
         static let featuredImageHeightConstant: CGFloat = WPDeviceIdentification.isiPad() ? 226 : 100
-        static let borderHeight: CGFloat = 1.0 / UIScreen.main.scale
         static let actionBarOpacity: Float = 1
     }
 }
