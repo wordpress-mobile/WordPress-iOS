@@ -8,27 +8,6 @@
 
 #pragma mark - Page Cell Styles
 
-+ (void)applyPageTitleStyle:(UILabel *)label
-{
-    CGFloat fontSize = 15.0;
-    label.font = [WPFontManager notoRegularFontOfSize:fontSize];
-    label.textColor = [self wordPressBlue];
-}
-
-+ (NSDictionary *)pageCellTitleAttributes
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPStyleGuide notoFontForTextStyle:UIFontTextStyleSubheadline]};
-}
-
-+ (void)applySectionHeaderTitleStyle:(UILabel *)label
-{
-    [self configureLabelForSmallFontStyle:label];
-    label.backgroundColor = [self lightGrey];
-    label.textColor = [self grey];
-}
-
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
     label.font = [WPStyleGuide regularFont];
@@ -72,30 +51,12 @@
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
 }
 
-+ (UIFont *)deviceDependantFontForLabels {
-    UIFontTextStyle textStyle = [UIDevice isPad] ? UIFontTextStyleSubheadline : UIFontTextStyleCaption1;
-    return [WPStyleGuide fontForTextStyle:textStyle maximumPointSize:[WPStyleGuide maxFontSize]];
-}
-
 + (UIFont *)regularFont {
     return [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline maximumPointSize:[WPStyleGuide maxFontSize]];
 }
 
 + (UIFont *)smallFont {
     return [WPStyleGuide fontForTextStyle:UIFontTextStyleCaption1 maximumPointSize:[WPStyleGuide maxFontSize]];
-}
-
-+ (void)configureLabelForDeviceDependantStyle:(UILabel *)label {
-    UIFontTextStyle textStyle = [UIDevice isPad] ? UIFontTextStyleSubheadline : UIFontTextStyleCaption1;
-    [WPStyleGuide configureLabel:label textStyle:textStyle];
-}
-
-+ (void)configureLabelForRegularFontStyle:(UILabel *)label {
-    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleSubheadline];
-}
-
-+ (void)configureLabelForSmallFontStyle:(UILabel *)label {
-    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCaption1];
 }
 
 @end
