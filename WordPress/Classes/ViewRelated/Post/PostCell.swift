@@ -185,7 +185,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
         }
 
         if let titleForDisplay = post.titleForDisplay() {
-            titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes() as? [NSAttributedString.Key: Any])
+            titleLabel.attributedText = NSAttributedString(string: titleForDisplay, attributes: WPStyleGuide.postCardTitleAttributes)
             titleLabel.lineBreakMode = .byTruncatingTail
         }
     }
@@ -197,7 +197,7 @@ class PostCell: UITableViewCell, ConfigurablePostView {
 
         if let contentPreviewForDisplay = post.contentPreviewForDisplay(),
             !contentPreviewForDisplay.isEmpty {
-            snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes() as? [NSAttributedString.Key: Any])
+            snippetLabel.attributedText = NSAttributedString(string: contentPreviewForDisplay, attributes: WPStyleGuide.postCardSnippetAttributes)
             snippetLabel.isHidden = false
             snippetLabel.lineBreakMode = .byTruncatingTail
         } else {

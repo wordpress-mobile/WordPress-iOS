@@ -7,28 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WPStyleGuide (Posts)
 
-+ (NSDictionary *)postCardAuthorSiteAttributes;
-
-+ (NSDictionary *)postCardAuthorNameAttributes;
-
-+ (NSDictionary *)postCardTitleAttributes;
-
-+ (NSDictionary *)postCardSnippetAttributes;
-
-+ (NSDictionary *)postCardDateAttributes;
-
-+ (NSDictionary *)postCardStatusAttributes;
-
-
-+ (CGRect)navigationBarButtonRect;
-
-+ (CGFloat)spacingBetweeenNavbarButtons;
-
-+ (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
-                                            target:(id)target
-                                          selector:(SEL)selector;
-
-
 #pragma mark - Pages
 
 + (void)applyPageTitleStyle:(UILabel *)label;

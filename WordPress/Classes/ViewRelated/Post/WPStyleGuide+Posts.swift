@@ -47,6 +47,50 @@ extension WPStyleGuide {
         button.setTitleColor(darkBlue(), for: .highlighted)
     }
 
+    // MARK: - Attributed String Attributes
+
+    class var postCardTitleAttributes: [NSAttributedString.Key: Any] {
+        let font = notoBoldFontForTextStyle(.headline)
+        let lineHeight = 1.4 * font.pointSize
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+        return [.paragraphStyle: paragraphStyle, .font: font]
+    }
+
+    class var postCardSnippetAttributes: [NSAttributedString.Key: Any] {
+        let textStyle: UIFont.TextStyle = UIDevice.isPad() ? .callout : .subheadline
+        let font = notoFontForTextStyle(textStyle)
+        let lineHeight = 1.6 * font.pointSize
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+        return [.paragraphStyle: paragraphStyle, .font: font]
+    }
+
+    // MARK: - Nav Bar Styles
+
+    class var navigationBarButtonRect: CGRect {
+        return CGRect(x: 0, y: 0, width: 30, height: 30)
+    }
+
+    class var spacingBetweeenNavbarButtons: CGFloat {
+        return 40
+    }
+
+    class func buttonForBar(with image: UIImage,
+                            target: Any?, selector: Selector) -> WPButtonForNavigationBar {
+        let button = WPButtonForNavigationBar(frame: navigationBarButtonRect)
+        button.tintColor = .white
+        button.setImage(image, for: .normal)
+        button.addTarget(target, action: selector, for: .touchUpInside)
+        button.removeDefaultLeftSpacing = true
+        button.removeDefaultRightSpacing = true
+        button.rightSpacing = spacingBetweeenNavbarButtons / 2
+        button.leftSpacing = spacingBetweeenNavbarButtons / 2
+        return button
+    }
+
     // MARK: - Font Styles
 
     static func configureLabelForRegularFontStyle(_ label: UILabel?) {
