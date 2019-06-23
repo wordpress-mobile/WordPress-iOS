@@ -61,7 +61,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
         guard let post = post else {
             return
         }
-        
+
         delegate?.restore(post)
     }
 
