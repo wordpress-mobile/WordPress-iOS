@@ -178,11 +178,11 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     // MARK: - Accessibility
     func prepareForVoiceOver() {
         isAccessibilityElement = true
-        
+
         let itemTitle = itemLabel.text ?? ""
         let dataTitle = dataLabel.text ?? ""
         accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
-        
+
         let showDisclosure = rowData?.showDisclosure ?? false
         accessibilityTraits = (showDisclosure) ? .button : .staticText
         accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""

@@ -323,14 +323,14 @@ extension TopTotalsCell: ViewMoreRowDelegate {
 extension TopTotalsCell: Accessible {
     func prepareForVoiceOver() {
         accessibilityTraits = .summaryElement
-        
+
         guard dataRows.count > 0 else {
             return
         }
-        
+
         let itemTitle = itemSubtitleLabel.text
         let dataTitle = dataSubtitleLabel.text
-        
+
         if let itemTitle = itemTitle, let dataTitle = dataTitle {
             let description = String(format: "Table showing %@ and %@", itemTitle, dataTitle)
             accessibilityLabel = NSLocalizedString(description, comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
