@@ -134,7 +134,13 @@ extension WPStyleGuide {
             } else {
                 cell.detailTextLabel?.textColor = darkGrey()
             }
-            cell.textField.textAlignment = .right
+            if cell.effectiveUserInterfaceLayoutDirection == .leftToRight {
+                // swiftlint:disable:next inverse_text_alignment
+                cell.textField.textAlignment = .right
+            } else {
+                // swiftlint:disable:next natural_text_alignment
+                cell.textField.textAlignment = .left
+            }
         }
     }
 
