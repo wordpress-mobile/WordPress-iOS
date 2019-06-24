@@ -133,8 +133,6 @@ private extension SiteStatsInsightsTableViewController {
         return [CellHeaderRow.self,
                 LatestPostSummaryRow.self,
                 TwoColumnStatsRow.self,
-                SimpleTotalsStatsRow.self,
-                SimpleTotalsStatsSubtitlesRow.self,
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
