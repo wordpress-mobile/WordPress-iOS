@@ -60,7 +60,6 @@ extension WPStyleGuide {
         static func configureLabelAsSubtitle(_ label: UILabel) {
             label.textColor = secondaryTextColor
             label.font = subTitleFont
-            label.text = label.text?.localizedUppercase
         }
 
         static func configureLabelItemDetail(_ label: UILabel) {
