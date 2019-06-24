@@ -7,6 +7,7 @@
 * Stats Insights: added details option for This Year stats.
 * Stats Insights: New two-column layout for Most Popular Time stats.
 * Post preview: Fixed issue with preview for self hosted sites not working. 
+* Stats: Updates the appearance of the 'difference to previous period' stats label to grey. 
 
 12.7
 -----
