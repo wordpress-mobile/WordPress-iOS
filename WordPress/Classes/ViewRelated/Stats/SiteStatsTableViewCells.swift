@@ -158,12 +158,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
             return
         }
 
-        let limitRowsDisplayed: Bool = {
-            if let statSection = dataRows.first?.statSection, statSection == .insightsPublicize {
-                return false
-            }
-            return true
-        }()
+        let limitRowsDisplayed = !(dataRows.first?.statSection == .insightsPublicize)
 
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
