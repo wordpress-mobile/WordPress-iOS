@@ -47,7 +47,7 @@ struct OverviewTabData: FilterTabBarItem {
     }
 
     var differenceTextColor: UIColor {
-        return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
+        return WPStyleGuide.grey()
     }
 
     var title: String {
