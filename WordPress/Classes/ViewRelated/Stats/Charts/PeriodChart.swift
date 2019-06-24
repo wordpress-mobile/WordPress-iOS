@@ -1,6 +1,4 @@
-
 import Foundation
-
 import Charts
 
 // MARK: - StatsPeriodFilterDimension
@@ -84,6 +82,7 @@ private final class PeriodChartDataTransformer {
         var visitorEntries  = [BarChartDataEntry]()
         var likeEntries     = [BarChartDataEntry]()
         var commentEntries  = [BarChartDataEntry]()
+
         for datum in summaryData {
             let dateInterval = datum.periodStartDate.timeIntervalSince1970
             let offset = dateInterval - firstDateInterval
@@ -91,10 +90,11 @@ private final class PeriodChartDataTransformer {
             let x = offset
 
             // If the chart has no data, show "stub" bars
-            let viewEntry = BarChartDataEntry(x: x, y: totalViews > 0 ? Double(datum.viewsCount) : 1.0)
-            let visitorEntry = BarChartDataEntry(x: x, y: totalVisitors > 0 ? Double(datum.visitorsCount) : 1.0)
-            let likeEntry = BarChartDataEntry(x: x, y: totalLikes > 0 ? Double(datum.likesCount) : 1.0)
-            let commentEntry = BarChartDataEntry(x: x, y: totalComments > 0 ? Double(datum.commentsCount) : 1.0)
+            let emptyChartBarHeight = StatsBarChartView.emptyChartBarHeight
+            let viewEntry = BarChartDataEntry(x: x, y: totalViews > 0 ? Double(datum.viewsCount) : emptyChartBarHeight)
+            let visitorEntry = BarChartDataEntry(x: x, y: totalVisitors > 0 ? Double(datum.visitorsCount) : emptyChartBarHeight)
+            let likeEntry = BarChartDataEntry(x: x, y: totalLikes > 0 ? Double(datum.likesCount) : emptyChartBarHeight)
+            let commentEntry = BarChartDataEntry(x: x, y: totalComments > 0 ? Double(datum.commentsCount) : emptyChartBarHeight)
 
             viewEntries.append(viewEntry)
             visitorEntries.append(visitorEntry)

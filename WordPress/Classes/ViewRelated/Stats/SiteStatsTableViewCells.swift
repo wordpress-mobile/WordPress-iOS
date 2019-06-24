@@ -91,54 +91,6 @@ struct LatestPostSummaryRow: ImmuTableRow {
     }
 }
 
-struct SimpleTotalsStatsRow: ImmuTableRow {
-
-    typealias CellType = SimpleTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let dataRows: [StatsTotalRowData]
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        cell.configure(dataRows: dataRows)
-    }
-}
-
-struct SimpleTotalsStatsSubtitlesRow: ImmuTableRow {
-
-    typealias CellType = SimpleTotalsCell
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
-    }()
-
-    let itemSubtitle: String
-    let dataSubtitle: String
-    let dataRows: [StatsTotalRowData]
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
-            return
-        }
-
-        // Don't show the subtitles if there is no data
-        let itemSubtitle = dataRows.count > 0 ? self.itemSubtitle : nil
-        let dataSubtitle = dataRows.count > 0 ? self.dataSubtitle : nil
-
-        cell.configure(dataRows: dataRows, itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle)
-    }
-}
-
 struct PostingActivityRow: ImmuTableRow {
 
     typealias CellType = PostingActivityCell
@@ -206,10 +158,13 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
             return
         }
 
+        let limitRowsDisplayed = !(dataRows.first?.statSection == .insightsPublicize)
+
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
                        dataRows: dataRows,
-                       siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                       siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                       limitRowsDisplayed: limitRowsDisplayed)
     }
 }
 

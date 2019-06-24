@@ -20,7 +20,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
     private var statType: StatType = .period
-    private var selectedDate: Date?
+    private var selectedDate = Date()
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsDetailsViewModel?
@@ -56,6 +56,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         Style.configureTable(tableView)
         refreshControl?.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        tableView.register(SiteStatsTableHeaderView.defaultNib,
+                           forHeaderFooterViewReuseIdentifier: SiteStatsTableHeaderView.defaultNibName)
     }
 
     func configure(statSection: StatSection,
@@ -63,7 +65,7 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
                    selectedPeriod: StatsPeriodUnit? = nil,
                    postID: Int? = nil) {
         self.statSection = statSection
-        self.selectedDate = selectedDate
+        self.selectedDate = selectedDate ?? Date()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         statType = StatSection.allInsights.contains(statSection) ? .insights : .period
@@ -79,6 +81,43 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         coordinator.animate(alongsideTransition: { _ in
             self.tableView.reloadData()
         })
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        // Only show the date bar for Insights Annual details
+        guard let statSection = statSection,
+            statSection == .insightsAnnualSiteStats,
+            let allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights,
+            let mostRecentYear = allAnnualInsights.last?.year else {
+            return nil
+        }
+
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: SiteStatsTableHeaderView.defaultNibName) as? SiteStatsTableHeaderView else {
+            return nil
+        }
+
+        // Allow the date bar to only go up to the most recent year available.
+        var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        dateComponents.year = mostRecentYear
+        let mostRecentDate = Calendar.current.date(from: dateComponents)
+
+        cell.configure(date: selectedDate,
+                       period: .year,
+                       delegate: self,
+                       expectedPeriodCount: allAnnualInsights.count,
+                       mostRecentDate: mostRecentDate)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let statSection = statSection,
+            statSection == .insightsAnnualSiteStats else {
+                return 0
+        }
+
+        return SiteStatsTableHeaderView.height
     }
 
 }
@@ -190,7 +229,7 @@ private extension SiteStatsDetailTableViewController {
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
         case .insightsAnnualSiteStats:
-            viewModel?.refreshAnnualAndMostPopularTime()
+            viewModel?.refreshAnnual(selectedDate: selectedDate)
         case .periodPostsAndPages:
             viewModel?.refreshPostsAndPages()
         case .periodSearchTerms:
@@ -342,4 +381,22 @@ extension SiteStatsDetailTableViewController: NoResultsViewControllerDelegate {
         }
         refreshData()
     }
+}
+
+// MARK: - SiteStatsTableHeaderDelegate Methods
+
+extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
+
+    func dateChangedTo(_ newDate: Date?) {
+        guard let newDate = newDate else {
+            return
+        }
+
+        // Since all Annual insights have already been fetched, don't refetch.
+        // Just update the date in the view model and refresh the table.
+        selectedDate = newDate
+        viewModel?.updateSelectedDate(newDate)
+        refreshTableView()
+    }
+
 }

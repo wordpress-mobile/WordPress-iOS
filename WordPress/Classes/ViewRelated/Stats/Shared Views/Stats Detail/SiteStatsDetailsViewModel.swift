@@ -27,6 +27,8 @@ class SiteStatsDetailsViewModel: Observable {
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
 
+    private var allAnnualInsights = [StatsAnnualInsight]()
+
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate) {
@@ -101,6 +103,10 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    func updateSelectedDate(_ selectedDate: Date) {
+        self.selectedDate = selectedDate
+    }
+
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
@@ -145,7 +151,6 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
             tableRows.append(contentsOf: tagsAndCategoriesRows())
         case .insightsAnnualSiteStats:
-            tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
             tableRows.append(contentsOf: annualRows())
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
@@ -215,8 +220,9 @@ class SiteStatsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
     }
 
-    func refreshAnnualAndMostPopularTime() {
-        ActionDispatcher.dispatch(InsightAction.refreshAnnualAndMostPopularTime)
+    func refreshAnnual(selectedDate: Date) {
+        self.selectedDate = selectedDate
+        ActionDispatcher.dispatch(InsightAction.refreshAnnual)
     }
 
     func refreshPostsAndPages() {
@@ -308,7 +314,7 @@ private extension SiteStatsDetailsViewModel {
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
         case .insightsAnnualSiteStats:
-            return .allAnnualAndMostPopularTime
+            return .allAnnual
         default:
             return nil
         }
@@ -447,24 +453,33 @@ private extension SiteStatsDetailsViewModel {
     }
 
     func annualRowData() -> [StatsTotalRowData] {
-        guard let annualInsights = insightsStore.getAllAnnualAndMostPopularTime() else {
+
+        guard let selectedDate = selectedDate else {
+            return []
+        }
+
+        allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights ?? []
+        let selectedYear = Calendar.current.component(.year, from: selectedDate)
+        let selectedYearInsights = allAnnualInsights.first { $0.year == selectedYear }
+
+        guard let annualInsights = selectedYearInsights else {
             return []
         }
 
         return [StatsTotalRowData(name: AnnualSiteStats.totalPosts,
-                                  data: annualInsights.annualInsightsTotalPostsCount.abbreviatedString()),
+                                  data: annualInsights.totalPostsCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.totalComments,
-                                  data: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString()),
+                                  data: annualInsights.totalCommentsCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                                  data: Int(round(annualInsights.annualInsightsAverageCommentsCount)).abbreviatedString()),
+                                  data: Int(round(annualInsights.averageCommentsCount)).abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.totalLikes,
-                                  data: annualInsights.annualInsightsTotalLikesCount.abbreviatedString()),
+                                  data: annualInsights.totalLikesCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                                  data: Int(round(annualInsights.annualInsightsAverageLikesCount)).abbreviatedString()),
+                                  data: Int(round(annualInsights.averageLikesCount)).abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.totalWords,
-                                  data: annualInsights.annualInsightsTotalWordsCount.abbreviatedString()),
+                                  data: annualInsights.totalWordsCount.abbreviatedString()),
                 StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                                  data: Int(round(annualInsights.annualInsightsAverageWordsCount)).abbreviatedString())]
+                                  data: Int(round(annualInsights.averageWordsCount)).abbreviatedString())]
     }
 
     // MARK: - Posts and Pages

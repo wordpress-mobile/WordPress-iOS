@@ -28,8 +28,8 @@ enum InsightAction: Action {
     case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
     case refreshTagsAndCategories
 
-    case receivedAllAnnualAndMostPopularTime(_ allAnnualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?, _ error: Error?)
-    case refreshAnnualAndMostPopularTime
+    case receivedAllAnnual(_ allAnnual: StatsAllAnnualInsight?, _ error: Error?)
+    case refreshAnnual
 }
 
 enum InsightQuery {
@@ -37,7 +37,7 @@ enum InsightQuery {
     case allFollowers
     case allComments
     case allTagsAndCategories
-    case allAnnualAndMostPopularTime
+    case allAnnual
 }
 
 struct InsightStoreState {
@@ -102,9 +102,9 @@ struct InsightStoreState {
     var fetchingAllTagsAndCategories = false
     var fetchingAllTagsAndCategoriesHasFailed = false
 
-    var allAnnualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?
-    var fetchingAllAnnualAndMostPopularTime = false
-    var fetchingAllAnnualAndMostPopularTimeHasFailed = false
+    var allAnnual: StatsAllAnnualInsight?
+    var fetchingAllAnnual = false
+    var fetchingAllAnnualHasFailed = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -156,10 +156,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllTagsAndCategories(allTagsAndCategories, error)
         case .refreshTagsAndCategories:
             refreshTagsAndCategories()
-        case .receivedAllAnnualAndMostPopularTime(let allAnnualAndMostPopularTime, let error):
-            receivedAllAnnualAndMostPopularTime(allAnnualAndMostPopularTime, error)
-        case .refreshAnnualAndMostPopularTime:
-            refreshAnnualAndMostPopularTime()
+        case .receivedAllAnnual(let allAnnual, let error):
+            receivedAllAnnual(allAnnual, error)
+        case .refreshAnnual:
+            refreshAnnual()
         }
     }
 
@@ -221,9 +221,9 @@ private extension StatsInsightsStore {
                 if shouldFetchTagsAndCategories() {
                     fetchAllTagsAndCategories()
                 }
-            case .allAnnualAndMostPopularTime:
-                if shouldFetchAnnualAndMostPopularTime() {
-                    fetchAllAnnualAndMostPopularTime()
+            case .allAnnual:
+                if shouldFetchAnnual() {
+                    fetchAllAnnual()
                 }
             }
         }
@@ -540,18 +540,18 @@ private extension StatsInsightsStore {
         }
     }
 
-    func fetchAllAnnualAndMostPopularTime() {
+    func fetchAllAnnual() {
         guard let api = statsRemote() else {
             return
         }
 
-        state.fetchingAllAnnualAndMostPopularTime = true
+        state.fetchingAllAnnual = true
 
-        api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
+        api.getInsight { (allAnnual: StatsAllAnnualInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching all annual/most popular time: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching all annual: \(String(describing: error?.localizedDescription))")
             }
-            self.actionDispatcher.dispatch(InsightAction.receivedAllAnnualAndMostPopularTime(annualAndTime, error))
+            self.actionDispatcher.dispatch(InsightAction.receivedAllAnnual(allAnnual, error))
         }
     }
 
@@ -634,27 +634,27 @@ private extension StatsInsightsStore {
         return !isFetchingTagsAndCategories
     }
 
-    func receivedAllAnnualAndMostPopularTime(_ allAnnualAndMostPopularTime: StatsAnnualAndMostPopularTimeInsight?, _ error: Error?) {
+    func receivedAllAnnual(_ allAnnual: StatsAllAnnualInsight?, _ error: Error?) {
         transaction { state in
-            if allAnnualAndMostPopularTime != nil {
-                state.allAnnualAndMostPopularTime = allAnnualAndMostPopularTime
+            if allAnnual != nil {
+                state.allAnnual = allAnnual
             }
-            state.fetchingAllAnnualAndMostPopularTime = false
-            state.fetchingAllAnnualAndMostPopularTimeHasFailed = error != nil
+            state.fetchingAllAnnual = false
+            state.fetchingAllAnnualHasFailed = error != nil
         }
     }
 
-    func refreshAnnualAndMostPopularTime() {
-        guard shouldFetchAnnualAndMostPopularTime() else {
-            DDLogInfo("Stats Insights Annual/Most Popular Time refresh triggered while one was in progress.")
+    func refreshAnnual() {
+        guard shouldFetchAnnual() else {
+            DDLogInfo("Stats Insights Annual refresh triggered while one was in progress.")
             return
         }
 
-        fetchAllAnnualAndMostPopularTime()
+        fetchAllAnnual()
     }
 
-    func shouldFetchAnnualAndMostPopularTime() -> Bool {
-        return !isFetchingAnnualAndMostPopularTime
+    func shouldFetchAnnual() -> Bool {
+        return !isFetchingAnnual
     }
 
 }
@@ -769,8 +769,8 @@ extension StatsInsightsStore {
         return state.allTagsAndCategories
     }
 
-    func getAllAnnualAndMostPopularTime() -> StatsAnnualAndMostPopularTimeInsight? {
-        return state.allAnnualAndMostPopularTime
+    func getAllAnnual() -> StatsAllAnnualInsight? {
+        return state.allAnnual
     }
 
     var isFetchingOverview: Bool {
@@ -801,8 +801,8 @@ extension StatsInsightsStore {
         return state.fetchingAllTagsAndCategories
     }
 
-    var isFetchingAnnualAndMostPopularTime: Bool {
-        return state.fetchingAllAnnualAndMostPopularTime
+    var isFetchingAnnual: Bool {
+        return state.fetchingAllAnnual
     }
 
     var fetchingOverviewHasFailed: Bool {
@@ -830,8 +830,8 @@ extension StatsInsightsStore {
             return state.fetchingAllCommentsInsightHasFailed
         case .allTagsAndCategories:
             return state.fetchingAllTagsAndCategoriesHasFailed
-        case .allAnnualAndMostPopularTime:
-            return state.fetchingAllAnnualAndMostPopularTimeHasFailed
+        case .allAnnual:
+            return state.fetchingAllAnnualHasFailed
         }
     }
 
