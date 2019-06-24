@@ -1,6 +1,4 @@
-
 import Foundation
-
 import Charts
 
 // MARK: - PostChartType
@@ -110,7 +108,7 @@ private final class PostChartDataTransformer {
 
             let x = offset
             // If the chart has no data, show "stub" bars
-            let y = totalViews > 0 ? Double(datum.viewsCount) : 1.0
+            let y = totalViews > 0 ? Double(datum.viewsCount) : StatsBarChartView.emptyChartBarHeight
             let entry = BarChartDataEntry(x: x, y: y)
 
             entries.append(entry)
