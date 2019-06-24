@@ -80,6 +80,8 @@ class BlockEditorScreen: BaseScreen {
             Logger.log(message: "Discarding unsaved changes", event: .v)
             discardButton.tap()
         }
+
+        XCTAssert(!BlockEditorScreen.isLoaded(), "Block editor should be closed but is still loaded.")
     }
 
     func publish() -> EditorNoticeComponent {

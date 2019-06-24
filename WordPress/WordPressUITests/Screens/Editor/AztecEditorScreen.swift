@@ -248,6 +248,8 @@ class AztecEditorScreen: BaseScreen {
             Logger.log(message: "Discarding unsaved changes", event: .v)
             discardButton.tap()
         }
+
+        XCTAssert(!AztecEditorScreen.isLoaded(), "Aztec editor should be closed but is still loaded.")
     }
 
     func publish() -> EditorNoticeComponent {
