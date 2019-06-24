@@ -161,6 +161,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
         case .refreshAnnual:
             refreshAnnual()
         }
+
+        if !isFetchingOverview {
+            DDLogInfo("Stats: Insights Overview fetching operations finished.")
+        }
     }
 
     override func queriesChanged() {
@@ -357,6 +361,7 @@ private extension StatsInsightsStore {
             return
         }
 
+        persistToCoreData()
         fetchInsights()
     }
 
