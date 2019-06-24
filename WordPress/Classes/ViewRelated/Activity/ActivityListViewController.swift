@@ -70,7 +70,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)

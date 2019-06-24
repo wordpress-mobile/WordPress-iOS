@@ -180,7 +180,7 @@ PODS:
   - WordPress-Aztec-iOS (1.7.0)
   - WordPress-Editor-iOS (1.7.0):
     - WordPress-Aztec-iOS (= 1.7.0)
-  - WordPressAuthenticator (1.5.4-beta.1):
+  - WordPressAuthenticator (1.5.4-beta.2):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.3)
     - CocoaLumberjack (~> 3.5)
@@ -200,7 +200,7 @@ PODS:
     - WordPressShared (~> 1.8.0)
     - wpxmlrpc (= 0.8.4)
   - WordPressMocks (0.0.5)
-  - WordPressShared (1.8.3):
+  - WordPressShared (1.8.4-beta.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.3.4)
@@ -254,10 +254,10 @@ DEPENDENCIES:
   - Starscream (= 3.0.6)
   - SVProgressHUD (= 2.2.5)
   - WordPress-Editor-iOS (~> 1.7.0)
-  - WordPressAuthenticator (~> 1.5.4-beta.1)
+  - WordPressAuthenticator (~> 1.5.4-beta.2)
   - WordPressKit (~> 4.2.0-beta.1)
   - WordPressMocks (~> 0.0.5)
-  - WordPressShared (~> 1.8.3)
+  - WordPressShared (~> 1.8.4-beta.1)
   - WordPressUI (~> 1.3.4)
   - WPMediaPicker (~> 1.4.2)
   - yoga (from `https://raw.githubusercontent.com/wordpress-mobile/gutenberg-mobile/v1.7.0/react-native-gutenberg-bridge/third-party-podspecs/yoga.podspec.json`)
@@ -393,10 +393,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 8f8a24b257a4d978c8d40ad1e7355b944ffbfa8c
   WordPress-Aztec-iOS: 2dc41978696cdae7537dab8035cb1a9df02d9e87
   WordPress-Editor-iOS: f032feafcd01282c9d4c24cd4ecf941a3b67f629
-  WordPressAuthenticator: a2ca65bbb342de7da496a37b4a241cb7ba398382
+  WordPressAuthenticator: c0e1417124f02885d55a7fb65e7fc4938ce135b5
   WordPressKit: 387ef89aff02fe5d042ef3657833ad71f9b4e6a5
   WordPressMocks: d8088f718439556ff3856d5881aef581740cd26a
-  WordPressShared: a70fb1f5465c484cd54e8ce150dd8d16cada5791
+  WordPressShared: 067bb60eb036bf9c7943a02cfcfdb7118e323728
   WordPressUI: 065de4c33212b9ca3ae458d43c73f2ce2738d3d4
   WPMediaPicker: 1897f312c7b41114ffd239fb782431ae602134a1
   wpxmlrpc: 6ba55c773cfa27083ae4a2173e69b19f46da98e2
@@ -404,6 +404,6 @@ SPEC CHECKSUMS:
   ZendeskSDK: cbd49d65efb2f2cdbdcaac84e618896ae87b861e
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: fa97274c22e9e94cb9131ec182f747bb24ed7fcf
+PODFILE CHECKSUM: e267e8521d1473e0464a2adb27b727d92fdf60d6
 
 COCOAPODS: 1.6.1

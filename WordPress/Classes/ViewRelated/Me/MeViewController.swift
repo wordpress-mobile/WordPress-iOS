@@ -55,7 +55,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.accessibilityIdentifier = "Me Table"
     }
 

@@ -532,7 +532,7 @@ private extension PeopleViewController {
                                                             target: self,
                                                             action: #selector(invitePersonWasPressed))
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         setupFilterBar()

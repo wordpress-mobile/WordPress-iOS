@@ -5,7 +5,6 @@
 #import "SharingAuthorizationHelper.h"
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUI/WordPressUI.h>
-
 #import "WordPress-Swift.h"
 
 

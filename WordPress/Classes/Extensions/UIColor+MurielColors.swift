@@ -1,3 +1,6 @@
+/// Only necessary until the .murielColors feature flag is removed
+import WordPressShared
+
 /// Generates the names of the named colors in the ColorPalette.xcasset
 enum MurielColorName: String, CustomStringConvertible {
     // MARK: - Base colors
@@ -106,7 +109,13 @@ extension UIColor {
     static var divider = muriel(color: .divider)
 
     /// Muriel error color
-    static var error = muriel(color: .error)
+    static var error: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .error)
+        } else {
+            return WPStyleGuide.errorRed()
+        }
+    }
     class func error(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .error, shade: shade))
     }
@@ -118,7 +127,13 @@ extension UIColor {
     }
 
     /// Muriel primary color
-    static var primary = muriel(color: .primary)
+    static var primary: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .primary)
+        } else {
+            return WPStyleGuide.wordPressBlue()
+        }
+    }
     class func primary(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .primary, shade: shade))
     }
@@ -146,4 +161,13 @@ extension UIColor {
 
     /// Muriel/iOS navgiation shadow color
     static var navigationBarShadow = muriel(color: .navigationBarShadow)
+
+    /// Muriel/iOS unselected color
+    static var unselected: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(name: .gray, shade: .shade300))
+        } else {
+            return WPStyleGuide.greyLighten10()
+        }
+    }
 }

@@ -62,7 +62,7 @@ import Reachability
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {

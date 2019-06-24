@@ -30,7 +30,7 @@ struct PlanListRow: ImmuTableRow {
     fileprivate var attributedTitle: NSAttributedString {
         let titleAttributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.tableviewTextFont(),
-            .foregroundColor: WPStyleGuide.tableViewActionColor()
+            .foregroundColor: UIColor.primary
         ]
         return NSAttributedString(string: title, attributes: titleAttributes)
     }

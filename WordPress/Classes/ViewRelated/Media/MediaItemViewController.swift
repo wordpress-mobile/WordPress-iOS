@@ -31,7 +31,7 @@ class MediaItemViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self, MediaDocumentRow.self],
                                tableView: tableView)
 
