@@ -6,13 +6,17 @@ struct OverviewTabData: FilterTabBarItem {
     var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
+    var date: Date?
+    var period: StatsPeriodUnit?
 
-    init(tabTitle: String, tabData: Int, tabDataStub: String? = nil, difference: Int, differencePercent: Int) {
+    init(tabTitle: String, tabData: Int, tabDataStub: String? = nil, difference: Int, differencePercent: Int, date: Date? = nil, period: StatsPeriodUnit? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
         self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
+        self.date = date
+        self.period = period
     }
 
     var attributedTitle: NSAttributedString? {
@@ -47,7 +51,13 @@ struct OverviewTabData: FilterTabBarItem {
     }
 
     var differenceTextColor: UIColor {
-        return WPStyleGuide.grey()
+        if let date = date,
+            let period = period,
+            StatsPeriodHelper().dateAvailableAfterDate(date, period: period) == false {
+            return WPStyleGuide.grey()
+        }
+        
+        return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
     var title: String {
