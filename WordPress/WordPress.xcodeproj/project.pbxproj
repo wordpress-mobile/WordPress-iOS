@@ -343,6 +343,9 @@
 		43290D0A215E8B1200F6B398 /* QuickStartSpotlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43290D09215E8B1200F6B398 /* QuickStartSpotlightView.swift */; };
 		432A5AE021F9222A00603959 /* QuickStartListTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A5ADF21F9222A00603959 /* QuickStartListTitleCell.swift */; };
 		433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432511E9ED18900915988 /* LoginEpilogueViewController.swift */; };
+		433840C722C2BA5B00CB13F8 /* MurielImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* MurielImages.xcassets */; };
+		433840C822C2BA6300CB13F8 /* MurielImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* MurielImages.xcassets */; };
+		433840C922C2BA6400CB13F8 /* MurielImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* MurielImages.xcassets */; };
 		4338672522B2E0D600C8DEBD /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		4338672622B2E0D600C8DEBD /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		4338672722B2E17F00C8DEBD /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
@@ -2283,6 +2286,7 @@
 		43290D09215E8B1200F6B398 /* QuickStartSpotlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartSpotlightView.swift; sourceTree = "<group>"; };
 		432A5ADF21F9222A00603959 /* QuickStartListTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartListTitleCell.swift; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
+		433840C622C2BA5B00CB13F8 /* MurielImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = MurielImages.xcassets; path = Resources/MurielImages.xcassets; sourceTree = "<group>"; };
 		433A550120F693A100757928 /* ManyDelegateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyDelegateNavigationController.swift; sourceTree = "<group>"; };
 		4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartTourGuide.swift; sourceTree = "<group>"; };
 		4349B0AB218A45270034118A /* RevisionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionsTableViewController.swift; sourceTree = "<group>"; };
@@ -4592,6 +4596,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				433840C622C2BA5B00CB13F8 /* MurielImages.xcassets */,
 				435035911EDCAB99004ECF47 /* Animations */,
 				858DE3FF172F9991000AC628 /* Fonts */,
 				CC098B8116A9EB0400450976 /* HTML */,
@@ -9093,6 +9098,7 @@
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
+				433840C722C2BA5B00CB13F8 /* MurielImages.xcassets in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
@@ -9238,6 +9244,7 @@
 				741AF3A2202F3DC400C771A5 /* ShareExtension.storyboard in Resources */,
 				74E44ADC2031EFD600556205 /* Localizable.strings in Resources */,
 				986FF29C214196A5005B28EC /* NoResults.storyboard in Resources */,
+				433840C922C2BA6400CB13F8 /* MurielImages.xcassets in Resources */,
 				74FC2D05202B69C100AC3422 /* AppImages.xcassets in Resources */,
 				435B762C2297484200511813 /* ColorPalette.xcassets in Resources */,
 			);
@@ -9259,6 +9266,7 @@
 				74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */,
 				986FF29B214196A4005B28EC /* NoResults.storyboard in Resources */,
 				931430201E68B9C50014B6C6 /* Localizable.strings in Resources */,
+				433840C822C2BA6300CB13F8 /* MurielImages.xcassets in Resources */,
 				B51DAF041C7E4F0B007F474C /* AppImages.xcassets in Resources */,
 				435B762B2297484200511813 /* ColorPalette.xcassets in Resources */,
 			);
@@ -12447,6 +12455,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = MurielImages.xcassets;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
@@ -12921,6 +12930,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = MurielImages.xcassets;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
@@ -13266,6 +13276,7 @@
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = AppImages.xcassets;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
@@ -13320,6 +13331,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = MurielImages.xcassets;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_THUMB_SUPPORT = NO;
