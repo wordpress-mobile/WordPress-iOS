@@ -130,13 +130,15 @@ private extension SiteStatsPeriodViewModel {
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
                                            tabData: viewsData.count,
                                            difference: viewsData.difference,
-                                           differencePercent: viewsData.percentage)
+                                           differencePercent: viewsData.percentage,
+                                           analyticsStat: .statsOverviewTypeTappedViews)
 
         let visitorsData = intervalData(summaryData: summaryData, summaryType: .visitors)
         let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
                                               tabData: visitorsData.count,
                                               difference: visitorsData.difference,
-                                              differencePercent: visitorsData.percentage)
+                                              differencePercent: visitorsData.percentage,
+                                              analyticsStat: .statsOverviewTypeTappedVisitors)
 
 
         // If Summary Likes is still loading, show dashes (instead of 0)
@@ -148,13 +150,15 @@ private extension SiteStatsPeriodViewModel {
                                            tabData: likesData.count,
                                            tabDataStub: likesLoadingStub,
                                            difference: likesData.difference,
-                                           differencePercent: likesData.percentage)
+                                           differencePercent: likesData.percentage,
+                                           analyticsStat: .statsOverviewTypeTappedLikes)
 
         let commentsData = intervalData(summaryData: summaryData, summaryType: .comments)
         let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
                                               tabData: commentsData.count,
                                               difference: commentsData.difference,
-                                              differencePercent: commentsData.percentage)
+                                              differencePercent: commentsData.percentage,
+                                              analyticsStat: .statsOverviewTypeTappedComments)
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [BarChartStyling]()

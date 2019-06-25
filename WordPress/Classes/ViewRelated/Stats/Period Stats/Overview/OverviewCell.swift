@@ -6,13 +6,20 @@ struct OverviewTabData: FilterTabBarItem {
     var tabDataStub: String?
     var difference: Int
     var differencePercent: Int
+    var analyticsStat: WPAnalyticsStat?
 
-    init(tabTitle: String, tabData: Int, tabDataStub: String? = nil, difference: Int, differencePercent: Int) {
+    init(tabTitle: String,
+         tabData: Int,
+         tabDataStub: String? = nil,
+         difference: Int,
+         differencePercent: Int,
+         analyticsStat: WPAnalyticsStat? = nil) {
         self.tabTitle = tabTitle
         self.tabData = tabData
         self.tabDataStub = tabDataStub
         self.difference = difference
         self.differencePercent = differencePercent
+        self.analyticsStat = analyticsStat
     }
 
     var attributedTitle: NSAttributedString? {
@@ -148,6 +155,10 @@ private extension OverviewCell {
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        if let event = tabsData[filterTabBar.selectedIndex].analyticsStat {
+            captureAnalyticsEvent(event)
+        }
+
         configureChartView()
         updateLabels()
     }
@@ -192,6 +203,18 @@ private extension OverviewCell {
     enum ChartBottomMargin {
         static let filterTabBarShown = CGFloat(16)
         static let filterTabBarHidden = CGFloat(24)
+    }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
     }
 
 }
