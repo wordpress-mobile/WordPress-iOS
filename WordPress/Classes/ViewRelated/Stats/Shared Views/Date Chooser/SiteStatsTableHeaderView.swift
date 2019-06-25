@@ -111,7 +111,7 @@ private extension SiteStatsTableHeaderView {
             updateArrowStates()
             return
         }
-        
+
         let helper = StatsPeriodHelper()
         forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period)
         backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit)
