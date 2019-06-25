@@ -753,14 +753,13 @@ extension WordPressAppDelegate {
         window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
+        WPStyleGuide.configureTabBarAppearance()
         if Feature.enabled(.murielColors) {
             WPStyleGuide.configureNavigationAppearance()
-            WPStyleGuide.configureTabBarAppearance()
         } else {
             WPStyleGuide.configureNavigationBarAppearance()
 
             UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
-            UITabBar.appearance().tintColor = WPStyleGuide.mediumBlue()
 
             let navigationAppearance = UINavigationBar.appearance()
             navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
