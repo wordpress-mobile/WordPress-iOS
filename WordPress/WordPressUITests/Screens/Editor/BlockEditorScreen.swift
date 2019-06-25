@@ -65,23 +65,29 @@ class BlockEditorScreen: BaseScreen {
 
     // returns void since return screen depends on from which screen it loaded
     func closeEditor() {
-        // Close the More menu if needed
-        if actionSheet.exists {
-            if isIpad {
-                app.otherElements["PopoverDismissRegion"].tap()
-            } else {
-                keepEditingButton.tap()
+        XCTContext.runActivity(named: "Close the block editor") { (activity) in
+            XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
+                if actionSheet.exists {
+                    if isIpad {
+                        app.otherElements["PopoverDismissRegion"].tap()
+                    } else {
+                        keepEditingButton.tap()
+                    }
+                }
             }
-        }
-        // Close the editor and discard any local changes
-        editorCloseButton.tap()
-        let notSavedState = app.staticTexts["You have unsaved changes."]
-        if notSavedState.exists {
-            Logger.log(message: "Discarding unsaved changes", event: .v)
-            discardButton.tap()
-        }
 
-        XCTAssert(!BlockEditorScreen.isLoaded(), "Block editor should be closed but is still loaded.")
+            editorCloseButton.tap()
+
+            XCTContext.runActivity(named: "Discard any local changes") { (activity) in
+                let notSavedState = app.staticTexts["You have unsaved changes."]
+                if notSavedState.exists {
+                    Logger.log(message: "Discarding unsaved changes", event: .v)
+                    discardButton.tap()
+                }
+            }
+
+            XCTAssert(!BlockEditorScreen.isLoaded(), "Block editor should be closed but is still loaded.")
+        }
     }
 
     func publish() -> EditorNoticeComponent {
