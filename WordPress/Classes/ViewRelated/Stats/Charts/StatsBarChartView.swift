@@ -278,10 +278,12 @@ private extension StatsBarChartView {
         addSubview(chartLegend)
 
         NSLayoutConstraint.activate([
-            chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
+            chartLegend.widthAnchor.constraint(equalTo: widthAnchor),
+            chartLegend.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartLegend.topAnchor.constraint(equalTo: topAnchor)
         ])
-        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
 
+        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
         self.legendView = chartLegend
     }
 
