@@ -234,4 +234,17 @@ extension StatsPeriodUnit {
         }
     }
 
+    var description: String {
+        switch self {
+        case .day: return "day"
+        case .week: return "week"
+        case .month: return "month"
+        case .year: return "year"
+        }
+    }
+
+    static var analyticsPeriodKey: String {
+        return "period"
+    }
+
 }
