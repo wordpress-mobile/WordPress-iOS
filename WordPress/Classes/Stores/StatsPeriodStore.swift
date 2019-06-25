@@ -213,7 +213,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         if !isFetchingOverview {
-            DDLogInfo("Stats: All fetching operations finished.")
+            DDLogInfo("Stats: Period Overview fetching operations finished.")
             fetchingOverviewListener?(false, fetchingOverviewHasFailed)
         }
     }
