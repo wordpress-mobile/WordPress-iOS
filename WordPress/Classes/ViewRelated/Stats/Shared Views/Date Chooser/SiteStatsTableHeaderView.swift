@@ -89,10 +89,12 @@ private extension SiteStatsTableHeaderView {
     }
 
     @IBAction func didTapBackButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
     }
 
     @IBAction func didTapForwardButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedForward)
         updateDate(forward: true)
     }
 
@@ -188,6 +190,19 @@ private extension SiteStatsTableHeaderView {
     func yearFromDate(_ date: Date) -> Int {
         return calendar.component(.year, from: date)
     }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
+    }
+
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
