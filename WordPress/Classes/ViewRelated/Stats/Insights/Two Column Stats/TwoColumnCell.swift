@@ -76,7 +76,38 @@ private extension TwoColumnCell {
         guard let statSection = statSection else {
             return
         }
+
+        captureAnalyticsEventsFor(statSection)
         siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
+    // MARK: - Analytics support
+
+    func captureAnalyticsEventsFor(_ statSection: StatSection) {
+        if let event = statSection.analyticsViewMoreEvent {
+            captureAnalyticsEvent(event)
+        }
+    }
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event)
+        }
+    }
+
+}
+
+// MARK: - Analytics support
+
+private extension StatSection {
+    var analyticsViewMoreEvent: WPAnalyticsStat? {
+        switch self {
+        case .insightsAnnualSiteStats:
+            return .statsViewMoreTappedThisYear
+        default:
+            return nil
+        }
+    }
 }
