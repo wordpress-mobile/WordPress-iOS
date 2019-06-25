@@ -14,6 +14,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     var analytics: WPAppAnalytics?
     var hockey: HockeyManager?
+    private lazy var crashLoggingProvider: WPCrashLoggingProvider = {
+        return WPCrashLoggingProvider()
+    }()
 
     @objc var logger: WPLogger?
     @objc var internetReachability: Reachability?
@@ -190,7 +193,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         logger = WPLogger()
 
-        WPCrashLogging.start()
+        CrashLogging.start(withDataProvider: crashLoggingProvider)
 
         configureHockeySDK()
         configureAppRatingUtility()
@@ -335,10 +338,6 @@ extension WordPressAppDelegate {
         utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
             DDLogError("Was unable to retrieve data about throttling")
         })
-    }
-
-    @objc func configureCrashLogging() {
-        WPCrashLogging.start()
     }
 
     @objc func configureHockeySDK() {

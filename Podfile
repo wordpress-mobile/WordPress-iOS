@@ -54,7 +54,6 @@ def shared_with_all_pods
     pod 'CocoaLumberjack', '3.5.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
-    pod 'Sentry', '4.3.1'
 end
 
 def shared_with_networking_pods    
@@ -147,7 +146,7 @@ target 'WordPress' do
     ##
 
     # Production
-    pod 'Automattic-Tracks-iOS', '0.3.5'
+    pod 'Automattic-Tracks-iOS', '~> 0.4'
     # While in PR
     # pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :commit => 'a15db91a24499913affae84243d45be0e353472a'
 
