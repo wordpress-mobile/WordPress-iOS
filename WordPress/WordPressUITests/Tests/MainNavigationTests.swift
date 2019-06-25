@@ -14,6 +14,7 @@ class MainNavigationTests: XCTestCase {
     }
 
     override func tearDown() {
+        takeScreenshotOfFailedTest()
         LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
