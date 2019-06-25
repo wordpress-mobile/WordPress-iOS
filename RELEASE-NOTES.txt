@@ -9,6 +9,7 @@
 * Post preview: Fixed issue with preview for self hosted sites not working.
 * Stats: modified appearance of empty charts.
 * Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
+* Stats overview chart: Fixed issue with legend location on iOS 11.
 
 12.7
 -----
