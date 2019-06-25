@@ -1,6 +1,6 @@
 import UIKit
 
-class StatsNoDataRow: UIView, NibLoadable {
+class StatsNoDataRow: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -15,6 +15,13 @@ class StatsNoDataRow: UIView, NibLoadable {
     func configure(forType statType: StatType) {
         noDataLabel.text = statType == .insights ? insightsNoDataLabel : periodNoDataLabel
         WPStyleGuide.Stats.configureLabelAsNoData(noDataLabel)
+        prepareForVoiceOver()
     }
 
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+
+        accessibilityLabel = noDataLabel.text
+        accessibilityTraits = .staticText
+    }
 }
