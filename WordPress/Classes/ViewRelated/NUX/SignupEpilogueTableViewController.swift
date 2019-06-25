@@ -181,7 +181,7 @@ private extension SignupEpilogueTableViewController {
         let userInfoNib = UINib(nibName: CellNibNames.epilogueUserInfoCell, bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         // remove empty cells
         tableView.tableFooterView = UIView()

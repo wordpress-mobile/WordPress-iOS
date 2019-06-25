@@ -37,6 +37,12 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
                  thumbnailCallback:(nullable void (^)(Media * __nonnull media, NSURL * __nonnull thumbnailURL))thumbnailCallback
                         completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
 
+/**
+ Get all Media that failed to upload.
+ 
+ @param result a block that will be invoked to return the requested media.
+ */
+- (void)getFailedMedia:(nonnull void (^)( NSArray<Media *>* _Nonnull media))result;
 
 /**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource

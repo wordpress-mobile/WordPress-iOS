@@ -59,7 +59,7 @@ open class SettingsPickerViewController: UITableViewController {
 
     // MARK: - Setup Helpers
     fileprivate func setupTableView() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.estimatedRowHeight = estimatedRowHeight
         tableView.rowHeight = UITableView.automaticDimension
     }

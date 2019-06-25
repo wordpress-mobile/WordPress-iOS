@@ -70,7 +70,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Title for the site creation flow.")

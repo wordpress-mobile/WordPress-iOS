@@ -72,7 +72,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.rowHeight = rowAndButtonHeight
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControl.State())

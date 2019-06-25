@@ -35,7 +35,7 @@ class PostTagPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         textView.delegate = self
         // Do any additional setup after loading the view, typically from a nib.

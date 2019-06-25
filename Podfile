@@ -13,13 +13,13 @@ plugin 'cocoapods-repo-update'
 ##
 def wordpress_shared
     ## for production:
-    pod 'WordPressShared', '~> 1.8.3'
+    pod 'WordPressShared', '~> 1.8.4-beta.1'
 
     ## for development:
     # pod 'WordPressShared', :path => '../WordPress-iOS-Shared'
 
     ## while PR is in review:
-    # pod 'WordPressShared', :git => 	# 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'task/support-swift-5'
+    # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :branch => 'issues/11946-remove-table-styling'
     # pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit	=> ''
 end
 
@@ -140,6 +140,7 @@ target 'WordPress' do
     pod 'SVProgressHUD', '2.2.5'
     pod 'ZendeskSDK', '2.3.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.3'
+    pod 'FSInteractiveMap', '0.1.0'
 
     ## Automattic libraries
     ## ====================
@@ -158,9 +159,9 @@ target 'WordPress' do
     
     pod 'Gridicons', '~> 0.16'
 
-    pod 'WordPressAuthenticator', '~> 1.5.3'
+    pod 'WordPressAuthenticator', '~> 1.5.4-beta.2'
     # pod 'WordPressAuthenticator', :path => '../WordPressAuthenticator-iOS'
-    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => ''
+    # pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '19efd8b8e7dadad66b5be9988fbc071acb766222'
 
     aztec
     wordpress_ui

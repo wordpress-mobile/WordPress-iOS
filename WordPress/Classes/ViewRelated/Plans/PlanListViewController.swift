@@ -33,7 +33,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
         handler.viewModel = viewModel.tableViewModelWithPresenter(self)
         updateNoResults()

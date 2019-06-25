@@ -22,7 +22,7 @@ class SignupUsernameTableViewController: NUXTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
         navigationItem.title = NSLocalizedString("Pick username", comment: "Title for selecting a new username in the site creation flow.")

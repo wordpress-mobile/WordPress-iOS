@@ -6,10 +6,14 @@
 * Stats Insights: New two-column layout for This Year stats.
 * Stats Insights: added details option for This Year stats.
 * Stats Insights: New two-column layout for Most Popular Time stats.
+* Post preview: Fixed issue with preview for self hosted sites not working.
+* Stats: modified appearance of empty charts.
 
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor network conditions.
+* Offline Improvements: Posts that failed to upload due to connectivity issues will be auto-uploaded.
 * Block Editor: Copy/Paste of text with attributes( bold, italic, ...) will be respected on the editor.
 * Block Editor: Updated color scheme.
 * Block Editor: Nested lists are now available on the toolbar.

@@ -100,16 +100,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
-        [[self tabBar] setTranslucent:NO];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
-        // Create a background
-        // (not strictly needed when white, but left here for possible customization)
-        [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
-
-        // This can't be set using UIAppearance, otherwise it overrides the titleTextAttributes
-        // set for unselected items.
-        [[self tabBar] setUnselectedItemTintColor:[WPStyleGuide greyLighten10]];
+        [self setupColors];
 
         [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerSplitViewController,
@@ -261,9 +254,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        self.meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-        self.meTabBarImageUnreadUnselected = [UIImage imageNamed:@"icon-tab-me-unread-unselected"];
-        self.meTabBarImageUnreadSelected = [UIImage imageNamed:@"icon-tab-me-unread-selected"];
+        NSString *tabIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-me-muriel" : @"icon-tab-me";
+        self.meTabBarImage = [UIImage imageNamed:tabIconName];
+        NSString *tabUnreadUnselectedIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-me-unread-unselected-muriel" : @"icon-tab-me-unread-unselected";
+        self.meTabBarImageUnreadUnselected = [UIImage imageNamed:tabUnreadUnselectedIconName];
+        NSString *tabUnreadSelectedIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-me-unread-selected-muriel" : @"icon-tab-me-unread-selected";
+        self.meTabBarImageUnreadSelected = [UIImage imageNamed:tabUnreadSelectedIconName];
         _meNavigationController.tabBarItem.image = self.meTabBarImage;
         _meNavigationController.tabBarItem.selectedImage = self.meTabBarImage;
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
@@ -293,8 +289,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
-    self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
-    self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"icon-tab-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    NSString *tabIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-notifications-muriel" : @"icon-tab-notifications";
+    self.notificationsTabBarImage = [UIImage imageNamed:tabIconName];
+    NSString *tabIconUnreadName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-notifications-unread-muriel" : @"icon-tab-notifications-unread";
+    self.notificationsTabBarImageUnread = [[UIImage imageNamed:tabIconUnreadName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
     _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
@@ -908,13 +906,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void) showReaderBadge:(NSNotification *)notification
 {
-    UIImage *readerTabBarImage = [[UIImage imageNamed:@"icon-tab-reader-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    NSString *tabIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-reader-unread-muriel" : @"icon-tab-reader-unread";
+    UIImage *readerTabBarImage = [[UIImage imageNamed:tabIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 
 - (void) hideReaderBadge:(NSNotification *)notification
 {
-    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
+    NSString *tabIconName = [Feature enabled:FeatureFlagMurielColors] ? @"icon-tab-reader-muriel" : @"icon-tab-reader";
+    UIImage *readerTabBarImage = [UIImage imageNamed:tabIconName];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 

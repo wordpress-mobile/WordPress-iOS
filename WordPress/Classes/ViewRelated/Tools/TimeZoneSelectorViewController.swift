@@ -151,7 +151,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
     override func viewDidLoad() {
         super.viewDidLoad()
         ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureSearchBar(searchController.searchBar)
         tableView.tableHeaderView = searchController.searchBar
 

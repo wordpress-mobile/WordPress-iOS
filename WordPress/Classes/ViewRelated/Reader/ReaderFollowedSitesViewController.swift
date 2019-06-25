@@ -65,7 +65,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupBackgroundTapGestureRecognizer()
         noResultsViewController.delegate = self
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
 

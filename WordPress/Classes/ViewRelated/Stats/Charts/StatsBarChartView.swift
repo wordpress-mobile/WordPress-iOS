@@ -1,6 +1,4 @@
-
 import UIKit
-
 import Charts
 
 // MARK: - StatsBarChartViewDelegate
@@ -31,6 +29,11 @@ class StatsBarChartView: BarChartView {
         static let trailingOffset           = CGFloat(20)
         static let verticalAxisLabelCount   = 5
     }
+
+    /// Height for "stub" bars when a chart is empty, which is the height of the default chart.
+    /// The value is just shy of the default height to prevent the chart height from automatically expanding.
+    ///
+    static let emptyChartBarHeight = Double(Constants.verticalAxisLabelCount - 1) - 0.01
 
     /// This adapts the data set for presentation by the Charts framework.
     ///

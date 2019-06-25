@@ -27,6 +27,9 @@ enum InsightAction: Action {
 
     case receivedAllTagsAndCategories(_ allTagsAndCategories: StatsTagsAndCategoriesInsight?, _ error: Error?)
     case refreshTagsAndCategories
+
+    case receivedAllAnnual(_ allAnnual: StatsAllAnnualInsight?, _ error: Error?)
+    case refreshAnnual
 }
 
 enum InsightQuery {
@@ -34,6 +37,7 @@ enum InsightQuery {
     case allFollowers
     case allComments
     case allTagsAndCategories
+    case allAnnual
 }
 
 struct InsightStoreState {
@@ -97,6 +101,10 @@ struct InsightStoreState {
     var allTagsAndCategories: StatsTagsAndCategoriesInsight?
     var fetchingAllTagsAndCategories = false
     var fetchingAllTagsAndCategoriesHasFailed = false
+
+    var allAnnual: StatsAllAnnualInsight?
+    var fetchingAllAnnual = false
+    var fetchingAllAnnualHasFailed = false
 }
 
 class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
@@ -148,6 +156,10 @@ class StatsInsightsStore: QueryStore<InsightStoreState, InsightQuery> {
             receivedAllTagsAndCategories(allTagsAndCategories, error)
         case .refreshTagsAndCategories:
             refreshTagsAndCategories()
+        case .receivedAllAnnual(let allAnnual, let error):
+            receivedAllAnnual(allAnnual, error)
+        case .refreshAnnual:
+            refreshAnnual()
         }
     }
 
@@ -209,6 +221,10 @@ private extension StatsInsightsStore {
                 if shouldFetchTagsAndCategories() {
                     fetchAllTagsAndCategories()
                 }
+            case .allAnnual:
+                if shouldFetchAnnual() {
+                    fetchAllAnnual()
+                }
             }
         }
     }
@@ -262,7 +278,7 @@ private extension StatsInsightsStore {
 
         api.getInsight { (annualAndTime: StatsAnnualAndMostPopularTimeInsight?, error) in
             if error != nil {
-                DDLogInfo("Error fetching most popular time: \(String(describing: error?.localizedDescription))")
+                DDLogInfo("Error fetching annual/most popular time: \(String(describing: error?.localizedDescription))")
             }
             self.actionDispatcher.dispatch(InsightAction.receivedAnnualAndMostPopularTimeStats(annualAndTime, error))
         }
@@ -524,6 +540,21 @@ private extension StatsInsightsStore {
         }
     }
 
+    func fetchAllAnnual() {
+        guard let api = statsRemote() else {
+            return
+        }
+
+        state.fetchingAllAnnual = true
+
+        api.getInsight { (allAnnual: StatsAllAnnualInsight?, error) in
+            if error != nil {
+                DDLogInfo("Error fetching all annual: \(String(describing: error?.localizedDescription))")
+            }
+            self.actionDispatcher.dispatch(InsightAction.receivedAllAnnual(allAnnual, error))
+        }
+    }
+
     func receivedAllDotComFollowers(_ allDotComFollowers: StatsDotComFollowersInsight?, _ error: Error?) {
         transaction { state in
             if allDotComFollowers != nil {
@@ -601,6 +632,29 @@ private extension StatsInsightsStore {
 
     func shouldFetchTagsAndCategories() -> Bool {
         return !isFetchingTagsAndCategories
+    }
+
+    func receivedAllAnnual(_ allAnnual: StatsAllAnnualInsight?, _ error: Error?) {
+        transaction { state in
+            if allAnnual != nil {
+                state.allAnnual = allAnnual
+            }
+            state.fetchingAllAnnual = false
+            state.fetchingAllAnnualHasFailed = error != nil
+        }
+    }
+
+    func refreshAnnual() {
+        guard shouldFetchAnnual() else {
+            DDLogInfo("Stats Insights Annual refresh triggered while one was in progress.")
+            return
+        }
+
+        fetchAllAnnual()
+    }
+
+    func shouldFetchAnnual() -> Bool {
+        return !isFetchingAnnual
     }
 
 }
@@ -715,6 +769,10 @@ extension StatsInsightsStore {
         return state.allTagsAndCategories
     }
 
+    func getAllAnnual() -> StatsAllAnnualInsight? {
+        return state.allAnnual
+    }
+
     var isFetchingOverview: Bool {
         return
             state.fetchingLastPostInsight ||
@@ -743,6 +801,10 @@ extension StatsInsightsStore {
         return state.fetchingAllTagsAndCategories
     }
 
+    var isFetchingAnnual: Bool {
+        return state.fetchingAllAnnual
+    }
+
     var fetchingOverviewHasFailed: Bool {
         return
             state.fetchingLastPostInsightHasFailed &&
@@ -768,6 +830,8 @@ extension StatsInsightsStore {
             return state.fetchingAllCommentsInsightHasFailed
         case .allTagsAndCategories:
             return state.fetchingAllTagsAndCategoriesHasFailed
+        case .allAnnual:
+            return state.fetchingAllAnnualHasFailed
         }
     }
 

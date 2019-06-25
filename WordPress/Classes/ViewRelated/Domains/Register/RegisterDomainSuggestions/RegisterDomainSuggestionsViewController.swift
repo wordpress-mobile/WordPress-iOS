@@ -66,7 +66,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
     private func configure() {
         title = NSLocalizedString("Register domain",
                                   comment: "Register domain - Title for the Suggested domains screen")
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")
         navigationItem.backBarButtonItem = backButton

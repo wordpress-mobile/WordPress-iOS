@@ -5,7 +5,7 @@ enum InsightType: Int {
     case latestPostSummary
     case allTimeStats
     case followersTotals
-    case mostPopularDayAndHour
+    case mostPopularTime
     case tagsAndCategories
     case annualSiteStats
     case comments
@@ -19,7 +19,7 @@ enum InsightType: Int {
                             .todaysStats,
                             .annualSiteStats,
                             .allTimeStats,
-                            .mostPopularDayAndHour,
+                            .mostPopularTime,
                             .postingActivity,
                             .comments,
                             .tagsAndCategories,
@@ -133,12 +133,9 @@ private extension SiteStatsInsightsTableViewController {
         return [CellHeaderRow.self,
                 LatestPostSummaryRow.self,
                 TwoColumnStatsRow.self,
-                SimpleTotalsStatsRow.self,
-                SimpleTotalsStatsSubtitlesRow.self,
                 PostingActivityRow.self,
                 TabbedTotalsStatsRow.self,
                 TopTotalsInsightStatsRow.self,
-                AnnualSiteStatsRow.self,
                 TableFooterRow.self]
     }
 
@@ -296,8 +293,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         removeViewModelListeners()
 
+        // When displaying Annual details, start from the most recent year available.
+        var selectedDate: Date?
+        if statSection == .insightsAnnualSiteStats,
+            let year = insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear {
+            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+            dateComponents.year = year
+            selectedDate = Calendar.current.date(from: dateComponents)
+        }
+
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
-        detailTableViewController.configure(statSection: statSection)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
