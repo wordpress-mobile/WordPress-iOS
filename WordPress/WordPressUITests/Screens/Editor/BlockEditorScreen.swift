@@ -86,7 +86,8 @@ class BlockEditorScreen: BaseScreen {
                 }
             }
 
-            XCTAssert(!BlockEditorScreen.isLoaded(), "Block editor should be closed but is still loaded.")
+            let editorClosed = waitFor(element: editorNavBar, predicate: "isEnabled == false")
+            XCTAssert(editorClosed, "Block editor should be closed but is still loaded.")
         }
     }
 

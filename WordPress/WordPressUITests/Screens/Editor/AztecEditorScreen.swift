@@ -253,7 +253,8 @@ class AztecEditorScreen: BaseScreen {
                 }
             }
 
-            XCTAssert(!AztecEditorScreen.isLoaded(), "Aztec editor should be closed but is still loaded.")
+            let editorClosed = waitFor(element: editorCloseButton, predicate: "isEnabled == false")
+            XCTAssert(editorClosed, "Aztec editor should be closed but is still loaded.")
         }
     }
 
