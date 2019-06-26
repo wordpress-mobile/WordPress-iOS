@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-class StatsCellHeader: UITableViewCell, NibLoadable {
+class StatsCellHeader: UITableViewCell, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -29,6 +29,12 @@ class StatsCellHeader: UITableViewCell, NibLoadable {
         applyStyles()
     }
 
+    func prepareForVoiceOver() {
+        isAccessibilityElement = !(headerLabel.text?.isEmpty ?? true)
+        accessibilityElementsHidden = (headerLabel.text?.isEmpty ?? true)
+        accessibilityLabel = headerLabel.text
+        accessibilityTraits = .staticText
+    }
 }
 
 private extension StatsCellHeader {
@@ -39,6 +45,7 @@ private extension StatsCellHeader {
         Style.configureLabelAsHeader(headerLabel)
         configureManageInsightButton()
         updateStackView()
+        prepareForVoiceOver()
     }
 
     func updateStackView() {
