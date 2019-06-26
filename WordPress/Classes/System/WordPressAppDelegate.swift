@@ -28,6 +28,18 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private var bgTask: UIBackgroundTaskIdentifier? = nil
 
     private var shouldRestoreApplicationState = false
+    private var uploadsManager: UploadsManager = {
+        // It's not great that we're using singletons here.  This change is a good opportunity to
+        // revisit if we can make the coordinators children to another owning object.
+        //
+        // We're leaving as-is for now to avoid digressing.
+        let uploaders: [Uploader] = [
+            MediaCoordinator.shared,
+            PostCoordinator.shared
+        ]
+
+        return UploadsManager(uploaders: uploaders)
+    }()
 
     @objc class var shared: WordPressAppDelegate? {
         return UIApplication.shared.delegate as? WordPressAppDelegate
@@ -102,6 +114,8 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
+
+        uploadsManager.resume()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -210,10 +224,11 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         PushNotificationsManager.shared.registerForRemoteNotifications()
 
         // Deferred tasks to speed up app launch
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).async { [weak self] in
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
+            self?.uploadsManager.resume()
         }
 
         setupWordPressExtensions()
@@ -738,25 +753,33 @@ extension WordPressAppDelegate {
         window?.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         window?.tintColor = WPStyleGuide.wordPressBlue()
 
-        WPStyleGuide.configureNavigationBarAppearance()
+        WPStyleGuide.configureTabBarAppearance()
+        if Feature.enabled(.murielColors) {
+            WPStyleGuide.configureNavigationAppearance()
+        } else {
+            WPStyleGuide.configureNavigationBarAppearance()
+
+            UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
+
+            let navigationAppearance = UINavigationBar.appearance()
+            navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
+            navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
+            navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
+
+            let tabBarTextColor = WPStyleGuide.wordPressBlue()
+            let tabBarUnselectedTextColor = WPStyleGuide.grey()
+
+            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarUnselectedTextColor], for: .normal)
+            UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
+        }
 
         let clearImage = UIImage(color: .clear, havingSize: CGSize(width: 320.0, height: 4.0))
         UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).shadowImage = clearImage
         UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for: .default)
 
-        UITabBar.appearance().shadowImage = UIImage(color: UIColor(red: 210.0/255.0, green: 222.0/255.0, blue: 230.0/255.0, alpha: 1.0))
-        UITabBar.appearance().tintColor = WPStyleGuide.mediumBlue()
-
-        let navigationAppearance = UINavigationBar.appearance()
-        navigationAppearance.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
-        navigationAppearance.shadowImage = WPStyleGuide.navigationBarShadowImage()
-        navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
-
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
         UIToolbar.appearance().barTintColor = WPStyleGuide.wordPressBlue()
         UISwitch.appearance().onTintColor = WPStyleGuide.wordPressBlue()
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.grey()], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: WPStyleGuide.wordPressBlue()], for: .selected)
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
         navReferenceAppearance.setBackgroundImage(nil, for: .default)

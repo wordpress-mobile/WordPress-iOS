@@ -87,6 +87,15 @@ class SignupEpilogueCell: UITableViewCell {
             accessibilityTraits.insert(.button) // selection transitions to SignupUsernameViewController
             isAccessibilityElement = true       // this assures double-tap properly captures cell selection
         }
+
+        switch cellType {
+        case .displayName:
+            cellField.accessibilityIdentifier = "Display Name Field"
+        case .username:
+            cellField.accessibilityIdentifier = "Username Field"
+        case .password:
+            cellField.accessibilityIdentifier = "Password Field"
+        }
     }
 
     private func configureAccessoryType(for cellType: EpilogueCellType) {

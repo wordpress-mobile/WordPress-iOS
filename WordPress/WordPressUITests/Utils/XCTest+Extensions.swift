@@ -52,6 +52,14 @@ extension XCTestCase {
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
     }
 
+    public func takeScreenshotOfFailedTest() {
+        if let failureCount = testRun?.failureCount, failureCount > 0 {
+            XCTContext.runActivity(named: "Take a screenshot at the end of a failed test") { (activity) in
+                add(XCTAttachment(screenshot: XCUIApplication().windows.firstMatch.screenshot()))
+            }
+        }
+    }
+
     public func systemAlertHandler(alertTitle: String, alertButton: String) {
         addUIInterruptionMonitor(withDescription: alertTitle) { (alert) -> Bool in
             let alertButtonElement = alert.buttons[alertButton]

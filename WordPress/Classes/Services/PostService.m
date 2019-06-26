@@ -65,6 +65,26 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     return page;
 }
 
+
+- (void)getFailedPosts:(void (^)( NSArray<AbstractPost *>* posts))result {
+    [self.managedObjectContext performBlock:^{
+        NSString *entityName = NSStringFromClass([AbstractPost class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        
+        request.predicate = [NSPredicate predicateWithFormat:@"remoteStatusNumber == %d", AbstractPostRemoteStatusFailed];
+        
+        NSError *error = nil;
+        NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+        
+        if (!results) {
+            result(@[]);
+        } else {
+            result(results);
+        }
+    }];
+}
+
+
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(AbstractPost *post))success
@@ -236,13 +256,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
-            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
-                if ([postInContext isRevision] && [postInContext isDraft]) {
-                    postInContext = postInContext.original;
-                    [postInContext applyRevision];
-                    [postInContext deleteRevision];
-                }
                 postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
                 // If the post was not created on the server yet we convert the post to a local draft post with the current date.
                 if (!postInContext.hasRemote) {

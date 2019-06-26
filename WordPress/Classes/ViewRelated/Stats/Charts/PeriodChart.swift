@@ -1,6 +1,4 @@
-
 import Foundation
-
 import Charts
 
 // MARK: - StatsPeriodFilterDimension
@@ -56,39 +54,47 @@ private struct PeriodChartData: BarChartDataConvertible {
 
 private final class PeriodChartDataTransformer {
     static func transform(data: StatsSummaryTimeIntervalData) -> (barChartData: [BarChartDataConvertible], barChartStyling: [BarChartStyling]) {
-        let data = data.summaryData
+        let summaryData = data.summaryData
 
         let firstDateInterval: TimeInterval
         let lastDateInterval: TimeInterval
         let effectiveWidth: Double
 
-        if data.isEmpty {
+        if summaryData.isEmpty {
             firstDateInterval = 0
             lastDateInterval = 0
             effectiveWidth = 1
         } else {
-            firstDateInterval = data.first?.periodStartDate.timeIntervalSince1970 ?? 0
-            lastDateInterval = data.last?.periodStartDate.timeIntervalSince1970 ?? 0
+            firstDateInterval = summaryData.first?.periodStartDate.timeIntervalSince1970 ?? 0
+            lastDateInterval = summaryData.last?.periodStartDate.timeIntervalSince1970 ?? 0
 
             let range = lastDateInterval - firstDateInterval
-            let effectiveBars = Double(Double(data.count) * 1.2)
+            let effectiveBars = Double(Double(summaryData.count) * 1.2)
             effectiveWidth = range / effectiveBars
         }
+
+        let totalViews = summaryData.compactMap({$0.viewsCount}).reduce(0, +)
+        let totalVisitors = summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
+        let totalLikes = summaryData.compactMap({$0.likesCount}).reduce(0, +)
+        let totalComments = summaryData.compactMap({$0.commentsCount}).reduce(0, +)
 
         var viewEntries     = [BarChartDataEntry]()
         var visitorEntries  = [BarChartDataEntry]()
         var likeEntries     = [BarChartDataEntry]()
         var commentEntries  = [BarChartDataEntry]()
-        for datum in data {
+
+        for datum in summaryData {
             let dateInterval = datum.periodStartDate.timeIntervalSince1970
             let offset = dateInterval - firstDateInterval
 
             let x = offset
 
-            let viewEntry = BarChartDataEntry(x: x, y: Double(datum.viewsCount))
-            let visitorEntry = BarChartDataEntry(x: x, y: Double(datum.visitorsCount))
-            let likeEntry = BarChartDataEntry(x: x, y: Double(datum.likesCount))
-            let commentEntry = BarChartDataEntry(x: x, y: Double(datum.commentsCount))
+            // If the chart has no data, show "stub" bars
+            let emptyChartBarHeight = StatsBarChartView.emptyChartBarHeight
+            let viewEntry = BarChartDataEntry(x: x, y: totalViews > 0 ? Double(datum.viewsCount) : emptyChartBarHeight)
+            let visitorEntry = BarChartDataEntry(x: x, y: totalVisitors > 0 ? Double(datum.visitorsCount) : emptyChartBarHeight)
+            let likeEntry = BarChartDataEntry(x: x, y: totalLikes > 0 ? Double(datum.likesCount) : emptyChartBarHeight)
+            let commentEntry = BarChartDataEntry(x: x, y: totalComments > 0 ? Double(datum.commentsCount) : emptyChartBarHeight)
 
             viewEntries.append(viewEntry)
             visitorEntries.append(visitorEntry)
@@ -128,26 +134,54 @@ private final class PeriodChartDataTransformer {
             barChartDataConvertibles.append(periodChartData)
         }
 
-        let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval)
+        let horizontalAxisFormatter = HorizontalAxisFormatter(initialDateInterval: firstDateInterval, period: data.period)
         let chartStyling: [BarChartStyling] = [
-            ViewsPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
-            DefaultPeriodChartStyling(xAxisValueFormatter: horizontalAxisFormatter),
+            ViewsPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalViews),
+                                    secondaryBarColor: secondaryBarColor(forCount: totalVisitors),
+                                    primaryHighlightColor: primaryHighlightColor(forCount: totalViews),
+                                    secondaryHighlightColor: secondaryHighlightColor(forCount: totalVisitors),
+                                    xAxisValueFormatter: horizontalAxisFormatter),
+            DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalVisitors),
+                                      primaryHighlightColor: primaryHighlightColor(forCount: totalVisitors),
+                                      xAxisValueFormatter: horizontalAxisFormatter),
+            DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalLikes),
+                                      primaryHighlightColor: primaryHighlightColor(forCount: totalLikes),
+                                      xAxisValueFormatter: horizontalAxisFormatter),
+            DefaultPeriodChartStyling(primaryBarColor: primaryBarColor(forCount: totalComments),
+                                      primaryHighlightColor: primaryHighlightColor(forCount: totalComments),
+                                      xAxisValueFormatter: horizontalAxisFormatter),
         ]
 
         return (barChartDataConvertibles, chartStyling)
     }
+
+    static func primaryBarColor(forCount count: Int) -> UIColor {
+        return count > 0 ? WPStyleGuide.wordPressBlue() : WPStyleGuide.lightGrey()
+    }
+
+    static func secondaryBarColor(forCount count: Int) -> UIColor {
+        return count > 0 ? WPStyleGuide.darkBlue() : WPStyleGuide.lightGrey()
+    }
+
+    static func primaryHighlightColor(forCount count: Int) -> UIColor? {
+        return count > 0 ? WPStyleGuide.jazzyOrange() : nil
+    }
+
+    static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
+        return count > 0 ? WPStyleGuide.fireOrange() : nil
+    }
+
 }
 
 // MARK: - ViewsPeriodChartStyling
 
 private struct ViewsPeriodChartStyling: BarChartStyling {
-    let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
-    let secondaryBarColor: UIColor?                 = WPStyleGuide.darkBlue()
-    let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
-    let secondaryHighlightColor: UIColor?           = WPStyleGuide.fireOrange()
+    let primaryBarColor: UIColor
+    let secondaryBarColor: UIColor?
+    let primaryHighlightColor: UIColor?
+    let secondaryHighlightColor: UIColor?
     let labelColor: UIColor                         = WPStyleGuide.grey()
+    let legendColor: UIColor?                       = WPStyleGuide.wordPressBlue()
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
     let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
     let xAxisValueFormatter: IAxisValueFormatter
@@ -157,11 +191,12 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
 // MARK: - DefaultPeriodChartStyling
 
 private struct DefaultPeriodChartStyling: BarChartStyling {
-    let primaryBarColor: UIColor                    = WPStyleGuide.wordPressBlue()
+    let primaryBarColor: UIColor
     let secondaryBarColor: UIColor?                 = nil
-    let primaryHighlightColor: UIColor?             = WPStyleGuide.jazzyOrange()
+    let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
     let labelColor: UIColor                         = WPStyleGuide.grey()
+    let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
     let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
     let xAxisValueFormatter: IAxisValueFormatter

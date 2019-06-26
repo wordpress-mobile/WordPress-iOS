@@ -11,8 +11,8 @@ public class LargeValueFormatter: NSObject, IValueFormatter, IAxisValueFormatter
 
     /// Suffix to be appended after the values.
     ///
-    /// **default**: suffix: ["", "k", "m", "b", "t"]
-    public var suffix = ["", "k", "m", "b", "t"]
+    /// **default**: suffixes: ["", "k", "m", "b", "t"]
+    public var suffixes = ["", "k", "m", "b", "t"]
 
     /// An appendix text to be added at the end of the formatted value.
     public var appendix: String?
@@ -22,26 +22,23 @@ public class LargeValueFormatter: NSObject, IValueFormatter, IAxisValueFormatter
     }
 
     fileprivate func format(value: Double) -> String {
-        var sig = value
-        var length = 0
-        let maxLength = suffix.count - 1
-
-        while sig >= 1000.0 && length < maxLength {
-            sig /= 1000.0
-            length += 1
+        guard let string = LargeValueFormatter.formatter.string(from: NSNumber(value: value)) else {
+            return ""
         }
 
-        var r = String(format: "%2.1f", sig) + suffix[length]
+        // Grab the exponent value
+        let penultimateIndex = string.index(string.endIndex, offsetBy: -2)
+        let exponent = string[penultimateIndex...]
+        let exponentInt = Int(exponent) ?? 0
 
-        if let appendix = appendix {
-            r += appendix
-        }
+        // Replace the exponent with the correct suffix
+        let replaced = string.replacingOccurrences(of: "E[0-9][0-9]", with: suffixes[exponentInt / 3], options: .regularExpression)
 
-        return r
-    }
+        return replaced
+   }
 
     public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-        return format(value: value)
+        return format(value: round(value))
     }
 
     public func stringForValue(
@@ -49,6 +46,16 @@ public class LargeValueFormatter: NSObject, IValueFormatter, IAxisValueFormatter
         entry: ChartDataEntry,
         dataSetIndex: Int,
         viewPortHandler: ViewPortHandler?) -> String {
-        return format(value: value)
+        return format(value: round(value))
     }
+
+    private static var formatter: NumberFormatter = {
+        var numberFormatter = NumberFormatter()
+        // Fix the locale, as our code to replace the exponent may not function in some locales.
+        numberFormatter.locale = Locale(identifier: "en-US")
+        numberFormatter.positiveFormat = "###E00"
+        numberFormatter.minimumFractionDigits = 1
+        numberFormatter.maximumFractionDigits = 3
+        return numberFormatter
+    }()
 }

@@ -41,7 +41,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     fileprivate func setupTableView() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         // Note: We really want to handle 'Unselect' manually.

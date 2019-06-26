@@ -21,6 +21,7 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
     private weak var delegate: SiteStatsTableHeaderDelegate?
     private var date: Date?
     private var period: StatsPeriodUnit?
+    private var mostRecentDate: Date?
 
     // Limits how far back the date chooser can go.
     // Corresponds to the number of bars shown on the Overview chart.
@@ -43,11 +44,16 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         applyStyles()
     }
 
-    func configure(date: Date?, period: StatsPeriodUnit?, delegate: SiteStatsTableHeaderDelegate, expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount) {
+    func configure(date: Date?,
+                   period: StatsPeriodUnit?,
+                   delegate: SiteStatsTableHeaderDelegate,
+                   expectedPeriodCount: Int = SiteStatsTableHeaderView.defaultPeriodCount,
+                   mostRecentDate: Date? = nil) {
         self.date = date
         self.period = period
         self.delegate = delegate
         self.expectedPeriodCount = expectedPeriodCount
+        self.mostRecentDate = mostRecentDate
         dateLabel.text = displayDate()
         updateButtonStates()
     }
@@ -78,19 +84,17 @@ private extension SiteStatsTableHeaderView {
                 return nil
             }
 
-            let startDate = dateFormatter.string(from: weekStart)
-            let endDate = dateFormatter.string(from: weekEnd)
-
-            let weekFormat = NSLocalizedString("%@ - %@", comment: "Stats label for week date range. Ex: Mar 25 - Mar 31")
-            return String.localizedStringWithFormat(weekFormat, startDate, endDate)
+            return "\(dateFormatter.string(from: weekStart)) – \(dateFormatter.string(from: weekEnd))"
         }
     }
 
     @IBAction func didTapBackButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedBackward)
         updateDate(forward: false)
     }
 
     @IBAction func didTapForwardButton(_ sender: UIButton) {
+        captureAnalyticsEvent(.statsDateTappedForward)
         updateDate(forward: true)
     }
 
@@ -100,7 +104,9 @@ private extension SiteStatsTableHeaderView {
         }
 
         let value = forward ? 1 : -1
-        self.date = calendar.date(byAdding: period.calendarComponent, value: value, to: date)
+
+        self.date = calculateEndDate(startDate: date, offsetBy: value, unit: period)
+
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
@@ -109,7 +115,7 @@ private extension SiteStatsTableHeaderView {
     func updateButtonStates() {
 
         // Use dates without time
-        let currentDate = Date().normalizedDate()
+        let currentDate = (mostRecentDate != nil) ? mostRecentDate!.normalizedDate() : Date().normalizedDate()
 
         guard var date = date,
             let period = period,
@@ -184,6 +190,19 @@ private extension SiteStatsTableHeaderView {
     func yearFromDate(_ date: Date) -> Int {
         return calendar.component(.year, from: date)
     }
+
+    // MARK: - Analytics support
+
+    func captureAnalyticsEvent(_ event: WPAnalyticsStat) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period?.description as Any]
+
+        if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
+            WPAppAnalytics.track(event, withProperties: properties, withBlogID: blogIdentifier)
+        } else {
+            WPAppAnalytics.track(event, withProperties: properties)
+        }
+    }
+
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
@@ -194,11 +213,65 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
 
         let periodShift = -((entryCount - 1) - entryIndex)
 
-        let currentDate = Date().normalizedDate()
+        self.date = calculateEndDate(startDate: Date().normalizedDate(), offsetBy: periodShift, unit: period)
 
-        self.date = calendar.date(byAdding: period.calendarComponent, value: periodShift, to: currentDate)
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
+    }
+}
+
+private extension SiteStatsTableHeaderView {
+    func calculateEndDate(startDate: Date, offsetBy count: Int = 1, unit: StatsPeriodUnit) -> Date? {
+        let calendar = Calendar.autoupdatingCurrent
+
+        guard let adjustedDate = calendar.date(byAdding: unit.calendarComponent, value: count, to: startDate) else {
+            DDLogError("[Stats] Couldn't do basic math on Calendars in Stats. Returning original value.")
+            return startDate
+        }
+
+        switch unit {
+        case .day:
+            return adjustedDate.normalizedDate()
+
+        case .week:
+
+            // The hours component here is because the `dateInterval` returnd by Calendar is a closed range
+            // — so the "end" of a specific week is also simultenously a 'start' of the next one.
+            // This causes problem when calling this math on dates that _already are_ an end/start of a week.
+            // This doesn't work for our calculations, so we force it to rollover using this hack.
+            // (I *think* that's what's happening here. Doing Calendar math on this method has broken my brain.
+            // I spend like 10h on this ~50 LoC method. Beware.)
+            let components = DateComponents(day: 7 * count, hour: -12)
+
+            guard let weekAdjusted = calendar.date(byAdding: components, to: startDate.normalizedDate()) else {
+                DDLogError("[Stats] Couldn't add a multiple of 7 days and -12 hours to a date in Stats. Returning original value.")
+                return startDate
+            }
+
+            let endOfAdjustedWeek = calendar.dateInterval(of: .weekOfYear, for: weekAdjusted)?.end
+
+            return endOfAdjustedWeek?.normalizedDate()
+
+        case .month:
+            guard let maxComponent = calendar.range(of: .day, in: .month, for: adjustedDate)?.max() else {
+                DDLogError("[Stats] Couldn't determine number of days in a given month in Stats. Returning original value.")
+                return startDate
+            }
+
+            return calendar.date(bySetting: .day, value: maxComponent, of: adjustedDate)?.normalizedDate()
+
+        case .year:
+            guard
+                let maxMonth = calendar.range(of: .month, in: .year, for: adjustedDate)?.max(),
+                let adjustedMonthDate = calendar.date(bySetting: .month, value: maxMonth, of: adjustedDate),
+                let maxDay = calendar.range(of: .day, in: .month, for: adjustedMonthDate)?.max() else {
+                    DDLogError("[Stats] Couldn't determine number of months in a given year, or days in a given monthin Stats. Returning original value.")
+                    return startDate
+            }
+            let adjustedDayDate = calendar.date(bySetting: .day, value: maxDay, of: adjustedMonthDate)
+
+            return adjustedDayDate?.normalizedDate()
+        }
     }
 }

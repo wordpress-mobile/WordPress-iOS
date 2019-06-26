@@ -1,7 +1,27 @@
+12.8
+-----
+* Stats Insights: New two-column layout for Follower Totals stats.
+* Stats Periods: Countries Map added in countries section.
+* Updated copy for preview unavailable screen
+* Stats Insights: New two-column layout for This Year stats.
+* Stats Insights: added details option for This Year stats.
+* Stats Insights: New two-column layout for Most Popular Time stats.
+* Stats: modified appearance of empty charts.
+* Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
+* Stats overview chart: Fixed issue with legend location on iOS 11.
+
 12.7
 -----
 * Block Editor: Video, Quote and More blocks are available now.
+* Post Settings: Setting a Featured Image on a Post/Site should now work better in poor network conditions.
+* Offline Improvements: Posts that failed to upload due to connectivity issues will be auto-uploaded.
+* Block Editor: Copy/Paste of text with attributes( bold, italic, ...) will be respected on the editor.
+* Block Editor: Updated color scheme.
+* Block Editor: Nested lists are now available on the toolbar.
 * Post Settings: Setting a Featured Image on a Post/Site should now work better in poor netowrk conditions.
+* Stats Insights: New two-column layout for All-Time stats.
+* Stats Insights: New two-column layout for Today stats.
+* Post preview: Fixed issue with preview for self hosted sites not working.
 
 12.6
 -----
@@ -12,6 +32,7 @@
 * The app now launches a bit more quickly.
 * Added a list of third-party library acknowledgements.
 * Updated messaging experience for a reply upload result.
+* Stats: Fixed an issue where chart axes may be formatted incorrectly in some locales.
 
 12.5
 -----

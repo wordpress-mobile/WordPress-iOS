@@ -1,6 +1,4 @@
-
 import UIKit
-
 import Charts
 
 // MARK: - StatsBarChartViewDelegate
@@ -31,6 +29,11 @@ class StatsBarChartView: BarChartView {
         static let trailingOffset           = CGFloat(20)
         static let verticalAxisLabelCount   = 5
     }
+
+    /// Height for "stub" bars when a chart is empty, which is the height of the default chart.
+    /// The value is just shy of the default height to prevent the chart height from automatically expanding.
+    ///
+    static let emptyChartBarHeight = Double(Constants.verticalAxisLabelCount - 1) - 0.01
 
     /// This adapts the data set for presentation by the Charts framework.
     ///
@@ -185,11 +188,14 @@ private extension StatsBarChartView {
 
         configureLegendIfNeeded()
         data = barChartData
+
+        configureYAxisMaximum()
     }
 
     func configureBarChartViewProperties() {
         drawBarShadowEnabled = false
         drawValueAboveBarEnabled = false
+        clipValuesToContentEnabled = false
         fitBars = true
     }
 
@@ -218,9 +224,13 @@ private extension StatsBarChartView {
         primaryDataSet.colors = [ styling.primaryBarColor ]
         primaryDataSet.drawValuesEnabled = false
 
-        primaryDataSet.highlightAlpha = Constants.highlightAlpha
         if let initialHighlightColor = styling.primaryHighlightColor {
+            primaryDataSet.highlightAlpha = Constants.highlightAlpha
             primaryDataSet.highlightColor = initialHighlightColor
+            primaryDataSet.highlightEnabled = true
+        } else {
+            primaryDataSet.highlightEnabled = false
+            highlightPerTapEnabled = false
         }
 
         // Secondary
@@ -260,7 +270,7 @@ private extension StatsBarChartView {
     func configureLegendIfNeeded() {
         legend.enabled = false
 
-        guard let legendColor = styling.secondaryBarColor, let legendTitle = styling.legendTitle, legendView == nil else {
+        guard let legendColor = styling.legendColor, let legendTitle = styling.legendTitle, legendView == nil else {
             return
         }
 
@@ -268,10 +278,12 @@ private extension StatsBarChartView {
         addSubview(chartLegend)
 
         NSLayoutConstraint.activate([
-            chartLegend.widthAnchor.constraint(equalTo: widthAnchor)
+            chartLegend.widthAnchor.constraint(equalTo: widthAnchor),
+            chartLegend.leadingAnchor.constraint(equalTo: leadingAnchor),
+            chartLegend.topAnchor.constraint(equalTo: topAnchor)
         ])
-        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
 
+        extraTopOffset = chartLegend.intrinsicContentSize.height + Constants.topOffsetWithLegend
         self.legendView = chartLegend
     }
 
@@ -284,6 +296,7 @@ private extension StatsBarChartView {
         xAxis.labelTextColor = styling.labelColor
         xAxis.setLabelCount(Constants.horizontalAxisLabelCount, force: true)
         xAxis.valueFormatter = styling.xAxisValueFormatter
+        xAxis.avoidFirstLastClippingEnabled = true
     }
 
     func configureYAxis() {
@@ -303,6 +316,17 @@ private extension StatsBarChartView {
         // This adjustment is intended to prevent clipping observed with some labels
         // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
         extraTopOffset = Constants.topOffsetSansLegend
+    }
+
+    func configureYAxisMaximum() {
+        let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
+
+        if let maxY = data?.getYMax(),
+            maxY >= lowestMaxValue {
+            leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
+        } else {
+            leftAxis.axisMaximum = lowestMaxValue
+        }
     }
 
     func drawChartMarker(for entry: ChartDataEntry) {

@@ -9,6 +9,7 @@ class LoginTests: XCTestCase {
     }
 
     override func tearDown() {
+        takeScreenshotOfFailedTest()
         LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
@@ -34,7 +35,7 @@ class LoginTests: XCTestCase {
         let welcomeScreen = WelcomeScreen().login()
             .proceedWith(email: WPUITestCredentials.testWPcomUserEmail)
             .proceedWithLink()
-            .openMagicLink()
+            .openMagicLoginLink()
             .continueWithSelectedSite()
             .dismissNotificationAlertIfNeeded()
             .tabBar.gotoMeScreen()
