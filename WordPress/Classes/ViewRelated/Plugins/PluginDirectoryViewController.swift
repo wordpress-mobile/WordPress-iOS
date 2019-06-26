@@ -35,7 +35,7 @@ class PluginDirectoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: nil, andTableView: tableView)
+        WPStyleGuide.configureColors(view: nil, tableView: tableView)
 
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true

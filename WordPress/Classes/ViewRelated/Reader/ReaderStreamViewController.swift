@@ -243,7 +243,7 @@ import WordPressFlux
 
         observeNetworkStatus()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         didSetupView = true
 

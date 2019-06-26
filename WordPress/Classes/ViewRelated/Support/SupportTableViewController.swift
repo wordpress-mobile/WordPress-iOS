@@ -102,7 +102,7 @@ private extension SupportTableViewController {
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         // remove empty cells
         tableView.tableFooterView = UIView()
 

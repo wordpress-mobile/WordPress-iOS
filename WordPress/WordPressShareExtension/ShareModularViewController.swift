@@ -177,7 +177,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         modulesTableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: modulesTableView)
+        WPStyleGuide.configureColors(view: view, tableView: modulesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: modulesTableView)
 
         view.layoutIfNeeded()
@@ -195,7 +195,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         sitesTableView.refreshControl = refreshControl
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: sitesTableView)
+        WPStyleGuide.configureColors(view: view, tableView: sitesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
     }
 

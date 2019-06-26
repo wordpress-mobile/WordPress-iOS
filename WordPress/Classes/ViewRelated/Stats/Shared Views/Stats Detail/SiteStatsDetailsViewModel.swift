@@ -27,6 +27,8 @@ class SiteStatsDetailsViewModel: Observable {
     private var selectedPeriod: StatsPeriodUnit?
     private var postID: Int?
 
+    private var allAnnualInsights = [StatsAnnualInsight]()
+
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate) {
@@ -101,6 +103,10 @@ class SiteStatsDetailsViewModel: Observable {
         }
     }
 
+    func updateSelectedDate(_ selectedDate: Date) {
+        self.selectedDate = selectedDate
+    }
+
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
@@ -144,6 +150,8 @@ class SiteStatsDetailsViewModel: Observable {
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                       dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
             tableRows.append(contentsOf: tagsAndCategoriesRows())
+        case .insightsAnnualSiteStats:
+            tableRows.append(contentsOf: annualRows())
         case .periodPostsAndPages:
             tableRows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                       dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
@@ -170,6 +178,10 @@ class SiteStatsDetailsViewModel: Observable {
                                                       dataSubtitle: StatSection.periodReferrers.dataSubtitle))
             tableRows.append(contentsOf: referrersRows())
         case .periodCountries:
+            let map = countriesMap()
+            if !map.data.isEmpty {
+                tableRows.append(CountriesMapRow(countriesMap: map))
+            }
             tableRows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                                      dataSubtitle: StatSection.periodCountries.dataSubtitle))
             tableRows.append(contentsOf: countriesRows())
@@ -206,6 +218,11 @@ class SiteStatsDetailsViewModel: Observable {
 
     func refreshTagsAndCategories() {
         ActionDispatcher.dispatch(InsightAction.refreshTagsAndCategories)
+    }
+
+    func refreshAnnual(selectedDate: Date) {
+        self.selectedDate = selectedDate
+        ActionDispatcher.dispatch(InsightAction.refreshAnnual)
     }
 
     func refreshPostsAndPages() {
@@ -296,6 +313,8 @@ private extension SiteStatsDetailsViewModel {
             return .allComments
         case .insightsTagsAndCategories:
             return .allTagsAndCategories
+        case .insightsAnnualSiteStats:
+            return .allAnnual
         default:
             return nil
         }
@@ -344,7 +363,7 @@ private extension SiteStatsDetailsViewModel {
         switch followerType {
         case .insightsFollowersWordPress:
             followers = insightsStore.getAllDotComFollowers()?.topDotComFollowers ?? []
-            totalFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount
+            totalFollowers = insightsStore.getAllDotComFollowers()?.dotComFollowersCount
         case .insightsFollowersEmail:
             followers = insightsStore.getAllEmailFollowers()?.topEmailFollowers ?? []
             totalFollowers = insightsStore.getAllEmailFollowers()?.emailFollowersCount
@@ -425,6 +444,42 @@ private extension SiteStatsDetailsViewModel {
                                      childRows: StatsDataHelper.childRowsForItems($0.children),
                                      statSection: .insightsTagsAndCategories)
         }
+    }
+
+    // MARK: - Annual Site Stats
+
+    func annualRows() -> [DetailDataRow] {
+        return dataRowsFor(annualRowData())
+    }
+
+    func annualRowData() -> [StatsTotalRowData] {
+
+        guard let selectedDate = selectedDate else {
+            return []
+        }
+
+        allAnnualInsights = insightsStore.getAllAnnual()?.allAnnualInsights ?? []
+        let selectedYear = Calendar.current.component(.year, from: selectedDate)
+        let selectedYearInsights = allAnnualInsights.first { $0.year == selectedYear }
+
+        guard let annualInsights = selectedYearInsights else {
+            return []
+        }
+
+        return [StatsTotalRowData(name: AnnualSiteStats.totalPosts,
+                                  data: annualInsights.totalPostsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalComments,
+                                  data: annualInsights.totalCommentsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
+                                  data: Int(round(annualInsights.averageCommentsCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalLikes,
+                                  data: annualInsights.totalLikesCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
+                                  data: Int(round(annualInsights.averageLikesCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalWords,
+                                  data: annualInsights.totalWordsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
+                                  data: Int(round(annualInsights.averageWordsCount)).abbreviatedString())]
     }
 
     // MARK: - Posts and Pages
@@ -595,6 +650,17 @@ private extension SiteStatsDetailsViewModel {
                                                                                 icon: UIImage(named: $0.code),
                                                                                 statSection: .periodCountries) }
             ?? []
+    }
+
+    func countriesMap() -> CountriesMap {
+        let countries = periodStore.getTopCountries()?.countries ?? []
+        return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
+                            maxViewsCount: countries.first?.viewsCount ?? 0,
+                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
+                                var nextDict = dict
+                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                return nextDict
+        })
     }
 
     // MARK: - Published

@@ -55,7 +55,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
                                   comment: "Title for the Register domain screen")
 
         configureTableView()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         viewModel.onChange = { [weak self] (change) in
             self?.handle(change: change)

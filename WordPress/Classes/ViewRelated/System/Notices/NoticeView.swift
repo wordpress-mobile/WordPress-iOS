@@ -241,7 +241,6 @@ class NoticeView: UIView {
         cancelButton.titleLabel?.font = notice.style.cancelButtonFont
         actionButton.titleLabel?.font = notice.style.actionButtonFont
         titleLabel.font = notice.style.titleLabelFont
-        messageLabel.font = notice.style.messageLabelFont
 
         if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
             dualButtonsStackView?.axis = .vertical

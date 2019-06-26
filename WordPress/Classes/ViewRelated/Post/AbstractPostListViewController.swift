@@ -148,7 +148,7 @@ class AbstractPostListViewController: UIViewController,
         configureAuthorFilter()
         configureSearchBackingView()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.reloadData()
 
         observeNetworkStatus()

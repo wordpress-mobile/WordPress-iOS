@@ -1,6 +1,5 @@
 import Foundation
 import WordPressFlux
-import WordPressComStatsiOS
 
 enum PeriodAction: Action {
 
@@ -214,7 +213,7 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         }
 
         if !isFetchingOverview {
-            DDLogInfo("Stats: All fetching operations finished.")
+            DDLogInfo("Stats: Period Overview fetching operations finished.")
             fetchingOverviewListener?(false, fetchingOverviewHasFailed)
         }
     }
@@ -412,7 +411,7 @@ private extension StatsPeriodStore {
             self.actionDispatcher.dispatch(PeriodAction.receivedVideos(videos, error))
         }
 
-        statsRemote.getData(for: period, endingOn: date) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
+        statsRemote.getData(for: period, endingOn: date, limit: 0) { (countries: StatsTopCountryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogInfo("Error fetching countries: \(String(describing: error?.localizedDescription))")
             }

@@ -28,7 +28,7 @@ class RoleViewController: UITableViewController {
 
         title = NSLocalizedString("Role", comment: "User Roles Title")
         setupActivityIndicator()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
