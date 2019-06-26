@@ -20,8 +20,8 @@ extension XCUIElement {
 
         if content.count > 0 && content != self.placeholderValue {
             self.press(forDuration: 1.2)
-            app.menuItems["Select All"].tap()
-            app.menuItems["Cut"].tap()
+            app.menuItems.element(boundBy: 1).tap() // Select All (in the text edit menu)
+            app.menuItems.element(boundBy: 0).tap() // Cut (in the text edit menu)
         }
     }
 
@@ -45,11 +45,19 @@ extension XCTestCase {
         continueAfterFailure = false
 
         let app = XCUIApplication()
-        app.launchArguments = ["NoAnimations"]
+        app.launchArguments = ["-wpcom-api-base-url", WireMock.URL().absoluteString, "-no-animations"]
         app.activate()
 
         // Media permissions alert handler
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: "OK")
+    }
+
+    public func takeScreenshotOfFailedTest() {
+        if let failureCount = testRun?.failureCount, failureCount > 0 {
+            XCTContext.runActivity(named: "Take a screenshot at the end of a failed test") { (activity) in
+                add(XCTAttachment(screenshot: XCUIApplication().windows.firstMatch.screenshot()))
+            }
+        }
     }
 
     public func systemAlertHandler(alertTitle: String, alertButton: String) {

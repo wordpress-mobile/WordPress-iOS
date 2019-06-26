@@ -3,7 +3,7 @@ import WordPressFlux
 
 @objc protocol PostStatsDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
 }
 
@@ -19,6 +19,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var postURL: URL?
     private var postID: Int?
     private var selectedDate = Date()
+    private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
     private let store = StoreContainer.shared.statsPeriod
@@ -32,7 +33,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Stats", comment: "Window title for Post Stats view.")
+        navigationItem.title = NSLocalizedString("Post Stats", comment: "Window title for Post Stats view.")
         refreshControl?.addTarget(self, action: #selector(userInitiatedRefresh), for: .valueChanged)
         Style.configureTable(tableView)
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
@@ -55,8 +56,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         }
 
         cell.configure(date: selectedDate, period: .day, delegate: self)
-        viewModel?.statsBarChartViewDelegate = cell
-
+        tableHeaderView = cell
         return cell
     }
 
@@ -90,6 +90,8 @@ private extension PostStatsTableViewController {
 
             self?.refreshTableView()
         }
+
+        viewModel?.statsBarChartViewDelegate = self
     }
 
     func trackAccessEvent() {
@@ -167,8 +169,11 @@ extension PostStatsTableViewController: PostStatsDelegate {
         present(navController, animated: true)
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
+        StatsDataHelper.updatedExpandedState(forRow: row)
     }
 
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
@@ -181,6 +186,14 @@ extension PostStatsTableViewController: PostStatsDelegate {
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
+}
+
+// MARK: - StatsBarChartViewDelegate
+
+extension PostStatsTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
+    }
 }
 
 // MARK: - SiteStatsTableHeaderDelegate Methods

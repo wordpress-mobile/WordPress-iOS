@@ -35,7 +35,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
         setupRefreshControl()
 

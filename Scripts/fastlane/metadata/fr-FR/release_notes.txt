@@ -1,5 +1,7 @@
-* Sometimes notices would appear behind the keyboard, which was not ideal if you actually wanted to read them. Now they show up in front, where notices are meant to be.
-* We spiffed up domain management in the app with the ability to redeem a WordPress.com domain credit to give your site a custom domain.
-* Posts now auto-save when you preview them — one less thing for you to think about while drafting.
-* The app occasionally crashed when it tried to load Reader comments with multiple GIFs. Interacting on the internet is 65% sharing GIFs, so that just wouldn’t do. It’s fixed now.
-* The app launches a bit faster, so you can take those saved seconds and use them productively (or for selecting the perfect GIF).
+* Les statistiques ont été nettement améliorées, nous ne savons même pas par où commencer. L'interface utilisateur et le serveur principal ont été totalement réorganisés ! Les données sont enregistrées dans la mémoire cache. Le chargement des statistiques est ainsi plus rapide et vous pouvez même les consulter lorsque vous êtes hors ligne ! Les statistiques individuelles sont plus détaillées ! Grâce aux sélecteurs de date, vous indiquez les périodes précises que vous voulez consulter ! Un tel enthousiasme concernant les statistiques n'est-il pas stupide ? Quelle importance !
+* L'éditeur de blocs est amélioré en continu. Le message apparaissant lorsque vous essayez d'ajouter du contenu non valide dans un bloc a été clarifié. Nous avons également résolu un problème au niveau de la configuration des liens qui désactivait en permanence « Ouvrir un nouvel onglet ».
+* Vers l'infini et au-delà : nous avons supprimé la limite du nombre de photos partageables sur WordPress à partir d'autres applications.
+* Si vous écrivez un commentaire et vous absentez pendant sa mise en ligne, vous obtiendrez un message plus clair une fois la publication du commentaire effective ou des informations détaillées en cas d'échec.
+* Dans Paramètres du compte, votre Site principal indique désormais le domaine du site si le site n'a pas de nom. (Ne vous mettez pas la pression pour trouver le nom de site parfait immédiatement. Vous le trouverez plus tard !)
+* Des questions sur le code sous-jacent de l'application ? Nous avons ajouté des remerciements pour toutes les bibliothèques de code tierces que nous utilisons. Vous les trouverez dans vos paramètres.
+* Nous avons résolu une défaillance qui pouvait survenir lors de la configuration de votre blog afin de vous permettre de le configurer facilement.

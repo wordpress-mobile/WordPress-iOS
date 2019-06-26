@@ -100,7 +100,7 @@ import Gridicons
 
         navigationItem.title = NSLocalizedString("Search", comment: "Title of the Reader's search feature")
 
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        WPStyleGuide.configureColors(view: view, tableView: nil)
         setupSearchBar()
         configureFilterBar()
         configureLabel()

@@ -1,4 +1,5 @@
 #import "SettingTableViewCell.h"
+#import "WordPress-Swift.h"
 
 @implementation SettingTableViewCell
 

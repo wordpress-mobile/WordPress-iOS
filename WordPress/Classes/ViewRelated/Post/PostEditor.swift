@@ -41,19 +41,14 @@ protocol PostEditor: class, UIViewControllerTransitioningDelegate {
 
     /// Cancels all ongoing uploads
     ///
-    ///TODO: We won't need this once media uploading is extracted to PostEditorUtil
     func cancelUploadOfAllMedia(for post: AbstractPost)
 
     /// Whether the editor has failed media or not
     ///
-    //TODO: We won't need this once media uploading is extracted to PostEditorUtil
     var hasFailedMedia: Bool { get }
 
-    //TODO: We won't need this once media uploading is extracted to PostEditorUtil
     var isUploadingMedia: Bool { get }
 
-    //TODO: We won't need this once media uploading is extracted to PostEditorUtil
-    //TODO: Otherwise the signature needs refactoring, it is too ambiguous for a protocol method
     func removeFailedMedia()
 
     /// Verification prompt helper

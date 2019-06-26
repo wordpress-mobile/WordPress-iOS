@@ -118,6 +118,10 @@ private extension SiteStatsPeriodViewModel {
 
         if mostRecentChartData == nil {
             mostRecentChartData = periodSummary
+        } else if let mostRecentChartData = mostRecentChartData,
+            let periodSummary = periodSummary,
+            mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
+            self.mostRecentChartData = periodSummary
         } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
             mostRecentChartData = chartData
         }
@@ -126,13 +130,15 @@ private extension SiteStatsPeriodViewModel {
         let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
                                            tabData: viewsData.count,
                                            difference: viewsData.difference,
-                                           differencePercent: viewsData.percentage)
+                                           differencePercent: viewsData.percentage,
+                                           analyticsStat: .statsOverviewTypeTappedViews)
 
         let visitorsData = intervalData(summaryData: summaryData, summaryType: .visitors)
         let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
                                               tabData: visitorsData.count,
                                               difference: visitorsData.difference,
-                                              differencePercent: visitorsData.percentage)
+                                              differencePercent: visitorsData.percentage,
+                                              analyticsStat: .statsOverviewTypeTappedVisitors)
 
 
         // If Summary Likes is still loading, show dashes (instead of 0)
@@ -144,13 +150,15 @@ private extension SiteStatsPeriodViewModel {
                                            tabData: likesData.count,
                                            tabDataStub: likesLoadingStub,
                                            difference: likesData.difference,
-                                           differencePercent: likesData.percentage)
+                                           differencePercent: likesData.percentage,
+                                           analyticsStat: .statsOverviewTypeTappedLikes)
 
         let commentsData = intervalData(summaryData: summaryData, summaryType: .comments)
         let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
                                               tabData: commentsData.count,
                                               difference: commentsData.difference,
-                                              differencePercent: commentsData.percentage)
+                                              differencePercent: commentsData.percentage,
+                                              analyticsStat: .statsOverviewTypeTappedComments)
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [BarChartStyling]()
@@ -342,11 +350,14 @@ private extension SiteStatsPeriodViewModel {
     func countriesTableRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
         tableRows.append(CellHeaderRow(title: StatSection.periodCountries.title))
+        let map = countriesMap()
+        if !map.data.isEmpty {
+            tableRows.append(CountriesMapRow(countriesMap: map))
+        }
         tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
                                            dataRows: countriesDataRows(),
                                            siteStatsPeriodDelegate: periodDelegate))
-
         return tableRows
     }
 
@@ -356,6 +367,17 @@ private extension SiteStatsPeriodViewModel {
                                                                                      icon: UIImage(named: $0.code),
                                                                                      statSection: .periodCountries) }
             ?? []
+    }
+
+    func countriesMap() -> CountriesMap {
+        let countries = store.getTopCountries()?.countries ?? []
+        return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
+                            maxViewsCount: countries.first?.viewsCount ?? 0,
+                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
+                                    var nextDict = dict
+                                    nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
+                                    return nextDict
+        })
     }
 
     func searchTermsTableRows() -> [ImmuTableRow] {

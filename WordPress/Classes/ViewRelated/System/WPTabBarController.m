@@ -100,16 +100,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
-        [[self tabBar] setTranslucent:NO];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
-        // Create a background
-        // (not strictly needed when white, but left here for possible customization)
-        [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
-
-        // This can't be set using UIAppearance, otherwise it overrides the titleTextAttributes
-        // set for unselected items.
-        [[self tabBar] setUnselectedItemTintColor:[WPStyleGuide greyLighten10]];
+        [self setupColors];
 
         [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerSplitViewController,

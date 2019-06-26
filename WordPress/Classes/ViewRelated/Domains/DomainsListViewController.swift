@@ -93,7 +93,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Domains", comment: "Title for the Domains list")
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
 
         if let dotComID = blog.dotComID?.intValue {
             service.refreshDomainsForSite(dotComID) { _ in }

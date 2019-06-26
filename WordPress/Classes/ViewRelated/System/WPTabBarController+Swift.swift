@@ -91,4 +91,9 @@ extension WPTabBarController {
         WPAppAnalytics.track(stat)
         return true
     }
+
+    /// Set up the tab bar's colors
+    @objc func setupColors() {
+        tabBar.isTranslucent = false
+    }
 }

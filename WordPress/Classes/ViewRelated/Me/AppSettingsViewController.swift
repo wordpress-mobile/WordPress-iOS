@@ -42,7 +42,7 @@ class AppSettingsViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         addAccountSettingsChangedObserver()

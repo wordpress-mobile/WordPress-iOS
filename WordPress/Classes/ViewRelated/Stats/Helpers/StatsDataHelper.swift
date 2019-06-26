@@ -215,7 +215,7 @@ extension StatsPeriodUnit {
         case .week:
             return "MMM d"
         case .month:
-            return "MMM yyyy"
+            return "MMM, yyyy"
         case .year:
             return "yyyy"
         }
@@ -232,6 +232,19 @@ extension StatsPeriodUnit {
         case .year:
             return .year
         }
+    }
+
+    var description: String {
+        switch self {
+        case .day: return "day"
+        case .week: return "week"
+        case .month: return "month"
+        case .year: return "year"
+        }
+    }
+
+    static var analyticsPeriodKey: String {
+        return "period"
     }
 
 }

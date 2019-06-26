@@ -51,11 +51,11 @@ struct StatsTotalRowData {
 @objc protocol StatsTotalRowDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func toggleChildRowsForRow(_ row: StatsTotalRow)
+    @objc optional func toggleChildRows(for row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
 
-class StatsTotalRow: UIView, NibLoadable {
+class StatsTotalRow: UIView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -167,6 +167,7 @@ class StatsTotalRow: UIView, NibLoadable {
         dataLabel.isHidden = rowData.data.isEmpty
 
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func layoutSubviews() {
@@ -174,6 +175,18 @@ class StatsTotalRow: UIView, NibLoadable {
         configureDataBar()
     }
 
+    // MARK: - Accessibility
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+
+        let itemTitle = itemLabel.text ?? ""
+        let dataTitle = dataLabel.text ?? ""
+        accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
+
+        let showDisclosure = rowData?.showDisclosure ?? false
+        accessibilityTraits = (showDisclosure) ? .button : .staticText
+        accessibilityHint = (showDisclosure) ? NSLocalizedString("Tap for more detail.", comment: "Accessibility hint") : ""
+    }
 }
 
 private extension StatsTotalRow {
@@ -296,7 +309,7 @@ private extension StatsTotalRow {
 
         if hasChildRows {
             expanded.toggle()
-            delegate?.toggleChildRowsForRow?(self)
+            delegate?.toggleChildRows?(for: self, didSelectRow: true)
             return
         }
 

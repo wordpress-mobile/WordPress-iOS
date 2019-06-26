@@ -5,7 +5,7 @@ import WordPressFlux
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
     @objc optional func displayMediaWithID(_ mediaID: NSNumber)
-    @objc optional func expandedRowUpdated(_ row: StatsTotalRow)
+    @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
 }
@@ -159,6 +159,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsPeriodStatsRow.self,
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
+                CountriesMapRow.self,
                 OverviewRow.self,
                 TableFooterRow.self]
     }
@@ -287,8 +288,10 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
         })
     }
 
-    func expandedRowUpdated(_ row: StatsTotalRow) {
-        applyTableUpdates()
+    func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool) {
+        if didSelectRow {
+            applyTableUpdates()
+        }
         StatsDataHelper.updatedExpandedState(forRow: row)
     }
 

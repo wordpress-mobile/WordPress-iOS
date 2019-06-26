@@ -44,6 +44,13 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
               failure:(void (^)(NSError *))failure;
 
 /**
+ Get all posts that failed to upload.
+ 
+ @param result a block that will be invoked to return the requested posts.
+ */
+- (void)getFailedPosts:(nonnull void (^)( NSArray<AbstractPost *>* _Nonnull posts))result;
+
+/**
  Sync an initial batch of posts from the specified blog.
  Please note that success and/or failure are called in the context of the
  NSManagedObjectContext supplied when the PostService was initialized, and may not

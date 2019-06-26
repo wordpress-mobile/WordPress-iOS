@@ -61,8 +61,6 @@ WordPress/Derived Sources/
 # coverage.py
 */CoverageData/*
 WordPress/Images.xcassets/AppIcon-Internal.appiconset
-WordPress/WordPressScreenshotGeneration/ScreenshotCredentials.swift
-WordPress/WordPressUITests/WPUITestCredentials.swift
 
 # Bundler
 /vendor/bundle/

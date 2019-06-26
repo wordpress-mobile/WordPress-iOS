@@ -98,7 +98,7 @@ class ShareTagsPickerViewController: UIViewController {
     }
 
     fileprivate func setupTableView() {
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureColors(view: view, tableView: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: SuggestionsDataSource.cellIdentifier)
         tableView.register(LoadingDataSource.Cell.self, forCellReuseIdentifier: LoadingDataSource.cellIdentifier)
         tableView.register(FailureDataSource.Cell.self, forCellReuseIdentifier: FailureDataSource.cellIdentifier)
