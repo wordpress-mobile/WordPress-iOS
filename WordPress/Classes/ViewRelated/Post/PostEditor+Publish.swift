@@ -282,7 +282,6 @@ extension PostEditor where Self: UIViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                self.editorSession.end(outcome: .save)
                 let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
                 self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
