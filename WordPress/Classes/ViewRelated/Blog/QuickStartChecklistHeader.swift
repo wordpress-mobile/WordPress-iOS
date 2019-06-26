@@ -28,7 +28,7 @@ class QuickStartChecklistHeader: UIView {
     @IBOutlet private var titleLabel: UILabel! {
         didSet {
             WPStyleGuide.configureLabel(titleLabel, textStyle: .body)
-            titleLabel.textColor = WPStyleGuide.grey()
+            titleLabel.textColor = .neutral(shade: .shade300)
         }
     }
     @IBOutlet private var chevronView: UIImageView! {

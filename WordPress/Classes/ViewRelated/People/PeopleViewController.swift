@@ -503,8 +503,8 @@ private extension PeopleViewController {
 
     func setupFilterBar() {
         filterBar.tintColor = .primary
-        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterBar.deselectedTabColor = .neutral(shade: .shade400)
+        filterBar.dividerColor = .neutral(shade: .shade100)
 
         filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)

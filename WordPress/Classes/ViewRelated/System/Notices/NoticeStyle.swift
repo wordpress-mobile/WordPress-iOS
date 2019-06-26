@@ -49,8 +49,8 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
     public let titleColor: UIColor = .white
-    public let messageColor: UIColor = WPStyleGuide.greyLighten20()
-    public let backgroundColor: UIColor = WPStyleGuide.darkGrey().withAlphaComponent(0.88)
+    public let messageColor: UIColor = .neutral(shade: .shade100)
+    public let backgroundColor: UIColor = UIColor.neutral(shade: .shade700).withAlphaComponent(0.88)
 
     public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
 

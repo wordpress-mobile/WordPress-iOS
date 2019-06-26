@@ -158,10 +158,10 @@ import Gridicons
     @objc func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
         let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade300))
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.greyDarken30())
+        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(.neutral(shade: .shade600))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
 
         WPStyleGuide.configureSearchBar(searchBar)
@@ -169,8 +169,8 @@ import Gridicons
 
     func configureFilterBar() {
         filterBar.tintColor = .primary
-        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
-        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterBar.deselectedTabColor = .neutral(shade: .shade400)
+        filterBar.dividerColor = .neutral(shade: .shade100)
         filterBar.tabSizingStyle = .equalWidths
         filterBar.items = sections
 
@@ -179,7 +179,7 @@ import Gridicons
 
     @objc func configureLabel() {
         let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
-        let rawAttributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: Any]
+        let rawAttributes = WPNUXUtility.titleAttributes(with: .neutral(shade: .shade500)) as! [String: Any]
         let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
         label.numberOfLines = 2
         label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)

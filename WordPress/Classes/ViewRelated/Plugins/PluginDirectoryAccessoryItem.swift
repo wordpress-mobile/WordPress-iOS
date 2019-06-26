@@ -27,7 +27,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func automanaged() -> UIView {
-        let color = WPStyleGuide.greyDarken10()
+        let color = UIColor.neutral(shade: .shade400)
         let text = NSLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: nil, tintColor: color, text: text)
@@ -43,7 +43,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func inactive() -> UIView {
         let icon = Gridicon.iconOfType(.cross, withSize: Constants.imageSize)
-        let color = WPStyleGuide.greyDarken10()
+        let color = UIColor.neutral(shade: .shade400)
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -132,7 +132,7 @@ struct PluginDirectoryAccessoryItem {
                 color = .primary(shade: .shade400)
             } else {
                 image = Gridicon.iconOfType(.starOutline, withSize: Constants.starImageSize)
-                color = WPStyleGuide.greyLighten20()
+                color = .neutral(shade: .shade100)
             }
 
             let imageView = UIImageView(image: image)
@@ -162,7 +162,7 @@ struct PluginDirectoryAccessoryItem {
         leftHalf.addConstraint(NSLayoutConstraint(item: leftHalf, attribute: .width, relatedBy: .equal, toItem: leftHalf, attribute: .height, multiplier: 0.5, constant: 0))
 
         let rightHalf = UIImageView(image: Gridicon.iconOfType(.starOutline, withSize: size))
-        rightHalf.tintColor = WPStyleGuide.greyLighten20()
+        rightHalf.tintColor = .neutral(shade: .shade100)
         rightHalf.translatesAutoresizingMaskIntoConstraints = false
         rightHalf.contentMode = .right
         rightHalf.clipsToBounds = true

@@ -775,7 +775,7 @@ extension ShareExtensionEditorViewController {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                .foregroundColor: WPStyleGuide.darkGrey()
+                .foregroundColor: UIColor.neutral(shade: .shade700)
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -1276,29 +1276,29 @@ fileprivate extension ShareExtensionEditorViewController {
     }
 
     struct ShareColors {
-        static let title                                = WPStyleGuide.grey()
-        static let separator                            = WPStyleGuide.greyLighten30()
-        static let placeholder                          = WPStyleGuide.grey()
-        static let mediaProgressOverlay                 = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
-        static let mediaOverlayBorderColor              = UIColor.primary
-        static let aztecBackground                      = UIColor.clear
-        static let aztecLinkColor                       = UIColor.primary(shade: .shade400)
-        static let aztecFormatBarDisabledColor          = WPStyleGuide.greyLighten20()
-        static let aztecFormatBarDividerColor           = WPStyleGuide.greyLighten30()
-        static let aztecCursorColor                     = UIColor.primary
-        static let aztecFormatBarBackgroundColor        = UIColor.white
-        static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
-        static let aztecFormatBarActiveColor: UIColor   = UIColor(hexString: "11181D")
+        static let title                          = UIColor.neutral(shade: .shade300)
+        static let separator                      = UIColor.neutral(shade: .shade50)
+        static let placeholder                    = UIColor.neutral(shade: .shade300)
+        static let mediaProgressOverlay           = UIColor.neutral(shade: .shade700).withAlphaComponent(CGFloat(0.6))
+        static let mediaOverlayBorderColor        = UIColor.primary
+        static let aztecBackground                = UIColor.clear
+        static let aztecLinkColor                 = UIColor.primary(shade: .shade400)
+        static let aztecFormatBarDisabledColor    = UIColor.neutral(shade: .shade100)
+        static let aztecFormatBarDividerColor     = UIColor.neutral(shade: .shade50)
+        static let aztecCursorColor               = UIColor.primary
+        static let aztecFormatBarBackgroundColor  = UIColor.white
+        static let aztecFormatBarInactiveColor    = UIColor(hexString: "7B9AB1")
+        static let aztecFormatBarActiveColor      = UIColor(hexString: "11181D")
 
         static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? WPStyleGuide.lightGrey() : WPStyleGuide.greyLighten30()
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .neutral(shade: .shade0) : .neutral(shade: .shade50)
             }
         }
 
         static var aztecFormatPickerBackgroundColor: UIColor {
             get {
-                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : WPStyleGuide.lightGrey()
+                return (UIDevice.current.userInterfaceIdiom == .pad) ? .white : .neutral(shade: .shade0)
             }
         }
     }

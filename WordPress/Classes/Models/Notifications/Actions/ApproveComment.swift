@@ -85,7 +85,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
             return
         }
 
-        let newBackgroundColor = on ? WPStyleGuide.grey() : .primary
+        let newBackgroundColor = on ? UIColor.neutral(shade: .shade300) : .primary
         button.backgroundColor = newBackgroundColor
 
         resetDefaultPadding()

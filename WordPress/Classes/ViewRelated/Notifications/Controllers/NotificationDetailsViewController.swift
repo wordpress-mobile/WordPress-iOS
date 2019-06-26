@@ -382,7 +382,7 @@ extension NotificationDetailsViewController {
     func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
-        tableView.backgroundColor           = WPStyleGuide.greyLighten30()
+        tableView.backgroundColor           = .neutral(shade: .shade50)
         tableView.accessibilityIdentifier   = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
         tableView.backgroundColor           = WPStyleGuide.itsEverywhereGrey()
     }

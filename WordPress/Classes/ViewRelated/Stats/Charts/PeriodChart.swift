@@ -156,11 +156,11 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? .primary : WPStyleGuide.lightGrey()
+        return count > 0 ? .primary : .neutral(shade: .shade0)
     }
 
     static func secondaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? .primary(shade: .shade700) : WPStyleGuide.lightGrey()
+        return count > 0 ? .primary(shade: .shade700) : .neutral(shade: .shade0)
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
@@ -180,10 +180,10 @@ private struct ViewsPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?
-    let labelColor: UIColor                         = WPStyleGuide.grey()
+    let labelColor: UIColor                         = .neutral(shade: .shade300)
     let legendColor: UIColor?                       = .primary
     let legendTitle: String?                        = NSLocalizedString("Visitors", comment: "This appears in the legend of the period chart; Visitors are superimposed over Views in that case.")
-    let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
+    let lineColor: UIColor                          = .neutral(shade: .shade50)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }
@@ -195,10 +195,10 @@ private struct DefaultPeriodChartStyling: BarChartStyling {
     let secondaryBarColor: UIColor?                 = nil
     let primaryHighlightColor: UIColor?
     let secondaryHighlightColor: UIColor?           = nil
-    let labelColor: UIColor                         = WPStyleGuide.grey()
+    let labelColor: UIColor                         = .neutral(shade: .shade300)
     let legendColor: UIColor?                       = nil
     let legendTitle: String?                        = nil
-    let lineColor: UIColor                          = WPStyleGuide.greyLighten30()
+    let lineColor: UIColor                          = .neutral(shade: .shade50)
     let xAxisValueFormatter: IAxisValueFormatter
     let yAxisValueFormatter: IAxisValueFormatter    = VerticalAxisFormatter()
 }

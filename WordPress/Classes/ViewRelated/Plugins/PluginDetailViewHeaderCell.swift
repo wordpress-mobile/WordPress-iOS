@@ -25,7 +25,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
         let author = directoryEntry.author
 
         let defaultAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .subheadline),
-                                                               .foregroundColor: WPStyleGuide.darkGrey()]
+                                                               .foregroundColor: UIColor.neutral(shade: .shade700)]
 
         let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary(shade: .shade400)]
 

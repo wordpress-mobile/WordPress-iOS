@@ -12,7 +12,7 @@ class SiteAssemblyViewTests: XCTestCase {
         let actualBackgroundColor = contentView.backgroundColor
 
         // Then
-        let expectedBackgroundColor = WPStyleGuide.greyLighten30()
+        let expectedBackgroundColor = .neutral(shade: .shade50)
         XCTAssertEqual(actualBackgroundColor, expectedBackgroundColor)
     }
 

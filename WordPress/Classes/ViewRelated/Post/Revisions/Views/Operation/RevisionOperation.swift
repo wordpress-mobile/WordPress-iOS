@@ -38,7 +38,7 @@ class RevisionOperationView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        numbersLabel.textColor = WPStyleGuide.greyDarken10()
+        numbersLabel.textColor = .neutral(shade: .shade400)
     }
 
 

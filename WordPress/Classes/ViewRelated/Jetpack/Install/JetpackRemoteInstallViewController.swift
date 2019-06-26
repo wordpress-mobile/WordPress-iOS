@@ -52,7 +52,7 @@ private extension JetpackRemoteInstallViewController {
     }
 
     func setupUI() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .neutral(shade: .shade50)
 
         jetpackView.delegate = self
         add(jetpackView)

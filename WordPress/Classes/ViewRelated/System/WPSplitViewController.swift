@@ -200,7 +200,7 @@ class WPSplitViewController: UISplitViewController {
 
     fileprivate lazy var dimmingView: UIView = {
         let dimmingView = UIView()
-        dimmingView.backgroundColor = WPStyleGuide.greyDarken30()
+        dimmingView.backgroundColor = .neutral(shade: .shade600)
         return dimmingView
     }()
 

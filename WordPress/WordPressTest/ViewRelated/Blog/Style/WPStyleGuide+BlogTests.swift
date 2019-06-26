@@ -21,7 +21,7 @@ class WPStyleGuide_BlogTests: XCTestCase {
 
     func testConfigureTableViewBlogCellSetsDetailTextLabelColor() {
         WPStyleGuide.configureTableViewBlogCell(testCell)
-        XCTAssertEqual(WPStyleGuide.greyDarken10(), testCell.detailTextLabel!.textColor)
+        XCTAssertEqual(.neutral(shade: .shade400), testCell.detailTextLabel!.textColor)
     }
 
     func testConfigureTableViewBlogCellSetsBackgroundColor() {

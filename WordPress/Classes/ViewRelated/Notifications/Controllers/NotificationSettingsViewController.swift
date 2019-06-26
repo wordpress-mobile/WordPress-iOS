@@ -266,7 +266,7 @@ open class NotificationSettingsViewController: UIViewController {
             cell.imageView?.image = .siteIconPlaceholder
 
             cell.accessoryType = .disclosureIndicator
-            cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
+            cell.imageView?.backgroundColor = .neutral(shade: .shade50)
 
             cell.textLabel?.text = site.title
             cell.detailTextLabel?.text = URL(string: site.siteURL)?.host

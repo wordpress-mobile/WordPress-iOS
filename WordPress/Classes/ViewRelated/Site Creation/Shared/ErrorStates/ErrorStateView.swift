@@ -77,7 +77,7 @@ final class ErrorStateView: UIView {
             label.numberOfLines = 0
 
             label.font = WPStyleGuide.fontForTextStyle(.title2)
-            label.textColor = WPStyleGuide.greyDarken10()
+            label.textColor = .neutral(shade: .shade400)
             label.textAlignment = .center
 
             label.text = configuration.title
@@ -105,7 +105,7 @@ final class ErrorStateView: UIView {
                 label.numberOfLines = 0
 
                 label.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular)
-                label.textColor = WPStyleGuide.darkGrey()
+                label.textColor = .neutral(shade: .shade700)
                 label.textAlignment = .center
 
                 label.text = subtitleText

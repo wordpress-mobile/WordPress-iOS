@@ -398,7 +398,7 @@ private extension PersonViewController {
             return
         }
         headerCell.fullNameLabel.font = WPStyleGuide.tableviewTextFont()
-        headerCell.fullNameLabel.textColor = WPStyleGuide.darkGrey()
+        headerCell.fullNameLabel.textColor = .neutral(shade: .shade700)
         headerCell.fullNameLabel.text = person.fullName
 
         headerCell.userNameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()

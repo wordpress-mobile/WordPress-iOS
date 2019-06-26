@@ -16,9 +16,9 @@ extension WPStyleGuide {
                 case .blue:
                     return .primary(shade: .shade400)
                 case .grey:
-                    return WPStyleGuide.greyLighten10()
+                    return .neutral(shade: .shade200)
                 case .darkGrey:
-                    return WPStyleGuide.darkGrey()
+                    return .neutral(shade: .shade700)
                 }
             }
         }
@@ -163,29 +163,29 @@ extension WPStyleGuide {
 
         // MARK: - Style Values
 
-        static let defaultTextColor = WPStyleGuide.darkGrey()
-        static let headerTextColor = WPStyleGuide.greyDarken20()
-        static let secondaryTextColor = WPStyleGuide.grey()
-        static let itemDetailTextColor = WPStyleGuide.greyDarken10()
-        static let actionTextColor: UIColor = .primary
-        static let summaryTextColor = WPStyleGuide.darkGrey()
-        static let substringHighlightTextColor: UIColor = .primary
-        static let iconLoadingBackgroundColor = WPStyleGuide.greyLighten20()
+        static let defaultTextColor = UIColor.neutral(shade: .shade700)
+        static let headerTextColor = UIColor.neutral(shade: .shade500)
+        static let secondaryTextColor = UIColor.neutral(shade: .shade300)
+        static let itemDetailTextColor = UIColor.neutral(shade: .shade400)
+        static let actionTextColor = UIColor.primary
+        static let summaryTextColor = UIColor.neutral(shade: .shade700)
+        static let substringHighlightTextColor = UIColor.primary
+        static let iconLoadingBackgroundColor = UIColor.neutral(shade: .shade100)
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
         static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 
-        static let tableBackgroundColor = WPStyleGuide.greyLighten30()
+        static let tableBackgroundColor = UIColor.neutral(shade: .shade50)
         static let cellBackgroundColor = UIColor.white
-        static let separatorColor = WPStyleGuide.greyLighten20()
-        static let verticalSeparatorColor = WPStyleGuide.greyLighten30()
+        static let separatorColor = UIColor.neutral(shade: .shade100)
+        static let verticalSeparatorColor = UIColor.neutral(shade: .shade50)
 
         static let defaultFilterTintColor: UIColor = .primary
-        static let tabbedCardFilterTintColor = WPStyleGuide.greyLighten20()
-        static let tabbedCardFilterSelectedTitleColor = WPStyleGuide.darkGrey()
-        static let filterDeselectedColor = WPStyleGuide.greyDarken10()
-        static let filterDividerColor = WPStyleGuide.greyLighten20()
+        static let tabbedCardFilterTintColor = UIColor.neutral(shade: .shade100)
+        static let tabbedCardFilterSelectedTitleColor = UIColor.neutral(shade: .shade700)
+        static let filterDeselectedColor = UIColor.neutral(shade: .shade400)
+        static let filterDividerColor = UIColor.neutral(shade: .shade100)
 
         static let overviewCardFilterTitleFont = WPStyleGuide.fontForTextStyle(.caption2, fontWeight: .regular)
         static let overviewCardFilterDataFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
@@ -198,11 +198,11 @@ extension WPStyleGuide {
         static let gridiconSize = CGSize(width: 24, height: 24)
 
         struct PostingActivityColors {
-            static let lightGrey = WPStyleGuide.greyLighten20()
+            static let lightGrey = UIColor.neutral(shade: .shade100)
             static let lightBlue = UIColor(fromRGBAColorWithRed: 145.0, green: 226.0, blue: 251.0, alpha: 1)
             static let mediumBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 190.0, blue: 246.0, alpha: 1)
             static let darkBlue = UIColor(fromRGBAColorWithRed: 0.0, green: 131.0, blue: 169.0, alpha: 1)
-            static let darkGrey = WPStyleGuide.darkGrey()
+            static let darkGrey = UIColor.neutral(shade: .shade700)
             static let orange = UIColor(fromRGBAColorWithRed: 245.0, green: 131.0, blue: 53.0, alpha: 1)
         }
 

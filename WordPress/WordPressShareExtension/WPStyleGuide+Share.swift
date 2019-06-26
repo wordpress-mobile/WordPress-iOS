@@ -46,7 +46,7 @@ extension WPStyleGuide {
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = darkGrey()
 
-            cell.backgroundColor = WPStyleGuide.greyLighten30()
+            cell.backgroundColor = .neutral(shade: .shade50)
             cell.separatorInset = UIEdgeInsets.zero
         }
 

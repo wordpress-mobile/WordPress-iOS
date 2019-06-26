@@ -436,19 +436,19 @@ extension WordPressAppDelegate {
     private func setupFancyAlertAppearance() {
         let appearance = FancyAlertView.appearance()
 
-        appearance.titleTextColor = WPStyleGuide.darkGrey()
+        appearance.titleTextColor = .neutral(shade: .shade700)
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
 
-        appearance.bodyTextColor = WPStyleGuide.darkGrey()
+        appearance.bodyTextColor = .neutral(shade: .shade700)
         appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
 
         appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
         appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         appearance.infoTintColor = WPStyleGuide.wordPressBlue()
 
-        appearance.topDividerColor = WPStyleGuide.greyLighten30()
-        appearance.bottomDividerColor = WPStyleGuide.lightGrey()
-        appearance.headerBackgroundColor = WPStyleGuide.lightGrey()
+        appearance.topDividerColor = .neutral(shade: .shade50)
+        appearance.bottomDividerColor = .neutral(shade: .shade0)
+        appearance.headerBackgroundColor = .neutral(shade: .shade0)
     }
 
     /// Setup: FancyButton's Appearance
@@ -767,7 +767,7 @@ extension WordPressAppDelegate {
             navigationAppearance.barStyle = WPStyleGuide.navigationBarBarStyle()
 
             let tabBarTextColor = WPStyleGuide.wordPressBlue()
-            let tabBarUnselectedTextColor = WPStyleGuide.grey()
+            let tabBarUnselectedTextColor = UIColor.neutral(shade: .shade300)
 
             UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarUnselectedTextColor], for: .normal)
             UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: tabBarTextColor], for: .selected)
@@ -798,13 +798,13 @@ extension WordPressAppDelegate {
         // Media Picker styles
         let barItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
         barItemAppearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: WPFontManager.systemSemiBoldFont(ofSize: 16.0)], for: .disabled)
-        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = WPStyleGuide.greyLighten30()
+        UICollectionView.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self]).backgroundColor = .neutral(shade: .shade50)
 
 
         let cellAppearance = WPMediaCollectionViewCell.appearance(whenContainedInInstancesOf: [WPMediaPickerViewController.self])
-        cellAppearance.loadingBackgroundColor = WPStyleGuide.lightGrey()
-        cellAppearance.placeholderBackgroundColor = WPStyleGuide.darkGrey()
-        cellAppearance.placeholderTintColor = WPStyleGuide.greyLighten30()
+        cellAppearance.loadingBackgroundColor = .neutral(shade: .shade0)
+        cellAppearance.placeholderBackgroundColor = .neutral(shade: .shade700)
+        cellAppearance.placeholderTintColor = .neutral(shade: .shade50)
         cellAppearance.setCellTintColor(WPStyleGuide.wordPressBlue())
 
         UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = WPStyleGuide.wordPressBlue()

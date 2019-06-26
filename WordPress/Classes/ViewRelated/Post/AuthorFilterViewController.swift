@@ -45,7 +45,7 @@ class AuthorFilterViewController: UITableViewController {
 
         tableView.rowHeight = Metrics.rowHeight
         tableView.separatorInset = .zero
-        tableView.separatorColor = WPStyleGuide.greyLighten20()
+        tableView.separatorColor = .neutral(shade: .shade100)
         tableView.isScrollEnabled = false
         tableView.showsVerticalScrollIndicator = false
     }
@@ -222,9 +222,9 @@ private class AuthorFilterCell: UITableViewCell {
     }
 
     private enum Appearance {
-        static let textColor = WPStyleGuide.darkGrey()
-        static let placeholderTintColor = WPStyleGuide.darkGrey()
-        static let placeholderBackgroundColor = WPStyleGuide.greyLighten20()
+        static let textColor = UIColor.neutral(shade: .shade700)
+        static let placeholderTintColor = UIColor.neutral(shade: .shade700)
+        static let placeholderBackgroundColor = UIColor.neutral(shade: .shade100)
     }
 
     private enum Metrics {

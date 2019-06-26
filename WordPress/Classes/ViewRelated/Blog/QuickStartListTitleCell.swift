@@ -39,7 +39,7 @@ class QuickStartListTitleCell: UITableViewCell {
         }
 
         if state == .completed {
-            label.textColor = WPStyleGuide.grey()
+            label.textColor = .neutral(shade: .shade300)
             label.attributedText = NSAttributedString(string: text, attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
         }
     }

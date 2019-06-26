@@ -36,7 +36,7 @@ class NotificationContentView: UIView {
         let view = CircularImageView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = WPStyleGuide.grey()
+        view.backgroundColor = UIColor.neutral(shade: .shade300)
 
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalToConstant: Metrics.avatarDimension),
