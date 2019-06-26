@@ -8,6 +8,7 @@
 * Stats Insights: New two-column layout for Most Popular Time stats.
 * Stats: modified appearance of empty charts.
 * Stats Insights: Fixed issue where refreshing would sometimes clear the stats.
+* Stats overview chart: Fixed issue with legend location on iOS 11.
 
 12.7
 -----
