@@ -30,7 +30,7 @@ extension UIImageView {
     ///
     @objc
     func downloadSiteIcon(at path: String) {
-        downloadSiteIcon(at: path, placeholderImage: .siteIconPlaceholderImage)
+        downloadSiteIcon(at: path, placeholderImage: .siteIconPlaceholder)
     }
 
 
@@ -60,7 +60,7 @@ extension UIImageView {
     ///     - placeholderImage: Yes. It's the "place holder image".
     ///
     @objc
-    func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholderImage) {
+    func downloadSiteIcon(for blog: Blog, placeholderImage: UIImage? = .siteIconPlaceholder) {
         guard let siteIconPath = blog.icon, let siteIconURL = optimizedURL(for: siteIconPath) else {
             image = placeholderImage
             return

@@ -96,7 +96,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     if (self.blog.hasIcon) {
         [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
-        self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
+        self.blavatarImageView.image = [UIImage siteIconPlaceholder];
     }
 
     if ([[QuickStartTourGuide find] isCurrentElement:QuickStartTourElementSiteIcon]) {

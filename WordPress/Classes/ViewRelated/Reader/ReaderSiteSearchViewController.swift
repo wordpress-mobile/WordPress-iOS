@@ -177,9 +177,9 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
         if let blavatarURL = feed.blavatarURL {
             cell.imageView?.downloadSiteIcon(at: blavatarURL.absoluteString,
-                                             placeholderImage: UIImage.siteIconPlaceholderImage)
+                                             placeholderImage: .siteIconPlaceholder)
         } else {
-            cell.imageView?.image = UIImage.siteIconPlaceholderImage
+            cell.imageView?.image = .siteIconPlaceholder
         }
     }
 

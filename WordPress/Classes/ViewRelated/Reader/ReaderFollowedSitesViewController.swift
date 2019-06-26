@@ -409,7 +409,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         }
 
         // Reset the site icon first to address: https://github.com/wordpress-mobile/WordPress-iOS/issues/8513
-        cell.imageView?.image = .siteIconPlaceholderImage
+        cell.imageView?.image = .siteIconPlaceholder
 
         cell.accessoryType = .disclosureIndicator
         cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
