@@ -285,7 +285,7 @@ class PostCardCell: UITableViewCell, ConfigurablePostView {
 
     private func setupSelectedBackgroundView() {
         if let selectedBackgroundView = selectedBackgroundView {
-            WPStyleGuide.applySelectedBackgroundView(selectedBackgroundView, topMargin: Constants.margin)
+            WPStyleGuide.insertSelectedBackgroundSubview(selectedBackgroundView, topMargin: Constants.margin)
         }
     }
 

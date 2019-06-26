@@ -72,7 +72,7 @@ extension WPStyleGuide {
         button.setTitleColor(darkGrey(), for: .selected)
     }
 
-    class func applySelectedBackgroundView(_ selectedBackgroundView: UIView, topMargin: CGFloat) {
+    class func insertSelectedBackgroundSubview(_ selectedBackgroundView: UIView, topMargin: CGFloat) {
         let marginMask = UIView()
         selectedBackgroundView.addSubview(marginMask)
         marginMask.translatesAutoresizingMaskIntoConstraints = false
