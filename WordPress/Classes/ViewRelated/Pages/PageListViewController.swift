@@ -354,8 +354,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let nibName = String(describing: PageListSectionHeaderView.self)
         let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)?.first as? PageListSectionHeaderView
 
-        if let sectionInfo = sectionInfo {
-            headerView?.setTitle(PostSearchHeader.title(forStatus: sectionInfo.name))
+        if let sectionInfo = sectionInfo, let headerView = headerView {
+            headerView.setTitle(PostSearchHeader.title(forStatus: sectionInfo.name))
         }
 
         return headerView
