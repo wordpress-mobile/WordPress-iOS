@@ -21,21 +21,21 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9qC-oR-E6W">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="UVB-Zz-xnO"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xGz-qQ-24V">
-                        <rect key="frame" x="0.0" y="0.5" width="320" height="283"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="283.5"/>
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="xGz-qQ-24V" secondAttribute="bottom" id="EUE-OI-Hu7"/>
                     <constraint firstAttribute="trailing" secondItem="xGz-qQ-24V" secondAttribute="trailing" id="IZO-DZ-xBv"/>
                     <constraint firstAttribute="trailing" secondItem="9qC-oR-E6W" secondAttribute="trailing" id="KRQ-6f-FXw"/>
                     <constraint firstItem="xGz-qQ-24V" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="O6b-Wo-o1n"/>
-                    <constraint firstItem="xGz-qQ-24V" firstAttribute="top" secondItem="9qC-oR-E6W" secondAttribute="bottom" id="XwT-aS-JyD"/>
+                    <constraint firstAttribute="bottom" secondItem="xGz-qQ-24V" secondAttribute="bottom" id="U1a-Rb-ycZ"/>
+                    <constraint firstItem="xGz-qQ-24V" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="aHU-mj-i0K"/>
                     <constraint firstItem="9qC-oR-E6W" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="c3O-Gr-avx"/>
                     <constraint firstItem="9qC-oR-E6W" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="pNy-yp-I8r"/>
                 </constraints>
