@@ -178,6 +178,13 @@ extension UIColor {
             return WPStyleGuide.wordPressBlue()
         }
     }
+    static var primaryDark: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .primary, shade: .shade700))
+        } else {
+            return WPStyleGuide.darkBlue()
+        }
+    }
     class func primary(shade: MurielColorShade) -> UIColor {
         if FeatureFlag.murielColors.enabled {
             return muriel(color: MurielColor(from: .primary, shade: shade))

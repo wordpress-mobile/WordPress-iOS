@@ -40,11 +40,11 @@ extension WPStyleGuide {
     // MARK: - Reader Card Styles
 
     @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
-        return mediumBlue()
+        return .primary
     }
 
     @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
-        return darkGrey()
+        return .neutral(shade: .shade700)
     }
 
     // MARK: - Custom Colors
@@ -169,8 +169,8 @@ extension WPStyleGuide {
             return
         }
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(mediumBlue(), for: UIControl.State())
-        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.setTitleColor(.primary, for: UIControl.State())
+        button.setTitleColor(.primaryDark, for: .highlighted)
         button.setTitleColor(darkGrey(), for: .disabled)
     }
 

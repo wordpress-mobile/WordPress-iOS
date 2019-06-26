@@ -21,7 +21,7 @@ extension WPStyleGuide {
         // MARK: Colors
         public static let superAdminColor = UIColor.accentDark
         public static let adminColor = UIColor.neutral(shade: .shade700)
-        public static let editorColor = UIColor.primary(shade: .shade700)
+        public static let editorColor = UIColor.primaryDark
         public static let otherRoleColor: UIColor = .primary
     }
 }

@@ -13,7 +13,7 @@
 
     @available(swift, obsoleted: 1.0)
     static func murielPrimaryDark() -> UIColor {
-        return .primary(shade: .shade700)
+        return .primaryDark
     }
 
     @available(swift, obsoleted: 1.0)
