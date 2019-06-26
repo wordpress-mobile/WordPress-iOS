@@ -1,6 +1,7 @@
 #import "RelatedPostsPreviewTableViewCell.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static CGFloat HorizontalMargin = 0.0;
 static CGFloat VerticalMargin = 5.0;
@@ -38,7 +39,7 @@ static CGFloat ImageHeight = 96.0;
 {
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _titleLabel.textColor = [WPStyleGuide darkGrey];
+        _titleLabel.textColor = [UIColor murielNeutral700];
         _titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:14.0];
         _titleLabel.numberOfLines = 0;
     }
@@ -50,7 +51,7 @@ static CGFloat ImageHeight = 96.0;
 {
     if (!_siteLabel) {
         _siteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _siteLabel.textColor = [WPStyleGuide greyDarken20];
+        _siteLabel.textColor = [UIColor murielNeutral];
         _siteLabel.font = [WPFontManager systemItalicFontOfSize:11.0];
         _siteLabel.numberOfLines = 0;
     }
@@ -117,7 +118,7 @@ static CGFloat ImageHeight = 96.0;
         _enabledImages = YES;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.text = NSLocalizedString(@"Related Posts", @"Label for Related Post header preview");
-        _headerLabel.textColor = [WPStyleGuide greyDarken20];
+        _headerLabel.textColor = [UIColor murielNeutral];
         _headerLabel.font = [WPFontManager systemSemiBoldFontOfSize:11.0];
         [readableContentView addSubview:_headerLabel];
         

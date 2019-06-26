@@ -2,6 +2,7 @@
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 #pragma mark - MenuItemSourceRadioButton
 
@@ -81,7 +82,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.font = [WPStyleGuide tableviewTextFont];
-    label.textColor = [WPStyleGuide greyDarken30];
+    label.textColor = [UIColor murielNeutral600];
     label.backgroundColor = [UIColor whiteColor];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByTruncatingTail;

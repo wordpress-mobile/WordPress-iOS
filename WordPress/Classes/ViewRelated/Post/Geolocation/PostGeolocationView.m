@@ -1,6 +1,7 @@
 #import "PostGeolocationView.h"
 #import "PostAnnotation.h"
 #import <WordPressShared/WPFontManager.h>
+#import "WordPress-Swift.h"
 
 const CGFloat DefaultLabelMargin = 20.0f;
 const CGFloat GeoViewMinHeight = 130.0f;
@@ -38,7 +39,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 130.0f, w, 60.0)];
     self.addressLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.addressLabel.font = [WPStyleGuide regularTextFont];
-    self.addressLabel.textColor = [WPStyleGuide darkGrey];
+    self.addressLabel.textColor = [UIColor murielNeutral700];
     self.addressLabel.numberOfLines = 0;
     self.addressLabel.lineBreakMode = NSLineBreakByWordWrapping;
     
@@ -131,8 +132,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
     }
     NSString *address = self.address ? [self.address stringByAppendingString:@"\n"] : @"";
     
-    NSDictionary *addressStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide darkGrey]};
-    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPFontManager systemSemiBoldFontOfSize:11.0], NSForegroundColorAttributeName:[WPStyleGuide grey]};
+    NSDictionary *addressStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[UIColor murielNeutral700]};
+    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPFontManager systemSemiBoldFontOfSize:11.0], NSForegroundColorAttributeName:[UIColor murielNeutral300]};
 
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:address attributes:addressStyle];
     NSAttributedString *coordinates = [[NSMutableAttributedString alloc] initWithString:coordText attributes:coordinateStyle];

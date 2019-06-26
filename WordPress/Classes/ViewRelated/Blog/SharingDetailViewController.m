@@ -82,7 +82,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     cell.textLabel.text = NSLocalizedString(@"Reconnect", @"Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog.");
     [WPStyleGuide configureTableViewActionCell:cell];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [WPStyleGuide jazzyOrange];
+    cell.textLabel.textColor = [UIColor murielAccent];
 }
 
 - (void)configureLearnMoreCell: (UITableViewCell *)cell
@@ -90,7 +90,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     cell.textLabel.text = NSLocalizedString(@"Learn More", @"Title of a button. Tapping allows the user to learn more about the specific error.");
     [WPStyleGuide configureTableViewActionCell:cell];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [WPStyleGuide wordPressBlue];
+    cell.textLabel.textColor = [UIColor murielPrimary];
 }
 
 - (void)configureDisconnectCell: (UITableViewCell *)cell

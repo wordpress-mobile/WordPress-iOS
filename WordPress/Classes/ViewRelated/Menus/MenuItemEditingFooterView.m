@@ -1,6 +1,7 @@
 #import "MenuItemEditingFooterView.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -27,8 +28,8 @@
 {
     UIButton *button = self.cancelButton;
     button.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
-    [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide greyDarken20] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielNeutral700] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielNeutral] forState:UIControlStateHighlighted];
     [button setTitle:NSLocalizedString(@"Cancel", @"Menus: Cancel button title for canceling an edited menu item.") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -38,7 +39,7 @@
     UIButton *button = self.trashButton;
     button.adjustsImageWhenHighlighted = YES;
     [button setTitle:nil forState:UIControlStateNormal];
-    button.tintColor = [WPStyleGuide grey];
+    button.tintColor = [UIColor murielNeutral300];
     [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -47,9 +48,9 @@
 {
     UIButton *button = self.saveButton;
     button.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
-    [button setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor murielPrimary] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor murielPrimaryDark] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor murielNeutral100] forState:UIControlStateDisabled];
     [button setTitle:NSLocalizedString(@"OK", @"Menus: button title for finishing editing of a menu item.") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -58,7 +59,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[UIColor murielNeutral50] CGColor]);
     CGContextSetLineWidth(context, 2.0);
 
     CGContextMoveToPoint(context, 0, 0);

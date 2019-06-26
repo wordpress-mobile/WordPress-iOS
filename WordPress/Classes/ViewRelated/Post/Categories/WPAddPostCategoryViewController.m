@@ -186,7 +186,7 @@
          
     _createCategoryCell.textField.clearButtonMode = UITextFieldViewModeAlways;
     _createCategoryCell.textField.font = [WPStyleGuide tableviewTextFont];
-    _createCategoryCell.textField.textColor = [WPStyleGuide darkGrey];
+    _createCategoryCell.textField.textColor = [UIColor murielNeutral700];
     _createCategoryCell.textField.text = @"";
     _createCategoryCell.textField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");;
     _createCategoryCell.textField.returnKeyType = UIReturnKeyDone;

@@ -110,14 +110,14 @@ static CGFloat const FeaturedImageSize = 120.0;
     self.titleLabel.font = [WPStyleGuide notoBoldFontForTextStyle:UIFontTextStyleHeadline];
     self.titleLabel.adjustsFontForContentSizeCategory = YES;
     
-    self.titleLabel.textColor = [WPStyleGuide darkGrey];
-    self.timestampLabel.textColor = [WPStyleGuide grey];
-    self.badgesLabel.textColor = [WPStyleGuide darkYellow];
-    self.menuButton.tintColor = [WPStyleGuide greyLighten10];
+    self.titleLabel.textColor = [UIColor murielNeutral700];
+    self.timestampLabel.textColor = [UIColor murielNeutral300];
+    self.badgesLabel.textColor = [UIColor murielWarningDark];
+    self.menuButton.tintColor = [UIColor murielNeutral200];
     [self.menuButton setImage:[Gridicon iconOfType:GridiconTypeEllipsis] forState:UIControlStateNormal];
 
-    self.backgroundColor = [WPStyleGuide greyLighten30];
-    self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.backgroundColor = [UIColor murielNeutral50];
+    self.contentView.backgroundColor = [UIColor murielNeutral50];
     
     self.featuredImageView.layer.cornerRadius = PageListTableViewCellTagLabelRadius;
 }
@@ -131,8 +131,8 @@ static CGFloat const FeaturedImageSize = 120.0;
 - (void)configureForStatus
 {
     if (self.post.isFailed && !self.post.hasLocalChanges) {
-        self.titleLabel.textColor = [WPStyleGuide errorRed];
-        self.menuButton.tintColor = [WPStyleGuide errorRed];
+        self.titleLabel.textColor = [UIColor murielError];
+        self.menuButton.tintColor = [UIColor murielError];
     }
 }
 
