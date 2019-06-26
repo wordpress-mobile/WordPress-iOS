@@ -128,8 +128,8 @@ private enum ReaderCardDiscoverAttribution: Int {
         let attributes = originalAttributionParagraphAttributes
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(.font, value: font, range: range)
-        textLabel.textColor = WPStyleGuide.mediumBlue()
-        textLabel.highlightedTextColor = WPStyleGuide.lightBlue()
+        textLabel.textColor = .primary
+        textLabel.highlightedTextColor = .primary
         textLabel.attributedText = attributedString
         attributionAction = .visitSite
     }

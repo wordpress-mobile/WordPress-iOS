@@ -14,7 +14,7 @@ extension WPStyleGuide {
             var styleGuideColor: UIColor {
                 switch self {
                 case .blue:
-                    return WPStyleGuide.mediumBlue()
+                    return .primary(shade: .shade400)
                 case .grey:
                     return WPStyleGuide.greyLighten10()
                 case .darkGrey:

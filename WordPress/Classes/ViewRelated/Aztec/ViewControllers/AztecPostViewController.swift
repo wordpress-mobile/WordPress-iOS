@@ -3254,7 +3254,7 @@ extension AztecPostViewController {
         static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
         static let mediaProgressBarTrack    = UIColor.primary
-        static let aztecLinkColor           = WPStyleGuide.mediumBlue()
+        static let aztecLinkColor           = UIColor.primary(shade: .shade400)
         static let mediaOverlayBorderColor  = UIColor.primary
     }
 

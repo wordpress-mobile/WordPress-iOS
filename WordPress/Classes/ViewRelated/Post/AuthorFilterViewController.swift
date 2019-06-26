@@ -186,7 +186,7 @@ private class AuthorFilterCell: UITableViewCell {
         stackView.addArrangedSubview(gravatarImageView)
         stackView.addArrangedSubview(titleLabel)
 
-        tintColor = WPStyleGuide.mediumBlue()
+        tintColor = .primary(shade: .shade400)
     }
 
     required init?(coder aDecoder: NSCoder) {

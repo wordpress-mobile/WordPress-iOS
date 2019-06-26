@@ -43,7 +43,7 @@ final class AddressCell: UITableViewCell, ModelSettableCell {
     }
 
     private func styleCheckmark() {
-        tintColor = WPStyleGuide.mediumBlue()
+        tintColor = .primary(shade: .shade400)
     }
 
     override func prepareForReuse() {

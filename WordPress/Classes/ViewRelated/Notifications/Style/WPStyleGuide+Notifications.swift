@@ -129,7 +129,7 @@ extension WPStyleGuide {
         public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
         public static let blockUnapprovedBgColor    = WPStyleGuide.alertYellowLighter()
         public static let blockUnapprovedTextColor  = WPStyleGuide.alertRedDarker()
-        public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
+        public static let blockUnapprovedLinkColor  = UIColor.primary(shade: .shade400)
 
         public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,

@@ -160,7 +160,7 @@ private final class PeriodChartDataTransformer {
     }
 
     static func secondaryBarColor(forCount count: Int) -> UIColor {
-        return count > 0 ? WPStyleGuide.darkBlue() : WPStyleGuide.lightGrey()
+        return count > 0 ? .primary(shade: .shade700) : WPStyleGuide.lightGrey()
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {

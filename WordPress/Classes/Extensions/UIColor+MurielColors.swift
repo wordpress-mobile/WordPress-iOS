@@ -100,7 +100,13 @@ extension UIColor {
     }
 
     /// Muriel accent color
-    static var accent = muriel(color: .accent)
+    static var accent: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .accent)
+        } else {
+            return WPStyleGuide.jazzyOrange()
+        }
+    }
     class func accent(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
@@ -177,7 +183,13 @@ extension UIColor {
     }
 
     /// Muriel success color
-    static var success = muriel(color: .success)
+    static var success: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: .success)
+        } else {
+            return WPStyleGuide.validGreen()
+        }
+    }
     class func success(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .success, shade: shade))
     }

@@ -99,7 +99,7 @@ class PostCardStatusViewModel: NSObject {
         case .pending:
             return WPStyleGuide.validGreen()
         case .scheduled:
-            return WPStyleGuide.mediumBlue()
+            return .primary(shade: .shade400)
         case .trash:
             return WPStyleGuide.errorRed()
         default:

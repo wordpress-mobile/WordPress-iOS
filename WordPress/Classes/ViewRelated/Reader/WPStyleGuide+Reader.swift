@@ -245,10 +245,10 @@ extension WPStyleGuide {
         let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
         let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
 
-        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
-        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+        let tintedFollowIcon = followIcon.imageWithTintColor(.primary(shade: .shade400))
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(.success(shade: .shade500))
 
-        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let highlightIcon = followingIcon.imageWithTintColor(.primary(shade: .shade300))
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
@@ -264,9 +264,9 @@ extension WPStyleGuide {
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
         let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
 
-        let normalColor = WPStyleGuide.greyLighten10()
-        let selectedColor = WPStyleGuide.mediumBlue()
-        let highlightedColor = WPStyleGuide.lightBlue()
+        let normalColor: UIColor = .text
+        let selectedColor: UIColor = .primary(shade: .shade600)
+        let highlightedColor: UIColor = .primary
 
         let tintedIcon = icon.imageWithTintColor(normalColor)
         let tintedSelectedIcon = selectedIcon.imageWithTintColor(selectedColor)
@@ -347,11 +347,11 @@ extension WPStyleGuide {
     }
 
     @objc public class func gapMarkerButtonBackgroundColor() -> UIColor {
-        return WPStyleGuide.greyDarken10()
+        return .neutral(shade: .shade400)
     }
 
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
-        return WPStyleGuide.lightBlue()
+        return .primary(shade: .shade300)
     }
 
 

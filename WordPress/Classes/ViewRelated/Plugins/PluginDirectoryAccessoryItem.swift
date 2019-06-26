@@ -129,7 +129,7 @@ struct PluginDirectoryAccessoryItem {
 
             if i <= Int(wholeStars) {
                 image = Gridicon.iconOfType(.star, withSize: Constants.starImageSize)
-                color = WPStyleGuide.mediumBlue()
+                color = .primary(shade: .shade400)
             } else {
                 image = Gridicon.iconOfType(.starOutline, withSize: Constants.starImageSize)
                 color = WPStyleGuide.greyLighten20()
@@ -145,7 +145,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func halfStar(size: CGSize) -> UIView {
-        let color = WPStyleGuide.mediumBlue()
+        let color = UIColor.primary(shade: .shade400)
 
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
