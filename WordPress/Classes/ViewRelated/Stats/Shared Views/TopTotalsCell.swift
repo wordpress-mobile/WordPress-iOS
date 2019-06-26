@@ -23,7 +23,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
     private var forDetails = false
     private var limitRowsDisplayed = true
     private let maxChildRowsToDisplay = 10
-    private var dataRows = [StatsTotalRowData]()
+    fileprivate var dataRows = [StatsTotalRowData]()
     private var subtitlesProvided = true
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
@@ -66,6 +66,7 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
         setSubtitleVisibility()
         applyStyles()
+        prepareForVoiceOver()
     }
 
     override func prepareForReuse() {
@@ -86,7 +87,6 @@ class TopTotalsCell: UITableViewCell, NibLoadable {
 
         removeRowsFromStackView(rowsStackView)
     }
-
 }
 
 // MARK: - Private Extension
@@ -316,4 +316,29 @@ extension TopTotalsCell: ViewMoreRowDelegate {
         postStatsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
 
+}
+
+// MARK: - Accessibility
+
+extension TopTotalsCell: Accessible {
+    func prepareForVoiceOver() {
+        accessibilityTraits = .summaryElement
+
+        guard dataRows.count > 0 else {
+            return
+        }
+
+        let itemTitle = itemSubtitleLabel.text
+        let dataTitle = dataSubtitleLabel.text
+
+        if let itemTitle = itemTitle, let dataTitle = dataTitle {
+            let description = String(format: "Table showing %@ and %@", itemTitle, dataTitle)
+            accessibilityLabel = NSLocalizedString(description, comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+        } else {
+            if let title = (itemTitle ?? dataTitle) {
+                let description = String(format: "Table showing %@", title)
+                accessibilityLabel = NSLocalizedString(description, comment: "Accessibility of stats table. Placeholder will be populated with name of data shown in table.")
+            }
+        }
+    }
 }
