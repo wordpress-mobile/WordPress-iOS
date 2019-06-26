@@ -123,7 +123,31 @@ extension UIColor {
     /// Muriel neutral color
     static var neutral = muriel(color: .neutral)
     class func neutral(shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .neutral, shade: shade))
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .neutral, shade: shade))
+        } else {
+            // here's compatibility with the old colors
+            switch shade {
+            case .shade700, .shade800, .shade900:
+                return WPStyleGuide.darkGrey()
+            case .shade600:
+                return WPStyleGuide.greyDarken30()
+            case .shade500:
+                return WPStyleGuide.greyDarken20()
+            case .shade400:
+                return WPStyleGuide.greyDarken10()
+            case .shade300:
+                return WPStyleGuide.grey()
+            case .shade200:
+                return WPStyleGuide.greyLighten10()
+            case .shade100:
+                return WPStyleGuide.greyLighten20()
+            case .shade50:
+                return WPStyleGuide.greyLighten30()
+            case .shade0:
+                return WPStyleGuide.lightGrey()
+            }
+        }
     }
 
     /// Muriel primary color
@@ -135,7 +159,21 @@ extension UIColor {
         }
     }
     class func primary(shade: MurielColorShade) -> UIColor {
-        return muriel(color: MurielColor(from: .primary, shade: shade))
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .primary, shade: shade))
+        } else {
+            // here's compatibility with the old colors
+            switch shade {
+            case .shade700, .shade800, .shade900:
+                return WPStyleGuide.darkBlue()
+            case .shade500, .shade600:
+                return WPStyleGuide.wordPressBlue()
+            case .shade400:
+                return WPStyleGuide.mediumBlue()
+            case .shade300, .shade200, .shade100, .shade50, .shade0:
+                return WPStyleGuide.lightBlue()
+            }
+        }
     }
 
     /// Muriel success color
