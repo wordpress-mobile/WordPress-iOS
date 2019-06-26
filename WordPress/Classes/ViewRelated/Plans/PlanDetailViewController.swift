@@ -38,7 +38,7 @@ class PlanDetailViewController: UIViewController {
     fileprivate lazy var currentPlanLabel: UIView = {
         let label = UILabel()
         label.font = WPFontManager.systemSemiBoldFont(ofSize: 13.0)
-        label.textColor = WPStyleGuide.validGreen()
+        label.textColor = .success
         label.text = NSLocalizedString("Current Plan", comment: "Label title. Refers to the current WordPress.com plan for a user's site.").localizedUppercase
         label.translatesAutoresizingMaskIntoConstraints = false
 

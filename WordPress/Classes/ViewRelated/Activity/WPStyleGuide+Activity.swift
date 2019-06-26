@@ -72,9 +72,9 @@ extension WPStyleGuide {
         public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
             switch activity.status {
             case ActivityStatus.error:
-                return WPStyleGuide.errorRed()
+                return .error
             case ActivityStatus.success:
-                return WPStyleGuide.validGreen()
+                return .success
             case ActivityStatus.warning:
                 return WPStyleGuide.warningYellow()
             default:

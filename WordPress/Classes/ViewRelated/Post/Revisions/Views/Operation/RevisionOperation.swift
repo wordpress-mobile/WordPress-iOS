@@ -49,7 +49,7 @@ class RevisionOperationView: UIView {
         var color: UIColor {
             switch self {
             case .add: return .primary
-            case .del: return WPStyleGuide.errorRed()
+            case .del: return .error
             }
         }
 

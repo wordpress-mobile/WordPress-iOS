@@ -285,7 +285,7 @@ extension SettingsTitleSubtitleController {
         let contentSection = Sections.section(for: section)
         if contentSection == .name {
             if let footer = view as? UITableViewHeaderFooterView {
-                footer.textLabel?.textColor = WPStyleGuide.errorRed()
+                footer.textLabel?.textColor = .error
             }
             // By default the footer is hidden, it will be shown if the user leaves the title empty
             view.isHidden = true

@@ -164,11 +164,11 @@ private final class PeriodChartDataTransformer {
     }
 
     static func primaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? WPStyleGuide.jazzyOrange() : nil
+        return count > 0 ? .accent : nil
     }
 
     static func secondaryHighlightColor(forCount count: Int) -> UIColor? {
-        return count > 0 ? WPStyleGuide.fireOrange() : nil
+        return count > 0 ? .accentDark : nil
     }
 
 }

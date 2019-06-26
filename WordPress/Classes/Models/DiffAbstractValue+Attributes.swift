@@ -8,7 +8,7 @@ extension DiffAbstractValue {
         case .del:
             return [.backgroundColor: WPStyleGuide.extraLightRed(),
                     .underlineStyle: NSNumber(value: 2),
-                    .underlineColor: WPStyleGuide.errorRed(),
+                    .underlineColor: UIColor.error,
                     .strikethroughStyle: NSNumber(value: 1),
                     .strikethroughColor: UIColor.black]
         default:

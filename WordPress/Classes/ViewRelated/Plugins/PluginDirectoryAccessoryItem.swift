@@ -35,7 +35,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func active() -> UIView {
         let icon = Gridicon.iconOfType(.checkmark, withSize: Constants.imageSize)
-        let color = WPStyleGuide.validGreen()
+        let color = UIColor.success
         let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -51,7 +51,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func needsUpdate() -> UIView {
         let icon = Gridicon.iconOfType(.sync, withSize: Constants.imageSize)
-        let color = WPStyleGuide.warningYellow()
+        let color = UIColor.warning
         let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
@@ -59,7 +59,7 @@ struct PluginDirectoryAccessoryItem {
 
     private static func updating() -> UIView {
         let icon = Gridicon.iconOfType(.sync, withSize: Constants.imageSize)
-        let color = WPStyleGuide.warningYellow()
+        let color = UIColor.warning
         let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
 
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)

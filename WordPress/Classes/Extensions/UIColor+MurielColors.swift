@@ -107,6 +107,13 @@ extension UIColor {
             return WPStyleGuide.jazzyOrange()
         }
     }
+    static var accentDark: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .accent, shade: .shade700))
+        } else {
+            return WPStyleGuide.fireOrange()
+        }
+    }
     class func accent(shade: MurielColorShade) -> UIColor {
         return muriel(color: MurielColor(from: .accent, shade: shade))
     }
@@ -120,6 +127,13 @@ extension UIColor {
             return muriel(color: .error)
         } else {
             return WPStyleGuide.errorRed()
+        }
+    }
+    static var errorDark: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(from: .error, shade: .shade700))
+        } else {
+            return WPStyleGuide.alertRedDarker()
         }
     }
     class func error(shade: MurielColorShade) -> UIColor {

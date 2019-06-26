@@ -338,7 +338,7 @@ private extension StatsBarChartView {
         if let primaryHighlightColor = styling.primaryHighlightColor {
             markerColor = primaryHighlightColor
         } else {
-            markerColor = WPStyleGuide.jazzyOrange()
+            markerColor = .accent
         }
         marker.backgroundColor = markerColor.withAlphaComponent(Constants.markerAlpha)
 

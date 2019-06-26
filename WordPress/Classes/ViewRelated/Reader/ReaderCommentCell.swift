@@ -122,7 +122,7 @@ class ReaderCommentCell: UITableViewCell {
         let size = Constants.buttonSize
         let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(.neutral(shade: .shade200))
         let highlightedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(.primary(shade: .shade300))
-        let selectedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(WPStyleGuide.jazzyOrange())
+        let selectedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(.accent)
 
         likeButton.setImage(tintedIcon, for: .normal)
         likeButton.setImage(highlightedIcon, for: .highlighted)
@@ -172,7 +172,7 @@ class ReaderCommentCell: UITableViewCell {
         authorButton.setTitleColor(.neutral(shade: .shade600), for: .disabled)
 
         if comment.authorIsPostAuthor() {
-            authorButton.setTitleColor(WPStyleGuide.jazzyOrange(), for: .normal)
+            authorButton.setTitleColor(.accent, for: .normal)
         } else if comment.hasAuthorUrl() {
             authorButton.setTitleColor(.primary, for: .normal)
         } else {

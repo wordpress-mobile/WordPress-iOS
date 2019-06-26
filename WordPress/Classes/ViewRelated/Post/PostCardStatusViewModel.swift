@@ -92,16 +92,16 @@ class PostCardStatusViewModel: NSObject {
         }
 
         if post.isFailed {
-            return WPStyleGuide.errorRed()
+            return .error
         }
 
         switch status {
         case .pending:
-            return WPStyleGuide.validGreen()
+            return .success
         case .scheduled:
             return .primary(shade: .shade400)
         case .trash:
-            return WPStyleGuide.errorRed()
+            return .error
         default:
             return .neutral(shade: .shade700)
         }

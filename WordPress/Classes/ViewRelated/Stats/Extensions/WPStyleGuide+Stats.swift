@@ -192,8 +192,8 @@ extension WPStyleGuide {
 
         static let postTitleFont = WPFontManager.notoBoldFont(ofSize: 17.0)
 
-        static let positiveColor = WPStyleGuide.validGreen()
-        static let negativeColor = WPStyleGuide.errorRed()
+        static let positiveColor = UIColor.success
+        static let negativeColor = UIColor.error
 
         static let gridiconSize = CGSize(width: 24, height: 24)
 

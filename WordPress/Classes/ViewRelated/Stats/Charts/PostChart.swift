@@ -25,7 +25,7 @@ extension PostChartType {
         case .latest:
             return nil
         case .selected:
-            return WPStyleGuide.jazzyOrange()
+            return .accent
         }
     }
 }

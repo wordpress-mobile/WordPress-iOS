@@ -70,7 +70,7 @@ open class DeleteSiteViewController: UITableViewController {
     fileprivate func setupHeaderSection() {
         let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48.0, height: 48.0))
         warningImage.image = warningIcon
-        warningImage.tintColor = WPStyleGuide.warningYellow()
+        warningImage.tintColor = UIColor.warning
         siteTitleLabel.textColor = .neutral(shade: .shade700)
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         siteTitleLabel.text = blog.displayURL as String?
@@ -153,7 +153,7 @@ open class DeleteSiteViewController: UITableViewController {
     fileprivate func setupDeleteButton() {
         let trashIcon = Gridicon.iconOfType(.trash)
         deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
-        deleteSiteButton.tintColor = WPStyleGuide.errorRed()
+        deleteSiteButton.tintColor = .error
         deleteSiteButton.setImage(trashIcon, for: .normal)
         deleteSiteButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
