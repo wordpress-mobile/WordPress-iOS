@@ -59,7 +59,7 @@ class ExpandableCell: WPReusableTableViewCell {
 
         titleTextLabel?.textColor = WPStyleGuide.darkGrey()
 
-        let linkAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: WPStyleGuide.wordPressBlue(),
+        let linkAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
                                                              .underlineStyle: 0,
                                                              .underlineColor: UIColor.clear]
         expandableTextView?.linkTextAttributes = linkAttributes

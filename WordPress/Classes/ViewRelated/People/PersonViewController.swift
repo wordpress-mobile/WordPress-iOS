@@ -402,7 +402,7 @@ private extension PersonViewController {
         headerCell.fullNameLabel.text = person.fullName
 
         headerCell.userNameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()
-        headerCell.userNameLabel.textColor = WPStyleGuide.wordPressBlue()
+        headerCell.userNameLabel.textColor = .primary
         headerCell.userNameLabel.text = "@" + person.username
 
         refreshGravatarImage(in: headerCell.gravatarImageView)

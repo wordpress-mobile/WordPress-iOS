@@ -168,7 +168,7 @@ import Gridicons
     }
 
     func configureFilterBar() {
-        filterBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterBar.tintColor = .primary
         filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterBar.dividerColor = WPStyleGuide.greyLighten20()
         filterBar.tabSizingStyle = .equalWidths

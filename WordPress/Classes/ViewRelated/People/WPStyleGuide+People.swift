@@ -22,6 +22,6 @@ extension WPStyleGuide {
         public static let superAdminColor = WPStyleGuide.fireOrange()
         public static let adminColor = WPStyleGuide.darkGrey()
         public static let editorColor = WPStyleGuide.darkBlue()
-        public static let otherRoleColor = WPStyleGuide.wordPressBlue()
+        public static let otherRoleColor: UIColor = .primary
     }
 }

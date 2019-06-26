@@ -38,8 +38,8 @@ private extension MainShareViewController {
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.barTintColor = WPStyleGuide.lightGrey()
         navigationBarAppearace.barStyle = .default
-        navigationBarAppearace.tintColor = WPStyleGuide.wordPressBlue()
-        navigationBarAppearace.titleTextAttributes = [.foregroundColor: WPStyleGuide.wordPressBlue()]
+        navigationBarAppearace.tintColor = .primary
+        navigationBarAppearace.titleTextAttributes = [.foregroundColor: UIColor.primary]
         navigationBarAppearace.isTranslucent = false
     }
 

@@ -1280,12 +1280,12 @@ fileprivate extension ShareExtensionEditorViewController {
         static let separator                            = WPStyleGuide.greyLighten30()
         static let placeholder                          = WPStyleGuide.grey()
         static let mediaProgressOverlay                 = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
-        static let mediaOverlayBorderColor              = WPStyleGuide.wordPressBlue()
+        static let mediaOverlayBorderColor              = UIColor.primary
         static let aztecBackground                      = UIColor.clear
         static let aztecLinkColor                       = WPStyleGuide.mediumBlue()
         static let aztecFormatBarDisabledColor          = WPStyleGuide.greyLighten20()
         static let aztecFormatBarDividerColor           = WPStyleGuide.greyLighten30()
-        static let aztecCursorColor                     = WPStyleGuide.wordPressBlue()
+        static let aztecCursorColor                     = UIColor.primary
         static let aztecFormatBarBackgroundColor        = UIColor.white
         static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
         static let aztecFormatBarActiveColor: UIColor   = UIColor(hexString: "11181D")

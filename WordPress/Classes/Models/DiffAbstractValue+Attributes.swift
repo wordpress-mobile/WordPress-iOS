@@ -4,7 +4,7 @@ extension DiffAbstractValue {
         case .add:
             return [.backgroundColor: WPStyleGuide.extraLightBlue(),
                     .underlineStyle: NSNumber(value: 2),
-                    .underlineColor: WPStyleGuide.wordPressBlue()]
+                    .underlineColor: UIColor.primary]
         case .del:
             return [.backgroundColor: WPStyleGuide.extraLightRed(),
                     .underlineStyle: NSNumber(value: 2),

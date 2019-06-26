@@ -439,7 +439,7 @@ private extension NotificationsViewController {
     }
 
     func setupFilterBar() {
-        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterTabBar.tintColor = .primary
         filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 

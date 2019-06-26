@@ -167,9 +167,9 @@ extension WPStyleGuide {
         static let headerTextColor = WPStyleGuide.greyDarken20()
         static let secondaryTextColor = WPStyleGuide.grey()
         static let itemDetailTextColor = WPStyleGuide.greyDarken10()
-        static let actionTextColor = WPStyleGuide.wordPressBlue()
+        static let actionTextColor: UIColor = .primary
         static let summaryTextColor = WPStyleGuide.darkGrey()
-        static let substringHighlightTextColor = WPStyleGuide.wordPressBlue()
+        static let substringHighlightTextColor: UIColor = .primary
         static let iconLoadingBackgroundColor = WPStyleGuide.greyLighten20()
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
@@ -181,7 +181,7 @@ extension WPStyleGuide {
         static let separatorColor = WPStyleGuide.greyLighten20()
         static let verticalSeparatorColor = WPStyleGuide.greyLighten30()
 
-        static let defaultFilterTintColor = WPStyleGuide.wordPressBlue()
+        static let defaultFilterTintColor: UIColor = .primary
         static let tabbedCardFilterTintColor = WPStyleGuide.greyLighten20()
         static let tabbedCardFilterSelectedTitleColor = WPStyleGuide.darkGrey()
         static let filterDeselectedColor = WPStyleGuide.greyDarken10()

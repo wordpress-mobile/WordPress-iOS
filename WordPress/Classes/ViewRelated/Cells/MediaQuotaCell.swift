@@ -54,7 +54,7 @@ import WordPressShared
         titleLabel.textColor = WPStyleGuide.darkGrey()
         valueLabel.font = WPStyleGuide.tableviewSubtitleFont()
         valueLabel.textColor = WPStyleGuide.grey()
-        progressView.progressTintColor = WPStyleGuide.wordPressBlue()
+        progressView.progressTintColor = .primary
         progressView.trackTintColor = WPStyleGuide.grey()
     }
 

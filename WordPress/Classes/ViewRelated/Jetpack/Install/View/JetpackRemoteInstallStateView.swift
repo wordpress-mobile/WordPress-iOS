@@ -57,7 +57,7 @@ private extension JetpackRemoteInstallStateView {
         mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         supportButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        supportButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        supportButton.setTitleColor(.primary, for: .normal)
         supportButton.setTitle(NSLocalizedString("Contact Support", comment: "Contact Support button title"),
                                for: .normal)
     }

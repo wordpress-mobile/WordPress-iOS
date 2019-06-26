@@ -378,8 +378,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var insertToolbarItem: UIButton = {
         let insertItem = UIButton(type: .custom)
         insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = WPStyleGuide.wordPressBlue()
-        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        insertItem.tintColor = .primary
+        insertItem.setTitleColor(.primary, for: .normal)
 
         return insertItem
     }()
@@ -3248,14 +3248,14 @@ extension AztecPostViewController {
         static let title                    = WPStyleGuide.grey()
         static let separator                = WPStyleGuide.greyLighten30()
         static let placeholder              = WPStyleGuide.grey()
-        static let progressBackground       = WPStyleGuide.wordPressBlue()
+        static let progressBackground       = UIColor.primary
         static let progressTint             = UIColor.white
-        static let progressTrack            = WPStyleGuide.wordPressBlue()
+        static let progressTrack            = UIColor.primary
         static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
-        static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
+        static let mediaProgressBarTrack    = UIColor.primary
         static let aztecLinkColor           = WPStyleGuide.mediumBlue()
-        static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
+        static let mediaOverlayBorderColor  = UIColor.primary
     }
 
     struct Fonts {

@@ -27,7 +27,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
 
     let approveIcon: UIButton = {
         let title = TitleStrings.approve
-        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: .primary)
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = TitleHints.approve
@@ -85,7 +85,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
             return
         }
 
-        let newBackgroundColor = on ? WPStyleGuide.grey() : WPStyleGuide.wordPressBlue()
+        let newBackgroundColor = on ? WPStyleGuide.grey() : .primary
         button.backgroundColor = newBackgroundColor
 
         resetDefaultPadding()
