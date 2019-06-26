@@ -47,7 +47,7 @@ class RestorePostTableViewCell: UITableViewCell, ConfigurablePostView, Interacti
 
     private func configureDefault() {
         topMargin.constant = Constants.defaultMargin
-        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor().cgColor
+        postContentView.layer.borderColor = WPStyleGuide.postCardBorderColor?.cgColor
         postContentView.layer.borderWidth = 1.0 / UIScreen.main.scale
     }
 

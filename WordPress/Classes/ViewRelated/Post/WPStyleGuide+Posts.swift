@@ -15,9 +15,7 @@ extension WPStyleGuide {
     }
 
     // MARK: - Card View Styles
-    class func postCardBorderColor() -> UIColor {
-        return UIColor(fromRGBAColorWithRed: 215.0, green: 227.0, blue: 235.0, alpha: 1.0)
-    }
+    static var postCardBorderColor = UIColor(fromRGBAColorWithRed: 215.0, green: 227.0, blue: 235.0, alpha: 1.0)
 
     class func applyPostCardStyle(_ cell: UITableViewCell) {
         cell.backgroundColor = greyLighten30()
@@ -61,7 +59,7 @@ extension WPStyleGuide {
 
     class func applyBorderStyle(_ view: UIView) {
         view.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale).isActive = true
-        view.backgroundColor = postCardBorderColor()
+        view.backgroundColor = postCardBorderColor
     }
 
     class func applyActionBarButtonStyle(_ button: UIButton) {
@@ -108,13 +106,9 @@ extension WPStyleGuide {
 
     // MARK: - Nav Bar Styles
 
-    class var navigationBarButtonRect: CGRect {
-        return CGRect(x: 0, y: 0, width: 30, height: 30)
-    }
+    static var navigationBarButtonRect = CGRect(x: 0, y: 0, width: 30, height: 30)
 
-    class var spacingBetweeenNavbarButtons: CGFloat {
-        return 40
-    }
+    static var spacingBetweeenNavbarButtons: CGFloat = 40
 
     class func buttonForBar(with image: UIImage,
                             target: Any?, selector: Selector) -> WPButtonForNavigationBar {
