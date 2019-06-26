@@ -76,10 +76,12 @@ extension WPStyleGuide {
         let marginMask = UIView()
         selectedBackgroundView.addSubview(marginMask)
         marginMask.translatesAutoresizingMaskIntoConstraints = false
-        marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor).isActive = true
-        marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor).isActive = true
-        marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor).isActive = true
-        marginMask.heightAnchor.constraint(equalToConstant: topMargin).isActive = true
+        NSLayoutConstraint.activate([
+            marginMask.leadingAnchor.constraint(equalTo: selectedBackgroundView.leadingAnchor),
+            marginMask.topAnchor.constraint(equalTo: selectedBackgroundView.topAnchor),
+            marginMask.trailingAnchor.constraint(equalTo: selectedBackgroundView.trailingAnchor),
+            marginMask.heightAnchor.constraint(equalToConstant: topMargin)
+        ])
         marginMask.backgroundColor = greyLighten30()
     }
 
