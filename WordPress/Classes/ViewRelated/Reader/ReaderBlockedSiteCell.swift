@@ -15,7 +15,7 @@ open class ReaderBlockedSiteCell: UITableViewCell {
         borderedContentView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedContentView.layer.borderWidth = 1.0
         label.font = WPStyleGuide.subtitleFont()
-        label.textColor = WPStyleGuide.whisperGrey()
+        label.textColor = .textSubtle
     }
 
     @objc open func setSiteName(_ name: String) {

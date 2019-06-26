@@ -35,8 +35,8 @@
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
-    cell.backgroundColor = [self greyLighten30];
-    cell.contentView.backgroundColor = [self greyLighten30];
+    cell.backgroundColor = [UIColor murielNeutral50];
+    cell.contentView.backgroundColor = [UIColor murielNeutral50];
 }
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
@@ -209,14 +209,14 @@
 + (void)applySectionHeaderTitleStyle:(UILabel *)label
 {
     [self configureLabelForSmallFontStyle:label];
-    label.backgroundColor = [self lightGrey];
-    label.textColor = [self grey];
+    label.backgroundColor = [UIColor murielNeutral0];
+    label.textColor = [UIColor murielNeutral300];
 }
 
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
     label.font = [WPStyleGuide regularFont];
-    label.textColor = [self grey];
+    label.textColor = [UIColor murielNeutral300];
 }
 
 + (void)applyRestorePageButtonStyle:(UIButton *)button
@@ -231,7 +231,7 @@
 + (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
 {
     [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielNeutral];
 }
 
 + (void)applyRestoreSavedPostTitleLabelStyle:(UILabel *)label
@@ -244,7 +244,7 @@
     UIFontDescriptorSymbolicTraits traits = [descriptor symbolicTraits];
     descriptor = [descriptor fontDescriptorWithSymbolicTraits:traits | UIFontDescriptorTraitItalic];
     label.font = [UIFont fontWithDescriptor:descriptor size:label.font.pointSize];
-    label.textColor = [self greyDarken10];
+    label.textColor = [UIColor murielNeutral];
 }
 
 + (void)applyRestoreSavedPostButtonStyle:(UIButton *)button

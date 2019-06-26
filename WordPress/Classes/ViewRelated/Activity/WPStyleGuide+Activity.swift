@@ -54,7 +54,7 @@ extension WPStyleGuide {
         }
 
         public static func backgroundRewindableColor() -> UIColor {
-            return .primary(shade: .shade300)
+            return .primaryLight
         }
 
         public static func getGridiconTypeForActivity(_ activity: Activity) -> GridiconType? {

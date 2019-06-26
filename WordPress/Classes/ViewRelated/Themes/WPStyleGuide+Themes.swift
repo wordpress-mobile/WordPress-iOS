@@ -53,7 +53,7 @@ extension WPStyleGuide {
         public static let activeCellBorderColor: UIColor = .neutral(shade: .shade400)
         public static let activeCellDividerColor: UIColor = .neutral(shade: .shade200)
         public static let activeCellNameColor: UIColor = .white
-        public static let activeCellInfoColor: UIColor = .primary(shade: .shade300)
+        public static let activeCellInfoColor: UIColor = .primaryLight
 
         public static let inactiveCellBackgroundColor: UIColor = .white
         public static let inactiveCellBorderColor: UIColor = .neutral(shade: .shade100)

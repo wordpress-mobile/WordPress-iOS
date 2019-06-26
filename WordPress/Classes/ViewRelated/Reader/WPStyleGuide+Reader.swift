@@ -68,7 +68,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: darkGrey()
+            .foregroundColor: UIColor.text
         ]
     }
 
@@ -81,7 +81,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: grey()
+            .foregroundColor: UIColor.textSubtle
         ]
     }
 
@@ -94,7 +94,7 @@ extension WPStyleGuide {
         return [
             .paragraphStyle: paragraphStyle,
             .font: font,
-            .foregroundColor: grey()
+            .foregroundColor: UIColor.textSubtle
         ]
     }
 
@@ -171,32 +171,32 @@ extension WPStyleGuide {
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
         button.setTitleColor(.primary, for: UIControl.State())
         button.setTitleColor(.primaryDark, for: .highlighted)
-        button.setTitleColor(darkGrey(), for: .disabled)
+        button.setTitleColor(.text, for: .disabled)
     }
 
     @objc public class func applyReaderCardBlogNameStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
         label.textColor = readerCardBlogNameLabelTextColor()
-        label.highlightedTextColor = lightBlue()
+        label.highlightedTextColor = .primaryLight
     }
 
     @objc public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
-        label.textColor = greyLighten10()
+        label.textColor = UIColor.textSubtle
     }
 
     @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
-        label.textColor = darkGrey()
+        label.textColor = .text
     }
 
     @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
-        label.textColor = darkGrey()
+        label.textColor = .text
     }
 
     @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
         WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
-        button.setTitleColor(mediumBlue(), for: UIControl.State())
-        button.setTitleColor(lightBlue(), for: .highlighted)
+        button.setTitleColor(.primary, for: UIControl.State())
+        button.setTitleColor(.primaryDark, for: .highlighted)
         button.titleLabel?.allowsDefaultTighteningForTruncation = false
         button.titleLabel?.lineBreakMode = .byTruncatingTail
     }
@@ -206,10 +206,10 @@ extension WPStyleGuide {
             return
         }
         WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
-        button.setTitleColor(greyLighten10(), for: UIControl.State())
-        button.setTitleColor(lightBlue(), for: .highlighted)
-        button.setTitleColor(jazzyOrange(), for: .selected)
-        button.setTitleColor(greyLighten10(), for: .disabled)
+        button.setTitleColor(.neutral(shade: .shade100), for: UIControl.State())
+        button.setTitleColor(.primaryLight, for: .highlighted)
+        button.setTitleColor(.accent, for: .selected)
+        button.setTitleColor(.neutral(shade: .shade100), for: .disabled)
     }
 
 
@@ -217,22 +217,22 @@ extension WPStyleGuide {
 
     @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
-        label.textColor = darkGrey()
+        label.textColor = .text
     }
 
     @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
-        label.textColor = greyDarken10()
+        label.textColor = .textSubtle
     }
 
     @objc public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
         WPStyleGuide.configureLabelForNotoFont(label, textStyle: .subheadline)
-        label.textColor = darkGrey()
+        label.textColor = .text
     }
 
     @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
-        label.textColor = grey()
+        label.textColor = .textSubtle
     }
 
 
@@ -248,7 +248,7 @@ extension WPStyleGuide {
         let tintedFollowIcon = followIcon.imageWithTintColor(.primary(shade: .shade400))
         let tintedFollowingIcon = followingIcon.imageWithTintColor(.success(shade: .shade500))
 
-        let highlightIcon = followingIcon.imageWithTintColor(.primary(shade: .shade300))
+        let highlightIcon = followingIcon.imageWithTintColor(.primaryLight)
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
@@ -351,7 +351,7 @@ extension WPStyleGuide {
     }
 
     @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
-        return .primary(shade: .shade300)
+        return .primaryLight
     }
 
 
