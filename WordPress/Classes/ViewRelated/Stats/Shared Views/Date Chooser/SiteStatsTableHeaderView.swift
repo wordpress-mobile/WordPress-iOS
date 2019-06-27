@@ -4,7 +4,7 @@ protocol SiteStatsTableHeaderDelegate: class {
     func dateChangedTo(_ newDate: Date?)
 }
 
-class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
+class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable, Accessible {
 
     // MARK: - Properties
 
@@ -50,8 +50,21 @@ class SiteStatsTableHeaderView: UITableViewHeaderFooterView, NibLoadable {
         self.expectedPeriodCount = expectedPeriodCount
         dateLabel.text = displayDate()
         updateButtonStates()
+        prepareForVoiceOver()
     }
 
+    func prepareForVoiceOver() {
+        if let period = dateLabel.text {
+            let localizedLabel = NSLocalizedString("Current period: %@", comment: "Period Accessibility label. Prefix the current selected period. Ex. Current period: 2019")
+            dateLabel.accessibilityLabel = .localizedStringWithFormat(localizedLabel, period)
+        }
+
+        backButton.accessibilityLabel = NSLocalizedString("Previous period", comment: "Accessibility label")
+        backButton.accessibilityHint = NSLocalizedString("Tap to select the previous period", comment: "Accessibility hint")
+
+        forwardButton.accessibilityLabel = NSLocalizedString("Next period", comment: "Accessibility label")
+        forwardButton.accessibilityHint = NSLocalizedString("Tap to select the next period", comment: "Accessibility hint")
+    }
 }
 
 private extension SiteStatsTableHeaderView {
@@ -102,6 +115,7 @@ private extension SiteStatsTableHeaderView {
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
+        prepareForVoiceOver()
     }
 
     func updateButtonStates() {
@@ -116,6 +130,7 @@ private extension SiteStatsTableHeaderView {
         forwardButton.isEnabled = helper.dateAvailableAfterDate(date, period: period)
         backButton.isEnabled = helper.dateAvailableBeforeDate(date, period: period, backLimit: backLimit)
         updateArrowStates()
+        prepareForVoiceOver()
     }
 
     func updateArrowStates() {
@@ -137,5 +152,6 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         delegate?.dateChangedTo(self.date)
         dateLabel.text = displayDate()
         updateButtonStates()
+        prepareForVoiceOver()
     }
 }
