@@ -674,7 +674,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// nothing or the resetting wasn't permanent.
     ///
     fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationBarAppearance()
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     func configureDismissButton() {
