@@ -74,7 +74,7 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
         contentLabel.text = title
         summaryLabel.text = summary
 
-        iconBackgroundImageView.backgroundColor = WPStyleGuide.wordPressBlue()
+        iconBackgroundImageView.backgroundColor = .primary
         iconImageView.image = Gridicon.iconOfType(.noticeOutline).imageWithTintColor(.white)
         iconImageView.isHidden = false
         rewindIconContainer.isHidden = true

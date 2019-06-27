@@ -25,7 +25,7 @@ extension WPStyleGuide {
         }
 
         public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
+            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleRegularFont,
@@ -33,7 +33,7 @@ extension WPStyleGuide {
         }
 
         public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
+            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleItalicsFont,
@@ -41,7 +41,7 @@ extension WPStyleGuide {
         }
 
         public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedString.Key: Any] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
+            let color = approved ? WPStyleGuide.littleEddieGrey() : .errorDark
 
             return  [.paragraphStyle: titleParagraph,
                      .font: titleBoldFont,

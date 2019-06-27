@@ -174,7 +174,7 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel = UILabel(frame: .zero)
         titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize,
                                             weight: .bold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = .neutral(shade: .shade700)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         self.addSubview(titleLabel)
@@ -184,7 +184,7 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
 
         actionButton = UIButton(type: .custom)
-        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.setTitleColor(.primary(shade: .shade400), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         actionButton.translatesAutoresizingMaskIntoConstraints = false

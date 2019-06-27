@@ -76,10 +76,10 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControl.State())
-        let buttonBackgroundImage = UIImage(color: WPStyleGuide.lightGrey())
+        let buttonBackgroundImage = UIImage(color: .neutral(shade: .shade0))
         clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControl.State())
 
-        borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
+        borderImageView.image = UIImage(color: .neutral(shade: .shade200), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
         updateHeightConstraint()
     }
@@ -178,7 +178,7 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
         }
         let suggestion = suggestions[indexPath.row]
         cell.textLabel?.text = suggestion.searchPhrase
-        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
+        cell.textLabel?.textColor = .neutral(shade: .shade700)
     }
 
 

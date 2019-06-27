@@ -26,7 +26,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     [super viewDidLoad];
 
     self.view.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.backgroundColor = [WPStyleGuide greyLighten30];
+    self.view.backgroundColor = [UIColor murielNeutral50];
 
     self.stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
 
@@ -107,7 +107,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     self.textLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote maximumPointSize:[WPStyleGuide maxFontSize]];
     self.textLabel.adjustsFontForContentSizeCategory = YES;
     self.textLabel.backgroundColor = [UIColor clearColor];
-    self.textLabel.textColor = [WPStyleGuide greyDarken20];
+    self.textLabel.textColor = [UIColor murielNeutral];
     self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
 }
 

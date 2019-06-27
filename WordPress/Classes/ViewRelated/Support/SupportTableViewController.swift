@@ -278,7 +278,7 @@ private extension SupportTableViewController {
             let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
+            cell.textLabel?.textColor = .primary
             cell.showIndicator = showIndicator
         }
     }
@@ -294,7 +294,7 @@ private extension SupportTableViewController {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
             WPStyleGuide.configureTableViewCell(cell)
-            cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
+            cell.textLabel?.textColor = .primary
         }
     }
 

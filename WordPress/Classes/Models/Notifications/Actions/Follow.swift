@@ -8,7 +8,7 @@ final class Follow: DefaultNotificationActionCommand {
     static let selectedHint = NSLocalizedString("Unfollows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog.")
 
     let followIcon: UIButton = {
-        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: .primary)
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = hint

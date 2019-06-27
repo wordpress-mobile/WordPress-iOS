@@ -10,18 +10,18 @@ extension WPStyleGuide {
 
         // MARK: - Public Properties
 
-        public static let linkColor = WPStyleGuide.baseLighterBlue()
+        public static let linkColor = UIColor.primary
 
         public static var contentRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentParagraph,
                      .font: contentRegularFont,
-                     .foregroundColor: contentTextColor ]
+                     .foregroundColor: UIColor.text]
         }
 
         public static var contentItalicStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentParagraph,
                      .font: contentItalicFont,
-                     .foregroundColor: contentTextColor ]
+                     .foregroundColor: UIColor.text]
         }
 
         public static func gravatarPlaceholderImage() -> UIImage {
@@ -31,18 +31,18 @@ extension WPStyleGuide {
         public static func summaryRegularStyle() -> [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: summaryParagraph,
                      .font: summaryRegularFont,
-                     .foregroundColor: WPStyleGuide.littleEddieGrey()]
+                     .foregroundColor: UIColor.text]
         }
 
         public static func summaryBoldStyle() -> [NSAttributedString.Key: Any] {
             return [.paragraphStyle: summaryParagraph,
                     .font: summaryBoldFont,
-                    .foregroundColor: WPStyleGuide.littleEddieGrey()]
+                    .foregroundColor: UIColor.text]
         }
 
         public static func timestampStyle() -> [NSAttributedString.Key: Any] {
             return  [.font: timestampFont,
-                     .foregroundColor: WPStyleGuide.allTAllShadeGrey()]
+                     .foregroundColor: UIColor.textSubtle]
         }
 
         public static func backgroundColor() -> UIColor {
@@ -50,11 +50,11 @@ extension WPStyleGuide {
         }
 
         public static func backgroundDiscardedColor() -> UIColor {
-            return WPStyleGuide.greyLighten30()
+            return .neutral(shade: .shade50)
         }
 
         public static func backgroundRewindableColor() -> UIColor {
-            return WPStyleGuide.lightBlue()
+            return .primaryLight
         }
 
         public static func getGridiconTypeForActivity(_ activity: Activity) -> GridiconType? {
@@ -72,19 +72,17 @@ extension WPStyleGuide {
         public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
             switch activity.status {
             case ActivityStatus.error:
-                return WPStyleGuide.errorRed()
+                return .error
             case ActivityStatus.success:
-                return WPStyleGuide.validGreen()
+                return .success
             case ActivityStatus.warning:
-                return WPStyleGuide.warningYellow()
+                return .warning
             default:
-                return WPStyleGuide.greyLighten10()
+                return .neutral(shade: .shade200)
             }
         }
 
         // MARK: - Private Properties
-
-        private static let contentTextColor = WPStyleGuide.littleEddieGrey()
 
         private static var minimumLineHeight: CGFloat {
             return contentFontSize * 1.3

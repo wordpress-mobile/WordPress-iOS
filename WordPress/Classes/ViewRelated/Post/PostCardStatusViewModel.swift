@@ -84,26 +84,26 @@ class PostCardStatusViewModel: NSObject {
     @objc
     var statusColor: UIColor {
         guard let status = postStatus else {
-            return WPStyleGuide.darkGrey()
+            return .neutral(shade: .shade700)
         }
 
         if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
-            return WPStyleGuide.grey()
+            return .neutral(shade: .shade300)
         }
 
         if post.isFailed {
-            return WPStyleGuide.errorRed()
+            return .error
         }
 
         switch status {
         case .pending:
-            return WPStyleGuide.validGreen()
+            return .success
         case .scheduled:
-            return WPStyleGuide.mediumBlue()
+            return .primary(shade: .shade400)
         case .trash:
-            return WPStyleGuide.errorRed()
+            return .error
         default:
-            return WPStyleGuide.darkGrey()
+            return .neutral(shade: .shade700)
         }
     }
 

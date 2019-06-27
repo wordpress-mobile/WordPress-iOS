@@ -147,7 +147,7 @@ private extension LoginEpilogueViewController {
             buttonPanel.backgroundColor = .white
             shadowView.isHidden = false
         } else {
-            buttonPanel.backgroundColor = WPStyleGuide.lightGrey()
+            buttonPanel.backgroundColor = .neutral(shade: .shade0)
             shadowView.isHidden = true
         }
     }

@@ -78,8 +78,8 @@ private extension RevisionsTableViewCell {
         WPStyleGuide.configureTableViewCell(self)
 
         // Setup labels
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        subTitleLabel.textColor = WPStyleGuide.greyDarken10()
+        titleLabel.textColor = .neutral(shade: .shade700)
+        subTitleLabel.textColor = .neutral(shade: .shade400)
 
         // Setup del operations
         delOperation = RevisionOperation(.del)

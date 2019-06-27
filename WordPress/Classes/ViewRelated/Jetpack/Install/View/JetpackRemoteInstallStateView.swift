@@ -46,18 +46,18 @@ class JetpackRemoteInstallStateView: UIViewController {
 
 private extension JetpackRemoteInstallStateView {
     func setupUI() {
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        view.backgroundColor = .neutral(shade: .shade50)
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.title2)
-        titleLabel.textColor = WPStyleGuide.greyDarken10()
+        titleLabel.textColor = .neutral(shade: .shade400)
 
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
-        descriptionLabel.textColor = WPStyleGuide.darkGrey()
+        descriptionLabel.textColor = .neutral(shade: .shade700)
 
         mainButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
 
         supportButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
-        supportButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        supportButton.setTitleColor(.primary, for: .normal)
         supportButton.setTitle(NSLocalizedString("Contact Support", comment: "Contact Support button title"),
                                for: .normal)
     }

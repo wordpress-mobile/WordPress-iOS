@@ -631,13 +631,13 @@ import WordPressShared
         if cell.accessoryView == nil {
             let image = Gridicon.iconOfType(.plus)
             let imageView = UIImageView(image: image)
-            imageView.tintColor = WPStyleGuide.wordPressBlue()
+            imageView.tintColor = .primary
             cell.accessoryView = imageView
         }
 
         cell.selectionStyle = .default
         cell.imageView?.image = menuItem.icon
-        cell.imageView?.tintColor = WPStyleGuide.wordPressBlue()
+        cell.imageView?.tintColor = .primary
         cell.textLabel?.text = menuItem.title
     }
 

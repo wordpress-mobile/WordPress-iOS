@@ -24,7 +24,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
-        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        footer.backgroundColor = .neutral(shade: .shade100)
         return footer
     }()
 

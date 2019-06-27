@@ -107,7 +107,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
         let attributes = originalAttributionParagraphAttributes
-        textLabel.textColor = WPStyleGuide.grey()
+        textLabel.textColor = .neutral(shade: .shade300)
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
     }
@@ -128,8 +128,8 @@ private enum ReaderCardDiscoverAttribution: Int {
         let attributes = originalAttributionParagraphAttributes
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(.font, value: font, range: range)
-        textLabel.textColor = WPStyleGuide.mediumBlue()
-        textLabel.highlightedTextColor = WPStyleGuide.lightBlue()
+        textLabel.textColor = .primary
+        textLabel.highlightedTextColor = .primary
         textLabel.attributedText = attributedString
         attributionAction = .visitSite
     }

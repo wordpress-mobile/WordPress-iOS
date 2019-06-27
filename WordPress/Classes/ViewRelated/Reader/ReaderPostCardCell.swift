@@ -215,8 +215,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
         let icon = Gridicon.iconOfType(.external, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())?.imageFlippedForRightToLeftLayoutDirection()
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.imageFlippedForRightToLeftLayoutDirection()
+        let tintedIcon = icon.imageWithTintColor(.textSubtle)?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightIcon = icon.imageWithTintColor(.primary)?.imageFlippedForRightToLeftLayoutDirection()
 
         visitButton.setTitle(title, for: UIControl.State())
         visitButton.setImage(tintedIcon, for: .normal)
@@ -230,8 +230,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedIcon = icon.imageWithTintColor(.textSubtle)
+        let highlightIcon = icon.imageWithTintColor(.primary)
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
@@ -252,8 +252,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies the default styles to the cell's subviews
     */
     fileprivate func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
-        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        backgroundColor = .neutral(shade: .shade50)
+        contentView.backgroundColor = .neutral(shade: .shade50)
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
 

@@ -24,14 +24,14 @@ class AuthorFilterButton: UIControl {
         let imageView = CircularImageView(image: UIImage.gravatarPlaceholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.backgroundColor = WPStyleGuide.greyLighten20()
-        imageView.tintColor = WPStyleGuide.darkGrey()
+        imageView.backgroundColor = .neutral(shade: .shade100)
+        imageView.tintColor = .neutral(shade: .shade700)
 
         return imageView
     }()
 
     private let chevronImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage.makeChevronDownImage(with: WPStyleGuide.greyDarken10(), size: Metrics.chevronSize))
+        let imageView = UIImageView(image: UIImage.makeChevronDownImage(with: .neutral(shade: .shade400), size: Metrics.chevronSize))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.contentMode = .bottom
