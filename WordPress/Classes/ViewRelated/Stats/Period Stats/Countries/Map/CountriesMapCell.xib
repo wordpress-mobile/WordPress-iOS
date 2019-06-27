@@ -19,6 +19,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="283.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xGz-qQ-24V">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="283.5"/>
+                    </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9qC-oR-E6W">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="0.5"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -26,9 +29,6 @@
                             <constraint firstAttribute="height" constant="0.5" id="UVB-Zz-xnO"/>
                         </constraints>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xGz-qQ-24V">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="283.5"/>
-                    </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="xGz-qQ-24V" secondAttribute="trailing" id="IZO-DZ-xBv"/>
