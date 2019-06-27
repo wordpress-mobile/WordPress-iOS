@@ -57,6 +57,18 @@ class NotificationService: UNNotificationServiceExtension {
             notificationContent.categoryIdentifier = category
         }
 
+        // If the notification has a body but not a title, and is a notification
+        // type that _can_ have a separate title and body, in case of failure later
+        // for now let's just populate the title with what we have.
+        // In practice, this means that notifications other than likes and
+        // comment likes will always have a bolded title.
+        if notificationContent.title.isEmpty,
+            !notificationContent.body.isEmpty,
+            !NotificationKind.omitsRichNotificationBody(notificationKind) {
+            notificationContent.title = notificationContent.body
+            notificationContent.body = ""
+        }
+
         let api = WordPressComRestApi(oAuthToken: token)
         let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
         self.notificationService = service
