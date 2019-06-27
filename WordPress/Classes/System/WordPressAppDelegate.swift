@@ -778,19 +778,19 @@ extension WordPressAppDelegate {
         UINavigationBar.appearance(whenContainedInInstancesOf: [NUXNavigationController.self]).setBackgroundImage(clearImage, for: .default)
 
         UISegmentedControl.appearance().setTitleTextAttributes( [NSAttributedString.Key.font: WPStyleGuide.regularTextFont()], for: .normal)
-        UIToolbar.appearance().barTintColor = WPStyleGuide.wordPressBlue()
-        UISwitch.appearance().onTintColor = WPStyleGuide.wordPressBlue()
+        UIToolbar.appearance().barTintColor = .primary
+        UISwitch.appearance().onTintColor = .primary
 
         let navReferenceAppearance = UINavigationBar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self])
         navReferenceAppearance.setBackgroundImage(nil, for: .default)
-        navReferenceAppearance.barTintColor = WPStyleGuide.wordPressBlue()
+        navReferenceAppearance.barTintColor = .primary
 
         UIToolbar.appearance(whenContainedInInstancesOf: [UIReferenceLibraryViewController.self]).barTintColor = .darkGray
 
         WPStyleGuide.configureSearchBarAppearance()
 
         // SVProgressHUD
-        SVProgressHUD.setBackgroundColor(WPStyleGuide.littleEddieGrey().withAlphaComponent(0.95))
+        SVProgressHUD.setBackgroundColor(UIColor.neutral(shade: .shade700).withAlphaComponent(0.95))
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
@@ -805,9 +805,9 @@ extension WordPressAppDelegate {
         cellAppearance.loadingBackgroundColor = .neutral(shade: .shade0)
         cellAppearance.placeholderBackgroundColor = .neutral(shade: .shade700)
         cellAppearance.placeholderTintColor = .neutral(shade: .shade50)
-        cellAppearance.setCellTintColor(WPStyleGuide.wordPressBlue())
+        cellAppearance.setCellTintColor(.primary)
 
-        UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = WPStyleGuide.wordPressBlue()
+        UIButton.appearance(whenContainedInInstancesOf: [WPActionBar.self]).tintColor = .primary
 
         customizeAppearanceForTextElements()
     }
