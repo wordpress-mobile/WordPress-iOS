@@ -85,8 +85,11 @@ class NotificationService: UNNotificationServiceExtension {
                 notificationReadStatus: notification.read,
                 noticon: notification.noticon)
 
-            notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
-            notificationContent.body = contentFormatter.body ?? ""
+            // Only populate title / body for notification kinds with rich body content
+            if !NotificationKind.omitsRichNotificationBody(notificationKind) {
+                notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
+                notificationContent.body = contentFormatter.body ?? ""
+            }
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
 
             tracks.trackNotificationAssembled()
