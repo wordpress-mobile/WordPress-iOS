@@ -263,7 +263,7 @@ open class NotificationSettingsViewController: UIViewController {
         }
 
         if let site = siteTopic(at: indexPath) {
-            cell.imageView?.image = .siteIconPlaceholderImage
+            cell.imageView?.image = .siteIconPlaceholder
 
             cell.accessoryType = .disclosureIndicator
             cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
@@ -291,7 +291,7 @@ open class NotificationSettingsViewController: UIViewController {
             if let blog = settings.blog {
                 cell.imageView?.downloadSiteIcon(for: blog)
             } else {
-                cell.imageView?.image = .siteIconPlaceholderImage
+                cell.imageView?.image = .siteIconPlaceholder
             }
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)

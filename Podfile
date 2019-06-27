@@ -178,7 +178,7 @@ target 'WordPress' do
         require 'commonmarker'
         
         project_root = File.dirname(__FILE__)
-        acknowledgements = 'Acknowledgements'
+        acknowledgements = 'Acknowledgments'
         markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-WordPress/Pods-WordPress-acknowledgements.markdown")
         rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
         styled_html = "<head>
