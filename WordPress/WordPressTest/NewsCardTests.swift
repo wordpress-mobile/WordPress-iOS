@@ -65,11 +65,11 @@ final class NewsCardTests: XCTestCase {
     }
 
     func testTitleHasTheExpectedColor() {
-        XCTAssertEqual(subject?.newsTitle.textColor, .neutral(shade: .shade700))
+        XCTAssertEqual(subject?.newsTitle.textColor, .text)
     }
 
     func testSubtitleHasTheExpectedColor() {
-        XCTAssertEqual(subject?.newsSubtitle.textColor, .neutral(shade: .shade400))
+        XCTAssertEqual(subject?.newsSubtitle.textColor, .textSubtle)
     }
 
     func testDismissButtonContainsTheExpectedIcon() {
