@@ -85,9 +85,15 @@ open class AppIconViewController: UITableViewController {
     }
     
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let icon = (indexPath.row == 0) ? nil : icons[indexPath.row]
+        let isOriginalIconRow = (indexPath.row == 0)
+        let icon = isOriginalIconRow ? nil : icons[indexPath.row]
         
-        UIApplication.shared.setAlternateIconName(icon, completionHandler: { [weak self] (error) in
+        UIApplication.shared.setAlternateIconName(icon, completionHandler: { [weak self] error in
+            if error == nil {
+                let event: WPAnalyticsStat = isOriginalIconRow ? .appIconReset : .appIconChanged
+                WPAppAnalytics.track(event)
+            }
+
             self?.tableView.reloadData()
         })
     }
