@@ -64,13 +64,14 @@ class NotificationService: UNNotificationServiceExtension {
         service.loadNotes(noteIds: [noteID]) { [tracks] error, notifications in
             if let error = error {
                 tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
+                contentHandler(notificationContent)
                 return
             }
 
             guard let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
                 let notification = remoteNotifications.first else {
-
+                contentHandler(notificationContent)
                 return
             }
 
