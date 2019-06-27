@@ -205,6 +205,13 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushAppIconSwitcher() -> ImmuTableAction {
+        return { [weak self] row in
+            let controller = AppIconViewController()
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     func pushAbout() -> ImmuTableAction {
         return { [weak self] row in
             let controller = AboutViewController()
@@ -410,6 +417,11 @@ private extension AppSettingsViewController {
     func otherTableSection() -> ImmuTableSection {
         let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
 
+        let iconRow = NavigationItemRow(
+            title: NSLocalizedString("App Icon", comment: "Navigates to picker screen to change the app's icon"),
+            action: pushAppIconSwitcher()
+        )
+
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
@@ -420,12 +432,15 @@ private extension AppSettingsViewController {
             action: pushAbout()
         )
 
+        var rows = [settingsRow, aboutRow]
+        if #available(iOS 10.3, *),
+            UIApplication.shared.supportsAlternateIcons {
+                rows.insert(iconRow, at: 0)
+        }
+        
         return ImmuTableSection(
             headerText: otherHeader,
-            rows: [
-                settingsRow,
-                aboutRow
-            ],
+            rows: rows,
             footerText: nil)
     }
 
