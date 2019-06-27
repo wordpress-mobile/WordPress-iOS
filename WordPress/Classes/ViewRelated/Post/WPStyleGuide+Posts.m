@@ -196,7 +196,7 @@
 {
     CGFloat fontSize = 15.0;
     label.font = [WPFontManager notoRegularFontOfSize:fontSize];
-    label.textColor = [self wordPressBlue];
+    label.textColor = [UIColor murielPrimary];
 }
 
 + (NSDictionary *)pageCellTitleAttributes
