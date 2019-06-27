@@ -247,4 +247,38 @@ extension UIColor {
             return WPStyleGuide.greyLighten10()
         }
     }
+
+    /// MARK: Muriel colors for buttons
+    static var buttonBase: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return .accent
+        } else {
+            return WPStyleGuide.mediumBlue()
+        }
+    }
+    static var buttonBorder: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return .accentDark
+        } else {
+            return WPStyleGuide.wordPressBlue()
+        }
+    }
+    static var buttonDown: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(name: .hotPink, shade: .shade800))
+        } else {
+            return WPStyleGuide.wordPressBlue()
+        }
+    }
+    static var buttonDownBorder: UIColor {
+        if FeatureFlag.murielColors.enabled {
+            return muriel(color: MurielColor(name: .hotPink, shade: .shade900))
+        } else {
+            return WPStyleGuide.wordPressBlue()
+        }
+    }
+    static var buttonSecondaryBase = UIColor.textInverted
+    static var buttonSecondaryBorder = UIColor.neutral(shade: .shade100)
+    static var buttonSecondaryDown = UIColor.neutral(shade: .shade100)
+    static var buttonSecondaryDownBorder = UIColor.neutral(shade: .shade400)
 }
