@@ -4,11 +4,17 @@ import Foundation
 /// and attempts to extract URL components for any placeholders present in the route.
 ///
 class RouteMatcher {
+    let redirects: [Route]
     let routes: [Route]
 
     /// - parameter routes: A collection of routes to match against.
-    init(routes: [Route]) {
+    init(routes: [Route], redirects: [Route]) {
+        self.redirects = redirects
         self.routes = routes
+    }
+
+    func redirectsMatching(_ url: URL) -> [MatchedRoute] {
+        return matches(in: routes, for: url)
     }
 
     /// Finds routes that match the specified URL's path. If any of the matching routes
@@ -23,33 +29,40 @@ class RouteMatcher {
     /// - returns: A collection of MatchedRoutes whose paths match `path`.
     ///
     func routesMatching(_ url: URL) -> [MatchedRoute] {
-        let pathComponents = url.pathComponents
+        return matches(in: routes, for: url)
+    }
 
+    func matches(in routes: [Route], for url: URL) -> [MatchedRoute] {
         return routes.compactMap({ route in
-            let values = valuesDictionary(forURL: url)
-
-            // If the paths are the same, we definitely have a match
-            if route.path == url.path {
-                return route.matched(with: values)
-            }
-
-            let routeComponents = route.components
-
-            // Ensure the paths have the same number of components
-            guard routeComponents.count == pathComponents.count else {
-                return nil
-            }
-
-            guard let placeholderValues = placeholderDictionary(forKeyComponents: routeComponents,
-                                                                valueComponents: pathComponents) else {
-                                                                    return nil
-            }
-
-            let allValues = values.merging(placeholderValues,
-                                           uniquingKeysWith: { (current, _) in current })
-
-            return route.matched(with: allValues)
+            return match(route: route, with: url)
         })
+    }
+
+    private func match(route: Route, with url: URL) -> MatchedRoute? {
+        let pathComponents = url.pathComponents
+        let values = valuesDictionary(forURL: url)
+
+        // If the paths are the same, we definitely have a match
+        if route.path == url.path {
+            return route.matched(with: values)
+        }
+
+        let routeComponents = route.components
+
+        // Ensure the paths have the same number of components
+        guard routeComponents.count == pathComponents.count else {
+            return nil
+        }
+
+        guard let placeholderValues = placeholderDictionary(forKeyComponents: routeComponents,
+                                                            valueComponents: pathComponents) else {
+                                                                return nil
+        }
+
+        let allValues = values.merging(placeholderValues,
+                                       uniquingKeysWith: { (current, _) in current })
+
+        return route.matched(with: allValues)
     }
 
     private func valuesDictionary(forURL url: URL) -> [String: String] {
