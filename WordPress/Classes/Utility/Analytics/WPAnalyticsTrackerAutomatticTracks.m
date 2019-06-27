@@ -72,7 +72,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     if (eventPair.properties == nil && properties == nil) {
         DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
     } else {
-        DDLogInfo(@"🔵 Tracked: %@, properties: %@", eventPair.eventName, mergedProperties);
+        NSArray<NSString *> *propertyKeys = [[mergedProperties allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSString *propertiesDescription = [[propertyKeys wp_map:^NSString *(NSString *key) {
+            return [NSString stringWithFormat:@"%@: %@", key, mergedProperties[key]];
+        }] componentsJoinedByString:@", "];
+        DDLogInfo(@"🔵 Tracked: %@ <%@>", eventPair.eventName, propertiesDescription);
     }
 
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
