@@ -18,30 +18,30 @@ struct UniversalLinkRouter {
                                             redirects: redirects)
 
     static let routes: [Route] =
-        MeRoutes +
-        NewPostRoutes +
-        NotificationsRoutes +
-        ReaderRoutes +
-        StatsRoutes +
-        MySitesRoutes +
-        AppBannerRoutes
+        meRoutes +
+        newPostRoutes +
+        notificationsRoutes +
+        readerRoutes +
+        statsRoutes +
+        mySitesRoutes +
+        appBannerRoutes
 
-    static let MeRoutes: [Route] = [
+    static let meRoutes: [Route] = [
         MeRoute(),
         MeAccountSettingsRoute(),
         MeNotificationSettingsRoute()
     ]
 
-    static let NewPostRoutes: [Route] = [
+    static let newPostRoutes: [Route] = [
         NewPostRoute(),
         NewPostForSiteRoute()
     ]
 
-    static let NotificationsRoutes: [Route] = [
+    static let notificationsRoutes: [Route] = [
         NotificationsRoute()
     ]
 
-    static let ReaderRoutes: [Route] = [
+    static let readerRoutes: [Route] = [
         ReaderRoute.root,
         ReaderRoute.discover,
         ReaderRoute.search,
@@ -56,7 +56,7 @@ struct UniversalLinkRouter {
         ReaderRoute.blogsPost
     ]
 
-    static let StatsRoutes: [Route] = [
+    static let statsRoutes: [Route] = [
         StatsRoute.root,
         StatsRoute.site,
         StatsRoute.daySite,
@@ -69,7 +69,7 @@ struct UniversalLinkRouter {
         StatsRoute.activityLog
     ]
 
-    static let MySitesRoutes: [Route] = [
+    static let mySitesRoutes: [Route] = [
         MySitesRoute.pages,
         MySitesRoute.posts,
         MySitesRoute.media,
@@ -80,7 +80,7 @@ struct UniversalLinkRouter {
         MySitesRoute.managePlugins
     ]
 
-    static let AppBannerRoutes: [Route] = [
+    static let appBannerRoutes: [Route] = [
         AppBannerRoute()
     ]
 
