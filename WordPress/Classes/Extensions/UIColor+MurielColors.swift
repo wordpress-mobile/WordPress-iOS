@@ -235,10 +235,9 @@ extension UIColor {
     }
 
     /// Muriel/iOS navigation color
-    static var navigationBar = muriel(color: .navigationBar)
+    static var textInverted = UIColor.white
 
-    /// Muriel/iOS navgiation shadow color
-    static var navigationBarShadow = muriel(color: .navigationBarShadow)
+    static var navigationBar = muriel(color: .navigationBar)
 
     /// Muriel/iOS unselected color
     static var unselected: UIColor {

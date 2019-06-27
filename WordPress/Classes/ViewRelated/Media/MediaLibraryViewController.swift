@@ -104,7 +104,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
      or the resetting wasn't permanent.
      */
     fileprivate func resetNavigationColors() {
-        WPStyleGuide.configureNavigationBarAppearance()
+        WPStyleGuide.configureNavigationAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
