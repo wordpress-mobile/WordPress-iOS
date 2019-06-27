@@ -456,14 +456,21 @@ extension WordPressAppDelegate {
     private func setupFancyButtonAppearance() {
         let appearance = FancyButton.appearance()
         appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
+        appearance.primaryTitleColor = .textInverted
         appearance.primaryNormalBackgroundColor = .buttonBase
         appearance.primaryNormalBorderColor = .buttonBorder
         appearance.primaryHighlightBackgroundColor = .buttonDown
         appearance.primaryHighlightBorderColor = .buttonDownBorder
-        appearance.secondaryNormalBackgroundColor = .buttonSecondaryBase
-        appearance.secondaryNormalBorderColor = .buttonSecondaryBorder
-        appearance.secondaryHighlightBackgroundColor = .buttonSecondaryDown
-        appearance.secondaryHighlightBorderColor = .buttonSecondaryDownBorder
+
+        appearance.secondaryTitleColor = .text
+        appearance.secondaryNormalBackgroundColor = UIColor.textInverted
+        appearance.secondaryNormalBorderColor = UIColor.neutral(shade: .shade100)
+        appearance.secondaryHighlightBackgroundColor = UIColor.neutral(shade: .shade100)
+        appearance.secondaryHighlightBorderColor = UIColor.neutral(shade: .shade400)
+
+        appearance.disabledTitleColor = .neutral(shade: .shade200)
+        appearance.disabledBackgroundColor = .textInverted
+        appearance.disabledBorderColor = .neutral(shade: .shade100)
     }
 }
 

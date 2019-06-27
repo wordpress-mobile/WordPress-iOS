@@ -277,8 +277,4 @@ extension UIColor {
             return WPStyleGuide.wordPressBlue()
         }
     }
-    static var buttonSecondaryBase = UIColor.textInverted
-    static var buttonSecondaryBorder = UIColor.neutral(shade: .shade100)
-    static var buttonSecondaryDown = UIColor.neutral(shade: .shade100)
-    static var buttonSecondaryDownBorder = UIColor.neutral(shade: .shade400)
 }
