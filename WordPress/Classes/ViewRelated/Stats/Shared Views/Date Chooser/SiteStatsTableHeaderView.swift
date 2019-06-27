@@ -116,6 +116,7 @@ private extension SiteStatsTableHeaderView {
         dateLabel.text = displayDate()
         updateButtonStates()
         prepareForVoiceOver()
+        postAccessibilityPeriodLabel()
     }
 
     func updateButtonStates() {
@@ -137,6 +138,10 @@ private extension SiteStatsTableHeaderView {
         forwardArrow.image = Style.imageForGridiconType(.chevronRight, withTint: (forwardButton.isEnabled ? .darkGrey : .grey))
         backArrow.image = Style.imageForGridiconType(.chevronLeft, withTint: (backButton.isEnabled ? .darkGrey : .grey))
     }
+
+    func postAccessibilityPeriodLabel() {
+        UIAccessibility.post(notification: .screenChanged, argument: dateLabel)
+    }
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
@@ -153,5 +158,6 @@ extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
         dateLabel.text = displayDate()
         updateButtonStates()
         prepareForVoiceOver()
+        postAccessibilityPeriodLabel()
     }
 }
