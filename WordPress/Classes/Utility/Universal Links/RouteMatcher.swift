@@ -8,7 +8,7 @@ class RouteMatcher {
     let routes: [Route]
 
     /// - parameter routes: A collection of routes to match against.
-    init(routes: [Route], redirects: [Route]) {
+    init(routes: [Route], redirects: [Route] = []) {
         self.redirects = redirects
         self.routes = routes
     }
